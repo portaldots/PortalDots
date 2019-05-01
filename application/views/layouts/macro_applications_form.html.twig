@@ -1,0 +1,174 @@
+{% macro applications_form( form, type, answers, form_attr, disabled ) %}
+  {{ form_open_multipart( null, form_attr )|raw }}
+    {% for section in form.sections %}
+      <section class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">{{ section.title }}</h2>
+        </div>
+        <div class="panel-body">
+          <div class="markdown-body w-max-md">
+            {{ section.description_html|raw }}
+          </div>
+
+          {% if section.description_html and section.questions %}<hr>{% endif %}
+
+          {% for question in section.questions %}
+            <div class="w-max-md form-group{% if not empty(form_error("answers[#{question.id}]")) %} has-error{% endif %}">
+              <label class="control-label" for="{{ "input_answer_#{question.id}" }}">
+                {{ question.name }}
+                {% if question.is_required == true %}
+                  <span class="label label-danger">必須</span>
+                {% endif %}
+
+                {% if question.type == "upload" %}
+                  {% if type == "update" and answers[question.id] is not empty %}
+                    <span class="label label-primary">アップロード済み</span>
+                  {% else %}
+                    <span class="label label-danger">未アップロード</span>
+                  {% endif %}
+                {% endif %}
+              </label>
+              {% if question.type == "checkbox" %}
+                {{ form_error("answers[#{question.id}][]", '<p class="text-danger">', '</p>') | raw }}
+              {% else %}
+                {{ form_error("answers[#{question.id}]", '<p class="text-danger">', '</p>') | raw }}
+              {% endif %}
+
+              {% if ( question.type == "text" or question.type == "textarea" or question.type == "number" ) and ( question.number_min is not empty or question.number_max is not empty ) %}
+                <p class="text-muted">
+                  {%- if question.number_min is not empty -%}
+                    {{ question.number_min }}
+                    {%- if question.type != "number" -%}文字{%- endif -%}以上
+                  {%- endif -%}
+                  {%- if question.number_max is not empty -%}
+                    {{ question.number_max }}
+                    {%- if question.type != "number" -%}文字{%- endif -%}以下
+                  {%- endif -%}
+                  の範囲で入力してください
+                </p>
+              {% endif %}
+
+              {% if question.type == "textarea" %}
+                <textarea
+                  name="answers[{{question.id}}]"
+                  class="form-control"
+                  id="input_answer_{{question.id}}"
+                  rows="5"
+                  {% if question.is_required %}required{% endif %}
+                  {% if not form.is_in_period or disabled %}readonly{% endif %}
+                >{{answers[question.id]}}</textarea>
+              {% elseif question.type == "radio" %}
+                {% for option in question.options %}
+                  <div class="radio">
+                    <label>
+                      <input
+                        type="radio"
+                        name="answers[{{question.id}}]"
+                        id="input_answer_{{question.id}}_{{option.id}}"
+                        value="{{option.id}}"
+                        {% if question.is_required %}required{% endif %}
+                        {% if option.id == answers[question.id] %}checked{% endif %}
+                        {% if not form.is_in_period or disabled %}disabled{% endif %}
+                      >
+                      {{ option.value }}
+                    </label>
+                  </div>
+                {% endfor %}
+              {% elseif question.type == "checkbox" %}
+                {% for option in question.options %}
+                  <div class="checkbox">
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="answers[{{question.id}}][]"
+                        id="input_answer_{{question.id}}_{{option.id}}"
+                        value="{{option.id}}"
+                        {# 選択肢が１つしかないチェックボックスに限り required を付ける #}
+                        {% if question.is_required and question.options|length == 1 %}required{% endif %}
+                        {% if option.id in answers[question.id] %}checked{% endif %}
+                        {% if not form.is_in_period or disabled %}disabled{% endif %}
+                      >
+                      {{ option.value }}
+                    </label>
+                  </div>
+                {% endfor %}
+              {% elseif question.type == "select" %}
+                <select
+                  name="answers[{{question.id}}]"
+                  class="form-control"
+                  id="input_answer_{{question.id}}"
+                  {% if question.is_required %}required{% endif %}
+                  {% if not form.is_in_period or disabled %}disabled{% endif %}
+                >
+                  {% for option in question.options %}
+                    <option
+                      value="{{option.id}}"
+                      {% if option.id == answers[question.id] %}selected{% endif %}
+                    >
+                      {{ option.value }}
+                    </option>
+                  {% endfor %}
+                </select>
+              {% else %}
+                <input
+                  type="{% if question.type != "upload" %}{{question.type}}{% else %}file{% endif %}"
+                  name="answers[{{question.id}}]"
+                  {% if question.type != "upload" %}value="{{answers[question.id]}}"{% endif %}
+                  class="form-control"
+                  id="input_answer_{{question.id}}"
+                  {% if question.type == "number" %}
+                    {% if question.number_min is not empty or question.number_min is same as(0) %}min="{{question.number_min}}"{% endif %}
+                    {% if question.number_max is not empty %}max="{{question.number_max}}"{% endif %}
+                  {% endif %}
+                  {% if question.type == "text" and ( question.number_min is not empty or question.number_max is not empty ) %}
+                    pattern="{{ ".{" }}{% if question.number_min is not empty %}{{ question.number_min }}{% else %} {% endif %},{% if question.number_max is not empty %}{{ question.number_max }}{% else %} {% endif %}{{ "}" }}"
+                    title="{% if question.number_min is not empty %}{{ question.number_min }}文字以上{% endif %}{% if question.number_max is not empty %}{{ question.number_max }}文字以下{% endif %}で入力してください"
+                  {% endif %}
+                  {% if question.is_required and question.type != "upload" %}required{% endif %}
+                  {% if question.is_required and question.type == "upload" and answers[question.id] is empty %}required{% endif %}
+                  {% if ( not form.is_in_period and question.type != "upload" ) or ( disabled and question.type != "upload" ) %}readonly{% endif %}
+                  {% if ( not form.is_in_period and question.type == "upload" ) or ( disabled and question.type == "upload" ) %}disabled{% endif %}
+                >
+              {% endif %}
+
+            </div>
+
+            {% if type == "update" and question.type == "upload" and answers[question.id] is not empty %}
+              <div class="checkbox">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="answers[{{question.id}}]"
+                    id="input_answer_{{question.id}}_{{option.id}}_delete"
+                    value="__delete__"
+                    {% if not form.is_in_period or question.is_required or disabled %}disabled{% endif %}
+                  >
+                  {% if not form.is_in_period or question.is_required %}<span class="text-muted">{% endif %}
+                  この項目を削除する
+                  {% if not form.is_in_period or question.is_required %}</span>{% endif %}
+                  |
+                  <a href="{{ base_url( "uploads/applications_form/#{answers[question.id]}" ) }}" target="_blank">アップロードされたファイルを表示...</a>
+                </label>
+              </div>
+            {% endif %}
+
+          {% endfor %}
+        </div>
+      </section>
+    {% endfor %}
+
+    <p class="hidden-print">
+      <button type="submit" class="btn btn-primary btn-lg btn-wide" {% if not form.is_in_period or disabled %}disabled{% endif %}>
+        送信
+      </button>
+      {% if not form.is_in_period and not disabled %}
+        {# disabled が true の場合，スタッフ表示用なので，受付期間外とか表示しない #}
+        <strong class="text-danger" style="margin-left: 1rem">
+          <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+          受付期間外です
+        </strong>
+      {% endif %}
+    </p>
+
+  {{ form_close()|raw }}
+{% endmacro %}

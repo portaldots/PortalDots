@@ -1,0 +1,308 @@
+{% extends "layout_main.html.twig" %}
+
+{% block title %}
+  申請管理 - {{ constant("RP_PORTAL_NAME") }}
+{% endblock %}
+
+{% block maincontent %}
+
+  <style>
+    .applications-read-student-id {
+      margin-bottom: .5rem;
+      font-weight: bold;
+    }
+
+    .applications-read-name {
+      margin-top: .5rem;
+    }
+
+    .applications-read-send-email {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+
+    .applications-read-roles {
+      margin-bottom: 0;
+    }
+
+    .applications-read-circle-name {
+      margin-top: 0;
+    }
+
+    @media screen and (max-width: 991px) {
+      .applications-read-header-main {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        margin: 15px;
+        padding: 15px;
+      }
+
+      .applications-read-circle-name {
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+
+      .applications-read-header-main,
+      .applications-read-circle-name {
+        text-align: center;
+      }
+    }
+
+    th,
+    td,
+    th a,
+    td a {
+      white-space: nowrap;
+    }
+
+    @media screen and (min-width: 768px) {
+      .table-sticky {
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        left: -1px;
+        background: #fff;
+        box-shadow: 1px 0 0 #ddd; /* border-right が効かないので，代わりに */
+      }
+    }
+
+    .table>tbody>tr>td.applications-read-answer-td {
+      padding: 0;
+    }
+
+    .applications-read-answer-td__inner {
+      padding: 8px;
+      max-width: 30vw;
+      overflow: auto;
+    }
+
+  </style>
+
+  <h1 class="main__title">
+    <a href="{{ base_url("home_staff/applications") }}">申請管理</a>
+    /
+    {{ form.name }}
+  </h1>
+
+  <header class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-2 text-center">
+          <p>
+            <i class="fa fa-pencil-square-o fa-fw fa-5x" aria-hidden="true"></i>
+          </p>
+          <p>
+            <a href="{{ base_url("home_staff/applications/edit/#{form.id}") }}" class="btn btn-primary">
+              <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
+              編集
+            </a>
+          </p>
+        </div>
+        <div class="col-md-6 applications-read-header-main">
+          <h1 class="applications-read-name">
+            {{ form.name }}
+          </h1>
+          <p class="text-muted">
+            受付期間 :
+            {{ form.open_at_string }}
+            〜
+            {{ form.close_at_string }}
+          </p>
+          <div>
+            {{ form.description_html | raw }}
+          </div>
+        </div>
+        <div class="col-md-4 text-center">
+          <ul class="list-unstyled text-muted">
+            <li>作成 : {{ form.created_at }}</li>
+            <li>変更 : {{ form.modified_at }}</li>
+          </ul>
+          <a href="{{ base_url("home_staff/applications/preview/#{form.id}") }}" class="btn btn-info btn-wide">
+            <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
+            フォームをプレビュー
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="panel panel-primary">
+    <div class="panel-heading">
+      <h2 class="panel-title">統計情報</h2>
+    </div>
+    <div class="table-responsive">
+      <table class="table applications-read-statistics">
+
+        <colgroup style="width: 10%">
+        <colgroup style="width: 10%;">
+        <colgroup style="width: 80%">
+
+        <tr>
+          <th>回答団体</th>
+          <td class="lead text-center">
+            {{ statistics.count_circle }}
+            <small>/ {{ statistics.count_all_circles }} ({{ statistics.proportion_circle }}%)</small>
+          </td>
+          <td>
+            <div class="progress">
+              <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ statistics.count_circle }}" aria-valuemin="0" aria-valuemax="{{ statistics.count_all_circles }}" style="width: {{ statistics.proportion_circle }}%">
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        {% if statistics.form_type == "booth" %}
+          <tr>
+            <th>回答ブース</th>
+            <td class="lead text-center">
+              {{ statistics.count_booth }}
+              <small>/ {{ statistics.count_all_booths }} ({{ statistics.proportion_booth }}%)</small>
+            </td>
+            <td>
+              <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{ statistics.count_booth }}" aria-valuemin="0" aria-valuemax="{{ statistics.count_all_booths }}" style="width: {{ statistics.proportion_booth }}%">
+                </div>
+              </div>
+            </td>
+          </tr>
+        {% endif %}
+
+      </table>
+    </div>
+  </section>
+
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">回答一覧</h2>
+    </div>
+    <div class="panel-body">
+      <div class="pull-right">
+        <a href="{{ base_url("home_staff/applications/read/#{form.id}/csv") }}" class="btn btn-success">
+          <span class="fa fa-file-excel-o" aria-hidden="true"></span>
+          CSV形式で出力
+        </a>
+        <a href="{{ base_url("home_staff/applications/read/#{form.id}/print") }}" class="btn btn-default jsPrintButton">
+          <span class="fa fa-print" aria-hidden="true"></span>
+          印刷
+        </a>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th rowspan="2">操作</th>
+            <th rowspan="2">回答ID</th>
+            <th rowspan="2" class="table-sticky">
+              団体
+              {% if form.type == "booth" %}
+                ・ ブース
+              {% endif %}
+            </th>
+            {% for section in form.sections if section.questions|length > 0 %}
+              <th colspan="{{ section.questions|length }}">
+                {{ section.title }}
+              </th>
+            {% endfor %}
+          </tr>
+          <tr>
+            {% for section in form.sections %}
+              {% for question in section.questions %}
+                <th>
+                  {{ question.name }}
+                </th>
+              {% endfor %}
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for answer in answers %}
+            <tr>
+              <td>
+                <a href="{{ base_url("home_staff/applications_answer_read/#{answer.id}") }}" class="btn btn-info">
+                  <span class="fa fa-eye" aria-hidden="true"></span>
+                </a>
+              </td>
+              <td>{{ answer.id }}</td>
+              <th class="table-sticky">
+                <a href="{{ base_url("home_staff/circles/read/#{answer.circle_id}") }}">
+                  {{ answer.circle.name }}
+                </a>
+                {% if form.type == "booth" %}
+                  <br>
+                  <a href="{{ base_url("home_staff/booths/read/#{answer_info.booth_id}") }}">
+                    {% if answer.booth.name is empty %}
+                      {{ answer.booth.place_name }}
+                    {% else %}
+                      {{ answer.booth.name }}
+                      ({{ answer.booth.place_name }})
+                    {% endif %}
+                  </a>
+                {% endif %}
+              </th>
+              {% for section in form.sections %}
+                {% for question in section.questions %}
+                  <td class="applications-read-answer-td">
+                    <div class="applications-read-answer-td__inner">
+
+                      {% if question.type == "checkbox" or question.type == "radio" or question.type == "select" %}
+                        <ul class="list-unstyled">
+                          {% for option in question.options %}
+                            <li>
+                              <span
+                                class="
+                                  fa fa-fw
+                                  {% if option.id in answer.answers[question.id] %}
+                                    fa-check-square-o
+                                    text-primary
+                                  {% else %}
+                                    fa-square-o
+                                    text-muted
+                                  {% endif %}
+                                " aria-hidden="true"></span>
+                              {% if option.id in answer.answers[question.id] %}<b>{% else %}<del class="text-muted">{% endif %}
+                              {{ option.value }}
+                              {% if option.id in answer.answers[question.id] %}</b>{% else %}</del>{% endif %}
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {% elseif question.type == "upload" %}
+                        {% if answer.answers[question.id] is not empty %}
+                          <a href="{{ base_url( "uploads/applications_form/#{answer.answers[question.id]}" ) }}" target="_blank">{{ answer.answers[question.id] }}</a>
+                        {% else %}
+                          <span class="text-muted">(未アップロード)</span>
+                        {% endif %}
+                      {% else %}
+                        {{ answer.answers[question.id] | nl2br }}
+                      {% endif %}
+
+                    </div>
+                  </td>
+                {% endfor %}
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+{% endblock %}
+
+{% block javascript %}
+  {{ parent() }}
+  <script src="{{ base_url("common/js/jquery.printElement.min.js") }}"></script>
+  <script>
+    $(function() {
+      "use strict";
+
+      $(document).on("click", ".jsPrintButton", function(e){
+        e.preventDefault();
+        var url = $(this).attr("href");
+        $.get( url, {}, function(data) {
+          $("<div/>").html(data).printElement();
+        });
+      });
+
+    });
+  </script>
+{% endblock %}

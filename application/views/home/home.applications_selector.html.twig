@@ -1,0 +1,32 @@
+{% extends "layout_main.html.twig" %}
+
+{% block title %}
+  申請 - {{ constant("RP_PORTAL_NAME") }}
+{% endblock %}
+
+{% block maincontent %}
+
+  <h1 class="main__title">申請</h1>
+
+  <div class="w-max-sm w-center">
+    <div class="panel panel-default">
+      <div class="panel-body text-center">
+        <p>
+          <i class="fa fa-pencil-square-o fa-fw fa-3x" aria-hidden="true"></i>
+        </p>
+        <h2>申請する団体の選択</h2>
+        <p>あなたは、次の団体に所属しています。どの団体の申請を行いますか？</p>
+      </div>
+      <div class="list-group">
+        {% for circle in circle_info %}
+        <a href="{{ base_url("home/applications/circles/#{circle.id}") }}" class="list-group-item" style="padding-top:14px;padding-bottom:14px">
+          <i class="fa fa-users fa-fw" aria-hidden="true"></i>
+          {{ circle.name }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  web:
+    container_name: portal_web
+    environment:
+      CI_ENV: development
+    build: ./web
+    ports:
+      - 80:80
+    volumes:
+      - ../:/var/www/html
+      - ./data/web/logs:/docker_web_logs
+
+  db:
+    image: mysql:5.7
+    container_name: portal_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_portal_dev
+      MYSQL_USER: default
+      MYSQL_PASSWORD: default
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./data/db:/var/lib/mysql
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./db/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    container_name: portal_phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=portal_db
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    ports:
+      - 8080:80
+
+  mailhog:
+    container_name: portal_mailhog
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025

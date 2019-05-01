@@ -1,0 +1,121 @@
+{% extends "layout_main.html.twig" %}
+
+{% block title %}
+  団体情報管理 - {{ constant("RP_PORTAL_NAME") }}
+{% endblock %}
+
+{% block maincontent %}
+
+  <style>
+    .circles-read-name {
+      margin-top: 0;
+    }
+
+    .circles-read-user-name {
+      margin-top: 0;
+    }
+
+    @media screen and (max-width: 991px) {
+      .circles-read-header-main {
+        border-top: 1px solid #ddd;
+        margin: 15px;
+        padding: 15px;
+        padding-bottom: 0;
+      }
+
+      .circles-read-user-name {
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+
+      .circles-read-header-main,
+      .circles-read-user-name,
+      .circles-read-user-email {
+        text-align: center;
+      }
+    }
+  </style>
+
+  <h1 class="main__title">
+    <a href="{{ base_url("home_staff/users") }}">団体情報管理</a>
+    /
+    個別表示
+  </h1>
+
+  <header class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-2 text-center">
+          <p>
+            <i class="fa fa-users fa-fw fa-5x" aria-hidden="true"></i>
+          </p>
+          <p>
+            <a href="{{ base_url("home_staff/circles/edit/#{circle_info.id}") }}" class="btn btn-primary">
+              <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
+              編集
+            </a>
+          </p>
+        </div>
+        <div class="col-md-10 circles-read-header-main">
+          <h1 class="circles-read-name">
+            {{ circle_info.name }}
+          </h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">この団体に所属するユーザー</h2>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        {% set mailto_string = "" %}
+        {% for user in users %}
+          {% set mailto_string = mailto_string ~ user.email ~ "," %}
+          <div class="col-lg-4 col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-2 text-center">
+                    <i class="fa fa-user-circle-o fa-fw fa-3x" aria-hidden="ture"></i>
+                  </div>
+                  <div class="col-md-10">
+                    <h3 class="circles-read-user-name">
+                      {{ user.name_family }}
+                      {{ user.name_given }}
+                    </h3>
+                    <p class="circles-read-user-email">
+                      <a href="mailto:{{ user.email }}">
+                        <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
+                        {{ user.email }}
+                      </a>
+                    </p>
+                    <p>
+                      <a href="{{ base_url("home_staff/users/read/#{user.id}") }}" class="btn btn-info">
+                        <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
+                        表示
+                      </a>
+                      <a href="{{ base_url("home_staff/users/edit/#{user.id}") }}" class="btn btn-primary">
+                        <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
+                        編集
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="panel-footer">
+      <a href="mailto:{{ mailto_string }}" class="btn btn-success">
+        <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
+        全員にメールを送信(To)
+      </a>
+    </div>
+  </section>
+
+{% endblock %}

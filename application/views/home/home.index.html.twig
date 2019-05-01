@@ -1,0 +1,150 @@
+{% extends "layout_main.html.twig" %}
+
+{% block title %}
+  {{ constant("RP_PORTAL_NAME") }}
+{% endblock %}
+
+{% block maincontent %}
+
+  <h1 class="sr-only main__title">ダッシュボード</h1>
+
+  {% if flashdata_success is not empty %}
+    <div class="alert alert-success">
+      {{ flashdata_success }}
+    </div>
+  {% endif %}
+
+  {% if flashdata_danger is not empty %}
+    <div class="alert danger">
+      {{ flashdata_danger }}
+    </div>
+  {% endif %}
+
+  <section class="panel panel-primary main-section__next-event">
+    <div class="panel-heading">
+      <h2 class="panel-title">次の予定</h2>
+    </div>
+    <div class="panel-body">
+      {% if next_event.name is not empty %}
+        <h3 class="main-section__next-event__title">
+          <date>{{ next_event.start_at_string }}</date>
+        </h3>
+        <p class="lead main-section__next-event__place">{{ next_event.name }} ・ {{ next_event.place }}</p>
+        <div class="markdown-body">{{ next_event.description_html | raw }}</div>
+      {% else %}
+        <h3 class="text-muted text-center">予定はありません</h3>
+      {% endif %}
+    </div>
+    <div class="panel-footer">
+      <a href="{{ base_url('home/schedules') }}" class="btn btn-primary">他の予定をみる</a>
+    </div>
+  </section>
+
+  <div class="row">
+    <div class="col-lg-4">
+      <section class="panel panel-info main-section__applications">
+        <div class="panel-heading">
+          <h2 class="panel-title">お知らせ</h2>
+        </div>
+        <div class="list-group">
+          {% for page in pages %}
+            <a href="{{ base_url("home/pages/detail/#{page.id}") }}" class="list-group-item">
+              <h3 class="list-group-item-heading h5">
+                <b>{{ page.title }}</b>
+                <small>
+                  <date>{{ page.created_at_string }}</date>
+                  {% if page.is_new == true %}
+                    <span class="label label-danger">NEW</span>
+                  {% endif %}
+                </small>
+              </h3>
+              <p class="list-group-item-text">{{ page.body_trimmed }}</p>
+            </a>
+          {% endfor %}
+        </div>
+        <div class="panel-footer">
+          <a href="{{ base_url('home/pages') }}" class="btn btn-primary">全てのお知らせをみる</a>
+          <span class="text-muted" style="margin-left:1rem">全 <b>{{ pages_count }}</b> 件</span>
+        </div>
+      </section>
+    </div>
+    <div class="col-lg-4">
+      <section class="panel panel-info main-section__applications">
+        <div class="panel-heading">
+          <h2 class="panel-title">配布資料</h2>
+        </div>
+        <div class="list-group">
+
+          {% for document in documents %}
+          <a href="{{ base_url("uploads/documents/#{document.id}") }}" class="list-group-item" target="_blank">
+            <h3 class="list-group-item-heading h5">
+              <b{% if document.is_important == 1 %} class="text-danger"{% endif %}>
+                {% if document.is_important == 1 %}
+                  <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+                {% else %}
+                  <i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>
+                {% endif %}
+                {{ document.name }}
+                <small>
+                  <date>{{ document.modified_at_string }}</date>
+                  {% if document.is_new == true %}
+                    <span class="label label-danger">NEW</span>
+                  {% endif %}
+                </small>
+              </b>
+            </h3>
+            <p class="list-group-item-text">
+              {{ document.description }}
+            </p>
+            {% if document.schedule_info.name is not empty %}
+              <p class="list-group-item-text text-muted">
+                <small>
+                  <b>{{ document.schedule_info.name }}</b>
+                  で配布
+                </small>
+              </p>
+            {% endif %}
+          </a>
+          {% endfor %}
+
+        </div>
+        <div class="panel-footer">
+          <a href="{{ base_url('home/documents') }}" class="btn btn-primary">全ての配布資料をみる</a>
+          <span class="text-muted" style="margin-left:1rem">全 <b>{{ documents_count }}</b> 件</span>
+        </div>
+      </section>
+    </div>
+    <div class="col-lg-4">
+      {{ form_open("home/contacts") | raw }}
+        <section class="panel panel-info main-section__applications">
+          <div class="panel-heading">
+            <h2 class="panel-title">お問い合わせ</h2>
+          </div>
+          <ul class="list-group text-muted">
+            <li class="list-group-item">
+              送信者 :
+              <span class="pull-right"><b>{{ user.name_family ~ " " ~ user.name_given }}</b></span>
+            </li>
+            {% if user.student_id %}
+              <li class="list-group-item">
+                学籍番号 :
+                <span class="pull-right"><b>{{ user.student_id }}</b></span>
+              </li>
+            {% endif %}
+            <li class="list-group-item">
+              メールアドレス :
+              <span class="pull-right"><b>{{ user.email }}</b></span>
+            </li>
+          </ul>
+          <div class="panel-body">
+            <textarea class="form-control" name="body" rows="4" placeholder="こちらからお問い合わせができます。ご意見等も、お気軽にどうぞ。" required></textarea>
+          </div>
+          <div class="panel-footer">
+            <button type="submit" class="btn btn-primary">送信</button>
+          </div>
+        </section>
+      {{ form_close() | raw }}
+    </div>
+  </div>
+
+{% endblock %}

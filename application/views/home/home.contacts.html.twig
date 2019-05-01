@@ -1,0 +1,50 @@
+{% extends "layout_main.html.twig" %}
+
+{% block title %}
+  お問い合わせ - {{ constant("RP_PORTAL_NAME") }}
+{% endblock %}
+
+{% block maincontent %}
+
+  <h1 class="main__title">お問い合わせ</h1>
+
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">フォーム</h2>
+    </div>
+    <div class="panel-body">
+      <p>こちらから送信された内容と、それに対する返信は、全て、<strong>{{ constant('RP_PORTAL_NAME') }}に登録しているあなたの団体のメンバーにも閲覧可能です</strong>。また、お問い合わせされた内容とその返信は、このページで閲覧可能であるほか、委員からの返信は、あなたのメールアドレス宛にも送信されます。</p>
+
+      <form class="form-horizontal">
+        <div class="form-group">
+          <label for="input_circle" class="col-sm-2 control-label">団体名</label>
+          <div class="col-lg-6 col-sm-10">
+            <select class="form-control" id="input_circle">
+              <option></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="input_title" class="col-sm-2 control-label">件名</label>
+          <div class="col-lg-6 col-sm-10">
+            <input type="text" class="form-control" id="input_title">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="input_content" class="col-sm-2 control-label">内容</label>
+          <div class="col-lg-6 col-sm-10">
+            <textarea class="form-control" id="input_content" rows="5"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-lg-6 col-sm-10">
+            <button type="submit" class="btn btn-primary">送信する</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+  </section>
+
+{% endblock %}

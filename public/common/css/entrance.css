@@ -1,0 +1,73 @@
+@charset "utf-8";
+
+.entrance__subcontent .btn {
+  text-shadow: none;
+}
+
+.entrance__header {
+  padding: 2rem;
+}
+
+@media screen and ( min-width: 992px ) and ( min-height: 600px ) {
+  .entrance__header {
+    padding: 2rem;
+    position: fixed;
+    margin-right: 45%;
+  }
+}
+
+  .entrance__header h1 {
+    font-weight: bold;
+    font-size: 3.2rem;
+    margin-top: 0;
+    margin-bottom: 2.5rem;
+  }
+
+  .entrance__header h2 {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 3rem;
+  }
+
+  .entrance__header .lead {
+    font-weight: bold;
+    font-size: 2.2rem;
+    letter-spacing: -.6px;
+  }
+
+footer {
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+  font-size: 1.4rem;
+  color: #fff;
+}
+
+.entrance__mainpanel {
+  background: #fff;
+  box-shadow: 0 1px 1px 1px rgba( 0, 0, 0, .1 );
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 2px;
+}
+
+.entrance__mainpanel h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+}
+
+.entrance__mainpanel *:last-child {
+  margin-bottom: 0;
+}
+
+#js_signup__mainpanel {
+  transition: .5s ease opacity;
+  opacity: 1;
+}
+
+#js_signup__mainpanel.signup__loading {
+  opacity: .1;
+}

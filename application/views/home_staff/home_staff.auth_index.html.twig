@@ -1,0 +1,224 @@
+{% extends "layout_main.html.twig" %}
+
+{% block title %}
+  認可設定(Admin) - {{ constant("RP_PORTAL_NAME") }}
+{% endblock %}
+
+{% block css %}
+  {{ parent() }}
+  <style>
+    .jsListGroupItemAdded {
+      animation: .6s ease jsListGroupItemAddedAnimation;
+    }
+
+    @keyframes jsListGroupItemAddedAnimation {
+      0% {
+        background: rgba( 255, 255, 0, .5 );
+      }
+      100% {
+        background: #fff;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% set mode_color_panel = [ "danger", "info" ] %}
+{% set mode_color_label = [ "danger", "primary" ] %}
+{% set mode_name = [ "原則不認可(ホワイトリスト方式)", "原則認可(ブラックリスト方式)" ] %}
+{% set label_white = [ "success", "default" ] %}
+{% set label_white_text = [ "有効", "無視" ] %}
+{% set label_black = [ "default", "success" ] %}
+{% set label_black_text = [ "無視", "有効" ] %}
+
+{% block maincontent %}
+
+  <h1 class="main__title">認可設定(Admin)</h1>
+  <p>
+    <a href="{{ base_url("home_staff/auth_config/new") }}" class="btn btn-primary">
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      設定を追加
+    </a>
+  </p>
+
+  <div class="row row-flex">
+    {% for page in pages %}
+    <div class="col-lg-6 panel-wrapper" data-id="{{ page.id }}">
+      <section class="panel panel-{{ mode_color_panel[page.is_authorized] }} jsPanel">
+      <div class="panel-heading">
+        <h2 class="panel-title">
+          <b>{{ page.main_page_type }}</b>
+          <span class="pull-right label label-{{ mode_color_label[page.is_authorized] }} jsLabelForMode">{{ mode_name[page.is_authorized] }}</span>
+        </h2>
+      </div>
+      <div class="panel-body">
+        <div class="row main-section__listpanel-row">
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                ホワイトリスト
+                <span class="label label-{{ label_white[page.is_authorized] }} jsLabelForWhite">{{ label_white_text[page.is_authorized] }}</span>
+                <a role="button" class="text-primary pull-right jsActionButton" data-type="AddRole" data-id="{{ page.id }}" data-is-authorized="1" data-already-added='{{ page.list_white | json_encode | raw }}'>
+                  <i class="fa fa-plus fa-fw" aria-hidden="true"></i>追加
+                </a>
+              </div>
+              <ul class="list-group jsListGroupWhite" data-id="{{ page.id }}">
+                {% for item in page.list_white %}
+                <li class="list-group-item" data-id="{{ item.id }}">
+                  {{ item.role_name }}
+                  <a role="button" class="pull-right text-danger jsActionButton" data-type="DeleteRole" data-id="{{ item.id }}">
+                    <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
+                    <span class="sr-only">削除</span>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                ブラックリスト
+                <span class="label label-{{ label_black[page.is_authorized] }} jsLabelForBlack">{{ label_black_text[page.is_authorized] }}</span>
+                <a role="button" class="text-primary pull-right jsActionButton" data-type="AddRole" data-id="{{ page.id }}" data-is-authorized="0" data-already-added='{{ page.list_black | json_encode | raw }}'>
+                  <i class="fa fa-plus fa-fw" aria-hidden="true"></i>追加
+                </a>
+              </div>
+              <ul class="list-group jsListGroupBlack" data-id="{{ page.id }}">
+                {% for item in page.list_black %}
+                <li class="list-group-item" data-id="{{ item.id }}">
+                  {{ item.role_name }}
+                  <a role="button" class="pull-right text-danger jsActionButton" data-type="DeleteRole" data-id="{{ item.id }}">
+                    <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
+                    <span class="sr-only">削除</span>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <a role="button" class="btn btn-primary jsActionButton" data-type="ToggleMode" data-id="{{ page.id }}" data-is-authorized="{{ (page.is_authorized - 1) | abs }}">
+          <i class="fa fa-toggle-on" aria-hidden="true"></i>
+          モードを切り替える
+        </a>
+        <a role="button" class="btn btn-danger jsActionButton" data-type="DeletePage" data-id="{{ page.id }}">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+          削除
+        </a>
+      </div>
+    </section>
+    </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}
+
+{% block javascript %}
+  {{ parent() }}
+  <script>
+    // TODO: Vue.js へ移行
+
+
+    var all_roles = {{ user_roles_list | json_encode | raw }};
+    var csrf_test_name = "{{ csrf_test_name }}";
+    var ajax_endpoint_uri = "{{ base_url("home_staff/auth_config/ajax") }}";
+
+    $(function(){
+      "use strict";
+
+      $(document).on("click", ".jsActionButton", function (e) {
+        var button = $(this);
+        var type = button.attr("data-type");
+        var url = ajax_endpoint_uri + "/" + type;
+        var id = button.attr("data-id");
+        var data = { "csrf_test_name": csrf_test_name, "id": id };
+        var mode_color_panel = ["{{ mode_color_panel[0] }}", "{{ mode_color_panel[1] }}"];
+        var mode_color_label = ["{{ mode_color_label[0] }}", "{{ mode_color_label[1] }}"];
+        var mode_name = ["{{ mode_name[0] }}", "{{ mode_name[1] }}"];
+        var label_white = ["{{ label_white[0] }}", "{{ label_white[1] }}"];
+        var label_white_text = ["{{ label_white_text[0] }}", "{{ label_white_text[1] }}"];
+        var label_black = ["{{ label_black[0] }}", "{{ label_black[1] }}"];
+        var label_black_text = ["{{ label_black_text[0] }}", "{{ label_black_text[1] }}"];
+        switch (type) {
+          case "DeletePage":
+            // id : auth_staff_page.id
+            if( false === confirm("この設定を削除します。\nよろしいですか？") ) break;
+            $.post( url, data, function(data){if(data === "success") $(".panel-wrapper[data-id=" + id + "]").fadeOut();} );
+            break;
+          case "DeleteRole":
+            // id : auth_staff_role.id
+            if( false === confirm("この設定を削除します。\nよろしいですか？") ) break;
+            $.post( url, data, function(data){if(data === "success") $(".list-group-item[data-id=" + id + "]").fadeOut();} );
+            break;
+          case "AddRole":
+            // id : auth_staff_page.id
+            $('body').prepend('<div class="jsAddRoleElement jsAddRoleBackground" style="position:fixed;top:0;bottom:0;left:0;right:0;background:rgba(0,0,0,.3);z-index:9998" onclick="$(\'.jsAddRoleElement\').remove();"></div>');
+            data.is_authorized = button.attr("data-is-authorized");
+            var already_added = button.attr("data-already-added");
+            var prepend_html  = '<li class="list-group-item jsAddRoleElement">';
+                prepend_html += '<select class="form-control input-sm jsSelectAddRole" data-id="' + id + '" data-is-authorized="' + data.is_authorized + '" style="position:relative;z-index:9999">';
+                prepend_html += '<option selected disabled>(選択)</option>';
+                for( var i = 0; i < all_roles.length; ++i ){
+                  if( all_roles[i].id - 0 === 0 ) continue;
+                  prepend_html += '<option value="' + all_roles[i].id + '">';
+                  prepend_html += all_roles[i].name;
+                  prepend_html += '</option>';
+                }
+                prepend_html += '</select>';
+                prepend_html += '</li>';
+            // minus one makes data.is_authorized int
+            if( data.is_authorized - 0 === 1 ) $('.jsListGroupWhite[data-id=' + id + ']').prepend(prepend_html);
+            if( data.is_authorized - 0 === 0 ) $('.jsListGroupBlack[data-id=' + id + ']').prepend(prepend_html);
+            $(".jsSelectAddRole").on("change", function(e){
+              var id = $(this).attr("data-id");
+              var is_authorized = $(this).attr("data-is-authorized");
+              var role_id = $(this).val();
+              var data = { "csrf_test_name": csrf_test_name, "id": id, "is_authorized": is_authorized, "role_id": role_id };
+              $.post( url, data, function(data){
+                data = JSON.parse(data);
+                if(data.result === "success"){
+                  var append_html  = '<li class="list-group-item jsListGroupItemAdded" data-id="' + data.auth_staff_role_id + '">';
+                      append_html += data.role_name;
+                      append_html += '<a role="button" class="pull-right text-danger jsActionButton" data-type="DeleteRole" data-id="' + data.auth_staff_role_id + '"><i class="fa fa-trash fa-fw" aria-hidden="true"></i><span class="sr-only">削除</span></a>';
+                      append_html += '</li>';
+                  if( data.is_authorized - 0 === 1 ) $('.jsListGroupWhite[data-id=' + id + ']').append(append_html);
+                  if( data.is_authorized - 0 === 0 ) $('.jsListGroupBlack[data-id=' + id + ']').append(append_html);
+                  $('.list-group-item[data-id=' + data.auth_staff_role_id + ']').fadeIn();
+                }else{
+                  alert(data.failed_msg);
+                }
+                $(".jsAddRoleElement").remove();
+              } );
+            });
+            break;
+          case "ToggleMode":
+            // id : auth_staff_page.id
+            if( false === confirm("モードを変更します。\nよろしいですか？\n\n(意図しないアクセス拒否・許可を防ぐために、モード変更前は必ずブラックリストまたはホワイトリストの内容が適切かどうかを確認してください)") ) break;
+            data.is_authorized = button.attr("data-is-authorized");
+            $.post( url, data, function(data){
+              if(data === "success"){
+                var is_authorized = button.attr("data-is-authorized");
+                $(".panel-wrapper[data-id=" + id + "] .jsPanel").toggleClass("panel-{{ mode_color_panel[0] }}");
+                $(".panel-wrapper[data-id=" + id + "] .jsPanel").toggleClass("panel-{{ mode_color_panel[1] }}");
+                $(".panel-wrapper[data-id=" + id + "] .jsLabelForMode").toggleClass("label-{{ mode_color_label[0] }}");
+                $(".panel-wrapper[data-id=" + id + "] .jsLabelForMode").toggleClass("label-{{ mode_color_label[1] }}");
+                $(".panel-wrapper[data-id=" + id + "] .jsLabelForMode").text( mode_name[is_authorized] );
+                $(".panel-wrapper[data-id=" + id + "] .jsLabelForWhite").toggleClass("label-{{ label_white[0] }}");
+                $(".panel-wrapper[data-id=" + id + "] .jsLabelForWhite").toggleClass("label-{{ label_white[1] }}");
+                $(".panel-wrapper[data-id=" + id + "] .jsLabelForWhite").text( label_white_text[is_authorized] );
+                $(".panel-wrapper[data-id=" + id + "] .jsLabelForBlack").toggleClass("label-{{ label_black[0] }}");
+                $(".panel-wrapper[data-id=" + id + "] .jsLabelForBlack").toggleClass("label-{{ label_black[1] }}");
+                $(".panel-wrapper[data-id=" + id + "] .jsLabelForBlack").text( label_black_text[is_authorized] );
+                button.attr("data-is-authorized", Math.abs( is_authorized - 1 ));
+              }
+            } );
+            break;
+          default:
+
+        }
+      });
+    });
+  </script>
+{% endblock %}

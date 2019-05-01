@@ -1,0 +1,28 @@
+{
+	"require": {
+		"twig/twig": "^2.0",
+		"cebe/markdown": "*",
+		"phpgangsta/googleauthenticator": "dev-master",
+		"ezyang/htmlpurifier": "^4.9",
+		"vlucas/phpdotenv": "^3.3"
+	},
+	"require-dev": {
+		"kenjis/ci-phpunit-test": "^0.15.0",
+		"phpmd/phpmd": "*",
+		"squizlabs/php_codesniffer": "3.*"
+	},
+	"scripts": {
+		"docker": [
+			"cd docker_dev; docker-compose up -d"
+		],
+		"docker-stop": [
+			"cd docker_dev; docker-compose down"
+		],
+		"phpmd": [
+			"./vendor/bin/phpmd ./application/ text ./phpmd_rule.xml"
+		],
+		"phpcs": [
+			"./vendor/bin/phpcs --standard=PSR2 --colors ./application/"
+		]
+	}
+}

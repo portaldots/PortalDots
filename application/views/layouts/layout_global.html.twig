@@ -1,0 +1,133 @@
+<!--
+**
+** {{ constant('RP_PORTAL_NAME') }}
+** {{ constant('RP_COPYRIGHT') }}
+**
+-->
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111290134-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-111290134-1');
+    </script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    {% block css %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ base_url('common/css/bootstrap.min.css?v=2') }}">
+    <link rel="stylesheet" href="{{ base_url('common/css/global.css?v=5') }}">
+    {% endblock %}
+  </head>
+  <body ontouchstart="">
+
+    <nav class="navbar navbar-fixed-top global__navbar hidden-print
+    {% if _home_type == "staff" %}
+      navbar-inverse
+    {% else %}
+      navbar-default
+    {% endif %}
+    ">
+      <div class="container-fluid">
+
+        <div class="navbar-header">
+          {% if xs_navbar_toggle is same as(true) %}
+            <button type="button" class="navbar-toggle sidebar-toggle">
+              <span class="sr-only">ナビ</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          {% endif %}
+          {% if xs_navbar_back is same as(true) %}
+            <button type="button" class="navbar-toggle sidebar-toggle" style="position:relative;" onclick="history.back()">
+              <span class="fa fa-chevron-left text-muted" aria-hidden="true" style="position:absolute;transform:scale(1.5);left:30px"></span>
+              <span class="sr-only">戻る</span>
+              <span style="visibility:hidden">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </span>
+            </button>
+          {% endif %}
+          <a class="navbar-brand hidden-xs" href="{{ base_url() }}">
+            {{ constant("RP_PORTAL_NAME") }}
+            {% if constant('ENVIRONMENT') == 'development' %}<span class="badge">dev</span>{% endif %}
+            {% if _home_type == "staff" %}<span class="badge">staff</span>{% endif %}
+          </a>
+          <span class="navbar-brand navbar-brand-static visible-xs">
+            {% if xs_navbar_title %}
+              {{ xs_navbar_title }}
+            {% else %}
+              {{ constant("RP_PORTAL_NAME") }}
+            {% endif %}
+          </span>
+        </div>
+
+        <div class="collapse navbar-collapse" id="global_navbar_collapse">
+          <ul class="nav navbar-nav">
+            {% block navbar_nav %}{% endblock %}
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+
+            {% if user is defined %}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                {{ user.name_family }}
+                {{ user.name_given }}
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                {% if user.student_id is not empty %}
+                  <li class="dropdown-header">
+                    {{ user.student_id | upper }}
+                  </li>
+                {% endif %}
+                <li><a href="{{ base_url('users/change_password') }}">パスワードの変更</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="{{ base_url('users/logout') }}">ログアウト</a></li>
+              </ul>
+            </li>
+            {% else %}
+            <li>
+              <a href="{{ base_url("users/login") }}">
+                ログイン
+              </a>
+            </li>
+            <li>
+              <a href="{{ base_url("users/signup") }}">
+                ユーザー登録
+              </a>
+            </li>
+            {% endif %}
+
+          </ul>
+
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="ss__wrapper">
+      <main id="main">
+        <div class="ss__overlay sidebar-toggle"></div>
+        {% block main %}{% endblock %}
+      </main>
+    </div>
+
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{{ base_url('common/js/bootstrap.min.js') }}"></script>
+    {% endblock %}
+
+  </body>
+</html>

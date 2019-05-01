@@ -1,0 +1,53 @@
+{% extends "email/layout_emailglobal.txt.twig" %}
+
+{% block body %}
+申請「{{ form_name | raw }}」の{{ type | raw }}が完了しましたのでお知らせします。
+
+このメールは、大切に保管してください。また、申請内容についてのお問い合わせは、このメールの内容を添付した上
+で、 <{{ constant("RP_CONTACT_EMAIL") | raw }}> 宛にお願いします。
+
+もし、申請内容を変更したい場合、このフォームの受付期間内であればいつでも下記のURLから変更できます。
+
+{{ update_form_url | raw }}
+
+
+**************************************************
+申請内容
+**************************************************
+
+申請名 : {{ form_name | raw }}
+団体名 : {{ circle.name | raw }}
+{% if booth %}
+ブース : {% spaceless %}
+  {% if booth.name is empty %}
+    {{ booth.place_name | raw }}
+  {% else %}
+    {{ booth.name | raw }}
+    ({{ booth.place_name | raw }})
+  {% endif %}
+{% endspaceless %}
+{% endif %}
+日　時 : {{ datetime | raw }}
+
+**************************************************
+
+{% for section, answers in sections %}
+【 {{ section | raw }} 】
+{% for question, answer in answers %}
+{% if answer is iterable %}
+[ {{ question | raw }} ]
+{% for option in answer %}
+ - {{ option | raw }}
+{% endfor %}
+{% else %}
+[ {{ question | raw }} ]
+{{ answer | raw }}
+{% endif %}
+
+{% endfor %}
+
+{% endfor %}
+
+**************************************************
+
+{% endblock %}

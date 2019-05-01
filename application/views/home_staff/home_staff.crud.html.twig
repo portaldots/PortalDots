@@ -1,0 +1,30 @@
+{% extends "layout_main.html.twig" %}
+
+{% block title %}
+  {{ page_title }} - {{ constant("RP_PORTAL_NAME") }}
+{% endblock %}
+
+{% block css %}
+  {{ parent() }}
+  {% for file in css_files %}
+    <link type="text/css" rel="stylesheet" href="{{ file }}">
+  {% endfor %}
+{% endblock %}
+
+{% block maincontent %}
+
+  <h1 class="main__title">{{ page_title }}</h1>
+
+  {{ output | raw }}
+
+{% endblock %}
+
+{% block javascript %}
+  {{ parent() }}
+  {% for file in js_files %}
+    <script src="{{ file }}"></script>
+  {% endfor %}
+  <script>
+    $('#crudFilterTableName').attr( 'value', '{{ main_page_type }}' );
+  </script>
+{% endblock %}
