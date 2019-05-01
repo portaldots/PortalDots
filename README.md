@@ -25,6 +25,9 @@ $ cp application/.env.development application/.env
 # LINE Notify 通知を利用したい場合、LINE Notify 管理画面でトークンを発行し、
 # 発行されたトークンを .env の RP_LINE_NOTIFY_TOKEN で設定してください。
 
+# 必要パッケージをインストール
+$ composer install
+
 # 開発環境を起動する
 $ composer docker
 
