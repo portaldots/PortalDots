@@ -39,6 +39,7 @@ $ composer docker-stop
 
 ## 開発環境の各種 URL
 - 開発環境 : http://localhost
+    - 初回アクセス時、データベースエラーが表示されることがありますが、数回再読み込みすることでエラーは解消するようです。もし解消しない場合、 `composer docker-stop` コマンドを実行してから `composer docker` コマンドを実行し、開発環境を再起動してください。
 - 開発環境から送信されるメールの確認(MailHog) : http://localhost:8025
 - phpMyAdmin : http://localhost:8080
     - 開発環境の DB に作成されるデータベース名は `db_portal_dev`
