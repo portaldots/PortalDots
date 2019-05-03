@@ -364,3 +364,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - CodeIgniter - MIT License
 - Grocery CRUD - MIT License、一部改変
+- Honoka - MIT License
