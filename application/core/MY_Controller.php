@@ -2,35 +2,35 @@
 class MY_Controller extends CI_Controller
 {
 
-  /**
-   * Twig_Environment のインスタンスを格納する
-   * @var object
-   */
+    /**
+     * Twig_Environment のインスタンスを格納する
+     * @var object
+     */
     protected $twig;
 
-  /**
-   * Twig テンプレートの拡張子
-   * @var array
-   */
+    /**
+     * Twig テンプレートの拡張子
+     * @var array
+     */
     const TWIG_FILETYPE = [
-    'html' => '.html.twig',
-    'css'  => '.css.twig',
-    'js'   => '.js.twig',
-    'json' => '.json.twig',
-    'xml'  => '.xml.twig',
-    'yaml' => '.yaml.twig',
-    'txt'  => '.txt.twig',
-    ''     => ''
+        'html' => '.html.twig',
+        'css'  => '.css.twig',
+        'js'   => '.js.twig',
+        'json' => '.json.twig',
+        'xml'  => '.xml.twig',
+        'yaml' => '.yaml.twig',
+        'txt'  => '.txt.twig',
+        ''     => ''
     ];
 
-  /**
-   * ログイン中のユーザーの ID を格納するセッションのキー名
-   */
+    /**
+     * ログイン中のユーザーの ID を格納するセッションのキー名
+     */
     private const SESSION_KEY_USER_ID = 'user_id';
 
-  /**
-   * コンストラクタ
-   */
+    /**
+     * コンストラクタ
+     */
     public function __construct()
     {
         parent::__construct();
@@ -38,50 +38,53 @@ class MY_Controller extends CI_Controller
         $this->_init_crud();
     }
 
-  /**
-   * Twig の初期化をする
-   */
+    /**
+     * Twig の初期化をする
+     */
     private function _init_twig()
     {
-      //テンプレートを配置しているフォルダを指定
-      //今回はapplication/views
+        //テンプレートを配置しているフォルダを指定
+        //今回はapplication/views
         $loader = new Twig_Loader_Chain([
-        new Twig_Loader_Filesystem('../application/views'),
-        new Twig_Loader_Filesystem('../application/views/layouts')
+            new Twig_Loader_Filesystem('../application/views'),
+            new Twig_Loader_Filesystem('../application/views/layouts')
         ]);
 
-      //オプションを指定して、twigインスタンス生成
+        //オプションを指定して、twigインスタンス生成
         $option = [
         'cache' => APPPATH.'/cache/twig',
         'debug' => ( ENVIRONMENT === 'development' ) ? true : false
         ];
         $this->twig = new Twig_Environment($loader, $option);
 
-      // Twig に独自関数を追加する
+        // Twig に独自関数を追加する
         $functions = [
-      // php
-        'empty', 'var_dump',
-      // code igniter
-        'base_url', 'site_url', 'current_url', 'uri_string',
-      // form functions
-        'form_open', 'form_hidden', 'form_input', 'form_password', 'form_upload', 'form_textarea', 'form_dropdown', 'form_multiselect', 'form_fieldset', 'form_fieldset_close', 'form_checkbox', 'form_radio', 'form_submit', 'form_label', 'form_reset', 'form_button', 'form_close', 'form_prep', 'set_value', 'set_select', 'set_checkbox', 'set_radio', 'form_open_multipart',
-      // varidation function
-        'validation_errors', 'form_error'
+            // php
+            'empty', 'var_dump',
+            // code igniter
+            'base_url', 'site_url', 'current_url', 'uri_string',
+            // form functions
+            'form_open', 'form_hidden', 'form_input', 'form_password', 'form_upload', 'form_textarea', 'form_dropdown',
+            'form_multiselect', 'form_fieldset', 'form_fieldset_close', 'form_checkbox', 'form_radio', 'form_submit',
+            'form_label', 'form_reset', 'form_button', 'form_close', 'form_prep', 'set_value',
+            'set_select', 'set_checkbox', 'set_radio', 'form_open_multipart',
+            // varidation function
+            'validation_errors', 'form_error'
         ];
         foreach ($functions as $function) {
             $this->twig->addFunction(new Twig_SimpleFunction($function, $function));
         }
 
-      // 独自フィルターを作成する( オブジェクトを配列にキャストする )
+        // 独自フィルターを作成する( オブジェクトを配列にキャストする )
         $filter_cast_to_array = new Twig_SimpleFilter('cast_to_array', function ($object) {
             return (array)$object;
         });
         $this->twig->addFilter($filter_cast_to_array);
     }
 
-  /**
-   * Grocry CRUD の初期化をする
-   */
+    /**
+     * Grocry CRUD の初期化をする
+     */
     private function _init_crud()
     {
       // カラム名の日本語化
@@ -121,49 +124,49 @@ class MY_Controller extends CI_Controller
         $this->grocery_crud->display_as('is_staff', 'スタッフ');
         $this->grocery_crud->display_as('notes', 'ｽﾀｯﾌ用ﾒﾓ');
 
-      // id順に表示する
+        // id順に表示する
         $this->grocery_crud->order_by('id', 'asc');
 
-      // textフィールドを表示する際の改行自動追加
+        // textフィールドを表示する際の改行自動追加
         $this->grocery_crud->callback_column('name', array($this, '_crud_full_text'));
         $this->grocery_crud->callback_column('genre', array($this, '_crud_full_text'));
         $this->grocery_crud->callback_column('description', array($this, '_crud_full_text'));
         $this->grocery_crud->callback_column('notes', array($this, '_crud_full_text'));
 
-      // 更新日時や更新者を自動設定する
+        // 更新日時や更新者を自動設定する
         $this->grocery_crud->callback_before_insert(array($this,'_crud_before_insert'));
         $this->grocery_crud->callback_before_update(array($this,'_crud_before_update'));
     }
 
-  /**
-   * description を適切に改行して表示させるための Grocery CRUD コールバック関数
-   */
+    /**
+     * description を適切に改行して表示させるための Grocery CRUD コールバック関数
+     */
     public function _crud_full_text($value, $row)
     {
         return $value = $this->_mb_wordwrap($value, 30, "<br>");
     }
 
-  /**
-   * Update 前に実行する処理のための Grocery CRUD コールバック関数
-   */
+    /**
+     * Update 前に実行する処理のための Grocery CRUD コールバック関数
+     */
     public function _crud_before_update($post_array)
     {
-      /**
-       * Grocery CRUD の fields または edit_fields に指定されていないカラムの情報をここで設定
-       * することはできません。つまり、以下で設定しているカラムが存在しない場合は、単に無視されるだけなので
-       * 難しく考える必要がありません。その代わり、change_field_type で、第１引数に、フォームで
-       * 非表示にしたいカラム名を指定し、第２引数に invisible を指定すれば OK です。
-       * See Also : https://www.grocerycrud.com/documentation/options_functions/callback_before_insert
-       */
+       /*
+        * Grocery CRUD の fields または edit_fields に指定されていないカラムの情報をここで設定
+        * することはできません。つまり、以下で設定しているカラムが存在しない場合は、単に無視されるだけなので
+        * 難しく考える必要がありません。その代わり、change_field_type で、第１引数に、フォームで
+        * 非表示にしたいカラム名を指定し、第２引数に invisible を指定すれば OK です。
+        * See Also : https://www.grocerycrud.com/documentation/options_functions/callback_before_insert
+        */
         $post_array['modified_at'] = date('Y-m-d H:i:s');
         $post_array['modified_by'] = $this->_get_login_user()->id;
 
         return $post_array;
     }
 
-  /**
-   * Insert 前に実行する処理のための Grocery CRUD コールバック関数
-   */
+    /**
+     * Insert 前に実行する処理のための Grocery CRUD コールバック関数
+     */
     public function _crud_before_insert($post_array)
     {
         $post_array = $this->_crud_before_update($post_array);
@@ -175,20 +178,20 @@ class MY_Controller extends CI_Controller
     }
 
 
-  /**
-   * ログインがされていない場合、ログインページにリダイレクトする
-   */
+    /**
+     * ログインがされていない場合、ログインページにリダイレクトする
+     */
     public function _require_login()
     {
         if (empty($this->_get_login_user())) {
-          # ログインされていない場合
-          // 現在アクセスされているURIをセッションに保存
+            # ログインされていない場合
+            // 現在アクセスされているURIをセッションに保存
             $_SESSION["login_return_uri"] = $this->uri->uri_string();
-          // ログインページへリダイレクト
+            // ログインページへリダイレクト
             redirect('users/login');
         } else {
-          # ログインされている場合
-          // login_return_uri がセットされている場合，そのページにアクセス
+            # ログインされている場合
+            // login_return_uri がセットされている場合，そのページにアクセス
             if (isset($_SESSION["login_return_uri"])) {
                 $uri = $_SESSION["login_return_uri"];
                 unset($_SESSION["login_return_uri"]);
@@ -197,9 +200,9 @@ class MY_Controller extends CI_Controller
         }
     }
 
-  /**
-   * ログイン中のユーザーの、ユーザー情報オブジェクトを返す
-   */
+    /**
+     * ログイン中のユーザーの、ユーザー情報オブジェクトを返す
+     */
     public function _get_login_user()
     {
         static $user;
@@ -217,28 +220,28 @@ class MY_Controller extends CI_Controller
         return $_SESSION[self::SESSION_KEY_USER_ID] ?? null;
     }
 
-  /**
-   * 指定したユーザーでログインする
-   */
+    /**
+     * 指定したユーザーでログインする
+     */
     protected function _login($user_id)
     {
         session_regenerate_id(true);
         return $_SESSION[self::SESSION_KEY_USER_ID] = $user_id;
     }
 
-  /**
-   * ログアウトする
-   */
+    /**
+     * ログアウトする
+     */
     protected function _logout()
     {
         session_regenerate_id(true);
         unset($_SESSION[self::SESSION_KEY_USER_ID]);
     }
 
-  /**
-   * ログイン中のユーザーがスタッフではない場合、アクセスを禁止する
-   * 必ず、_require_login() してから、このメソッドを使用すること
-   */
+    /**
+     * ログイン中のユーザーがスタッフではない場合、アクセスを禁止する
+     * 必ず、_require_login() してから、このメソッドを使用すること
+     */
     public function _staff_only()
     {
         if ((int)$this->_get_login_user()->is_staff !== 1) {
@@ -246,11 +249,11 @@ class MY_Controller extends CI_Controller
         }
     }
 
-  /**
-   * ログイン中のユーザーが管理者ではない場合、アクセスを禁止する
-   * 必ず、_require_login() してから、このメソッドを使用すること
-   * また、_staff_only() の後にこのメソッドを使用することが望ましい(必須ではない)
-   */
+    /**
+     * ログイン中のユーザーが管理者ではない場合、アクセスを禁止する
+     * 必ず、_require_login() してから、このメソッドを使用すること
+     * また、_staff_only() の後にこのメソッドを使用することが望ましい(必須ではない)
+     */
     public function _admin_only()
     {
         if ((bool)$this->_get_login_user()->is_admin === false) {
@@ -258,17 +261,21 @@ class MY_Controller extends CI_Controller
         }
     }
 
-  /**
-   * Twig テンプレートによって作成されたビューを出力する
-   * @param  string $template_filename 使用する Twig テンプレート( 拡張子不要 )
-   * @param  array  $vars              ビューに渡すパラメータ
-   * @param  string $file_type         Twig のファイルタイプ( デフォルトは html )
-   */
+    /**
+     * Twig テンプレートによって作成されたビューを出力する
+     * @param  string $template_filename 使用する Twig テンプレート( 拡張子不要 )
+     * @param  array  $vars              ビューに渡すパラメータ
+     * @param  string $file_type         Twig のファイルタイプ( デフォルトは html )
+     */
     public function _render($template_filename, $vars = [], $file_type = 'html')
     {
-        $template = $this->twig->loadTemplate(dirname($template_filename). "/". str_replace("/", ".", $template_filename). $this::TWIG_FILETYPE[$file_type]);
+        $template = $this->twig->loadTemplate(
+            dirname($template_filename). "/".
+            str_replace("/", ".", $template_filename).
+            $this::TWIG_FILETYPE[$file_type]
+        );
 
-      // ユーザー情報を$varsに追加
+        // ユーザー情報を$varsに追加
         if (! empty($this->_get_login_user())) {
             $vars['user'] = $this->_get_login_user();
         }
@@ -276,11 +283,11 @@ class MY_Controller extends CI_Controller
         $this->output->set_output($template->render($vars));
     }
 
-  /**
-   * エラーを表示してアプリケーションを強制終了する
-   * @param  string $error_title エラータイトル
-   * @param  string $error_info  [description]
-   */
+    /**
+     * エラーを表示してアプリケーションを強制終了する
+     * @param  string $error_title エラータイトル
+     * @param  string $error_info  [description]
+     */
     public function _error($error_title, $error_info, $status_header = 400)
     {
         $this->output->set_status_header($status_header);
@@ -296,39 +303,38 @@ class MY_Controller extends CI_Controller
         exit();
     }
 
-  /**
-   * メールを送信する
-   * @param  string $to                送信先(To)メールアドレス
-   * @param  string $subject           メールの件名
-   * @param  string $template_filename 送信するメールの Twig テンプレート
-   * @param  array  $vars              パラメータ( name_to(送信者名) を含むこと )
-   * @param  string $reply_to          返信先メールアドレス
-   * @param  string $cc                CCメールアドレス
-   * @return bool                      送信成功時 true
-   */
+    /**
+     * メールを送信する
+     * @param  string $to                送信先(To)メールアドレス
+     * @param  string $subject           メールの件名
+     * @param  string $template_filename 送信するメールの Twig テンプレート
+     * @param  array  $vars              パラメータ( name_to(送信者名) を含むこと )
+     * @param  string $reply_to          返信先メールアドレス
+     * @param  string $cc                CCメールアドレス
+     * @return bool                      送信成功時 true
+     */
     public function _send_email($to, $subject, $template_filename, $vars = [], $reply_to = null, $cc = null)
     {
         $template = $this->twig->loadTemplate($template_filename. $this::TWIG_FILETYPE['txt']);
 
         $this->load->library('email');
 
-      // $reply_to の指定がない場合，運営者の連絡先メールアドレスに設定する
+        // $reply_to の指定がない場合，運営者の連絡先メールアドレスに設定する
         if (empty($reply_to)) {
             $reply_to = RP_CONTACT_EMAIL;
         }
 
-        $this->email->initialize(array(
-        'protocol' => 'smtp',
-        'smtp_host' => RP_SMTP_HOST,
-        'smtp_user' => RP_SMTP_USER,
-        'smtp_pass' => RP_SMTP_PASS,
-        'smtp_port' => RP_SMTP_PORT, // default: 587
-        'crlf' => "\r\n",
-        'newline' => "\r\n",
-        'wordwrap' => false,
-        'charset' => 'utf-8',
-
-        ));
+        $this->email->initialize([
+            'protocol' => 'smtp',
+            'smtp_host' => RP_SMTP_HOST,
+            'smtp_user' => RP_SMTP_USER,
+            'smtp_pass' => RP_SMTP_PASS,
+            'smtp_port' => RP_SMTP_PORT, // default: 587
+            'crlf' => "\r\n",
+            'newline' => "\r\n",
+            'wordwrap' => false,
+            'charset' => 'utf-8',
+        ]);
 
         $this->email->from(RP_EMAIL_FROM, RP_EMAIL_FROM_NAME);
         $this->email->to(mb_strtolower($to));
@@ -341,13 +347,13 @@ class MY_Controller extends CI_Controller
         return $this->email->send();
     }
 
-  /**
-   * テーブルデータを操作するためのGUIを出力する
-   * @param  string $table_name        表示するデータベースのテーブル名
-   * @param  string $title             (省略可)ページタイトル。省略した場合、テーブル名。
-   * @param  string $memo              (省略可)ページに表示するメモ。HTML使用不可。
-   * @param  string $template_filename (省略可)使用する Twig テンプレート( 拡張子不要 )
-   */
+    /**
+     * テーブルデータを操作するためのGUIを出力する
+     * @param  string $table_name        表示するデータベースのテーブル名
+     * @param  string $title             (省略可)ページタイトル。省略した場合、テーブル名。
+     * @param  string $memo              (省略可)ページに表示するメモ。HTML使用不可。
+     * @param  string $template_filename (省略可)使用する Twig テンプレート( 拡張子不要 )
+     */
     public function _table_render($table_name, $title = null, $memo = null, $template_filename = 'home/database')
     {
         $vars['title'] = empty($title) ? $table_name : $title;
@@ -360,14 +366,14 @@ class MY_Controller extends CI_Controller
         $this->_render($template_filename, $vars);
     }
 
-  /**
-   * マルチバイト文字対応の wordwrap
-   * ( PHP 標準関数の wordwrap は、日本語などのマルチバイト文字に非対応のため )
-   * @param  string  $str   入力文字列。
-   * @param  integer $width 文字列を分割するときの文字数。
-   * @param  string  $break オプションのパラメータ break を用いて行を分割します。
-   * @return string         受け取った文字列を指定した長さで分割したものを返します。
-   */
+    /**
+     * マルチバイト文字対応の wordwrap
+     * ( PHP 標準関数の wordwrap は、日本語などのマルチバイト文字に非対応のため )
+     * @param  string  $str   入力文字列。
+     * @param  integer $width 文字列を分割するときの文字数。
+     * @param  string  $break オプションのパラメータ break を用いて行を分割します。
+     * @return string         受け取った文字列を指定した長さで分割したものを返します。
+     */
     public function _mb_wordwrap($str, $width = 35, $break = PHP_EOL)
     {
         $c = mb_strlen($str);
@@ -378,19 +384,19 @@ class MY_Controller extends CI_Controller
         return implode($break, $arr);
     }
 
-  /**
-   * LINE Notify で同報を送信する
-   * @param  string $template_filename 使用する Twig テンプレート( 拡張子不要 )
-   * @param  array  $vars              ビューに渡すパラメータ
-   * @return bool                      送信に成功したら true
-   */
+    /**
+     * LINE Notify で同報を送信する
+     * @param  string $template_filename 使用する Twig テンプレート( 拡張子不要 )
+     * @param  array  $vars              ビューに渡すパラメータ
+     * @return bool                      送信に成功したら true
+     */
     public function _send_to_line($template_filename, $vars = [])
     {
         $template = $this->twig->loadTemplate($template_filename. $this::TWIG_FILETYPE['txt']);
         $message = $template->render($vars);
 
         $data = [
-        "message" => $message,
+            "message" => $message,
         ];
         $data = http_build_query($data, "", "&");
 

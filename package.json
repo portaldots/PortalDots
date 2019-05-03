@@ -1,0 +1,26 @@
+{
+  "name": "inaka-portal",
+  "version": "1.0.0",
+  "description": "inaka-portal | ridaisai_portal / オープンソース版 ridaisai_portal",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "docsify-cli": "^4.3.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SofPyon/inaka-portal.git"
+  },
+  "author": "",
+  "license": "MIT License",
+  "bugs": {
+    "url": "https://github.com/SofPyon/inaka-portal/issues"
+  },
+  "homepage": "https://github.com/SofPyon/inaka-portal#readme"
+}

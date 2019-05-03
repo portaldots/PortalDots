@@ -1,7 +1,7 @@
 <h1 align="center">inaka-portal | ridaisai_portal</h1>
 <p align="center">オープンソース版 ridaisai_portal</p>
 
-![inaka-portal](docs/inaka-portal-eyecatch.png)
+![inaka-portal](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/inaka-portal-eyecatch.png)
 
 ## これは何？
 - [野田地区理大祭](https://nodaridaisai.com) という大学祭の実行委員会の業務を効率化するためのウェブシステム。
@@ -17,7 +17,7 @@
 Git、Composer、Docker がセットアップ済みである必要があります。
 
 ```bash
-# git clone ...
+$ git clone git@github.com:SofPyon/inaka-portal.git
 $ cd inaka-portal/
 
 # 設定ファイルを作成

@@ -27,7 +27,7 @@ services:
       - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./db/sql:/docker-entrypoint-initdb.d
     ports:
-      - 3306:3306
+      - 4306:3306
 
   phpmyadmin:
     container_name: portal_phpmyadmin

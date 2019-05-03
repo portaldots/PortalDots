@@ -15,6 +15,9 @@
 		"docker": [
 			"cd docker_dev; docker-compose up -d"
 		],
+		"docker-build": [
+			"cd docker_dev; docker-compose up -d --build"
+		],
 		"docker-stop": [
 			"cd docker_dev; docker-compose down"
 		],
