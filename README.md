@@ -3,15 +3,6 @@
 
 ![inaka-portal](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/inaka-portal-eyecatch.png)
 
-## ここは `migrate-to-laravel` ブランチ
-- 使用フレームワークを CodeIgniter から Laravel に移行する作業を行うブランチです
-
-### メモ
-- ルートディレクトリにある `.env` は Laravel から読み出され、 `application` ディレクトリにある `.env` は CodeIgniter から読み出されます
-    - 将来的に、1 つの `.env` ファイルに統合する予定です。
-- 定期的に `master` ブランチにマージしていきます
-    - inaka-portal が v1.0.0 になるまで、ワークフローなど深く考えず、雑に運用していきます。
-
 ## これは何？
 - [野田地区理大祭](https://nodaridaisai.com) という大学祭の実行委員会の業務を効率化するためのウェブシステム。
     - 団体向け : 団体向け会議の次回予告、各種配布資料ダウンロード、お知らせの閲覧、各種申請の提出、お問い合わせなどを行うことができる。
