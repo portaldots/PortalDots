@@ -9,6 +9,6 @@ class Logout extends Users_base_controller
     public function index()
     {
         $this->_logout();
-        redirect('/');
+        codeigniter_redirect('/');
     }
 }

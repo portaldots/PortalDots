@@ -98,7 +98,7 @@ class Auth_model extends MY_Model
     public function get_all_auth_staff_page()
     {
         $result = $this->db->get("auth_staff_page")->result();
-        $roles = $this->users->get_all_user_role_info();
+        $roles = $this->users->get_all_roles();
         $roles_list = [];
         foreach ($roles as $item) {
             $roles_list[$item->id] = $item->name;

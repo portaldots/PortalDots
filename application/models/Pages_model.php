@@ -20,9 +20,9 @@ class Pages_model extends MY_Model
         $this->db->set("body", $body);
         $datetime = date("Y-m-d H:i:s");
         $this->db->set("created_at", $datetime);
-        $this->db->set("modified_at", $datetime);
+        $this->db->set("updated_at", $datetime);
         $this->db->set("created_by", $user->id);
-        $this->db->set("modified_by", $user->id);
+        $this->db->set("updated_by", $user->id);
         $this->db->set("notes", $notes);
         $this->db->insert("pages");
         return $this->db->insert_id();
@@ -94,7 +94,7 @@ class Pages_model extends MY_Model
    *  - body の内容をリスト表示用に省略して body_trimmed とする
    *  - body の内容を HTML にパースして body_html とする
    *  - 作成日時を人間にとってわかりやすい形式に変換し created_at_string とする
-   *  - 更新日時を人間にとってわかりやすい形式に変換し modified_at_string とする
+   *  - 更新日時を人間にとってわかりやすい形式に変換し updated_at_string とする
    * @param  object $data ページ情報オブジェクト。
    * @return object       加工されたページ情報オブジェクト。
    */
@@ -104,7 +104,7 @@ class Pages_model extends MY_Model
         $data->body_html = $this->parse_markdown($data->body);
         $data->body_trimmed = mb_strimwidth(strip_tags($data->body_html), 0, 100, "...");
         $data->created_at_string = $this->arrange_datetime($data->created_at);
-        $data->modified_at_string = $this->arrange_datetime($data->modified_at);
+        $data->updated_at_string = $this->arrange_datetime($data->updated_at);
         return $data;
     }
 }

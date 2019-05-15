@@ -35,7 +35,6 @@ class MY_Controller extends CI_Controller
     {
         parent::__construct();
         $this->_init_twig();
-        $this->_init_crud();
     }
 
     /**
@@ -83,102 +82,6 @@ class MY_Controller extends CI_Controller
     }
 
     /**
-     * Grocry CRUD の初期化をする
-     */
-    private function _init_crud()
-    {
-      // カラム名の日本語化
-        $this->grocery_crud->display_as('student_id', '学籍番号');
-        $this->grocery_crud->display_as('title', 'タイトル');
-        $this->grocery_crud->display_as('category_id', 'カテゴリーID');
-        $this->grocery_crud->display_as('body', '本文');
-        $this->grocery_crud->display_as('booth_id', 'ブースID');
-        $this->grocery_crud->display_as('place_id', '場所');
-        $this->grocery_crud->display_as('circle_id', '団体');
-        $this->grocery_crud->display_as('genre', 'ジャンル');
-        $this->grocery_crud->display_as('image_filename', '画像');
-        $this->grocery_crud->display_as('description', '紹介');
-        $this->grocery_crud->display_as('url', 'URL');
-        $this->grocery_crud->display_as('twitter_id', 'Twitter ID');
-        $this->grocery_crud->display_as('facebook_url', 'Facebook URL');
-        $this->grocery_crud->display_as('google_plus_url', 'Google+ URL');
-        $this->grocery_crud->display_as('is_sell_foods', '飲食物販売');
-        $this->grocery_crud->display_as('is_sell_things', '成果物販売');
-        $this->grocery_crud->display_as('is_exhibition', '展示');
-        $this->grocery_crud->display_as('is_performance', '実演');
-        $this->grocery_crud->display_as('is_public', '公開');
-        $this->grocery_crud->display_as('is_important', '重要');
-        $this->grocery_crud->display_as('is_locked', '編集禁止');
-        $this->grocery_crud->display_as('created_at', '作成日時');
-        $this->grocery_crud->display_as('modified_at', '最終変更日時');
-        $this->grocery_crud->display_as('created_by', '作成者');
-        $this->grocery_crud->display_as('modified_by', '最終変更者');
-        $this->grocery_crud->display_as('name_family', '姓');
-        $this->grocery_crud->display_as('name_family_yomi', '姓(よみ)');
-        $this->grocery_crud->display_as('name_given', '名');
-        $this->grocery_crud->display_as('name_given_yomi', '名(よみ)');
-        $this->grocery_crud->display_as('email', '連絡先メールアドレス');
-        $this->grocery_crud->display_as('tel', '電話番号');
-        $this->grocery_crud->display_as('verified_univemail', '大学ﾒｱﾄﾞ認証済');
-        $this->grocery_crud->display_as('verified_email', '連絡先ﾒｱﾄﾞ認証済');
-        $this->grocery_crud->display_as('is_staff', 'スタッフ');
-        $this->grocery_crud->display_as('notes', 'ｽﾀｯﾌ用ﾒﾓ');
-
-        // id順に表示する
-        $this->grocery_crud->order_by('id', 'asc');
-
-        // textフィールドを表示する際の改行自動追加
-        $this->grocery_crud->callback_column('name', array($this, '_crud_full_text'));
-        $this->grocery_crud->callback_column('genre', array($this, '_crud_full_text'));
-        $this->grocery_crud->callback_column('description', array($this, '_crud_full_text'));
-        $this->grocery_crud->callback_column('notes', array($this, '_crud_full_text'));
-
-        // 更新日時や更新者を自動設定する
-        $this->grocery_crud->callback_before_insert(array($this,'_crud_before_insert'));
-        $this->grocery_crud->callback_before_update(array($this,'_crud_before_update'));
-    }
-
-    /**
-     * description を適切に改行して表示させるための Grocery CRUD コールバック関数
-     */
-    public function _crud_full_text($value, $row)
-    {
-        return $value = $this->_mb_wordwrap($value, 30, "<br>");
-    }
-
-    /**
-     * Update 前に実行する処理のための Grocery CRUD コールバック関数
-     */
-    public function _crud_before_update($post_array)
-    {
-       /*
-        * Grocery CRUD の fields または edit_fields に指定されていないカラムの情報をここで設定
-        * することはできません。つまり、以下で設定しているカラムが存在しない場合は、単に無視されるだけなので
-        * 難しく考える必要がありません。その代わり、change_field_type で、第１引数に、フォームで
-        * 非表示にしたいカラム名を指定し、第２引数に invisible を指定すれば OK です。
-        * See Also : https://www.grocerycrud.com/documentation/options_functions/callback_before_insert
-        */
-        $post_array['modified_at'] = date('Y-m-d H:i:s');
-        $post_array['modified_by'] = $this->_get_login_user()->id;
-
-        return $post_array;
-    }
-
-    /**
-     * Insert 前に実行する処理のための Grocery CRUD コールバック関数
-     */
-    public function _crud_before_insert($post_array)
-    {
-        $post_array = $this->_crud_before_update($post_array);
-
-        $post_array['created_at'] = date('Y-m-d H:i:s');
-        $post_array['created_by'] = $this->_get_login_user()->id;
-
-        return $post_array;
-    }
-
-
-    /**
      * ログインがされていない場合、ログインページにリダイレクトする
      */
     public function _require_login()
@@ -188,14 +91,20 @@ class MY_Controller extends CI_Controller
             // 現在アクセスされているURIをセッションに保存
             $_SESSION["login_return_uri"] = $this->uri->uri_string();
             // ログインページへリダイレクト
-            redirect('users/login');
+            codeigniter_redirect('users/login');
         } else {
             # ログインされている場合
+            // メール認証が完了していない場合、メール認証ページへリダイレクト
+            $user = $this->_get_login_user();
+            if (empty($user->email_verified_at) || empty($user->univemail_verified_at)) {
+                codeigniter_redirect('/email/verify');
+            }
+
             // login_return_uri がセットされている場合，そのページにアクセス
             if (isset($_SESSION["login_return_uri"])) {
                 $uri = $_SESSION["login_return_uri"];
                 unset($_SESSION["login_return_uri"]);
-                redirect($uri);
+                codeigniter_redirect($uri);
             }
         }
     }
@@ -235,7 +144,7 @@ class MY_Controller extends CI_Controller
     protected function _logout()
     {
         session_regenerate_id(true);
-        unset($_SESSION[self::SESSION_KEY_USER_ID]);
+        unset($_SESSION[self::SESSION_KEY_USER_ID], $_SESSION['staff_authorized']);
     }
 
     /**
@@ -321,28 +230,28 @@ class MY_Controller extends CI_Controller
 
         // $reply_to の指定がない場合，運営者の連絡先メールアドレスに設定する
         if (empty($reply_to)) {
-            $reply_to = RP_CONTACT_EMAIL;
+            $reply_to = PORTAL_CONTACT_EMAIL;
         }
 
         $this->email->initialize([
             'protocol' => 'smtp',
-            'smtp_host' => RP_SMTP_HOST,
-            'smtp_user' => RP_SMTP_USER,
-            'smtp_pass' => RP_SMTP_PASS,
-            'smtp_port' => RP_SMTP_PORT, // default: 587
+            'smtp_host' => MAIL_HOST,
+            'smtp_user' => MAIL_USERNAME,
+            'smtp_pass' => MAIL_PASSWORD,
+            'smtp_port' => MAIL_PORT, // default: 587
             'crlf' => "\r\n",
             'newline' => "\r\n",
             'wordwrap' => false,
             'charset' => 'utf-8',
         ]);
 
-        $this->email->from(RP_EMAIL_FROM, RP_EMAIL_FROM_NAME);
+        $this->email->from(MAIL_FROM_ADDRESS, MAIL_FROM_NAME);
         $this->email->to(mb_strtolower($to));
         if (!empty($cc)) {
             $this->email->cc(mb_strtolower($cc));
         }
         $this->email->reply_to(mb_strtolower($reply_to));
-        $this->email->subject(RP_EMAIL_SUBJECT_PREFIX. $subject);
+        $this->email->subject($subject);
         $this->email->message($template->render($vars));
         return $this->email->send();
     }

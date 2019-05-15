@@ -10,7 +10,7 @@ CREATE TABLE `auth_staff_page` (
 CREATE TABLE `auth_staff_role` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `auth_staff_page_id` int(11) NOT NULL COMMENT 'auth_staff_page の ID',
-  `role_id` int(11) NOT NULL COMMENT 'user_rolesテーブルのID',
+  `role_id` int(11) NOT NULL COMMENT 'role_userテーブルのID',
   `is_authorized` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'このrole_idのroleに所属するユーザーは認可されているか',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -21,8 +21,10 @@ CREATE TABLE `booths` (
   `place_id` int(11) NOT NULL,
   `circle_id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `modified_at` datetime NOT NULL,
-  `modified_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `created_by` int(11) unsigned NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `updated_by` int(11) unsigned NOT NULL,
   `notes` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -36,28 +38,11 @@ CREATE TABLE `ci_sessions` (
   KEY `ci_sessions_timestamp` (`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Create syntax for TABLE 'circle_members'
-CREATE TABLE `circle_members` (
+-- Create syntax for TABLE 'circle_user'
+CREATE TABLE `circle_user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `circle_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `notes` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Create syntax for TABLE 'circle_members_roles'
-CREATE TABLE `circle_members_roles` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `circle_member_id` int(11) NOT NULL COMMENT 'circle_members.id',
-  `role_id` int(11) DEFAULT NULL COMMENT 'circle_members_roles_list.id',
-  `notes` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Create syntax for TABLE 'circle_members_roles_list'
-CREATE TABLE `circle_members_roles_list` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
   `notes` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -66,8 +51,10 @@ CREATE TABLE `circle_members_roles_list` (
 CREATE TABLE `circles` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
-  `modified_at` datetime NOT NULL,
-  `modified_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `created_by` int(11) unsigned NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `updated_by` int(11) unsigned NOT NULL,
   `notes` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -78,9 +65,10 @@ CREATE TABLE `documents` (
   `name` varchar(255) NOT NULL DEFAULT '',
   `description` tinytext,
   `filename` varchar(255) NOT NULL DEFAULT '',
-  `created_by` int(11) NOT NULL COMMENT 'user_id',
   `created_at` datetime NOT NULL,
-  `modified_at` datetime NOT NULL,
+  `created_by` int(11) unsigned NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `updated_by` int(11) unsigned NOT NULL,
   `is_public` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'circleメンバーが閲覧可能なら1',
   `is_important` tinyint(1) NOT NULL DEFAULT '0',
   `schedule_id` int(11) unsigned DEFAULT NULL COMMENT 'この資料を配布したイベントのID',
@@ -88,41 +76,42 @@ CREATE TABLE `documents` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Create syntax for TABLE 'form_answer_details'
-CREATE TABLE `form_answer_details` (
+-- Create syntax for TABLE 'answer_details'
+CREATE TABLE `answer_details` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '設問回答ID',
-  `answer_id` int(11) unsigned NOT NULL COMMENT 'form_answers.id',
+  `answer_id` int(11) unsigned NOT NULL COMMENT 'answers.id',
   `question_id` int(11) unsigned NOT NULL COMMENT '設問ID',
   `answer` longtext COMMENT '回答本文',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Create syntax for TABLE 'form_answers'
-CREATE TABLE `form_answers` (
+-- Create syntax for TABLE 'answers'
+CREATE TABLE `answers` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '回答ID',
   `form_id` int(11) unsigned NOT NULL COMMENT 'フォームID',
   `created_at` datetime NOT NULL COMMENT '回答新規作成日時',
-  `modified_at` datetime NOT NULL COMMENT '回答更新日時',
+  `updated_at` datetime NOT NULL COMMENT '回答更新日時',
   `circle_id` int(11) unsigned NOT NULL COMMENT '回答した団体',
   `booth_id` int(11) unsigned DEFAULT NULL COMMENT '回答したブース',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Create syntax for TABLE 'form_question_options'
-CREATE TABLE `form_question_options` (
+-- Create syntax for TABLE 'options'
+CREATE TABLE `options` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '選択肢ID',
   `question_id` int(11) unsigned NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Create syntax for TABLE 'form_questions'
-CREATE TABLE `form_questions` (
+-- Create syntax for TABLE 'questions'
+CREATE TABLE `questions` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '設問ID',
-  `section_id` int(11) unsigned NOT NULL COMMENT 'セクションID',
+  `form_id` int(11) unsigned NOT NULL COMMENT 'フォームID',
   `name` varchar(255) NOT NULL DEFAULT '',
-  `type` varchar(255) NOT NULL DEFAULT '' COMMENT 'number/text/textarea/radio/checkbox/select/upload',
-  `is_required` tinyint(1) NOT NULL DEFAULT '0',
+  `description` text,
+  `type` varchar(255) NOT NULL DEFAULT '' COMMENT 'heading/number/text/textarea/radio/checkbox/select/upload',
+  `is_required` tinyint(1) NOT NULL DEFAULT '0' COMMENT '(heading)無視',
   `number_min` int(11) DEFAULT NULL COMMENT '(number)範囲制限/(upload)無視/(それ以外)文字数制限',
   `number_max` int(11) DEFAULT NULL COMMENT 'number_min と同様',
   `allowed_types` varchar(255) DEFAULT NULL COMMENT '(uploadで使用)パイプで接続された，アップロードを許可するMIMEタイプ一覧．一般的に，ファイル拡張子はMIMEタイプとして使用できる．',
@@ -131,15 +120,7 @@ CREATE TABLE `form_questions` (
   `max_height` int(11) unsigned DEFAULT '0',
   `min_width` int(11) unsigned DEFAULT '0',
   `min_height` int(11) unsigned DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Create syntax for TABLE 'form_sections'
-CREATE TABLE `form_sections` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'セクションID',
-  `form_id` int(11) unsigned NOT NULL COMMENT 'フォームID',
-  `title` varchar(255) NOT NULL DEFAULT '' COMMENT 'セクションタイトル',
-  `description` text COMMENT '説明文',
+  `priority` int(11) unsigned NOT NULL DEFAULT '1' COMMENT 'priorityが小さい値の設問ほど上に配置される',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -151,11 +132,11 @@ CREATE TABLE `forms` (
   `open_at` datetime NOT NULL,
   `close_at` datetime NOT NULL,
   `created_at` datetime NOT NULL,
-  `modified_at` datetime NOT NULL,
+  `created_by` int(11) unsigned NOT NULL COMMENT 'フォーム作成者のユーザーID',
+  `updated_at` datetime NOT NULL,
   `type` varchar(10) NOT NULL DEFAULT '' COMMENT 'circleかboothか',
   `max_answers` int(11) DEFAULT NULL COMMENT '最大回答数',
   `is_public` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '公開するか',
-  `created_by` int(11) unsigned NOT NULL COMMENT 'フォーム作成者のユーザーID',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -165,9 +146,9 @@ CREATE TABLE `pages` (
   `title` varchar(255) NOT NULL DEFAULT '',
   `body` longtext NOT NULL,
   `created_at` datetime NOT NULL,
-  `modified_at` datetime NOT NULL,
-  `created_by` int(11) NOT NULL COMMENT 'user_id',
-  `modified_by` int(11) NOT NULL COMMENT 'user_id',
+  `created_by` int(11) unsigned NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `updated_by` int(11) unsigned NOT NULL,
   `notes` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -192,17 +173,17 @@ CREATE TABLE `schedules` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Create syntax for TABLE 'user_roles'
-CREATE TABLE `user_roles` (
+-- Create syntax for TABLE 'role_user'
+CREATE TABLE `role_user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL COMMENT 'roles.id(0:Admin)',
   `user_id` int(11) NOT NULL COMMENT 'users.id',
-  `role_id` int(11) NOT NULL COMMENT 'user_roles_list.id(0:Admin)',
   `notes` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Create syntax for TABLE 'user_roles_list'
-CREATE TABLE `user_roles_list` (
+-- Create syntax for TABLE 'roles'
+CREATE TABLE `roles` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
   `notes` text,
@@ -221,7 +202,7 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `is_staff` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'スタッフなら 1',
   `created_at` datetime NOT NULL,
-  `modified_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
   `reset_pass_key` text,
   `reset_pass_key_created_at` datetime DEFAULT NULL,
   `notes` text,

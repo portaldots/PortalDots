@@ -36,11 +36,51 @@
  * @filesource
  */
 
+// 一部 Laravel にルーティング
+(function () {
+    $LARAVEL_PATHS = [
+        '/welcome',
+        // Auth
+        '/login',
+        '/logout',
+        '/register',
+        '/password',
+        '/email',
+        // Users
+        '/change_password',
+        // Staff
+        '/staff',
+        // Debugbar
+        '/_debugbar',
+        // 以下のルートはCodeIgniter側のものだが、404にしたいもの
+        '/users/logout',
+    ];
+    $request_uri = $_SERVER['REQUEST_URI'];
+
+    foreach ($LARAVEL_PATHS as $path) {
+        $path = str_replace('/', '\/', preg_quote($path));
+        if (preg_match('/^'. $path. '/', $request_uri)) {
+            require __DIR__. '/index_laravel.php';
+            exit;
+        }
+    }
+})();
+
 require_once('../vendor/autoload.php');
-Dotenv\Dotenv::create(__DIR__. '/../application/')->load();
-function env($key, $default = null) {
-  return ! empty($value = getenv($key)) ? $value : $default;
+
+if (file_exists(__DIR__. '/../.env')) {
+    Dotenv\Dotenv::create(__DIR__ . '/../')->load();
+} else {
+    die('.env file not found');
 }
+
+function codeigniter_env($key, $default = null)
+{
+    return ! empty($value = getenv($key)) ? $value : $default;
+}
+
+// セッションのシリアライズ方式を変更する
+ini_set('session.serialize_handler', 'php_serialize');
 
 /*
  *---------------------------------------------------------------
@@ -59,8 +99,8 @@ function env($key, $default = null) {
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-    // define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
-    define('ENVIRONMENT', getenv('CI_ENV') ?? 'production');
+    $app_env = codeigniter_env('APP_ENV') === 'local' ? 'development' : codeigniter_env('APP_ENV', 'production');
+    define('ENVIRONMENT', $app_env);
 
 /*
  *---------------------------------------------------------------

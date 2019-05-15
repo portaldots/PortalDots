@@ -33,10 +33,10 @@ class Circles_model extends MY_Model
      */
     public function get_circle_info_by_user_id($user_id)
     {
-      // select * from circle_members join circles on circles.id = circle_members.circle_id where circle_members.user_id = ?
-        $this->db->from("circle_members");
-        $this->db->join("circles", "circles.id = circle_members.circle_id");
-        $this->db->where("circle_members.user_id", $user_id);
+      // select * from circle_user join circles on circles.id = circle_user.circle_id where circle_user.user_id = ?
+        $this->db->from("circle_user");
+        $this->db->join("circles", "circles.id = circle_user.circle_id");
+        $this->db->where("circle_user.user_id", $user_id);
         $query = $this->db->get();
         return $query->result();
     }
@@ -49,7 +49,7 @@ class Circles_model extends MY_Model
     public function get_user_info_by_circle_id($circle_id)
     {
         $this->db->where("circle_id", $circle_id);
-        $query = $this->db->get("circle_members");
+        $query = $this->db->get("circle_user");
         $result = [];
         foreach ($query->result() as $user) {
             $result[] = $this->users->get_user_by_user_id($user->user_id);
@@ -88,7 +88,7 @@ class Circles_model extends MY_Model
 
         $this->db->where("circle_id", $circle_id);
         $this->db->where("user_id", $user_id);
-        $query = $this->db->get("circle_members");
+        $query = $this->db->get("circle_user");
         if ((int)$query->num_rows() === 0) {
             return false;
         }

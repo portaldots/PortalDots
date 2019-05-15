@@ -21,7 +21,7 @@ class Verify extends Users_base_controller
             $vars['user_checked'] = $_SESSION['user_checked'];
             $this->_render('users/verify_info', $vars);
         } else {
-            redirect("/");
+            codeigniter_redirect("/");
         }
     }
 

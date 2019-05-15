@@ -22,7 +22,7 @@ class Documents_model extends MY_Model
         for ($i = 0; $i < count($results); ++$i) {
             $results[$i]->is_new = $this->is_new($results[$i]->created_at);
             $results[$i]->created_at_string = $this->arrange_datetime($results[$i]->created_at);
-            $results[$i]->modified_at_string = $this->arrange_datetime($results[$i]->modified_at);
+            $results[$i]->updated_at_string = $this->arrange_datetime($results[$i]->updated_at);
             if (!empty($results[$i]->schedule_id)) {
                 $results[$i]->schedule_info = $this->schedules->get_schedule_by_schedule_id($results[$i]->schedule_id);
             } else {
@@ -48,7 +48,7 @@ class Documents_model extends MY_Model
         for ($i = 0; $i < count($results); ++$i) {
             $results[$i]->is_new = $this->is_new($results[$i]->created_at);
             $results[$i]->created_at_string = $this->arrange_datetime($results[$i]->created_at);
-            $results[$i]->modified_at_string = $this->arrange_datetime($results[$i]->modified_at);
+            $results[$i]->updated_at_string = $this->arrange_datetime($results[$i]->updated_at);
             if (!empty($results[$i]->schedule_id)) {
                 $results[$i]->schedule_info = $this->schedules->get_schedule_by_schedule_id($results[$i]->schedule_id);
             } else {
@@ -84,7 +84,7 @@ class Documents_model extends MY_Model
         for ($i = 0; $i < count($results); ++$i) {
             $results[$i]->is_new = $this->is_new($results[$i]->created_at);
             $results[$i]->created_at_string = $this->arrange_datetime($results[$i]->created_at);
-            $results[$i]->modified_at_string = $this->arrange_datetime($results[$i]->modified_at);
+            $results[$i]->updated_at_string = $this->arrange_datetime($results[$i]->updated_at);
             if (!empty($results[$i]->schedule_id)) {
                 $results[$i]->schedule_info = $this->schedules->get_schedule_by_schedule_id($results[$i]->schedule_id);
             } else {
@@ -109,7 +109,7 @@ class Documents_model extends MY_Model
             $result = $query->result()[0];
             $result->is_new = $this->is_new($result->created_at);
             $result->created_at_string = $this->arrange_datetime($result->created_at);
-            $result->modified_at_string = $this->arrange_datetime($result->modified_at);
+            $result->updated_at_string = $this->arrange_datetime($result->updated_at);
             if (!empty($result->schedule_id)) {
                 $result->schedule_info = $this->schedules->get_schedule_by_schedule_id($result->schedule_id);
             } else {
@@ -136,7 +136,7 @@ class Documents_model extends MY_Model
         for ($i = 0; $i < count($results); ++$i) {
             $results[$i]->is_new = $this->is_new($results[$i]->created_at);
             $results[$i]->created_at_string = $this->arrange_datetime($results[$i]->created_at);
-            $results[$i]->modified_at_string = $this->arrange_datetime($results[$i]->modified_at);
+            $results[$i]->updated_at_string = $this->arrange_datetime($results[$i]->updated_at);
           // スケジュール情報は，他のメソッドと同じように代入しない予定
         }
         return $results;
@@ -154,7 +154,7 @@ class Documents_model extends MY_Model
         if ($query->num_rows() === 1) {
             $result = $query->result()[0];
             $result->created_at_string = $this->arrange_datetime($result->created_at);
-            $result->modified_at_string = $this->arrange_datetime($result->modified_at);
+            $result->updated_at_string = $this->arrange_datetime($result->updated_at);
             if (!empty($result->schedule_id)) {
                 $result->schedule_info = $this->schedules->get_schedule_by_schedule_id($result->schedule_id);
             } else {
