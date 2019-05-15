@@ -1,7 +1,7 @@
 {% extends "layout_main.html.twig" %}
 
 {% block title %}
-  フォーム - {{ constant("RP_PORTAL_NAME") }}
+  フォーム - {{ constant("APP_NAME") }}
 {% endblock %}
 
 {% macro form_preview_alert( is_preview, form ) %}
@@ -125,14 +125,15 @@
   {{ parent() }}
   <script>
     {% if is_preview != true %}
-      $("#js_applications__form").change(function(){
+      const $form = $("#js_applications__form");
+      $form.change(function(){
         // フォームに変更があったとき，ページ移動前イベントを登録
         $(window).on("beforeunload", function() {
           return "このままページを移動すると、入力・変更内容が破棄されます。";
         });
       });
 
-      $("#js_applications__form").on("submit", function(e) {
+      $form.on("submit", function(e) {
         // フォーム送信時ページ移動前イベントを削除
         $(window).off("beforeunload");
       });

@@ -25,34 +25,28 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 */
 # ポータルの名前
-if (!defined('RP_PORTAL_NAME')) {
-    define('RP_PORTAL_NAME', env('RP_PORTAL_NAME', 'ポータル名称未設定'));
-}
-
-# 著作権表記
-if (!defined('RP_COPYRIGHT')) {
-    define('RP_COPYRIGHT', env('RP_COPYRIGHT', 'All Rights Reserved.'));
+if (!defined('APP_NAME')) {
+    define('APP_NAME', codeigniter_env('APP_NAME', 'ポータル名称未設定'));
 }
 
 # 連絡先メールアドレス
 // ここで設定したメールアドレスが、運営者の連絡先として表示されるほか、お問い合わせフォームの送信先として使用されます。
-if (!defined('RP_CONTACT_EMAIL')) {
-    define('RP_CONTACT_EMAIL', env('RP_CONTACT_EMAIL', 'info@example.com'));
+if (!defined('PORTAL_CONTACT_EMAIL')) {
+    define('PORTAL_CONTACT_EMAIL', codeigniter_env('PORTAL_CONTACT_EMAIL', 'info@example.com'));
 }
 
 # 大学発行メールアドレスのドメイン
-// @マークも含めて記入してください(例 : '@example.com' )。
 // Notice: 学籍番号@ドメイン という形式のメールアドレスが発行されない大学では
 //   ridaisai_portal は利用できません。
-if (!defined('RP_UNIVEMAIL_DOMAIN')) {
-    define('RP_UNIVEMAIL_DOMAIN', env('RP_UNIVEMAIL_DOMAIN', '@example.com'));
+if (!defined('PORTAL_UNIVEMAIL_DOMAIN')) {
+    define('PORTAL_UNIVEMAIL_DOMAIN', codeigniter_env('PORTAL_UNIVEMAIL_DOMAIN', 'example.com'));
 }
 
 # ファイルアップロード先ディレクトリ(フォルダ)
 // 必ず、ア ク セ ス 禁 止 の デ ィ レ ク ト リ を指定してください。
 // 末尾のスラッシュ(/)は不要です。
 if (!defined('RP_UPLOAD_DIR')) {
-    define('RP_UPLOAD_DIR', env('RP_UPLOAD_DIR', __DIR__. '/../uploads'));
+    define('RP_UPLOAD_DIR', codeigniter_env('RP_UPLOAD_DIR', __DIR__. '/../uploads'));
 }
 
 # Grocery CRUD ファイルアップロード先ディレクトリ(フォルダ)
@@ -60,7 +54,7 @@ if (!defined('RP_UPLOAD_DIR')) {
 // 先頭にスラッシュ(/)をつけることは で き ま せ ん。
 // public/index.php からみたディレクトリを指定してください。
 if (!defined('RP_UPLOAD_DIR_CRUD')) {
-    define('RP_UPLOAD_DIR_CRUD', env('RP_UPLOAD_DIR_CRUD', '../application/uploads'));
+    define('RP_UPLOAD_DIR_CRUD', codeigniter_env('RP_UPLOAD_DIR_CRUD', '../application/uploads'));
 }
 
 # LINE Notify スタッフ同報設定
@@ -69,44 +63,39 @@ if (!defined('RP_UPLOAD_DIR_CRUD')) {
   ## 通知POST先URL
   // LINE Notifyの仕様変更がない限り、この設定を変える必要はありません。
 if (!defined('RP_LINE_NOTIFY_URL')) {
-    define('RP_LINE_NOTIFY_URL', env('RP_LINE_NOTIFY_URL', 'https://notify-api.line.me/api/notify'));
+    define('RP_LINE_NOTIFY_URL', codeigniter_env('RP_LINE_NOTIFY_URL', 'https://notify-api.line.me/api/notify'));
 }
   ## アクセストークン
 if (!defined('RP_LINE_NOTIFY_TOKEN')) {
-    define('RP_LINE_NOTIFY_TOKEN', env('RP_LINE_NOTIFY_TOKEN'));
+    define('RP_LINE_NOTIFY_TOKEN', codeigniter_env('RP_LINE_NOTIFY_TOKEN'));
 }
 
 # メール設定(SMTP対応)
 // ポータルからメールを送信するための設定です。
-  ## 件名(Subject)接頭辞
-  // メールの件名の先頭に付加する文字列
-if (!defined('RP_EMAIL_SUBJECT_PREFIX')) {
-    define('RP_EMAIL_SUBJECT_PREFIX', env('RP_EMAIL_SUBJECT_PREFIX', '【ポータル】'));
-}
   ## 送信元(form)メールアドレス
-if (!defined('RP_EMAIL_FROM')) {
-    define('RP_EMAIL_FROM', env('RP_EMAIL_FROM', 'noreply@example.com'));
+if (!defined('MAIL_FROM_ADDRESS')) {
+    define('MAIL_FROM_ADDRESS', codeigniter_env('MAIL_FROM_ADDRESS', 'noreply@example.com'));
 }
   ## 送信者名
   // 受信者にもこの送信者名が表示されます、
-if (!defined('RP_EMAIL_FROM_NAME')) {
-    define('RP_EMAIL_FROM_NAME', env('RP_EMAIL_FROM_NAME', 'ポータル'));
+if (!defined('MAIL_FROM_NAME')) {
+    define('MAIL_FROM_NAME', codeigniter_env('MAIL_FROM_NAME', 'ポータル'));
 }
   ## ホスト名
-if (!defined('RP_SMTP_HOST')) {
-    define('RP_SMTP_HOST', env('RP_SMTP_HOST'));
+if (!defined('MAIL_HOST')) {
+    define('MAIL_HOST', codeigniter_env('MAIL_HOST'));
 }
   ## ユーザー名
-if (!defined('RP_SMTP_USER')) {
-    define('RP_SMTP_USER', env('RP_SMTP_USER'));
+if (!defined('MAIL_USERNAME')) {
+    define('MAIL_USERNAME', codeigniter_env('MAIL_USERNAME'));
 }
   ## パスワード
-if (!defined('RP_SMTP_PASS')) {
-    define('RP_SMTP_PASS', env('RP_SMTP_PASS'));
+if (!defined('MAIL_PASSWORD')) {
+    define('MAIL_PASSWORD', codeigniter_env('MAIL_PASSWORD'));
 }
   ## ポート( 通常は 587 )
-if (!defined('RP_SMTP_PORT')) {
-    define('RP_SMTP_PORT', env('RP_SMTP_PORT', 587));
+if (!defined('MAIL_PORT')) {
+    define('MAIL_PORT', codeigniter_env('MAIL_PORT', 587));
 }
 
 
@@ -132,7 +121,7 @@ if (!defined('RP_SMTP_PORT')) {
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = env('APP_BASE_URL', 'http://localhost/');
+$config['base_url'] = codeigniter_env('APP_URL', 'http://localhost/');
 
 /*
 |--------------------------------------------------------------------------
@@ -434,7 +423,7 @@ $config['cache_query_string'] = false;
 | https://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = env('APP_ENCRYPTION_KEY');
+$config['encryption_key'] = str_replace('base64:', '', codeigniter_env('APP_KEY'));
 
 /*
 |--------------------------------------------------------------------------

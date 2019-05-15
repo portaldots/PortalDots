@@ -1,6 +1,6 @@
 {% extends "layout_global.html.twig" %}
 
-{% block title %}ユーザー登録 - {{ constant("RP_PORTAL_NAME") }}{% endblock %}
+{% block title %}ユーザー登録 - {{ constant("APP_NAME") }}{% endblock %}
 
 {% block main %}
 
@@ -63,7 +63,7 @@
 
           <p><b>本人確認</b>のため</p>
           <p class="lead">
-            {{ user_checked.student_id }}{{ constant("RP_UNIVEMAIL_DOMAIN") }}
+            {{ user_checked.student_id }}@{{ constant("PORTAL_UNIVEMAIL_DOMAIN") }}
           </p>
           <p>に確認メールを送信しました。送信から<b>24時間以内</b>に、確認メールに書かれているURLにアクセスしてください。</p>
           <p>
@@ -76,7 +76,7 @@
     {% endif %}
 
     {# 連絡先メールアドレス #}
-    {% if user_checked.email != "#{user_checked.student_id}#{constant('RP_UNIVEMAIL_DOMAIN')}" %}
+    {% if user_checked.email != "#{user_checked.student_id}@#{constant('PORTAL_UNIVEMAIL_DOMAIN')}" %}
       <div class="col-md-6">
         <div class="well well-sm text-center">
 

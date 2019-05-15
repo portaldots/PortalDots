@@ -1,6 +1,6 @@
 {% extends "layout_entrance_nosub.html.twig" %}
 
-{% block title %}スタッフ認証 - {{ constant("RP_PORTAL_NAME") }}{% endblock %}
+{% block title %}スタッフ認証 - {{ constant("APP_NAME") }}{% endblock %}
 
 {% block maincontent %}
 
@@ -17,7 +17,7 @@
     {% if failed_email == true %}
       <div class="alert alert-danger">
         <p><b>確認メールの送信に失敗しました。</b>もう一度同じ操作を行なってください。</p>
-        <p>もし、何度もこのエラーが表示される場合、システムに障害が発生している可能性がありますので、{{ constant("RP_PORTAL_NAME") }} の管理者にお問い合わせ下さい。</p>
+        <p>もし、何度もこのエラーが表示される場合、システムに障害が発生している可能性がありますので、{{ constant("APP_NAME") }} の管理者にお問い合わせ下さい。</p>
       </div>
     {% endif %}
 

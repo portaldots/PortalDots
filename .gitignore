@@ -1,7 +1,5 @@
 .DS_Store
 
-.env
-
 application/cache/*
 !application/cache/index.html
 !application/cache/.htaccess
@@ -22,8 +20,6 @@ user_guide_src/build/*
 user_guide_src/cilexer/build/*
 user_guide_src/cilexer/dist/*
 user_guide_src/cilexer/pycilexer.egg-info/*
-/vendor/
-/node_modules/
 
 composer.phar
 
@@ -38,3 +34,17 @@ composer.phar
 *.stTheme.cache
 *.sublime-workspace
 *.sublime-project
+
+# From Laravel
+#-------------------------
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log

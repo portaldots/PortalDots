@@ -1,7 +1,6 @@
 <!--
 **
-** {{ constant('RP_PORTAL_NAME') }}
-** {{ constant('RP_COPYRIGHT') }}
+** {{ constant('APP_NAME') }}
 **
 -->
 <!DOCTYPE html>
@@ -59,7 +58,7 @@
             </button>
           {% endif %}
           <a class="navbar-brand hidden-xs" href="{{ base_url() }}">
-            {{ constant("RP_PORTAL_NAME") }}
+            {{ constant("APP_NAME") }}
             {% if constant('ENVIRONMENT') == 'development' %}<span class="badge">dev</span>{% endif %}
             {% if _home_type == "staff" %}<span class="badge">staff</span>{% endif %}
           </a>
@@ -67,7 +66,7 @@
             {% if xs_navbar_title %}
               {{ xs_navbar_title }}
             {% else %}
-              {{ constant("RP_PORTAL_NAME") }}
+              {{ constant("APP_NAME") }}
             {% endif %}
           </span>
         </div>
@@ -93,9 +92,9 @@
                     {{ user.student_id | upper }}
                   </li>
                 {% endif %}
-                <li><a href="{{ base_url('users/change_password') }}">パスワードの変更</a></li>
+                <li><a href="{{ base_url('change_password') }}">パスワードの変更</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="{{ base_url('users/logout') }}">ログアウト</a></li>
+                <li><a href="{{ base_url('logout') }}">ログアウト</a></li>
               </ul>
             </li>
             {% else %}

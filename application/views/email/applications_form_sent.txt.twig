@@ -4,7 +4,7 @@
 申請「{{ form_name | raw }}」の{{ type | raw }}が完了しましたのでお知らせします。
 
 このメールは、大切に保管してください。また、申請内容についてのお問い合わせは、このメールの内容を添付した上
-で、 <{{ constant("RP_CONTACT_EMAIL") | raw }}> 宛にお願いします。
+で、 <{{ constant("PORTAL_CONTACT_EMAIL") | raw }}> 宛にお願いします。
 
 もし、申請内容を変更したい場合、このフォームの受付期間内であればいつでも下記のURLから変更できます。
 
@@ -31,8 +31,6 @@
 
 **************************************************
 
-{% for section, answers in sections %}
-【 {{ section | raw }} 】
 {% for question, answer in answers %}
 {% if answer is iterable %}
 [ {{ question | raw }} ]
@@ -43,8 +41,6 @@
 [ {{ question | raw }} ]
 {{ answer | raw }}
 {% endif %}
-
-{% endfor %}
 
 {% endfor %}
 

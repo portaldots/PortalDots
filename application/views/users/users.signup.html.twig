@@ -1,6 +1,6 @@
 {% extends "layout_entrance_nosub.html.twig" %}
 
-{% block title %}ユーザー登録 - {{ constant("RP_PORTAL_NAME") }}{% endblock %}
+{% block title %}ユーザー登録 - {{ constant("APP_NAME") }}{% endblock %}
 
 {% block maincontent %}
 
@@ -9,7 +9,7 @@
   {{ form_open( null, { id: 'js_signup__form' } )|raw }}
 
     <h1>ユーザー登録</h1>
-    <p>「<strong>{{ constant("RP_PORTAL_NAME") }}</strong>」にユーザー登録します。</p>
+    <p>「<strong>{{ constant("APP_NAME") }}</strong>」にユーザー登録します。</p>
     <p>全て<span class="label label-danger">必須</span>項目です。</p>
 
     {% if validation_errors() != '' %}
@@ -21,7 +21,7 @@
     {% if failed_email == true %}
       <div class="alert alert-danger">
         <p><b>確認メールの送信に失敗しました。</b>パスワードを入力し直した上で、もう一度[確認メールを送信]してみてください。</p>
-        <p>もし、何度もこのエラーが表示される場合、手動で登録作業を行わさせていただきますので、恐れ入りますが、<a href="mailto:{{ constant('RP_CONTACT_EMAIL') }}">{{ constant('RP_CONTACT_EMAIL') }}</a> に、このエラーが何度も表示される旨とともに、以下の入力欄の内容を全て記入してメールで送信してください。</p>
+        <p>もし、何度もこのエラーが表示される場合、手動で登録作業を行わさせていただきますので、恐れ入りますが、<a href="mailto:{{ constant('PORTAL_CONTACT_EMAIL') }}">{{ constant('PORTAL_CONTACT_EMAIL') }}</a> に、このエラーが何度も表示される旨とともに、以下の入力欄の内容を全て記入してメールで送信してください。</p>
         <p>お急ぎでなければ、後日、登録をやり直していただくことをお勧めします。</p>
       </div>
     {% endif %}
@@ -87,7 +87,7 @@
 
 <section class="entrance__mainpanel">
   <h1 class="sr-only">ログイン</h1>
-  <p>すでに「<strong>{{ constant("RP_PORTAL_NAME") }}</strong>」のアカウントをお持ちの方はこちら。</p>
+  <p>すでに「<strong>{{ constant("APP_NAME") }}</strong>」のアカウントをお持ちの方はこちら。</p>
   <p class="text-right"><a href="{{ base_url("users/login") }}" class="btn btn-primary">ログイン</a></p>
 </section>
 

@@ -1,7 +1,7 @@
 {% extends "layout_main.html.twig" %}
 
 {% block title %}
-  ユーザー情報管理 - {{ constant("RP_PORTAL_NAME") }}
+  ユーザー情報管理 - {{ constant("APP_NAME") }}
 {% endblock %}
 
 {% block maincontent %}
@@ -89,6 +89,12 @@
             <a href="mailto:{{ user_read.email }}">
               <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
               {{ user_read.email }}
+            </a>
+          </p>
+            <p>
+            <a href="tel:{{ user_read.tel }}">
+              <i class="fa fa-phone fa-fw" aria-hidden="true"></i>
+              {{ user_read.tel }}
             </a>
           </p>
         </div>

@@ -1,100 +1,130 @@
 <meta charset="utf-8">
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <style>
-@page{margin: 5mm}
-#print-table{ color: #000; background: #fff; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", メイリオ, Meiryo, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 13px; font-feature-settings: "palt" }
-#print-table table tr td, #print-table table tr th{ border: 1px solid black; border-bottom: none; border-right: none; padding: 4px 8px 4px 4px; font-size: 13px; vertical-align: top; }
-#print-table table tr th{line-height: 1}
-#print-table table tr td{white-space: nowrap; line-height: 1.3;}
-#print-table table{ border-bottom: 1px solid black; border-right: 1px solid black}
-#print-table table thead th{text-align: left;background: #ddd; vertical-align: middle; }
-#print-table table tr:nth-child(odd){background: #eee}
-tr, td, th, .item {page-break-inside: avoid}
+    @page {
+        margin: 5mm
+    }
+
+    #print-table {
+        color: #000;
+        background: #fff;
+        font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", メイリオ, Meiryo, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-size: 13px;
+        font-feature-settings: "palt"
+    }
+
+    #print-table table tr td, #print-table table tr th {
+        border: 1px solid black;
+        border-bottom: none;
+        border-right: none;
+        padding: 4px 8px 4px 4px;
+        font-size: 13px;
+        vertical-align: top;
+    }
+
+    #print-table table tr th {
+        line-height: 1
+    }
+
+    #print-table table tr td {
+        white-space: nowrap;
+        line-height: 1.3;
+    }
+
+    #print-table table {
+        border-bottom: 1px solid black;
+        border-right: 1px solid black
+    }
+
+    #print-table table thead th {
+        text-align: left;
+        background: #ddd;
+        vertical-align: middle;
+    }
+
+    #print-table table tr:nth-child(odd) {
+        background: #eee
+    }
+
+    tr, td, th, .item {
+        page-break-inside: avoid
+    }
 </style>
 
 <h1>
-  {{ form.name }}
+    {{ form.name }}
 </h1>
 
 <p class="text-muted">
-  受付期間 :
-  {{ form.open_at_string }}
-  〜
-  {{ form.close_at_string }}
+    受付期間 :
+    {{ form.open_at_string }}
+    〜
+    {{ form.close_at_string }}
 </p>
 
 <div id="print-table">
-  <table width="100%" cellpadding="0" cellspacing="0" border="1">
-    <thead>
-      <tr>
-        <th rowspan="2">回答ID</th>
-        <th rowspan="2" class="table-sticky">
-          団体
-          {% if form.type == "booth" %}
-            ・ ブース
-          {% endif %}
-        </th>
-        {% for section in form.sections if section.questions|length > 0 %}
-          <th colspan="{{ section.questions|length }}">
-            {{ section.title }}
-          </th>
-        {% endfor %}
-      </tr>
-      <tr>
-        {% for section in form.sections %}
-          {% for question in section.questions %}
-            <th>
-              {{ question.name }}
-            </th>
-          {% endfor %}
-        {% endfor %}
-      </tr>
-    </thead>
-    <tbody>
-      {% for answer in answers %}
-        <tr>
-          <td>{{ answer.id }}</td>
-          <th class="table-sticky">
-            {{ answer.circle.name }}
-            {% if form.type == "booth" %}
-              <br>
-              {% if answer.booth.name is empty %}
-                {{ answer.booth.place_name }}
-              {% else %}
-                {{ answer.booth.name }}
-                ({{ answer.booth.place_name }})
-              {% endif %}
-            {% endif %}
-          </th>
-          {% for section in form.sections %}
-            {% for question in section.questions %}
-              <td class="applications-read-answer-td">
-                <div class="applications-read-answer-td__inner">
-
-                  {% if question.type == "checkbox" or question.type == "radio" or question.type == "select" %}
-                    <ul>
-                      {% for option in question.options if option.id in answer.answers[question.id] %}
-                        <li>
-                          {{ option.value }}
-                        </li>
-                      {% endfor %}
-                    </ul>
-                  {% elseif question.type == "upload" %}
-                    {% if answer.answers[question.id] is not empty %}
-                      <a href="{{ base_url( "uploads/applications_form/#{answer.answers[question.id]}" ) }}" target="_blank">{{ answer.answers[question.id] }}</a>
-                    {% else %}
-                      <span class="text-muted">(未アップロード)</span>
+    <table width="100%" cellpadding="0" cellspacing="0" border="1">
+        <thead>
+            <tr>
+                <th>回答ID</th>
+                <th class="table-sticky">
+                    団体
+                    {% if form.type == "booth" %}
+                        ・ ブース
                     {% endif %}
-                  {% else %}
-                    {{ answer.answers[question.id] | nl2br }}
-                  {% endif %}
+                </th>
+                {% for question in form.questions if question.type is not same as ("heading") %}
+                    <th>
+                        {{ question.name }}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for answer in answers %}
+                <tr>
+                    <td>{{ answer.id }}</td>
+                    <th class="table-sticky">
+                        {{ answer.circle.name }}
+                        {% if form.type == "booth" %}
+                            <br>
+                            {% if answer.booth.name is empty %}
+                                {{ answer.booth.place_name }}
+                            {% else %}
+                                {{ answer.booth.name }}
+                                ({{ answer.booth.place_name }})
+                            {% endif %}
+                        {% endif %}
+                    </th>
+                    {% for question in form.questions if question.type is not same as("heading") %}
+                        <td class="applications-read-answer-td">
+                            <div class="applications-read-answer-td__inner">
 
-                </div>
-              </td>
+                                {% if question.type == "checkbox" or question.type == "radio" or question.type == "select" %}
+                                    <ul>
+                                        {% for option in question.options if option.id in answer.answers[question.id] %}
+                                            <li>
+                                                {{ option.value }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% elseif question.type == "upload" %}
+                                    {% if answer.answers[question.id] is not empty %}
+                                        <a href="{{ base_url( "uploads/applications_form/#{answer.answers[question.id]}" ) }}"
+                                           target="_blank">{{ answer.answers[question.id] }}</a>
+                                    {% else %}
+                                        <span class="text-muted">(未アップロード)</span>
+                                    {% endif %}
+                                {% else %}
+                                    {{ answer.answers[question.id] | nl2br }}
+                                {% endif %}
+
+                            </div>
+                        </td>
+                    {% endfor %}
+                </tr>
             {% endfor %}
-          {% endfor %}
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        </tbody>
+    </table>
 </div>

@@ -1,6 +1,6 @@
 {% extends "layout_entrance_nosub.html.twig" %}
 
-{% block title %}ログイン - {{ constant("RP_PORTAL_NAME") }}{% endblock %}
+{% block title %}ログイン - {{ constant("APP_NAME") }}{% endblock %}
 
 {% block maincontent %}
 
@@ -45,7 +45,7 @@
 
 <section class="entrance__mainpanel">
   <h1>初めての方へ</h1>
-  <p>「<strong>{{ constant("RP_PORTAL_NAME") }}</strong>」に登録されていない方は、まず、こちらから登録を行ってください。</p>
+  <p>「<strong>{{ constant("APP_NAME") }}</strong>」に登録されていない方は、まず、こちらから登録を行ってください。</p>
   <p class="text-right">
     <a href="{{ base_url('users/signup') }}" class="btn btn-primary">ユーザー登録</a>
   </p>

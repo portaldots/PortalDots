@@ -18,7 +18,7 @@ class Reset_password extends Users_base_controller
       # 学籍番号・連絡先メールアドレス入力フォーム
 
         if (! empty($this->_get_login_user())) {
-            redirect("/");
+            codeigniter_redirect("/");
         }
 
       // メール送信に失敗した場合true
@@ -65,7 +65,7 @@ class Reset_password extends Users_base_controller
             $this->session->set_flashdata('success_msg', '指定された学籍番号・連絡先メールアドレスのユーザーがデータベースに登録されている場合、パスワードリセットメールを「連絡先メールアドレス」に送信しました。パスワードリセットの手順については、そのメールを確認してください。');
         }
         $this->session->set_flashdata('failed_email', $failed_email);
-        redirect('users/reset_password');
+        codeigniter_redirect('users/reset_password');
     }
 
   /**

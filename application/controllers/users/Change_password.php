@@ -36,7 +36,7 @@ class Change_password extends Users_base_controller
             $userinfo = $this->users->get_user_by_login_id($this->input->post("login_id"));
             $this->users->change_password($userinfo->id, $this->input->post('new_password'));
             $this->session->set_flashdata("flashdata_success", "パスワードは正常に変更されました。");
-            redirect("home");
+            codeigniter_redirect("home");
         }
     }
 
