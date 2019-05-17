@@ -18,6 +18,7 @@ class CreateQuestionsTable extends Migration
             $table->unsignedBigInteger('form_id');
             $table->string('name');
             $table->text('description');
+            $table->string('type');
             $table->boolean('is_required')->default(false);
             $table->integer('number_min')->nullable();
             $table->integer('number_max')->nullable();
