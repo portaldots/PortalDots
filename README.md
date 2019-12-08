@@ -11,24 +11,20 @@
     - 実行委員向け : 登録されているユーザー情報の閲覧、参加団体・企画情報の管理など。また、お問い合わせを LINE Notify で受け取る機能もある。
 - 「平成30年度野田地区新入生歓迎ガイダンス」などで実運用されていた。
 - inaka-portal として公開するにあたり、ある程度のリファクタリングなどを施した。が、まだ途中。
-- 2019 年 5 月 1 日現在公開されている [理大祭ウェブポータル](https://portal.nodaridaisai.com/login) とは別システム。
-    - こちらの「理大祭ウェブポータル」は、このプロジェクトの第 2 世代にあたるが、あまり機能を優れていない。
-    - 余談だが、 [理大祭ウェブポータル](https://portal.nodaridaisai.com/login) に掲載されている「配布資料」を読むと、この `inaka-portal` をより一層お楽しみいただける(?)
 
 ## 開発環境セットアップ方法
-Git、Composer、Docker がセットアップ済みである必要があります。
+Git、Composer、Node.js、Yarn、Docker がセットアップ済みである必要があります。
 
 ```bash
 $ git clone git@github.com:SofPyon/inaka-portal.git
 $ cd inaka-portal/
 
 # 設定ファイルを作成
-$ cp application/.env.development application/.env
-# LINE Notify 通知を利用したい場合、LINE Notify 管理画面でトークンを発行し、
-# 発行されたトークンを .env の RP_LINE_NOTIFY_TOKEN で設定してください。
+$ cp .env.example .env
 
 # 必要パッケージをインストール
 $ composer install
+$ yarn install
 
 # 開発環境を起動する
 $ composer docker
@@ -40,11 +36,15 @@ $ composer docker
 # 　代わりに `composer migrate:refresh` コマンドを実行してください。
 $ composer migrate
 
+# フロントエンド用アセットのコンパイル
+$ yarn watch
+# Ctrl-C で停止
+
 # 開発環境を停止する
 $ composer docker-stop
 ```
 
-- `composer docker` コマンドにより、開発環境が起動します。データベース上には、必要なテーブルが自動で作成されます。
+- `composer docker` コマンドにより、開発環境が起動します。
 
 ## 開発環境の各種 URL
 - 開発環境 : http://localhost
@@ -89,8 +89,11 @@ inaka-portal では、Issue や Pull Request を歓迎します。
 
 ## 将来的に実装したい機能
 - 申請フォーム作成 GUI
+    - 【開発中】 http://localhost/staff/forms/{フォームID}/editor が申請フォーム作成画面になっています
 - 団体登録機能
+    - 現状、スタッフでないと団体登録ができませんが、参加団体自らで参加登録できるようにする機能を実装したいと考えています
 - 場所登録機能
+    - 上記と同様です
 
 ## 雑多なメモ書き
 - ~~平文のパスワードを格納する時の変数名は `$plain_password` とする~~
