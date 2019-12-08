@@ -17,6 +17,7 @@ class CreateOptionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('question_id');
             $table->text('value');
+            $table->integer('priority')->nullable();
             $table->timestamps();
         });
     }

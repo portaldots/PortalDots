@@ -224,14 +224,14 @@ class Applications_form extends Home_base_controller
                             && $this->input->post("answers[" . $question->id . "]") !== "__delete__"))) {
                     // アップロードされたとき
 
-                    $config_fields = ["is_required", "allowed_types", "max_size", "max_width",
-                        "max_height", "min_width", "min_height"];
+                    $config_fields = ["is_required", "allowed_types"];
                     // is_required は，ファイルアップロードクラスの $config で必要なものではないが，
                     // 独自に使用する
                     foreach ($config_fields as $field) {
-                        // $question->$field の $filed に， allowed_types や max_size などが入る
+                        // $question->$field の $filed に， allowed_types や is_required などが入る
                         $this->form_upload_config[$question->id][$field] = $question->$field;
                     }
+                    $this->form_upload_config[$question->id]['max_size'] = $question->number_max;
 
                     // アップロードフィールドの設問IDや名前を指定する
                     // ( ファイルアップロードクラスの $config で必要なものではない )

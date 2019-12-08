@@ -72,11 +72,6 @@ class Forms_model extends MY_Model
             "questions.number_min AS question_number_min",
             "questions.number_max AS question_number_max",
             "questions.allowed_types AS question_allowed_types",
-            "questions.max_size AS question_max_size",
-            "questions.max_width AS question_max_width",
-            "questions.max_height AS question_max_height",
-            "questions.min_width AS question_min_width",
-            "questions.min_height AS question_min_height",
             "questions.priority AS question_priority",
             // options
             "options.id AS option_id",
@@ -106,11 +101,6 @@ class Forms_model extends MY_Model
                 $question->number_min = $result->question_number_min ?? null;
                 $question->number_max = $result->question_number_max ?? null;
                 $question->allowed_types = $result->question_allowed_types;
-                $question->max_size = (int)$result->question_max_size ?? null;
-                $question->max_width = (int)$result->question_max_width ?? null;
-                $question->max_height = (int)$result->question_max_height ?? null;
-                $question->min_width = (int)$result->question_min_width ?? null;
-                $question->min_height = (int)$result->question_min_height ?? null;
                 $question->priority = (int)$result->question_priority ?? null;
 
                 $questions_for_return[$question_id] = $question;
