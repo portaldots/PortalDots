@@ -8,10 +8,6 @@
 @import '~bootstrap/scss/bootstrap';
 
 // あとで別ファイルに切り出す
-//// _variables.scss
-$app-navbar-height: 5rem;
-$narrow-container-width: 600px;
-
 //// _global.scss
 body {
     padding-top: $app-navbar-height + $spacer;

@@ -11,6 +11,8 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css')
+mix.js('resources/js/app.js', 'public/js')                              // メインスクリプト
+    .sass('resources/sass/app.scss', 'public/css')                      // メインスタイル
+    .js('resources/js/forms_editor/index.js', 'public/js/forms_editor') // フォームエディタJS
+    .sass('resources/sass/forms_editor.scss', 'public/css')             // フォームエディタCSS
     .version();

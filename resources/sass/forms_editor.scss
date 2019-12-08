@@ -1,0 +1,44 @@
+// Variables
+@import 'variables';
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+$editor-header-height: 4rem;
+$editor-sidebar-width: 300px;
+
+body {
+    padding-top: $app-navbar-height + $editor-header-height;
+}
+
+.spnav-space,
+.spnav-list {
+    display: none;
+}
+
+// EditorHeader.vue
+.editor-header-styling {
+    position: fixed;
+    z-index: 100;
+    top: $app-navbar-height;
+    left: 0;
+    width: 100%;
+    height: $editor-header-height;
+    padding: 0 $navbar-padding-x;
+    line-height: 1;
+}
+
+// EditorContent.vue
+.editor-content-styling {
+    margin-right: $editor-sidebar-width;
+}
+
+// EditorSidebar.vue
+.editor-sidebar-styling {
+    position: fixed;
+    z-index: 10;
+    top: $app-navbar-height + $editor-header-height;
+    bottom: 0;
+    right: 0;
+    width: $editor-sidebar-width;
+}

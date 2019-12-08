@@ -1,34 +1,36 @@
 @section('global_nav')
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('/home') }}">
-            <i class="fas fa-fw fa-home nav-icon"></i>
-            <span class="nav-label">ホーム</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('/home/pages') }}">
-            <i class="fas fa-fw fa-newspaper nav-icon"></i>
-            <span class="nav-label">お知らせ</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('/home/applications') }}">
-            <i class="far fa-fw fa-edit nav-icon"></i>
-            <span class="nav-label">申請</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('/home/documents') }}">
-            <i class="far fa-fw fa-file-alt nav-icon"></i>
-            <span class="nav-label">配布資料</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('/home/schedules') }}">
-            <i class="far fa-fw fa-calendar-alt nav-icon"></i>
-            <span class="nav-label">予定</span>
-        </a>
-    </li>
+    @staffpage
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/home') }}">
+                <i class="fas fa-fw fa-home nav-icon"></i>
+                <span class="nav-label">ホーム</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/home/pages') }}">
+                <i class="fas fa-fw fa-newspaper nav-icon"></i>
+                <span class="nav-label">お知らせ</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/home/applications') }}">
+                <i class="far fa-fw fa-edit nav-icon"></i>
+                <span class="nav-label">申請</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/home/documents') }}">
+                <i class="far fa-fw fa-file-alt nav-icon"></i>
+                <span class="nav-label">配布資料</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/home/schedules') }}">
+                <i class="far fa-fw fa-calendar-alt nav-icon"></i>
+                <span class="nav-label">予定</span>
+            </a>
+        </li>
+    @endstaffpage
 @endsection
 
 <!DOCTYPE html>
@@ -39,15 +41,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    @prepend('css')
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    @endprepend
+    @stack('css')
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}" defer></script>
+    @prepend('js')
+        <script src="{{ mix('js/app.js') }}" defer></script>
+    @endprepend
+    @stack('js')
 
     <meta name="format-detection" content="telephone=no">
 </head>
