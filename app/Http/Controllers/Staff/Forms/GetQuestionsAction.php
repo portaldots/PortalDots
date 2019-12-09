@@ -12,8 +12,7 @@ class GetQuestionsAction extends Controller
 {
     public function __invoke(Form $form)
     {
-        // TODO: options テーブルを select する際に N+1 問題が発生してるのを解消する
-        $questions = $form->questions;
+        $questions = $form->questions()->with('options')->get();
         return $questions->map(function (Question $question) {
             return [
                 'id' => $question->id,
