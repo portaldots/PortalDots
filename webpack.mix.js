@@ -15,4 +15,5 @@ mix.js('resources/js/app.js', 'public/js')                              // メ�
     .sass('resources/sass/app.scss', 'public/css')                      // メインスタイル
     .js('resources/js/forms_editor/index.js', 'public/js/forms_editor') // フォームエディタJS
     .sass('resources/sass/forms_editor.scss', 'public/css')             // フォームエディタCSS
+    .browserSync('localhost')
     .version();
