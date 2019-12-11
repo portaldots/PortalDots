@@ -1,6 +1,8 @@
 <h1 align="center">inaka-portal | ridaisai_portal</h1>
 <p align="center">オープンソース版 ridaisai_portal</p>
 
+[![CircleCI](https://circleci.com/gh/SofPyon/inaka-portal.svg?style=svg)](https://circleci.com/gh/SofPyon/inaka-portal)
+
 ![inaka-portal](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/inaka-portal-eyecatch.png)
 
 ![スクリーンショット](https://raw.githubusercontent.com/SofPyon/inaka-portal-docs/master/docs/img/screenshots/home.png)
