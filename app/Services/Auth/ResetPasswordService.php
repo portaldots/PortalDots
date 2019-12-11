@@ -20,7 +20,7 @@ class ResetPasswordService
      */
     public function handleResetStart(string $login_id)
     {
-        $user = (new User)->firstByLoginId($login_id);
+        $user = (new User())->firstByLoginId($login_id);
 
         if (! empty($user)) {
             $this->send($user);

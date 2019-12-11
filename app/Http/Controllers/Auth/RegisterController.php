@@ -17,6 +17,8 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
+    use RegistersUsers;
+
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -27,8 +29,6 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
-
-    use RegistersUsers;
 
     /**
      * Where to redirect users after registration.
@@ -69,7 +69,7 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request): RedirectResponse
     {
-        $user = new User;
+        $user = new User();
         $user->student_id = $request->student_id;
         $user->name = $request->name;
         $user->name_yomi = $request->name_yomi;

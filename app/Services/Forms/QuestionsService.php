@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Forms;
 
-use \DB;
+use DB;
 use App\Eloquents\Form;
 use App\Eloquents\Question;
 

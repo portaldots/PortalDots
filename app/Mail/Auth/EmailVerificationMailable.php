@@ -11,7 +11,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class EmailVerificationMailable extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public $verifyUrl;
 

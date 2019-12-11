@@ -57,11 +57,11 @@ class ResetStartNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('パスワード再設定のご案内')
             ->greeting('パスワード再設定のご案内')
-            ->line($this->user->name. ' 様')
-            ->line('「'. config('app.name'). '」にログインするためのパスワードを変更するには、以下のボタンを選んでください。')
+            ->line($this->user->name . ' 様')
+            ->line('「' . config('app.name') . '」にログインするためのパスワードを変更するには、以下のボタンを選んでください。')
             ->action('パスワードを変更する', $this->reset_url)
             ->line('このメールに心当たりがない場合、このメールはそのまま破棄してください。');
     }

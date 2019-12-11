@@ -139,7 +139,7 @@ class User extends Authenticatable
      */
     public function getUnivemailAttribute()
     {
-        return mb_strtolower($this->student_id). '@'. config('portal.univemail_domain');
+        return mb_strtolower($this->student_id) . '@' . config('portal.univemail_domain');
     }
 
     /**

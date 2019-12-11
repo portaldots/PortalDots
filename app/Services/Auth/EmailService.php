@@ -63,7 +63,7 @@ class EmailService
      */
     private function send(string $email, string $name, string $verifyUrl)
     {
-        $recipient = new \stdClass;
+        $recipient = new \stdClass();
         $recipient->email = $email;
         $recipient->name = $name;
         Mail::to($recipient)

@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Question extends Model
 {
-    const QUESTION_TYPES = [
+    public const QUESTION_TYPES = [
         'heading',
         'text',
         'number',

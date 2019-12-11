@@ -49,11 +49,11 @@ class PasswordChangedNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
+        return (new MailMessage())
                     ->subject('パスワードが変更されました')
                     ->greeting('パスワードが変更されました')
-                    ->line($this->user->name. ' 様')
-                    ->line('最近、'. config('app.name'). 'にログインするためのパスワードが変更されました。この変更がご自身によるものである場合、このメールは無視してください。')
+                    ->line($this->user->name . ' 様')
+                    ->line('最近、' . config('app.name') . 'にログインするためのパスワードが変更されました。この変更がご自身によるものである場合、このメールは無視してください。')
                     ->line('もし、このパスワード変更に心当たりがない場合、第三者が不正にパスワードを変更した可能性があります。
                         その場合、ログイン画面にある「パスワードを忘れた場合」からパスワードのリセットをお願いします。');
     }
