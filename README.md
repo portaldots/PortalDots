@@ -2,7 +2,7 @@
 <p align="center">オープンソース版 ridaisai_portal</p>
 
 <p align="center">
-    <a href-"https://circleci.com/gh/SofPyon/inaka-portal">
+    <a href="https://circleci.com/gh/SofPyon/inaka-portal">
         <img src="https://circleci.com/gh/SofPyon/inaka-portal.svg?style=svg" alt="CircleCI">
     </a>
 </p>
