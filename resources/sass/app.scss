@@ -9,75 +9,72 @@
 
 // あとで別ファイルに切り出す
 //// _global.scss
+
 body {
-    padding-top: $app-navbar-height + $spacer;
+  padding-top: $app-navbar-height + $spacer;
 }
 
 //// _layout_narrow.scss
+
 .narrow-container {
-    max-width: $narrow-container-width;
+  max-width: $narrow-container-width;
 }
 
 //// _navbar.scss
-.app-navbar {
-    height: $app-navbar-height;
-    box-shadow: $box-shadow-sm;
-    background: #fff;
 
-    .nav-link {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-    }
+.app-navbar {
+  background: #fff;
+  box-shadow: $box-shadow-sm;
+  height: $app-navbar-height;
+  .nav-link {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
 }
 
 //// _spnav.scss
+
 .spnav-space {
-    height: 8rem;
+  height: 8rem;
 }
 
 .spnav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+  background: #fff;
+  bottom: 0;
+  box-shadow: 0 -0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  left: 0;
+  position: fixed;
+  width: 100%;
+  &-list {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0 auto;
+    max-width: $narrow-container-width - 30px;
+    padding: 0 15px 40px;
     width: 100%;
-    background: #fff;
-    box-shadow: 0 -0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-
-    &-list {
-        display: flex;
-        list-style: none;
-        margin: 0 auto;
-        padding: 0 15px 40px;
-        justify-content: space-between;
-        width: 100%;
-        max-width: $narrow-container-width - 30px;
-
-        .nav-item {
-            flex: 1;
-        }
-
-        .nav-link {
-            color: $gray-600;
-            padding: .5rem;
-            font-weight: bold;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            &:hover {
-                color: $gray-800;
-            }
-        }
-
-        .nav-icon {
-            font-size: 1.25rem;
-            margin-bottom: .5rem;
-        }
-
-        .nav-label {
-            font-size: .6rem;
-            line-height: 1;
-        }
+    .nav-item {
+      flex: 1;
     }
+    .nav-link {
+      align-items: center;
+      color: $gray-600;
+      display: flex;
+      flex-direction: column;
+      font-weight: bold;
+      padding: 0.5rem;
+      text-align: center;
+      &:hover {
+        color: $gray-800;
+      }
+    }
+    .nav-icon {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    .nav-label {
+      font-size: 0.6rem;
+      line-height: 1;
+    }
+  }
 }

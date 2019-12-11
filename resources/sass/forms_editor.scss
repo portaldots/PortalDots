@@ -8,37 +8,40 @@ $editor-header-height: 4rem;
 $editor-sidebar-width: 300px;
 
 body {
-    padding-top: $app-navbar-height + $editor-header-height;
+  padding-top: $app-navbar-height + $editor-header-height;
 }
 
 .spnav-space,
 .spnav-list {
-    display: none;
+  display: none;
 }
 
 // EditorHeader.vue
+
 .editor-header-styling {
-    position: fixed;
-    z-index: 100;
-    top: $app-navbar-height;
-    left: 0;
-    width: 100%;
-    height: $editor-header-height;
-    padding: 0 $navbar-padding-x;
-    line-height: 1;
+  height: $editor-header-height;
+  left: 0;
+  line-height: 1;
+  padding: 0 $navbar-padding-x;
+  position: fixed;
+  top: $app-navbar-height;
+  width: 100%;
+  z-index: 100;
 }
 
 // EditorContent.vue
+
 .editor-content-styling {
-    margin-right: $editor-sidebar-width;
+  margin-right: $editor-sidebar-width;
 }
 
 // EditorSidebar.vue
+
 .editor-sidebar-styling {
-    position: fixed;
-    z-index: 10;
-    top: $app-navbar-height + $editor-header-height;
-    bottom: 0;
-    right: 0;
-    width: $editor-sidebar-width;
+  bottom: 0;
+  position: fixed;
+  right: 0;
+  top: $app-navbar-height + $editor-header-height;
+  width: $editor-sidebar-width;
+  z-index: 10;
 }

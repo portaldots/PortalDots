@@ -39,7 +39,7 @@ jobs:
           paths:
             - ./vendor
 
-      # JavaScript
+      # Frontend Assets
       - restore_cache:
           keys:
             - node-v1-{{ checksum "package.json" }}
@@ -48,6 +48,8 @@ jobs:
       - run: yarn install
 
       - run: yarn eslint-check
+
+      - run: yarn stylelint-check
 
       - save_cache:
           key: node-v1-{{ checksum "package.json" }}

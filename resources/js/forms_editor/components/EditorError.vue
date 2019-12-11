@@ -22,23 +22,22 @@ export default {
 
 <style lang="scss" scoped>
 .editor-error {
-  position: fixed;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  align-items: center;
   background: rgba(0, 0, 0, 0.25);
   display: flex;
-  align-items: center;
+  height: 100vh;
   justify-content: center;
+  left: 0;
   padding: 1.5rem;
-
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 9999;
   &__modal {
     background: #fff;
-    width: 100%;
     max-width: 360px;
     padding: 1.5rem;
+    width: 100%;
   }
 }
 </style>

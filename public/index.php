@@ -39,7 +39,6 @@
 // 一部 Laravel にルーティング
 (function () {
     $LARAVEL_PATHS = [
-        '/welcome',
         // Auth
         '/login',
         '/logout',

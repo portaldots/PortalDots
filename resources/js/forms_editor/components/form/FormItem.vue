@@ -97,72 +97,62 @@ export default {
 $form-item-padding: 1.5rem;
 
 .form-item {
-  box-shadow: none;
-  transition: 0.25s ease box-shadow, 0.25s ease z-index;
-  position: relative;
-  z-index: 10;
   background: #fff;
   border: 1px solid transparent;
   border-left-width: 5px;
-
+  box-shadow: none;
+  position: relative;
+  transition: 0.25s ease box-shadow, 0.25s ease z-index;
+  z-index: 10;
   &__handle {
+    color: #a7a7a7;
     cursor: move;
     display: none;
-    text-align: center;
-    position: absolute;
-    top: 0;
     left: 0;
-    width: 100%;
     padding: 0.25rem;
-    color: #a7a7a7;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
   }
-
   &:hover:not(&--drag),
   &--active {
     border: 1px solid #007bff;
     border-left-width: 5px;
     border-radius: 5px;
   }
-
   &:hover:not(&--active) {
     z-index: 20;
   }
-
   &:hover &__handle {
     display: block;
   }
-
   &--active {
     z-index: 15;
   }
-
   &__content {
-    padding: $form-item-padding;
     cursor: pointer;
-
+    padding: $form-item-padding;
     &__inner {
       pointer-events: none;
       user-select: none;
     }
   }
-
   &__edit-panel {
-    display: none;
-    padding: $form-item-padding;
-    overflow: hidden;
-    box-shadow: inset 0 0.3rem 0.25rem -0.2rem rgba(0, 0, 0, 0.07);
     background: lighten(#f8fafc, 1%);
     border-bottom: 1px solid #f8fafc;
-
+    box-shadow: inset 0 0.3rem 0.25rem -0.2rem rgba(0, 0, 0, 0.07);
+    display: none;
+    overflow: hidden;
+    padding: $form-item-padding;
     &--open {
       display: block;
     }
-
     &__type {
-      font-weight: bold;
-      padding-bottom: 0.5rem;
       border-bottom: 1px solid #ccc;
+      font-weight: bold;
       margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
     }
   }
 }

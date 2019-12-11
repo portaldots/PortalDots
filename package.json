@@ -20,11 +20,21 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "docker-bash": "cd docker_dev/ && docker-compose exec web bash",
-        "eslint-check": "eslint --ext js,vue ./resources"
+        "eslint-check": "eslint --ext js,vue ./resources",
+        "stylelint-check": "stylelint ./resources/**/*.{vue,scss}"
     },
     "lint-staged": {
-        "*.{js,vue}": [
+        "*.js": [
             "eslint --fix",
+            "git add"
+        ],
+        "*.vue": [
+            "eslint --fix",
+            "stylelint --fix",
+            "git add"
+        ],
+        "*.scss": [
+            "stylelint --fix",
             "git add"
         ]
     },
@@ -52,6 +62,11 @@
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
+        "stylelint": "^12.0.0",
+        "stylelint-config-prettier": "^8.0.0",
+        "stylelint-config-standard": "^19.0.0",
+        "stylelint-order": "^3.1.1",
+        "stylelint-scss": "^3.13.0",
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
