@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Http\Controllers\Controller;
 
 class LoginController extends Controller
 {
@@ -48,5 +49,17 @@ class LoginController extends Controller
     public function showLogout()
     {
         return view('auth.logout');
+    }
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function loggedOut(Request $request)
+    {
+        // スタッフモードの二段階認証状態を解除する
+        $request->session()->forget('staff_authorized');
     }
 }

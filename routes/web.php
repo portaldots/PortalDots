@@ -58,8 +58,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 });
 
-// スタッフページ
-Route::middleware(['auth', 'verified', 'can:staff'])
+// スタッフページ（二段階認証も済んでいる状態）
+Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
     ->prefix('/staff')
     ->name('staff.')
     ->group(function () {

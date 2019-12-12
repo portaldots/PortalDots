@@ -29,6 +29,7 @@ class InjectSessionFromCodeIgniter
      * CodeIgniter と Laravel で共有するセッションのキー(ユーザーID以外)
      */
     private const SHARED_SESSION_KEY = [
+        'staff_authorized',
     ];
 
     /**
