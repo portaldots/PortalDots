@@ -106,6 +106,13 @@
                         〜
                         {{ form.close_at_string }}
                     </p>
+                    <p class="text-muted">
+                        申請フォームのURL :
+                        <a href="{{ public_form_url }}" target="_blank" rel="noopener">
+                            {{ public_form_url }}
+                        </a>
+                    </p>
+                    <hr>
                     <div>
                         {{ form.description_html | raw }}
                     </div>

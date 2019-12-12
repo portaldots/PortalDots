@@ -301,6 +301,8 @@ class Home_staff extends MY_Controller
             $vars["answers"] = $this->forms->get_answers($form_id);
             // 統計情報を取得する
             $vars["statistics"] = $this->forms->get_statistics_by_form_id($form_id);
+            // 申請フォームのURL
+            $vars["public_form_url"] = base_url("/forms/{$form_id}/answers/create");
         } else {
             // 存在しない場合
             show_404();

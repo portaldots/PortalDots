@@ -32,7 +32,9 @@
 **************************************************
 
 {% for question, answer in answers %}
-{% if answer is iterable %}
+{% if answer is same as('%heading%') %}
+## {{ question | raw }}
+{% elseif answer is iterable %}
 [ {{ question | raw }} ]
 {% for option in answer %}
  - {{ option | raw }}

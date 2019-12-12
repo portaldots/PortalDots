@@ -25,7 +25,8 @@ class Applications extends Home_base_controller
             $this->_error("エラー", "どの団体にも所属していないため、申請ページは表示できません。", 403);
         }
 
-      // 団体セレクタ
+        // 団体セレクタ
+        $vars['url_format'] = base_url('home/applications/circles/%circle_id%');
         $this->_render('home/applications_selector', $vars);
     }
 

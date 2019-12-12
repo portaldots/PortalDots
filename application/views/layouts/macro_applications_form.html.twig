@@ -1,5 +1,5 @@
-{% macro applications_form( form, type, answers, form_attr, disabled ) %}
-    {{ form_open_multipart( null, form_attr )|raw }}
+{% macro applications_form( form, type, answers, form_attr, disabled, form_action ) %}
+    {{ form_open_multipart( form_action, form_attr )|raw }}
     {% for question in form.questions %}
         <div class="w-max-md form-group{% if not empty(form_error("answers[#{question.id}]")) %} has-error{% endif %}">
             {% if question.type is same as("heading") %}

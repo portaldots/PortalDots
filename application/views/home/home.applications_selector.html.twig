@@ -1,12 +1,18 @@
 {% extends "layout_main.html.twig" %}
 
 {% block title %}
-  申請 - {{ constant("APP_NAME") }}
+  {# 本来、xs_navbar_title という変数は、名前の通りナビバーでだけ使うべきですが、
+     CodeIgniter+Twig構成はLaravelに今後置き換えられるので… #}
+  {{ xs_navbar_title }} - {{ constant("APP_NAME") }}
 {% endblock %}
 
 {% block maincontent %}
 
-  <h1 class="main__title">申請</h1>
+  <h1 class="main__title">
+  {# 本来、xs_navbar_title という変数は、名前の通りナビバーでだけ使うべきですが、
+     CodeIgniter+Twig構成はLaravelに今後置き換えられるので… #}
+    {{ xs_navbar_title }}
+  </h1>
 
   <div class="w-max-sm w-center">
     <div class="panel panel-default">
@@ -19,7 +25,7 @@
       </div>
       <div class="list-group">
         {% for circle in circle_info %}
-        <a href="{{ base_url("home/applications/circles/#{circle.id}") }}" class="list-group-item" style="padding-top:14px;padding-bottom:14px">
+        <a href="{{ str_replace('%circle_id%', circle.id, url_format) }}" class="list-group-item" style="padding-top:14px;padding-bottom:14px">
           <i class="fa fa-users fa-fw" aria-hidden="true"></i>
           {{ circle.name }}
         </a>
