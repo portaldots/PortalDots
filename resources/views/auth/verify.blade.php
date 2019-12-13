@@ -1,5 +1,7 @@
 @extends('layouts.single_column')
 
+@section('title', 'メール認証のお願い - ' . config('app.name'))
+
 @section('main')
     <div class="card mb-3">
         <div class="card-header">メール認証のお願い</div>

@@ -1,5 +1,7 @@
 @extends('layouts.single_column')
 
+@section('title', 'パスワードの再設定 - ' . config('app.name'))
+
 @section('main')
 <div class="card mb-3">
     <div class="card-header">パスワードを再設定</div>

@@ -1,5 +1,7 @@
 @extends('layouts.single_column')
 
+@section('title', 'ログアウトしますか？ - ' . config('app.name'))
+
 @section('main')
     <div class="card mb-3">
         <div class="card-header">ログアウト</div>

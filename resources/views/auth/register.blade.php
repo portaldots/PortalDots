@@ -1,5 +1,7 @@
 @extends('layouts.single_column')
 
+@section('title', 'ユーザー登録 - ' . config('app.name'))
+
 @section('main')
 <div class="card">
     <div class="card-header">ユーザー登録</div>
