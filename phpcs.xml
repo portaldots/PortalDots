@@ -18,6 +18,8 @@
     <exclude-pattern>/bootstrap/</exclude-pattern>
     <exclude-pattern>/config/</exclude-pattern>
     <exclude-pattern>/database/</exclude-pattern>
+    <exclude-pattern>/docker_dev/</exclude-pattern>
+    <exclude-pattern>/docs/</exclude-pattern>
     <exclude-pattern>/node_modules/</exclude-pattern>
     <exclude-pattern>/public/</exclude-pattern>
     <exclude-pattern>/resources/</exclude-pattern>
