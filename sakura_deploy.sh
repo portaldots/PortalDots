@@ -37,7 +37,7 @@
 
 # メンテナンスモードを有効にする
 echo "メンテナンスモード On"
-ssh ${SSH_USERNAME}@${SSH_HOST} "cd /home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/; if [ -f ./artisan ]; then; php artisan down --message=\"メンテナンス中です\"; fi" >& /dev/null
+ssh ${SSH_USERNAME}@${SSH_HOST} -o StrictHostKeyChecking=no "cd /home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/; if [ -f ./artisan ]; then; php artisan down --message=\"メンテナンス中です\"; fi" >& /dev/null
 
 rm -rf dist/
 
@@ -74,9 +74,9 @@ yarn replace "/../" "/../../${DEPLOY_DIRECTORY}/" dist/public/index.php >& /dev/
 yarn replace "/../" "/../../${DEPLOY_DIRECTORY}/" dist/public/index_laravel.php >& /dev/null
 
 echo "デプロイ Start"
-rsync -avz --update -e "ssh" ./dist/ "${SSH_USERNAME}@${SSH_HOST}:/home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/" >& /dev/null
+rsync -avz --update -e "ssh -o StrictHostKeyChecking=no" ./dist/ "${SSH_USERNAME}@${SSH_HOST}:/home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/" >& /dev/null
 
-rsync -avz --update -e "ssh" ./dist/public/ "${SSH_USERNAME}@${SSH_HOST}:/home/${SSH_USERNAME}/www/${DEPLOY_DIRECTORY}/" >& /dev/null
+rsync -avz --update -e "ssh -o StrictHostKeyChecking=no" ./dist/public/ "${SSH_USERNAME}@${SSH_HOST}:/home/${SSH_USERNAME}/www/${DEPLOY_DIRECTORY}/" >& /dev/null
 
 ssh "${SSH_USERNAME}@${SSH_HOST}" "cd /home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/; php artisan config:cache; php artisan route:cache; php artisan migrate --force" >& /dev/null
 
