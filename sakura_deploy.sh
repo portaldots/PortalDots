@@ -38,6 +38,7 @@
 # メンテナンスモードを有効にする
 echo "メンテナンスモード On"
 ssh ${SSH_USERNAME}@${SSH_HOST} -o StrictHostKeyChecking=no "cd /home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/; if [ -f ./artisan ]; then; php artisan down --message=\"メンテナンス中です\"; fi" >& /dev/null
+echo "メンテナンスモード On 完了"
 
 rm -rf dist/
 
@@ -78,7 +79,9 @@ rsync -avz --update -e "ssh -o StrictHostKeyChecking=no" ./dist/ "${SSH_USERNAME
 
 rsync -avz --update -e "ssh -o StrictHostKeyChecking=no" ./dist/public/ "${SSH_USERNAME}@${SSH_HOST}:/home/${SSH_USERNAME}/www/${DEPLOY_DIRECTORY}/" >& /dev/null
 
-ssh "${SSH_USERNAME}@${SSH_HOST}" "cd /home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/; php artisan config:cache; php artisan route:cache; php artisan migrate --force" >& /dev/null
+ssh ${SSH_USERNAME}@${SSH_HOST} -o StrictHostKeyChecking=no "cd /home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/; php artisan config:cache; php artisan route:cache; php artisan migrate --force" >& /dev/null
+echo "デプロイ End"
 
-ssh "${SSH_USERNAME}@${SSH_HOST}" "cd /home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/; php artisan up" >& /dev/null
-echo "デプロイ End / メンテナンスモード解除"
+echo "メンテナンスモード解除"
+ssh ${SSH_USERNAME}@${SSH_HOST} -o StrictHostKeyChecking=no "cd /home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/; php artisan up" >& /dev/null
+echo "メンテナンスモード解除完了"
