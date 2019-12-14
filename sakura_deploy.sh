@@ -36,7 +36,8 @@
 # MAIL_FROM_NAME=(ユーザーフレンドリーな差出人名)
 
 # メンテナンスモードを有効にする
-ssh "${SSH_USERNAME}@${SSH_HOST}" "cd /home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/; if [ -f ./artisan ]; then; php artisan down --message=\"メンテナンス中です\"; fi" >& /dev/null
+echo "メンテナンスモード On"
+ssh ${SSH_USERNAME}@${SSH_HOST} "cd /home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/; if [ -f ./artisan ]; then; php artisan down --message=\"メンテナンス中です\"; fi" >& /dev/null
 
 rm -rf dist/
 
@@ -50,6 +51,7 @@ cd dist/; yarn run production; cd ../
 php -r "copy('dist/.env.prod', 'dist/.env');" >& /dev/null
 
 # .env ファイルを CircleCI の環境変数を元に作成する
+echo ".env ファイルの作成 Start"
 yarn replace "%APP_NAME%" "${APP_NAME}" dist/.env >& /dev/null
 yarn replace "%APP_URL%" "${APP_URL}" dist/.env >& /dev/null
 yarn replace "%PORTAL_ADMIN_NAME%" "${PORTAL_ADMIN_NAME}" dist/.env >& /dev/null
@@ -66,10 +68,12 @@ yarn replace "%MAIL_USERNAME%" "${MAIL_USERNAME}" dist/.env >& /dev/null
 yarn replace "%MAIL_PASSWORD%" "${MAIL_PASSWORD}" dist/.env >& /dev/null
 yarn replace "%MAIL_FROM_ADDRESS%" "${MAIL_FROM_ADDRESS}" dist/.env >& /dev/null
 yarn replace "%MAIL_FROM_NAME%" "${MAIL_FROM_NAME}" dist/.env >& /dev/null
+echo ".env ファイルの作成 End"
 
 yarn replace "/../" "/../../${DEPLOY_DIRECTORY}/" dist/public/index.php >& /dev/null
 yarn replace "/../" "/../../${DEPLOY_DIRECTORY}/" dist/public/index_laravel.php >& /dev/null
 
+echo "デプロイ Start"
 rsync -avz --update -e "ssh" ./dist/ "${SSH_USERNAME}@${SSH_HOST}:/home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/" >& /dev/null
 
 rsync -avz --update -e "ssh" ./dist/public/ "${SSH_USERNAME}@${SSH_HOST}:/home/${SSH_USERNAME}/www/${DEPLOY_DIRECTORY}/" >& /dev/null
@@ -77,3 +81,4 @@ rsync -avz --update -e "ssh" ./dist/public/ "${SSH_USERNAME}@${SSH_HOST}:/home/$
 ssh "${SSH_USERNAME}@${SSH_HOST}" "cd /home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/; php artisan config:cache; php artisan route:cache; php artisan migrate --force" >& /dev/null
 
 ssh "${SSH_USERNAME}@${SSH_HOST}" "cd /home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/; php artisan up" >& /dev/null
+echo "デプロイ End / メンテナンスモード解除"
