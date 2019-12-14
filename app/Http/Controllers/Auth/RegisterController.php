@@ -61,6 +61,11 @@ class RegisterController extends Controller
         $this->verifyService = $verifyService;
     }
 
+    public function showRegistrationForm()
+    {
+        return view('users.form');
+    }
+
     /**
      * ユーザー登録を実行する
      *
@@ -82,7 +87,7 @@ class RegisterController extends Controller
 
         // メール認証に関する処理
         if ($user->univemail === $user->email) {
-            $this->verifyService->markEmailAsVerified($user);
+            $this->verifyService->markEmailAsVerified($user, $user->email);
         }
         $this->emailService->sendAll($user);
 

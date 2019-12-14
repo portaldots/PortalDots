@@ -14,9 +14,12 @@ class VerifyService
      * @param  User  $user
      * @return bool
      */
-    public function markEmailAsVerified(User $user): bool
+    public function markEmailAsVerified(User $user, $email): bool
     {
         if ($user->hasVerifiedEmail()) {
+            return false;
+        }
+        if ($user->email !== $email) {
             return false;
         }
         return $user->markEmailAsVerified();
@@ -28,9 +31,12 @@ class VerifyService
      * @param  User  $user
      * @return bool
      */
-    public function markUnivemailAsVerified(User $user): bool
+    public function markUnivemailAsVerified(User $user, $email): bool
     {
         if ($user->hasVerifiedUnivemail()) {
+            return false;
+        }
+        if ($user->univemail !== $email) {
             return false;
         }
         return $user->markUnivemailAsVerified();

@@ -23,13 +23,14 @@ class VerifyAction extends Controller
             abort(403, 'この URL は無効です。');
         }
 
+        $email = $request->email;
         $result = false;
         switch ($type) {
             case 'email':
-                $result = $this->verifyService->markEmailAsVerified($user);
+                $result = $this->verifyService->markEmailAsVerified($user, $email);
                 break;
             case 'univemail':
-                $result = $this->verifyService->markUnivemailAsVerified($user);
+                $result = $this->verifyService->markUnivemailAsVerified($user, $email);
                 break;
             default:
                 abort(404);

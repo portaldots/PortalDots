@@ -72,11 +72,10 @@
     <div class="card mb-3">
         <div class="card-header">誤った情報でユーザー登録してしまった場合</div>
         <div class="card-body">
-            <p>学籍番号・メールアドレス・電話番号などを誤った情報で登録してしまった場合、恐れ入りますが{{ config('portal.admin_name') }}にお問い合わせください。</p>
-            <p><a href="{{ route('change_password') }}" target="_blank">※パスワード変更はこちらから可能です</a></p>
             <p>
-                お問い合わせ先 :
-                {{ config('portal.contact_email') }}
+                <a href="{{ route('user.edit') }}" class="btn btn-primary" role="button" target="_blank">登録情報の変更</a>
+                <a href="{{ route('change_password') }}" class="btn btn-primary" role="button" target="_blank">パスワードの変更</a>
+                <a href="{{ route('user.delete') }}" class="btn btn-danger">アカウントの削除</a>
             </p>
         </div>
     </div>

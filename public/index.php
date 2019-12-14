@@ -47,6 +47,7 @@
         '/email',
         // Users
         '/change_password',
+        '/user/',
         // Staff
         '/staff',
         // Debugbar

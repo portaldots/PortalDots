@@ -85,6 +85,7 @@ class EmailService
             [
                 'type' => $type,
                 'user' => $user->id,
+                'email' => ($type === 'univemail' ? $user->univemail : $user->email )
             ]
         );
     }

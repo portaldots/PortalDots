@@ -33,13 +33,11 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'student_id' => ['string', 'unique:users'],
-            'name' => ['required', 'string', 'max:255', 'regex:/^([^\s　]+)([\s　]+)([^\s　]+)$/u'],
-            // 姓と名の間であれば，何個でもスペースを入れてもよしとする
-            'name_yomi' => ['required', 'string', 'max:255', 'regex:/^([ぁ-んァ-ヶー]+)([\s　]+)([ぁ-んァ-ヶー]+)$/u'],
-            // 姓と名の間であれば，何個でもスペースを入れてもよしとする
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'tel' => ['required', 'string', 'max:255'],
+            'student_id' => array_merge(User::STUDENT_ID_RULES, ['unique:users']),
+            'name' => User::NAME_RULES,
+            'name_yomi' => User::NAME_YOMI_RULES,
+            'email' => array_merge(User::EMAIL_RULES, ['unique:users']),
+            'tel' => User::TEL_RULES,
             'password' => array_merge(User::PASSWORD_RULES, ['confirmed']),
         ];
     }
