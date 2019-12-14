@@ -1,3 +1,5 @@
+-- このSQLファイルは Docker 起動時、自動的に処理されます！
+
 -- Create syntax for TABLE 'auth_staff_page'
 CREATE TABLE `auth_staff_page` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -31,7 +33,7 @@ CREATE TABLE `booths` (
 
 -- Create syntax for TABLE 'ci_sessions'
 CREATE TABLE `ci_sessions` (
-  `id` varchar(40) NOT NULL,
+  `id` char(40) NOT NULL PRIMARY KEY,
   `ip_address` varchar(45) NOT NULL,
   `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
   `data` blob NOT NULL,
