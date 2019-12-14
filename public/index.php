@@ -171,8 +171,8 @@ switch (ENVIRONMENT) {
  *
  * NO TRAILING SLASH!
  */
-    $view_folder = './../application/views';
-
+    $view_folder = __DIR__. '/../application/views';
+    define('VIEW_FOLDER', $view_folder);
 
 /*
  * --------------------------------------------------------------------

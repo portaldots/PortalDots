@@ -45,14 +45,14 @@ class MY_Controller extends CI_Controller
         //テンプレートを配置しているフォルダを指定
         //今回はapplication/views
         $loader = new Twig_Loader_Chain([
-            new Twig_Loader_Filesystem('../application/views'),
-            new Twig_Loader_Filesystem('../application/views/layouts')
+            new Twig_Loader_Filesystem(VIEW_FOLDER),
+            new Twig_Loader_Filesystem(VIEW_FOLDER . '/layouts')
         ]);
 
         //オプションを指定して、twigインスタンス生成
         $option = [
-        'cache' => false,
-        'debug' => ( ENVIRONMENT === 'development' ) ? true : false
+            'cache' => false,
+            'debug' => ( ENVIRONMENT === 'development' ) ? true : false
         ];
         $this->twig = new Twig_Environment($loader, $option);
 
