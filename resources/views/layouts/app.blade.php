@@ -65,7 +65,7 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
-            @if(config('env') !== 'production')
+            @if(config('app.env') !== 'production')
                 <span class="badge badge-dark badge-pill">dev</span>
             @endif
         </a>
