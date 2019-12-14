@@ -76,8 +76,8 @@ echo ".env ファイルの作成 End"
 
 echo "パスの修正 Start"
 cd dist/
-yarn replace "/../" "/../../${DEPLOY_DIRECTORY}/" dist/public/index.php >& /dev/null
-yarn replace "/../" "/../../${DEPLOY_DIRECTORY}/" dist/public/index_laravel.php >& /dev/null
+yarn replace "/../" "/../../${DEPLOY_DIRECTORY}/" public/index.php >& /dev/null
+yarn replace "/../" "/../../${DEPLOY_DIRECTORY}/" public/index_laravel.php >& /dev/null
 cd ../
 echo "パスの修正 End"
 
