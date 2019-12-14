@@ -53,22 +53,24 @@ php -r "copy('dist/.env.prod', 'dist/.env');" >& /dev/null
 
 # .env ファイルを CircleCI の環境変数を元に作成する
 echo ".env ファイルの作成 Start"
-yarn replace "%APP_NAME%" "${APP_NAME}" dist/.env >& /dev/null
-yarn replace "%APP_URL%" "${APP_URL}" dist/.env >& /dev/null
-yarn replace "%PORTAL_ADMIN_NAME%" "${PORTAL_ADMIN_NAME}" dist/.env >& /dev/null
-yarn replace "%PORTAL_CONTACT_EMAIL%" "${PORTAL_CONTACT_EMAIL}" dist/.env >& /dev/null
-yarn replace "%PORTAL_UNIVEMAIL_DOMAIN%" "${PORTAL_UNIVEMAIL_DOMAIN}" dist/.env >& /dev/null
-yarn replace "%DB_HOST%" "${DB_HOST}" dist/.env >& /dev/null
-yarn replace "%DB_PORT%" "${DB_PORT}" dist/.env >& /dev/null
-yarn replace "%DB_DATABASE%" "${DB_DATABASE}" dist/.env >& /dev/null
-yarn replace "%DB_USERNAME%" "${DB_USERNAME}" dist/.env >& /dev/null
-yarn replace "%DB_PASSWORD%" "${DB_PASSWORD}" dist/.env >& /dev/null
-yarn replace "%MAIL_HOST%" "${MAIL_HOST}" dist/.env >& /dev/null
-yarn replace "%MAIL_PORT%" "${MAIL_PORT}" dist/.env >& /dev/null
-yarn replace "%MAIL_USERNAME%" "${MAIL_USERNAME}" dist/.env >& /dev/null
-yarn replace "%MAIL_PASSWORD%" "${MAIL_PASSWORD}" dist/.env >& /dev/null
-yarn replace "%MAIL_FROM_ADDRESS%" "${MAIL_FROM_ADDRESS}" dist/.env >& /dev/null
-yarn replace "%MAIL_FROM_NAME%" "${MAIL_FROM_NAME}" dist/.env >& /dev/null
+cd dist/
+yarn replace "%APP_NAME%" "${APP_NAME}" .env >& /dev/null
+yarn replace "%APP_URL%" "${APP_URL}" .env >& /dev/null
+yarn replace "%PORTAL_ADMIN_NAME%" "${PORTAL_ADMIN_NAME}" .env >& /dev/null
+yarn replace "%PORTAL_CONTACT_EMAIL%" "${PORTAL_CONTACT_EMAIL}" .env >& /dev/null
+yarn replace "%PORTAL_UNIVEMAIL_DOMAIN%" "${PORTAL_UNIVEMAIL_DOMAIN}" .env >& /dev/null
+yarn replace "%DB_HOST%" "${DB_HOST}" .env >& /dev/null
+yarn replace "%DB_PORT%" "${DB_PORT}" .env >& /dev/null
+yarn replace "%DB_DATABASE%" "${DB_DATABASE}" .env >& /dev/null
+yarn replace "%DB_USERNAME%" "${DB_USERNAME}" .env >& /dev/null
+yarn replace "%DB_PASSWORD%" "${DB_PASSWORD}" .env >& /dev/null
+yarn replace "%MAIL_HOST%" "${MAIL_HOST}" .env >& /dev/null
+yarn replace "%MAIL_PORT%" "${MAIL_PORT}" .env >& /dev/null
+yarn replace "%MAIL_USERNAME%" "${MAIL_USERNAME}" .env >& /dev/null
+yarn replace "%MAIL_PASSWORD%" "${MAIL_PASSWORD}" .env >& /dev/null
+yarn replace "%MAIL_FROM_ADDRESS%" "${MAIL_FROM_ADDRESS}" .env >& /dev/null
+yarn replace "%MAIL_FROM_NAME%" "${MAIL_FROM_NAME}" .env >& /dev/null
+cd ../
 echo ".env ファイルの作成 End"
 
 yarn replace "/../" "/../../${DEPLOY_DIRECTORY}/" dist/public/index.php >& /dev/null
