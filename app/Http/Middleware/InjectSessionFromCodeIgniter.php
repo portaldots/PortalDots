@@ -162,4 +162,20 @@ class InjectSessionFromCodeIgniter
         }
         return $sid_length;
     }
+
+    /**
+     * ロックを取得する
+     *
+     * system/libraries/Session/drivers/Session_database_driver.php 由来のコード
+     */
+    private function getLock($sessionId)
+    {
+        $arg = md5($sessionId . ($this->_config['match_ip'] ? '_' . $_SERVER['REMOTE_ADDR'] : ''));
+        if ($this->_db->query("SELECT GET_LOCK('" . $arg . "', 300) AS ci_session_lock")->row()->ci_session_lock) {
+            $this->_lock = $arg;
+            return true;
+        }
+
+        return false;
+    }
 }
