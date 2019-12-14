@@ -3,10 +3,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
-| ポータル設定 
+| ポータル設定
 |--------------------------------------------------------------------------
 |
-| ポータルに関する各種設定を行います。実際の設定は、 application/.env 
+| ポータルに関する各種設定を行います。実際の設定は、 application/.env
 | ファイル上で行なってください。
 |
 | 注意 : これは Codeigniter の機能では あ り ま せ ん。Ridaisai Portal(RP) の独自機能です。
@@ -478,9 +478,9 @@ $config['encryption_key'] = str_replace('base64:', '', codeigniter_env('APP_KEY'
 */
 $config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = 'session_id';
-$config['sess_expiration'] = 72000;
+$config['sess_expiration'] = 7200;
 $config['sess_save_path'] = 'ci_sessions';
-$config['sess_match_ip'] = false;
+$config['sess_match_ip'] = true;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = false;
 
