@@ -69,7 +69,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card mb-3">
         <div class="card-header">誤った情報でユーザー登録してしまった場合</div>
         <div class="card-body">
             <p>学籍番号・メールアドレス・電話番号などを誤った情報で登録してしまった場合、恐れ入りますが{{ config('portal.admin_name') }}にお問い合わせください。</p>
