@@ -38,8 +38,8 @@
             "git add"
         ],
         "*.php": [
-            "composer phpcs",
             "composer phpcbf",
+            "composer phpcs",
             "git add"
         ]
     },
