@@ -6,6 +6,14 @@
 
     <rule ref="PSR12" />
 
+    <rule ref="Squiz.WhiteSpace.FunctionSpacing" >
+        <properties>
+            <property name="spacing" value="1" />
+            <property name="spacingBeforeFirst" value="0" />
+            <property name="spacingAfterLast" value="0" />
+        </properties>
+    </rule>
+
     <arg name="colors" />
 
     <arg value="ps" />

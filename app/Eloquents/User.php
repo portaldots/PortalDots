@@ -5,6 +5,8 @@ namespace App\Eloquents;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Eloquents\Circle;
+use App\Eloquents\CircleUser;
 
 /**
  * @property string $id
@@ -58,6 +60,10 @@ class User extends Authenticatable
         'is_staff' => 'bool',
     ];
 
+    public function circles()
+    {
+        return $this->belongsToMany(Circle::class)->using(CircleUser::class)->withPivot('is_leader');
+    }
 
     /**
      * ログイン ID から該当ユーザーを取得する
@@ -70,6 +76,16 @@ class User extends Authenticatable
         return $this->where('email', $login_id)
             ->orWhere('student_id', $login_id)
             ->first();
+    }
+
+    public function firstByStudentId($student_id)
+    {
+        return $this->where('student_id', $student_id)->first();
+    }
+
+    public function getByStudentIdIn(array $student_ids)
+    {
+        return $this->whereIn('student_id', $student_ids)->get();
     }
 
     /**

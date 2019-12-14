@@ -52,6 +52,8 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->display_as('tel', '電話番号');
         $this->grocery_crud->display_as('verified_univemail', '大学ﾒｱﾄﾞ認証済');
         $this->grocery_crud->display_as('verified_email', '連絡先ﾒｱﾄﾞ認証済');
+        $this->grocery_crud->display_as('leader', '責任者');
+        $this->grocery_crud->display_as('members', '所属者');
         $this->grocery_crud->display_as('is_staff', 'スタッフ');
         $this->grocery_crud->display_as('notes', 'ｽﾀｯﾌ用ﾒﾓ');
 
@@ -598,6 +600,13 @@ class Home_staff extends MY_Controller
             // 個別表示の場合，Grocery CRUD を使用しない
             $circle_id = $this->uri->segment(4);
             return $this->_circles_read($circle_id);
+        } elseif ($this->uri->segment(3) === "edit") {
+            $circle_id = $this->uri->segment(4);
+            $edit_url = ['staff', 'circles', $circle_id, 'edit'];
+            codeigniter_redirect(base_url($edit_url));
+        } elseif ($this->uri->segment(3) === "add") {
+            $edit_url = ['staff', 'circles', 'create'];
+            codeigniter_redirect(base_url($edit_url));
         }
 
         $this->grocery_crud->set_table('circles');
@@ -614,37 +623,11 @@ class Home_staff extends MY_Controller
             'updated_by',
             'notes'
         );
-        $this->grocery_crud->fields(
-            'name',
-            'members',
-            'created_at',
-            'created_by',
-            'updated_at',
-            'updated_by',
-            'notes'
-        );
-        $this->grocery_crud->change_field_type('created_at', 'invisible');
-        $this->grocery_crud->change_field_type('created_by', 'invisible');
-        $this->grocery_crud->change_field_type('updated_at', 'invisible');
-        $this->grocery_crud->change_field_type('updated_by', 'invisible');
-
-        $this->grocery_crud->required_fields('name');
-
-        $this->grocery_crud->unique_fields(['name']);
-
+        
         if ($this->grocery_crud->getstate() !== 'edit' && $this->grocery_crud->getstate() !== 'add') {
             $this->grocery_crud->set_relation('created_by', 'users', '{student_id} {name_family} {name_given}');
             $this->grocery_crud->set_relation('updated_by', 'users', '{student_id} {name_family} {name_given}');
         }
-        $this->grocery_crud->set_relation_n_n(
-            'members',
-            'circle_user',
-            'users',
-            'circle_id',
-            'user_id',
-            '{student_id} {name_family} {name_given}'
-        );
-
 
         $vars += (array)$this->grocery_crud->render();
 
@@ -675,7 +658,6 @@ class Home_staff extends MY_Controller
             // 存在しない場合
             show_404();
         }
-
         $this->_render('home_staff/circles_read', $vars);
     }
 

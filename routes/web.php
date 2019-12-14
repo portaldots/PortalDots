@@ -78,4 +78,10 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::post('/editor/api/update_question', 'Staff\Forms\UpdateQuestionAction');
                 Route::post('/editor/api/delete_question', 'Staff\Forms\DeleteQuestionAction');
             });
+
+        // 団体情報編集
+        Route::get('/circles/{circle}/edit', 'Staff\Circles\EditAction')->name('circles.edit');
+        Route::patch('/circles/{circle}', 'Staff\Circles\UpdateAction')->name('circles.update');
+        Route::get('/circles/create', 'Staff\Circles\CreateAction')->name('circles.create');
+        Route::post('/circles', 'Staff\Circles\StoreAction')->name('circles.new');
     });

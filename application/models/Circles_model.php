@@ -48,11 +48,13 @@ class Circles_model extends MY_Model
      */
     public function get_user_info_by_circle_id($circle_id)
     {
-        $this->db->where("circle_id", $circle_id);
+        $this->db->where("circle_id", $circle_id)->order_by("is_leader", 'desc');
         $query = $this->db->get("circle_user");
         $result = [];
         foreach ($query->result() as $user) {
-            $result[] = $this->users->get_user_by_user_id($user->user_id);
+            $res = $this->users->get_user_by_user_id($user->user_id);
+            $res->is_leader = $user->is_leader;
+            $result[] = $res;
         }
         return $result;
     }
