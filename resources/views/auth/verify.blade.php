@@ -56,16 +56,28 @@
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header">確認メールが見つからない場合・確認メールの URL にアクセスするとエラーになる場合</div>
+    <div class="card mb-3">
+        <div class="card-header">確認メールの再送</div>
         <div class="card-body">
-            <p>確認メールを再送するには、以下のボタンを選んでください。</p>
+            <p>確認メールが見つからない場合・確認メールの URL にアクセスするとエラーになる場合、以下のボタンより確認メールを再送できます。</p>
             <form action="{{ route('verification.resend') }}" method="post">
                 @csrf
                 <button class="btn btn-primary">
                     確認メールを再送する
                 </button>
             </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">誤った情報でユーザー登録してしまった場合</div>
+        <div class="card-body">
+            <p>学籍番号・メールアドレス・電話番号などを誤った情報で登録してしまった場合、恐れ入りますが{{ config('portal.admin_name') }}にお問い合わせください。</p>
+            <p><a href="{{ route('change_password') }}" target="_blank">※パスワード変更はこちらから可能です</a></p>
+            <p>
+                お問い合わせ先 :
+                {{ config('portal.contact_email') }}
+            </p>
         </div>
     </div>
 @endsection
