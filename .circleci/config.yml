@@ -4,7 +4,9 @@
 #
 version: 2
 jobs:
-  build:
+  testcases:
+    working_directory: ~/workspace
+
     docker:
       # Specify the version you desire here
       - image: circleci/php:7.3-node-browsers
@@ -66,3 +68,30 @@ jobs:
       #- run: ./vendor/bin/phpunit
       # - run: ./vendor/bin/codecept build
       # - run: ./vendor/bin/codecept run
+
+  deploy:
+    working_directory: ~/workspace
+
+    docker:
+      # Specify the version you desire here
+      - image: circleci/php:7.3-node-browsers
+
+    steps:
+      - checkout
+
+      - run: sudo apt update
+      - run: sudo apt install rsync
+
+      - run: bash sakura_deploy.sh
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - testcases
+      - deploy:
+          requires:
+            - testcases
+          filters:
+            branches:
+              only: master
