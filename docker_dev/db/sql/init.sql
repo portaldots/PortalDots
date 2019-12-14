@@ -43,7 +43,6 @@ CREATE TABLE `circle_user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `circle_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `is_leader` tinyint(1) NOT NULL DEFAULT '0',
   `notes` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
