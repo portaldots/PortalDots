@@ -74,8 +74,12 @@ yarn replace "%MAIL_FROM_NAME%" "${MAIL_FROM_NAME}" .env >& /dev/null
 cd ../
 echo ".env ファイルの作成 End"
 
+echo "パスの修正 Start"
+cd dist/
 yarn replace "/../" "/../../${DEPLOY_DIRECTORY}/" dist/public/index.php >& /dev/null
 yarn replace "/../" "/../../${DEPLOY_DIRECTORY}/" dist/public/index_laravel.php >& /dev/null
+cd ../
+echo "パスの修正 End"
 
 echo "デプロイ Start"
 rsync -avz --update -e "ssh -o StrictHostKeyChecking=no" ./dist/ "${SSH_USERNAME}@${SSH_HOST}:/home/${SSH_USERNAME}/${DEPLOY_DIRECTORY}/" >& /dev/null
