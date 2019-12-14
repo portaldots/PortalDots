@@ -50,6 +50,7 @@ cd dist/; composer install --optimize-autoloader --no-dev; yarn install; cd ../
 cd dist/; yarn run production; cd ../
 
 php -r "copy('dist/.env.prod', 'dist/.env');" >& /dev/null
+php dist/artisan key:generate >& /dev/null
 
 # .env ファイルを CircleCI の環境変数を元に作成する
 echo ".env ファイルの作成 Start"
