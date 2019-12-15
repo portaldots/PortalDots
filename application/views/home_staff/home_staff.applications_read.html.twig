@@ -117,6 +117,11 @@
                         <a href="{{ public_form_url }}" target="_blank" rel="noopener">
                             {{ public_form_url }}
                         </a>
+                        {% if (form.is_public == 0) %}
+                            <span class="label label-danger">非公開</span>
+                        {% else %}
+                            <span class="label label-success">公開</span>
+                        {% endif %}
                     </p>
                     <hr>
                     <div>
