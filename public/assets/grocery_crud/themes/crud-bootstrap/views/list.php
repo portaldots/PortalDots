@@ -40,6 +40,11 @@
 							<i class="fa fa-pencil" aria-hidden="true"></i>
 						</a>
 					<?php }?>
+					<?php if($set_editor){?>
+						<a href='<?php echo base_url($row->editor_url) ?>' title='エディターで編集' class="btn btn-primary edit-row">
+							<i class="fa fa-edit" aria-hidden="true"></i>
+						</a>
+					<?php }?>
 					<?php if(!$unset_read){?>
 						<a href='<?php echo $row->read_url?>' title='<?php echo $this->l('list_view')?> <?php echo $subject?>' class="btn btn-info view-row">
 							<i class="fa fa-eye" aria-hidden="true"></i>

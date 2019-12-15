@@ -1607,6 +1607,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->unset_delete			= $this->unset_delete;
 		$data->unset_export			= $this->unset_export;
 		$data->unset_print			= $this->unset_print;
+		$data->set_editor			= $this->set_editor;
 
 		$default_per_page = $this->config->default_per_page;
 		$data->paging_options = $this->config->paging_options;
@@ -1624,6 +1625,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 			$data->list[$num_row]->edit_url = $data->edit_url.'/'.$row->{$data->primary_key};
 			$data->list[$num_row]->delete_url = $data->delete_url.'/'.$row->{$data->primary_key};
 			$data->list[$num_row]->read_url = $data->read_url.'/'.$row->{$data->primary_key};
+			$data->list[$num_row]->editor_url = $this->getFormEditorUrl($row->{$data->primary_key});
 		}
 
 		if(!$ajax)
@@ -3432,6 +3434,11 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 	{
 		return $this->state_url('ajax_relation_n_n');
 	}
+
+	protected function getFormEditorUrl($primary_key)
+	{
+		return "staff/forms/{$primary_key}/editor";
+	}
 }
 
 
@@ -3544,6 +3551,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 	protected $unset_add_fields 	= null;
 	protected $unset_edit_fields	= null;
 	protected $unset_read_fields	= null;
+	protected $set_editor			= false;
 
 	/* Callbacks */
 	protected $callback_before_insert 	= null;
@@ -3931,6 +3939,13 @@ class Grocery_CRUD extends grocery_CRUD_States
 	public function unset_back_to_list()
 	{
 		$this->unset_back_to_list = true;
+
+		return $this;
+	}
+
+	public function set_editor() // フォームエディター用に作成
+	{
+		$this->set_editor = true;
 
 		return $this;
 	}
@@ -5128,7 +5143,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 	 * @param $css_class
 	 * @param $url_callback
 	 */
-	public function add_action( $label, $image_url = '', $link_url = '', $css_class = '', $url_callback = null)
+	public function add_action( $label, $image_url = '', $link_url = '', $css_class = '', $url_callback = null , $display_text = null)
 	{
 		$unique_id = substr($label,0,1).substr(md5($label.$link_url),-8); //The unique id is used for class name so it must begin with a string
 
@@ -5138,7 +5153,8 @@ class Grocery_CRUD extends grocery_CRUD_States
 			'link_url'		=> $link_url,
 			'css_class' 	=> $css_class,
 			'url_callback' 	=> $url_callback,
-			'url_has_http'	=> substr($link_url,0,7) == 'http://' || substr($link_url,0,8) == 'https://' ? true : false
+			'url_has_http'	=> substr($link_url,0,7) == 'http://' || substr($link_url,0,8) == 'https://' ? true : false,
+			'display_text' 	=> $display_text, 
 		);
 
 		return $this;

@@ -259,6 +259,7 @@ class Home_staff extends MY_Controller
         );
 
         $this->grocery_crud->unset_delete();
+        $this->grocery_crud->set_editor();
 
         $vars += (array)$this->grocery_crud->render();
 
@@ -305,6 +306,8 @@ class Home_staff extends MY_Controller
             $vars["statistics"] = $this->forms->get_statistics_by_form_id($form_id);
             // 申請フォームのURL
             $vars["public_form_url"] = base_url("/forms/{$form_id}/answers/create");
+            // エディターのURL
+            $vars["editor_url"] = base_url("/staff/forms/{$form_id}/editor");
         } else {
             // 存在しない場合
             show_404();
