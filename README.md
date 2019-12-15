@@ -115,6 +115,8 @@ inaka-portal では、Issue や Pull Request を歓迎します。
 ## SQL
 inaka-portal を動作させるために必要な SQL は `docker_dev/db/sql/init.sql` に格納されています。
 
+この SQL ファイルは、Docker 初回起動時、自動的に実行されるようになっています。
+
 # ライセンス
 
 (このセクションは書きかけです)
