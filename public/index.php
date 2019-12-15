@@ -38,6 +38,9 @@
 
 // 一部 Laravel にルーティング
 (function () {
+    // 以下の配列にあげたパスの他、
+    // Laravel 側でメンテナンスモードが有効になっている場合も、
+    // Laravel にルーティングされる
     $LARAVEL_PATHS = [
         // Auth
         '/login',
@@ -55,6 +58,13 @@
         // 以下のルートはCodeIgniter側のものだが、404にしたいもの
         '/users/logout',
     ];
+
+    if (file_exists(__DIR__. '/../storage/framework/down')) {
+        // メンテナンスモードが有効の場合、Laravel へルーティング
+        require __DIR__. '/index_laravel.php';
+        exit;
+    }
+
     $request_uri = $_SERVER['REQUEST_URI'];
 
     foreach ($LARAVEL_PATHS as $path) {
