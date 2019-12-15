@@ -46,9 +46,9 @@
                     <label for="leaderInput" class="col-sm-2 col-form-label">責任者の学籍番号</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control {{ $errors->has('leader') ? 'is-invalid' : '' }}" id="leaderInput" name="leader" value="{{ old('leader', empty($leader) ? '' : $leader->student_id) }}">
-                        @error('leader')
+                        @foreach ($errors->get('leader') as $message)
                             <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        @endforeach
                     </div>
                 </div>
 
@@ -57,9 +57,9 @@
                     <label for="membersInput" class="col-sm-2 col-form-label">学園祭係(副責任者)の学籍番号</label>
                     <div class="col-sm-4">
                         <textarea id="membersInput" class="form-control {{ $errors->has('members') ? 'is-invalid' : '' }}" name="members" rows="3">{{ old('members', empty($members) ? '' : $members) }}</textarea>
-                        @error('members')
+                        @foreach ($errors->get('members') as $message)
                             <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        @endforeach
                         <small>学籍番号を改行して入力することで複数の学園祭係を追加できます</small>
                     </div>
                 </div>
