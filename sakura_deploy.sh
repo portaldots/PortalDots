@@ -19,6 +19,7 @@
 # PORTAL_ADMIN_NAME=(ポータルの運営組織名)
 # PORTAL_CONTACT_EMAIL=(運営組織への連絡メールアドレス)
 # PORTAL_UNIVEMAIL_DOMAIN=(学生用大学発行メールアドレスのドメイン・理科大なら ed.tus.ac.jp )
+# PORTAL_UPLOAD_DIR_CRUD=(通常は ../../デプロイ先ディレクトリの名前/application/uploads)
 #
 # 【データベースに関する設定】
 # DB_HOST=(DBのホスト名)
