@@ -20,19 +20,19 @@ class UpdateInfoAction extends Controller
 
     public function __invoke(ChangeInfoRequest $request)
     {
-        $email_flag = false;
-        $univemail_flag = false;
+        $changed_email = false;
+        $changed_univemail = false;
         $user = User::find(Auth::id());
         if ($user->email !== $request->email) {
             $user->email = $request->email;
             $user->email_verified_at = null;
-            $email_flag = true;
+            $changed_email = true;
         }
         if (!empty($request->student_id)) {
             if ($user->student_id !== $request->student_id) {
                 $user->student_id = $request->student_id;
                 $user->univemail_verified_at = null;
-                $univemail_flag = true;
+                $changed_univemail = true;
             }
         }
 
@@ -43,30 +43,42 @@ class UpdateInfoAction extends Controller
         if (!empty($request->name_yomi)) {
             $user->name_yomi = $request->name_yomi;
         }
-        
+
         $user->tel = $request->tel;
 
-        $user->save();
+        if (!$user->save()) {
+            return redirect()
+                ->route('user.edit')
+                ->with('error_message', 'ユーザー情報の更新に失敗しました')
+                ->withInput();
+        }
 
         if ($user->univemail === $user->email) {
             $this->verifyService->markEmailAsVerified($user, $user->email);
         }
 
-        if ($email_flag) {
+        if ($changed_email) {
             $this->emailService->sendToEmail($user);
         }
 
-        if ($univemail_flag) {
+        if ($changed_univemail) {
             $this->emailService->sendToUnivemail($user);
         }
 
-        if (!($user->areBothEmailsVerified())) {
+        if ($changed_univemail || $changed_email) {
             return redirect()
             ->route('home')
             ->with('success_message', '確認メールを送信しました');
         }
-        return redirect()
+
+        if ($user->areBothEmailsVerified()) {
+            return redirect()
             ->route('user.edit')
+            ->with('success_message', 'ユーザー情報を更新しました');
+        }
+
+        return redirect()
+            ->route('home')
             ->with('success_message', 'ユーザー情報を更新しました');
     }
 }
