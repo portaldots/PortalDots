@@ -14,7 +14,7 @@
             </p>
             <p class="text-center mb-0">
                 <a href="{{ route('home') }}" class="btn btn-primary">
-                    ダッシュボードにアクセスする
+                    ダッシュボードにアクセス
                 </a>
             </p>
         </div>

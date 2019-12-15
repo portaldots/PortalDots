@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class ChangeInfoAction extends Controller
+class EditInfoAction extends Controller
 {
     public function __invoke()
     {

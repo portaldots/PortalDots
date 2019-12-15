@@ -51,7 +51,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/change_password', 'Users\ChangePasswordAction')->name('change_password');
     Route::post('/change_password', 'Users\PostChangePasswordAction');
     Route::get('/logout', 'Auth\LoginController@showLogout');
-    Route::get('/user/edit', 'Users\ChangeInfoAction')->name('user.edit');
+    Route::get('/user/edit', 'Users\EditInfoAction')->name('user.edit');
     Route::patch('/user/update', 'Users\UpdateInfoAction')->name('user.update');
     Route::get('/user/delete', 'Users\DeleteAction')->name('user.delete');
     Route::delete('/user/delete', 'Users\DestroyAction'); // Laravel に移行後 /user に変更する

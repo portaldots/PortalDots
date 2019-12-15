@@ -13,7 +13,7 @@
             <p class="card-text">詳細については「{{ config('portal.admin_name') }}」までお問い合わせください</p>
             <p><a href="{{ route('home') }}" class="btn btn-primary" role="button">ホームに戻る</a></p>
         @else
-            <p class="card-text">アカウントを削除した場合申請の手続きなどができなくなります。</p>
+            <p class="card-text">アカウントを削除した場合、申請の手続きなどができなくなります。</p>
             <form action="{{ route('user.delete') }}" method="post">
                 @method('delete')
                 @csrf

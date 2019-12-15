@@ -91,10 +91,10 @@
             </div>
             @if (isset($user))
                 <hr>
-                <p>保存するにはパスワードを入力してください</p>
+                <p>保存するには現在のパスワードを入力してください</p>
             @endif
             <div class="form-group row">
-                <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>
+                <label for="password" class="col-md-4 col-form-label text-md-right">現在のパスワード</label>
 
                 <div class="col-md-8">
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -118,7 +118,7 @@
             <div class="form-group row mb-0">
                 <div class="col-md-8 offset-md-4">
                     <button type="submit" class="btn btn-primary">
-                        {{ isset($user) ? '保存する' : '登録する' }}
+                        {{ isset($user) ? '保存' : '登録' }}
                     </button>
                     <a href="{{ route('home') }}" class="btn btn-default" role="button">キャンセル</a>
                 </div>

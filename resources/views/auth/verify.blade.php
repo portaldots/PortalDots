@@ -63,7 +63,7 @@
             <form action="{{ route('verification.resend') }}" method="post">
                 @csrf
                 <button class="btn btn-primary">
-                    確認メールを再送する
+                    確認メールを再送
                 </button>
             </form>
         </div>
