@@ -71,6 +71,8 @@ yarn replace "%MAIL_USERNAME%" "${MAIL_USERNAME}" .env >& /dev/null
 yarn replace "%MAIL_PASSWORD%" "${MAIL_PASSWORD}" .env >& /dev/null
 yarn replace "%MAIL_FROM_ADDRESS%" "${MAIL_FROM_ADDRESS}" .env >& /dev/null
 yarn replace "%MAIL_FROM_NAME%" "${MAIL_FROM_NAME}" .env >& /dev/null
+# ↓この行は、Grocery CRUD を完全廃止したら削除する
+yarn replace "%PORTAL_UPLOAD_DIR_CRUD%" "${PORTAL_UPLOAD_DIR_CRUD}" .env >& /dev/null
 cd ../
 echo ".env ファイルの作成 End"
 

@@ -60,8 +60,8 @@ if (!defined('RP_UPLOAD_DIR')) {
 // RP_UPLOAD_DIR と似た設定ですが、設定方法が異なります。
 // 先頭にスラッシュ(/)をつけることは で き ま せ ん。
 // public/index.php からみたディレクトリを指定してください。
-if (!defined('RP_UPLOAD_DIR_CRUD')) {
-    define('RP_UPLOAD_DIR_CRUD', codeigniter_env('RP_UPLOAD_DIR_CRUD', '../application/uploads'));
+if (!defined('PORTAL_UPLOAD_DIR_CRUD')) {
+    define('PORTAL_UPLOAD_DIR_CRUD', codeigniter_env('PORTAL_UPLOAD_DIR_CRUD', '../application/uploads'));
 }
 
 # LINE Notify スタッフ同報設定

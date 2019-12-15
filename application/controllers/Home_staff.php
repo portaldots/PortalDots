@@ -873,7 +873,7 @@ class Home_staff extends MY_Controller
 
         $this->grocery_crud->required_fields('name', 'filename');
 
-        $this->grocery_crud->set_field_upload('filename', RP_UPLOAD_DIR_CRUD . '/documents');
+        $this->grocery_crud->set_field_upload('filename', PORTAL_UPLOAD_DIR_CRUD . '/documents');
 
         // ファイル表示リンクにする
         $this->grocery_crud->callback_column('filename', array($this, '_crud_download_document'));
