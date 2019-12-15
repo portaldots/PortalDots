@@ -20,8 +20,8 @@
                 <label for="student_id" class="col-md-4 col-form-label text-md-right">学籍番号</label>
 
                 <div class="col-md-8">
-                    <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror" name="student_id" value="{{ old('student_id', isset($user) ? $user->student_id : '' ) }}" {{ $belong ? 'disabled' : '' }} required>
-                    @if ($belong)
+                    <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror" name="student_id" value="{{ old('student_id', isset($user) ? $user->student_id : '' ) }}" {{ !empty($circles) ? 'disabled' : '' }} required>
+                    @if (!empty($circles))
                         <small class="form-text text-muted">団体に所属しているため修正できません</small>
                     @endif
                     @error('student_id')
@@ -36,8 +36,8 @@
                 <label for="name" class="col-md-4 col-form-label text-md-right">名前</label>
 
                 <div class="col-md-8">
-                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', isset($user) ? $user->name : '' ) }}" {{ $belong ? 'disabled' : '' }} required autocomplete="name">
-                    <small class="form-text text-muted">{{ $belong ? '団体に所属しているため修正できません' : '姓と名の間にはスペースを入れてください' }}</small>
+                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', isset($user) ? $user->name : '' ) }}" {{ !empty($circles) ? 'disabled' : '' }} required autocomplete="name">
+                    <small class="form-text text-muted">{{ !empty($circles) ? '団体に所属しているため修正できません' : '姓と名の間にはスペースを入れてください' }}</small>
 
                     @error('name')
                         <span class="invalid-feedback" role="alert">
@@ -51,8 +51,8 @@
                 <label for="name_yomi" class="col-md-4 col-form-label text-md-right">名前(よみ)</label>
 
                 <div class="col-md-8">
-                    <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror" name="name_yomi" value="{{ old('name_yomi', isset($user) ? $user->name_yomi : '' ) }}" {{ $belong ? 'disabled' : '' }} required>
-                    <small class="form-text text-muted">{{ $belong ? '団体に所属しているため修正できません' : '姓と名の間にはスペースを入れてください' }}</small>
+                    <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror" name="name_yomi" value="{{ old('name_yomi', isset($user) ? $user->name_yomi : '' ) }}" {{ !empty($circles) ? 'disabled' : '' }} required>
+                    <small class="form-text text-muted">{{ !empty($circles) ? '団体に所属しているため修正できません' : '姓と名の間にはスペースを入れてください' }}</small>
 
                     @error('name_yomi')
                         <span class="invalid-feedback" role="alert">
@@ -67,7 +67,7 @@
 
                 <div class="col-md-8">
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', isset($user) ? $user->email : '' ) }}" required autocomplete="email">
-
+                    <small class="form-text text-muted">連絡先メールアドレスとして学校発行のメールアドレスもご利用になれます</small>
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
