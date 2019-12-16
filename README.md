@@ -19,7 +19,7 @@
 - inaka-portal として公開するにあたり、ある程度のリファクタリングなどを施した。が、まだ途中。
 
 ## 開発環境セットアップ方法
-Git、Composer、Node.js、Yarn、Docker がセットアップ済みである必要があります。
+Git、PHP、Composer、Node.js、Yarn、Docker がセットアップ済みである必要があります。
 
 ```bash
 $ git clone git@github.com:SofPyon/inaka-portal.git
@@ -27,6 +27,7 @@ $ cd inaka-portal/
 
 # 設定ファイルを作成
 $ cp .env.example .env
+$ php artisan key:generate
 
 # 必要パッケージをインストール
 $ composer install
