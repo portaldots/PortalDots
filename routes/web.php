@@ -93,4 +93,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::patch('/circles/{circle}', 'Staff\Circles\UpdateAction')->name('circles.update');
         Route::get('/circles/create', 'Staff\Circles\CreateAction')->name('circles.create');
         Route::post('/circles', 'Staff\Circles\StoreAction')->name('circles.new');
+
+        // ユーザーチェッカー
+        Route::get('/users/check', 'Staff\Users\CheckerAction')->name('users.check');
+        Route::post('/users/check', 'Staff\Users\PostCheckerAction');
     });

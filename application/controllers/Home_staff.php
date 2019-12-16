@@ -512,41 +512,6 @@ class Home_staff extends MY_Controller
     }
 
     /**
-     * ユーザー登録チェッカー
-     */
-    public function users_checker()
-    {
-
-        $vars = [];
-        $vars["page_title"] = "ユーザー登録チェッカー";
-        $vars["main_page_type"] = "users_checker";
-
-        $this->load->database();
-
-        if (!empty($this->input->post("student_id"))) {
-            // 学籍番号入力時
-            $student_id = $this->input->post("student_id");
-            $user_check = $this->db->where("student_id", $student_id)->get("users")->result();
-            if (!empty($user_check)) {
-                $vars["user_check"] = $user_check[0];
-                $vars["user_check"]->is_completed_register = true;
-            } else {
-                $user_check = $this->db->where("student_id", $student_id)->get("users_pre")->result();
-                if (!empty($user_check)) {
-                    $vars["user_check"] = $user_check[0];
-                    $vars["user_check"]->is_completed_register = false;
-                } else {
-                    $vars["user_check"] = null;
-                }
-            }
-        } else {
-            $vars["user_check"] = null;
-        }
-
-        $this->_render('home_staff/users_checker', $vars);
-    }
-
-    /**
      * 姓にふりがなをふるための Grocery CRUD コールバック関数
      */
     public function _crud_name_family_yomi($value, $row)
@@ -1264,7 +1229,7 @@ class Home_staff extends MY_Controller
                 "users_checker" => [
                     "icon" => "address-book-o",
                     "name" => "ユーザー登録チェッカー",
-                    "url" => "home_staff/users_checker",
+                    "url" => "staff/users/check",
                 ],
                 "circles" => [
                     "icon" => "users",
