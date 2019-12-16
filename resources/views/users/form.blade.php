@@ -3,7 +3,7 @@
 @section('title', (isset($user) ? 'ユーザー情報の編集 - ' : 'ユーザー登録 - ' ) . config('app.name'))
 
 @section('main')
-<div class="card">
+<div class="card mb-3">
     <div class="card-header">{{ isset($user) ? 'ユーザー情報の編集' : 'ユーザー登録' }}</div>
 
     <div class="card-body">
@@ -132,4 +132,18 @@
         </form>
     </div>
 </div>
+
+@isset($user)
+    <div class="card mb-3">
+        <div class="card-header">その他の設定</div>
+        <div class="card-body text-center">
+            <a href="{{ route('change_password') }}" class="btn btn-primary">
+                パスワードの変更
+            </a>
+            <a href="{{ route('user.delete') }}" class="btn btn-danger">
+                アカウントの削除
+            </a>
+        </div>
+    </div>
+@endisset
 @endsection
