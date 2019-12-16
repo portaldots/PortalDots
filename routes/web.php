@@ -83,6 +83,11 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::post('/editor/api/delete_question', 'Staff\Forms\DeleteQuestionAction');
             });
 
+        // メール一斉送信
+        Route::get('/send_emails', 'Staff\SendEmails\ListAction')->name('send_emails');
+        Route::post('/send_emails', 'Staff\SendEmails\StoreAction');
+        Route::delete('/send_emails', 'Staff\SendEmails\DestroyAction');
+
         // 団体情報編集
         Route::get('/circles/{circle}/edit', 'Staff\Circles\EditAction')->name('circles.edit');
         Route::patch('/circles/{circle}', 'Staff\Circles\UpdateAction')->name('circles.update');

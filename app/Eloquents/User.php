@@ -73,6 +73,17 @@ class User extends Authenticatable
     }
 
     /**
+     * メール認証が完了しているユーザーだけに限定するクエリスコープ
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeVerified($query)
+    {
+        return $query->whereNotNull('email_verified_at')->whereNotNull('univemail_verified_at');
+    }
+
+    /**
      * ログイン ID から該当ユーザーを取得する
      *
      * @param string $login_id

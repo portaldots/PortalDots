@@ -626,7 +626,7 @@ class Home_staff extends MY_Controller
             'updated_by',
             'notes'
         );
-        
+
         if ($this->grocery_crud->getstate() !== 'edit' && $this->grocery_crud->getstate() !== 'add') {
             $this->grocery_crud->set_relation('created_by', 'users', '{student_id} {name_family} {name_given}');
             $this->grocery_crud->set_relation('updated_by', 'users', '{student_id} {name_family} {name_given}');
