@@ -7,10 +7,10 @@
     <div class="card-header">{{ isset($user) ? 'ユーザー情報の編集' : 'ユーザー登録' }}</div>
 
     <div class="card-body">
-        @if (!isset($user))
+        @empty($user)
             「<strong>{{ config('app.name') }}</strong>」にユーザー登録します。
             <hr>
-        @endif
+        @endempty
 
         <form method="POST" action="{{ isset($user) ? route('user.update') : route('register') }}">
             @method(isset($user) ? 'patch' : 'post')
@@ -25,7 +25,7 @@
                         <small class="form-text text-muted">団体に所属しているため修正できません</small>
                     @endif
                     @error('student_id')
-                    <span class="invalid-feedback" role="alert">
+                        <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
@@ -83,18 +83,24 @@
                     <input id="tel" type="text" class="form-control @error('tel') is-invalid @enderror" name="tel" value="{{ old('tel', isset($user) ? $user->tel : '' ) }}" required>
 
                     @error('tel')
-                    <span class="invalid-feedback" role="alert">
+                        <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
                 </div>
             </div>
-            @if (isset($user))
+            @isset($user)
                 <hr>
                 <p>保存するには現在のパスワードを入力してください</p>
-            @endif
+            @endisset
             <div class="form-group row">
-                <label for="password" class="col-md-4 col-form-label text-md-right">現在のパスワード</label>
+                <label for="password" class="col-md-4 col-form-label text-md-right">
+                    @isset($user)
+                        現在のパスワード
+                    @else
+                        パスワード
+                    @endisset
+                </label>
 
                 <div class="col-md-8">
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -105,7 +111,7 @@
                     @enderror
                 </div>
             </div>
-            @if (!isset($user))
+            @empty($user)
                 <div class="form-group row">
                     <label for="password-confirm" class="col-md-4 col-form-label text-md-right">パスワード(確認)</label>
 
@@ -113,7 +119,7 @@
                         <input id="password-confirm" type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation" required autocomplete="new-password">
                     </div>
                 </div>
-            @endif
+            @endempty
 
             <div class="form-group row mb-0">
                 <div class="col-md-8 offset-md-4">
