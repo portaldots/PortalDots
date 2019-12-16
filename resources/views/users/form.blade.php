@@ -103,7 +103,14 @@
                 </label>
 
                 <div class="col-md-8">
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                    <input
+                        id="password"
+                        type="password"
+                        class="form-control @error('password') is-invalid @enderror"
+                        name="password"
+                        required
+                        autocomplete="{{ isset($user) ? 'current-password' : 'new-password' }}"
+                    >
                     @error('password')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
