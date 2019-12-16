@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', (empty($circle) ? '団体情報新規作成' : '団体情報編集') . ' - ' . config('app.name') )
+@section('title', 'メールの一斉送信 - ' . config('app.name') )
 
 @section('content')
 <div class="container">
