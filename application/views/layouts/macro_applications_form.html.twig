@@ -60,13 +60,13 @@
                             <input
                                 type="radio"
                                 name="answers[{{ question.id }}]"
-                                id="input_answer_{{ question.id }}_{{ option.id }}"
-                                value="{{ option.id }}"
+                                id="input_answer_{{ question.id }}_{{ sha1(option) }}"
+                                value="{{ option }}"
                                 {% if question.is_required %}required{% endif %}
-                                {% if option.id == answers[question.id] %}checked{% endif %}
+                                {% if option == answers[question.id] %}checked{% endif %}
                                 {% if not form.is_in_period or disabled %}disabled{% endif %}
                             >
-                            {{ option.value }}
+                            {{ option }}
                         </label>
                     </div>
                 {% endfor %}
@@ -77,14 +77,14 @@
                             <input
                                 type="checkbox"
                                 name="answers[{{ question.id }}][]"
-                                id="input_answer_{{ question.id }}_{{ option.id }}"
-                                value="{{ option.id }}"
+                                id="input_answer_{{ question.id }}_{{ sha1(option) }}"
+                                value="{{ option }}"
                                 {# 選択肢が１つしかないチェックボックスに限り required を付ける #}
                                 {% if question.is_required and question.options|length == 1 %}required{% endif %}
-                                {% if option.id in answers[question.id] %}checked{% endif %}
+                                {% if option in answers[question.id] %}checked{% endif %}
                                 {% if not form.is_in_period or disabled %}disabled{% endif %}
                             >
-                            {{ option.value }}
+                            {{ option }}
                         </label>
                     </div>
                 {% endfor %}
@@ -96,12 +96,13 @@
                     {% if question.is_required %}required{% endif %}
                     {% if not form.is_in_period or disabled %}disabled{% endif %}
                 >
+                    <option></option>
                     {% for option in question.options %}
                         <option
-                            value="{{ option.id }}"
-                            {% if option.id == answers[question.id] %}selected{% endif %}
+                            value="{{ option }}"
+                            {% if option == answers[question.id] %}selected{% endif %}
                         >
-                            {{ option.value }}
+                            {{ option }}
                         </option>
                     {% endfor %}
                 </select>

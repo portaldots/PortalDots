@@ -72,14 +72,11 @@ class Forms_model extends MY_Model
             "questions.number_min AS question_number_min",
             "questions.number_max AS question_number_max",
             "questions.allowed_types AS question_allowed_types",
+            "questions.options AS question_options",
             "questions.priority AS question_priority",
-            // options
-            "options.id AS option_id",
-            "options.value AS option_value",
         ];
         $this->db->select(implode(",", $select), false);
         $this->db->where("questions.form_id", $form_id);
-        $this->db->join("options", "questions.id = options.question_id", "left");
         $this->db->order_by("questions.priority");
         $query = $this->db->get("questions");
         $results = $query->result();
@@ -103,22 +100,14 @@ class Forms_model extends MY_Model
                 $question->allowed_types = $result->question_allowed_types;
                 $question->priority = (int)$result->question_priority ?? null;
 
+                // 設問
+                $options = explode("\n", $result->question_options);
+                $options = array_map('trim', $options);
+                $options = array_filter($options, 'strlen');
+                $options = array_values($options);
+                $question->options = $options;
+
                 $questions_for_return[$question_id] = $question;
-            }
-
-            // 選択肢を格納していく
-            if (!isset($questions_for_return[$question_id]->options) ||
-                !is_array($questions_for_return[$question_id]->options)) {
-                $questions_for_return[$question_id]->options = [];
-            }
-
-            if (!empty($result->option_id)) {
-                $option = new stdClass();
-
-                $option->id = $result->option_id;
-                $option->value = $result->option_value;
-
-                $questions_for_return[$question_id]->options[$option->id] = $option;
             }
         }
 
@@ -288,17 +277,6 @@ class Forms_model extends MY_Model
         foreach ($query->result() as $answer) {
             $item = $this->get_answer_by_answer_id($answer->id);
             $return[] = $item;
-        }
-        return $return;
-    }
-
-    public function get_options_by_question_id($question_id)
-    {
-        $this->db->where("question_id", $question_id);
-        $query = $this->db->get("options");
-        $return = [];
-        foreach ($query->result() as $option) {
-            $return[$option->id] = $option;
         }
         return $return;
     }

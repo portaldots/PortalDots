@@ -43,6 +43,7 @@ class Question extends Model
         'number_min',
         'number_max',
         'allowed_types',
+        'options',
         'priority',
     ];
 
@@ -65,11 +66,6 @@ class Question extends Model
     public function form()
     {
         return $this->belongsTo(Form::class);
-    }
-
-    public function options()
-    {
-        return $this->hasMany(Option::class);
     }
 
     public function getAllowedTypesArrayAttribute()

@@ -101,11 +101,11 @@
                         <td class="applications-read-answer-td">
                             <div class="applications-read-answer-td__inner">
 
-                                {% if question.type == "checkbox" or question.type == "radio" or question.type == "select" %}
+                                {% if question.type == "checkbox"%}
                                     <ul>
-                                        {% for option in question.options if option.id in answer.answers[question.id] %}
+                                        {% for option in answer.answers[question.id] %}
                                             <li>
-                                                {{ option.value }}
+                                                {{ option }}
                                             </li>
                                         {% endfor %}
                                     </ul>

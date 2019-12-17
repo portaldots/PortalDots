@@ -246,25 +246,8 @@ class Applications_form extends Home_base_controller
             // (radio/select/checkbox)選択肢として妥当かどうかの検証
             if ($question->type === "radio" || $question->type === "select" || $question->type === "checkbox") {
                 // 選択肢として妥当かどうかを検証
-                $rule = "in_list[";
-                foreach ($question->options as $option) {
-                    $rule .= $option->id . ",";
-                }
-                $rule .= "]";
+                $rule = "in_list[" . implode(',', $question->options) . "]";
                 $rules[] = $rule;
-
-                // メール送信用
-                if ($question->type === "checkbox") {
-                    $answers_for_email[$question->name] = [];
-                    if (is_iterable($this->input->post($name))) {
-                        foreach ($this->input->post($name) as $value) {
-                            $answers_for_email[$question->name][] = $question->options[$value]->value;
-                        }
-                    }
-                } else {
-                    $value = $this->input->post($name);
-                    $answers_for_email[$question->name] = !empty($question->options) ? $question->options[$value]->value : null;
-                }
             }
 
             // (upload)検証とアップロード処理

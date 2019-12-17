@@ -12,7 +12,7 @@ class GetQuestionsAction extends Controller
 {
     public function __invoke(Form $form)
     {
-        $questions = $form->questions()->with('options')->get();
+        $questions = $form->questions()->get();
         return $questions->map(function (Question $question) {
             return [
                 'id' => $question->id,
@@ -23,18 +23,10 @@ class GetQuestionsAction extends Controller
                 'number_min' => $question->number_min,
                 'number_max' => $question->number_max,
                 'allowed_types' => $question->allowed_types,
+                'options' => $question->options,
                 'priority' => $question->priority,
                 'created_at' => $question->created_at,
                 'updated_at' => $question->updated_at,
-                'options' => $question->options->map(function (Option $option) {
-                    return [
-                        'id' => $option->id,
-                        'value' => $option->value,
-                        'priority' => $option->priority,
-                        'created_at' => $option->created_at,
-                        'updated_at' => $option->updated_at,
-                    ];
-                }),
             ];
         });
     }

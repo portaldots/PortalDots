@@ -265,9 +265,9 @@
                                             {% for option in question.options %}
                                                 <li>
                                                 <span
-                                                        class="
+                                                    class="
                                                         fa fa-fw
-                                                        {% if option.id in answer.answers[question.id] %}
+                                                        {% if option in answer.answers[question.id] %}
                                                             fa-check-square-o
                                                             text-primary
                                                         {% else %}
@@ -277,11 +277,17 @@
                                                     " aria-hidden="true"
                                                 >
                                                 </span>
-                                                    {% if option.id in answer.answers[question.id] %}<b>{% else %}
-                                                        <del class="text-muted">{% endif %}
-                                                            {{ option.value }}
-                                                            {% if option.id in answer.answers[question.id] %}
-                                                    </b>{% else %}</del>{% endif %}
+                                                    {% if option in answer.answers[question.id] %}
+                                                        <b>
+                                                    {% else %}
+                                                        <del class="text-muted">
+                                                    {% endif %}
+                                                    {{ option }}
+                                                    {% if option in answer.answers[question.id] %}
+                                                        </b>
+                                                    {% else %}
+                                                        </del>
+                                                    {% endif %}
                                                 </li>
                                             {% endfor %}
                                         </ul>

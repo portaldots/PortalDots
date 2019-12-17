@@ -32,6 +32,7 @@
             id="inputDescription"
             v-model="description"
             @blur="save"
+            rows="4"
           />
         </div>
       </div>

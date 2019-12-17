@@ -371,12 +371,11 @@ class Home_staff extends MY_Controller
                     $question->type === "select") {
                     // 多肢選択式
                     $string_to_export .= "\t";
-                    foreach ($question->options as $option) {
-                        if (is_array($answer->answers[$question->id]) &&
-                            in_array($option->id, $answer->answers[$question->id], true)) {
-                            $string_to_export .= $option->value . "/";
-                        } elseif ($option->id === $answer->answers[$question->id]) {
-                            $string_to_export .= $option->value;
+                    if (isset($answer->answers[$question->id])) {
+                        if (is_array($answer->answers[$question->id])) {
+                            $string_to_export .= implode('/', $answer->answers[$question->id]);
+                        } else {
+                            $string_to_export .= $answer->answers[$question->id];
                         }
                     }
                 } else {

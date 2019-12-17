@@ -34,7 +34,24 @@
           v-model="description"
           @blur="save"
           :disabled="is_deleting"
+          rows="4"
         />
+      </div>
+    </label>
+    <label class="form-group row" v-if="show_options">
+      <span class="col-sm-2 col-form-label">選択肢</span>
+      <div class="col-sm-10">
+        <textarea
+          class="form-control"
+          v-model="options"
+          @blur="save"
+          :disabled="is_deleting"
+          rows="4"
+          placeholder="1行に1つ選択肢を入力"
+        />
+        <small class="form-text text-muted mb-0">
+          改行区切りで選択肢を入力。
+        </small>
       </div>
     </label>
     <label class="form-group row" v-if="label_number_min">
@@ -64,9 +81,9 @@
       </div>
     </label>
     <label class="form-group row" v-if="show_allowed_types">
-      <span class="col-sm-2 col-form-label"
-        >許可される拡張子(<code>|</code>区切りで指定)</span
-      >
+      <span class="col-sm-2 col-form-label">
+        許可される拡張子(<code>|</code>区切りで指定)
+      </span>
       <div class="col-sm-10">
         <input
           type="text"
@@ -178,6 +195,18 @@ export default {
         this.$store.commit(`editor/${UPDATE_QUESTION}`, {
           id: this.question.id,
           key: 'description',
+          value: new_value
+        })
+      }
+    },
+    options: {
+      get() {
+        return this.question.options
+      },
+      set(new_value) {
+        this.$store.commit(`editor/${UPDATE_QUESTION}`, {
+          id: this.question.id,
+          key: 'options',
           value: new_value
         })
       }
