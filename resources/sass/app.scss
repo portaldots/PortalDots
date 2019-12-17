@@ -26,6 +26,10 @@ body {
   background: #fff;
   box-shadow: $box-shadow-sm;
   height: $app-navbar-height;
+  padding-bottom: 0;
+  padding-left: calc(env(safe-area-inset-left) + 1rem);
+  padding-right: calc(env(safe-area-inset-right) + 1rem);
+  padding-top: env(safe-area-inset-top);
   .nav-link {
     padding-left: 1rem !important;
     padding-right: 1rem !important;
@@ -51,7 +55,7 @@ body {
     list-style: none;
     margin: 0 auto;
     max-width: $narrow-container-width - 30px;
-    padding: 0 15px 40px;
+    padding: 0 15px env(safe-area-inset-bottom);
     width: 100%;
     .nav-item {
       flex: 1;
