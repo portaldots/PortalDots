@@ -15,30 +15,39 @@
   {% endif %}
 
   {% if flashdata_danger is not empty %}
-    <div class="alert danger">
+    <div class="alert alert-danger">
       {{ flashdata_danger }}
     </div>
   {% endif %}
 
+  {% if circle_info is empty %}
+    <div class="alert alert-info">
+      <p>
+        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+        <strong>団体参加登録が未完了</strong>
+      </p>
+      <p>団体参加登録がお済みでない場合、申請機能など、{{ constant("APP_NAME") }} の一部機能がご利用になれません</p>
+      <p><small>(参加登録を行ってからこの表示が消えるのに時間がかかることがあります)</small></p>
+    </div>
+  {% endif %}
+
+  {% if next_event.name is not empty %}
   <section class="panel panel-primary main-section__next-event">
     <div class="panel-heading">
       <h2 class="panel-title">次の予定</h2>
     </div>
     <div class="panel-body">
-      {% if next_event.name is not empty %}
-        <h3 class="main-section__next-event__title">
-          <date>{{ next_event.start_at_string }}</date>
-        </h3>
-        <p class="lead main-section__next-event__place">{{ next_event.name }} ・ {{ next_event.place }}</p>
-        <div class="markdown-body">{{ next_event.description_html | raw }}</div>
-      {% else %}
-        <h3 class="text-muted text-center">予定はありません</h3>
-      {% endif %}
+      <h3 class="main-section__next-event__title">
+        <date>{{ next_event.start_at_string }}</date>
+      </h3>
+      <p class="lead main-section__next-event__place">{{ next_event.name }} ・ {{ next_event.place }}</p>
+      <div class="markdown-body">{{ next_event.description_html | raw }}</div>
     </div>
     <div class="panel-footer">
       <a href="{{ base_url('home/schedules') }}" class="btn btn-primary">他の予定をみる</a>
     </div>
   </section>
+  {% endif %}
 
   <div class="row">
     <div class="col-lg-4">
@@ -115,36 +124,50 @@
       </section>
     </div>
     <div class="col-lg-4">
-      {{ form_open("home/contacts") | raw }}
-        <section class="panel panel-info main-section__applications">
-          <div class="panel-heading">
-            <h2 class="panel-title">お問い合わせ</h2>
-          </div>
-          <ul class="list-group text-muted">
-            <li class="list-group-item">
-              送信者 :
-              <span class="pull-right"><b>{{ user.name_family ~ " " ~ user.name_given }}</b></span>
-            </li>
-            {% if user.student_id %}
-              <li class="list-group-item">
-                学籍番号 :
-                <span class="pull-right"><b>{{ user.student_id }}</b></span>
-              </li>
-            {% endif %}
-            <li class="list-group-item">
-              メールアドレス :
-              <span class="pull-right"><b>{{ user.email }}</b></span>
-            </li>
-          </ul>
-          <div class="panel-body">
-            <textarea class="form-control" name="body" rows="4" placeholder="こちらからお問い合わせができます。ご意見等も、お気軽にどうぞ。" required></textarea>
+      <section class="panel panel-info main-section__applications">
+        <div class="panel-heading">
+          <h2 class="panel-title">申請</h2>
+        </div>
+        {% if circle_info is not empty %}
+          <div class="list-group">
+
+            {% for form in forms %}
+            <a href="{{ base_url("forms/#{form.id}/answers/create") }}" class="list-group-item">
+              <h3 class="list-group-item-heading h5">
+                <b>
+                  {{ form.name }}
+                </b>
+              </h3>
+              <p class="list-group-item-text">
+                {{ form.close_at_string }} まで受付
+              </p>
+            </a>
+            {% endfor %}
+
           </div>
           <div class="panel-footer">
-            <button type="submit" class="btn btn-primary">送信</button>
+            <a href="{{ base_url('home/applications') }}" class="btn btn-primary">全ての申請をみる</a>
           </div>
-        </section>
-      {{ form_close() | raw }}
+        {% else %}
+          <div class="panel-body text-center muted">
+            <h3>団体参加登録が未完了</h3>
+            <p>申請機能は、団体参加登録をされた方のみご利用になれます。</p>
+          </div>
+        {% endif %}
+      </section>
     </div>
+  </div>
+
+  <div class="alert alert-info text-center">
+    <p>
+      お問い合わせページは移動しました。
+    </p>
+    <p>
+      <a href="{{ base_url('home/contacts') }}" class="btn btn-primary">
+        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+        お問い合わせ
+      </a>
+    </p>
   </div>
 
 {% endblock %}

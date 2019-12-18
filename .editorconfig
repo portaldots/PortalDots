@@ -22,3 +22,6 @@ indent_size = 2
 
 [*.yml]
 indent_size = 2
+
+[*.twig]
+indent_size = 2

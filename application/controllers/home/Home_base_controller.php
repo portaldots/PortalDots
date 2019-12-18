@@ -58,11 +58,11 @@ class Home_base_controller extends MY_Controller
                     "name" => "スケジュール",
                     "url" => "home/schedules",
                 ],
-                // "contacts" => [
-                //   "icon" => "envelope-o",
-                //   "name" => "お問い合わせ",
-                //   "url" => "home/contacts",
-                // ],
+                "contacts" => [
+                  "icon" => "envelope-o",
+                  "name" => "お問い合わせ",
+                  "url" => "home/contacts",
+                ],
                 // "help" => [
                 //   "icon" => "question-circle",
                 //   "name" => "ヘルプ",

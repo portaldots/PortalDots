@@ -9,31 +9,35 @@
   <h1 class="main__title">お問い合わせ</h1>
 
   <section class="panel panel-default">
-    <div class="panel-heading">
-      <h2 class="panel-title">フォーム</h2>
-    </div>
     <div class="panel-body">
-      <p>こちらから送信された内容と、それに対する返信は、全て、<strong>{{ constant('APP_NAME') }}に登録しているあなたの団体のメンバーにも閲覧可能です</strong>。また、お問い合わせされた内容とその返信は、このページで閲覧可能であるほか、委員からの返信は、あなたのメールアドレス宛にも送信されます。</p>
+      {# <p>こちらから送信された内容と、それに対する返信は、全て、<strong>{{ constant('APP_NAME') }}に登録しているあなたの団体のメンバーにも閲覧可能です</strong>。また、お問い合わせされた内容とその返信は、このページで閲覧可能であるほか、委員からの返信は、あなたのメールアドレス宛にも送信されます。</p> #}
 
-      <form class="form-horizontal">
-        <div class="form-group">
-          <label for="input_circle" class="col-sm-2 control-label">団体名</label>
+      {{ form_open("home/contacts", { class: 'form-horizontal' }) | raw }}
+        <div class="row">
+          <b for="input_content" class="col-sm-2 control-label">送信者</b>
           <div class="col-lg-6 col-sm-10">
-            <select class="form-control" id="input_circle">
-              <option></option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="input_title" class="col-sm-2 control-label">件名</label>
-          <div class="col-lg-6 col-sm-10">
-            <input type="text" class="form-control" id="input_title">
+            <ul class="list-group text-muted">
+              <li class="list-group-item">
+                名前 :
+                <span class="pull-right"><b>{{ user.name_family ~ " " ~ user.name_given }}</b></span>
+              </li>
+              {% if user.student_id %}
+                <li class="list-group-item">
+                  学籍番号 :
+                  <span class="pull-right"><b>{{ user.student_id }}</b></span>
+                </li>
+              {% endif %}
+              <li class="list-group-item">
+                メールアドレス :
+                <span class="pull-right"><b>{{ user.email }}</b></span>
+              </li>
+            </ul>
           </div>
         </div>
         <div class="form-group">
           <label for="input_content" class="col-sm-2 control-label">内容</label>
           <div class="col-lg-6 col-sm-10">
-            <textarea class="form-control" id="input_content" rows="5"></textarea>
+            <textarea name="body" class="form-control" id="input_content" rows="8"></textarea>
           </div>
         </div>
         <div class="form-group">
@@ -41,7 +45,7 @@
             <button type="submit" class="btn btn-primary">送信する</button>
           </div>
         </div>
-      </form>
+      {{ form_close() | raw }}
 
     </div>
 
