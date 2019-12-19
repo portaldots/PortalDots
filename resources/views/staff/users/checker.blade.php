@@ -2,48 +2,61 @@
 
 @section('title', 'ユーザー登録チェッカー - ' . config('app.name'))
 
-@section('main')
-<div class="card mb-3">
-    <div class="card-header">ユーザー登録チェッカー</div>
-    <div class="card-body">
-        <form method="post" class="form-inline" action="{{ route('staff.users.check') }}">
-            <div class="form-group">
-                @csrf
-                <input type="text" class="form-control" name="student_id" placeholder="学籍番号">
-                <button type="submit" class="btn btn-primary ml-1">確認</button>
-                <a href="{{ url('/home_staff') }}" class="btn btn-light ml-1">戻る</a>
-            </div>
-        </form>
-    </div>
-</div>
+@push('js')
+    <script src="{{ mix('js/users_checker.js') }}" defer></script>
+@endpush
 
-@if (!empty(request('student_id')))
-<div class="card {{ isset($user) ? $user->areBothEmailsVerified() ? 'border-success' : 'border-warning' : 'border-danger' }}">
-    <div class="card-header lead d-flex align-items-center">
-        <span class="text-uppercase text-monospace d-inline-block mr-2">
-            {{ request('student_id') }}
-        </span>
-        @if (isset($user))
-            {{ $user->name }}（{{ $user->name_yomi }}）
-            <a href="{{ url('/home_staff/users/read/' . $user->id)}}" class="btn btn-primary ml-auto" role="button">
-                <i class="fa fa-eye mr-1" aria-hidden="true"></i>
-                詳細
-            </a>
-        @endif
+@section('main')
+<div id="vue-user-checker">
+    <div class="card mb-3">
+        <div class="card-header">ユーザー登録チェッカー</div>
+        <div class="card-body">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="学籍番号"
+                v-model="student_id"
+                v-on:keyup.enter="onPressEnter"
+            >
+            <small class="form-text text-muted">入力すると自動的に検索が始まります</small>
+        </div>
     </div>
-    <div class="card-body">
-        @if (isset($user))
-            <h4 class="{{ $user->areBothEmailsVerified() ? 'text-success' : 'text-danger' }} mb-1 card-title">{{ $user->areBothEmailsVerified() ? '登録済み' : 'メールの認証が済んでいません' }}</h4>
-            @if (!$user->hasVerifiedEmail())
-                <p class="text-muted mb-1">連絡用メール未認証</p>
-            @endif
-            @if (!$user->hasVerifiedUnivemail())
-                <p class="text-muted mb-1">学校発行のメール未認証</p>
-            @endif
-        @else
-            <h5 class="text-danger card-title">未登録</h5>
-        @endif
+
+    <ul class="list-group" v-if="!is_loading">
+        <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+            v-for="item in list"
+            v-bind:key="item.id"
+        >
+            <div class="d-flex flex-column">
+                <small class="text-monospace">@{{ item.student_id }}</small>
+                <strong>@{{ item.name_family }} @{{ item.name_given }}</strong>
+            </div>
+            <div>
+                <span
+                    v-if="!item.email_verified_at || !item.univemail_verified_at"
+                    class="text-danger"
+                >
+                    メール認証未完了
+                </span>
+                <span
+                    v-else
+                    class="text-success"
+                >
+                    登録済み
+                </span>
+            </div>
+        </li>
+    </ul>
+
+    <div class="card card-body text-center text-muted" v-if="is_loading">
+        <p class="lead m-0">
+            <span class="fas fa-sync fa-spin fa-fw" aria-hidden="true"></span>
+        </p>
+    </div>
+
+    <div class="card card-body text-center text-danger" v-else-if="list.length === 0 && !is_init">
+        <p class="lead m-0">該当なし</p>
     </div>
 </div>
-@endif
 @endsection

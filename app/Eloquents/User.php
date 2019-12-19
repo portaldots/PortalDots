@@ -84,6 +84,18 @@ class User extends Authenticatable
     }
 
     /**
+     * $student_id から始まる学籍番号のユーザーだけに限定するクエリスコープ
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $student_id
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByStudentIdStartWith($query, $student_id)
+    {
+        return $query->where('student_id', 'LIKE', "{$student_id}%");
+    }
+
+    /**
      * ログイン ID から該当ユーザーを取得する
      *
      * @param string $login_id

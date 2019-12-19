@@ -96,5 +96,5 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
 
         // ユーザーチェッカー
         Route::get('/users/check', 'Staff\Users\CheckerAction')->name('users.check');
-        Route::post('/users/check', 'Staff\Users\PostCheckerAction');
+        Route::get('/users/check/list', 'Staff\Users\CheckerListAction')->name('users.check.list');
     });
