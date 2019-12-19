@@ -50,13 +50,11 @@
         '/email',
         // Users
         '/change_password',
-        '/user/',
+        '/user',
         // Staff
         '/staff',
         // Debugbar
         '/_debugbar',
-        // 以下のルートはCodeIgniter側のものだが、404にしたいもの
-        '/users/logout',
     ];
 
     if (file_exists(__DIR__. '/../storage/framework/down')) {

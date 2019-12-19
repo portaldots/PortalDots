@@ -12,6 +12,10 @@ class Index_controller extends MY_Controller
    */
     public function index()
     {
-        codeigniter_redirect("users/login");
+        if (empty($this->_get_login_user())) {
+            codeigniter_redirect("/login");
+        } else {
+            codeigniter_redirect("/home");
+        }
     }
 }

@@ -91,7 +91,7 @@ class MY_Controller extends CI_Controller
             // 現在アクセスされているURIをセッションに保存
             $_SESSION["login_return_uri"] = $this->uri->uri_string();
             // ログインページへリダイレクト
-            codeigniter_redirect('users/login');
+            codeigniter_redirect('login');
         } else {
             # ログインされている場合
             // メール認証が完了していない場合、メール認証ページへリダイレクト
