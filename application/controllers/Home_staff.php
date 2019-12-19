@@ -451,6 +451,8 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->set_subject('ユーザー');
         $this->grocery_crud->display_as('id', 'ユーザーID');
 
+        $this->grocery_crud->display_as('verify', 'メール認証');
+
         $columns = [
             'id',
             'student_id',
@@ -458,6 +460,7 @@ class Home_staff extends MY_Controller
             'name_family_yomi',
             'name_given',
             'name_given_yomi',
+            'verify',
             'email',
             'tel',
             'is_staff',
@@ -505,6 +508,8 @@ class Home_staff extends MY_Controller
             $this->grocery_crud->callback_column('name_given', array($this, '_crud_name_given_yomi'));
         }
 
+        $this->grocery_crud->callback_column('verify', array($this, '_crud_email_verified'));
+
         $vars += (array)$this->grocery_crud->render();
 
         $this->_render('home_staff/crud', $vars);
@@ -524,6 +529,17 @@ class Home_staff extends MY_Controller
     public function _crud_name_given_yomi($value, $row)
     {
         return "<ruby>" . $value . "<rt>" . $row->name_given_yomi . "</rt></ruby>";
+    }
+
+    /**
+     * メール認証の完了を調べる関数
+     */
+    public function _crud_email_verified($value, $row)
+    {
+        if (empty($row->email_verified_at) || empty($row->univemail_verified_at)) {
+            return '<span class="text-danger">未認証</span>';
+        }
+        return '<span class="text-success">認証済み</span>';
     }
 
     /**
