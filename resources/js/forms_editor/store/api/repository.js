@@ -8,6 +8,8 @@ const baseURL = JSON.parse(
 
 const axios = Axios.create({
   baseURL,
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+  withCredentials: true,
   headers: {
     'X-Requested-With': 'XMLHttpRequest'
   }
