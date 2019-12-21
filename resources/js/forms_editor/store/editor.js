@@ -102,9 +102,7 @@ export default {
       commit(SET_QUESTIONS, (await API.get_questions()).data)
       commit(SET_LOADED)
     },
-    async [UPDATE_QUESTIONS_ORDER]({ commit, state }, questions) {
-      // 現状のquestions配列の状態をバックアップ
-      const questions_backup = state.questions
+    async [UPDATE_QUESTIONS_ORDER]({ commit }, questions) {
       let count = 0
       const questions_with_priority = questions.map(question => {
         const _ = question
@@ -113,17 +111,12 @@ export default {
         return _
       })
       commit(SET_QUESTIONS, questions_with_priority)
-      try {
-        await API.update_questions_order(
-          questions_with_priority.map(question => ({
-            id: question.id,
-            priority: question.priority
-          }))
-        )
-      } catch (e) {
-        // バックアップをリストア
-        commit(SET_QUESTIONS, questions_backup)
-      }
+      await API.update_questions_order(
+        questions_with_priority.map(question => ({
+          id: question.id,
+          priority: question.priority
+        }))
+      )
     },
     [DRAG_START]({ commit }) {
       commit(CLOSE)
