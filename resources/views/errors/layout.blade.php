@@ -10,7 +10,7 @@
         <style>
             html, body {
                 background-color: #fff;
-                color: #333;
+                color: #304554;
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
                 height: 100vh;
                 margin: 0;
@@ -39,7 +39,7 @@
             }
 
             .app-name a {
-                color: #333;
+                color: #304554;
                 text-decoration: none;
             }
 
