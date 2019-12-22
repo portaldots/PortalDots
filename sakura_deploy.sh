@@ -42,7 +42,7 @@ echo "【デプロイスクリプト Start】"
 rm -rf dist/
 
 # 全ファイルを dist へ移動させる
-rsync -av --update --delete --stats ./ ./dist/ --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='vendor/' --exclude='node_modules/' >& /dev/null
+rsync -av --update --delete --stats ./ ./dist/ --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='/vendor/' --exclude='node_modules/' >& /dev/null
 
 cd dist/; composer install --optimize-autoloader --no-dev; yarn install; cd ../
 
