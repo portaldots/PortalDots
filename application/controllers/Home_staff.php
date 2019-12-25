@@ -384,7 +384,7 @@ class Home_staff extends MY_Controller
                         str_replace(
                             ["\r\n", "\t"],
                             ["{{改行}}", "{{タブ文字}}"],
-                            $answer->answers[$question->id]
+                            $answer->answers[$question->id] ?? ''
                         );
                 }
             }
