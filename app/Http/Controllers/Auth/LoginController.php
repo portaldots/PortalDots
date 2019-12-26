@@ -44,6 +44,16 @@ class LoginController extends Controller
     }
 
     /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        return view('vue_app.index');
+    }
+
+    /**
      * ログアウトページに GET リクエストされた場合
      */
     public function showLogout()

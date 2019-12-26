@@ -1,0 +1,43 @@
+/**
+ * Colors
+**/
+$color-text: #22292F;
+$color-primary: #1F97CC;
+$color-warning: #EF3F2F;
+$color-success: #36B34E;
+$color-muted: #737A80;
+$color-border: #CED4DA;
+$color-bg-gray: #F0F2F2;
+$color-bg-white: #FFF;
+
+/**
+ * Base Stylings
+ */
+$base-padding: 1.5rem;
+$base-box-shadow: 0 1px 2px rgba($color-text, 0.1);
+
+/**
+ * Z-Indexes
+**/
+$z-index-global-navbar: 9999;
+
+/**
+ * Responsive Breakpoints
+**/
+// Sidebar is hidden
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+
+// Sidebar is visible
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+/**
+ * Global Navbar
+**/
+$global-navbar-height: 4rem;
+
+/**
+ * Global Sidebar
+**/
+$global-sidebar-width: 20rem;

@@ -13,19 +13,20 @@ const path = require('path')
  */
 
 mix
+  .copy('node_modules/normalize.css/normalize.css', 'public/css/normalize.css')
   .js('resources/js/app.js', 'public/js') // メインスクリプト
   .sass('resources/sass/app.scss', 'public/css') // メインスタイル
-  .sass('resources/sass/vue_app/index.scss', 'public/css') // Vue を利用した新 UI 用のスタイル
-  .js('resources/js/vue_app/index.js', 'public/js') // Vue を利用した新 UI 用のJS
-  .js('resources/js/users_checker.js', 'public/js') // ユーザー登録チェッカー
-  .js('resources/js/forms_editor/index.js', 'public/js/forms_editor') // フォームエディタJS
-  .sass('resources/sass/forms_editor.scss', 'public/css') // フォームエディタCSS
+  .sass('resources/sass/vue_app/index.scss', 'public/css/vue_app') // Vue を利用した新 UI 用のスタイル
+  .js('resources/js/vue_app/index.js', 'public/js/vue_app') // Vue を利用した新 UI 用のJS
   .webpackConfig({
     resolve: {
       alias: {
-        '@': path.resolve('resources/')
+        '@': path.resolve('./resources/')
       }
     }
   })
+  .js('resources/js/users_checker.js', 'public/js') // ユーザー登録チェッカー
+  .js('resources/js/forms_editor/index.js', 'public/js/forms_editor') // フォームエディタJS
+  .sass('resources/sass/forms_editor.scss', 'public/css') // フォームエディタCSS
   .browserSync('localhost')
   .version()

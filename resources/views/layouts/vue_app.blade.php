@@ -8,6 +8,7 @@
 
     @prepend('css')
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        <link href="{{ mix('css/normalize.css') }}" rel="stylesheet">
         <link href="{{ mix('css/vue_app/index.css') }}" rel="stylesheet">
     @endprepend
     @stack('css')
@@ -24,8 +25,11 @@
     <meta name="format-detection" content="telephone=no">
 </head>
 <body>
+    <noscript>
+        {{ config('app.name') }}を利用するには JavaScript を有効にする必要があります。
+    </noscript>
     <div id="app">
-        @yield('content')
+        @yield('vue_content')
     </div>
 </body>
 </html>
