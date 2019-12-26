@@ -75,10 +75,7 @@ class InjectSessionFromCodeIgniter
                 ]);
             }
 
-            if (!empty($sessionArray[self::CI_SESSION_USER_ID_KEY])) {
-                // ユーザー ID が CodeIgniter 側で格納されている場合はログイン
-                Auth::loginUsingId((int)$sessionArray[self::CI_SESSION_USER_ID_KEY]);
-            } else {
+            if (empty($sessionArray[self::CI_SESSION_USER_ID_KEY])) {
                 // ユーザー ID が空の場合、ログアウト
                 Auth::logout();
             }
