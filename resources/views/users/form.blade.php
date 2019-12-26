@@ -20,7 +20,7 @@
                 <label for="student_id" class="col-md-4 col-form-label text-md-right">学籍番号</label>
 
                 <div class="col-md-8">
-                    <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror" name="student_id" value="{{ old('student_id', isset($user) ? $user->student_id : '' ) }}" {{ !empty($circles) ? 'disabled' : '' }} required>
+                    <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror" name="student_id" value="{{ old('student_id', isset($user) ? $user->student_id : '' ) }}" {{ !empty($circles) ? 'disabled' : '' }} required autocomplete="username">
                     @if (!empty($circles))
                         <small class="form-text text-muted">団体に所属しているため修正できません</small>
                     @endif
