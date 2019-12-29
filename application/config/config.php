@@ -52,12 +52,12 @@ if (!defined('PORTAL_UNIVEMAIL_DOMAIN')) {
 # ファイルアップロード先ディレクトリ(フォルダ)
 // 必ず、ア ク セ ス 禁 止 の デ ィ レ ク ト リ を指定してください。
 // 末尾のスラッシュ(/)は不要です。
-if (!defined('RP_UPLOAD_DIR')) {
-    define('RP_UPLOAD_DIR', codeigniter_env('RP_UPLOAD_DIR', __DIR__. '/../uploads'));
+if (!defined('PORTAL_UPLOAD_DIR')) {
+    define('PORTAL_UPLOAD_DIR', codeigniter_env('PORTAL_UPLOAD_DIR', __DIR__. '/../uploads'));
 }
 
 # Grocery CRUD ファイルアップロード先ディレクトリ(フォルダ)
-// RP_UPLOAD_DIR と似た設定ですが、設定方法が異なります。
+// PORTAL_UPLOAD_DIR と似た設定ですが、設定方法が異なります。
 // 先頭にスラッシュ(/)をつけることは で き ま せ ん。
 // public/index.php からみたディレクトリを指定してください。
 // ただし、さくらのレンタルサーバーにデプロイする場合、sakura_deploy.sh ファイルに
@@ -71,12 +71,12 @@ if (!defined('PORTAL_UPLOAD_DIR_CRUD')) {
 // 特定個人に対してLINEする機能ではありません。あくまでもスタッフ同報用です。
   ## 通知POST先URL
   // LINE Notifyの仕様変更がない限り、この設定を変える必要はありません。
-if (!defined('RP_LINE_NOTIFY_URL')) {
-    define('RP_LINE_NOTIFY_URL', codeigniter_env('RP_LINE_NOTIFY_URL', 'https://notify-api.line.me/api/notify'));
+if (!defined('LINE_NOTIFY_URL')) {
+    define('LINE_NOTIFY_URL', codeigniter_env('LINE_NOTIFY_URL', 'https://notify-api.line.me/api/notify'));
 }
   ## アクセストークン
-if (!defined('RP_LINE_NOTIFY_TOKEN')) {
-    define('RP_LINE_NOTIFY_TOKEN', codeigniter_env('RP_LINE_NOTIFY_TOKEN'));
+if (!defined('LINE_NOTIFY_TOKEN')) {
+    define('LINE_NOTIFY_TOKEN', codeigniter_env('LINE_NOTIFY_TOKEN'));
 }
 
 # メール設定(SMTP対応)

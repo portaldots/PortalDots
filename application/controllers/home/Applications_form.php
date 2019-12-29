@@ -432,7 +432,7 @@ class Applications_form extends Home_base_controller
         unset($config["name"]);
         unset($config["is_required"]);
         // パスなどのアップロード設定
-        $config["upload_path"] = RP_UPLOAD_DIR . "/form_file";
+        $config["upload_path"] = PORTAL_UPLOAD_DIR . "/form_file";
         $config["encrypt_name"] = true;
         // ファイルアップロードクラスを load する
         $this->load->library("upload", $config);

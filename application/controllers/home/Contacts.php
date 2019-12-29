@@ -36,7 +36,7 @@ class Contacts extends Home_base_controller
         ];
         $result = $this->_send_email(PORTAL_CONTACT_EMAIL, APP_NAME. "からのお問い合わせ", "email/contact", $vars_email, $this->_get_login_user()->email);
 
-        if (! empty(RP_LINE_NOTIFY_TOKEN)) {
+        if (! empty(LINE_NOTIFY_TOKEN)) {
             $this->_send_to_line("email/contact_line_notify", $vars_email);
         }
 

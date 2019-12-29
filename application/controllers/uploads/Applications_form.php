@@ -12,7 +12,7 @@ class Applications_form extends Uploads_base_controller
         if (empty($filename)) {
             $this->_uploads_forbidden();
         }
-        $filepath = RP_UPLOAD_DIR. '/form_file/'. basename($filename);
+        $filepath = PORTAL_UPLOAD_DIR. '/form_file/'. basename($filename);
         $this->_render_file($filepath);
     }
 }

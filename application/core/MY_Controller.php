@@ -312,14 +312,14 @@ class MY_Controller extends CI_Controller
         $options = [
             "http" => [
                 "method" => "POST",
-                "header" => "Authorization: Bearer " . RP_LINE_NOTIFY_TOKEN . "\r\n"
+                "header" => "Authorization: Bearer " . LINE_NOTIFY_TOKEN . "\r\n"
                         . "Content-Type: application/x-www-form-urlencoded\r\n"
                         . "Content-Length: ". strlen($data). "\r\n",
                 "content" => $data,
             ]
         ];
         $context = stream_context_create($options);
-        $resultJson = file_get_contents(RP_LINE_NOTIFY_URL, false, $context);
+        $resultJson = file_get_contents(LINE_NOTIFY_URL, false, $context);
         $resutlArray = json_decode($resultJson, true);
         if ((int)$resutlArray["status"] !== 200) {
             return false;

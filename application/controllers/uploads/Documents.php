@@ -17,7 +17,7 @@ class Documents extends Uploads_base_controller
             if (empty($document->filename)) {
                 $this->_uploads_forbidden();
             }
-            $filepath = RP_UPLOAD_DIR. '/documents/'. basename($document->filename);
+            $filepath = PORTAL_UPLOAD_DIR. '/documents/'. basename($document->filename);
 
             $this->_render_file($filepath);
         } else {
