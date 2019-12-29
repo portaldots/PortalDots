@@ -370,7 +370,7 @@ class Applications_form extends Home_base_controller
 
             // 完了メールを送信
             $vars_email = [];
-            $vars_email["name_to"] = $this->_get_login_user()->name_family . " " .
+            $vars_email["submitted_by"] = $this->_get_login_user()->name_family . " " .
                 $this->_get_login_user()->name_given;
             $vars_email["form_name"] = $vars["form"]->name;
             $vars_email["type"] = $type === "create" ? "新規作成" : "更新";
@@ -382,16 +382,20 @@ class Applications_form extends Home_base_controller
             $vars_email["datetime"] = date("Y/m/d H:i:s");
             $vars_email["answers"] = $answers_for_email;
 
-            // 回答者に送信するメール
-            $this->_send_email(
-                $this->_get_login_user()->email,
-                "申請「" . $vars_email["form_name"] . "」を承りました",
-                "email/applications_form_sent",
-                $vars_email
-            );
+            foreach ($this->circles->get_user_info_by_circle_id($circleId) as $user) {
+                // 回答者に送信するメール
+                $vars_email["name_to"] = $user->name_family . " " . $user->name_given;
+                $this->_send_email(
+                    $user->email,
+                    "申請「" . $vars_email["form_name"] . "」を承りました",
+                    "email/applications_form_sent",
+                    $vars_email
+                );
+            }
 
             // フォーム管理者に送信するメール
             $manager = $this->users->get_user_by_user_id($vars["form"]->created_by);
+            $vars_email["name_to"] = $manager->name_family . " " . $manager->name_given;
             $this->_send_email(
                 $manager->email,
                 "[スタッフ用控え]申請「" . $vars_email["form_name"] . "」を承りました",

@@ -17,6 +17,7 @@
 
 申請名 : {{ form_name | raw }}
 団体名 : {{ circle.name | raw }}
+申請者 : {{ submitted_by | raw }}
 {% if booth %}
 ブース : {% spaceless %}
   {% if booth.name is empty %}
