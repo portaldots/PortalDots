@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Markdown;
+namespace App\Services\Utils;
 
 use App;
 use cebe\markdown\GithubMarkdown as Parser;

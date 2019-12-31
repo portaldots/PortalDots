@@ -1,0 +1,45 @@
+// Font Size
+$font-size-lg: #{(20 / 16) + 'rem'}; // = 20px
+$font-size: #{(14 / 16) + 'rem'}; // = 14px
+$font-size-listview-title: 1rem; // = 16px
+
+// Color
+$color-success: #36B34E;
+$color-primary: #007bff;
+$color-warning: #EF3F2F;
+$color-text: #22292F;
+$color-muted: #737A80;
+$color-border: #CED4DA;
+$color-bg-grey: #F8FAFC;
+$color-bg-light: rgba($color-primary, 0.05);
+$color-bg-white: #FFF;
+
+// Spacing (WIP)
+$spacing-xl: 6rem;
+$spacing-lg: 2.5rem;
+$spacing: 1.5rem;
+$spacing-md: 1rem;
+$spacing-sm: 0.5rem;
+$spacing-xs: 0.25rem;
+
+// Parameters
+$drawer-width: 320px;
+$navbar-height: 5rem;
+$content-width: calc(100vw - #{$drawer-width});
+$transition-base: 0.3s ease;
+$transition-base-fast: 0.2s ease;
+$border-radius: 0.25rem;
+
+// Container Width
+$container-width-wide: 1200px;
+$container-width: 1024px;
+$container-width-narrow: 400px;
+
+// Media Breakpoints
+$breakpoint-drawer-hide: 1240px;
+$breakpoint-listview-single-col: 860px;
+
+// Z indexes
+$z-index-drawer: 9990;
+$z-index-drawer-backdrop: 9989;
+$z-index-navbar: 9980;

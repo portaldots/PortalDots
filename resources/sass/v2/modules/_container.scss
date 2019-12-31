@@ -1,0 +1,15 @@
+.container {
+  margin: 0 auto;
+  max-width: $container-width;
+  padding: 0 $spacing;
+  width: 100%;
+  &.is-fluid {
+    max-width: 100%;
+  }
+  &.is-wide {
+    max-width: $container-width-wide;
+  }
+  &.is-narrow {
+    max-width: $container-width-narrow;
+  }
+}

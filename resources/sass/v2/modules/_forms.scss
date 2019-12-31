@@ -1,0 +1,19 @@
+.form {
+  &-group {
+    margin-bottom: $spacing-md;
+  }
+  &-control {
+    appearance: none;
+    border: 1px solid $color-border;
+    border-radius: $border-radius;
+    box-shadow: inset 0 0.5px 1.5px rgba($color-text, 0.1);
+    padding: 0.75rem $spacing-md;
+    transition: #{$transition-base-fast} background-color, #{$transition-base-fast} box-shadow;
+    width: 100%;
+    &:focus {
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.25);
+      outline: 0;
+    }
+  }
+}

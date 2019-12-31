@@ -14,6 +14,25 @@
 // ルートURL
 Route::get('/', 'IndexController');
 
+// トップページ
+// TODO: URL は /home に変更する
+Route::get('/home__v2', 'HomeAction')->name('home');
+
+// お知らせ
+Route::prefix('/pages')
+    ->name('pages.')
+    ->group(function () {
+        Route::get('/', 'Pages\IndexAction')->name('index');
+        Route::get('/{page}', 'Pages\ShowAction')->name('show');
+    });
+
+// 配布資料
+Route::prefix('/documents')
+    ->name('documents.')
+    ->group(function () {
+        Route::get('/', 'Documents\IndexAction')->name('index');
+    });
+
 // 認証系
 Auth::routes([
     'register' => true,
@@ -59,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
 
 // ログインされており、メールアドレス認証が済んでいる場合のみアクセス可能なルート
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/home', 'HomeController@index')->name('home');
+    // Route::get('/home', 'HomeController@index')->name('home');
 });
 
 // スタッフページ（二段階認証も済んでいる状態）

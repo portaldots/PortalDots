@@ -1,0 +1,102 @@
+.listview {
+  $listview-item-width: calc((100% - #{$spacing * 2}) / 3);
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: $spacing $spacing 0;
+  @media screen and (max-width: $breakpoint-listview-single-col) {
+    flex-direction: column;
+    padding: 0;
+  }
+  &-header {
+    font-size: $font-size-lg;
+    font-weight: bold;
+    padding: 0 0 $spacing;
+    width: 100%;
+    @media screen and (max-width: $breakpoint-listview-single-col) {
+      background: $color-muted;
+      color: $color-bg-white;
+      font-size: $font-size;
+      overflow: hidden;
+      padding: $spacing-xs $spacing;
+      position: sticky;
+      text-overflow: ellipsis;
+      top: $navbar-height;
+      white-space: nowrap;
+    }
+  }
+  &-item {
+    background: $color-bg-white;
+    border-radius: $border-radius;
+    box-shadow: 0 0 0.5rem rgba($color-text, 0.05);
+    color: $color-text;
+    display: flex;
+    margin-bottom: $spacing;
+    padding: $spacing-md $spacing;
+    width: $listview-item-width;
+    &:hover,
+    &:active,
+    &:focus {
+      background: $color-bg-light;
+      color: $color-text;
+      text-decoration: none;
+    }
+    &:not(a):hover,
+    &:not(a):active,
+    &:not(a):focus {
+      background: $color-bg-white;
+    }
+    &.is-fluid {
+      width: 100%;
+    }
+    @media screen and (max-width: $breakpoint-listview-single-col) {
+      border-bottom: 1px solid $color-border;
+      border-radius: 0;
+      box-shadow: none;
+      margin: 0;
+      width: 100%;
+      &:last-child {
+        border: 0;
+      }
+    }
+    &__day_calendar {
+      flex: 1 0 auto;
+      margin-right: $spacing;
+    }
+    &__body {
+      flex: 1 1 100%;
+      &:not(:first-child) {
+        border-left: 1px solid $color-border;
+        padding-left: $spacing;
+      }
+    }
+    &__date {
+      color: $color-muted;
+      flex: 0 1 100%;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin: 0;
+    }
+    &__title {
+      font-size: $font-size-listview-title;
+      font-weight: bold;
+      margin: 0;
+    }
+    &__summary {
+      margin: 0 0 $spacing-md;
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+  &-more {
+    text-align: center;
+  }
+  &::after {
+    // 最後の行の配置がおかしくなる問題を解消
+    content: "";
+    height: 0;
+    width: $listview-item-width;
+  }
+}

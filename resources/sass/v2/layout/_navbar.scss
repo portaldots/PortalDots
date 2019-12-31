@@ -1,0 +1,46 @@
+.navbar {
+  align-items: center;
+  background: $color-bg-white;
+  box-shadow: 0 0 1rem rgba($color-text, 0.1);
+  display: flex;
+  height: $navbar-height;
+  left: $drawer-width;
+  padding: 0 $spacing;
+  position: fixed;
+  top: 0;
+  width: $content-width;
+  z-index: $z-index-navbar;
+
+  @media screen and (max-width: $breakpoint-drawer-hide) {
+    left: 0;
+    width: 100%;
+  }
+  &-toggle {
+    appearance: none;
+    background: 0;
+    border: 0;
+    display: none;
+    height: 100%;
+    // ↓ナビバーがもつpaddingを打ち消すネガティブマージン
+    margin-left: -$spacing;
+    padding: 0;
+    padding: $spacing;
+
+    @media screen and (max-width: $breakpoint-drawer-hide) {
+      display: block;
+    }
+  }
+  &-back {
+    align-items: center;
+    display: flex;
+    &__icon {
+      font-size: 1.25rem;
+      margin-right: $spacing-sm;
+    }
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+}

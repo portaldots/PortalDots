@@ -5,21 +5,13 @@
  */
 class Uploads_base_controller extends MY_Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-        if (empty($this->_get_login_user())) {
-            $this->_uploads_forbidden();
-        }
-    }
-
-  /**
-   * 指定したパスのファイルを表示
-   */
+    /**
+     * 指定したパスのファイルを表示
+     */
     protected function _render_file($filepath)
     {
         if (file_exists($filepath)) {
-          //MIMEタイプの取得
+            //MIMEタイプの取得
             $finfo = new finfo(FILEINFO_MIME_TYPE);
             $mime_type = $finfo->file($filepath);
 

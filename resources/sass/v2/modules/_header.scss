@@ -1,0 +1,16 @@
+.header {
+  margin: 0 0 $spacing;
+  padding: $spacing-xl 0 #{$spacing-xl - $spacing};
+  &__title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 0 $spacing-xs;
+  }
+  &__date {
+    color: $color-muted;
+    margin: 0 0 $spacing-md;
+  }
+  &__description {
+    margin: 0;
+  }
+}

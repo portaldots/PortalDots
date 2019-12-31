@@ -1,0 +1,20 @@
+$heading-borders: true;
+$line-height: 1.7;
+$margin: $spacing;
+$heading-borders: true;
+
+@import 'wysiwyg.css/wysiwyg.sass';
+
+.markdown {
+  @extend .wysiwyg;
+  img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+  ol,
+  ul {
+    margin-left: 0;
+    padding-left: $spacing-md;
+  }
+}

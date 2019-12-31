@@ -1,0 +1,49 @@
+@mixin btn($color, $background, $hover-background, $border-color) {
+  background: $background;
+  border: 1px solid $border-color;
+  color: $color;
+  &:hover {
+    background: $hover-background;
+  }
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($border-color, 0.5);
+  }
+}
+
+.btn {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-radius: $border-radius;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 1.15;
+  padding: 0.75rem $spacing-md;
+  text-align: center;
+  text-decoration: none;
+  transition: #{$transition-base-fast} background-color, #{$transition-base-fast} box-shadow;
+  white-space: nowrap;
+  &:hover {
+    text-decoration: none;
+  }
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+  &.is-primary {
+    @include btn(#fff, $color-primary, lighten($color-primary, 5%), $color-primary);
+  }
+  &.is-secondary {
+    @include btn($color-text, #fff, lighten($color-border, 15%), $color-border);
+  }
+  &.is-warning {
+    @include btn(#fff, $color-warning, lighten($color-warning, 5%), $color-warning);
+  }
+  &.is-block {
+    display: block;
+    width: 100%;
+  }
+  &.is-no-border {
+    border: none;
+  }
+}

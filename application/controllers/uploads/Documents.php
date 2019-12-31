@@ -11,7 +11,7 @@ class Documents extends Uploads_base_controller
         $document = $this->documents->get_document_by_document_id($document_id);
 
         if ($document !== false && ( (int)$document->is_public === 1 ||
-        (int)$this->_get_login_user()->is_staff === 1 )
+        (!empty($this->_get_login_user()) && (int)$this->_get_login_user()->is_staff === 1) )
         ) {
           // basename: ディレクトリ・トラバーサル脆弱性対策
             if (empty($document->filename)) {

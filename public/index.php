@@ -46,6 +46,10 @@
     // Laravel 側でメンテナンスモードが有効になっている場合も、
     // Laravel にルーティングされる
     $LARAVEL_PATHS = [
+        // Home
+        '/home__THISIS_V2',
+        '/pages',
+        '/documents',
         // Auth
         '/login',
         '/logout',

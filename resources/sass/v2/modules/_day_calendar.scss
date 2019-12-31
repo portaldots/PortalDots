@@ -1,0 +1,19 @@
+.day_calendar {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  &__month,
+  &__date,
+  &__day {
+    line-height: 1;
+    margin: 0;
+  }
+  &__date {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: $spacing-xs 0;
+  }
+  &__day {
+    font-size: 0.75rem;
+  }
+}

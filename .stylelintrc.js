@@ -4,6 +4,9 @@ module.exports = {
     'stylelint-config-prettier'
   ],
   plugins: ['stylelint-order', 'stylelint-scss'],
+  ignoreFiles: [
+    'resources/sass/v2/_normalize.scss'
+  ],
   rules: {
     'at-rule-no-unknown': null,
     'scss/at-rule-no-unknown': true,

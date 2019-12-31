@@ -1,0 +1,97 @@
+.drawer {
+  background: $color-bg-white;
+  border-right: 1px solid rgba($color-text, 0.16);
+  height: 100vh;
+  max-width: 80vw;
+  position: fixed;
+  top: 0;
+  transition: #{$transition-base} transform;
+  width: $drawer-width;
+  z-index: $z-index-drawer;
+  &__content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
+  }
+
+  @media screen and (max-width: $breakpoint-drawer-hide) {
+    transform: translateX(-100%);
+    &.is-open {
+      transform: translateX(0);
+    }
+  }
+  &-header {
+    background: $color-bg-light;
+    color: $color-text;
+    display: block;
+    font-weight: bold;
+    padding: $spacing;
+    padding-top: #{$navbar-height + $spacing};
+    &:hover,
+    &:focus,
+    &:active {
+      color: $color-text;
+      text-decoration: none;
+    }
+  }
+  &-nav {
+    padding: $spacing;
+    &__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    &__link {
+      border-left: 2px solid transparent;
+      color: $color-text;
+      display: block;
+      margin: $spacing-md 0;
+      padding: $spacing-sm $spacing-md;
+      &:hover,
+      &:focus,
+      &:active {
+        color: $color-text;
+        text-decoration: none;
+      }
+      &.is-active {
+        border-color: $color-primary;
+        color: $color-primary;
+        font-weight: bold;
+      }
+    }
+  }
+  &-user {
+    background: $color-muted;
+    margin-top: auto;
+    padding: $spacing;
+    &__info {
+      color: #fff;
+      font-weight: bold;
+      margin: 0 0 $spacing-md;
+      text-align: center;
+    }
+  }
+}
+
+.drawer-backdrop {
+  background: rgba($color-text, 0.5);
+  height: 100vh;
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  transition: #{$transition-base} opacity, #{$transition-base} visibility;
+  visibility: hidden;
+  width: 100vw;
+  z-index: $z-index-drawer-backdrop;
+
+  @media screen and (max-width: $breakpoint-drawer-hide) {
+    &.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
