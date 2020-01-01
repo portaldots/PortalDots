@@ -131,7 +131,7 @@
                 <div class="col-md-4 text-center">
                     <ul class="list-unstyled text-muted">
                         <li>作成 : {{ form.created_at }}</li>
-                        <li>変更 : {{ form.modified_at }}</li>
+                        <li>変更 : {{ form.updated_at }}</li>
                     </ul>
                     <a href="{{ base_url("home_staff/applications/preview/#{form.id}") }}"
                        class="btn btn-info btn-wide">
@@ -223,6 +223,8 @@
                             ・ ブース
                         {% endif %}
                     </th>
+                    <th>作成日時</th>
+                    <th>更新日時</th>
                     {% for question in form.questions if question.type is not same as("heading") %}
                         <th>
                             {{ question.name }}
@@ -256,6 +258,8 @@
                                 </a>
                             {% endif %}
                         </th>
+                        <td>{{ answer.created_at }}</td>
+                        <td>{{ answer.updated_at }}</td>
                         {% for question in form.questions if question.type is not same as("heading") %}
                             <td class="applications-read-answer-td">
                                 <div class="applications-read-answer-td__inner">

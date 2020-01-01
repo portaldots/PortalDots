@@ -53,7 +53,7 @@
           <li class="list-group-item"><a href="{{ base_url("home/schedules/") }}{{ document.schedule_info.start_at | date("Y/m/d") }}#schedule-{{ document.schedule_info.id }}"><strong>{{ document.schedule_info.name }}</strong></a> で配布</li>
           {% endif %}
           <li class="list-group-item">公開 : <span class="pull-right">{{ document.created_at_string }}</span></li>
-          <li class="list-group-item">変更 : <span class="pull-right">{{ document.modified_at_string }}</span></li>
+          <li class="list-group-item">変更 : <span class="pull-right">{{ document.updated_at_string }}</span></li>
         </ul>
         <div class="panel-footer">
           <a href="{{ base_url("uploads/documents/#{document.id}") }}" class="btn btn-primary" target="_blank">
