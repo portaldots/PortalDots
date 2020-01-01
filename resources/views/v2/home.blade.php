@@ -97,6 +97,9 @@
             </div>
         </div>
     </div>
+    <a class="listview-item is-fluid is-more-btn" href="{{ url('home/schedules') }}">
+        他の予定を見る
+    </a>
 </div>
 @endisset
 <div class="listview">
@@ -118,6 +121,11 @@
         </div>
     </a>
     @endforeach
+    @if ($remaining_pages_count > 0)
+    <a class="listview-item is-more-btn" href="{{ route('pages.index') }}">
+        残り {{ $remaining_pages_count }} 件のお知らせを見る
+    </a>
+    @endif
 </div>
 <div class="listview">
     <div class="listview-header">
@@ -150,5 +158,10 @@
         </div>
     </a>
     @endforeach
+    @if ($remaining_documents_count > 0)
+    <a class="listview-item is-more-btn" href="{{ route('documents.index') }}">
+        残り {{ $remaining_documents_count }} 件の配布資料を見る
+    </a>
+    @endif
 </div>
 @endsection

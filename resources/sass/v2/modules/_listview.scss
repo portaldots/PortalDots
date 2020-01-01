@@ -50,6 +50,16 @@
     &.is-fluid {
       width: 100%;
     }
+    &.is-more-btn {
+      align-items: center;
+      color: $color-primary;
+      display: flex;
+      flex-direction: column;
+      font-weight: bold;
+      justify-content: center;
+      padding-bottom: $spacing;
+      padding-top: $spacing;
+    }
     @media screen and (max-width: $breakpoint-listview-single-col) {
       border-bottom: 1px solid $color-border;
       border-radius: 0;
@@ -85,9 +95,6 @@
     &__summary {
       margin: $spacing-sm 0 0;
     }
-  }
-  &-more {
-    text-align: center;
   }
   &::after {
     // 最後の行の配置がおかしくなる問題を解消

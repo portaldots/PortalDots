@@ -3,6 +3,7 @@
 namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Document extends Model
 {
@@ -10,6 +11,20 @@ class Document extends Model
         'is_public' => 'bool',
         'is_important' => 'bool',
     ];
+
+    /**
+     * モデルの「初期起動」メソッド
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('updated_at', function (Builder $builder) {
+            $builder->orderBy('updated_at', 'desc');
+        });
+    }
 
     /**
      * 公開されている配布資料に限定するクエリスコープ
