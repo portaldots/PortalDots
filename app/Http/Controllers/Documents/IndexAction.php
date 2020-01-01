@@ -11,6 +11,6 @@ class IndexAction extends Controller
     public function __invoke()
     {
         return view('v2.documents.index')
-            ->with('documents', Document::public()->get());
+            ->with('documents', Document::public()->with('schedule')->get());
     }
 }

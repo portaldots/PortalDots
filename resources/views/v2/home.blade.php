@@ -1,6 +1,21 @@
 @extends('v2.layouts.app')
 
 @section('content')
+
+@auth
+@if (count($my_circles) < 1)
+<div class="top_alert is-primary">
+    <h2 class="top_alert__title">
+        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+        団体参加登録が未完了
+    </h2>
+    <p class="top_alert__body">
+        団体参加登録がお済みでない場合、申請機能など、{{ config('app.name') }} の一部機能がご利用になれません
+    </p>
+</div>
+@endif
+@endauth
+
 @guest
 <header class="jumbotron">
     <div class="container is-narrow">
@@ -91,11 +106,11 @@
     @foreach ($pages as $page)
     <a class="listview-item" href="{{ route('pages.show', $page) }}">
         <div class="listview-item__body">
-            <p class="listview-item__date">
-                @datetime($page->updated_at)
-            </p>
             <p class="listview-item__title">
                 {{ $page->title }}
+            </p>
+            <p class="listview-item__meta">
+                @datetime($page->updated_at)
             </p>
             <p class="listview-item__summary">
                 @summary($page->body)
@@ -116,7 +131,21 @@
         rel="noopener"
     >
         <div class="listview-item__body">
-            <p class="listview-item__title">{{ $document->name }}</p>
+            <p class="listview-item__title{{ $document->is_important ? ' text-danger' : '' }}">
+                @if ($document->is_important)
+                <i class="fas fa-exclamation-circle"></i>
+                @else
+                <i class="far fa-file-alt fa-fw"></i>
+                @endif
+                {{ $document->name }}
+            </p>
+            <p class="listview-item__meta">
+                @datetime($document->updated_at) 更新
+                @isset($document->schedule)
+                •
+                {{ $document->schedule->name }}で配布
+                @endisset
+            </p>
             <p class="listview-item__summary">{{ $document->description }}</p>
         </div>
     </a>

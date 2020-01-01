@@ -1,0 +1,22 @@
+.top_alert {
+  color: #fff;
+  padding: $spacing;
+  & + & {
+    border-top: 1px solid rgba(#fff, 0.16);
+  }
+  &.is-primary {
+    background: $color-primary;
+  }
+  &.is-danger {
+    background: $color-danger;
+  }
+  &__title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0 0 $spacing-xs;
+  }
+  &__body {
+    font-size: 1rem;
+    margin: 0;
+  }
+}

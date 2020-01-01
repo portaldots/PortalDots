@@ -1,0 +1,12 @@
+.text {
+  // Colors
+  &-primary {
+    color: $color-primary;
+  }
+  &-danger {
+    color: $color-danger;
+  }
+  &-muted {
+    color: $color-muted;
+  }
+}

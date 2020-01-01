@@ -36,8 +36,8 @@
   &.is-secondary {
     @include btn($color-text, #fff, lighten($color-border, 15%), $color-border);
   }
-  &.is-warning {
-    @include btn(#fff, $color-warning, lighten($color-warning, 5%), $color-warning);
+  &.is-danger {
+    @include btn(#fff, $color-danger, lighten($color-danger, 5%), $color-danger);
   }
   &.is-block {
     display: block;

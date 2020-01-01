@@ -1,38 +1,3 @@
-@section('global_nav')
-    @staffpage
-        <li class="nav-item">
-            <a class="nav-link" href="{{ url('/home') }}">
-                <i class="fas fa-fw fa-home nav-icon"></i>
-                <span class="nav-label">ホーム</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ url('/home/pages') }}">
-                <i class="fas fa-fw fa-newspaper nav-icon"></i>
-                <span class="nav-label">お知らせ</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ url('/home/applications') }}">
-                <i class="far fa-fw fa-edit nav-icon"></i>
-                <span class="nav-label">申請</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ url('/home/documents') }}">
-                <i class="far fa-fw fa-file-alt nav-icon"></i>
-                <span class="nav-label">配布資料</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ url('/home/schedules') }}">
-                <i class="far fa-fw fa-calendar-alt nav-icon"></i>
-                <span class="nav-label">予定</span>
-            </a>
-        </li>
-    @endstaffpage
-@endsection
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -70,13 +35,6 @@
             @endif
         </a>
 
-        @auth
-            @if (Gate::forUser(Auth::user())->allows('use-all-features'))
-                <ul class="navbar-nav app-navbar-nav d-none d-lg-flex">
-                    @yield('global_nav')
-                </ul>
-            @endif
-        @endauth
         <ul class="navbar-nav ml-auto">
             @auth
                 <li class="nav-item dropdown">
@@ -125,17 +83,6 @@
 </nav>
 
 @yield('content')
-
-@auth
-    @if (Gate::forUser(Auth::user())->allows('use-all-features'))
-        <div class="spnav-space d-block d-lg-none"></div>
-        <nav class="spnav d-block d-lg-none">
-            <ul class="spnav-list">
-                @yield('global_nav')
-            </ul>
-        </nav>
-    @endif
-@endauth
 
 </body>
 </html>

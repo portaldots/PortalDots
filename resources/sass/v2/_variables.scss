@@ -1,12 +1,17 @@
 // Font Size
-$font-size-lg: #{(20 / 16) + 'rem'}; // = 20px
-$font-size: #{(14 / 16) + 'rem'}; // = 14px
-$font-size-listview-title: 1rem; // = 16px
+$base-font-size-px: 15;
+$base-font-size: #{$base-font-size-px + 'px'};
+$font-size-lg: #{(20 / $base-font-size-px) + 'rem'};
+$font-size: #{(14 / $base-font-size-px) + 'rem'};
+// inputのフォントサイズは16px以上にしないと、フォーカス時 iOS デバイスで
+// ズームしてしまう
+$font-size-input: #{(16 / $base-font-size-px) + 'rem'};
+$font-size-listview-title: 1rem;
 
 // Color
 $color-success: #36B34E;
 $color-primary: #007bff;
-$color-warning: #EF3F2F;
+$color-danger: #EF3F2F;
 $color-text: #22292F;
 $color-muted: #737A80;
 $color-border: #CED4DA;

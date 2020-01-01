@@ -21,17 +21,17 @@
         </li>
         @auth
         <li class="drawer-nav__item">
-            <a href="" class="drawer-nav__link">
+            <a href="{{ url('home/applications') }}" class="drawer-nav__link">
                 申請
             </a>
         </li>
         <li class="drawer-nav__item">
-            <a href="" class="drawer-nav__link">
-                今後の予定
+            <a href="{{ url('home/schedules') }}" class="drawer-nav__link">
+                スケジュール
             </a>
         </li>
         <li class="drawer-nav__item">
-            <a href="" class="drawer-nav__link">
+            <a href="{{ url('home/contacts') }}" class="drawer-nav__link">
                 お問い合わせ
             </a>
         </li>

@@ -38,18 +38,17 @@
     }
   }
   &-nav {
-    padding: $spacing;
+    padding: $spacing-md 0;
     &__list {
       list-style: none;
       margin: 0;
       padding: 0;
     }
     &__link {
-      border-left: 2px solid transparent;
       color: $color-text;
       display: block;
       margin: $spacing-md 0;
-      padding: $spacing-sm $spacing-md;
+      padding: $spacing-sm $spacing;
       &:hover,
       &:focus,
       &:active {
@@ -57,9 +56,22 @@
         text-decoration: none;
       }
       &.is-active {
-        border-color: $color-primary;
         color: $color-primary;
         font-weight: bold;
+        position: relative;
+        &::before {
+          $bar-width: 4px;
+
+          background: $color-primary;
+          border-radius: $bar-width;
+          content: "";
+          display: block;
+          height: 100%;
+          left: -#{$bar-width};
+          position: absolute;
+          top: 0;
+          width: #{$bar-width * 2};
+        }
       }
     }
   }

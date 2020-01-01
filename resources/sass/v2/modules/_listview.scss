@@ -12,7 +12,7 @@
   &-header {
     font-size: $font-size-lg;
     font-weight: bold;
-    padding: 0 0 $spacing;
+    padding: 0 0 $spacing-md;
     width: 100%;
     @media screen and (max-width: $breakpoint-listview-single-col) {
       background: $color-muted;
@@ -71,23 +71,19 @@
         padding-left: $spacing;
       }
     }
-    &__date {
-      color: $color-muted;
-      flex: 0 1 100%;
-      font-size: 0.75rem;
-      font-weight: bold;
-      margin: 0;
-    }
     &__title {
       font-size: $font-size-listview-title;
       font-weight: bold;
       margin: 0;
     }
+    &__meta {
+      color: $color-muted;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin: 0;
+    }
     &__summary {
-      margin: 0 0 $spacing-md;
-      &:last-child {
-        margin: 0;
-      }
+      margin: $spacing-sm 0 0;
     }
   }
   &-more {

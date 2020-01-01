@@ -31,4 +31,9 @@ class Schedule extends Model
     {
         return $query->where('start_at', '>', now());
     }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
 }
