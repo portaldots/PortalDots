@@ -67,6 +67,14 @@
         </div>
     </div>
     <div class="content">
+        @if (Session::has('topAlert.title'))
+            <div class="top_alert is-primary">
+                <h2 class="top_alert__title">{{ session('topAlert.title') }}</h2>
+                @if (Session::has('topAlert.body'))
+                    <p class="top_alert__body">{{ session('topAlert.body') }}</p>
+                @endif
+            </div>
+        @endif
         @yield('content')
     </div>
 </div>

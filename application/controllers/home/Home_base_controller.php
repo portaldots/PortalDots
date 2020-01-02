@@ -61,7 +61,7 @@ class Home_base_controller extends MY_Controller
                 "contacts" => [
                   "icon" => "envelope-o",
                   "name" => "お問い合わせ",
-                  "url" => "home/contacts",
+                  "url" => "contacts",
                 ],
                 // "help" => [
                 //   "icon" => "question-circle",

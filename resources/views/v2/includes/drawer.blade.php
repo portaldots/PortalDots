@@ -31,7 +31,7 @@
             </a>
         </li>
         <li class="drawer-nav__item">
-            <a href="{{ url('home/contacts') }}" class="drawer-nav__link">
+            <a href="{{ route('contacts') }}" class="drawer-nav__link{{ Request::is('contacts*') ? ' is-active' : '' }}">
                 お問い合わせ
             </a>
         </li>
