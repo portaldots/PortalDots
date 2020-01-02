@@ -11,14 +11,14 @@
         @if ($belong)
             <p class="card-text">団体に所属しているため削除することができません</p>
             <p class="card-text">詳細については「{{ config('portal.admin_name') }}」までお問い合わせください</p>
-            <p><a href="{{ route('home') }}" class="btn btn-primary" role="button">ホームに戻る</a></p>
+            <p><a href="{{ url('/') }}" class="btn btn-primary" role="button">ホームに戻る</a></p>
         @else
             <p class="card-text">アカウントを削除した場合、申請の手続きなどができなくなります。</p>
             <form action="{{ route('user.destroy') }}" method="post">
                 @method('delete')
                 @csrf
                 <button type="submit" class="btn btn-danger">アカウントを削除</button>
-                <a href="{{ route('home') }}" class="btn btn-primary">キャンセル</a>
+                <a href="{{ url('/') }}" class="btn btn-primary">キャンセル</a>
             </form>
         @endif
     </div>

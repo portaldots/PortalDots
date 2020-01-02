@@ -133,7 +133,7 @@
                     <button type="submit" class="btn btn-primary">
                         {{ isset($user) ? '保存' : '登録' }}
                     </button>
-                    <a href="{{ route('home') }}" class="btn btn-default" role="button">キャンセル</a>
+                    <a href="{{ url('/') }}" class="btn btn-default" role="button">キャンセル</a>
                 </div>
             </div>
         </form>
