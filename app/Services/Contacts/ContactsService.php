@@ -21,7 +21,7 @@ class ContactsService
      */
     public function create(?Circle $circle, User $sender, string $contactBody)
     {
-        if (is_iterable($circle->users) && count($circle->users) > 0) {
+        if (isset($circle) && is_iterable($circle->users) && count($circle->users) > 0) {
             // 団体に所属するユーザー全員に確認メールを送信する
             foreach ($circle->users as $user) {
                 $this->send($user, $circle, $sender, $contactBody);

@@ -38,7 +38,7 @@
             <label class="form-label" for="email">メールアドレス</label>
             <input type="email" id="email" readonly value="{{ Auth::user()->email }}" class="form-control is-plaintext">
         </div>
-        @unless (empty($circles))
+        @unless (empty($circles) || count($circles) < 1)
             <div class="form-group">
                 <label class="form-label" for="circle_id">団体名</label>
                 <select name="circle_id" id="circle_id" class="form-control">
