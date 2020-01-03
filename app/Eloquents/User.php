@@ -65,6 +65,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'is_staff' => 'bool',
+        'is_signed_up' => 'bool',
     ];
 
     public function circles()
@@ -240,5 +241,14 @@ class User extends Authenticatable
         return $this->forceFill([
             'univemail_verified_at' => $this->freshTimestamp(),
         ])->save();
+    }
+
+    /**
+     * is_signed_up を true にセット
+     */
+    public function setSignedUp()
+    {
+        $this->is_signed_up = true;
+        $this->save();
     }
 }

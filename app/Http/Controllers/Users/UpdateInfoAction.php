@@ -58,16 +58,15 @@ class UpdateInfoAction extends Controller
         }
 
         if ($changed_email) {
-            $this->emailService->sendToEmail($user);
+            $this->emailService->sendToEmail($user, $user->is_signed_up);
         }
 
         if ($changed_univemail) {
-            $this->emailService->sendToUnivemail($user);
+            $this->emailService->sendToUnivemail($user, $user->is_signed_up);
         }
 
         if ($changed_univemail || $changed_email) {
-            return redirect()
-            ->route('home')
+            return redirect('/')
             ->with('success_message', '確認メールを送信しました');
         }
 
@@ -77,8 +76,7 @@ class UpdateInfoAction extends Controller
             ->with('success_message', 'ユーザー情報を更新しました');
         }
 
-        return redirect()
-            ->route('home')
+        return redirect('/')
             ->with('success_message', 'ユーザー情報を更新しました');
     }
 }

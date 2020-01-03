@@ -10,7 +10,7 @@
                 <i class="fas fa-check-circle"></i>
             </p>
             <p class="text-center text-success lead mb-0 pb-4">
-                <strong>ユーザー登録完了しました！</strong>
+                <strong>手続きが完了しました！</strong>
             </p>
             <p class="text-center mb-0">
                 <a href="{{ url('/') }}" class="btn btn-primary">

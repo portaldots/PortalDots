@@ -22,6 +22,8 @@ class EnsureEmailIsVerified
         if (! $user || ! $user->areBothEmailsVerified()) {
             return redirect()->route('verification.notice');
         }
+        
+        $user->setSignedUp();
 
         return $next($request);
     }
