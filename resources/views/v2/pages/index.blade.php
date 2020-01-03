@@ -19,5 +19,11 @@
         </div>
     </a>
     @endforeach
+    @empty ($pages)
+    <div class="listview-empty">
+        <i class="fas fa-bullhorn listview-empty__icon"></i>
+        <p class="listview-empty__text">お知らせはまだありません</p>
+    </div>
+    @endempty
 </div>
 @endsection

@@ -3,7 +3,7 @@
         {{ $date->format('n') }}
     </p>
     <p class="day_calendar__date">
-        {{ $date->format('d') }}
+        {{ $date->format('j') }}
     </p>
     <p class="day_calendar__day">
         @dayByDayId($date->format('w'))

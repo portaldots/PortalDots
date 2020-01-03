@@ -50,6 +50,7 @@
         '/home__v2',
         '/pages',
         '/documents',
+        '/schedules',
         // Auth
         '/login',
         '/logout',

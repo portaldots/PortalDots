@@ -1,0 +1,39 @@
+.tab_strip {
+  background: $color-bg-white;
+  border-bottom: 1px solid $color-border;
+  display: flex;
+  overflow: hidden;
+  padding: 0 $spacing;
+  &-tab {
+    color: $color-text;
+    display: block;
+    padding: $spacing $spacing $spacing-md;
+    text-align: center;
+    @media screen and (max-width: $breakpoint-listview-single-col) {
+      width: 100%;
+    }
+    &:hover,
+    &:focus,
+    &:active {
+      color: $color-text;
+      text-decoration: none;
+    }
+    &.is-active {
+      font-weight: bold;
+      position: relative;
+      &::before {
+        $bar-width: 4px;
+
+        background: $color-primary;
+        border-radius: $bar-width;
+        bottom: -#{$bar-width};
+        content: "";
+        display: block;
+        height: #{$bar-width * 2};
+        left: 0;
+        position: absolute;
+        width: 100%;
+      }
+    }
+  }
+}

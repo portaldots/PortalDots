@@ -26,3 +26,10 @@ a {
     text-decoration: underline;
   }
 }
+
+hr {
+  border: 0;
+  border-top: 1px solid $color-border;
+  margin: $spacing 0;
+  padding: 0;
+}

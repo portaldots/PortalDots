@@ -33,6 +33,15 @@ Route::prefix('/documents')
         Route::get('/', 'Documents\IndexAction')->name('index');
     });
 
+// スケジュール
+Route::prefix('/schedules')
+    ->name('schedules.')
+    ->group(function () {
+        Route::get('/', 'Schedules\IndexAction')->name('index');
+        Route::get('/ended', 'Schedules\EndedAction')->name('ended');
+        Route::get('/{schedule}', 'Schedules\ShowAction')->name('show');
+    });
+
 // 認証系
 Auth::routes([
     'register' => true,

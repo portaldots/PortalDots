@@ -90,7 +90,7 @@
                 {{ $next_schedule->name }}
             </p>
             <p class="listview-item__summary">
-                @datetime($next_schedule->start_at) • {{ $next_schedule->place }}
+                @datetime($next_schedule->start_at)〜 • {{ $next_schedule->place }}
             </p>
             <div class="listview-item__sumarry markdown">
                 @markdown($next_schedule->description)
@@ -126,6 +126,12 @@
         残り {{ $remaining_pages_count }} 件のお知らせを見る
     </a>
     @endif
+    @empty ($pages)
+    <div class="listview-empty">
+        <i class="fas fa-bullhorn listview-empty__icon"></i>
+        <p class="listview-empty__text">お知らせはまだありません</p>
+    </div>
+    @endempty
 </div>
 <div class="listview">
     <div class="listview-header">
@@ -163,5 +169,11 @@
         残り {{ $remaining_documents_count }} 件の配布資料を見る
     </a>
     @endif
+    @empty ($documents)
+    <div class="listview-empty">
+        <i class="far fa-file-alt listview-empty__icon"></i>
+        <p class="listview-empty__text">配布資料はまだありません</p>
+    </div>
+    @endempty
 </div>
 @endsection
