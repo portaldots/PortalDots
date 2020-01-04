@@ -1,7 +1,7 @@
 ---
 name: バグ・不具合の報告
 about: バグ・不具合に関する issue
-title: "【画面名】 不具合の内容"
+title: '【画面名】 不具合の内容'
 labels: bug
 assignees: ''
 
@@ -21,6 +21,6 @@ assignees: ''
 1. 「〜」というエラーが表示される
 
 ## 期待する動作
-A clear and concise description of what you expected to happen. / 正常に動作した場合、どのような動作になると思われますでしょうか。
+<!-- 正常に動作した場合、どのような動作になると思われますでしょうか。 -->
 
 ## 備考
