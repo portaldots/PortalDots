@@ -20,9 +20,7 @@
       font-size: $font-size;
       overflow: hidden;
       padding: $spacing-xs $spacing;
-      position: sticky;
       text-overflow: ellipsis;
-      top: $navbar-height;
       white-space: nowrap;
     }
   }
