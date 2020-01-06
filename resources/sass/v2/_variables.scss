@@ -6,7 +6,7 @@ $font-size: #{(14 / $base-font-size-px) + 'rem'};
 // inputのフォントサイズは16px以上にしないと、フォーカス時 iOS デバイスで
 // ズームしてしまう
 $font-size-input: #{(16 / $base-font-size-px) + 'rem'};
-$font-size-listview-title: 1rem;
+$font-size-listview-title: 1.25rem;
 
 // Color
 $color-success: #36B34E;
