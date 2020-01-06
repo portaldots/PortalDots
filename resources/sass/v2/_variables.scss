@@ -34,17 +34,21 @@ $content-width: calc(100vw - #{$drawer-width});
 $transition-base: 0.3s ease;
 $transition-base-fast: 0.2s ease;
 $border-radius: 0.25rem;
+$bottom-tabs-height: 4.5rem;
 
 // Container Width
 $container-width-wide: 1200px;
 $container-width: 1024px;
+$container-width-medium: 600px;
 $container-width-narrow: 400px;
 
 // Media Breakpoints
 $breakpoint-drawer-hide: 1240px;
 $breakpoint-listview-single-col: 860px;
+$breakpoint-bottom-tabs: $breakpoint-drawer-hide;
 
 // Z indexes
 $z-index-drawer: 9990;
 $z-index-drawer-backdrop: 9989;
 $z-index-navbar: 9980;
+$z-index-bottom_tabs: 9980;

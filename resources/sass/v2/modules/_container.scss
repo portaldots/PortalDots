@@ -9,6 +9,9 @@
   &.is-wide {
     max-width: $container-width-wide;
   }
+  &.is-medium {
+    max-width: $container-width-medium;
+  }
   &.is-narrow {
     max-width: $container-width-narrow;
   }

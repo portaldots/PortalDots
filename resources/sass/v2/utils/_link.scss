@@ -1,0 +1,8 @@
+@mixin link-style-reset($color: $color-text) {
+  &:hover,
+  &:focus,
+  &:active {
+    color: $color;
+    text-decoration: none;
+  }
+}

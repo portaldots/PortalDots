@@ -1,0 +1,58 @@
+body {
+  padding-bottom: calc(env(safe-area-inset-bottom) + #{$bottom-tabs-height});
+  @media screen and (min-width: $breakpoint-bottom-tabs) {
+    padding-bottom: 0;
+  }
+}
+
+.bottom_tabs {
+  background: #fff;
+  bottom: 0;
+  box-shadow: 0 -1px 4px rgba($color-text, 0.05);
+  height: calc(env(safe-area-inset-bottom) + #{$bottom-tabs-height});
+  left: 0;
+  position: fixed;
+  width: 100vw;
+  z-index: $z-index-bottom-tabs;
+  &-container {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    padding: 0 $spacing env(safe-area-inset-bottom);
+  }
+  &-tab {
+    $selector-tab: &;
+    @include link-style-reset($color-muted);
+
+    align-items: center;
+    color: $color-muted;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    &__icon {
+      font-size: 1.4rem;
+      margin-bottom: $spacing-sm;
+    }
+    &__label {
+      border-radius: 9999px;
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: bold;
+      padding: 0 $spacing-sm;
+    }
+    &.is-active {
+      @include link-style-reset($color-primary);
+
+      color: $color-primary;
+      #{$selector-tab}__label {
+        background: $color-bg-light;
+        color: $color-primary;
+      }
+    }
+  }
+
+  @media screen and (min-width: $breakpoint-bottom-tabs) {
+    display: none;
+  }
+}

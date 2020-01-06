@@ -71,3 +71,7 @@
     </form>
 </main>
 @endsection
+
+@section('bottom_tabs')
+{{-- TODO: 完全にLaravel化したら、このセクションは完全削除する --}}
+@endsection

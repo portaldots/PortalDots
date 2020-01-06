@@ -1,6 +1,11 @@
 @import 'normalize';
 @import 'variables';
 
+// Utils
+@import 'utils/text';
+@import 'utils/spacing';
+@import 'utils/link';
+
 // Layout
 @import 'layout/base';
 @import 'layout/main_wrapper';
@@ -19,7 +24,4 @@
 @import 'modules/markdown';
 @import 'modules/day_calendar';
 @import 'modules/tab_strip';
-
-// Utils
-@import 'utils/text';
-@import 'utils/spacing';
+@import 'modules/bottom_tabs';
