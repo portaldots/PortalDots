@@ -25,6 +25,7 @@
         @markdown($schedule->description)
     </div>
 </main>
+@if (count($schedule->documents) > 0)
 <div class="listview container">
     <div class="listview-header">
         配布資料
@@ -57,4 +58,5 @@
     </a>
     @endforeach
 </div>
+@endif
 @endsection
