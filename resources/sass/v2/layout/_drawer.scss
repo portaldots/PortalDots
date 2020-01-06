@@ -63,14 +63,14 @@
           $bar-width: 4px;
 
           background: $color-primary;
-          border-radius: $bar-width;
+          border-radius: 0 $bar-width $bar-width 0;
           content: "";
           display: block;
           height: 100%;
-          left: -#{$bar-width};
+          left: 0;
           position: absolute;
           top: 0;
-          width: #{$bar-width * 2};
+          width: $bar-width;
         }
       }
     }

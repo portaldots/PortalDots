@@ -25,11 +25,11 @@
         $bar-width: 4px;
 
         background: $color-primary;
-        border-radius: $bar-width;
-        bottom: -#{$bar-width};
+        border-radius: $bar-width $bar-width 0 0;
+        bottom: 0;
         content: "";
         display: block;
-        height: #{$bar-width * 2};
+        height: $bar-width;
         left: 0;
         position: absolute;
         width: 100%;
