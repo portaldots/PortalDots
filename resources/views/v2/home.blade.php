@@ -97,7 +97,7 @@
             </div>
         </div>
     </div>
-    <a class="listview-item is-fluid is-more-btn" href="{{ url('home/schedules') }}">
+    <a class="listview-item is-fluid is-more-btn" href="{{ route('schedules.index') }}">
         他の予定を見る
     </a>
 </div>
