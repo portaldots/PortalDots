@@ -80,7 +80,7 @@
                 <label for="tel" class="col-md-4 col-form-label text-md-right">連絡先電話番号</label>
 
                 <div class="col-md-8">
-                    <input id="tel" type="text" class="form-control @error('tel') is-invalid @enderror" name="tel" value="{{ old('tel', isset($user) ? $user->tel : '' ) }}" required>
+                    <input id="tel" type="tel" class="form-control @error('tel') is-invalid @enderror" name="tel" value="{{ old('tel', isset($user) ? $user->tel : '' ) }}" required>
 
                     @error('tel')
                         <span class="invalid-feedback" role="alert">
