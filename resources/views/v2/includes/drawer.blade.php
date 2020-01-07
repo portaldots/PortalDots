@@ -5,7 +5,7 @@
     <ul class="drawer-nav__list">
         <li class="drawer-nav__item">
             {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
-            <a href="{{ url('/') }}" class="drawer-nav__link{{ Request::is('login') || Request::is('home*') ? ' is-active' : '' }}">
+            <a href="{{ route('home') }}" class="drawer-nav__link{{ Request::is('login') || Request::is('home*') ? ' is-active' : '' }}">
                 ホーム
             </a>
         </li>
