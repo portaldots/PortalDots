@@ -81,7 +81,7 @@
     <div class="bottom_tabs">
         <div class="container is-medium bottom_tabs-container">
             {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
-            <a href="{{ url('/') }}" class="bottom_tabs-tab{{ Request::is('login') || Request::is('home*') ? ' is-active' : '' }}">
+            <a href="{{ route('home') }}" class="bottom_tabs-tab{{ Request::is('login') || Request::is('home*') ? ' is-active' : '' }}">
                 <i class="fas fa-home bottom_tabs-tab__icon"></i>
                 <div class="bottom_tabs-tab__label">ホーム</div>
             </a>
