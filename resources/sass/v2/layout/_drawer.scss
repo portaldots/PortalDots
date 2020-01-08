@@ -1,7 +1,7 @@
 .drawer {
   background: $color-bg-white;
   border-right: 1px solid rgba($color-text, 0.16);
-  height: 100vh;
+  height: 100%;
   max-width: 80vw;
   position: fixed;
   top: 0;
@@ -79,6 +79,7 @@
     background: $color-muted;
     margin-top: auto;
     padding: $spacing;
+    padding-bottom: calc(env(safe-area-inset-bottom) + #{$spacing});
     &__info {
       color: #fff;
       font-weight: bold;
