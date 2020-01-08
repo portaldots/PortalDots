@@ -1,5 +1,9 @@
 html {
   font-size: $base-font-size;
+
+  @media screen and (max-width: 350px) {
+    font-size: #{($base-font-size-px * 0.8) + 'px'};
+  }
 }
 
 body {

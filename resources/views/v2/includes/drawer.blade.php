@@ -38,7 +38,7 @@
             </a>
         </li>
         <li class="drawer-nav__item">
-            <a href="{{ route('user.edit') }}" class="drawer-nav__link">
+            <a href="{{ route('user.edit') }}" class="drawer-nav__link{{ Request::is('user*') || Request::is('change_password') ? ' is-active' : '' }}">
                 ユーザー設定
             </a>
         </li>

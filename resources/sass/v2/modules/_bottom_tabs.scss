@@ -18,7 +18,7 @@ body {
     align-items: center;
     display: flex;
     height: 100%;
-    padding: 0 $spacing env(safe-area-inset-bottom);
+    padding: 0 0 env(safe-area-inset-bottom);
   }
   &-tab {
     $selector-tab: &;

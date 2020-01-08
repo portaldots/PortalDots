@@ -9,6 +9,6 @@ class ChangePasswordAction extends Controller
 {
     public function __invoke()
     {
-        return view('users.change_password');
+        return view('v2.users.change_password');
     }
 }

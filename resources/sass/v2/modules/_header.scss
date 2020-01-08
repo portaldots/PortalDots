@@ -1,10 +1,11 @@
 .header {
-  margin: 0 0 $spacing;
-  padding: $spacing-lg 0 #{$spacing-lg - $spacing};
+  margin: 0;
+  padding: $spacing-lg 0;
   &__title {
     font-size: 2rem;
     font-weight: bold;
-    margin: 0 0 $spacing-xs;
+    line-height: 1.4;
+    margin: $spacing-xs 0;
   }
   &__date {
     color: $color-muted;

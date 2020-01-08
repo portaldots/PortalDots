@@ -18,7 +18,18 @@
 </nav>
 @endsection
 
+@section('bottom_tabs')
+{{-- TODO: 完全にLaravel化したら、このセクションは完全削除する --}}
+@endsection
+
 @section('content')
+<header class="header">
+    <div class="container">
+        <h1 class="header__title">
+            お問い合わせ
+        </h1>
+    </div>
+</header>
 <main class="container">
     <form class="form" method="post" action="{{ route('contacts.post') }}">
         @csrf
@@ -70,8 +81,4 @@
         <button type="submit" class="btn is-primary">送信</button>
     </form>
 </main>
-@endsection
-
-@section('bottom_tabs')
-{{-- TODO: 完全にLaravel化したら、このセクションは完全削除する --}}
 @endsection

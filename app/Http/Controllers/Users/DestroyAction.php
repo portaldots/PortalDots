@@ -18,17 +18,16 @@ class DestroyAction extends Controller
         if (!empty($circles)) {
             return redirect()
                 ->route('user.delete')
-                ->with('error_message', 'アカウントの削除に失敗しました。');
+                ->with('topAlert.title', '団体に所属しているため、アカウント削除はできません。');
         }
-        
+
         if ($user->delete()) {
-            return redirect()
-                ->route('home')
+            return redirect('/')
                 ->with('success_message', 'アカウントの削除が完了しました。');
         }
 
         return redirect()
             ->route('user.delete')
-            ->with('error_message', 'アカウントの削除に失敗しました。');
+            ->with('topAlert.title', 'アカウントの削除に失敗しました。');
     }
 }

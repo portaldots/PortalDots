@@ -19,7 +19,7 @@ class PostChangePasswordAction extends Controller
     {
         $this->changePasswordService = $changePasswordService;
     }
-    
+
     public function __invoke(ChangePasswordRequest $request)
     {
         // ChangePasswordRequest クラス内で、現在のパスワードが正しいことも含めてのバリデーション済み
@@ -27,6 +27,6 @@ class PostChangePasswordAction extends Controller
         $this->changePasswordService->changePassword(Auth::user(), $request->new_password);
 
         return redirect()->route('change_password')
-            ->with('success_message', 'パスワードを変更しました。');
+            ->with('topAlert.title', 'パスワードを変更しました。');
     }
 }

@@ -1,6 +1,25 @@
+.pt-spacing {
+  padding-top: $spacing;
+  &-lg {
+    padding-top: $spacing-lg;
+  }
+  &-md {
+    padding-top: $spacing-md;
+  }
+}
+
 .pb-spacing {
   padding-bottom: $spacing;
   &-lg {
     padding-bottom: $spacing-lg;
+  }
+}
+
+.py-spacing {
+  padding-bottom: $spacing;
+  padding-top: $spacing;
+  &-lg {
+    padding-bottom: $spacing-lg;
+    padding-top: $spacing-lg;
   }
 }

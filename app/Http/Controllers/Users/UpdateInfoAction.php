@@ -73,7 +73,7 @@ class UpdateInfoAction extends Controller
         if ($user->areBothEmailsVerified()) {
             return redirect()
             ->route('user.edit')
-            ->with('success_message', 'ユーザー情報を更新しました');
+            ->with('topAlert.title', 'ユーザー情報を更新しました');
         }
 
         return redirect('/')

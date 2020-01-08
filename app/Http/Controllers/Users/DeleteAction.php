@@ -13,7 +13,7 @@ class DeleteAction extends Controller
         $user = Auth::user();
         $circles = $user->circles->all();
 
-        return view('users.delete')
+        return view('v2.users.delete')
             ->with('belong', !empty($circles));
     }
 }

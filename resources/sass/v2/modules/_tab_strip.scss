@@ -4,12 +4,17 @@
   display: flex;
   overflow: hidden;
   padding: 0 $spacing;
+  @media screen and (max-width: $breakpoint-listview-single-col) {
+    padding: 0;
+  }
   &-tab {
     color: $color-text;
     display: block;
     padding: $spacing $spacing $spacing-md;
     text-align: center;
     @media screen and (max-width: $breakpoint-listview-single-col) {
+      padding-left: 0;
+      padding-right: 0;
       width: 100%;
     }
     &:hover,

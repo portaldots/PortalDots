@@ -31,6 +31,14 @@ textarea {
         }
       }
     }
+    &[disabled] {
+      background: $color-bg-grey;
+      color: $color-muted;
+      opacity: 0.75;
+    }
+    &.is-invalid {
+      border-color: $color-danger;
+    }
     &.is-plaintext {
       background: transparent;
       border: 0;
@@ -45,6 +53,11 @@ textarea {
     }
   }
   &-text {
+    display: block;
+    margin: $spacing-xs 0;
+  }
+  &-invalid-feedback {
+    color: $color-danger;
     display: block;
     margin: $spacing-xs 0;
   }
