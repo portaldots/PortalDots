@@ -9,9 +9,9 @@
   }
   &__date {
     color: $color-muted;
-    margin: 0 0 $spacing-md;
+    margin: 0;
   }
   &__description {
-    margin: 0;
+    margin: $spacing-md 0 0;
   }
 }
