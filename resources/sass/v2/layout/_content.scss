@@ -5,4 +5,8 @@
   @media screen and (max-width: $breakpoint-drawer-hide) {
     margin-left: 0;
   }
+
+  @media screen and (max-width: $breakpoint-bottom-tabs) {
+    padding-bottom: 0;
+  }
 }

@@ -1,25 +1,25 @@
 .pt-spacing {
-  padding-top: $spacing;
+  padding-top: $spacing !important;
   &-lg {
-    padding-top: $spacing-lg;
+    padding-top: $spacing-lg !important;
   }
   &-md {
-    padding-top: $spacing-md;
+    padding-top: $spacing-md !important;
   }
 }
 
 .pb-spacing {
-  padding-bottom: $spacing;
+  padding-bottom: $spacing !important;
   &-lg {
-    padding-bottom: $spacing-lg;
+    padding-bottom: $spacing-lg !important;
   }
 }
 
 .py-spacing {
-  padding-bottom: $spacing;
-  padding-top: $spacing;
+  padding-bottom: $spacing !important;
+  padding-top: $spacing !important;
   &-lg {
-    padding-bottom: $spacing-lg;
-    padding-top: $spacing-lg;
+    padding-bottom: $spacing-lg !important;
+    padding-top: $spacing-lg !important;
   }
 }

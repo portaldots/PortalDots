@@ -3,7 +3,7 @@
 @section('title', 'お知らせ')
 
 @section('content')
-<div class="listview">
+<div class="listview container">
     @foreach ($pages as $page)
     <a class="listview-item" href="{{ route('pages.show', $page) }}">
         <div class="listview-item__body">

@@ -1,6 +1,6 @@
 .drawer {
   background: $color-bg-white;
-  border-right: 1px solid rgba($color-text, 0.16);
+  box-shadow: 0.25rem 0 1rem rgba($color-text, 0.05);
   height: 100%;
   max-width: 80vw;
   position: fixed;
@@ -8,6 +8,23 @@
   transition: #{$transition-base} transform;
   width: $drawer-width;
   z-index: $z-index-drawer;
+  @mixin divider($is-bottom: false) {
+    position: relative;
+    &::after {
+      border-bottom: 1px solid $color-border;
+      content: "";
+      display: block;
+      height: 1px;
+      left: $spacing;
+      position: absolute;
+      right: $spacing;
+      @if ($is-bottom) {
+        bottom: 0;
+      } @else {
+        top: 0;
+      }
+    }
+  }
   &__content {
     display: flex;
     flex-direction: column;
@@ -24,7 +41,8 @@
     }
   }
   &-header {
-    background: $color-bg-light;
+    @include divider(true);
+
     color: $color-text;
     display: block;
     font-weight: bold;
@@ -47,7 +65,7 @@
     &__link {
       color: $color-text;
       display: block;
-      margin: $spacing-md 0;
+      margin: $spacing 0;
       padding: $spacing-sm $spacing;
       &:hover,
       &:focus,
@@ -74,14 +92,19 @@
         }
       }
     }
+    &__icon {
+      font-size: 1.2rem;
+      margin-right: $spacing-sm;
+      opacity: 0.5;
+    }
   }
   &-user {
-    background: $color-muted;
+    @include divider(false);
+
     margin-top: auto;
     padding: $spacing;
     padding-bottom: calc(env(safe-area-inset-bottom) + #{$spacing});
     &__info {
-      color: #fff;
       font-weight: bold;
       margin: 0 0 $spacing-md;
       text-align: center;

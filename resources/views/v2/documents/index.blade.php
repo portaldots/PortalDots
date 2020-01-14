@@ -3,7 +3,7 @@
 @section('title', '配布資料')
 
 @section('content')
-<div class="listview">
+<div class="listview container">
     @foreach ($documents as $document)
     <a
         class="listview-item"

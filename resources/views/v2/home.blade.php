@@ -77,11 +77,11 @@
 </header>
 @endguest
 @isset($next_schedule)
-<div class="listview">
+<div class="listview container">
     <div class="listview-header">
         次の予定
     </div>
-    <div class="listview-item is-fluid">
+    <div class="listview-item">
         <div class="listview-item__day_calendar">
             @include('v2.includes.day_calendar', ['date' => $next_schedule->start_at])
         </div>
@@ -89,7 +89,7 @@
             <p class="listview-item__title">
                 {{ $next_schedule->name }}
             </p>
-            <p class="listview-item__summary">
+            <p class="listview-item__meta">
                 @datetime($next_schedule->start_at)〜 • {{ $next_schedule->place }}
             </p>
             <div class="listview-item__sumarry markdown">
@@ -97,12 +97,12 @@
             </div>
         </div>
     </div>
-    <a class="listview-item is-fluid is-more-btn" href="{{ route('schedules.index') }}">
+    <a class="listview-item is-action-btn" href="{{ route('schedules.index') }}">
         他の予定を見る
     </a>
 </div>
 @endisset
-<div class="listview">
+<div class="listview container">
     <div class="listview-header">
         お知らせ
     </div>
@@ -122,7 +122,7 @@
     </a>
     @endforeach
     @if ($remaining_pages_count > 0)
-    <a class="listview-item is-more-btn" href="{{ route('pages.index') }}">
+    <a class="listview-item is-action-btn" href="{{ route('pages.index') }}">
         残り {{ $remaining_pages_count }} 件のお知らせを見る
     </a>
     @endif
@@ -133,7 +133,7 @@
     </div>
     @endempty
 </div>
-<div class="listview">
+<div class="listview container">
     <div class="listview-header">
         最近の配布資料
     </div>
@@ -165,7 +165,7 @@
     </a>
     @endforeach
     @if ($remaining_documents_count > 0)
-    <a class="listview-item is-more-btn" href="{{ route('documents.index') }}">
+    <a class="listview-item is-action-btn" href="{{ route('documents.index') }}">
         残り {{ $remaining_documents_count }} 件の配布資料を見る
     </a>
     @endif

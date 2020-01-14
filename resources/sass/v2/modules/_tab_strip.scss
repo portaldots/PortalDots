@@ -2,9 +2,10 @@
   background: $color-bg-white;
   border-bottom: 1px solid $color-border;
   display: flex;
+  justify-content: center;
   overflow: hidden;
   padding: 0 $spacing;
-  @media screen and (max-width: $breakpoint-listview-single-col) {
+  @media screen and (max-width: $breakpoint-listview-sm) {
     padding: 0;
   }
   &-tab {
@@ -12,7 +13,7 @@
     display: block;
     padding: $spacing $spacing $spacing-md;
     text-align: center;
-    @media screen and (max-width: $breakpoint-listview-single-col) {
+    @media screen and (max-width: $breakpoint-listview-sm) {
       padding-left: 0;
       padding-right: 0;
       width: 100%;

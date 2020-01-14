@@ -8,7 +8,7 @@ body {
 .bottom_tabs {
   background: #fff;
   bottom: 0;
-  box-shadow: 0 -1px 4px rgba($color-text, 0.05);
+  box-shadow: 0 -0.5rem 0.5rem rgba($color-text, 0.05);
   height: calc(env(safe-area-inset-bottom) + #{$bottom-tabs-height});
   left: 0;
   position: fixed;
@@ -18,7 +18,11 @@ body {
     align-items: center;
     display: flex;
     height: 100%;
+    margin: 0 auto;
+    max-width: $bottom-tabs-container-width;
+    padding: 0 $spacing;
     padding: 0 0 env(safe-area-inset-bottom);
+    width: 100%;
   }
   &-tab {
     $selector-tab: &;

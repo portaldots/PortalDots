@@ -1,5 +1,5 @@
 <div class="bottom_tabs">
-    <div class="container is-medium bottom_tabs-container">
+    <div class="bottom_tabs-container">
         @auth
         {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
         <a href="{{ route('home') }}" class="bottom_tabs-tab{{ Request::is('login') || Request::is('home*') ? ' is-active' : '' }}">

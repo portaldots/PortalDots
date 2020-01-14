@@ -4,8 +4,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: $spacing $spacing 0;
-  @media screen and (max-width: $breakpoint-listview-single-col) {
+  padding: $spacing $spacing $spacing-md;
+  @media screen and (max-width: $breakpoint-listview-sm) {
     flex-direction: column;
     padding: 0;
   }
@@ -14,7 +14,7 @@
     font-weight: bold;
     padding: 0 0 $spacing-md;
     width: 100%;
-    @media screen and (max-width: $breakpoint-listview-single-col) {
+    @media screen and (max-width: $breakpoint-listview-sm) {
       background: $color-muted;
       color: $color-bg-white;
       font-size: $font-size;
@@ -26,13 +26,20 @@
   }
   &-item {
     background: $color-bg-white;
-    border-radius: $border-radius;
-    box-shadow: 0 0 0.5rem rgba($color-text, 0.05);
+    border-bottom: 1px solid $color-border;
+    box-shadow: 0 1rem 1rem rgba($color-text, 0.05);
     color: $color-text;
     display: flex;
-    margin-bottom: $spacing;
+    margin: 0;
     padding: $spacing-md $spacing;
-    width: $listview-item-width;
+    position: relative;
+    width: 100%;
+    @media screen and (max-width: $breakpoint-listview-sm) {
+      box-shadow: none;
+    }
+    &:last-child {
+      border: 0;
+    }
     &:hover,
     &:active,
     &:focus {
@@ -45,10 +52,7 @@
     &:not(a):focus {
       background: $color-bg-white;
     }
-    &.is-fluid {
-      width: 100%;
-    }
-    &.is-more-btn {
+    &.is-action-btn {
       align-items: center;
       color: $color-primary;
       display: flex;
@@ -57,16 +61,6 @@
       justify-content: center;
       padding-bottom: $spacing;
       padding-top: $spacing;
-    }
-    @media screen and (max-width: $breakpoint-listview-single-col) {
-      border-bottom: 1px solid $color-border;
-      border-radius: 0;
-      box-shadow: none;
-      margin: 0;
-      width: 100%;
-      &:last-child {
-        border: 0;
-      }
     }
     &__day_calendar {
       flex: 1 0 auto;

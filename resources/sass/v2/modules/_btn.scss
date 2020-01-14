@@ -1,12 +1,18 @@
-@mixin btn($color, $background, $hover-background, $border-color) {
+@mixin btn($color, $background, $hover-background, $border-color, $shadow-color-base: null) {
   background: $background;
   border: 1px solid $border-color;
   color: $color;
   &:hover {
     background: $hover-background;
   }
-  &:focus {
-    box-shadow: 0 0 0 3px rgba($border-color, 0.5);
+  @if ($shadow-color-base) {
+    box-shadow: 0 0.25rem 0.75rem rgba($shadow-color-base, 0.25);
+    &:hover {
+      box-shadow: 0 0.5rem 0.75rem rgba($shadow-color-base, 0.4);
+    }
+    &:active {
+      box-shadow: 0 0.1rem 0.3rem rgba($shadow-color-base, 0.6);
+    }
   }
 }
 
@@ -27,17 +33,16 @@
     text-decoration: none;
   }
   &:focus {
-    outline: none;
     text-decoration: none;
   }
   &.is-primary {
-    @include btn(#fff, $color-primary, lighten($color-primary, 5%), $color-primary);
+    @include btn(#fff, $color-primary, lighten($color-primary, 5%), $color-primary, $color-primary);
   }
   &.is-secondary {
     @include btn($color-text, #fff, lighten($color-border, 15%), $color-border);
   }
   &.is-danger {
-    @include btn(#fff, $color-danger, lighten($color-danger, 5%), $color-danger);
+    @include btn(#fff, $color-danger, lighten($color-danger, 5%), $color-danger, $color-danger);
   }
   &.is-block {
     display: block;

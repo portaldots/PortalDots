@@ -2,18 +2,33 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  font-weight: bold;
   &__month,
   &__date,
   &__day {
     line-height: 1;
     margin: 0;
   }
+  &__month {
+    font-size: 1.25rem;
+  }
   &__date {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 2rem;
     margin: $spacing-xs 0;
   }
   &__day {
-    font-size: 0.75rem;
+    color: $color-muted;
+    font-size: 1rem;
+  }
+  @media screen and (max-width: $breakpoint-listview-sm) {
+    &__month {
+      font-size: 1rem;
+    }
+    &__date {
+      font-size: 1.5rem;
+    }
+    &__day {
+      font-size: 0.75rem;
+    }
   }
 }

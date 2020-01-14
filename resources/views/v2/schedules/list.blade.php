@@ -18,7 +18,7 @@
     </a>
 </div>
 @foreach ($schedules as $month => $group)
-<div class="listview">
+<div class="listview container">
     <div class="listview-header">
         {{ $month }}
     </div>
