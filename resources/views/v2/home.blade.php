@@ -92,7 +92,7 @@
             <p class="listview-item__meta">
                 @datetime($next_schedule->start_at)〜 • {{ $next_schedule->place }}
             </p>
-            <div class="listview-item__sumarry markdown">
+            <div class="listview-item__summary markdown">
                 @markdown($next_schedule->description)
             </div>
         </div>
