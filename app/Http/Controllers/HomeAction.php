@@ -15,18 +15,20 @@ class HomeAction extends Controller
      */
     private const TAKE_COUNT = 5;
 
+    public function __construct()
+    {
+        // TODO: 将来的には、非ログイン状態でもこのページが表示されるようにする
+        $this->middleware('auth');
+    }
+
     public function __invoke()
     {
-        if (Auth::check()) {
-            return view('v2.home')
+        return view('v2.home')
             ->with('my_circles', Auth::user()->circles)
             ->with('pages', Page::take(self::TAKE_COUNT)->get())
             ->with('remaining_pages_count', max(Page::count() - self::TAKE_COUNT, 0))
             ->with('next_schedule', Schedule::startOrder()->notStarted()->first())
             ->with('documents', Document::take(self::TAKE_COUNT)->public()->with('schedule')->get())
             ->with('remaining_documents_count', max(Document::public()->count() - self::TAKE_COUNT, 0));
-        }
-        return redirect()
-            ->route('login');
     }
 }
