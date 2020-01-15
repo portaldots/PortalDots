@@ -10,16 +10,21 @@ use App\Eloquents\Document;
 
 class HomeAction extends Controller
 {
+    /**
+     * 表示するお知らせ・配布資料の最大数
+     */
+    private const TAKE_COUNT = 5;
+
     public function __invoke()
     {
         if (Auth::check()) {
             return view('v2.home')
             ->with('my_circles', Auth::user()->circles)
-            ->with('pages', Page::take(5)->get())
-            ->with('remaining_pages_count', max(Page::count() - 5, 0))
+            ->with('pages', Page::take(self::TAKE_COUNT)->get())
+            ->with('remaining_pages_count', max(Page::count() - self::TAKE_COUNT, 0))
             ->with('next_schedule', Schedule::startOrder()->notStarted()->first())
-            ->with('documents', Document::take(5)->public()->with('schedule')->get())
-            ->with('remaining_documents_count', max(Document::public()->count() - 5, 0));
+            ->with('documents', Document::take(self::TAKE_COUNT)->public()->with('schedule')->get())
+            ->with('remaining_documents_count', max(Document::public()->count() - self::TAKE_COUNT, 0));
         }
         return redirect()
             ->route('login');
