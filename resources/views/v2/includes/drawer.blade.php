@@ -57,13 +57,12 @@
     <p class="drawer-user__info">
         {{ Auth::user()->name }}としてログイン中
     </p>
-    <a
-        href="{{ route('logout') }}"
-        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-        class="btn is-secondary is-block"
-    >
-        ログアウト
-    </a>
+    <form action="{{ route('logout') }}" method="post">
+        @csrf
+        <button type="submit" class="btn is-secondary is-block">
+            ログアウト
+        </button>
+    </form>
     @else
     <p class="drawer-user__info">
         ログインしていません
@@ -72,7 +71,4 @@
         <strong>ログイン</strong>
     </a>
     @endauth
-    <form id="logout-form" action="{{ route('logout') }}" method="post">
-        @csrf
-    </form>
 </div>
