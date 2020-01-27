@@ -1,5 +1,5 @@
 <h1 align="center">inaka-portal</h1>
-<p align="center">イベント参加サークルへのお知らせ配信、申請フォーム回答受付ができるオープンソースウェブシステム。</p>
+<p align="center">イベント参加サークルへのお知らせ配信、ウェブフォームによる申請受付ができるオープンソースウェブシステム。</p>
 
 <p align="center">
     <a href="https://circleci.com/gh/SofPyon/inaka-portal">
