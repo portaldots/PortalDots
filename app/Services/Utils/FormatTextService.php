@@ -23,9 +23,10 @@ class FormatTextService
      *
      * ※ 確実に「...」を表示するため、 mb_strimwidth の機能ではなく単に「...」を文字列連結している
      */
-    public static function summary(string $text): string
+    public static function summary(?string $text): string
     {
-        return mb_strimwidth(strip_tags(ParseMarkdownService::render(mb_strimwidth($text, 0, 200))), 0, 100) . '...';
+        return empty($text) ? ''
+            : mb_strimwidth(strip_tags(ParseMarkdownService::render(mb_strimwidth($text, 0, 200))), 0, 100) . '...';
     }
 
     /**

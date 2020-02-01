@@ -9,8 +9,11 @@ use cebe\markdown\GithubMarkdown as Parser;
 
 class ParseMarkdownService
 {
-    public static function render(string $markdown): string
+    public static function render(?string $markdown): string
     {
+        if (empty($markdown)) {
+            return '';
+        }
         $parser = App::make(Parser::class);
         $parser->enableNewlines = true;
         return $parser->parse($markdown);
