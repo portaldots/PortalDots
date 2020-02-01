@@ -1,6 +1,6 @@
 .drawer {
   background: $color-bg-white;
-  box-shadow: 0 0 1rem rgba($color-text, 0.05);
+  border-right: 1px solid $color-border;
   height: 100%;
   max-width: 80vw;
   position: fixed;
@@ -8,6 +8,9 @@
   transition: #{$transition-base} transform;
   width: $drawer-width;
   z-index: $z-index-drawer;
+  &:focus {
+    outline: 0;
+  }
   @mixin divider($is-bottom: false) {
     position: relative;
     &::after {
