@@ -68,13 +68,22 @@
     </div>
     <div class="content">
         @if (Session::has('topAlert.title'))
-            <div class="top_alert is-primary">
-                <h2 class="top_alert__title">{{ session('topAlert.title') }}</h2>
-                @if (Session::has('topAlert.body'))
-                    <p class="top_alert__body">{{ session('topAlert.body') }}</p>
-                @endif
+            @prepend('top_alerts')
+            <div class="listview-item is-primary">
+                <div class="listview-item__body">
+                    <p class="listview-item__title">
+                        {{ session('topAlert.title') }}
+                    </p>
+                    @if (Session::has('topAlert.body'))
+                        <p class="listview-item__summary">{{ session('topAlert.body') }}</p>
+                    @endif
+                </div>
             </div>
+            @endprepend
         @endif
+        <div class="listview container">
+        @stack('top_alerts')
+        </div>
         @yield('content')
     </div>
     @section('bottom_tabs')

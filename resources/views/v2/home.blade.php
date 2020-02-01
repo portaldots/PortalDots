@@ -4,15 +4,19 @@
 
 @auth
 @if (count($my_circles) < 1)
-<div class="top_alert is-primary">
-    <h2 class="top_alert__title">
-        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
-        団体参加登録が未完了
-    </h2>
-    <p class="top_alert__body">
-        団体参加登録がお済みでない場合、申請機能など、{{ config('app.name') }} の一部機能がご利用になれません
-    </p>
+@prepend('top_alerts')
+<div class="listview-item is-primary">
+    <div class="listview-item__body">
+        <h2 class="listview-item__title">
+            <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+            団体参加登録が未完了
+        </h2>
+        <p class="listview-item__summary">
+            団体参加登録がお済みでない場合、申請機能など、{{ config('app.name') }} の一部機能がご利用になれません
+        </p>
+    </div>
 </div>
+@endprepend
 @endif
 @endauth
 

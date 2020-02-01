@@ -25,6 +25,21 @@
     }
   }
   &-item {
+    @mixin hover($hover-color, $default-color, $text-color) {
+      &:hover,
+      &:active,
+      &:focus {
+        background: $hover-color;
+        color: $text-color;
+        text-decoration: none;
+      }
+      &:not(a):hover,
+      &:not(a):active,
+      &:not(a):focus {
+        background: $default-color;
+      }
+    }
+
     background: $color-bg-white;
     border-bottom: 1px solid $color-border;
     box-shadow: 0 0.5rem 0.5rem rgba($color-text, 0.05);
@@ -40,18 +55,22 @@
     &:last-child {
       border: 0;
     }
-    &:hover,
-    &:active,
-    &:focus {
-      background: $color-bg-light;
-      color: $color-text;
-      text-decoration: none;
+    &.is-success {
+      background: $color-success;
+      color: #fff;
+      @include hover($color-success, $color-success, #fff);
     }
-    &:not(a):hover,
-    &:not(a):active,
-    &:not(a):focus {
-      background: $color-bg-white;
+    &.is-primary {
+      background: $color-primary;
+      color: #fff;
+      @include hover($color-primary, $color-primary, #fff);
     }
+    &.is-danger {
+      background: $color-danger;
+      color: #fff;
+      @include hover($color-danger, $color-danger, #fff);
+    }
+    @include hover($color-bg-light, $color-bg-white, $color-text);
     &.is-action-btn {
       align-items: center;
       color: $color-primary;
