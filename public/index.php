@@ -47,25 +47,25 @@
     // Laravel にルーティングされる
     $LARAVEL_PATHS = [
         // Home
-        '/home__v2',
-        '/pages',
-        '/documents',
-        '/schedules',
+        '/^\/home__v2/',
+        '/^\/pages/',
+        '/^\/documents/',
+        '/^\/schedules/',
         // Auth
-        '/login',
-        '/logout',
-        '/register',
-        '/password',
-        '/email',
+        '/^\/login/',
+        '/^\/logout/',
+        '/^\/register/',
+        '/^\/password/',
+        '/^\/email/',
         // Users
-        '/change_password',
-        '/user',
-        '/contacts',
-        '/selector',
+        '/^\/change_password/',
+        '/^\/user/',
+        '/^\/contacts/',
+        '/^\/selector/',
         // Staff
-        '/staff',
+        '/^\/staff/',
         // Debugbar
-        '/_debugbar',
+        '/^\/_debugbar/',
     ];
 
     if (file_exists($down_path = __DIR__. '/../storage/framework/down')) {
@@ -81,8 +81,7 @@
     $request_uri = $_SERVER['REQUEST_URI'];
 
     foreach ($LARAVEL_PATHS as $path) {
-        $path = str_replace('/', '\/', preg_quote($path));
-        if (preg_match('/^'. $path. '/', $request_uri)) {
+        if (preg_match($path , $request_uri)) {
             require __DIR__. '/index_laravel.php';
             exit;
         }
