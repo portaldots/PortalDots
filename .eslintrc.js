@@ -20,6 +20,9 @@ module.exports = {
   plugins: [
     'vue',
   ],
+  ignorePatterns: [
+    'public/vendor/',
+  ],
   rules: {
     "prettier/prettier": [
       "error", {
