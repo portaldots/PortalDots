@@ -6,6 +6,7 @@
         "ext-mbstring": "*",
         "cebe/markdown": "*",
         "doctrine/dbal": "^2.10",
+        "encore/laravel-admin": "^1.7",
         "ezyang/htmlpurifier": "^4.9",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
