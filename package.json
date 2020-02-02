@@ -21,7 +21,8 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "docker-bash": "cd docker_dev/ && docker-compose exec web bash",
         "eslint-check": "eslint --ext js,vue ./resources",
-        "stylelint-check": "stylelint ./resources/**/*.{vue,scss}"
+        "stylelint-check": "stylelint ./resources/**/*.{vue,scss}",
+        "admin:make": "cd docker_dev; docker-compose run web php artisan admin:make"
     },
     "lint-staged": {
         "*.js": [

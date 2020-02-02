@@ -64,6 +64,8 @@
         '/selector',
         // Staff
         '/staff',
+        // Laravel Admin
+        '/admin',
         // Debugbar
         '/_debugbar',
     ];
