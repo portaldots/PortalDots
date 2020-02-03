@@ -39,7 +39,7 @@
     @include btn(#fff, $color-primary, lighten($color-primary, 5%), $color-primary, $color-primary);
   }
   &.is-secondary {
-    @include btn($color-text, #fff, lighten($color-border, 15%), $color-border);
+    @include btn($color-text, #fff, $color-bg-grey, $color-border);
   }
   &.is-danger {
     @include btn(#fff, $color-danger, lighten($color-danger, 5%), $color-danger, $color-danger);
@@ -50,5 +50,9 @@
   }
   &.is-no-border {
     border: none;
+  }
+  &.is-wide {
+    padding-left: $spacing-lg;
+    padding-right: $spacing-lg;
   }
 }

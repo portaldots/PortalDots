@@ -16,10 +16,10 @@
   &__title {
     font-size: 1rem;
     font-weight: bold;
-    margin: 0 0 $spacing-xs;
+    margin: 0;
   }
   &__body {
     font-size: 1rem;
-    margin: 0;
+    margin: $spacing-sm 0 0;
   }
 }

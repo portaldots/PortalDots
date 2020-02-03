@@ -3,14 +3,19 @@
 @section('content')
 
 @auth
-@if (count($my_circles) < 1)
+@if (Auth::user()->areBothEmailsVerified() && count($my_circles) < 1)
 <div class="top_alert is-primary">
     <h2 class="top_alert__title">
-        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
-        団体参加登録が未完了
+        <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+        参加登録をしましょう！
     </h2>
     <p class="top_alert__body">
-        団体参加登録がお済みでない場合、申請機能など、{{ config('app.name') }} の一部機能がご利用になれません
+        まだ参加登録がお済みでないようですね。まずは参加登録からはじめましょう！
+    </p>
+    <p class="top_alert__body pt-spacing-sm">
+        <a href="#" class="btn is-secondary is-no-border is-wide">
+            <strong>参加登録をはじめる</strong>
+        </a>
     </p>
 </div>
 @endif

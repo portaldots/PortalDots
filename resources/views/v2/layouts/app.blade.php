@@ -67,6 +67,36 @@
         </div>
     </div>
     <div class="content">
+        @auth
+            @unless (Auth::user()->areBothEmailsVerified())
+                <div class="top_alert is-primary">
+                    <h2 class="top_alert__title">
+                        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+                        メール認証を行ってください
+                    </h2>
+                    <p class="top_alert__body">
+                        {{ config('app.name') }}の全機能を利用するには、次のメールアドレス宛に送信された確認メール内のURLにアクセスしてください。
+                        <strong>
+                        @unless (Auth::user()->hasVerifiedUnivemail())
+                            {{ Auth::user()->univemail }}
+                            @unless (Auth::user()->hasVerifiedEmail())
+                                •
+                            @endunless
+                        @endunless
+                        @unless (Auth::user()->hasVerifiedEmail())
+                            {{ Auth::user()->email }}
+                        @endunless
+                        </strong>
+                    </p>
+                    <form class="top_alert__body pt-spacing-sm" action="{{ route('verification.resend') }}" method="post">
+                        @csrf
+                        <button class="btn is-secondary is-no-border is-wide">
+                            <strong>確認メールを再送</strong>
+                        </button>
+                    </form>
+                </div>
+            @endunless
+        @endauth
         @if (Session::has('topAlert.title'))
             <div class="top_alert is-primary">
                 <h2 class="top_alert__title">{{ session('topAlert.title') }}</h2>
