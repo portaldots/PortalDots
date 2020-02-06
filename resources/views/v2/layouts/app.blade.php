@@ -74,6 +74,7 @@
     <div
         class="drawer"
         v-bind:class="{'is-open': isDrawerOpen}"
+        v-on:click="closeDrawer"
         tabindex="0"
         ref="drawer"
     >
