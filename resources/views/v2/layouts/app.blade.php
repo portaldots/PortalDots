@@ -24,12 +24,29 @@
     @prepend('js')
         <script src="{{ mix('js/v2/app.js') }}" defer></script>
     @endprepend
+    @if (config('app.debug'))
+        @prepend('js')
+            <script defer>
+                if (typeof jQuery === 'undefined') {
+                    window.jQuery = {
+                        noConflict: function () {
+                            console.log('do nothing');
+                        }
+                    };
+                }
+            </script>
+        @endprepend
+    @endif
     @stack('js')
 
     <meta name="format-detection" content="telephone=no">
 </head>
 </head>
-<body ontouchstart="">
+<body>
+
+<div class="loading" id="loading">
+    <div class="loading-circle"></div>
+</div>
 
 <div class="app" id="v2-app">
     <global-events
@@ -69,41 +86,47 @@
     <div class="content">
         @auth
             @unless (Auth::user()->areBothEmailsVerified())
-                <div class="top_alert is-primary">
-                    <h2 class="top_alert__title">
+
+                <top-alert type="primary">
+                    <template v-slot:title>
                         <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
                         メール認証を行ってください
-                    </h2>
-                    <p class="top_alert__body">
-                        {{ config('app.name') }}の全機能を利用するには、次のメールアドレス宛に送信された確認メール内のURLにアクセスしてください。
-                        <strong>
-                        @unless (Auth::user()->hasVerifiedUnivemail())
-                            {{ Auth::user()->univemail }}
-                            @unless (Auth::user()->hasVerifiedEmail())
-                                •
-                            @endunless
-                        @endunless
+                    </template>
+
+                    {{ config('app.name') }}の全機能を利用するには、次のメールアドレス宛に送信された確認メール内のURLにアクセスしてください。
+                    <strong>
+                    @unless (Auth::user()->hasVerifiedUnivemail())
+                        {{ Auth::user()->univemail }}
                         @unless (Auth::user()->hasVerifiedEmail())
-                            {{ Auth::user()->email }}
+                            •
                         @endunless
-                        </strong>
-                    </p>
-                    <form class="top_alert__body pt-spacing-sm" action="{{ route('verification.resend') }}" method="post">
-                        @csrf
-                        <button class="btn is-secondary is-no-border is-wide">
-                            <strong>確認メールを再送</strong>
-                        </button>
-                    </form>
-                </div>
+                    @endunless
+                    @unless (Auth::user()->hasVerifiedEmail())
+                        {{ Auth::user()->email }}
+                    @endunless
+                    </strong>
+
+                    <template v-slot:cta>
+                        <form action="{{ route('verification.resend') }}" method="post">
+                            @csrf
+                            <button class="btn is-primary-inverse is-no-border is-wide">
+                                <strong>確認メールを再送</strong>
+                            </button>
+                        </form>
+                    </template>
+                </top-alert>
             @endunless
         @endauth
         @if (Session::has('topAlert.title'))
-            <div class="top_alert is-primary">
-                <h2 class="top_alert__title">{{ session('topAlert.title') }}</h2>
+            <top-alert type="primary">
+                <template v-slot:title>
+                    {{ session('topAlert.title') }}
+                </template>
+
                 @if (Session::has('topAlert.body'))
-                    <p class="top_alert__body">{{ session('topAlert.body') }}</p>
+                    {{ session('topAlert.body') }}
                 @endif
-            </div>
+            </top-alert>
         @endif
         @yield('content')
     </div>

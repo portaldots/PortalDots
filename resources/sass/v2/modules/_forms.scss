@@ -35,6 +35,7 @@ textarea {
     &[disabled] {
       background: $color-bg-grey;
       color: $color-muted;
+      cursor: not-allowed;
       opacity: 0.75;
     }
     &.is-invalid {
@@ -51,6 +52,10 @@ textarea {
       border-color: $color-primary;
       box-shadow: 0 0 0 3px rgba($color-primary, 0.25);
       outline: 0;
+    }
+    &.is-invalid:focus {
+      border-color: $color-danger;
+      box-shadow: 0 0 0 3px rgba($color-danger, 0.25);
     }
   }
   &-text {

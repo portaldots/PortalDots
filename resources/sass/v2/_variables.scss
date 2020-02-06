@@ -6,14 +6,13 @@ $font-size: #{(14 / $base-font-size-px) + 'rem'};
 // inputのフォントサイズは16px以上にしないと、フォーカス時 iOS デバイスで
 // ズームしてしまう
 $font-size-input: #{(16 / $base-font-size-px) + 'rem'};
-$font-size-listview-title: 1.25rem;
 
 // Color
 $color-success: #36B34E;
 $color-primary: #1F97CC;
 $color-danger: #EF3F2F;
 $color-text: #22292F;
-$color-muted: #737A80;
+$color-muted: #71777b;
 $color-border: #dae0e6;
 $color-bg-grey: #F8FAFC;
 $color-bg-light: lighten($color-primary, 52);
@@ -45,8 +44,10 @@ $container-width-narrow: 400px;
 $breakpoint-drawer-hide: 1240px;
 $breakpoint-listview-sm: 860px;
 $breakpoint-bottom-tabs: $breakpoint-drawer-hide;
+$breakpoint-top-alert-col: 860px;
 
 // Z indexes
+$z-index-loading: 9999;
 $z-index-drawer: 9990;
 $z-index-drawer-backdrop: 9989;
 $z-index-navbar: 9980;

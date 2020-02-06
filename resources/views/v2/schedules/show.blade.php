@@ -11,52 +11,45 @@
 
 @section('content')
 <header class="header">
-    <div class="container">
+    <app-container>
         <h1 class="header__title">
             {{ $schedule->name }}
         </h1>
         <p class="header__date">
             @datetime($schedule->start_at)〜 • {{ $schedule->place }}
         </p>
-    </div>
+    </app-container>
 </header>
-<main class="container pb-spacing-lg">
+<app-container component-is="main" class="pb-spacing-lg">
     <div class="markdown">
         @markdown($schedule->description)
     </div>
-</main>
+</app-container>
 @if (count($schedule->documents) > 0)
-<div class="listview container">
-    <div class="listview-header">
-        配布資料
-    </div>
+<list-view header-title="配布資料">
     @foreach ($schedule->documents as $document)
-    <a
-        class="listview-item"
+    <list-view-item
         href="{{ url("uploads/documents/{$document->id}") }}"
-        target="_blank"
-        rel="noopener"
+        newtab
     >
-        <div class="listview-item__body">
-            <p class="listview-item__title{{ $document->is_important ? ' text-danger' : '' }}">
-                @if ($document->is_important)
-                <i class="fas fa-exclamation-circle"></i>
-                @else
-                <i class="far fa-file-alt fa-fw"></i>
-                @endif
-                {{ $document->name }}
-            </p>
-            <p class="listview-item__meta">
-                @datetime($document->updated_at) 更新
-                @isset($document->schedule)
-                •
-                {{ $document->schedule->name }}で配布
-                @endisset
-            </p>
-            <p class="listview-item__summary">{{ $document->description }}</p>
-        </div>
-    </a>
+        <template v-slot:title>
+            @if ($document->is_important)
+            <i class="fas fa-exclamation-circle fa-fw text-danger"></i>
+            @else
+            <i class="far fa-file-alt fa-fw"></i>
+            @endif
+            {{ $document->name }}
+        </template>
+        <template v-slot:meta>
+            @datetime($document->updated_at) 更新
+            @isset($document->schedule)
+            •
+            {{ $document->schedule->name }}で配布
+            @endisset
+        </template>
+        @summary($document->description)
+    </list-view-item>
     @endforeach
-</div>
+</list-view>
 @endif
 @endsection

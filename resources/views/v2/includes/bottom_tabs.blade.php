@@ -22,7 +22,8 @@
             <div class="bottom_tabs-tab__label">配布資料</div>
         </a>
         @auth
-        <a href="{{ url('home/applications') }}" class="bottom_tabs-tab">
+        {{-- 申請ページを Project v2 にしたら data-turbolinks="false" は削除する --}}
+        <a href="{{ url('home/applications') }}" class="bottom_tabs-tab" data-turbolinks="false">
             <i class="far fa-edit bottom_tabs-tab__icon"></i>
             <div class="bottom_tabs-tab__label">申請</div>
         </a>

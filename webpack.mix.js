@@ -13,13 +13,18 @@ const mix = require('laravel-mix')
 
 const path = require('path')
 
-mix.webpackConfig({
-  resolve: {
-    modules: [path.resolve('./node_modules')]
-  }
-})
-
 mix
+  .webpackConfig({
+    resolve: {
+      modules: [path.resolve('./node_modules')]
+    }
+  })
+  .options({
+    globalVueStyles: 'resources/sass/v2/_variables.scss'
+    // ↓申請フォームエディターのレイアウトが崩れてしまうため、
+    // purifyCss: true の指定は、一時的にコメントアウトしています
+    // purifyCss: true
+  })
   .js('resources/js/app.js', 'public/js') // メインスクリプト
   .sass('resources/sass/app.scss', 'public/css') // メインスタイル
   .sass('resources/sass/v2/app.scss', 'public/css/v2') // メインスタイル(v2)
@@ -27,5 +32,16 @@ mix
   .js('resources/js/users_checker.js', 'public/js') // ユーザー登録チェッカー
   .js('resources/js/forms_editor/index.js', 'public/js/forms_editor') // フォームエディタJS
   .sass('resources/sass/forms_editor.scss', 'public/css') // フォームエディタCSS
-  .browserSync('localhost')
+  .browserSync({
+    proxy: 'localhost',
+    snippetOptions: {
+      rule: {
+        match: /<\/head>/i,
+        fn(snippet, match) {
+          return snippet + match
+        }
+      }
+    }
+  })
+  .sourceMaps()
   .version()

@@ -11,18 +11,18 @@
 
 @section('content')
 <header class="header">
-    <div class="container">
+    <app-container>
         <h1 class="header__title">
             {{ $page->title }}
         </h1>
         <p class="header__date">
             @datetime($page->updated_at) 更新
         </p>
-    </div>
+    </app-container>
 </header>
-<main class="container">
+<app-container component-is="main">
     <div class="markdown">
         @markdown($page->body)
     </div>
-</main>
+</app-container>
 @endsection

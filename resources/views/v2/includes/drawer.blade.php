@@ -24,7 +24,8 @@
         </li>
         @auth
         <li class="drawer-nav__item">
-            <a href="{{ url('home/applications') }}" class="drawer-nav__link">
+            {{-- 申請ページが Project v2 になったら、data-turbolinks="false" は削除する --}}
+            <a href="{{ url('home/applications') }}" class="drawer-nav__link" data-turbolinks="false">
                 <i class="far fa-edit drawer-nav__icon fa-fw"></i>
                 申請
             </a>

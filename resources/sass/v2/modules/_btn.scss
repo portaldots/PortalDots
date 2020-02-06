@@ -2,15 +2,15 @@
   background: $background;
   border: 1px solid $border-color;
   color: $color;
-  &:hover {
+  &:not([disabled]):hover {
     background: $hover-background;
   }
   @if ($shadow-color-base) {
     box-shadow: 0 0.25rem 0.75rem rgba($shadow-color-base, 0.25);
-    &:hover {
+    &:not([disabled]):hover {
       box-shadow: 0 0.5rem 0.75rem rgba($shadow-color-base, 0.4);
     }
-    &:active {
+    &:not([disabled]):active {
       box-shadow: 0 0.1rem 0.3rem rgba($shadow-color-base, 0.6);
     }
   }
@@ -29,6 +29,10 @@
   text-decoration: none;
   transition: #{$transition-base-fast} background-color, #{$transition-base-fast} box-shadow;
   white-space: nowrap;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.75;
+  }
   &:hover {
     text-decoration: none;
   }
@@ -37,6 +41,9 @@
   }
   &.is-primary {
     @include btn(#fff, $color-primary, lighten($color-primary, 5%), $color-primary, $color-primary);
+  }
+  &.is-primary-inverse {
+    @include btn($color-primary, #fff, lighten($color-primary, 50%), #fff, $color-muted);
   }
   &.is-secondary {
     @include btn($color-text, #fff, $color-bg-grey, $color-border);

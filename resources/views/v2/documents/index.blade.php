@@ -3,39 +3,35 @@
 @section('title', '配布資料')
 
 @section('content')
-<div class="listview container">
+<list-view>
     @foreach ($documents as $document)
-    <a
-        class="listview-item"
+    <list-view-item
         href="{{ url("uploads/documents/{$document->id}") }}"
-        target="_blank"
-        rel="noopener"
+        newtab
     >
-        <div class="listview-item__body">
-            <p class="listview-item__title{{ $document->is_important ? ' text-danger' : '' }}">
-                @if ($document->is_important)
-                <i class="fas fa-exclamation-circle"></i>
-                @else
-                <i class="far fa-file-alt fa-fw"></i>
-                @endif
-                {{ $document->name }}
-            </p>
-            <p class="listview-item__meta">
-                @datetime($document->updated_at) 更新
-                @isset($document->schedule)
-                •
-                {{ $document->schedule->name }}で配布
-                @endisset
-            </p>
-            <p class="listview-item__summary">{{ $document->description }}</p>
-        </div>
-    </a>
+        <template v-slot:title>
+            @if ($document->is_important)
+            <i class="fas fa-exclamation-circle fa-fw text-danger"></i>
+            @else
+            <i class="far fa-file-alt fa-fw"></i>
+            @endif
+            {{ $document->name }}
+        </template>
+        <template v-slot:meta>
+            @datetime($document->updated_at) 更新
+            @isset($document->schedule)
+            •
+            {{ $document->schedule->name }}で配布
+            @endisset
+        </template>
+        @summary($document->description)
+    </list-view-item>
     @endforeach
     @empty ($documents)
-    <div class="listview-empty">
-        <i class="far fa-file-alt listview-empty__icon"></i>
-        <p class="listview-empty__text">配布資料はまだありません</p>
-    </div>
+    <list-view-empty
+        icon-class="far fa-file-alt"
+        text="配布資料はまだありません"
+    />
     @endempty
-</div>
+</list-view>
 @endsection
