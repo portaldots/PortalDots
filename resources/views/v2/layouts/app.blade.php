@@ -42,7 +42,6 @@
 
     <meta name="format-detection" content="telephone=no">
 </head>
-</head>
 <body>
 
 <div class="loading" id="loading">
