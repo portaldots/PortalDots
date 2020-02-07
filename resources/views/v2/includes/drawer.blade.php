@@ -80,7 +80,7 @@
     <p class="drawer-user__info">
         ログインしていません
     </p>
-    <a href="{{ url('/') }}" class="btn is-primary is-block">
+    <a href="{{ route('login') }}?new=1" class="btn is-primary is-block">
         <strong>ログイン</strong>
     </a>
     @endauth
