@@ -3,6 +3,8 @@
 </a>
 <nav class="drawer-nav">
     <ul class="drawer-nav__list">
+        @auth
+        {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
         <li class="drawer-nav__item">
             {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
             <a href="{{ route('home') }}" class="drawer-nav__link{{ Request::is('login') || Request::is('home*') ? ' is-active' : '' }}">
@@ -10,6 +12,16 @@
                 ホーム
             </a>
         </li>
+        @else
+        {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
+        <li class="drawer-nav__item">
+            {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
+            <a href="{{ route('login') }}?new=1" class="drawer-nav__link{{ Request::is('login') || Request::is('home*') ? ' is-active' : '' }}">
+                <i class="fas fa-home drawer-nav__icon fa-fw"></i>
+                ホーム
+            </a>
+        </li>
+        @endauth
         <li class="drawer-nav__item">
             <a href="{{ route('pages.index') }}" class="drawer-nav__link{{ Request::is('pages*') ? ' is-active' : '' }}">
                 <i class="fas fa-bullhorn drawer-nav__icon fa-fw"></i>
