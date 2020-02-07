@@ -21,7 +21,8 @@
 @endauth
 
 @guest
-<header class="jumbotron">
+{{-- 完全に Turbolinks 化できたら、以下の data-turbolinks="false" は削除する  --}}
+<header class="jumbotron" data-turbolinks="false">
     <app-container narrow>
         <h1 class="jumbotron__title">
             {{ config('app.name') }}
