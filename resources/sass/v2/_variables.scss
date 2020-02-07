@@ -35,10 +35,12 @@ $transition-base-fast: 0.2s ease;
 $border-radius: 0.25rem;
 $bottom-tabs-height: 4.5rem;
 $bottom-tabs-container-width: 600px;
+$listview-border: 1px solid $color-border;
 
 // Container Width
 $container-width: 1024px;
 $container-width-narrow: 400px;
+$container-width-medium: 800px;
 
 // Media Breakpoints
 $breakpoint-drawer-hide: 1240px;

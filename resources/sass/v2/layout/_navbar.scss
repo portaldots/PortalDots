@@ -10,6 +10,10 @@
   top: 0;
   width: $content-width;
   z-index: $z-index-navbar;
+  &.is-no-drawer {
+    left: 0;
+    width: 100%;
+  }
 
   @media screen and (max-width: $breakpoint-drawer-hide) {
     left: 0;
@@ -23,16 +27,30 @@
     height: 100%;
     // ↓ナビバーがもつpaddingを打ち消すネガティブマージン
     margin-left: -$spacing;
-    padding: 0;
     padding: $spacing;
 
     @media screen and (max-width: $breakpoint-drawer-hide) {
       display: block;
     }
   }
+  &-brand {
+    color: $color-text;
+    // ↓ナビバーがもつpaddingを打ち消すネガティブマージン
+    margin-left: -$spacing;
+    padding: $spacing;
+    &:hover,
+    &:active,
+    &:focus {
+      color: $color-text;
+      text-decoration: none;
+    }
+  }
   &-back {
     align-items: center;
     display: flex;
+    // ↓ナビバーがもつpaddingを打ち消すネガティブマージン
+    margin-left: -$spacing;
+    padding: $spacing;
     &__icon {
       font-size: 1.25rem;
       margin-right: $spacing-sm;

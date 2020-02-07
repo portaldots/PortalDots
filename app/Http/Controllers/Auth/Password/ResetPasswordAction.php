@@ -11,6 +11,6 @@ class ResetPasswordAction extends Controller
 {
     public function __invoke(User $user)
     {
-        return view('auth.passwords.reset');
+        return view('v2.auth.passwords.reset');
     }
 }

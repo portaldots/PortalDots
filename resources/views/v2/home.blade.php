@@ -21,8 +21,7 @@
 @endauth
 
 @guest
-{{-- 完全に Turbolinks 化できたら、以下の data-turbolinks="false" は削除する  --}}
-<header class="jumbotron" data-turbolinks="false">
+<header class="jumbotron">
     <app-container narrow>
         <h1 class="jumbotron__title">
             {{ config('app.name') }}
@@ -73,7 +72,8 @@
                 </button>
             </div>
             <p>
-                <a class="btn is-secondary is-block" href="{{ route('register') }}">
+                {{-- 完全に Turbolinks 化できたら、以下の data-turbolinks="false" は削除する  --}}
+                <a class="btn is-secondary is-block" href="{{ route('register') }}" data-turbolinks="false">
                     はじめての方は新規ユーザー登録
                 </a>
             </p>

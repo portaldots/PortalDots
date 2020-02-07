@@ -28,7 +28,7 @@ export default {
 <style lang="scss" scoped>
 .listview-base-item {
   background: $color-bg-white;
-  border-bottom: 1px solid $color-border;
+  border-bottom: $listview-border;
   box-shadow: 0 0.5rem 0.5rem rgba($color-text, 0.05);
   color: $color-text;
   display: block;
@@ -36,11 +36,11 @@ export default {
   padding: $spacing-md $spacing;
   position: relative;
   width: 100%;
+  &:last-child {
+    border-bottom: 0;
+  }
   @media screen and (max-width: $breakpoint-listview-sm) {
     box-shadow: none;
-    &:first-child {
-      border-top: 1px solid $color-border;
-    }
   }
   @media screen and (min-width: $breakpoint-listview-sm) {
     &:first-child {
@@ -48,7 +48,6 @@ export default {
       border-top-right-radius: $border-radius;
     }
     &:last-child {
-      border-bottom: 0;
       border-bottom-left-radius: $border-radius;
       border-bottom-right-radius: $border-radius;
     }

@@ -1,5 +1,9 @@
 <template>
-  <AppContainer class="listview">
+  <AppContainer
+    class="listview"
+    :narrow="containerNarrow"
+    :medium="containerMedium"
+  >
     <div class="listview-header" v-if="headerTitle || headerDescription">
       <h2 class="listview-header__title" v-if="headerTitle">
         {{ headerTitle }}
@@ -29,6 +33,14 @@ export default {
     headerDescription: {
       type: String,
       default: null
+    },
+    containerNarrow: {
+      type: Boolean,
+      default: false
+    },
+    containerMedium: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -54,6 +66,12 @@ export default {
     &__description {
       color: $color-muted;
       margin: $spacing-xs 0 0;
+    }
+  }
+  &-body {
+    @media screen and (max-width: $breakpoint-listview-sm) {
+      border-bottom: $listview-border;
+      border-top: $listview-border;
     }
   }
 }

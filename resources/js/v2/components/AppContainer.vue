@@ -2,7 +2,7 @@
   <component
     :is="componentIs"
     class="container"
-    :class="{ 'is-narrow': narrow }"
+    :class="{ 'is-narrow': narrow, 'is-medium': medium }"
   >
     <slot />
   </component>
@@ -18,6 +18,10 @@ export default {
     narrow: {
       type: Boolean,
       default: false
+    },
+    medium: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -31,6 +35,9 @@ export default {
   width: 100%;
   &.is-narrow {
     max-width: $container-width-narrow;
+  }
+  &.is-medium {
+    max-width: $container-width-medium;
   }
 }
 </style>

@@ -44,11 +44,9 @@ export default {
 
 <style lang="scss" scoped>
 .listview-form-group {
-  padding-bottom: $spacing-lg;
-  padding-top: 0;
-  &:not(:last-child) {
-    border-bottom: 0;
-  }
+  border: 0;
+  padding-bottom: $spacing-lg / 2;
+  padding-top: $spacing-lg / 2;
   &:first-child {
     padding-top: $spacing;
   }

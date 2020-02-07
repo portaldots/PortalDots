@@ -9,6 +9,6 @@ class ResetStartAction extends Controller
 {
     public function __invoke()
     {
-        return view('auth.passwords.request');
+        return view('v2.auth.passwords.request');
     }
 }
