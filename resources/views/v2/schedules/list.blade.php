@@ -17,27 +17,29 @@
         過去の予定
     </a>
 </div>
-@foreach ($schedules as $month => $group)
-<list-view header-title="{{ $month }}">
-    @foreach ($group as $schedule)
-    <list-view-item href="{{ route('schedules.show', $schedule) }}">
-        <template v-slot:title>
-            {{ $schedule->name }}
-        </template>
-        <template v-slot:meta>
-            @datetime($schedule->start_at)〜 • {{ $schedule->place }}
-        </template>
-        @summary($schedule->description)
-    </list-view-item>
+<app-container>
+    @foreach ($schedules as $month => $group)
+    <list-view header-title="{{ $month }}">
+        @foreach ($group as $schedule)
+        <list-view-item href="{{ route('schedules.show', $schedule) }}">
+            <template v-slot:title>
+                {{ $schedule->name }}
+            </template>
+            <template v-slot:meta>
+                @datetime($schedule->start_at)〜 • {{ $schedule->place }}
+            </template>
+            @summary($schedule->description)
+        </list-view-item>
+        @endforeach
+    </list-view>
     @endforeach
-</list-view>
-@endforeach
-@empty ($schedules)
-<list-view>
-    <list-view-empty
-        icon-class="far fa-calendar-alt"
-        text="予定はありません"
-    />
-</list-view>
-@endempty
+    @empty ($schedules)
+    <list-view>
+        <list-view-empty
+            icon-class="far fa-calendar-alt"
+            text="予定はありません"
+        />
+    </list-view>
+    @endempty
+</app-container>
 @endsection

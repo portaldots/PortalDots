@@ -9,13 +9,13 @@ $font-size-input: #{(16 / $base-font-size-px) + 'rem'};
 
 // Color
 $color-success: #36B34E;
-$color-primary: #1F97CC;
+$color-primary: #3490dc;
 $color-danger: #EF3F2F;
 $color-text: #22292F;
-$color-muted: #71777b;
+$color-muted: #6c757d;
 $color-border: #dae0e6;
 $color-bg-grey: #F8FAFC;
-$color-bg-light: lighten($color-primary, 52);
+$color-bg-light: lighten($color-primary, 45);
 $color-bg-white: #FFF;
 
 // Spacing (WIP)
@@ -36,6 +36,8 @@ $border-radius: 0.25rem;
 $bottom-tabs-height: 4.5rem;
 $bottom-tabs-container-width: 600px;
 $listview-border: 1px solid $color-border;
+$container-padding-x: $spacing;
+$container-padding-y: 0;
 
 // Container Width
 $container-width: 1024px;

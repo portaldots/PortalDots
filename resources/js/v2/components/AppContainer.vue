@@ -31,7 +31,7 @@ export default {
 .container {
   margin: 0 auto;
   max-width: $container-width;
-  padding: 0 $spacing;
+  padding: $container-padding-y $container-padding-x;
   width: 100%;
   &.is-narrow {
     max-width: $container-width-narrow;

@@ -1,5 +1,8 @@
 .text {
   // Colors
+  &-success {
+    color: $color-success;
+  }
   &-primary {
     color: $color-primary;
   }

@@ -1,5 +1,5 @@
 <template>
-  <ListViewBaseItem :href="href" class="action-btn">
+  <ListViewBaseItem :href="href" :newtab="newtab" class="action-btn">
     <slot />
   </ListViewBaseItem>
 </template>
@@ -15,6 +15,10 @@ export default {
     href: {
       type: String,
       default: null
+    },
+    newtab: {
+      type: Boolean,
+      default: false
     }
   }
 }

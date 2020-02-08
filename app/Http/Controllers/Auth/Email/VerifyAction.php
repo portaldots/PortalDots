@@ -42,9 +42,9 @@ class VerifyAction extends Controller
             ->route($user->areBothEmailsVerified() ? 'verification.completed' : 'verification.notice');
 
         if ($result) {
-            return $response->with('success_message', 'メール認証に成功しました。');
+            return $response->with('topAlert.title', 'メール認証に成功しました。');
         } else {
-            return $response->with('error_message', 'この URL は使用済みです。');
+            return $response->with('topAlert.title', 'この URL は使用済みです。');
         }
     }
 }

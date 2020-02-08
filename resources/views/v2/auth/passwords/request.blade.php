@@ -6,20 +6,22 @@
 <form method="POST">
     @csrf
 
-    <list-view container-medium header-title="パスワードの再設定">
+    <app-container medium>
+        <list-view header-title="パスワードの再設定">
 
-        <list-view-item>
-            <p>まず、「{{ config('app.name') }}」にログインするために使用していた学籍番号または連絡先メールアドレスを入力してください。</p>
-            <p>連絡先メールアドレスに対し、パスワード再設定に関するご案内を差し上げます。</p>
-        </list-view-item>
-        <list-view-form-group label-for="login_id">
-            <template v-slot:label>学籍番号または連絡先メールアドレス</template>
-            <input id="login_id" type="text" class="form-control @error('login_id') is-invalid @enderror" name="login_id" value="{{ old('login_id') }}" required autofocus>
-            @error('login_id')
-                <template v-slot:invalid>{{ $message }}</template>
-            @enderror
-        </list-view-form-group>
-    </list-view>
+            <list-view-item>
+                <p>まず、「{{ config('app.name') }}」にログインするために使用していた学籍番号または連絡先メールアドレスを入力してください。</p>
+                <p>連絡先メールアドレスに対し、パスワード再設定に関するご案内を差し上げます。</p>
+            </list-view-item>
+            <list-view-form-group label-for="login_id">
+                <template v-slot:label>学籍番号または連絡先メールアドレス</template>
+                <input id="login_id" type="text" class="form-control @error('login_id') is-invalid @enderror" name="login_id" value="{{ old('login_id') }}" required autofocus>
+                @error('login_id')
+                    <template v-slot:invalid>{{ $message }}</template>
+                @enderror
+            </list-view-form-group>
+        </list-view>
+    </app-container>
     <app-container class="text-center pt-spacing-md">
         <button type="submit" class="btn is-primary is-wide">次へ</button>
     </app-container>

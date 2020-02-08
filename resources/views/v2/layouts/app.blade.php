@@ -119,7 +119,7 @@
             @endunless
         @endauth
         @if (Session::has('topAlert.title'))
-            <top-alert type="primary">
+            <top-alert type="{{ session('topAlert.type', 'primary') }}">
                 <template v-slot:title>
                     {{ session('topAlert.title') }}
                 </template>
@@ -128,6 +128,13 @@
                     {{ session('topAlert.body') }}
                 @endif
             </top-alert>
+        @endif
+        @if ($errors->any())
+        <top-alert type="danger">
+            <template v-slot:title>
+                エラーがあります。以下をご確認ください
+            </template>
+        </top-alert>
         @endif
         @yield('content')
     </div>

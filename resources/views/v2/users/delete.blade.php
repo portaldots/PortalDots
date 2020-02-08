@@ -38,13 +38,17 @@
         <p><a href="{{ url('/') }}" class="btn is-primary is-block" role="button">ホームに戻る</a></p>
     @else
         <p class="card-text">アカウントを削除した場合、申請の手続きなどができなくなります。</p>
-        <form action="{{ route('user.destroy') }}" method="post">
+        <form-with-confirm
+            action="{{ route('user.destroy') }}"
+            method="post"
+            confirm-message="本当にアカウントを削除しますか？"
+        >
             @method('delete')
             @csrf
             <button type="submit" class="btn is-danger is-block">
                 <strong>アカウントを削除</strong>
             </button>
-        </form>
+        </form-with-confirm>
     @endif
 </app-container>
 @endsection

@@ -21,6 +21,6 @@ class ResendAction extends Controller
         $this->emailService->sendAll(Auth::user());
         return redirect()
             ->route('verification.notice')
-            ->with('success_message', '確認メールを再送しました。');
+            ->with('topAlert.title', '確認メールを再送しました。');
     }
 }

@@ -9,6 +9,6 @@ class CompletedAction extends Controller
 {
     public function __invoke()
     {
-        return view('auth.verify_completed');
+        return view('v2.auth.verify_completed');
     }
 }

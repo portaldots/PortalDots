@@ -12,7 +12,7 @@ class EditInfoAction extends Controller
     public function __invoke()
     {
         $user = User::find(Auth::id());
-        return view('v2.users.form')
+        return view('v2.users.edit')
             ->with('user', $user)
             ->with('circles', $user->circles->all());
     }
