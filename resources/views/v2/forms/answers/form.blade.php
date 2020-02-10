@@ -9,14 +9,25 @@
     <app-container>
         <list-view>
             @foreach ($questions as $question)
-                <component
-                    is="question-{{ $question->type }}"
-                    input-id="question_{{ $question->id }}"
-                    input-name="answers[{{ $question->id }}]"
-                    name="{{ $question->name }}"
-                    description="{{ $question->description }}"
-                    {{ $question->required ? 'required' : '' }}
-                ></component>
+                @if ($question->type === 'heading')
+                    <question-heading
+                        name="{{ $question->name }}"
+                    >
+                        @markdown($question->description)
+                    </question-heading>
+                @else
+                    <question-item
+                        type="{{ $question->type }}"
+                        {{-- Vue に String ではなく Number 型であると認識させるため
+                            v-bind を利用 --}}
+                        v-bind:question-id="{{ $question->id }}"
+                        name="{{ $question->name }}"
+                        description="{{ $question->description }}"
+                        {{ $question->required ? 'required' : '' }}
+                        value="仮のバリュー"
+                        v-bind:options="{{ json_encode($question->optionsArray) }}"
+                    ></question-item>
+                @endif
             @endforeach
         </list-view>
     </app-container>

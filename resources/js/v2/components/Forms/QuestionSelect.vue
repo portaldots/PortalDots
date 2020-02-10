@@ -1,12 +1,20 @@
 <template>
-  <textarea
-    type="text"
+  <select
     :id="inputId"
     :name="inputName"
     class="form-control"
-    :value="value"
     :required="required"
-  />
+  >
+    <option></option>
+    <option
+      v-for="(option, index) in options"
+      :key="`${option}_${index}`"
+      :selected="option === value"
+      :value="option"
+    >
+      {{ option }}
+    </option>
+  </select>
 </template>
 
 <script>
@@ -31,6 +39,10 @@ export default {
     value: {
       type: String,
       default: null
+    },
+    options: {
+      type: Array,
+      default: () => []
     }
   }
 }

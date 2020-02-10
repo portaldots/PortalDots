@@ -1,6 +1,6 @@
 <template>
-  <textarea
-    type="text"
+  <input
+    type="number"
     :id="inputId"
     :name="inputName"
     class="form-control"
