@@ -13,6 +13,10 @@ import ListViewFormGroup from './components/ListViewFormGroup.vue'
 import TopAlert from './components/TopAlert.vue'
 import FormWithConfirm from './components/FormWithConfirm.vue'
 
+// Form Questions
+import QuestionText from './components/Forms/QuestionText.vue'
+import QuestionTextarea from './components/Forms/QuestionTextarea.vue'
+
 // iOS で CSS の hover を有効にするハック
 document.body.addEventListener('touchstart', () => {}, { passive: true })
 
@@ -31,7 +35,10 @@ document.addEventListener('turbolinks:load', () => {
       ListViewEmpty,
       ListViewFormGroup,
       TopAlert,
-      FormWithConfirm
+      FormWithConfirm,
+      // Form Questions
+      QuestionText,
+      QuestionTextarea
     },
     data() {
       return {

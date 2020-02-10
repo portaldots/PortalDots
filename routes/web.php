@@ -42,6 +42,21 @@ Route::prefix('/schedules')
         Route::get('/{schedule}', 'Schedules\ShowAction')->name('show');
     });
 
+// 申請
+Route::prefix('/forms')
+    ->name('forms.')
+    ->group(function () {
+        Route::prefix('/{form}/answers')
+            ->name('answers.')
+            ->group(function () {
+                // Route::get('/{answer}/edit', 'Forms\Answers\EditAction')->name('edit');
+                // Route::patch('/{answer}', 'Forms\Answers\UpdateAction')->name('update');
+                Route::get('/create', 'Forms\Answers\CreateAction')->name('create');
+                // Route::post('/', 'Forms\Answers\StoreAction')->name('new');
+            });
+    });
+
+
 // 認証系
 Auth::routes([
     'register' => true,
