@@ -3,8 +3,10 @@
 namespace App\Http\Requests\Forms;
 
 use App;
+use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Services\Forms\ValidationRulesService;
+use App\Eloquents\Circle;
 
 class AnswerRequest extends FormRequest
 {
@@ -17,8 +19,9 @@ class AnswerRequest extends FormRequest
      */
     public function authorize()
     {
-        // TODO: フォームの回答権限チェックや、受付期間チェックもやる
-        return true;
+        $form = $this->route('form');
+        return Gate::allows('circle.belongsTo', Circle::findOrFail($this->circle_id)) &&
+            $form->is_public && $form->isOpen();
     }
 
     /**

@@ -6,6 +6,8 @@
 <form method="post" action="{{ route('forms.answers.store', [$form]) }}">
     @csrf
 
+    <input type="hidden" name="circle_id" value="{{ $circle->id }}">
+
     <app-container>
         <app-header>
             <template v-slot:title>{{ $form->name }}</template>
@@ -21,8 +23,11 @@
             <list-view-item>
                 <template v-slot:title>申請団体名</template>
                 {{ $circle->name }}
+                @if (count(Auth::user()->circles) > 1)
+                {{-- TODO: あとでもうちょっといい感じのコードに書き直す --}}
                 —
-                <a href="#">変更</a>
+                <a href="{{ route('forms.answers.create', ['form' => $form]) }}">変更</a>
+                @endif
             </list-view-item>
         </list-view>
 

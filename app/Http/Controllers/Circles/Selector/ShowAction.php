@@ -26,18 +26,12 @@ class ShowAction extends Controller
                     ->route($redirect);
             }
 
-            if (!empty(session('error_message'))) {
-                return view('circles.selector')
-                ->with('redirect', $redirect)
+            return view('v2.circles.selector')
+                ->with('url', route($redirect))
                 ->with('circles', $circles)
                 ->with('error_message', session('error_message'));
-            }
-
-            return view('v2.circles.selector')
-                ->with('redirect', $redirect)
-                ->with('circles', $circles);
         }
-        
+
         return redirect()
             ->route('home');
     }
