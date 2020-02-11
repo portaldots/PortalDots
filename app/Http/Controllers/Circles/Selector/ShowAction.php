@@ -33,7 +33,7 @@ class ShowAction extends Controller
                 ->with('error_message', session('error_message'));
             }
 
-            return view('circles.selector')
+            return view('v2.circles.selector')
                 ->with('redirect', $redirect)
                 ->with('circles', $circles);
         }
