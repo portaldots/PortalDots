@@ -9,7 +9,7 @@
         type="checkbox"
         :name="inputName"
         :required="computedRequired"
-        :checked="option === value"
+        :checked="Array.isArray(value) && value.includes(option)"
         :value="option"
       />
       {{ option }}
@@ -37,8 +37,8 @@ export default {
       default: null
     },
     value: {
-      type: String,
-      default: null
+      type: Array,
+      default: () => []
     },
     options: {
       type: Array,

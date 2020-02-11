@@ -78,7 +78,7 @@ export default {
       default: null
     },
     value: {
-      type: String
+      type: [String, Array]
     },
     options: {
       type: Array

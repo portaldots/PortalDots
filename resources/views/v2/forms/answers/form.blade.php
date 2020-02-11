@@ -45,11 +45,14 @@
                         name="{{ $question->name }}"
                         description="{{ $question->description }}"
                         {{ $question->is_required ? 'required' : '' }}
-                        value="仮のバリュー"
+                        v-bind:value="{{ json_encode(old('answers.'. $question->id)) }}"
                         v-bind:options="{{ json_encode($question->optionsArray) }}"
                         v-bind:number-min="{{ $question->number_min ?? 'null' }}"
                         v-bind:number-max="{{ $question->number_max ?? 'null' }}"
                         v-bind:allowed-types="{{ json_encode($question->allowed_types_array) }}"
+                        @error('answers.'. $question->id)
+                        invalid="{{ $message }}"
+                        @enderror
                     ></question-item>
                 @endif
             @endforeach
