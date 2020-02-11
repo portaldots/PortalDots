@@ -31,6 +31,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::guessPolicyNamesUsing(function ($modelClass) {
+            return 'App\\Policies\\' . class_basename($modelClass) . 'Policy';
+        });
+
         Auth::provider('app', function (Application $app, array $config) {
             return new AppUserProvider($app['hash'], $config['model']);
         });

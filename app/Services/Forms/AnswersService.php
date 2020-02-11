@@ -8,10 +8,18 @@ use App\Eloquents\Form;
 use App\Eloquents\Circle;
 use App\Eloquents\Answer;
 use App\Eloquents\AnswerDetail;
+use App\Services\Forms\AnswerDetailsService;
 use DB;
 
 class AnswersService
 {
+    private $answerDetailsService;
+
+    public function __construct(AnswerDetailsService $answerDetailsService)
+    {
+        $this->answerDetailsService = $answerDetailsService;
+    }
+
     public function createAnswer(Form $form, Circle $circle, array $answer_details)
     {
         return DB::transaction(function () use ($form, $circle, $answer_details) {
@@ -20,26 +28,17 @@ class AnswersService
                 'circle_id' => $circle->id,
             ]);
 
-            $data = [];
-            foreach ($answer_details as $question_id => $detail) {
-                if (is_array($detail)) {
-                    foreach ($detail as $value) {
-                        $data[] = [
-                            'answer_id' => $answer->id,
-                            'question_id' => $question_id,
-                            'answer' => $value
-                        ];
-                    }
-                } else {
-                    $data[] = [
-                        'answer_id' => $answer->id,
-                        'question_id' => $question_id,
-                        'answer' => $detail
-                    ];
-                }
-            }
+            $this->answerDetailsService->updateAnswerDetails($answer, $answer_details);
 
-            AnswerDetail::insert($data);
+            return $answer;
+        });
+    }
+
+    public function updateAnswer(Answer $answer, array $answer_details)
+    {
+        return DB::transaction(function () use ($answer, $answer_details) {
+            $answer->update();
+            $this->answerDetailsService->updateAnswerDetails($answer, $answer_details);
 
             return true;
         });

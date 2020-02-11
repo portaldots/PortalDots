@@ -46,6 +46,11 @@ class Form extends Model
         return $this->hasMany(Question::class);
     }
 
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
     public function isOpen()
     {
         return $this->open_at->lte(now()) && $this->close_at->gte(now());

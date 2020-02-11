@@ -19,4 +19,14 @@ class Answer extends Model
     {
         return $this->belongsToMany(Answer::class);
     }
+
+    public function circle()
+    {
+        return $this->belongsTo(Circle::class);
+    }
+
+    public function form()
+    {
+        return $this->belongsTo(Form::class);
+    }
 }

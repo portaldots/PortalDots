@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Services\Forms\ValidationRulesService;
 use App\Eloquents\Circle;
 
-class AnswerRequest extends FormRequest
+class StoreAnswerRequest extends FormRequest
 {
     private $validationRulesService;
 

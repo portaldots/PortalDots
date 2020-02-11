@@ -3,8 +3,10 @@
 @section('title', '申請')
 
 @section('content')
-<form method="post" action="{{ route('forms.answers.store', [$form]) }}">
+<form method="post" action="{{ empty($answer) ? route('forms.answers.store', [$form]) : route('forms.answers.update', [$form, $answer]) }}">
     @csrf
+
+    @method(empty($answer) ? 'post' : 'patch' )
 
     <input type="hidden" name="circle_id" value="{{ $circle->id }}">
 
@@ -23,7 +25,7 @@
             <list-view-item>
                 <template v-slot:title>申請団体名</template>
                 {{ $circle->name }}
-                @if (count(Auth::user()->circles) > 1)
+                @if (count(Auth::user()->circles) > 1 && empty($answer))
                 {{-- TODO: あとでもうちょっといい感じのコードに書き直す --}}
                 —
                 <a href="{{ route('forms.answers.create', ['form' => $form]) }}">変更</a>
@@ -50,7 +52,7 @@
                         name="{{ $question->name }}"
                         description="{{ $question->description }}"
                         {{ $question->is_required ? 'required' : '' }}
-                        v-bind:value="{{ json_encode(old('answers.'. $question->id)) }}"
+                        v-bind:value="{{ json_encode(old('answers.'. $question->id, $answer_details[$question->id] ?? null)) }}"
                         v-bind:options="{{ json_encode($question->optionsArray) }}"
                         v-bind:number-min="{{ $question->number_min ?? 'null' }}"
                         v-bind:number-max="{{ $question->number_max ?? 'null' }}"
