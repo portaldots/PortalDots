@@ -4,6 +4,7 @@ import Vue from 'vue'
 import GlobalEvents from 'vue-global-events'
 import TurbolinksAdapter from './vue-turbolinks'
 
+import AppHeader from './components/AppHeader.vue'
 import AppContainer from './components/AppContainer.vue'
 import ListView from './components/ListView.vue'
 import ListViewItem from './components/ListViewItem.vue'
@@ -28,6 +29,7 @@ document.addEventListener('turbolinks:load', () => {
   new Vue({
     components: {
       GlobalEvents,
+      AppHeader,
       AppContainer,
       ListView,
       ListViewItem,

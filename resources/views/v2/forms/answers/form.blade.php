@@ -7,13 +7,34 @@
     @csrf
 
     <app-container>
+        <app-header>
+            <template v-slot:title>{{ $form->name }}</template>
+            <div class="markdown">
+                <p class="text-muted">
+                    受付期間 : @datetime($form->open_at)〜@datetime($form->close_at)
+                </p>
+                @markdown($form->description)
+            </div>
+        </app-header>
+
+        <list-view>
+            <list-view-item>
+                <template v-slot:title>申請団体名</template>
+                {{ $circle->name }}
+                —
+                <a href="#">変更</a>
+            </list-view-item>
+        </list-view>
+
         <list-view>
             @foreach ($questions as $question)
                 @if ($question->type === 'heading')
                     <question-heading
                         name="{{ $question->name }}"
                     >
-                        @markdown($question->description)
+                        <div class="markdown">
+                            @markdown($question->description)
+                        </div>
                     </question-heading>
                 @else
                     <question-item
