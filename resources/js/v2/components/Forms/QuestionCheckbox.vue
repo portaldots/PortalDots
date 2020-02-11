@@ -4,13 +4,13 @@
       class="checkbox"
       v-for="(option, index) in options"
       :key="`${option}_${index}`"
-      :value="option"
     >
       <input
         type="checkbox"
         :name="inputName"
-        :required="required"
+        :required="computedRequired"
         :checked="option === value"
+        :value="option"
       />
       {{ option }}
     </label>
@@ -43,6 +43,17 @@ export default {
     options: {
       type: Array,
       default: () => []
+    }
+  },
+  computed: {
+    computedRequired() {
+      // 選択肢が1つの時の場合のみ、required属性をつける
+      //
+      // 選択肢が2つ以上の場合、1つ以上のチェックがついていれば良しとしたいため
+      if (this.options.length === 1 && this.required) {
+        return true
+      }
+      return false
     }
   }
 }

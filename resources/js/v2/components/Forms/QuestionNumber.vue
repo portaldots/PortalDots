@@ -6,6 +6,9 @@
     class="form-control"
     :value="value"
     :required="required"
+    step="1"
+    :min="numberMin"
+    :max="numberMax"
   />
 </template>
 
@@ -30,6 +33,14 @@ export default {
     },
     value: {
       type: String,
+      default: null
+    },
+    numberMin: {
+      type: Number,
+      default: null
+    },
+    numberMax: {
+      type: Number,
       default: null
     }
   }

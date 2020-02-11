@@ -4,13 +4,13 @@
       class="radio"
       v-for="(option, index) in options"
       :key="`${option}_${index}`"
-      :value="option"
     >
       <input
         type="radio"
         :name="inputName"
         :required="required"
         :checked="option === value"
+        :value="option"
       />
       {{ option }}
     </label>

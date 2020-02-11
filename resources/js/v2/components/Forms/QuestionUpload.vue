@@ -12,6 +12,7 @@
     :name="inputName"
     class="form-control"
     :required="required"
+    :accept="accept"
   />
 </template>
 
@@ -37,6 +38,16 @@ export default {
     value: {
       type: String,
       default: null
+    },
+    allowedTypes: {
+      type: Array,
+      default: () => []
+    }
+  },
+  computed: {
+    accept() {
+      // .jpg,.pdf,.doc のような形式の文字列にする
+      return `.${this.allowedTypes.join(',.')}`
     }
   }
 }

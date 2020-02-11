@@ -1,5 +1,5 @@
 <template>
-  <ListViewFormGroup :labelFor="inputId">
+  <ListViewFormGroup :labelFor="inputId" class="question-item">
     <!-- TODO: Min や Max といったバリデーションルールにも対応する -->
     <!-- TODO: せっかくVue使ってるので、バリデーションエラーは即座に表示したい -->
     <template #label>
@@ -7,7 +7,10 @@
       {{ required ? '(必須)' : '' }}
     </template>
     <template #description>
-      {{ description }}
+      <p class="question-item__description">{{ description }}</p>
+      <p class="question-item__description" v-if="validationNotice">
+        {{ validationNotice }}
+      </p>
     </template>
     <component
       :is="componentIs"
@@ -16,7 +19,10 @@
       :required="required"
       :invalid="invalid"
       :value="value"
-      :options="options"
+      :options="computedOptions"
+      :numberMin="numberMin"
+      :numberMax="numberMax"
+      :allowedTypes="computedAllowedTypes"
     />
     <template #invalid v-if="invalid">
       {{ invalid }}
@@ -76,6 +82,17 @@ export default {
     },
     options: {
       type: Array
+    },
+    numberMin: {
+      type: Number,
+      default: null
+    },
+    numberMax: {
+      type: Number,
+      default: null
+    },
+    allowedTypes: {
+      type: Array
     }
   },
   computed: {
@@ -93,7 +110,73 @@ export default {
         return `answers[${this.questionId}][]`
       }
       return `answers[${this.questionId}]`
+    },
+    computedOptions() {
+      if (['radio', 'select', 'checkbox'].includes(this.type)) {
+        return this.options
+      }
+      return undefined
+    },
+    computedAllowedTypes() {
+      if (this.type === 'upload') {
+        return this.allowedTypes
+      }
+      return undefined
+    },
+    validationNotice() {
+      let text = ''
+      switch (this.type) {
+        case 'text':
+        case 'textarea': {
+          if (this.numberMin !== null || this.numberMax !== null) {
+            if (this.numberMin !== null) {
+              text += `${this.numberMin}文字以上`
+            }
+            if (this.numberMax !== null) {
+              text += `${this.numberMax}文字以下`
+            }
+            text += 'で入力してください'
+          }
+          break
+        }
+        case 'number': {
+          if (this.numberMin !== null || this.numberMax !== null) {
+            if (this.numberMin !== null) {
+              text += `${this.numberMin}以上`
+            }
+            if (this.numberMax !== null) {
+              text += `${this.numberMax}以下`
+            }
+            text += 'の値を入力してください'
+          }
+          break
+        }
+        case 'upload': {
+          if (this.numberMax !== null) {
+            text += `${this.numberMax}KB以下としてください。`
+          }
+          if (this.allowedTypes && this.allowedTypes.length > 0) {
+            text += `対応形式 : ${this.allowedTypes.join(', ')}`
+          }
+          break
+        }
+        default: {
+          break
+        }
+      }
+      return text
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.question-item {
+  &__description {
+    margin: 0 0 $spacing-xs;
+    &:last-child {
+      margin: 0;
+    }
+  }
+}
+</style>

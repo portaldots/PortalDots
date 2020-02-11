@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\DB;
  */
 class Answer extends Model
 {
+    protected $fillable = [
+        'form_id',
+        'circle_id'
+    ];
+
     public function details()
     {
         return $this->belongsToMany(Answer::class);

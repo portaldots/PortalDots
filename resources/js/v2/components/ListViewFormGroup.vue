@@ -10,9 +10,9 @@
     >
       <slot name="label" />
     </component>
-    <p class="listview-form-group__description" v-if="$slots.description">
+    <div class="listview-form-group__description" v-if="$slots.description">
       <slot name="description" />
-    </p>
+    </div>
     <div class="listview-form-group__body">
       <slot />
     </div>

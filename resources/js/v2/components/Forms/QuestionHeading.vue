@@ -29,6 +29,9 @@ export default {
 .question-heading {
   border: 0;
   padding: $spacing 0;
+  &:first-child {
+    padding-top: 0;
+  }
   &__body {
     border-top: $listview-border;
     padding: $spacing $container-padding-x 0;

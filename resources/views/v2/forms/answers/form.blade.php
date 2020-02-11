@@ -3,7 +3,7 @@
 @section('title', '申請')
 
 @section('content')
-<form method="post" action="">
+<form method="post" action="{{ route('forms.answers.store', [$form]) }}">
     @csrf
 
     <app-container>
@@ -23,9 +23,12 @@
                         v-bind:question-id="{{ $question->id }}"
                         name="{{ $question->name }}"
                         description="{{ $question->description }}"
-                        {{ $question->required ? 'required' : '' }}
+                        {{ $question->is_required ? 'required' : '' }}
                         value="仮のバリュー"
                         v-bind:options="{{ json_encode($question->optionsArray) }}"
+                        v-bind:number-min="{{ $question->number_min ?? 'null' }}"
+                        v-bind:number-max="{{ $question->number_max ?? 'null' }}"
+                        v-bind:allowed-types="{{ json_encode($question->allowed_types_array) }}"
                     ></question-item>
                 @endif
             @endforeach
