@@ -35,7 +35,10 @@
     @if ($belong)
         <p class="card-text">団体に所属しているため、アカウント削除はできません。</p>
         <p class="card-text">詳細については「{{ config('portal.admin_name') }}」までお問い合わせください</p>
-        <p><a href="{{ url('/') }}" class="btn is-primary is-block" role="button">ホームに戻る</a></p>
+        <p>
+            {{-- リンク先が Turbolinks に対応したら data-turbolinks="false" は削除する --}}
+            <a href="{{ url('/') }}" class="btn is-primary is-block" data-turbolinks="false">ホームに戻る</a>
+        </p>
     @else
         <p class="card-text">アカウントを削除した場合、申請の手続きなどができなくなります。</p>
         <form-with-confirm

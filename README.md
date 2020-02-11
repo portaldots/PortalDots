@@ -7,7 +7,7 @@
     </a>
 </p>
 
-![inaka-portal](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/inaka-portal-eyecatch.png)
+![inaka-portal](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/inaka-portal-eyecatch-v2.png)
 
 ![スクリーンショット](https://raw.githubusercontent.com/SofPyon/inaka-portal-docs/master/docs/img/screenshots/home.png)
 
