@@ -57,8 +57,8 @@
                         description="{{ $question->description }}"
                         {{ $question->is_required ? 'required' : '' }}
                         @if ($question->type === 'upload' && !empty($answer) && !empty($answer_details[$question->id]))
-                        {{-- ファイルアップロード済の場合は、アップロードしたファイルにアクセスできる有効期限付きのURLをvalueに設定 --}}
-                        value="{{ URL::temporarySignedRoute('forms.answers.uploads.show', now()->addMinutes(10), ['form' => $form, 'answer' => $answer, 'question' => $question]) }}"
+                        {{-- ファイルアップロード済の場合は、アップロードしたファイルにアクセスできるURLをvalueに設定 --}}
+                        value="{{ route('forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question]) }}"
                         @else
                         v-bind:value="{{ json_encode(old('answers.'. $question->id, $answer_details[$question->id] ?? null)) }}"
                         @endif
