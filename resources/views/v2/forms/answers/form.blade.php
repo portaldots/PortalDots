@@ -77,6 +77,9 @@
 
     <app-container class="text-center pt-spacing-md">
         <button type="submit" class="btn is-primary is-wide">送信</button>
+        @if (config('app.debug'))
+        <button type="submit" class="btn is-primary-inverse" formnovalidate>（開発用）バリデーションせずに送信</button>
+        @endif
     </app-container>
 </form>
 @endsection
