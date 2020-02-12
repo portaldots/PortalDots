@@ -13,6 +13,11 @@ class CreateAction extends Controller
 {
     public function __invoke(Form $form, Request $request)
     {
+        if (! $form->is_public) {
+            abort(404);
+            return;
+        }
+
         $circle = null;
         if (empty($request->circle)) {
             $circles = Auth::user()->circles;

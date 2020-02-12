@@ -23,6 +23,11 @@ class EditAction extends Controller
 
     public function __invoke(Form $form, Answer $answer)
     {
+        if (! $form->is_public) {
+            abort(404);
+            return;
+        }
+
         $questions = $form->questions()->get();
         return view('v2.forms.answers.form')
             ->with('circle', $answer->circle)
