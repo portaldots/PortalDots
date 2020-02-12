@@ -36,7 +36,7 @@
             <list-view-item>
                 <template v-slot:title>申請団体名</template>
                 {{ $circle->name }}
-                @if (count(Auth::user()->circles) > 1 && empty($answer))
+                @if (count(Auth::user()->circles) > 1)
                 {{-- TODO: あとでもうちょっといい感じのコードに書き直す --}}
                 —
                 <a href="{{ route('forms.answers.create', ['form' => $form]) }}">変更</a>
