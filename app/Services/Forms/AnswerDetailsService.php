@@ -47,7 +47,7 @@ class AnswerDetailsService
     public function getAnswerDetailsWithFilePathFromRequest(Form $form, BaseAnswerRequest $request)
     {
         $form->loadMissing('questions');
-        $answer_details = $request->validated()['answers'];
+        $answer_details = $request->validated()['answers'] ?? [];
         foreach ($form->questions as $question) {
             $file = $request->file('answers.' . $question->id);
             if ($question->type === 'upload' && isset($file)) {
