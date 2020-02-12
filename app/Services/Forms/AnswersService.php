@@ -21,6 +21,11 @@ class AnswersService
         $this->answerDetailsService = $answerDetailsService;
     }
 
+    public function getAnswersByCircle(Form $form, Circle $circle)
+    {
+        return Answer::where('form_id', $form->id)->where('circle_id', $circle->id)->get();
+    }
+
     public function createAnswer(Form $form, Circle $circle, BaseAnswerRequest $request)
     {
         return DB::transaction(function () use ($form, $circle, $request) {

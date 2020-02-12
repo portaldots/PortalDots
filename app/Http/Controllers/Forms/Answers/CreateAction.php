@@ -8,9 +8,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Form;
 use App\Eloquents\Circle;
+use App\Services\Forms\AnswersService;
 
 class CreateAction extends Controller
 {
+    private $answersService;
+
+    public function __construct(AnswersService $answersService)
+    {
+        $this->answersService = $answersService;
+    }
+
     public function __invoke(Form $form, Request $request)
     {
         if (! $form->is_public) {
@@ -40,6 +48,14 @@ class CreateAction extends Controller
                 abort(403);
                 return;
             }
+        }
+
+        // すでに回答済だった場合
+        $answers = $this->answersService->getAnswersByCircle($form, $circle);
+        if (count($answers) > 0) {
+            // TODO: 回答数制限に対応する
+            return redirect()
+                ->route('forms.answers.edit', ['form' => $form, 'answer' => $answers[0]]);
         }
 
         $questions = $form->questions()->get();
