@@ -38,6 +38,9 @@ textarea {
       cursor: not-allowed;
       opacity: 0.75;
     }
+    &[readonly] {
+      background: $color-bg-grey;
+    }
     &.is-invalid {
       border-color: $color-danger;
     }

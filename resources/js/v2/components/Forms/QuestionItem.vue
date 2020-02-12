@@ -23,6 +23,7 @@
       :numberMin="numberMin"
       :numberMax="numberMax"
       :allowedTypes="computedAllowedTypes"
+      :disabled="disabled"
     />
     <template #invalid v-if="invalid">
       {{ invalid }}
@@ -93,6 +94,10 @@ export default {
     },
     allowedTypes: {
       type: Array
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

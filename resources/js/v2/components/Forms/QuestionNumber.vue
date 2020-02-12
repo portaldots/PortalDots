@@ -9,6 +9,7 @@
     step="1"
     :min="numberMin"
     :max="numberMax"
+    :readonly="disabled"
   />
 </template>
 
@@ -42,6 +43,10 @@ export default {
     numberMax: {
       type: Number,
       default: null
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   }
 }

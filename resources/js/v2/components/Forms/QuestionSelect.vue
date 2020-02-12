@@ -4,6 +4,7 @@
     :name="inputName"
     class="form-control"
     :required="required"
+    :disabled="disabled"
   >
     <option></option>
     <option
@@ -43,6 +44,10 @@ export default {
     options: {
       type: Array,
       default: () => []
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   }
 }

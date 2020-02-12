@@ -11,6 +11,7 @@
         :required="required"
         :checked="option === value"
         :value="option"
+        :disabled="disabled"
       />
       {{ option }}
     </label>
@@ -43,6 +44,10 @@ export default {
     options: {
       type: Array,
       default: () => []
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   }
 }

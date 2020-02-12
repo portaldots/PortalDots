@@ -20,6 +20,13 @@
             <div class="markdown">
                 <p class="text-muted">
                     受付期間 : @datetime($form->open_at)〜@datetime($form->close_at)
+                    @if (!$form->isOpen())
+                    —
+                    <strong class="text-danger">
+                        <i class="fas fa-info-circle"></i>
+                        受付期間外です
+                    </strong>
+                    @endif
                 </p>
                 @markdown($form->description)
             </div>
@@ -66,6 +73,7 @@
                         v-bind:number-min="{{ $question->number_min ?? 'null' }}"
                         v-bind:number-max="{{ $question->number_max ?? 'null' }}"
                         v-bind:allowed-types="{{ json_encode($question->allowed_types_array) }}"
+                        v-bind:disabled="{{ json_encode(!$form->isOpen()) }}"
                         @error('answers.'. $question->id)
                         invalid="{{ $message }}"
                         @enderror
@@ -76,7 +84,7 @@
     </app-container>
 
     <app-container class="text-center pt-spacing-md">
-        <button type="submit" class="btn is-primary is-wide">送信</button>
+        <button type="submit" class="btn is-primary is-wide"{{ $form->isOpen() ? '' : ' disabled' }}>送信</button>
         @if (config('app.debug'))
         <button type="submit" class="btn is-primary-inverse" formnovalidate>（開発用）バリデーションせずに送信</button>
         @endif

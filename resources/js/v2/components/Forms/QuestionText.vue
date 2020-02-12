@@ -8,6 +8,7 @@
     :required="required"
     :minlength="numberMin"
     :maxlength="numberMax"
+    :readonly="disabled"
   />
 </template>
 
@@ -41,6 +42,10 @@ export default {
     numberMax: {
       type: Number,
       default: null
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   }
 }

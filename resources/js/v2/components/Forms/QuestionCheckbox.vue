@@ -11,6 +11,7 @@
         :required="computedRequired"
         :checked="Array.isArray(value) && value.includes(option)"
         :value="option"
+        :disabled="disabled"
       />
       {{ option }}
     </label>
@@ -43,6 +44,10 @@ export default {
     options: {
       type: Array,
       default: () => []
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

@@ -15,6 +15,7 @@
         class="form-control"
         :required="required"
         :accept="accept"
+        :disabled="disabled"
       />
       <div class="uploaded-notice" v-if="value">
         <button
@@ -39,7 +40,12 @@
       <a :href="value" target="_blank" rel="noopener">
         アップロード済ファイルをダウンロード
       </a>
-      <button type="button" class="btn is-secondary is-sm" @click="deleteFile">
+      <button
+        type="button"
+        class="btn is-secondary is-sm"
+        @click="deleteFile"
+        :disabled="disabled"
+      >
         削除
       </button>
     </div>
@@ -85,6 +91,10 @@ export default {
     allowedTypes: {
       type: Array,
       default: () => []
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
