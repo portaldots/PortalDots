@@ -30,7 +30,11 @@ class Turbolinks
 
         if (!empty($location = $response->headers->get('location'))) {
             $parsed_location = parse_url($location);
-            Session::flash(self::LOCATION_SESSION_NAME, $parsed_location['path'] . '?' . $parsed_location['query']);
+            $turbolinks_location = $parsed_location['path'];
+            if (!empty($parsed_location['query'])) {
+                $turbolinks_location .= '?' . $parsed_location['query'];
+            }
+            Session::flash(self::LOCATION_SESSION_NAME, $turbolinks_location);
         }
 
         return $response;
