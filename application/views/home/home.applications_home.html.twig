@@ -56,7 +56,7 @@
           <div class="main-list__inner {% if form.now_period == "not_started" %}main-list__inner--greyout{% endif %}">
             <h2 class="main-list__title">
               {# TODO: 複数件申請には未対応( 現状：常に create へリンクする．max_answers == 1 の場合 create から変更ページへリダイレクト ) #}
-              <a href="{{ base_url("forms/#{form.id}/answers/create?circle_id=#{circle.id}") }}" class="lead">
+              <a href="{{ base_url("applications/#{form.id}/answers/create?circle_id=#{circle.id}") }}" class="lead">
                 {% if form.now_period == "not_started" %}
                   <span class="badge">
                     受付開始前

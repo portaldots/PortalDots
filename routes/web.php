@@ -42,6 +42,15 @@ Route::prefix('/schedules')
         Route::get('/{schedule}', 'Schedules\ShowAction')->name('show');
     });
 
+// 申請
+Route::prefix('/forms')
+    ->name('forms.')
+    ->group(function() {
+        Route::get('/', 'Forms\IndexAction')->name('index');
+        Route::get('/closed', 'Forms\ClosedAction')->name('closed');
+        Route::get('/all', 'Forms\AllAction')->name('all');
+    });
+
 // 認証系
 Auth::routes([
     'register' => true,

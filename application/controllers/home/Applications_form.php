@@ -103,7 +103,7 @@ class Applications_form extends Home_base_controller
             $vars["type"] = "create";
 
             // フォームの送信先URL
-            $vars["form_action"] = base_url("/forms/{$formId}/answers/create?circle_id={$circleId}");
+            $vars["form_action"] = base_url("/applications/{$formId}/answers/create?circle_id={$circleId}");
 
             $answer_list = $this->forms->get_answers($formId, $circleId, $boothId);
 
@@ -115,7 +115,7 @@ class Applications_form extends Home_base_controller
                 // if ($vars["form"]->type === "booth") {
                 //     $url .= "/b:{$boothId}";
                 // }
-                $url = "/forms/{$formId}/answers/". $answer_list[0]->id. "/edit";
+                $url = "/applications/{$formId}/answers/". $answer_list[0]->id. "/edit";
                 codeigniter_redirect($url);
             }
 
@@ -132,7 +132,7 @@ class Applications_form extends Home_base_controller
             $vars["type"] = "update";
 
             // フォームの送信先URL
-            $vars["form_action"] = base_url("/forms/{$formId}/answers/{$answer_id}/edit");
+            $vars["form_action"] = base_url("/applications/{$formId}/answers/{$answer_id}/edit");
 
             // 存在しない回答の時エラー
             if ($answer_info === false) {
@@ -177,7 +177,7 @@ class Applications_form extends Home_base_controller
         $vars["circle_info"] = $this->circles->get_circle_info_by_user_id($this->_get_login_user()->id);
 
         $form_id = (int)$vars['form']->id;
-        $vars['url_format'] = base_url("forms/{$form_id}/answers/create?circle_id=%circle_id%");
+        $vars['url_format'] = base_url("applications/{$form_id}/answers/create?circle_id=%circle_id%");
 
         if (count($vars["circle_info"]) === 1) {
             // アクセスできる団体が１つしかない場合，その団体の回答ページに直接アクセスする
@@ -377,7 +377,7 @@ class Applications_form extends Home_base_controller
             //     $url .= "/b:{$boothId}";
             // }
             // $url .= "/forms/{$formId}/{$answer_id}";
-            $url = "/forms/{$formId}/answers/{$answer_id}/edit";
+            $url = "/applications/{$formId}/answers/{$answer_id}/edit";
 
             // 完了メールを送信
             $vars_email = [];

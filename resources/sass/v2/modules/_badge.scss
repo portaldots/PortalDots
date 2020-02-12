@@ -1,0 +1,22 @@
+.badge {
+    border-radius: $border-radius;
+    display: inline-block;
+    padding: 0 $spacing-xs;
+    text-align: center;
+    &.is-primary {
+        background: $color-primary;
+        color: #fff;
+    }
+    &.is-danger {
+        background: $color-danger;
+        color: white;
+    }
+    &.is-success {
+        background: $color-success;
+        color: white;
+    }
+    &.is-muted {
+        background: $color-muted;
+        color: white;
+    }
+}

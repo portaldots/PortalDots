@@ -16,10 +16,10 @@ class ShowAction extends Controller
 
     public function __invoke(Request $request)
     {
-        $redirect = (string) $request->redirect;
+        $redirect = $request->redirect;
         if (isset($redirect) && $this->router->has($redirect)) {
             $user = Auth::user();
-            $circles = $user->circles->all();
+            $circles = $user->circles()->get();
 
             if (count($circles) <= 1) {
                 return redirect()
@@ -32,7 +32,6 @@ class ShowAction extends Controller
                 ->with('error_message', session('error_message'));
         }
 
-        return redirect()
-            ->route('home');
+        return redirect('/');
     }
 }
