@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Forms;
 
 use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
 use App\Eloquents\Form;
 
 class ValidationRulesService
@@ -15,10 +16,11 @@ class ValidationRulesService
      * 回答の下書き保存用の簡易バリデーションとしたい場合、第二引数を false にする
      *
      * @param Form $form
+     * @param Request $request
      * @param bool $isStrict 厳密なバリデーションルールにするか
      * @return void
      */
-    public function getRulesFromForm(Form $form, bool $isStrict = true)
+    public function getRulesFromForm(Form $form, Request $request, bool $isStrict = true)
     {
         $questions = $form->questions;
 
@@ -59,6 +61,21 @@ class ValidationRulesService
                 isset($question->number_max) && $isStrict
             ) {
                 $rule[] = 'max:' . $question->number_max;
+            }
+
+            // ファイルの種類チェック
+            if ($question->type === 'upload') {
+                $rule[] = 'mimes:' . \implode(',', $question->allowed_types_array);
+            }
+
+            // ファイルアップロード設問において、回答が "__KEEP__" だった場合、
+            // 以前アップロードしたファイルを回答として利用したいということなので、
+            // 回答のバリデーションは行わない
+            if (
+                $question->type === 'upload' && isset($request->answers[$question->id]) &&
+                $request->answers[$question->id] === '__KEEP__'
+            ) {
+                $rule = ['required'];
             }
 
             $rules['answers.' . $question->id] = $rule;

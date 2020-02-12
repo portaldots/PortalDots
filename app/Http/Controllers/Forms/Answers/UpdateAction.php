@@ -20,7 +20,7 @@ class UpdateAction extends Controller
 
     public function __invoke(Form $form, Answer $answer, UpdateAnswerRequest $request)
     {
-        $result = $this->answersService->updateAnswer($answer, $request->answers);
+        $result = $this->answersService->updateAnswer($form, $answer, $request);
         if ($result) {
             return back()
                 ->with('topAlert.title', '回答を更新しました');

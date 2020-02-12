@@ -3,7 +3,11 @@
 @section('title', '申請')
 
 @section('content')
-<form method="post" action="{{ empty($answer) ? route('forms.answers.store', [$form]) : route('forms.answers.update', [$form, $answer]) }}">
+<form
+    method="post"
+    action="{{ empty($answer) ? route('forms.answers.store', [$form]) : route('forms.answers.update', [$form, $answer]) }}"
+    enctype="multipart/form-data"
+>
     @csrf
 
     @method(empty($answer) ? 'post' : 'patch' )
@@ -52,7 +56,12 @@
                         name="{{ $question->name }}"
                         description="{{ $question->description }}"
                         {{ $question->is_required ? 'required' : '' }}
+                        @if ($question->type === 'upload' && !empty($answer) && !empty($answer_details[$question->id]))
+                        {{-- ファイルアップロード済の場合は、アップロードしたファイルにアクセスできる有効期限付きのURLをvalueに設定 --}}
+                        value="{{ URL::temporarySignedRoute('forms.answers.uploads.show', now()->addMinutes(10), ['form' => $form, 'answer' => $answer, 'question' => $question]) }}"
+                        @else
                         v-bind:value="{{ json_encode(old('answers.'. $question->id, $answer_details[$question->id] ?? null)) }}"
+                        @endif
                         v-bind:options="{{ json_encode($question->optionsArray) }}"
                         v-bind:number-min="{{ $question->number_min ?? 'null' }}"
                         v-bind:number-max="{{ $question->number_max ?? 'null' }}"

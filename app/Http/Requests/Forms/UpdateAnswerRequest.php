@@ -4,14 +4,11 @@ namespace App\Http\Requests\Forms;
 
 use App;
 use Gate;
-use Illuminate\Foundation\Http\FormRequest;
 use App\Services\Forms\ValidationRulesService;
 use App\Eloquents\Circle;
 
-class UpdateAnswerRequest extends FormRequest
+class UpdateAnswerRequest extends BaseAnswerRequest
 {
-    private $validationRulesService;
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -22,21 +19,5 @@ class UpdateAnswerRequest extends FormRequest
         $form = $this->route('form');
         $answer = $this->route('answer');
         return $this->user()->can('update', $answer) && $form->is_public && $form->isOpen();
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules(ValidationRulesService $validationRulesService)
-    {
-        return $validationRulesService->getRulesFromForm($this->route('form'));
-    }
-
-    public function attributes()
-    {
-        $validationRulesService = App::make(ValidationRulesService::class);
-        return $validationRulesService->getAttributesFromForm($this->route('form'))->toArray();
     }
 }
