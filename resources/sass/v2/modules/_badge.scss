@@ -1,7 +1,9 @@
 .badge {
     border-radius: $border-radius;
     display: inline-block;
-    padding: 0 $spacing-xs;
+    font-size: 0.75em;
+    line-height: 1.75;
+    padding: 0 0.4em;
     text-align: center;
     &.is-primary {
         background: $color-primary;
