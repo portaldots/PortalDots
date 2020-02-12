@@ -36,9 +36,9 @@
         アップロード済
       </strong>
       —
-      <a :href="value" target="_blank" rel="noopener"
-        >アップロード済ファイルをダウンロード</a
-      >
+      <a :href="value" target="_blank" rel="noopener">
+        アップロード済ファイルをダウンロード
+      </a>
       <button type="button" class="btn is-secondary is-sm" @click="deleteFile">
         削除
       </button>
