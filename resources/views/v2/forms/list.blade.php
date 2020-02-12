@@ -41,18 +41,16 @@
     <app-container>
         <list-view>
             @foreach ($forms as $form)
-            {{-- 回答ページが Project v2 になったら data-turbolinks="false" は削除する --}}
             <list-view-item
-                href="/applications/{{ $form->id }}/answers/create?circle_id={{ $circle->id }}"
-                data-turbolinks="false"
+                href="/forms/{{ $form->id }}/answers/create?circle={{ $circle->id }}"
             >
                 <template v-slot:title>
                     {{ $form->name }}
                     @if ($form->answered($circle))
-                        <small class="badge is-success">提出済</small>
+                        <span class="badge is-success">提出済</span>
                     @endif
                     @if ($form->yetOpen())
-                        <small class="badge is-muted">受付開始前</small>
+                        <span class="badge is-muted">受付開始前</span>
                     @endif
                 </template>
                 <template v-slot:meta>
