@@ -4,7 +4,7 @@
     <!-- TODO: せっかくVue使ってるので、バリデーションエラーは即座に表示したい -->
     <template #label>
       {{ name }}
-      {{ required ? '(必須)' : '' }}
+      <span class="badge is-danger" v-if="required">必須</span>
     </template>
     <template #description>
       <p class="question-item__description">{{ description }}</p>
