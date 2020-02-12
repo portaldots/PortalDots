@@ -83,6 +83,7 @@ class Form extends Model
         return $this->hasMany(Answer::class);
     }
 
+    // TODO: 意味的に isAnswered という名前に変えたい
     public function answered(Circle $circle)
     {
         $answer = Answer::where('form_id', $this->id)->where('circle_id', $circle->id)->first();
