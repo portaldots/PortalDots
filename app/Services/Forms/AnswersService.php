@@ -8,9 +8,13 @@ use App\Eloquents\Form;
 use App\Eloquents\Circle;
 use App\Eloquents\Answer;
 use App\Eloquents\AnswerDetail;
+use App\Eloquents\User;
 use App\Services\Forms\AnswerDetailsService;
 use App\Http\Requests\Forms\BaseAnswerRequest;
+use App\Mail\Forms\AnswerConfirmationMailable;
+use Illuminate\Database\Eloquent\Collection;
 use DB;
+use Illuminate\Support\Facades\Mail;
 
 class AnswersService
 {
@@ -19,6 +23,47 @@ class AnswersService
     public function __construct(AnswerDetailsService $answerDetailsService)
     {
         $this->answerDetailsService = $answerDetailsService;
+    }
+
+    /**
+     * 団体所属者にメールを送信する
+     *
+     * @return void
+     */
+    public function sendAll(Answer $answer)
+    {
+        // TODO: 希望するスタッフも確認メールを受信できるようにする
+        // 団体にメールを送る
+        $answer->loadMissing('form.questions');
+        $answer->loadMissing('circle.users');
+        $answer_details = $this->answerDetailsService->getAnswerDetailsByAnswer($answer);
+
+        foreach ($answer->circle->users as $user) {
+            $this->sendToUser(
+                $answer->form,
+                $answer->form->questions,
+                $answer->circle,
+                $user,
+                $answer,
+                $answer_details
+            );
+        }
+    }
+
+    private function sendToUser(
+        Form $form,
+        Collection $questions,
+        Circle $circle,
+        User $user,
+        Answer $answer,
+        array $answer_details
+    ) {
+        Mail::to($user)
+            ->send(
+                (new AnswerConfirmationMailable($form, $questions, $circle, $user, $answer, $answer_details))
+                    ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
+                    ->subject('申請「' . $form->name . '」を承りました')
+            );
     }
 
     public function getAnswersByCircle(Form $form, Circle $circle)
@@ -50,7 +95,7 @@ class AnswersService
             $answer->update();
             $this->answerDetailsService->updateAnswerDetails($form, $answer, $answer_details);
 
-            return true;
+            return $answer;
         });
     }
 }

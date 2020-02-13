@@ -22,6 +22,7 @@ class StoreAction extends Controller
         $circle = Circle::findOrFail($request->circle_id);
         $answer = $this->answersService->createAnswer($form, $circle, $request);
         if ($answer) {
+            $this->answersService->sendAll($answer);
             return redirect()
                 ->route('forms.answers.edit', ['form' => $form, 'answer' => $answer])
                 ->with('topAlert.title', '回答を作成しました')
