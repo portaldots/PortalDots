@@ -105,7 +105,9 @@ class AnswersService
     public function updateAnswer(Form $form, Answer $answer, BaseAnswerRequest $request)
     {
         return DB::transaction(function () use ($form, $answer, $request) {
-            $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
+            $answer_details = $this
+                ->answerDetailsService
+                ->getAnswerDetailsWithFilePathFromRequest($form, $request, $answer);
 
             $answer->update();
             $this->answerDetailsService->updateAnswerDetails($form, $answer, $answer_details);

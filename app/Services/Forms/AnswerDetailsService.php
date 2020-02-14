@@ -42,16 +42,41 @@ class AnswerDetailsService
      *
      * @param Form $form
      * @param BaseAnswerRequest $request
+     * @param Answer|null $answer
      * @return array
      */
-    public function getAnswerDetailsWithFilePathFromRequest(Form $form, BaseAnswerRequest $request)
-    {
+    public function getAnswerDetailsWithFilePathFromRequest(
+        Form $form,
+        BaseAnswerRequest $request,
+        ?Answer $answer = null
+    ) {
         $form->loadMissing('questions');
         $answer_details = $request->validated()['answers'] ?? [];
+        $answer_details_on_db = [];
+
+        if (isset($answer)) {
+            $answer_details_on_db = $this->getAnswerDetailsByAnswer($answer);
+        }
+
         foreach ($form->questions as $question) {
-            $file = $request->file('answers.' . $question->id);
-            if ($question->type === 'upload' && isset($file)) {
-                $answer_details[$question->id] = $file->store('answer_details');
+            if ($question->type === 'upload') {
+                $file = $request->file('answers.' . $question->id);
+                if (isset($file)) {
+                    $answer_details[$question->id] = $file->store('answer_details');
+
+                    // 変更前のファイルは削除する
+                    if (!empty($answer_details_on_db[$question->id])) {
+                        Storage::delete($answer_details_on_db[$question->id]);
+                    }
+                } elseif (
+                    (empty($answer_details[$question->id]) || $answer_details[$question->id] !== '__KEEP__') &&
+                    !empty($answer_details_on_db[$question->id])
+                ) {
+                    // 今回ファイルはアップロードされなかったものの
+                    // DB 上にはファイルパスが格納されている場合、
+                    // そのファイルは削除する
+                    Storage::delete($answer_details_on_db[$question->id]);
+                }
             }
         }
 
