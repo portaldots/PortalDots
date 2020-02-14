@@ -54,31 +54,31 @@
     "prefer-stable": true,
 	"scripts": {
 		"docker": [
-			"cd docker_dev; docker-compose up -d"
+			"cd docker_dev && docker-compose up -d"
 		],
 		"docker-build": [
-			"cd docker_dev; docker-compose up -d --build"
+			"cd docker_dev && docker-compose up -d --build"
 		],
 		"docker-stop": [
-			"cd docker_dev; docker-compose down"
+			"cd docker_dev && docker-compose down"
 		],
         "migrate": [
-            "cd docker_dev; docker-compose run web php artisan migrate"
+            "cd docker_dev && docker-compose run web php artisan migrate"
         ],
         "migrate:status": [
-            "cd docker_dev; docker-compose run web php artisan migrate:status"
+            "cd docker_dev && docker-compose run web php artisan migrate:status"
         ],
         "migrate:rollback": [
-            "cd docker_dev; docker-compose run web php artisan migrate:rollback"
+            "cd docker_dev && docker-compose run web php artisan migrate:rollback"
         ],
         "migrate:refresh": [
-            "cd docker_dev; docker-compose run web php artisan migrate:refresh"
+            "cd docker_dev && docker-compose run web php artisan migrate:refresh"
         ],
         "phpcs": [
-            "./vendor/bin/phpcs --standard=phpcs.xml ./"
+            "phpcs --standard=phpcs.xml ./"
         ],
         "phpcbf": [
-            "./vendor/bin/phpcbf --standard=phpcs.xml ./"
+            "phpcbf --standard=phpcs.xml ./"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
