@@ -24,13 +24,33 @@
     </div>
     <div class="editor-header__actions">
       <a class="btn btn-link" :href="preview_url" target="_blank">プレビュー</a>
-      <button class="btn btn-primary" :disabled="is_saving">公開する</button>
+      <template v-if="is_public">
+        <span class="badge badge-primary mr-2">公開</span>
+        <button
+          class="btn btn-danger"
+          :disabled="is_saving"
+          @click="setPrivate()"
+        >
+          非公開にする
+        </button>
+      </template>
+      <template v-else>
+        <span class="badge badge-danger mr-2">非公開</span>
+        <button
+          class="btn btn-primary"
+          :disabled="is_saving"
+          @click="setPublic()"
+        >
+          公開する
+        </button>
+      </template>
     </div>
   </header>
 </template>
 
 <script>
 import { SAVE_STATUS_SAVING, SAVE_STATUS_SAVED } from '../store/status'
+import { SET_FORM_PUBLIC, SET_FORM_PRIVATE, SAVE_FORM } from '../store/editor'
 
 export default {
   computed: {
@@ -52,6 +72,30 @@ export default {
     preview_url() {
       const form_id = this.$store.state.editor.form.id
       return `/home_staff/applications/preview/${form_id}`
+    },
+    is_public() {
+      return this.$store.state.editor.form.is_public
+    }
+  },
+  methods: {
+    save() {
+      this.$store.dispatch(`editor/${SAVE_FORM}`)
+    },
+    setPublic() {
+      if (
+        window.confirm(
+          '公開しますか？\n公開しても受付期間外の場合、団体は回答できません。'
+        )
+      ) {
+        this.$store.commit(`editor/${SET_FORM_PUBLIC}`)
+        this.save()
+      }
+    },
+    setPrivate() {
+      if (window.confirm('非公開にしますか？')) {
+        this.$store.commit(`editor/${SET_FORM_PRIVATE}`)
+        this.save()
+      }
     }
   }
 }
