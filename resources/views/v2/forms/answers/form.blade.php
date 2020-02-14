@@ -103,7 +103,7 @@
                         value="{{
                             strpos($answer_details[$question->id], 'answer_details') === 0
                                 ? route('forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question])
-                                : url('/uploads/applications_form/'. $question->id)
+                                : url('/uploads/applications_form/'. $answer_details[$question->id])
                         }}"
                         @else
                         v-bind:value="{{ json_encode(old('answers.'. $question->id, $answer_details[$question->id] ?? null)) }}"
