@@ -83,10 +83,13 @@
         </list-view>
     </app-container>
 
-    <app-container class="text-center pt-spacing-md">
+    <app-container class="text-center pt-spacing-md pb-spacing-lg">
         <button type="submit" class="btn is-primary is-wide"{{ $form->isOpen() ? '' : ' disabled' }}>送信</button>
         @if (config('app.debug'))
-        <button type="submit" class="btn is-primary-inverse" formnovalidate>（開発用）バリデーションせずに送信</button>
+        <button type="submit" class="btn is-primary-inverse" formnovalidate>
+            <strong class="badge is-primary">開発モード</strong>
+            バリデーションせずに送信
+        </button>
         @endif
     </app-container>
 </form>
