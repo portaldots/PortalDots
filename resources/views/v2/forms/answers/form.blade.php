@@ -100,7 +100,11 @@
                         {{ $question->is_required ? 'required' : '' }}
                         @if ($question->type === 'upload' && !empty($answer) && !empty($answer_details[$question->id]))
                         {{-- ファイルアップロード済の場合は、アップロードしたファイルにアクセスできるURLをvalueに設定 --}}
-                        value="{{ route('forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question]) }}"
+                        value="{{
+                            strpos($answer_details[$question->id], 'answer_details') === 0
+                                ? route('forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question])
+                                : url('/uploads/applications_form/'. $question->id)
+                        }}"
                         @else
                         v-bind:value="{{ json_encode(old('answers.'. $question->id, $answer_details[$question->id] ?? null)) }}"
                         @endif
