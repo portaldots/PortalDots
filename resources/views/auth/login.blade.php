@@ -61,4 +61,10 @@
         </p>
     </div>
 </div>
+
+<hr>
+
+<p class="text-muted text-center">
+    {{ config('portal.admin_name') }}
+</p>
 @endsection
