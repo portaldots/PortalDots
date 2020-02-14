@@ -4,6 +4,12 @@
 
 @section('content')
 <app-container>
+    @if ($pages->isEmpty())
+    <list-view-empty
+        icon-class="fas fa-bullhorn"
+        text="お知らせはまだありません"
+    />
+    @else
     <list-view>
         @foreach ($pages as $page)
         <list-view-item href="{{ route('pages.show', $page) }}">
@@ -16,12 +22,7 @@
             @summary($page->body)
         </list-view-item>
         @endforeach
-        @empty ($pages)
-        <list-view-empty
-            icon-class="fas fa-bullhorn"
-            text="お知らせはまだありません"
-        />
-        @endempty
     </list-view>
+    @endif
 </app-container>
 @endsection

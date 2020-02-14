@@ -34,12 +34,10 @@
     </list-view>
     @endforeach
     @empty ($schedules)
-    <list-view>
-        <list-view-empty
-            icon-class="far fa-calendar-alt"
-            text="予定はありません"
-        />
-    </list-view>
+    <list-view-empty
+        icon-class="far fa-calendar-alt"
+        text="予定はありません"
+    />
     @endempty
 </app-container>
 @endsection

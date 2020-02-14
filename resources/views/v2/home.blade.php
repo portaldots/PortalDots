@@ -102,6 +102,8 @@
         </list-view-action-btn>
     </list-view>
     @endisset
+
+    @if (!$pages->isEmpty())
     <list-view header-title="お知らせ">
         @foreach ($pages as $page)
         <list-view-item href="{{ route('pages.show', $page) }}">
@@ -119,14 +121,10 @@
             残り {{ $remaining_pages_count }} 件のお知らせを見る
         </list-view-action-btn>
         @endif
-        @empty ($pages)
-        <list-view-empty
-            icon-class="fas fa-bullhorn"
-            text="お知らせはまだありません"
-        />
-        @endempty
     </list-view>
+    @endif
 
+    @if (!$documents->isEmpty())
     <list-view header-title="最近の配布資料">
         @foreach ($documents as $document)
         <list-view-item
@@ -156,12 +154,7 @@
             残り {{ $remaining_documents_count }} 件の配布資料を見る
         </list-view-action-btn>
         @endif
-        @empty ($documents)
-        <list-view-empty
-            icon-class="far fa-file-alt"
-            text="配布資料はまだありません"
-        />
-        @endempty
     </list-view>
+    @endif
 </app-container>
 @endsection
