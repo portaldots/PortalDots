@@ -52,8 +52,10 @@ class CreateAction extends Controller
 
         // すでに回答済だった場合
         $answers = $this->answersService->getAnswersByCircle($form, $circle);
-        if (count($answers) > 0) {
-            // TODO: 回答数制限に対応する
+        if ($form->max_answers === 1 && count($answers) === 1) {
+            // 最大回答回数 1 かつ 現時点での回答数が 1 の場合に限り、
+            // 編集画面へリダイレクトする。
+            // （それ以外の場合、View にて、回答編集も可能な旨を表示する）
             return redirect()
                 ->route('forms.answers.edit', ['form' => $form, 'answer' => $answers[0]]);
         }
@@ -61,6 +63,7 @@ class CreateAction extends Controller
         $questions = $form->questions()->get();
         return view('v2.forms.answers.form')
             ->with('circle', $circle)
+            ->with('answers', $answers)
             ->with('form', $form)
             ->with('questions', $questions);
     }

@@ -95,6 +95,7 @@ class AnswerDetailsService
         }
 
         AnswerDetail::insert($data);
+        $answer->touch();
     }
 
     /**

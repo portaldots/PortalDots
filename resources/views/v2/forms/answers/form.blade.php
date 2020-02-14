@@ -44,7 +44,42 @@
             </list-view-item>
         </list-view>
 
-        <list-view>
+        {{--
+            $answers ← 団体 $circle が回答した全回答（回答新規作成画面で使用）
+            $answer ← 編集対象の回答（回答変更画面で使用）
+        --}}
+
+        @if (empty($answer) && count($answers) > 0)
+        <list-view
+            header-title="以前の回答を閲覧・変更"
+            header-description="受付期間内に限り、回答の変更ができます"
+        >
+            @foreach ($answers as $_)
+            <list-view-item
+                href="{{ route('forms.answers.edit', ['form' => $form, 'answer' => $_]) }}"
+            >
+                <template v-slot:title>@datetime($_->created_at) に新規作成した回答</template>
+                @unless ($_->created_at->eq($_->updated_at))
+                <template v-slot:meta>回答の最終更新日時 : @datetime($_->updated_at)</template>
+                @endunless
+            </list-view-item>
+            @endforeach
+        </list-view>
+        @endif
+
+        <list-view
+        @if (empty($answer) && $form->max_answers > 1)
+            header-title="回答を新規作成"
+            @if ($form->max_answers - count($answers) > 0)
+            header-description="貴団体はこの申請を、あと{{ $form->max_answers - count($answers) }}つ新規作成できます"
+            @else
+            header-description="回答数上限({{ $form->max_answers }}つ)に達したため、これ以上新規作成できません。以前の回答の編集は上記より可能です。"
+            @endif
+        @endif
+        @isset ($answer)
+            header-title="{{ $form->isOpen() ? '回答を編集' : '回答を閲覧' }}"
+        @endisset
+        >
             @foreach ($questions as $question)
                 @if ($question->type === 'heading')
                     <question-heading
@@ -73,7 +108,7 @@
                         v-bind:number-min="{{ $question->number_min ?? 'null' }}"
                         v-bind:number-max="{{ $question->number_max ?? 'null' }}"
                         v-bind:allowed-types="{{ json_encode($question->allowed_types_array) }}"
-                        v-bind:disabled="{{ json_encode(!$form->isOpen()) }}"
+                        v-bind:disabled="{{ json_encode(!$form->isOpen() || (empty($answer) && $form->max_answers <= count($answers))) }}"
                         @error('answers.'. $question->id)
                         invalid="{{ $message }}"
                         @enderror
@@ -84,7 +119,7 @@
     </app-container>
 
     <app-container class="text-center pt-spacing-md pb-spacing-lg">
-        <button type="submit" class="btn is-primary is-wide"{{ $form->isOpen() ? '' : ' disabled' }}>送信</button>
+        <button type="submit" class="btn is-primary is-wide"{{ !$form->isOpen() || (empty($answer) && $form->max_answers <= count($answers)) ? ' disabled' : '' }}>送信</button>
         @if (config('app.debug'))
         <button type="submit" class="btn is-primary-inverse" formnovalidate>
             <strong class="badge is-primary">開発モード</strong>

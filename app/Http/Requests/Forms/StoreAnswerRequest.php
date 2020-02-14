@@ -6,6 +6,7 @@ use App;
 use Gate;
 use App\Services\Forms\ValidationRulesService;
 use App\Eloquents\Circle;
+use App\Services\Forms\AnswersService;
 
 class StoreAnswerRequest extends BaseAnswerRequest
 {
@@ -16,8 +17,11 @@ class StoreAnswerRequest extends BaseAnswerRequest
      */
     public function authorize()
     {
+        $answersService = App::make(AnswersService::class);
         $form = $this->route('form');
-        return Gate::allows('circle.belongsTo', Circle::findOrFail($this->circle_id)) &&
-            $form->is_public && $form->isOpen();
+        $circle = Circle::findOrFail($this->circle_id);
+        $answers = $answersService->getAnswersByCircle($form, $circle);
+        return Gate::allows('circle.belongsTo', $circle) &&
+            $form->is_public && $form->isOpen() && $form->max_answers > count($answers);
     }
 }
