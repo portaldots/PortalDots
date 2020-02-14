@@ -32,7 +32,6 @@ class AnswersService
      */
     public function sendAll(Answer $answer, User $applicant)
     {
-        // TODO: 希望するスタッフも確認メールを受信できるようにする
         // 団体にメールを送る
         $answer->loadMissing('form.questions');
         $answer->loadMissing('circle.users');
@@ -47,6 +46,20 @@ class AnswersService
                 $answer,
                 $answer_details,
                 $recipient
+            );
+        }
+
+        // フォーム作成者にメールを送る
+        $creator = User::find($answer->form->created_by);
+        if (! empty($creator)) {
+            $this->sendToUser(
+                $answer->form,
+                $answer->form->questions,
+                $answer->circle,
+                $applicant,
+                $answer,
+                $answer_details,
+                $creator
             );
         }
     }
