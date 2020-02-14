@@ -4,6 +4,7 @@
     :id="inputId"
     :name="inputName"
     class="form-control"
+    rows="3"
     :value="value"
     :required="required"
     :minlength="numberMin"
