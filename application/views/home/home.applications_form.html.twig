@@ -115,7 +115,7 @@
   </section>
 
   {% import "macro_applications_form.html.twig" as form_macros %}
-  {{ form_macros.applications_form( form, type, answers, { id: 'js_applications__form' }, false, form_action ) }}
+  {{ form_macros.applications_form( form, type, answers, { id: 'js_applications__form' }, false, form_action, answer_info ) }}
 
   {{ alerts.form_preview_alert( is_preview, form ) }}
 

@@ -163,6 +163,7 @@ class Applications_form extends Home_base_controller
         } // end if post
 
         $vars["answers"] = $answers;
+        $vars["answer_info"] = $answer_info ?? null;
         $this->_render('home/applications_form', $vars);
     }
 
