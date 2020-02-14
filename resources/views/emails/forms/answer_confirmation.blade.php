@@ -5,8 +5,8 @@
 @component('mail::panel')
 - 申請名 : {{ $form->name }}
 - 団体名 : {{ $circle->name }}
-- 回答者 : {{ $user->name }}
-- 日時 : {{ $answer->updated_at }}
+- 回答者 : {{ $applicant->name }}
+- 日時 : @datetime($answer->updated_at)
 @endcomponent
 
 @foreach ($questions as $question)
@@ -27,7 +27,7 @@
 - {{ $detail }}
 @endforeach
 @elseif ($question->type === 'upload')
-✔︎アップロード済 — [アップロードしたファイルをダウンロード]({{ route('forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question]) }})
+✓アップロード済 — [アップロードしたファイルをダウンロード]({{ route('forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question]) }})
 @else
 {!! nl2br(e($answer_details[$question->id])) !!}
 @endif

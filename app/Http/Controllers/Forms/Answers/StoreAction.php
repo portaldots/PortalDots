@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Forms\Answers;
 
+use Auth;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Form;
 use App\Eloquents\Circle;
@@ -22,7 +23,7 @@ class StoreAction extends Controller
         $circle = Circle::findOrFail($request->circle_id);
         $answer = $this->answersService->createAnswer($form, $circle, $request);
         if ($answer) {
-            $this->answersService->sendAll($answer);
+            $this->answersService->sendAll($answer, Auth::user());
             return redirect()
                 ->route('forms.answers.edit', ['form' => $form, 'answer' => $answer])
                 ->with('topAlert.title', '回答を作成しました')

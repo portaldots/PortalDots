@@ -43,7 +43,7 @@ class AnswerConfirmationMailable extends Mailable
      *
      * @var User
      */
-    public $user;
+    public $applicant;
 
     /**
      * 回答
@@ -68,14 +68,14 @@ class AnswerConfirmationMailable extends Mailable
         Form $form,
         Collection $questions,
         Circle $circle,
-        User $user,
+        User $applicant,
         Answer $answer,
         array $answer_details
     ) {
         $this->form = $form;
         $this->questions = $questions;
         $this->circle = $circle;
-        $this->user = $user;
+        $this->applicant = $applicant;
         $this->answer = $answer;
         $this->answer_details = $answer_details;
     }

@@ -30,7 +30,7 @@ class AnswersService
      *
      * @return void
      */
-    public function sendAll(Answer $answer)
+    public function sendAll(Answer $answer, User $applicant)
     {
         // TODO: 希望するスタッフも確認メールを受信できるようにする
         // 団体にメールを送る
@@ -38,14 +38,15 @@ class AnswersService
         $answer->loadMissing('circle.users');
         $answer_details = $this->answerDetailsService->getAnswerDetailsByAnswer($answer);
 
-        foreach ($answer->circle->users as $user) {
+        foreach ($answer->circle->users as $recipient) {
             $this->sendToUser(
                 $answer->form,
                 $answer->form->questions,
                 $answer->circle,
-                $user,
+                $applicant,
                 $answer,
-                $answer_details
+                $answer_details,
+                $recipient
             );
         }
     }
@@ -54,13 +55,14 @@ class AnswersService
         Form $form,
         Collection $questions,
         Circle $circle,
-        User $user,
+        User $applicant,
         Answer $answer,
-        array $answer_details
+        array $answer_details,
+        User $recipient
     ) {
-        Mail::to($user)
+        Mail::to($recipient)
             ->send(
-                (new AnswerConfirmationMailable($form, $questions, $circle, $user, $answer, $answer_details))
+                (new AnswerConfirmationMailable($form, $questions, $circle, $applicant, $answer, $answer_details))
                     ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
                     ->subject('申請「' . $form->name . '」を承りました')
             );
