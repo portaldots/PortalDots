@@ -66,6 +66,17 @@
     </ul>
 </nav>
 <div class="drawer-adj">
+    <div class="drawer-locale">
+        @if (App::getLocale() === 'ja')
+            <b>{{ __('日本語') }}</b>
+            •
+            <a href="?locale=en">English</a>
+        @else
+            <a href="?locale=ja">{{ __('日本語') }}</a>
+            •
+            <b>English</b>
+        @endif
+    </div>
     <div class="drawer-user">
         @auth
         <p class="drawer-user__info">

@@ -101,6 +101,11 @@
       opacity: 0.5;
     }
   }
+  &-locale {
+    color: $color-muted;
+    padding: $spacing;
+    text-align: center;
+  }
   &-user {
     @include divider(false);
 

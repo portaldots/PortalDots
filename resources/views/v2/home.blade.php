@@ -78,18 +78,6 @@
                     {{ __('はじめての方は新規ユーザー登録') }}
                 </a>
             </p>
-            <p>
-                {{-- TODO: ?new=1 は最終的に削除する --}}
-                @if (App::getLocale() === 'ja')
-                    <b>{{ __('日本語') }}</b>
-                    •
-                    <a href="?new=1&locale=en">English</a>
-                @else
-                    <a href="?new=1&locale=ja">{{ __('日本語') }}</a>
-                    •
-                    <b>English</b>
-                @endif
-            </p>
         </form>
     </app-container>
 </header>
