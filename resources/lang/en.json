@@ -53,7 +53,7 @@
     "ホームに戻る": "Back to home",
 
     "————— Help Texts —————": "（フォームコントロールに補足するためのヘルプテキストなど）",
-    "メールアドレスの変更は :link で行えます。": "You can change your e-mail address in :link",
+    "メールアドレスの変更は :link で行えます": "You can change your e-mail address in :link",
     "どの団体としてお問い合わせするのか選択してください": "Please select which circle to contact",
     "確認のため、お問い合わせ内容をメールで送信いたします": "We will send your inquiry by e-mail for confirmation",
     "「 :app_name 」にユーザー登録します。": "Create your :app_name account",

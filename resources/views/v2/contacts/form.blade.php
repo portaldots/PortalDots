@@ -43,7 +43,7 @@
             <list-view-form-group label-for="email">
                 <template v-slot:label>{{ __('メールアドレス') }}</template>
                 <template v-slot:description>
-                    {!! __('メールアドレスの変更は :link で行えます。', ['link' => '<a href="' . route('user.edit') . '">' . __('ユーザー設定') . '</a>']) !!}
+                    {!! __('メールアドレスの変更は :link で行えます', ['link' => '<a href="' . route('user.edit') . '">' . __('ユーザー設定') . '</a>']) !!}
                 </template>
                 <input type="email" id="email" readonly value="{{ Auth::user()->email }}" class="form-control is-plaintext">
             </list-view-form-group>
