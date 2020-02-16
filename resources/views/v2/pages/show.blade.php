@@ -5,7 +5,7 @@
 @section('navbar')
 <a href="{{ route('pages.index') }}" class="navbar-back">
     <i class="fas fa-chevron-left navbar-back__icon"></i>
-    お知らせ
+    {{ __('お知らせ') }}
 </a>
 @endsection
 
@@ -16,7 +16,8 @@
             {{ $page->title }}
         </h1>
         <p class="header__date">
-            @datetime($page->updated_at) 更新
+            {{ __('更新 :') }}
+            @datetime($page->updated_at)
         </p>
     </app-container>
 </header>

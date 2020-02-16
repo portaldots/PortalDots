@@ -1,6 +1,6 @@
 @extends('v2.layouts.app')
 
-@section('title', 'スケジュール')
+@section('title', __('スケジュール'))
 
 @section('content')
 <div class="tab_strip">
@@ -8,13 +8,13 @@
         href="{{ route('schedules.index') }}"
         class="tab_strip-tab{{ Route::currentRouteName() === 'schedules.index' ? ' is-active' : '' }}"
     >
-        今後の予定
+        {{ __('今後の予定') }}
     </a>
     <a
         href="{{ route('schedules.ended') }}"
         class="tab_strip-tab{{ Route::currentRouteName() === 'schedules.ended' ? ' is-active' : '' }}"
     >
-        過去の予定
+        {{ __('過去の予定') }}
     </a>
 </div>
 <app-container>
@@ -36,7 +36,7 @@
     @empty ($schedules)
     <list-view-empty
         icon-class="far fa-calendar-alt"
-        text="予定はありません"
+        text="{{ __('予定はありません') }}"
     />
     @endempty
 </app-container>

@@ -1,6 +1,6 @@
 @extends('v2.layouts.app')
 
-@section('title', 'ユーザー設定')
+@section('title', __('ユーザー設定'))
 
 {{-- TODO: 完全にLaravel化したら、以下のdrawerセクションは完全削除する --}}
 @section('drawer')
@@ -11,7 +11,7 @@
     <ul class="drawer-nav__list">
         <li class="drawer-nav__item">
             <a href="{{ url('/') }}" class="drawer-nav__link" data-turbolinks="false">
-                ホームに戻る
+                {{ __('ホームに戻る') }}
             </a>
         </li>
     </ul>
@@ -29,31 +29,31 @@
     @csrf
 
     <app-container>
-        <list-view header-title="パスワード変更">
+        <list-view header-title="{{ __('パスワード変更') }}">
             <list-view-form-group label-for="password">
-                <template v-slot:label>現在のパスワード</template>
+                <template v-slot:label>{{ __('現在のパスワード') }}</template>
                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                 @error('password')
                 <template v-slot:invalid>{{ $message }}</template>
                 @enderror
             </list-view-form-group>
             <list-view-form-group label-for="new_password">
-                <template v-slot:label>新しいパスワード</template>
+                <template v-slot:label>{{ __('新しいパスワード') }}</template>
                 <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" required autocomplete="new-password">
                 @error('new_password')
                 <template v-slot:invalid>{{ $message }}</template>
                 @enderror
             </list-view-form-group>
             <list-view-form-group label-for="new_password_confirmation">
-                <template v-slot:label>新しいパスワード(確認)</template>
-                <template v-slot:description>確認のため、パスワードをもう一度入力してください</template>
+                <template v-slot:label>{{ __('新しいパスワード(確認)') }}</template>
+                <template v-slot:description>{{ __('確認のため、パスワードをもう一度入力してください') }}</template>
                 <input id="new_password_confirmation" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password_confirmation" required autocomplete="new-password">
             </list-view-form-group>
         </list-view>
     </app-container>
 
     <app-container class="text-center pt-spacing-md">
-        <button type="submit" class="btn is-primary is-wide">保存</button>
+        <button type="submit" class="btn is-primary is-wide">{{ __('保存') }}</button>
     </app-container>
 </form>
 @endsection

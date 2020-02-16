@@ -64,7 +64,7 @@
             v-on:click="toggleDrawer"
             ref="toggle"
         >
-            <img src="{{ url('img/drawerToggle.svg') }}" alt="ドロワーを開閉">
+            <img src="{{ url('img/drawerToggle.svg') }}" alt="{{ __('ドロワーを開閉') }}">
         </button>
         <div class="navbar__title">
             @yield('title', config('app.name'))
@@ -132,8 +132,9 @@
         @if ($errors->any())
         <top-alert type="danger">
             <template v-slot:title>
-                エラーがあります。以下をご確認ください
+                {{ __('エラーがあります') }}
             </template>
+            {{ __('以下をご確認ください') }}
         </top-alert>
         @endif
         @yield('content')

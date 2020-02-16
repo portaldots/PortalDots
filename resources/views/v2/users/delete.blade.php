@@ -1,6 +1,6 @@
 @extends('v2.layouts.app')
 
-@section('title', 'ユーザー設定')
+@section('title', __('ユーザー設定'))
 
 {{-- TODO: 完全にLaravel化したら、以下のdrawerセクションは完全削除する --}}
 @section('drawer')
@@ -11,7 +11,7 @@
     <ul class="drawer-nav__list">
         <li class="drawer-nav__item">
             <a href="{{ url('/') }}" class="drawer-nav__link" data-turbolinks="false">
-                ホームに戻る
+                {{ __('ホームに戻る') }}
             </a>
         </li>
     </ul>
@@ -27,29 +27,33 @@
 <header class="header">
     <app-container>
         <h1 class="header__title">
-            アカウント削除
+            {{ __('アカウント削除') }}
         </h1>
     </app-container>
 </header>
 <app-container>
     @if ($belong)
-        <p class="card-text">団体に所属しているため、アカウント削除はできません。</p>
-        <p class="card-text">詳細については「{{ config('portal.admin_name') }}」までお問い合わせください</p>
+        <p class="card-text">{{ __('団体に所属しているため、アカウント削除はできません') }}</p>
+        <p class="card-text">{{ __('詳細については :admin_name までお問い合わせください', ['admin_name' => config('portal.admin_name')]) }}</p>
         <p>
             {{-- リンク先が Turbolinks に対応したら data-turbolinks="false" は削除する --}}
-            <a href="{{ url('/') }}" class="btn is-primary is-block" data-turbolinks="false">ホームに戻る</a>
+            <a href="{{ url('/') }}" class="btn is-primary is-block" data-turbolinks="false">
+                {{ __('ホームに戻る') }}
+            </a>
         </p>
     @else
-        <p class="card-text">アカウントを削除した場合、申請の手続きなどができなくなります。</p>
+        <p class="card-text">
+            {{ __('アカウントを削除した場合、申請の手続きなどができなくなります。') }}
+        </p>
         <form-with-confirm
             action="{{ route('user.destroy') }}"
             method="post"
-            confirm-message="本当にアカウントを削除しますか？"
+            confirm-message="{{ __('本当にアカウントを削除しますか？') }}"
         >
             @method('delete')
             @csrf
             <button type="submit" class="btn is-danger is-block">
-                <strong>アカウントを削除</strong>
+                <strong>{{ __('アカウント削除') }}</strong>
             </button>
         </form-with-confirm>
     @endif

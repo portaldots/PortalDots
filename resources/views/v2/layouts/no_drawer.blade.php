@@ -53,7 +53,7 @@
         @section('navbar')
         {{-- Turbolinks 化が完了したら  data-turbolinks="false" を外す --}}
         <a href="{{ url('/') }}" class="navbar-brand" data-turbolinks="false">
-            {{ config('app.name', 'ホームへ戻る') }}
+            {{ config('app.name', __('ホームに戻る')) }}
         </a>
         @show
     </div>
@@ -72,8 +72,9 @@
         @if ($errors->any())
         <top-alert type="danger" container-medium>
             <template v-slot:title>
-                エラーがあります。以下をご確認ください
+                {{ __('エラーがあります') }}
             </template>
+            {{ __('以下をご確認ください') }}
         </top-alert>
         @endif
         @yield('content')

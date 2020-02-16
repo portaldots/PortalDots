@@ -1,13 +1,13 @@
 @extends('v2.layouts.app')
 
-@section('title', '配布資料')
+@section('title', __('配布資料'))
 
 @section('content')
 <app-container>
     @if ($documents->isEmpty())
     <list-view-empty
         icon-class="far fa-file-alt"
-        text="配布資料はまだありません"
+        text="{{ __('配布資料はまだありません') }}"
     />
     @else
     <list-view>
@@ -25,10 +25,11 @@
                 {{ $document->name }}
             </template>
             <template v-slot:meta>
-                @datetime($document->updated_at) 更新
+                {{ __('更新 :') }}
+                @datetime($document->updated_at)
                 @isset($document->schedule)
                 •
-                {{ $document->schedule->name }}で配布
+                {{ __(':schedule_name で配布', ['schedule_name' => $document->schedule->name]) }}
                 @endisset
             </template>
             @summary($document->description)

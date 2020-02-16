@@ -41,13 +41,13 @@
             @endif
 
             <div class="form-group">
-                <label for="login_id" class="sr-only">学籍番号・連絡先メールアドレス</label>
-                <input id="login_id" type="text" class="form-control" name="login_id" value="{{ old('login_id') }}" required autocomplete="username" autofocus placeholder="学籍番号・連絡先メールアドレス">
+                <label for="login_id" class="sr-only">{{ __('学籍番号') }} / {{ __('連絡先メールアドレス') }}</label>
+                <input id="login_id" type="text" class="form-control" name="login_id" value="{{ old('login_id') }}" required autocomplete="username" autofocus placeholder="{{ __('学籍番号') }} / {{ __('連絡先メールアドレス') }}">
             </div>
 
             <div class="form-group">
-                <label for="password" class="sr-only">パスワード</label>
-                <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password" placeholder="パスワード">
+                <label for="password" class="sr-only">{{ __('パスワード') }}</label>
+                <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password" placeholder="{{ __('パスワード') }}">
             </div>
 
             <div class="form-group">
@@ -55,25 +55,27 @@
                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                     <label class="form-check-label" for="remember">
-                        ログインしたままにする
+                        {{ __('ログインしたままにする') }}
                     </label>
                 </div>
             </div>
 
             <p>
                 <a href="{{ route('password.request') }}">
-                    パスワードをお忘れの場合はこちら
+                    {{ __('パスワードをお忘れの場合はこちら') }}
                 </a>
             </p>
 
             <div class="form-group">
                 <button type="submit" class="btn is-primary is-block">
-                    <strong>ログイン</strong>
+                    <strong>
+                        {{ __('ログイン') }}
+                    </strong>
                 </button>
             </div>
             <p>
                 <a class="btn is-secondary is-block" href="{{ route('register') }}">
-                    はじめての方は新規ユーザー登録
+                    {{ __('はじめての方は新規ユーザー登録') }}
                 </a>
             </p>
         </form>
@@ -82,7 +84,7 @@
 @endguest
 <app-container>
     @isset($next_schedule)
-    <list-view header-title="次の予定">
+    <list-view header-title="{{ __('次の予定') }}">
         <list-view-item>
             <template v-slot:title>
                 {{ $next_schedule->name }}
@@ -98,13 +100,13 @@
             @endisset
         </list-view-item>
         <list-view-action-btn href="{{ route('schedules.index') }}">
-            他の予定を見る
+            {{ __('他の予定を見る') }}
         </list-view-action-btn>
     </list-view>
     @endisset
 
     @if (!$pages->isEmpty())
-    <list-view header-title="お知らせ">
+    <list-view header-title="{{ __('お知らせ') }}">
         @foreach ($pages as $page)
         <list-view-item href="{{ route('pages.show', $page) }}">
             <template v-slot:title>
@@ -118,14 +120,14 @@
         @endforeach
         @if ($remaining_pages_count > 0)
         <list-view-action-btn href="{{ route('pages.index') }} ">
-            残り {{ $remaining_pages_count }} 件のお知らせを見る
+            {{ trans_choice(__('残り :remaining 件のお知らせを見る'), $remaining_pages_count, ['remaining' => $remaining_pages_count]) }}
         </list-view-action-btn>
         @endif
     </list-view>
     @endif
 
     @if (!$documents->isEmpty())
-    <list-view header-title="最近の配布資料">
+    <list-view header-title="{{ __('配布資料') }}">
         @foreach ($documents as $document)
         <list-view-item
             href="{{ url("uploads/documents/{$document->id}") }}"
@@ -140,10 +142,11 @@
                 {{ $document->name }}
             </template>
             <template v-slot:meta>
-                @datetime($document->updated_at) 更新
+                {{ __('更新 :') }}
+                @datetime($document->updated_at)
                 @isset($document->schedule)
                 •
-                {{ $document->schedule->name }}で配布
+                {{ __(':schedule_name で配布', ['schedule_name' => $document->schedule->name]) }}
                 @endisset
             </template>
             @summary($document->description)
@@ -151,7 +154,7 @@
         @endforeach
         @if ($remaining_documents_count > 0)
         <list-view-action-btn href="{{ route('documents.index') }} ">
-            残り {{ $remaining_documents_count }} 件の配布資料を見る
+            {{ trans_choice(__('残り :remaining 件の配布資料を見る'), $remaining_documents_count, ['remaining' => $remaining_documents_count]) }}
         </list-view-action-btn>
         @endif
     </list-view>

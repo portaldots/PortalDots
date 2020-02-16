@@ -5,7 +5,7 @@
 @section('navbar')
 <a href="{{ route('schedules.index') }}" class="navbar-back">
     <i class="fas fa-chevron-left navbar-back__icon"></i>
-    スケジュール
+    {{ __('スケジュール') }}
 </a>
 @endsection
 
@@ -27,7 +27,7 @@
 </app-container>
 @if (count($schedule->documents) > 0)
 <app-container>
-    <list-view header-title="配布資料">
+    <list-view header-title="{{ __('配布資料') }}">
         @foreach ($schedule->documents as $document)
         <list-view-item
             href="{{ url("uploads/documents/{$document->id}") }}"
@@ -42,10 +42,11 @@
                 {{ $document->name }}
             </template>
             <template v-slot:meta>
-                @datetime($document->updated_at) 更新
+                {{ __('更新 :') }}
+                @datetime($document->updated_at)
                 @isset($document->schedule)
                 •
-                {{ $document->schedule->name }}で配布
+                {{ __(':schedule_name で配布', ['schedule_name' => $document->schedule->name]) }}
                 @endisset
             </template>
             @summary($document->description)

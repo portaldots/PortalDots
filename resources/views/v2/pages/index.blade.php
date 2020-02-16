@@ -1,13 +1,13 @@
 @extends('v2.layouts.app')
 
-@section('title', 'お知らせ')
+@section('title', __('お知らせ'))
 
 @section('content')
 <app-container>
     @if ($pages->isEmpty())
     <list-view-empty
         icon-class="fas fa-bullhorn"
-        text="お知らせはまだありません"
+        text="{{ __('お知らせはまだありません') }}"
     />
     @else
     <list-view>

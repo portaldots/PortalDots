@@ -1,4 +1,4 @@
-@section('title', isset($user) ? 'ユーザー設定' : 'ユーザー登録')
+@section('title', isset($user) ? __('ユーザー設定') : __('ユーザー登録'))
 
 {{-- TODO: 完全にLaravel化したら、以下のdrawerセクションは完全削除する --}}
 @section('drawer')
@@ -9,7 +9,7 @@
     <ul class="drawer-nav__list">
         <li class="drawer-nav__item">
             <a href="{{ url('/') }}" class="drawer-nav__link" data-turbolinks="false">
-                ホームに戻る
+                {{ __('ホームに戻る') }}
             </a>
         </li>
     </ul>
@@ -34,16 +34,16 @@
     @endempty
     >
         <list-view
-            header-title="{{ isset($user) ? '一般設定' : 'ユーザー登録' }}"
+            header-title="{{ isset($user) ? __('一般設定') : __('ユーザー登録') }}"
             @empty ($user)
-            header-description="「{{ config('app.name') }}」にユーザー登録します。"
+            header-description="{{ __('「 :app_name 」にユーザー登録します。', ['app_name' => config('app.name')]) }}"
             @endempty
         >
             <list-view-form-group label-for="student_id">
-                <template v-slot:label>学籍番号</template>
+                <template v-slot:label>{{ __('学籍番号') }}</template>
                 <template v-slot:description>
                     @if (!empty($circles))
-                        団体に所属しているため修正できません
+                        {{ __('団体に所属しているため修正できません') }}
                     @endif
                 </template>
                 <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror" name="student_id" value="{{ old('student_id', isset($user) ? $user->student_id : '' ) }}" {{ !empty($circles) ? 'disabled' : '' }} required autocomplete="username">
@@ -52,9 +52,9 @@
                 @enderror
             </list-view-form-group>
             <list-view-form-group label-for="name">
-                <template v-slot:label>名前</template>
+                <template v-slot:label>{{ __('名前') }}</template>
                 <template v-slot:description>
-                    {{ !empty($circles) ? '団体に所属しているため修正できません' : '姓と名の間にはスペースを入れてください' }}
+                    {{ !empty($circles) ? __('団体に所属しているため修正できません') : __('姓と名の間にはスペースを入れてください') }}
                 </template>
                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', isset($user) ? $user->name : '' ) }}" {{ !empty($circles) ? 'disabled' : '' }} required autocomplete="name">
 
@@ -63,9 +63,9 @@
                 @enderror
             </list-view-form-group>
             <list-view-form-group label-for="name_yomi">
-                <template v-slot:label>名前(よみ)</template>
+                <template v-slot:label>{{ __('名前') }}(よみ)</template>
                 <template v-slot:description>
-                    {{ !empty($circles) ? '団体に所属しているため修正できません' : '姓と名の間にはスペースを入れてください' }}
+                    {{ !empty($circles) ? __('団体に所属しているため修正できません') : __('姓と名の間にはスペースを入れてください') }}
                 </template>
                 <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror" name="name_yomi" value="{{ old('name_yomi', isset($user) ? $user->name_yomi : '' ) }}" {{ !empty($circles) ? 'disabled' : '' }} required>
 
@@ -74,9 +74,9 @@
                 @enderror
             </list-view-form-group>
             <list-view-form-group label-for="email">
-                <template v-slot:label>連絡先メールアドレス</template>
+                <template v-slot:label>{{ __('連絡先メールアドレス') }}</template>
                 <template v-slot:description>
-                    連絡先メールアドレスとして学校発行のメールアドレスもご利用になれます
+                    {{ __('学校発行のメールアドレスもご利用になれます') }}
                 </template>
                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', isset($user) ? $user->email : '' ) }}" required autocomplete="email">
                 @error('email')
@@ -84,7 +84,7 @@
                 @enderror
             </list-view-form-group>
             <list-view-form-group label-for="tel">
-                <template v-slot:label>連絡先電話番号</template>
+                <template v-slot:label>{{ __('連絡先電話番号') }}</template>
                 <input id="tel" type="tel" class="form-control @error('tel') is-invalid @enderror" name="tel" value="{{ old('tel', isset($user) ? $user->tel : '' ) }}" required>
                 @error('tel')
                     <template v-slot:invalid>{{ $message }}</template>
@@ -93,7 +93,7 @@
 
             @empty($user)
                 <list-view-form-group label-for="password">
-                    <template v-slot:label>パスワード</template>
+                    <template v-slot:label>{{ __('パスワード') }}</template>
                     <input
                         id="password"
                         type="password"
@@ -107,8 +107,8 @@
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="password_confirmation">
-                    <template v-slot:label>パスワード(確認)</template>
-                    <template v-slot:description>確認のため、パスワードをもう一度入力してください</template>
+                    <template v-slot:label>{{ __('パスワード(確認)') }}</template>
+                    <template v-slot:description>{{ __('確認のため、パスワードをもう一度入力してください') }}</template>
                     <input
                         id="password_confirmation"
                         type="password"
@@ -122,9 +122,9 @@
         </list-view>
 
         @isset($user)
-            <list-view header-description="変更を保存するには、現在のパスワードを入力してください">
+            <list-view header-description="{{ __('変更を保存するには、現在のパスワードを入力してください') }}">
                 <list-view-form-group label-for="password">
-                    <template v-slot:label>現在のパスワード</template>
+                    <template v-slot:label>{{ __('現在のパスワード') }}</template>
                     <input
                         id="password"
                         type="password"
@@ -143,7 +143,7 @@
 
     <app-container class="text-center pt-spacing-md">
         <button type="submit" class="btn is-primary is-wide">
-            {{ isset($user) ? '保存' : '登録' }}
+            {{ isset($user) ? __('保存') : __('登録') }}
         </button>
     </app-container>
 
