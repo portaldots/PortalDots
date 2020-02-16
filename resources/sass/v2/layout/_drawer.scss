@@ -104,14 +104,16 @@
   &-user {
     @include divider(false);
 
-    margin-top: auto;
     padding: $spacing;
-    padding-bottom: calc(env(safe-area-inset-bottom) + #{$spacing});
     &__info {
       font-weight: bold;
       margin: 0 0 $spacing-md;
       text-align: center;
     }
+  }
+  &-adj {
+    margin-top:auto;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 

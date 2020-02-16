@@ -65,23 +65,25 @@
         @endauth
     </ul>
 </nav>
-<div class="drawer-user">
-    @auth
-    <p class="drawer-user__info">
-        {{ Auth::user()->name }}としてログイン中
-    </p>
-    <form action="{{ route('logout') }}" method="post">
-        @csrf
-        <button type="submit" class="btn is-secondary is-block">
-            ログアウト
-        </button>
-    </form>
-    @else
-    <p class="drawer-user__info">
-        ログインしていません
-    </p>
-    <a href="{{ route('login') }}?new=1" class="btn is-primary is-block">
-        <strong>ログイン</strong>
-    </a>
-    @endauth
+<div class="drawer-adj">
+    <div class="drawer-user">
+        @auth
+        <p class="drawer-user__info">
+            {{ Auth::user()->name }}としてログイン中
+        </p>
+        <form action="{{ route('logout') }}" method="post">
+            @csrf
+            <button type="submit" class="btn is-secondary is-block">
+                ログアウト
+            </button>
+        </form>
+        @else
+        <p class="drawer-user__info">
+            ログインしていません
+        </p>
+        <a href="{{ route('login') }}?new=1" class="btn is-primary is-block">
+            <strong>ログイン</strong>
+        </a>
+        @endauth
+    </div>
 </div>

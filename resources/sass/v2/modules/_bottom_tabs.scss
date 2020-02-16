@@ -9,6 +9,7 @@ body {
   background: #fff;
   bottom: 0;
   box-shadow: 0 0 0.5rem rgba($color-text, 0.15);
+  height: $bottom-tabs-height;
   height: calc(env(safe-area-inset-bottom) + #{$bottom-tabs-height});
   left: 0;
   position: fixed;

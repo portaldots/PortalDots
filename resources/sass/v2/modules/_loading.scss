@@ -27,7 +27,6 @@
     display: flex;
     height: $circle-size;
     justify-content: center;
-    position: relative;
     width: $circle-size;
 
     @keyframes loading {
@@ -44,7 +43,6 @@
       content: "";
       display: block;
       height: calc(#{$circle-size} - 4px);
-      position: absolute;
       width: calc(#{$circle-size} - 4px);
     }
   }
