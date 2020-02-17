@@ -63,7 +63,7 @@
                 @enderror
             </list-view-form-group>
             <list-view-form-group label-for="name_yomi">
-                <template v-slot:label>{{ __('名前') }}(よみ)</template>
+                <template v-slot:label>{{ __('名前(よみ)') }}</template>
                 <template v-slot:description>
                     {{ !empty($circles) ? __('団体に所属しているため修正できません') : __('姓と名の間にはスペースを入れてください') }}
                 </template>
