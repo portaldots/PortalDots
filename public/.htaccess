@@ -25,5 +25,7 @@
 #
 # 50MB を超えるファイルがアップロードされると、画面上に
 # 「アップロードに失敗しました」というエラーが表示されます
-php_value upload_max_filesize "50M"
-php_value post_max_size "55M"
+<IfModule mod_php7.c>
+    php_value upload_max_filesize "50M"
+    php_value post_max_size "55M"
+</IfModule>
