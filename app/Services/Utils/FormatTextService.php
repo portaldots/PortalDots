@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services\Utils;
 
 use DateTime;
+use App;
+use Carbon\CarbonImmutable;
 
 class FormatTextService
 {
@@ -30,19 +32,15 @@ class FormatTextService
     }
 
     /**
-     * Y年n月d日(曜日) H:i 形式の日付文字列を作成する
+     * 現在設定されているロケールにおける形式の日付文字列を作成する
      *
      * @param  string $datetime     PHPにおいて日付として認識される文字列。
      * @return string               整形された日付文字列。
      */
     public static function datetime(string $datetime): string
     {
-        $format = 'Y年n月j日';
-        $date = (new DateTime($datetime))->format($format);
-        $dayId = (int)(new DateTime($datetime))->format('w');
-        $day = self::getDayByDayId($dayId);
-        $time = (new DateTime($datetime))->format('H:i');
-        return "{$date}({$day}) {$time}";
+        $locale = App::getLocale();
+        return (new CarbonImmutable($datetime))->locale($locale)->isoFormat('LLLL');
     }
 
     /**
