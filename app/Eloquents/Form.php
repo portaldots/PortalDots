@@ -41,8 +41,62 @@ class Form extends Model
         'is_public' => 'bool',
     ];
 
+    /**
+     * 公開中のものを取得
+     */
+    public function scopePublic($query)
+    {
+        return $query->where('is_public', true);
+    }
+
+    /**
+     * 受付終了時刻の早い順で並び替え
+     */
+    public function scopeCloseOrder($query, $direction = 'asc')
+    {
+        return $query->orderBy('close_at', $direction);
+    }
+
+    /**
+     * 現時点で受付中のもの
+     */
+    public function scopeOpen($query)
+    {
+        return $query->where('open_at', '<=', now())->where('close_at', '>=', now());
+    }
+
+    /**
+     * 現時点で受付終了しているもの
+     */
+    public function scopeClosed($query)
+    {
+        return $query->where('close_at', '<', now());
+    }
+
     public function questions()
     {
         return $this->hasMany(Question::class);
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+    // TODO: 意味的に isAnswered という名前に変えたい
+    public function answered(Circle $circle)
+    {
+        $answer = Answer::where('form_id', $this->id)->where('circle_id', $circle->id)->first();
+        return !empty($answer);
+    }
+
+    public function yetOpen()
+    {
+        return $this->open_at > now();
+    }
+
+    public function isOpen()
+    {
+        return $this->open_at->lte(now()) && $this->close_at->gte(now());
     }
 }

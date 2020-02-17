@@ -1,4 +1,4 @@
-{% macro applications_form( form, type, answers, form_attr, disabled, form_action ) %}
+{% macro applications_form( form, type, answers, form_attr, disabled, form_action, answer_info ) %}
     {{ form_open_multipart( form_action, form_attr )|raw }}
     {% for question in form.questions %}
         <div class="w-max-md form-group{% if not empty(form_error("answers[#{question.id}]")) %} has-error{% endif %}">
@@ -145,7 +145,11 @@
                         この項目を削除する
                         {% if not form.is_in_period or question.is_required %}</span>{% endif %}
                         |
-                        <a href="{{ base_url( "uploads/applications_form/#{answers[question.id]}" ) }}" target="_blank">
+                        <a href="{{
+                          strpos(answers[question.id], 'answer_details') is same as(0)
+                                ? base_url( "forms/#{form.id}/answers/#{answer_info.id}/uploads/#{question.id}" )
+                                : base_url( "uploads/applications_form/#{answers[question.id]}" )
+                        }}" target="_blank">
                             アップロードされたファイルを表示...
                         </a>
                 </label>

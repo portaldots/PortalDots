@@ -77,4 +77,13 @@ class Question extends Model
     {
         $this->attributes['allowed_types'] = implode('|', $value);
     }
+
+    public function getOptionsArrayAttribute()
+    {
+        $options = explode("\n", $this->options);
+        $options = array_map('trim', $options);
+        $options = array_filter($options, 'strlen');
+        $options = array_values($options);
+        return $options;
+    }
 }

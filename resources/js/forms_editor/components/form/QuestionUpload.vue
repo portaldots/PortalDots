@@ -17,6 +17,7 @@
         :question="question"
         :label_number_min="false"
         label_number_max="最大サイズ(KB)"
+        help_number_max="サーバーの upload_max_filesize 設定の値を超える設定は無効になります。規定値は 50MB であり、public フォルダ内の .htaccess ファイルで設定されています。upload_max_filesize 設定の詳細は PHP ドキュメントをご確認ください"
         :show_allowed_types="true"
       />
     </template>

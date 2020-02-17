@@ -156,5 +156,31 @@
         @endif
     </list-view>
     @endif
+
+    @if (!empty($forms) && !$forms->isEmpty())
+    <list-view header-title="受付中の申請">
+        @foreach ($forms as $form)
+        <list-view-item
+            href="{{ route('forms.answers.create', ['form' => $form]) }}"
+        >
+            <template v-slot:title>
+                {{ $form->name }}
+            </template>
+            <template v-slot:meta>
+                @datetime($form->close_at) まで受付
+                @if ($form->max_answers > 1)
+                • 1団体あたり{{ $form->max_answers }}つ回答可能
+                @endif
+            </template>
+            @summary($form->description)
+        </list-view-item>
+        @endforeach
+        @if ($remaining_forms_count > 0)
+        <list-view-action-btn href="{{ route('forms.index') }} ">
+            残り {{ $remaining_forms_count }} 件の受付中の申請を見る
+        </list-view-action-btn>
+        @endif
+    </list-view>
+    @endif
 </app-container>
 @endsection

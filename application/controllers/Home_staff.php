@@ -333,7 +333,7 @@ class Home_staff extends MY_Controller
     private function _application_read_csv($vars)
     {
         // カラム名
-        $string_to_export = "ID\t団体名";
+        $string_to_export = "ID\t団体ID\t団体名";
 
         if ($vars["form"]->type === "booth") {
             $string_to_export .= "\tブース名";
@@ -354,6 +354,8 @@ class Home_staff extends MY_Controller
         foreach ($vars["answers"] as $answer) {
             // 回答ID
             $string_to_export .= $answer->id;
+            // 団体ID
+            $string_to_export .= "\t" . $answer->circle->id;
             // 団体名
             $string_to_export .= "\t" . $answer->circle->name;
             // ブース名
@@ -389,8 +391,8 @@ class Home_staff extends MY_Controller
                     // Not多肢選択式
                     $string_to_export .= "\t" .
                         str_replace(
-                            ["\r\n", "\t"],
-                            ["{{改行}}", "{{タブ文字}}"],
+                            ["\r\n", "\n", "\r", "\t"],
+                            ["{{改行}}", "{{改行}}", "{{改行}}", "{{タブ文字}}"],
                             $answer->answers[$question->id] ?? ''
                         );
                 }

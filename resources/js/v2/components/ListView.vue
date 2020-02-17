@@ -43,7 +43,7 @@ export default {
     &__title {
       font-size: $font-size-lg;
       font-weight: bold;
-      margin: 0;
+      margin: $spacing-sm 0 0;
     }
     &__description {
       color: $color-muted;

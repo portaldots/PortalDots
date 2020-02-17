@@ -36,6 +36,7 @@ mix
     proxy: 'localhost',
     snippetOptions: {
       rule: {
+        // これがないと Turbolinks が正常に動作しない
         match: /<\/head>/i,
         fn(snippet, match) {
           return snippet + match

@@ -3,9 +3,7 @@
     <template v-slot:content>
       <div class="form-group mb-0">
         <h2>{{ name }}</h2>
-        <div>
-          {{ description }}
-        </div>
+        <div v-html="description_html" />
       </div>
     </template>
     <template v-slot:edit-panel>
@@ -21,6 +19,7 @@
 </template>
 
 <script>
+import marked from 'marked'
 import FormItem from './FormItem.vue'
 import EditPanel from './EditPanel.vue'
 import { GET_QUESTION_BY_ID } from '../../store/editor'
@@ -45,8 +44,9 @@ export default {
     name() {
       return this.question.name || '(無題のセクション見出し)'
     },
-    description() {
-      return this.question.description
+    description_html() {
+      const { description } = this.question
+      return marked(description || '')
     }
   }
 }

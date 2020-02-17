@@ -62,4 +62,8 @@
     padding-left: $spacing-lg;
     padding-right: $spacing-lg;
   }
+  &.is-sm {
+    font-size: 0.9rem;
+    padding: $spacing-xs $spacing-sm;
+  }
 }
