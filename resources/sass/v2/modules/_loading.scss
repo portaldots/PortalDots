@@ -6,7 +6,7 @@
   align-items: center;
   background: #fff;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   height: 100%;
   justify-content: center;
   left: 0;
@@ -45,5 +45,11 @@
       height: calc(#{$circle-size} - 4px);
       width: calc(#{$circle-size} - 4px);
     }
+  }
+  &-noscript {
+    margin: $spacing 0 0;
+  }
+  &-noscript + &-circle {
+    display: none;
   }
 }

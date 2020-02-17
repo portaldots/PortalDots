@@ -78,6 +78,9 @@
           @blur="save"
           :disabled="is_deleting"
         />
+        <small class="form-text text-muted mb-0" v-if="help_number_max">
+          {{ help_number_max }}
+        </small>
       </div>
     </label>
     <label class="form-group row" v-if="show_allowed_types">
@@ -143,6 +146,10 @@ export default {
     label_number_max: {
       required: false,
       default: '最大文字数'
+    },
+    help_number_max: {
+      required: false,
+      default: ''
     },
     show_allowed_types: {
       required: false,

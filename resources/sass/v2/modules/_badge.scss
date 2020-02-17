@@ -1,0 +1,24 @@
+.badge {
+    border-radius: $border-radius;
+    display: inline-block;
+    font-size: 0.75em;
+    line-height: 1.75;
+    padding: 0 0.4em;
+    text-align: center;
+    &.is-primary {
+        background: $color-primary;
+        color: #fff;
+    }
+    &.is-danger {
+        background: $color-danger;
+        color: #fff;
+    }
+    &.is-success {
+        background: $color-success;
+        color: #fff;
+    }
+    &.is-muted {
+        background: $color-muted;
+        color: #fff;
+    }
+}

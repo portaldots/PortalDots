@@ -59,7 +59,7 @@ class MY_Controller extends CI_Controller
         // Twig に独自関数を追加する
         $functions = [
             // php
-            'empty', 'var_dump', 'str_replace', 'sha1',
+            'empty', 'var_dump', 'str_replace', 'sha1', 'strpos',
             // code igniter
             'base_url', 'site_url', 'current_url', 'uri_string',
             // form functions

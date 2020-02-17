@@ -86,7 +86,7 @@
                 <tr>
                     <td>{{ answer.id }}</td>
                     <th class="table-sticky">
-                        {{ answer.circle.name }}
+                        {{ answer.circle.name }} (ID : {{ answer.circle.id }})
                         {% if form.type == "booth" %}
                             <br>
                             {% if answer.booth.name is empty %}
@@ -111,8 +111,12 @@
                                     </ul>
                                 {% elseif question.type == "upload" %}
                                     {% if answer.answers[question.id] is not empty %}
-                                        <a href="{{ base_url( "uploads/applications_form/#{answer.answers[question.id]}" ) }}"
-                                           target="_blank">{{ answer.answers[question.id] }}</a>
+                                        <a href="{{
+                                            strpos(answer.answers[question.id], 'answer_details') is same as(0)
+                                                  ? base_url( "forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
+                                                  : base_url( "uploads/applications_form/#{answer.answers[question.id]}" )
+                                          }}"
+                                          target="_blank">{{ answer.answers[question.id] }}</a>
                                     {% else %}
                                         <span class="text-muted">(未アップロード)</span>
                                     {% endif %}

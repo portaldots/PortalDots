@@ -13,15 +13,17 @@ textarea {
     margin: 0 0 $spacing-xs;
   }
   &-control {
+    $default-box-shadow: inset 0 0.5px 1.5px rgba($color-text, 0.1);
+
     appearance: none;
     background-color: $color-bg-white;
     border: 1px solid $color-border;
     border-radius: $border-radius;
-    box-shadow: inset 0 0.5px 1.5px rgba($color-text, 0.1);
+    box-shadow: $default-box-shadow;
     font-size: $font-size-input;
     line-height: 1.6;
     padding: $spacing-sm $spacing-md;
-    transition: #{$transition-base-fast} background-color, #{$transition-base-fast} box-shadow;
+    transition: #{$transition-base-fast} background-color, #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color;
     width: 100%;
     @at-root {
       select#{&} {
@@ -38,6 +40,9 @@ textarea {
       cursor: not-allowed;
       opacity: 0.75;
     }
+    &[readonly] {
+      background: $color-bg-grey;
+    }
     &.is-invalid {
       border-color: $color-danger;
     }
@@ -50,7 +55,7 @@ textarea {
     }
     &:focus {
       border-color: $color-primary;
-      box-shadow: 0 0 0 3px rgba($color-primary, 0.25);
+      box-shadow: $default-box-shadow, 0 0 0 3px rgba($color-primary, 0.25);
       outline: 0;
     }
     &.is-invalid:focus {

@@ -93,7 +93,24 @@ Route::middleware(['auth'])->group(function () {
 
 // ログインされており、メールアドレス認証が済んでいる場合のみアクセス可能なルート
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Route::get('/home', 'HomeController@index')->name('home');
+    // 申請
+    Route::prefix('/forms__v2')
+        ->name('forms.')
+        ->group(function () {
+            Route::get('/', 'Forms\IndexAction')->name('index');
+            Route::get('/closed', 'Forms\ClosedAction')->name('closed');
+            Route::get('/all', 'Forms\AllAction')->name('all');
+
+            Route::prefix('/{form}/answers')
+                ->name('answers.')
+                ->group(function () {
+                    Route::get('/{answer}/edit', 'Forms\Answers\EditAction')->name('edit');
+                    Route::patch('/{answer}', 'Forms\Answers\UpdateAction')->name('update');
+                    Route::get('/create', 'Forms\Answers\CreateAction')->name('create');
+                    Route::post('/', 'Forms\Answers\StoreAction')->name('store');
+                    Route::get('/{answer}/uploads/{question}', 'Forms\Answers\Uploads\ShowAction')->name('uploads.show');
+                });
+        });
 });
 
 // スタッフページ（二段階認証も済んでいる状態）

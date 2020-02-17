@@ -7,6 +7,7 @@ use Auth;
 use App\Eloquents\Page;
 use App\Eloquents\Schedule;
 use App\Eloquents\Document;
+use App\Eloquents\Form;
 
 class HomeAction extends Controller
 {
@@ -29,6 +30,8 @@ class HomeAction extends Controller
             ->with('remaining_pages_count', max(Page::count() - self::TAKE_COUNT, 0))
             ->with('next_schedule', Schedule::startOrder()->notStarted()->first())
             ->with('documents', Document::take(self::TAKE_COUNT)->public()->with('schedule')->get())
-            ->with('remaining_documents_count', max(Document::public()->count() - self::TAKE_COUNT, 0));
+            ->with('remaining_documents_count', max(Document::public()->count() - self::TAKE_COUNT, 0))
+            ->with('forms', Form::take(self::TAKE_COUNT)->public()->open()->closeOrder()->get())
+            ->with('remaining_forms_count', max(Form::public()->open()->count() - self::TAKE_COUNT, 0));
     }
 }

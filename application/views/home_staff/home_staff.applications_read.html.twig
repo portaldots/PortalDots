@@ -246,6 +246,7 @@
                             <a href="{{ base_url("home_staff/circles/read/#{answer.circle_id}") }}">
                                 {{ answer.circle.name }}
                             </a>
+                            (ID : {{ answer.circle.id }})
                             {% if form.type == "booth" %}
                                 <br>
                                 <a href="{{ base_url("home_staff/booths/read/#{answer_info.booth_id}") }}">
@@ -297,8 +298,12 @@
                                         </ul>
                                     {% elseif question.type == "upload" %}
                                         {% if answer.answers[question.id] is not empty %}
-                                            <a href="{{ base_url( "uploads/applications_form/#{answer.answers[question.id]}" ) }}"
-                                               target="_blank">{{ answer.answers[question.id] }}</a>
+                                            <a href="{{
+                                                strpos(answer.answers[question.id], 'answer_details') is same as(0)
+                                                      ? base_url( "forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
+                                                      : base_url( "uploads/applications_form/#{answer.answers[question.id]}" )
+                                              }}"
+                                              target="_blank">{{ answer.answers[question.id] }}</a>
                                         {% else %}
                                             <span class="text-muted">(未アップロード)</span>
                                         {% endif %}
