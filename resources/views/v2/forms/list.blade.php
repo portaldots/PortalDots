@@ -1,6 +1,6 @@
 @extends('v2.layouts.app')
 
-@section('title', '申請')
+@section('title', __('申請'))
 
 @section('content')
 @if(empty($circle))
@@ -47,7 +47,7 @@
                 <template v-slot:title>
                     {{ $form->name }}
                     @if ($form->answered($circle))
-                        <span class="badge is-success">提出済</span>
+                        <span class="badge is-success">{{ __('提出済') }}</span>
                     @endif
                     @if ($form->yetOpen())
                         <span class="badge is-muted">受付開始前</span>
@@ -55,9 +55,11 @@
                 </template>
                 <template v-slot:meta>
                     @if ($form->yetOpen())
-                        @datetime($form->open_at) から受付開始
+                        {{ __('受付開始 :') }}
+                        @datetime($form->open_at)
                     @else
-                        @datetime($form->close_at) まで受付
+                        {{ __('締切 :') }}
+                        @datetime($form->close_at)
                     @endif
                     @if ($form->max_answers > 1)
                     • 1団体あたり{{ $form->max_answers }}つ回答可能
