@@ -30,7 +30,7 @@ class Turbolinks
 
         if (!empty($location = $response->headers->get('location'))) {
             $parsed_location = parse_url($location);
-            $turbolinks_location = $parsed_location['path'];
+            $turbolinks_location = $parsed_location['path'] ?? '/';
             if (!empty($parsed_location['query'])) {
                 $turbolinks_location .= '?' . $parsed_location['query'];
             }
