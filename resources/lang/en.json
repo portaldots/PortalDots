@@ -2,6 +2,9 @@
     "————— このファイルについて —————":
         "翻訳ファイルです。追加する前に、似た文言がないかどうか確認してください。",
 
+    "————— 誤訳の報告 —————":
+        "もし翻訳の間違いを見つけた場合、Pull Request にて翻訳の提案をしていただけますと幸いです",
+
     "————— 機能名 —————": "（主要機能の名称）",
     "ホーム": "Home",
     "お知らせ": "Announcements",
@@ -21,16 +24,33 @@
     "————— 配布資料 —————": "（「配布資料」内のラベル）",
     ":schedule_name で配布": "Distributed in :schedule_name",
 
+    "————— 申請 —————": "（「申請」内のラベル）",
+    "受付中": "Open",
+    "受付終了": "Closed",
+    "締切": "Due date",
+    "受付開始 :": "Start from",
+    "提出済": "Submitted",
+    "受付開始前": "Before open",
+    "このフォームは1団体あたり :max_answers つ回答可能": "This form can be answered up to :max_answers per circle",
+    "回答ID": "Answer ID",
+    "回答の新規作成": "Create new answer",
+    "受付期間外です": "This form is closed",
+    "受付期間": "Receiving period",
+    "申請団体名": "Applicant",
+    "以前の回答を閲覧・変更": "View / change previous answers",
+    "受付期間内に限り、回答の変更ができます": "You can change the answer only during the receiving period",
+    "回答の最終更新日時 :": "Last updated at",
+    "貴団体は回答を、あと :remaining つ新規作成できます": "{1} Your circle can create :remaining new answer to this application|[2,*] Your circle can create :remaining new answers to this application",
+    "回答数上限(:max_answers)に達したため、これ以上回答を新規作成できません": "No more answers can be created because you have reached the answer limit (:max_answers)",
+
     "————— お問い合わせ —————": "（「お問い合わせ」内のラベル）",
     "宛先": "To",
     "差出人": "From",
 
-    "————— 申請 —————": "（「申請」内のラベル）",
-    "締切 :": "Due date :",
-    "受付開始 :": "Start from :",
-    "提出済": "Submitted",
-
-    "————— Labels —————": "（ボタンやリンクなどのラベルなど）",
+    "————— ラベル —————": "（ボタンやリンクなどのラベルなど）",
+    "〜": " — ",
+    "全て": "All",
+    "変更": "Change",
     "日本語": "Japanese",
     ":name としてログイン中": "Logged in as :name",
     "ログアウト": "Log out",
@@ -66,7 +86,7 @@
     "アカウント削除": "Delete account",
     "ホームに戻る": "Back to home",
 
-    "————— Help Texts —————": "（フォームコントロールに補足するためのヘルプテキストなど）",
+    "————— センテンス —————": "（フォームコントロールに補足するためのヘルプテキストなど）",
     "メールアドレスの変更は :link で行えます": "You can change your e-mail address in :link",
     "どの団体としてお問い合わせするのか選択してください": "Please select which circle to contact",
     "確認のため、お問い合わせ内容をメールで送信いたします": "We will send your inquiry by e-mail for confirmation",
@@ -84,10 +104,10 @@
     "以下をご確認ください": "Check the following",
     "ドロワーを開閉": "Toggle drawer",
 
-    "————— Empty Texts —————": "（ListViewEmpty で表示するテキスト）",
+    "————— アイテムが空の場合の表示 —————": "（ListViewEmpty で表示するテキスト）",
     "お知らせはまだありません": "No announcements",
     "配布資料はまだありません": "No documents",
     "予定はありません": "No schedule",
 
-    "————— End of Translations —————": "（終わり）"
+    "————— 翻訳の終わり —————": "（終わり）"
 }

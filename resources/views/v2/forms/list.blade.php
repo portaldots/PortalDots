@@ -23,19 +23,19 @@
             href="{{ route('forms.index', ['circle' => $circle]) }}"
             class="tab_strip-tab{{ Route::currentRouteName() === 'forms.index' ? ' is-active' : '' }}"
         >
-            受付中
+            {{ __('受付中') }}
         </a>
         <a
             href="{{ route('forms.closed', ['circle' => $circle]) }}"
             class="tab_strip-tab{{ Route::currentRouteName() === 'forms.closed' ? ' is-active' : '' }}"
         >
-            受付終了
+            {{ __('受付終了') }}
         </a>
         <a
             href="{{ route('forms.all', ['circle' => $circle]) }}"
             class="tab_strip-tab{{ Route::currentRouteName() === 'forms.all' ? ' is-active' : '' }}"
         >
-            全て
+            {{ __('全て') }}
         </a>
     </div>
     <app-container>
@@ -50,19 +50,20 @@
                         <span class="badge is-success">{{ __('提出済') }}</span>
                     @endif
                     @if ($form->yetOpen())
-                        <span class="badge is-muted">受付開始前</span>
+                        <span class="badge is-muted">{{ __('受付開始前') }}</span>
                     @endif
                 </template>
                 <template v-slot:meta>
                     @if ($form->yetOpen())
-                        {{ __('受付開始 :') }}
+                        {{ __('受付開始') }}
                         @datetime($form->open_at)
                     @else
-                        {{ __('締切 :') }}
+                        {{ __('締切') }}
+                        :
                         @datetime($form->close_at)
                     @endif
                     @if ($form->max_answers > 1)
-                    • 1団体あたり{{ $form->max_answers }}つ回答可能
+                    • {{ __('このフォームは1団体あたり :max_answers つ回答可能', ['max_answers' => $form->max_answers]) }}
                     @endif
                 </template>
                 @summary($form->description)

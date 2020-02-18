@@ -1,17 +1,17 @@
 @extends('v2.layouts.app')
 
-@section('title', $form->name . ' — 申請')
+@section('title', $form->name . ' — '. __('申請'))
 
 @section('navbar')
 @if (!empty($answer) && count($answers) > 0 && $form->max_answers > 1)
 <a href="{{ route('forms.answers.create', ['form' => $form, 'circle' => $circle]) }}" class="navbar-back">
     <i class="fas fa-chevron-left navbar-back__icon"></i>
-    回答の新規作成
+    {{ __('回答の新規作成') }}
 </a>
 @else
 <a href="{{ route('forms.index', ['circle' => $circle]) }}" class="navbar-back">
     <i class="fas fa-chevron-left navbar-back__icon"></i>
-    申請
+    {{ __('申請') }}
 </a>
 @endif
 @endsection
@@ -33,12 +33,16 @@
             <template v-slot:title>{{ $form->name }}</template>
             <div class="markdown">
                 <p class="text-muted">
-                    受付期間 : @datetime($form->open_at)〜@datetime($form->close_at)
+                    {{ __('受付期間') }}
+                    :
+                    @datetime($form->open_at)
+                    {{ __('〜') }}
+                    @datetime($form->close_at)
                     @if (!$form->isOpen())
                     —
                     <strong class="text-danger">
                         <i class="fas fa-info-circle"></i>
-                        受付期間外です
+                        {{ __('受付期間外です') }}
                     </strong>
                     @endif
                 </p>
@@ -48,12 +52,16 @@
 
         <list-view>
             <list-view-item>
-                <template v-slot:title>申請団体名</template>
+                <template v-slot:title>
+                    {{ __('申請団体名') }}
+                </template>
                 {{ $circle->name }}
                 @if (count(Auth::user()->circles) > 1)
                 {{-- TODO: あとでもうちょっといい感じのコードに書き直す --}}
                 —
-                <a href="{{ route('forms.answers.create', ['form' => $form]) }}">変更</a>
+                <a href="{{ route('forms.answers.create', ['form' => $form]) }}">
+                    {{ __('変更') }}
+                </a>
                 @endif
             </list-view-item>
         </list-view>
@@ -65,18 +73,24 @@
 
         @if (empty($answer) && count($answers) > 0)
         <list-view
-            header-title="以前の回答を閲覧・変更"
-            header-description="受付期間内に限り、回答の変更ができます"
+            header-title="{{ __('以前の回答を閲覧・変更') }}"
+            header-description="{{ __('受付期間内に限り、回答の変更ができます') }}"
         >
             @foreach ($answers as $_)
             <list-view-item
                 href="{{ route('forms.answers.edit', ['form' => $form, 'answer' => $_]) }}"
             >
                 <template v-slot:title>
-                    @datetime($_->created_at) に新規作成した回答 — 回答ID : {{ $_->id }}
+                    @datetime($_->created_at)
+                    —
+                    {{ __('回答ID') }}
+                    :
+                    {{ $_->id }}
                 </template>
                 @unless ($_->created_at->eq($_->updated_at))
-                <template v-slot:meta>回答の最終更新日時 : @datetime($_->updated_at)</template>
+                <template v-slot:meta>
+                    {{ __('回答の最終更新日時 :') }}
+                    @datetime($_->updated_at)</template>
                 @endunless
             </list-view-item>
             @endforeach
@@ -85,11 +99,11 @@
 
         <list-view
         @if (empty($answer) && $form->max_answers > 1)
-            header-title="回答を新規作成"
+            header-title="{{ __('回答の新規作成') }}"
             @if ($form->max_answers - count($answers) > 0)
-            header-description="貴団体はこの申請を、あと{{ $form->max_answers - count($answers) }}つ新規作成できます"
+            header-description="{{ trans_choice(__('貴団体は回答を、あと :remaining つ新規作成できます'), $form->max_answers - count($answers), ['remaining' => $form->max_answers - count($answers)]) }}"
             @else
-            header-description="回答数上限({{ $form->max_answers }}つ)に達したため、これ以上新規作成できません。以前の回答の編集は上記より可能です。"
+            header-description="{{ __('回答数上限(:max_answers)に達したため、これ以上回答を新規作成できません', ['max_answers' => $form->max_answers]) }}"
             @endif
         @endif
         @isset ($answer)
