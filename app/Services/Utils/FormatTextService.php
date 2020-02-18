@@ -40,7 +40,7 @@ class FormatTextService
     public static function datetime(string $datetime): string
     {
         $locale = App::getLocale();
-        return (new CarbonImmutable($datetime))->locale($locale)->isoFormat('LLLL');
+        return (new CarbonImmutable($datetime))->locale($locale)->isoFormat('llll');
     }
 
     /**
