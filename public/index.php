@@ -46,6 +46,7 @@
     // Laravel 側でメンテナンスモードが有効になっている場合も、
     // Laravel にルーティングされる
     $LARAVEL_PATHS = [
+        '/change_locale',
         // Home
         '/home__v2',
         '/pages',

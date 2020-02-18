@@ -69,9 +69,9 @@
         @if (App::getLocale() === 'ja')
             <b>{{ __('日本語') }}</b>
             •
-            <a href="?locale=en">English</a>
+            <a href="{{ route('change_locale', ['locale' => 'en']) }}">English</a>
         @else
-            <a href="?locale=ja">{{ __('日本語') }}</a>
+            <a href="{{ route('change_locale', ['locale' => 'ja']) }}">{{ __('日本語') }}</a>
             •
             <b>English</b>
         @endif

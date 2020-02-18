@@ -18,6 +18,9 @@ Route::get('/', 'IndexController');
 // TODO: URL は /home に変更する
 Route::get('/home__v2', 'HomeAction')->name('home');
 
+// 言語切り替え
+Route::get('/change_locale', 'ChangeLocaleAction')->name('change_locale');
+
 // お知らせ
 Route::prefix('/pages')
     ->name('pages.')
