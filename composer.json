@@ -8,7 +8,7 @@
         "doctrine/dbal": "^2.10",
         "ezyang/htmlpurifier": "^4.9",
         "fideloper/proxy": "^4.0",
-        "laravel/framework": "5.8.*",
+        "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
         "phpgangsta/googleauthenticator": "dev-master",
         "twig/twig": "^2.0",
