@@ -105,7 +105,7 @@ export default {
       return `Question${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`
     },
     inputId() {
-      if (['radio', 'checkbox'].includes(this.type)) {
+      if (['radio', 'checkbox'].indexOf(this.type) >= 0) {
         return undefined
       }
       return `question-${this.questionId}`
@@ -117,7 +117,7 @@ export default {
       return `answers[${this.questionId}]`
     },
     computedOptions() {
-      if (['radio', 'select', 'checkbox'].includes(this.type)) {
+      if (['radio', 'select', 'checkbox'].indexOf(this.type) >= 0) {
         return this.options
       }
       return undefined

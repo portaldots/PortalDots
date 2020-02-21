@@ -68,9 +68,11 @@ export default {
       return this.question.description
     },
     options() {
-      return this.question.options
-        ? this.question.options.trim().split(/\r\n|\n/)
-        : null
+      if (this.question.options) {
+        const options = new Set(this.question.options.trim().split(/\r\n|\n/))
+        return Array.from(options)
+      }
+      return null
     },
     is_required() {
       return this.question.is_required

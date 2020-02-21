@@ -1,10 +1,17 @@
 <template>
   <div class="editor-error">
     <div class="editor-error__modal text-center">
-      <p><strong>エラーが発生しました</strong></p>
-      <p>恐れ入りますが、ページを再読み込みしてください。</p>
+      <p>
+        <strong>{{ title }}</strong>
+      </p>
+      <p>{{ message }}</p>
       <p class="mb-0">
-        <button @click="reload" class="btn btn-primary">再読み込み</button>
+        <template v-if="back">
+          <button @click="goback" class="btn btn-primary">戻る</button>
+        </template>
+        <template v-else>
+          <button @click="reload" class="btn btn-primary">再読み込み</button>
+        </template>
       </p>
     </div>
   </div>
@@ -15,6 +22,23 @@ export default {
   methods: {
     reload() {
       window.location.reload()
+    },
+    goback() {
+      window.history.back(-1)
+    }
+  },
+  props: {
+    title: {
+      type: String,
+      default: 'エラーが発生しました'
+    },
+    message: {
+      type: String,
+      default: '恐れ入りますが、ページを再読み込みしてください。'
+    },
+    back: {
+      type: Boolean,
+      default: false
     }
   }
 }
