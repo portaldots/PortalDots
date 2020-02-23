@@ -66,7 +66,6 @@ $route["forms/(:num)/answers/(:num)/uploads/(:num)"] = "home/Applications_form/u
 // $route["home/applications/(:num)/b:(:num)/forms/(:num)/(:any)"] = "home/Applications_form/index/$3/$1/$4/$2";
 
 // Uploads
-$route['uploads/documents/(:any)'] = 'uploads/documents/index/$1';
 $route['uploads/applications_form/(:any)'] = 'uploads/applications_form/index/$1';
 
 // Schedules

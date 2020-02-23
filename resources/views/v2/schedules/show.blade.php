@@ -30,7 +30,7 @@
     <list-view header-title="配布資料">
         @foreach ($schedule->documents as $document)
         <list-view-item
-            href="{{ url("uploads/documents/{$document->id}") }}"
+            href="{{ route('documents.show', ['document' => $document]) }}"
             newtab
         >
             <template v-slot:title>
