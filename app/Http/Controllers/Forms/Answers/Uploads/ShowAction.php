@@ -28,6 +28,6 @@ class ShowAction extends Controller
             ->where('question_id', $question_id)
             ->firstOrFail();
 
-        return Storage::download($file_path->answer);
+        return response()->file(Storage::path($file_path->answer));
     }
 }

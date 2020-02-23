@@ -35,7 +35,7 @@
             {% if document.is_important == 1 %}
               <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
             {% endif %}
-            <a href="{{ base_url("uploads/documents/#{document.id}") }}" target="_blank">
+            <a href="{{ base_url("documents/#{document.id}") }}" target="_blank">
               {{ document.name }}
               {% if document.is_new == true %}
                 <span class="label label-danger">NEW</span>
@@ -56,7 +56,7 @@
           <li class="list-group-item">変更 : <span class="pull-right">{{ document.updated_at_string }}</span></li>
         </ul>
         <div class="panel-footer">
-          <a href="{{ base_url("uploads/documents/#{document.id}") }}" class="btn btn-primary" target="_blank">
+          <a href="{{ base_url("documents/#{document.id}") }}" class="btn btn-primary" target="_blank">
             <i class="fa fa-download fa-fw"></i>
             ダウンロード
           </a>

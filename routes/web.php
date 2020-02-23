@@ -31,6 +31,7 @@ Route::prefix('/documents')
     ->name('documents.')
     ->group(function () {
         Route::get('/', 'Documents\IndexAction')->name('index');
+        Route::get('/{document}', 'Documents\ShowAction')->name('show');
     });
 
 // スケジュール
