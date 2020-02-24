@@ -15,7 +15,7 @@
         <p>団体参加登録が済んでいないため、申請を行うことができません</p>
         <p>詳細については「{{ config('portal.admin_name') }}」までお問い合わせください</p>
         <p>※ すでに団体参加登録を行った場合でも反映に時間がかかることがあります</p>
-        <p><a href="{{ url('/') }}" class="btn is-primary is-block">ホームに戻る</a></p>
+        <p><a href="{{ route('home') }}" class="btn is-primary is-block">ホームに戻る</a></p>
     </app-container>
 @else
     <div class="tab_strip">

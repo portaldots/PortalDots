@@ -3,13 +3,6 @@
 @section('content')
 <div class="jumbotron">
     <app-container narrow>
-        <p>
-            <i class="fas fa-info-circle"></i>
-            <strong>ログイン画面が新しくなりました</strong>
-            <br />
-            新たにユーザー登録する必要はありません
-        </p>
-        <hr>
         <h1 class="jumbotron__title">
             {{ config('app.name') }}
         </h1>

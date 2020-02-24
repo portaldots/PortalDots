@@ -47,11 +47,10 @@
     // Laravel にルーティングされる
     $LARAVEL_PATHS = [
         // Home
-        '/home__v2',
         '/pages',
         '/documents',
         '/schedules',
-        '/forms__v2',
+        '/forms',
         // Auth
         '/login',
         '/logout',
@@ -83,7 +82,7 @@
 
     foreach ($LARAVEL_PATHS as $path) {
         $path = str_replace('/', '\/', preg_quote($path));
-        if (preg_match('/^'. $path. '/', $request_uri)) {
+        if ($request_uri === '/' || preg_match('/^'. $path. '/', $request_uri)) {
             require __DIR__. '/index_laravel.php';
             exit;
         }

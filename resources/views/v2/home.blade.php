@@ -4,7 +4,7 @@
 
 @auth
 @if (Auth::user()->areBothEmailsVerified() && count($my_circles) < 1)
-<top-alert type="primary">
+{{-- <top-alert type="primary">
     <template v-slot:title>
         <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
         参加登録をしましょう！
@@ -16,6 +16,15 @@
             <strong>参加登録をはじめる</strong>
         </a>
     </template>
+</top-alert> --}}
+<top-alert type="primary">
+    <template v-slot:title>
+        <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+        参加登録が未完了
+    </template>
+
+    団体参加登録がお済みでない場合、申請機能など、{{ config("app.name") }} の一部機能がご利用になれません<br>
+    <small>(参加登録を行ってからこの表示が消えるのに時間がかかることがあります)</small>
 </top-alert>
 @endif
 @endauth

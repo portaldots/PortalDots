@@ -57,7 +57,7 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="app-name">
-                    <a href="{{ url('/') }}">
+                    <a href="{{ route('home') }}">
                         {{ config('app.name') }}
                     </a>
                 </div>
