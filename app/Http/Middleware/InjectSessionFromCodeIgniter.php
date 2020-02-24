@@ -87,6 +87,16 @@ class InjectSessionFromCodeIgniter
 
         $response = $next($request);
 
+        $response->cookie(
+            'session_id',
+            $ciSessionRecord->id,
+            0,
+            '/',
+            '',
+            false,
+            true
+        );
+
         // SHARED_SESSION_KEY と一致するキーのセッションを ci_sessions に保存する
         foreach (self::SHARED_SESSION_KEY as $key) {
             $sessionArray[$key] = session($key, null);
@@ -121,16 +131,6 @@ class InjectSessionFromCodeIgniter
             ]);
 
         $ciSessionRecord = DB::table(self::CI_SESSION_TABLE_NAME)->where('id', $newSessionId)->first();
-
-        setcookie(
-            'session_id',
-            $ciSessionRecord->id,
-            0,
-            '/',
-            '',
-            false,
-            true
-        );
 
         return $ciSessionRecord;
     }
