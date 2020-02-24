@@ -2,6 +2,11 @@
     {{ config('app.name') }}
 </a>
 <nav class="drawer-nav">
+    <div class="px-spacing">
+        <a href="/home_staff" class="btn is-primary is-block" data-turbolinks="false">
+            スタッフモードへ
+        </a>
+    </div>
     <ul class="drawer-nav__list">
         <li class="drawer-nav__item">
             <a href="{{ route('home') }}" class="drawer-nav__link{{ Request::is('/') ? ' is-active' : '' }}">
