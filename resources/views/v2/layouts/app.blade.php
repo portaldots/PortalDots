@@ -96,7 +96,7 @@
         @auth
             @unless (Auth::user()->areBothEmailsVerified())
 
-                <top-alert type="primary">
+                <top-alert type="primary" keep-visible>
                     <template v-slot:title>
                         <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
                         メール認証を行ってください
