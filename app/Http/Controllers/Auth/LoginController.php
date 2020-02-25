@@ -63,7 +63,7 @@ class LoginController extends Controller
      */
     public function showLogout()
     {
-        return view('auth.logout');
+        return view('v2.auth.logout');
     }
 
     /**

@@ -1,5 +1,7 @@
 @extends('v2.layouts.no_drawer')
 
+@section('title', 'ログイン')
+
 @section('content')
 <div class="jumbotron">
     <app-container narrow>
