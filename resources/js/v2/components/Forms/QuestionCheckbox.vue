@@ -1,12 +1,12 @@
 <template>
-  <div class="checkbox">
+  <div class="form-checkbox">
     <label
-      class="checkbox__label"
+      class="form-checkbox__label"
       v-for="(option, index) in options"
       :key="`${option}_${index}`"
     >
       <input
-        class="checkbox__input"
+        class="form-checkbox__input"
         type="checkbox"
         :name="inputName"
         :required="computedRequired"
@@ -64,19 +64,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.checkbox {
-  $input-spacing: $spacing-md + $spacing-xs;
-  &__label {
-    display: block;
-    margin: 0 0 $spacing-sm;
-    padding: 0 0 0 #{$input-spacing};
-    position: relative;
-  }
-  &__input {
-    margin: 0.4rem 0 0 #{-$input-spacing};
-    position: absolute;
-  }
-}
-</style>

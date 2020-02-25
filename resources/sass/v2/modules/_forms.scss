@@ -63,6 +63,20 @@ textarea {
       box-shadow: 0 0 0 3px rgba($color-danger, 0.25);
     }
   }
+  &-checkbox,
+  &-radio {
+    $input-spacing: $spacing-md + $spacing-xs;
+    &__label {
+      display: block;
+      margin: 0 0 $spacing-sm;
+      padding: 0 0 0 #{$input-spacing};
+      position: relative;
+    }
+    &__input {
+      margin: 0.4rem 0 0 #{-$input-spacing};
+      position: absolute;
+    }
+  }
   &-text {
     display: block;
     margin: $spacing-xs 0;

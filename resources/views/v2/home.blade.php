@@ -60,10 +60,9 @@
             </div>
 
             <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                    <label class="form-check-label" for="remember">
+                <div class="form-checkbox">
+                    <label class="form-checkbox__label">
+                        <input class="form-checkbox__input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                         ログインしたままにする
                     </label>
                 </div>
