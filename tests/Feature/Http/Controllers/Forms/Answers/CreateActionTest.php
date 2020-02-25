@@ -95,4 +95,23 @@ class CreateActionTest extends TestCase
 
         $response->assertStatus(403);
     }
+
+    /**
+     * @test
+     */
+    public function 非公開のフォームにはアクセスできない()
+    {
+        $privateForm = factory(Form::class)->states('private')->create();
+
+        $response = $this
+                    ->actingAs($this->user)
+                    ->get(
+                        route('forms.answers.create', [
+                            'form' => $privateForm,
+                            'circle' => $this->circle
+                        ])
+                    );
+
+        $response->assertStatus(404);
+    }
 }

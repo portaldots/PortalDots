@@ -36,4 +36,3 @@ $factory->state(User::class, 'not_verified', [
     'email_verified_at' => null,
     'univemail_verified_at' => null,
 ]);
-

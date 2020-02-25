@@ -17,3 +17,7 @@ $factory->define(Form::class, function (Faker $faker) {
         'is_public' => true,
     ];
 });
+
+$factory->state(Form::class, 'private', [
+    'is_public' => false,
+]);
