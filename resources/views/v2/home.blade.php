@@ -17,7 +17,7 @@
         </a>
     </template>
 </top-alert> --}}
-<top-alert type="primary">
+<top-alert type="primary" keep-visible>
     <template v-slot:title>
         <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
         参加登録が未完了

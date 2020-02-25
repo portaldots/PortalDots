@@ -4,8 +4,11 @@
     :class="{
       'is-success': type === 'success',
       'is-primary': type === 'primary',
-      'is-danger': type === 'danger'
+      'is-danger': type === 'danger',
+      'is-hidden': hidden
     }"
+    :style="{ height: height === Infinity ? undefined : `${height}px` }"
+    ref="topAlert"
   >
     <AppContainer
       class="top_alert__container"
@@ -34,6 +37,20 @@ export default {
   components: {
     AppContainer
   },
+  data() {
+    return {
+      hidden: false,
+      height: Infinity
+    }
+  },
+  mounted() {
+    if (!this.keepVisible) {
+      this.height = this.$refs.topAlert.getBoundingClientRect().height
+      window.setTimeout(() => {
+        this.hidden = true
+      }, 5000)
+    }
+  },
   props: {
     type: {
       type: String,
@@ -46,6 +63,11 @@ export default {
     containerMedium: {
       type: Boolean,
       default: false
+    },
+    keepVisible: {
+      // 5 秒後に自動で消えないようにする
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -53,6 +75,14 @@ export default {
 
 <style lang="scss" scoped>
 .top_alert {
+  color: #fff;
+  overflow: hidden;
+  transition: 0.75s ease height, 0.75s ease color, 0.75s ease visibility;
+  &.is-hidden {
+    color: rgba(#fff, 0);
+    height: 0 !important;
+    visibility: hidden;
+  }
   & + & {
     border-top: 1px solid rgba(#fff, 0.16);
   }
@@ -67,7 +97,6 @@ export default {
   }
   &__container {
     align-items: center;
-    color: #fff;
     display: flex;
     justify-content: space-between;
     padding: $spacing;
