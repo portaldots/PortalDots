@@ -10,6 +10,7 @@
         <list-view header-title="パスワードの再設定" header-description="新しいパスワードを入力してください">
             <list-view-form-group label-for="new_password">
                 <template v-slot:label>新しいパスワード</template>
+                <template v-slot:description>8文字以上で入力してください</template>
                 <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" required autocomplete="new-password">
                 @error('new_password')
                     <template v-slot:invalid>{{ $message }}</template>

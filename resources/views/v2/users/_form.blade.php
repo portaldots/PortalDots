@@ -74,6 +74,7 @@
             @empty($user)
                 <list-view-form-group label-for="password">
                     <template v-slot:label>パスワード</template>
+                    <template v-slot:description>8文字以上で入力してください</template>
                     <input
                         id="password"
                         type="password"
