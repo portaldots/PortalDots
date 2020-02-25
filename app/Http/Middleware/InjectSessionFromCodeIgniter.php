@@ -6,6 +6,7 @@ use Closure;
 use DB;
 use Auth;
 use Cookie;
+use App;
 
 /**
  * CodeIgniter 側で保存されたセッションを Laravel 側で扱えるようにする
@@ -48,6 +49,12 @@ class InjectSessionFromCodeIgniter
      */
     public function handle($request, Closure $next)
     {
+        // テストの妨げになるため、ユニットテスト実行中は
+        // このミドルウェアを適用しない
+        if (App::runningUnitTests()) {
+            return $next($request);
+        }
+
         $ipAddress = $_SERVER['REMOTE_ADDR'];
 
         // CodeIgniter のセッションを管理している ci_sessions テーブルからデータを読み出し、
