@@ -9,7 +9,9 @@
 
 ![inaka-portal](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/inaka-portal-eyecatch-v2.png)
 
-![スクリーンショット](https://raw.githubusercontent.com/SofPyon/inaka-portal-docs/master/docs/img/screenshots/home.png)
+![スクリーンショット](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/screenshots-home-v2.png)
+
+<p align="center">(このスクリーンショットは開発中の新バージョンのものです。 <a href="https://github.com/SofPyon/inaka-portal/pull/251">#251</a> がマージされることで、この新バージョンになります)</p>
 
 ## これは何？
 - [野田地区理大祭](https://nodaridaisai.com) という大学祭の実行委員会の業務を効率化するためのウェブシステム。
