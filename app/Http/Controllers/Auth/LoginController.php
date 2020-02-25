@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Request as FacadeRequest;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\Controller;

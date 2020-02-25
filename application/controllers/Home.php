@@ -5,7 +5,7 @@
 //
 // 【理由】
 // このクラスは、/home という URL を廃止したことに伴う暫定措置として設置している
-// ものであり、その暫定措置は、COdeIgniter を完全に廃止したタイミングで解消する
+// ものであり、その暫定措置は、CodeIgniter を完全に廃止したタイミングで解消する
 class Home extends MY_Controller
 {
     public function index()
