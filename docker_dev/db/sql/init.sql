@@ -1,3 +1,8 @@
+-- このファイルを変更する際は、
+-- • 2014_10_11_000000_create_fundamental_tables.php
+-- 上記のファイルも修正してください
+--TODO: 将来的にはこの init.sql は削除する
+
 -- Create syntax for TABLE 'auth_staff_page'
 CREATE TABLE `auth_staff_page` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
