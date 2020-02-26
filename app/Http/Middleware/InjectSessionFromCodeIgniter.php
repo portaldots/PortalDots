@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use DB;
 use Auth;
+use Cookie;
 
 /**
  * CodeIgniter 側で保存されたセッションを Laravel 側で扱えるようにする
@@ -87,7 +88,7 @@ class InjectSessionFromCodeIgniter
 
         $response = $next($request);
 
-        $response->cookie(
+        Cookie::queue(
             'session_id',
             $ciSessionRecord->id,
             0,
