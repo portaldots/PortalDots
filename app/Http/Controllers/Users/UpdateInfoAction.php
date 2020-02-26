@@ -73,7 +73,7 @@ class UpdateInfoAction extends Controller
         }
 
         return redirect()
-            ->route('home')
+            ->route('user.edit')
             ->with('topAlert.title', 'ユーザー情報を更新しました');
     }
 }
