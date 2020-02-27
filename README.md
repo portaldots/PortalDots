@@ -119,9 +119,11 @@ inaka-portal では、Issue や Pull Request を歓迎します。
 このプロジェクトは、まだプログラミングスキルが浅かった時に開発されたものを、最近になって多くのリファクタリングを施したものです。今でもあまり良いコードとは言えないかもしれませんが、これでもだいぶマシになったほうです(パスワードがハードコードされていたりした)。
 
 ## SQL
-inaka-portal を動作させるために必要な DB テーブルは、`composer migrate` コマンドによって作成されるほか、 `docker_dev/db/sql/init.sql` に格納されている SQL によって作成されます。
+inaka-portal を動作させるために必要な DB テーブルは、`composer migrate` コマンドによって作成されます。
 
-`init.sql` は、Docker 初回起動時、自動的に実行されるようになっています。
+以前は、 `composer migrate` コマンド実行前に `docker_dev/db/sql/init.sql` に格納されている SQL を実行する必要がありましたが、現在は `init.sql` の実行は不要です。
+
+<!-- `init.sql` は、Docker 初回起動時、自動的に実行されるようになっています。 -->
 
 # ライセンス
 

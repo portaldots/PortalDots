@@ -61,9 +61,6 @@ jobs:
 
       - run: sudo docker-php-ext-install pdo_mysql
 
-      # TODO: init.sql を廃止したら、以下の行は削除する
-      - run: mysql -h 127.0.0.1 -uroot circle_test < ./docker_dev/db/sql/init.sql
-
       - save_cache:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
@@ -93,9 +90,11 @@ jobs:
       # - run: php artisan migrate --env=testing --database=sqlite_testing --force
 
       # run tests with phpunit or codecept
-      - run: ./vendor/bin/phpunit
+      - run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
       # - run: ./vendor/bin/codecept build
       # - run: ./vendor/bin/codecept run
+
+      - run: bash <(curl -s https://codecov.io/bash)
 
   deploy:
     working_directory: ~/workspace
