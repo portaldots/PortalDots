@@ -23,6 +23,8 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 composer.phar
 
+coverage.xml
+
 # IDE Files
 #-------------------------
 /nbproject/
