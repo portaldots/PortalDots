@@ -5,6 +5,9 @@
     <a href="https://circleci.com/gh/SofPyon/inaka-portal">
         <img src="https://circleci.com/gh/SofPyon/inaka-portal.svg?style=svg" alt="CircleCI">
     </a>
+    <a href="https://codecov.io/gh/SofPyon/inaka-portal">
+        <img src="https://codecov.io/gh/SofPyon/inaka-portal/branch/master/graph/badge.svg" />
+    </a>
 </p>
 
 ![inaka-portal](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/inaka-portal-eyecatch-v2.png)
