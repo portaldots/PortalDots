@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Forms;
+namespace App\Http\Controllers\Staff\Forms\Editor;
 
 use App\Services\Forms\FormsService;
 use Illuminate\Http\Request;

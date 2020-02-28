@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Forms;
+namespace App\Http\Controllers\Staff\Forms\Editor;
 
 use App\Eloquents\Form;
 use App\Services\Forms\QuestionsService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class DeleteQuestionAction extends Controller
+class UpdateQuestionsOrderAction extends Controller
 {
     private $questionsService;
 
@@ -18,7 +18,11 @@ class DeleteQuestionAction extends Controller
 
     public function __invoke(Form $form, Request $request)
     {
-        $question_id = (int)$request->question;
-        $this->questionsService->deleteQuestion($question_id);
+        $this->questionsService->updateQuestionsOrder(
+            $form,
+            collect($request->questions)->mapWithKeys(function ($question) {
+                return [$question['id'] => $question['priority']];
+            })->toArray()
+        );
     }
 }

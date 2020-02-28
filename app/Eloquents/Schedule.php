@@ -70,6 +70,8 @@ class Schedule extends Model
      */
     public static function groupByMonth(Collection $queryResults)
     {
+        // TODO: Laravel コレクションの `groupBy` メソッドが使えるかも
+
         $return = [];
         $lastKey = '';
         foreach ($queryResults as $queryResult) {

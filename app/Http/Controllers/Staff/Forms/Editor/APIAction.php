@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Forms;
+namespace App\Http\Controllers\Staff\Forms\Editor;
 
 use App\Eloquents\Form;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class EditorAPIAction extends Controller
+class APIAction extends Controller
 {
     public function __invoke(Form $form)
     {
