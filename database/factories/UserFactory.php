@@ -32,6 +32,10 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
+$factory->state(User::class, 'staff', [
+    'is_staff' => true,
+]);
+
 $factory->state(User::class, 'not_verified', [
     'email_verified_at' => null,
     'univemail_verified_at' => null,
