@@ -38,24 +38,20 @@ class DownloadZipAction extends Controller
             Storage::makeDirectory('answer_details_zip');
         }
 
-        $zip = new ZipArchive();
-        $zip_filename = 'uploads_' . $form_id . '_' . date('Y-m-d_H-i-s') . '.zip';
-        $zip_path = storage_path("app/answer_details_zip/{$zip_filename}");
-
-        if ($zip->open($zip_path, ZipArchive::CREATE) !== true) {
-            abort(500, 'このサーバーは、ZIPダウンロードに対応していません');
-            return;
-        }
-
-        $fullpaths = array_map(function ($path) {
-            if (strpos($path, 'answer_details/') === 0 && file_exists($fullpath = Storage::path($path))) {
+        $tuples = array_map(function ($path) {
+            if (
+                strpos($path, 'answer_details/') === 0 &&
+                file_exists($fullpath = Storage::path($path)) &&
+                is_file($fullpath)
+            ) {
                 // Project v2 申請フォームからアップロードされたファイル
                 //
                 // TODO: 将来的に、ダウンロードされるファイル名に answer_details__ は含めないようにしたい
                 // TODO: 別件だが、回答一覧画面でも answer_details/ というパスは表示しないようにしたい
                 return [$fullpath, str_replace('answer_details/', 'answer_details__', $path)];
             } elseif (
-                file_exists($fullpath = config('portal.codeigniter_upload_dir') . '/form_file/' . basename($path))
+                file_exists($fullpath = config('portal.codeigniter_upload_dir') . '/form_file/' . basename($path)) &&
+                is_file($fullpath)
             ) {
                 // CodeIgniter 申請フォームからアップロードされたファイル
                 //
@@ -64,10 +60,25 @@ class DownloadZipAction extends Controller
             }
             return null;
         }, $uploaded_file_paths);
-        $fullpaths = array_filter($fullpaths);
+        $tuples = array_filter($tuples);
 
-        foreach ($fullpaths as $path) {
-            [$fullpath, $localname] = $path;
+        if (!is_array($tuples) || count($tuples) === 0) {
+            return back()
+                ->with('topAlert.title', 'ダウンロードできるファイルはありません');
+        }
+
+        $zip = new ZipArchive();
+        $zip_filename = 'uploads_' . $form_id . '_' . date('Y-m-d_H-i-s') . '.zip';
+        $zip_path = storage_path("app/answer_details_zip/{$zip_filename}");
+
+        if ($zip->open($zip_path, ZipArchive::CREATE) !== true) {
+            return back()
+                ->with('topAlert.type', 'danger')
+                ->with('topAlert.title', 'このサーバーは、ZIPダウンロードに対応していません');
+        }
+
+        foreach ($tuples as $tuple) {
+            [$fullpath, $localname] = $tuple;
             $zip->addFile($fullpath, $localname);
         }
 
