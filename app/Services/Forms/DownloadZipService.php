@@ -52,7 +52,7 @@ class DownloadZipService
                 // Project v2 申請フォームからアップロードされたファイル
                 //
                 // TODO: 将来的に、ダウンロードされるファイル名に answer_details__ は含めないようにしたい
-                // TODO: 別件だが、回答一覧画面でも answer_details/ というパスは表示しないようにしたい
+                // TODO: 別件だが、回答一覧画面でも answer_details__ というパスは表示しないようにしたい
                 return [$fullpath, str_replace('answer_details/', 'answer_details__', $path)];
             } elseif (
                 file_exists($fullpath = config('portal.codeigniter_upload_dir') . '/form_file/' . basename($path)) &&

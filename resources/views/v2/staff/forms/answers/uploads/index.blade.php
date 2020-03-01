@@ -12,8 +12,6 @@
                 <p>フォーム「{{ $form->name }}」にてアップロードされたファイルを ZIP 形式で一括ダウンロードします。</p>
                 <p><strong>注意事項 (必ずお読みください) :</strong></p>
                 <ul>
-                    <li>回答一覧において、ファイル名が<code>answer_details/</code>で始まっているファイルについては、当該部分が<code>answer_details__</code>に置き換えられます。</li>
-                    <li>回答一覧をCSVでダウンロードする際は<code>answer_details/</code>のままとなります。Wordの「差し込み文書」機能やInDesignの「データ結合」機能を利用される際は、CSVファイル内の<code>answer_details/</code>部分を<code>answer_details__</code>に手動で置き換えてご利用ください。</li>
                     <li>「差し込み文書」機能や「データ結合」機能を利用する際は、回答一覧CSVファイルを、ZIPフォルダ内のファイルと同階層に配置してください。</li>
                     <li><strong>ダウンロードには時間がかかります。</strong>ダウンロードが完了するまで、この画面は開いたままにしてください。</li>
                     <li><strong>本機能はベータ版です。</strong>ファイル数が多い場合、エラーになることがあります。また、予告なしに仕様変更される可能性があります。</li>

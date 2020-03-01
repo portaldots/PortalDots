@@ -387,8 +387,12 @@ class Home_staff extends MY_Controller
                             $string_to_export .= $answer->answers[$question->id];
                         }
                     }
+                } elseif ($question->type === "upload") {
+                    // ファイルアップロード
+                    $string_to_export .= "\t" .
+                        str_replace('answer_details/', 'answer_details__', $answer->answers[$question->id] ?? '');
                 } else {
-                    // Not多肢選択式
+                    // Not多肢選択式、Notファイルアップロード
                     $string_to_export .= "\t" .
                         str_replace(
                             ["\r\n", "\n", "\r", "\t"],

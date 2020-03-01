@@ -308,7 +308,7 @@
                                                       ? base_url( "forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
                                                       : base_url( "uploads/applications_form/#{answer.answers[question.id]}" )
                                               }}"
-                                              target="_blank">{{ answer.answers[question.id] }}</a>
+                                              target="_blank">{{ str_replace('answer_details/', 'answer_details__', answer.answers[question.id]) }}</a>
                                         {% else %}
                                             <span class="text-muted">(未アップロード)</span>
                                         {% endif %}
