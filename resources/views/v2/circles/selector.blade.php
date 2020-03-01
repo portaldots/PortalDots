@@ -4,7 +4,8 @@
 
 @section('content')
     <app-container>
-        <list-view header-title="団体を選択してください">
+        <list-view>
+            <template v-slot:title>団体を選択</template>
             @foreach ($circles as $circle)
                 <list-view-item href="{{ $url }}?circle={{ $circle->id }}">
                     <template v-slot:title>

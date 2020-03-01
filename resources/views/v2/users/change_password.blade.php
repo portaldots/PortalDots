@@ -29,7 +29,8 @@
     @csrf
 
     <app-container>
-        <list-view header-title="パスワード変更">
+        <list-view>
+            <template v-slot:title>パスワード変更</template>
             <list-view-form-group label-for="password">
                 <template v-slot:label>現在のパスワード</template>
                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">

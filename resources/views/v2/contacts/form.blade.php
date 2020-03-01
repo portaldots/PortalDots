@@ -27,7 +27,8 @@
     @csrf
 
     <app-container>
-        <list-view header-title="お問い合わせ">
+        <list-view>
+            <template v-slot:title>お問い合わせ</template>
             <list-view-form-group label-for="recipient">
                 <template v-slot:label>宛先</template>
                 <input type="text" id="recipient" readonly value="{{ config('portal.admin_name') }}" class="form-control is-plaintext">

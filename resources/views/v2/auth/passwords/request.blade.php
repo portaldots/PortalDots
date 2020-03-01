@@ -7,8 +7,8 @@
     @csrf
 
     <app-container medium>
-        <list-view header-title="パスワードの再設定">
-
+        <list-view>
+            <template v-slot:title>パスワードの再設定</template>
             <list-view-card>
                 <p>まず、「{{ config('app.name') }}」にログインするために使用していた学籍番号または連絡先メールアドレスを入力してください。</p>
                 <p>連絡先メールアドレスに対し、パスワード再設定に関するご案内を差し上げます。</p>

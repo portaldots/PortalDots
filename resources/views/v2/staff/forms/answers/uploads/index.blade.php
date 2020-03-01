@@ -7,7 +7,12 @@
     @csrf
 
     <app-container medium>
-        <list-view header-title="アップロードファイルの一括ダウンロード(BETA)">
+        <list-view>
+            <template v-slot:title>
+                アップロードファイルの一括ダウンロード
+                <small class="badge is-muted">BETA</small>
+            </template>
+
             <list-view-card>
                 <p>フォーム「{{ $form->name }}」にてアップロードされたファイルを ZIP 形式で一括ダウンロードします。</p>
                 <p><strong>注意事項 (必ずお読みください) :</strong></p>

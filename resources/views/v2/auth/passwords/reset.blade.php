@@ -7,7 +7,9 @@
     @csrf
 
     <app-container medium>
-        <list-view header-title="パスワードの再設定" header-description="新しいパスワードを入力してください">
+        <list-view>
+            <template v-slot:title>パスワードの再設定</template>
+            <template v-slot:description>新しいパスワードを入力してください</template>
             <list-view-form-group label-for="new_password">
                 <template v-slot:label>新しいパスワード</template>
                 <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" required autocomplete="new-password">

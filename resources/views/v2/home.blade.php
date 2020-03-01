@@ -82,7 +82,8 @@
 @endguest
 <app-container>
     @isset($next_schedule)
-    <list-view header-title="次の予定">
+    <list-view>
+        <template v-slot:title>次の予定</template>
         <list-view-item>
             <template v-slot:title>
                 {{ $next_schedule->name }}
@@ -104,7 +105,8 @@
     @endisset
 
     @if (!$pages->isEmpty())
-    <list-view header-title="お知らせ">
+    <list-view>
+        <template v-slot:title>お知らせ</template>
         @foreach ($pages as $page)
         <list-view-item href="{{ route('pages.show', $page) }}">
             <template v-slot:title>
@@ -125,7 +127,8 @@
     @endif
 
     @if (!$documents->isEmpty())
-    <list-view header-title="最近の配布資料">
+    <list-view>
+        <template v-slot:title>最近の配布資料</template>
         @foreach ($documents as $document)
         <list-view-item
             href="{{ route('documents.show', ['document' => $document]) }}"
@@ -158,7 +161,8 @@
     @endif
 
     @if (!empty($forms) && !$forms->isEmpty())
-    <list-view header-title="受付中の申請">
+    <list-view>
+        <template v-slot:title>受付中の申請</template>
         @foreach ($forms as $form)
         <list-view-item
             href="{{ route('forms.answers.create', ['form' => $form]) }}"

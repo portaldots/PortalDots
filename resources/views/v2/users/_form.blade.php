@@ -33,12 +33,12 @@
         medium
     @endempty
     >
-        <list-view
-            header-title="{{ isset($user) ? '一般設定' : 'ユーザー登録' }}"
+        <list-view>
+            <template v-slot:title>{{ isset($user) ? '一般設定' : 'ユーザー登録' }}</template>
             @empty ($user)
-            header-description="「{{ config('app.name') }}」にユーザー登録します。"
+            <template v-slot:description>「{{ config('app.name') }}」にユーザー登録します。</template>
             @endempty
-        >
+
             <list-view-form-group label-for="student_id">
                 <template v-slot:label>学籍番号</template>
                 <template v-slot:description>
@@ -122,7 +122,8 @@
         </list-view>
 
         @isset($user)
-            <list-view header-description="変更を保存するには、現在のパスワードを入力してください">
+            <list-view>
+                <template v-slot:description>変更を保存するには、現在のパスワードを入力してください</template>
                 <list-view-form-group label-for="password">
                     <template v-slot:label>現在のパスワード</template>
                     <input

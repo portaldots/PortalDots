@@ -1,11 +1,11 @@
 <template>
   <div class="listview">
-    <div class="listview-header" v-if="headerTitle || headerDescription">
-      <h2 class="listview-header__title" v-if="headerTitle">
-        {{ headerTitle }}
+    <div class="listview-header" v-if="$slots.title || $slots.description">
+      <h2 class="listview-header__title" v-if="$slots.title">
+        <slot name="title" />
       </h2>
-      <div class="listview-header__description" v-if="headerDescription">
-        {{ headerDescription }}
+      <div class="listview-header__description" v-if="$slots.description">
+        <slot name="description" />
       </div>
     </div>
     <div class="listview-body">
@@ -15,18 +15,7 @@
 </template>
 
 <script>
-export default {
-  props: {
-    headerTitle: {
-      type: String,
-      default: null
-    },
-    headerDescription: {
-      type: String,
-      default: null
-    }
-  }
-}
+export default {}
 </script>
 
 <style lang="scss" scoped>
