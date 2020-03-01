@@ -30,6 +30,8 @@ class DownloadZipService
      *
      * @param Form $form
      * @param array $uploaded_file_paths
+     * @throws NoDownloadFileExistException
+     * @throws ZipArchiveNotSupportedException
      * @return string
      */
     public function makeZip(Form $form, array $uploaded_file_paths): string
