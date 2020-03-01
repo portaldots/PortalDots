@@ -5,6 +5,9 @@
     <a href="https://circleci.com/gh/SofPyon/inaka-portal">
         <img src="https://circleci.com/gh/SofPyon/inaka-portal.svg?style=svg" alt="CircleCI">
     </a>
+    <a href="https://codecov.io/gh/SofPyon/inaka-portal">
+        <img src="https://codecov.io/gh/SofPyon/inaka-portal/branch/master/graph/badge.svg" />
+    </a>
 </p>
 
 ![inaka-portal](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/inaka-portal-eyecatch-v2.png)
@@ -98,7 +101,7 @@ inaka-portal では、Issue や Pull Request を歓迎します。
 その他の問題は、開発者の GitHub プライベートリポジトリの issue で管理されています。今後、このリポジトリに issue を移行するかもしれません。
 
 ## 将来的に実装したい機能
-- ~~申請フォーム作成 GUI~~ **(申請フォームエディター実装完了。ただし、エディター右上の「公開」ボタンは現状機能していません)**
+- ~~申請フォーム作成 GUI~~ **(申請フォームエディター実装完了)**
     - ~~【開発中】 http://localhost/staff/forms/{フォームID}/editor が申請フォーム作成画面になっています~~
 - 団体登録機能
     - 現状、スタッフでないと団体登録ができませんが、参加団体自らで参加登録できるようにする機能を実装したいと考えています

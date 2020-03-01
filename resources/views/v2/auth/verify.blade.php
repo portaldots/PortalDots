@@ -7,11 +7,9 @@
     <list-view
         header-title="{{ Auth::user()->is_signed_up ? 'まだユーザー情報の変更は完了していません！' : 'まだユーザー登録は完了していません！' }}"
     >
-        <list-view-item>
-            <template v-slot:meta>
-                以下のメールアドレスに確認メールを送信しました。<strong>メール送信から {{ config('auth.verification.expire', 60) }} 分以内</strong>に、確認メールに記載されている URL にアクセスしてください。
-            </template>
-        </list-view-item>
+        <list-view-card>
+            以下のメールアドレスに確認メールを送信しました。<strong>メール送信から {{ config('auth.verification.expire', 60) }} 分以内</strong>に、確認メールに記載されている URL にアクセスしてください。
+        </list-view-card>
         {{-- 大学提供メールアドレス --}}
         <list-view-item>
             <template v-slot:title>
@@ -45,15 +43,15 @@
     <list-view
         header-title="確認メールの再送"
     >
-        <list-view-item>
-            <template v-slot:meta>確認メールが見つからない場合・確認メールの URL にアクセスするとエラーになる場合、以下のボタンより確認メールを再送できます。</template>
+        <list-view-card>
+            <p>確認メールが見つからない場合・確認メールの URL にアクセスするとエラーになる場合、以下のボタンより確認メールを再送できます。</p>
             <form action="{{ route('verification.resend') }}" method="post">
                 @csrf
                 <button class="btn is-primary is-wide">
                     確認メールを再送
                 </button>
             </form>
-        </list-view-item>
+        </list-view-card>
     </list-view>
 
     <list-view

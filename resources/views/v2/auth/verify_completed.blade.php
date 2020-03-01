@@ -5,7 +5,7 @@
 @section('content')
 <app-container medium>
     <list-view header-title="メール認証完了">
-        <list-view-item>
+        <list-view-card>
             <p class="text-center text-success">
                 <i class="fas fa-check-circle"></i>
                 <strong>手続きが完了しました！</strong>
@@ -15,7 +15,7 @@
                     ホームにアクセス
                 </a>
             </p>
-        </list-view-item>
+        </list-view-card>
     </list-view>
 </app-container>
 @endsection

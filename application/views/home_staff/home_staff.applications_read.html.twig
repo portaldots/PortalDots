@@ -200,6 +200,11 @@
         </div>
         <div class="panel-body">
             <div class="pull-right">
+                <a href="{{ base_url("/staff/forms/#{form.id}/answers/uploads") }}" class="btn btn-primary">
+                    <span class="fa fa-file-archive-o" aria-hidden="true"></span>
+                    ファイルをZIP形式で出力
+                    <span class="badge">BETA</span>
+                </a>
                 <a href="{{ base_url("home_staff/applications/read/#{form.id}/csv") }}" class="btn btn-success">
                     <span class="fa fa-file-excel-o" aria-hidden="true"></span>
                     CSV形式で出力
@@ -303,7 +308,7 @@
                                                       ? base_url( "forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
                                                       : base_url( "uploads/applications_form/#{answer.answers[question.id]}" )
                                               }}"
-                                              target="_blank">{{ answer.answers[question.id] }}</a>
+                                              target="_blank">{{ str_replace('answer_details/', 'answer_details__', answer.answers[question.id]) }}</a>
                                         {% else %}
                                             <span class="text-muted">(未アップロード)</span>
                                         {% endif %}
