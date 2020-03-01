@@ -53,6 +53,42 @@ class DownloadZipActionTest extends TestCase
     /**
      * @test
      */
+    public function ダウンロードできるファイルがない時に適切にエラー表示される()
+    {
+        $this->mock(DownloadZipService::class, function ($mock) {
+        $mock->shouldReceive('makeZip')
+            ->once()
+            ->andThrow(new NoDownloadFileExistException());
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
+
+        $response->assertSessionHas('topAlert.title');
+    }
+
+    /**
+     * @test
+     */
+    public function ZipArchive非対応時に適切にエラー表示される()
+    {
+        $this->mock(DownloadZipService::class, function ($mock) {
+        $mock->shouldReceive('makeZip')
+            ->once()
+            ->andThrow(new ZipArchiveNotSupportedException());
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
+
+        $response->assertSessionHas('topAlert.title');
+    }
+
+    /**
+     * @test
+     */
     public function スタッフ以外はダウンロードできない()
     {
         $response = $this->actingAs(factory(User::class)->create())
