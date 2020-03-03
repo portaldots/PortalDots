@@ -82,11 +82,6 @@ class InjectSessionFromCodeIgniter
                     $key => $sessionArray[$key] ?? null,
                 ]);
             }
-
-            if (empty($sessionArray[self::CI_SESSION_USER_ID_KEY])) {
-                // ユーザー ID が空の場合、ログアウト
-                Auth::logout();
-            }
         }
 
         // CodeIgniter 側と Laravel 側で、どちらのセッションが最新か判断できるよう
