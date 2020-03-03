@@ -31,8 +31,8 @@
     <template v-slot:edit-panel>
       <edit-panel
         :question="question"
-        :label_number_min="false"
-        :label_number_max="false"
+        label_number_min="最低選択数"
+        label_number_max="最大選択数"
         :show_options="true"
       />
     </template>

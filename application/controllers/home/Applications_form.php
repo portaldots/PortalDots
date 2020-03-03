@@ -324,6 +324,20 @@ class Applications_form extends Home_base_controller
                 }
             }
 
+
+            // Checkbox チェック数バリデーション
+            if ($question->type === "checkbox") {
+                if (!empty($question->number_min)) {
+                    $rules[] = "callback__checkbox_min[" . $question->id . "," . $question->number_min ."]";
+                    $this->form_validation->set_message("_checkbox_min", '{field}は' . $question->number_min . '個以上の項目を選択してください。');
+                }
+                if (!empty($question->number_max)) {
+                    $rules[] = "callback__checkbox_max[" . $question->id . "," . $question->number_max ."]";
+                    $this->form_validation->set_message("_checkbox_max", '{field}は' . $question->number_max . '個以下の項目を選択してください。');
+                }
+            }
+
+
             // バリデーションルールを設定する
             $this->form_validation->set_rules($name, $question->name, $rules);
 
@@ -477,5 +491,20 @@ class Applications_form extends Home_base_controller
         // アップロードしたデータのファイル名を格納
         $this->form_upload_data[$question_id] = ($this->upload->data())["file_name"];
         return true;
+    }
+    public function _checkbox_min($value, $data) {
+        $data = preg_split('/,/', $data);
+        $question_id = $data[0];
+        $checks = $this->input->post("answers[" . $question_id . "]");
+        $min = $data[1];
+        return count(is_array($checks) ? $checks : []) >= $min;
+    }
+
+    public function _checkbox_max($value, $data) {
+        $data = preg_split('/,/', $data);
+        $question_id = $data[0];
+        $checks = $this->input->post("answers[" . $question_id . "]");
+        $max = $data[1];
+        return count(is_array($checks) ? $checks : []) <= $max;
     }
 }
