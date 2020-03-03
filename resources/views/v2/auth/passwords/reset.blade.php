@@ -7,7 +7,9 @@
     @csrf
 
     <app-container medium>
-        <list-view header-title="パスワードの再設定" header-description="新しいパスワードを入力してください">
+        <list-view>
+            <template v-slot:title>パスワードの再設定</template>
+            <template v-slot:description>新しいパスワードを入力してください</template>
             <list-view-form-group label-for="new_password">
                 <template v-slot:label>新しいパスワード</template>
                 <template v-slot:description>8文字以上で入力してください</template>

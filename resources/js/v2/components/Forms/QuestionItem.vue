@@ -165,6 +165,18 @@ export default {
           }
           break
         }
+        case 'checkbox': {
+          if (this.numberMin !== null || this.numberMax !== null) {
+            if (this.numberMin !== null) {
+              text += `${this.numberMin}個以上`
+            }
+            if (this.numberMax !== null) {
+              text += `${this.numberMax}個以下`
+            }
+            text += 'の項目を選択してください'
+          }
+          break
+        }
         default: {
           break
         }

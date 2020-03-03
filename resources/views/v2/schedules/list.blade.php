@@ -19,7 +19,8 @@
 </div>
 <app-container>
     @foreach ($schedules as $month => $group)
-    <list-view header-title="{{ $month }}">
+    <list-view>
+        <template v-slot:title>{{ $month }}</template>
         @foreach ($group as $schedule)
         <list-view-item href="{{ route('schedules.show', $schedule) }}">
             <template v-slot:title>

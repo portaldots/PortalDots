@@ -4,7 +4,8 @@
 
 @section('content')
 <app-container medium>
-    <list-view header-title="メール認証完了">
+    <list-view>
+        <template v-slot:title>メール認証完了</template>
         <list-view-card>
             <p class="text-center text-success">
                 <i class="fas fa-check-circle"></i>

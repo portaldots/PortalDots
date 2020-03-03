@@ -30,17 +30,17 @@
                 {{ form_error("answers[#{question.id}]", '<p class="text-danger">', '</p>') | raw }}
             {% endif %}
 
-            {% if ( question.type == "text" or question.type == "textarea" or question.type == "number" ) and ( question.number_min is not empty or question.number_max is not empty ) %}
+            {% if ( question.type == "text" or question.type == "textarea" or question.type == "number" or question.type == "checkbox" ) and ( question.number_min is not empty or question.number_max is not empty ) %}
                 <p class="text-muted">
                     {%- if question.number_min is not empty -%}
                         {{ question.number_min }}
-                        {%- if question.type != "number" -%}文字{%- endif -%}以上
+                        {%- if question.type == "checkbox" -%}項目{%- elseif question.type != "number" -%}文字{%- endif -%}以上
                     {%- endif -%}
                     {%- if question.number_max is not empty -%}
                         {{ question.number_max }}
-                        {%- if question.type != "number" -%}文字{%- endif -%}以下
+                        {%- if question.type == "checkbox" -%}項目{%- elseif question.type != "number" -%}文字{%- endif -%}以下
                     {%- endif -%}
-                    の範囲で入力してください
+                    の範囲で{%- if question.type == "checkbox" -%}選択{%- else -%}入力{%- endif -%}してください
                 </p>
             {% endif %}
 
