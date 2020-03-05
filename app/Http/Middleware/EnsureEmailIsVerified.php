@@ -26,8 +26,6 @@ class EnsureEmailIsVerified
                 ->with('topAlert.title', 'このページにアクセスするには、メール認証を完了してください');
         }
 
-        $user->setSignedUp();
-
         return $next($request);
     }
 }
