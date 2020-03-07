@@ -1,5 +1,6 @@
 @extends('errors.layout')
 
-@section('title', __('Forbidden'))
-@section('code', '403')
-@section('message', __($exception->getMessage() ?: 'Forbidden'))
+@section('title', '403 Forbidden')
+@section('top', $exception->getMessage() ?: 'アクセスが拒否されました')
+@section('message', '権限がないか、アクセスできないページです')
+@section('twitter', false)
