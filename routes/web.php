@@ -25,6 +25,7 @@ Route::prefix('/pages')
 // 配布資料
 Route::prefix('/documents')
     ->name('documents.')
+    ->middleware(['auth', 'verified'])  // TODO: PortalDots ではミドルウェアを外す
     ->group(function () {
         Route::get('/', 'Documents\IndexAction')->name('index');
         Route::get('/{document}', 'Documents\ShowAction')->name('show');
@@ -141,6 +142,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                         Route::post('/api/update_question', 'Staff\Forms\Editor\UpdateQuestionAction');
                         Route::post('/api/delete_question', 'Staff\Forms\Editor\DeleteQuestionAction');
                     });
+
+                Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction');
             });
 
         // メール一斉送信

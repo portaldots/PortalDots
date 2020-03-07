@@ -41,6 +41,10 @@ class VerifyAction extends Controller
         $response = redirect()
             ->route($user->areBothEmailsVerified() ? 'verification.completed' : 'verification.notice');
 
+        if ($user->areBothEmailsVerified() && !$user->is_signed_up) {
+            $user->setSignedUpAt();
+        }
+
         if ($result) {
             return $response->with('topAlert.title', 'メール認証に成功しました。');
         } else {

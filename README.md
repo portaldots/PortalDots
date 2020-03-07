@@ -3,10 +3,13 @@
 
 <p align="center">
     <a href="https://circleci.com/gh/SofPyon/inaka-portal">
-        <img src="https://circleci.com/gh/SofPyon/inaka-portal.svg?style=svg" alt="CircleCI">
+        <img src="https://circleci.com/gh/SofPyon/inaka-portal.svg?style=svg" alt="CircleCI" />
     </a>
     <a href="https://codecov.io/gh/SofPyon/inaka-portal">
         <img src="https://codecov.io/gh/SofPyon/inaka-portal/branch/master/graph/badge.svg" />
+    </a>
+    <a href="https://opensource.org/licenses/MIT">
+        <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" />
     </a>
 </p>
 
