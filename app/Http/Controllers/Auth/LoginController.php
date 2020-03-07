@@ -63,7 +63,7 @@ class LoginController extends Controller
                 ->with('documents', Document::take(5)->public()->with('schedule')->get())
                 ->with('remaining_documents_count', max(Document::public()->count() - 5, 0));
         }
-        return view('auth.login');
+        return view('v2.auth.login');
     }
 
     /**

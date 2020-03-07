@@ -38,7 +38,7 @@
       </strong>
       —
       <a :href="value" target="_blank" rel="noopener">
-        アップロード済ファイルをダウンロード
+        アップロード済ファイルを表示
       </a>
       <button
         type="button"

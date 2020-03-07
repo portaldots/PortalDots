@@ -64,10 +64,9 @@
         --}}
 
         @if (empty($answer) && count($answers) > 0)
-        <list-view
-            header-title="以前の回答を閲覧・変更"
-            header-description="受付期間内に限り、回答の変更ができます"
-        >
+        <list-view>
+            <template v-slot:title>以前の回答を閲覧・変更</template>
+            <template v-slot:description>受付期間内に限り、回答の変更ができます</template>
             @foreach ($answers as $_)
             <list-view-item
                 href="{{ route('forms.answers.edit', ['form' => $form, 'answer' => $_]) }}"
@@ -83,20 +82,21 @@
         </list-view>
         @endif
 
-        <list-view
-        @if (empty($answer) && $form->max_answers > 1)
-            header-title="回答を新規作成"
-            @if ($form->max_answers - count($answers) > 0)
-            header-description="貴団体はこの申請を、あと{{ $form->max_answers - count($answers) }}つ新規作成できます"
-            @else
-            header-description="回答数上限({{ $form->max_answers }}つ)に達したため、これ以上新規作成できません。以前の回答の編集は上記より可能です。"
+        <list-view>
+
+            @if (empty($answer) && $form->max_answers > 1)
+                <template v-slot:title>回答を新規作成</template>
+                @if ($form->max_answers - count($answers) > 0)
+                <template v-slot:description>貴団体はこの申請を、あと{{ $form->max_answers - count($answers) }}つ新規作成できます</template>
+                @else
+                <template v-slot:description>回答数上限({{ $form->max_answers }}つ)に達したため、これ以上新規作成できません。以前の回答の編集は上記より可能です。</template>
+                @endif
             @endif
-        @endif
-        @isset ($answer)
-            header-title="{{ $form->isOpen() ? '回答を編集' : '回答を閲覧' }} — 回答ID : {{ $answer->id }}"
-            header-description="回答の最終更新日時 : @datetime($form->updated_at)"
-        @endisset
-        >
+            @isset ($answer)
+                <template v-slot:title>{{ $form->isOpen() ? '回答を編集' : '回答を閲覧' }} — 回答ID : {{ $answer->id }}</template>
+                <template v-slot:description>回答の最終更新日時 : @datetime($form->updated_at)</template>
+            @endisset
+
             @foreach ($questions as $question)
                 @if ($question->type === 'heading')
                     <question-heading

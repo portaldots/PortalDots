@@ -9,7 +9,10 @@ jobs:
 
     docker:
       # Specify the version you desire here
-      - image: circleci/php:7.3-node-browsers
+      # - image: circleci/php:7.3-node-browsers
+
+      - image: circleci/php:7.3-apache-node-browsers
+      - image: circleci/mysql:5.7
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -20,11 +23,29 @@ jobs:
       #
       # - image: redis:2.8.19
 
+    environment:
+      - APP_NAME: 継続的インテグレーション祭
+      - APP_DEBUG: true
+      - APP_ENV: testing
+      - APP_KEY: base64:xWEI4OS7YZ0rIxmMfJaAgbRiMkOkFsf5Bn1QEO+iP4k=
+      - DB_CONNECTION: mysql
+      - DB_HOST: 127.0.0.1
+      - DB_PORT: 3306
+      - DB_DATABASE: circle_test
+      - DB_USERNAME: root
+      - DB_PASSWORD: ''
+      - MYSQL_ALLOW_EMPTY_PASSWORD: true
+      - PORTAL_ADMIN_NAME: 継続的インテグレーション実行委員会
+      - PORTAL_CONTACT_EMAIL: info@example.com
+      - PORTAL_UNIVEMAIL_DOMAIN: univemail.example.com
+      - PORTAL_UPLOAD_DIR_CRUD:
+
     steps:
       - checkout
 
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
+      - run: sudo apt-get install default-mysql-client
 
       # PHP
       - restore_cache:
@@ -38,6 +59,8 @@ jobs:
 
       - run: composer phpcs
 
+      - run: sudo docker-php-ext-install pdo_mysql
+
       - save_cache:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
@@ -50,6 +73,8 @@ jobs:
             - node-v1-
 
       - run: yarn install
+
+      - run: yarn dev
 
       - run: yarn eslint-check
 
@@ -65,9 +90,11 @@ jobs:
       # - run: php artisan migrate --env=testing --database=sqlite_testing --force
 
       # run tests with phpunit or codecept
-      #- run: ./vendor/bin/phpunit
+      - run: ./vendor/bin/phpunit --coverage-clover=coverage.xml
       # - run: ./vendor/bin/codecept build
       # - run: ./vendor/bin/codecept run
+
+      - run: bash <(curl -s https://codecov.io/bash)
 
   deploy:
     working_directory: ~/workspace

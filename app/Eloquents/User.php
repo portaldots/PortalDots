@@ -60,12 +60,13 @@ class User extends Authenticatable
     ];
 
     protected $dates = [
-        'email_verified_at', 'univemail_verified_at',
+        'email_verified_at',
+        'univemail_verified_at',
+        'signed_up_at',
     ];
 
     protected $casts = [
         'is_staff' => 'bool',
-        'is_signed_up' => 'bool',
     ];
 
     public function circles()
@@ -243,12 +244,14 @@ class User extends Authenticatable
         ])->save();
     }
 
-    /**
-     * is_signed_up を true にセット
-     */
-    public function setSignedUp()
+    public function setSignedUpAt()
     {
-        $this->is_signed_up = true;
-        $this->save();
+        $this->signed_up_at = now();
+        return $this->save();
+    }
+
+    public function getIsSignedUpAttribute()
+    {
+        return !empty($this->signed_up_at);
     }
 }

@@ -3,13 +3,21 @@
 
 <p align="center">
     <a href="https://circleci.com/gh/SofPyon/inaka-portal">
-        <img src="https://circleci.com/gh/SofPyon/inaka-portal.svg?style=svg" alt="CircleCI">
+        <img src="https://circleci.com/gh/SofPyon/inaka-portal.svg?style=svg" alt="CircleCI" />
+    </a>
+    <a href="https://codecov.io/gh/SofPyon/inaka-portal">
+        <img src="https://codecov.io/gh/SofPyon/inaka-portal/branch/master/graph/badge.svg" />
+    </a>
+    <a href="https://opensource.org/licenses/MIT">
+        <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" />
     </a>
 </p>
 
 ![inaka-portal](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/inaka-portal-eyecatch-v2.png)
 
-![スクリーンショット](https://raw.githubusercontent.com/SofPyon/inaka-portal-docs/master/docs/img/screenshots/home.png)
+![スクリーンショット](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/screenshots-home-v2.png)
+
+<p align="center">(このスクリーンショットは開発中の新バージョンのものです。 <a href="https://github.com/SofPyon/inaka-portal/pull/251">#251</a> がマージされることで、この新バージョンになります)</p>
 
 ## これは何？
 - [野田地区理大祭](https://nodaridaisai.com) という大学祭の実行委員会の業務を効率化するためのウェブシステム。
@@ -98,7 +106,7 @@ inaka-portal では、Issue や Pull Request を歓迎します。
 その他の問題は、開発者の GitHub プライベートリポジトリの issue で管理されています。今後、このリポジトリに issue を移行するかもしれません。
 
 ## 将来的に実装したい機能
-- ~~申請フォーム作成 GUI~~ **(申請フォームエディター実装完了。ただし、エディター右上の「公開」ボタンは現状機能していません)**
+- ~~申請フォーム作成 GUI~~ **(申請フォームエディター実装完了)**
     - ~~【開発中】 http://localhost/staff/forms/{フォームID}/editor が申請フォーム作成画面になっています~~
 - 団体登録機能
     - 現状、スタッフでないと団体登録ができませんが、参加団体自らで参加登録できるようにする機能を実装したいと考えています
@@ -117,9 +125,11 @@ inaka-portal では、Issue や Pull Request を歓迎します。
 このプロジェクトは、まだプログラミングスキルが浅かった時に開発されたものを、最近になって多くのリファクタリングを施したものです。今でもあまり良いコードとは言えないかもしれませんが、これでもだいぶマシになったほうです(パスワードがハードコードされていたりした)。
 
 ## SQL
-inaka-portal を動作させるために必要な DB テーブルは、`composer migrate` コマンドによって作成されるほか、 `docker_dev/db/sql/init.sql` に格納されている SQL によって作成されます。
+inaka-portal を動作させるために必要な DB テーブルは、`composer migrate` コマンドによって作成されます。
 
-`init.sql` は、Docker 初回起動時、自動的に実行されるようになっています。
+以前は、 `composer migrate` コマンド実行前に `docker_dev/db/sql/init.sql` に格納されている SQL を実行する必要がありましたが、現在は `init.sql` の実行は不要です。
+
+<!-- `init.sql` は、Docker 初回起動時、自動的に実行されるようになっています。 -->
 
 # ライセンス
 

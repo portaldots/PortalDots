@@ -34,6 +34,7 @@
     <exclude-pattern>/routes/</exclude-pattern>
     <exclude-pattern>/storage/</exclude-pattern>
     <exclude-pattern>/vendor/</exclude-pattern>
+    <exclude-pattern>/tests/</exclude-pattern>
     <exclude-pattern>/server.php</exclude-pattern>
     <exclude-pattern>/app/Console/Kernel.php</exclude-pattern>
     <exclude-pattern>/tests/CreatesApplication.php</exclude-pattern>

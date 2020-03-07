@@ -30,9 +30,25 @@ services:
     volumes:
       - ./data/db:/var/lib/mysql
       - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./db/sql:/docker-entrypoint-initdb.d
     ports:
       - 4306:3306
+
+  db-testing:
+    image: mysql:5.7
+    container_name: portal_db_testing
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_portal_dev
+      MYSQL_USER: default
+      MYSQL_PASSWORD: default
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb-use-native-aio=0
+    tmpfs:
+      - /var/lib/mysql
+    volumes:
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - 5306:3306
 
   phpmyadmin:
     container_name: portal_phpmyadmin

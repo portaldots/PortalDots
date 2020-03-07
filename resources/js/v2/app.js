@@ -7,6 +7,7 @@ import TurbolinksAdapter from './vue-turbolinks'
 import AppHeader from './components/AppHeader.vue'
 import AppContainer from './components/AppContainer.vue'
 import ListView from './components/ListView.vue'
+import ListViewCard from './components/ListViewCard.vue'
 import ListViewItem from './components/ListViewItem.vue'
 import ListViewActionBtn from './components/ListViewActionBtn.vue'
 import ListViewEmpty from './components/ListViewEmpty.vue'
@@ -32,6 +33,7 @@ document.addEventListener('turbolinks:load', () => {
       AppHeader,
       AppContainer,
       ListView,
+      ListViewCard,
       ListViewItem,
       ListViewActionBtn,
       ListViewEmpty,

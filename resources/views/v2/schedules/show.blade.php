@@ -27,10 +27,12 @@
 </app-container>
 @if (count($schedule->documents) > 0)
 <app-container>
-    <list-view header-title="配布資料">
+    <list-view>
+        <template v-slot:title>配布資料</template>
+
         @foreach ($schedule->documents as $document)
         <list-view-item
-            href="{{ url("uploads/documents/{$document->id}") }}"
+            href="{{ route('documents.show', ['document' => $document]) }}"
             newtab
         >
             <template v-slot:title>

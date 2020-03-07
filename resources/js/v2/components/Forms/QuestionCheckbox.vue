@@ -10,7 +10,7 @@
         type="checkbox"
         :name="inputName"
         :required="computedRequired"
-        :checked="Array.isArray(value) && value.includes(option)"
+        :checked="Array.isArray(value) && value.indexOf(option) >= 0"
         :value="option"
         :disabled="disabled"
       />

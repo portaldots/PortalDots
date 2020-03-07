@@ -4,8 +4,9 @@ ADD ./apache/*.conf /etc/apache2/sites-enabled/
 
 RUN apt-get update \
     && apt-get install -y zlib1g-dev libpq-dev libzip-dev default-mysql-client unzip wget \
+    && pecl install xdebug \
     && docker-php-ext-install zip pdo_mysql mysqli \
-    && docker-php-ext-enable mysqli
+    && docker-php-ext-enable mysqli xdebug
 
 RUN a2enmod rewrite
 

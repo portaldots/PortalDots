@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use DB;
 use Auth;
+use Cookie;
+use App;
 
 /**
  * CodeIgniter 側で保存されたセッションを Laravel 側で扱えるようにする
@@ -47,6 +49,12 @@ class InjectSessionFromCodeIgniter
      */
     public function handle($request, Closure $next)
     {
+        // テストの妨げになるため、ユニットテスト実行中は
+        // このミドルウェアを適用しない
+        if (App::runningUnitTests()) {
+            return $next($request);
+        }
+
         $ipAddress = $_SERVER['REMOTE_ADDR'];
 
         // CodeIgniter のセッションを管理している ci_sessions テーブルからデータを読み出し、
@@ -74,11 +82,6 @@ class InjectSessionFromCodeIgniter
                     $key => $sessionArray[$key] ?? null,
                 ]);
             }
-
-            if (empty($sessionArray[self::CI_SESSION_USER_ID_KEY])) {
-                // ユーザー ID が空の場合、ログアウト
-                Auth::logout();
-            }
         }
 
         // CodeIgniter 側と Laravel 側で、どちらのセッションが最新か判断できるよう
@@ -86,6 +89,16 @@ class InjectSessionFromCodeIgniter
         session([self::LARAVEL_SESSION_TIMESTAMP_NAME => time()]);
 
         $response = $next($request);
+
+        Cookie::queue(
+            'session_id',
+            $ciSessionRecord->id,
+            0,
+            '/',
+            '',
+            false,
+            true
+        );
 
         // SHARED_SESSION_KEY と一致するキーのセッションを ci_sessions に保存する
         foreach (self::SHARED_SESSION_KEY as $key) {
@@ -121,16 +134,6 @@ class InjectSessionFromCodeIgniter
             ]);
 
         $ciSessionRecord = DB::table(self::CI_SESSION_TABLE_NAME)->where('id', $newSessionId)->first();
-
-        setcookie(
-            'session_id',
-            $ciSessionRecord->id,
-            0,
-            '/',
-            '',
-            false,
-            true
-        );
 
         return $ciSessionRecord;
     }

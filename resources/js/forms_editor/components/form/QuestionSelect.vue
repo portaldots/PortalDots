@@ -9,18 +9,29 @@
         <p class="form-text text-muted mb-2">
           {{ description }}
         </p>
-        <select class="custom-select" tabindex="-1">
-          <option>単一選択(ドロップダウン)</option>
-        </select>
-        <ul class="list-group">
-          <li
-            class="list-group-item py-1"
-            v-for="option in options"
-            :key="option"
-          >
-            {{ option }}
-          </li>
-        </ul>
+        <template v-if="options">
+          <select class="custom-select" tabindex="-1">
+            <option>単一選択(ドロップダウン)</option>
+          </select>
+          <ul class="list-group">
+            <li
+              class="list-group-item py-1"
+              v-for="option in options"
+              :key="option"
+            >
+              {{ option }}
+            </li>
+          </ul>
+        </template>
+        <template v-else>
+          <div class="empty-option">
+            <p class="empty-option-text">
+              <i class="fa fa-exclamation-triangle mr-1"></i>
+              <b>選択肢がありません。</b>
+            </p>
+            <p class="empty-option-text">選択肢を1つ以上入力してください。</p>
+          </div>
+        </template>
       </div>
     </template>
     <template v-slot:edit-panel>
@@ -63,9 +74,11 @@ export default {
       return this.question.description
     },
     options() {
-      return this.question.options
-        ? this.question.options.trim().split(/\r\n|\n/)
-        : ['(選択肢なし)']
+      if (this.question.options) {
+        const options = new Set(this.question.options.trim().split(/\r\n|\n/))
+        return Array.from(options)
+      }
+      return null
     },
     is_required() {
       return this.question.is_required

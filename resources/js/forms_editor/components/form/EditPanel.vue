@@ -44,7 +44,7 @@
         <textarea
           class="form-control"
           v-model="options"
-          @blur="save"
+          @blur="onBlur"
           :disabled="is_deleting"
           rows="4"
           placeholder="1行に1つ選択肢を入力"
@@ -178,6 +178,21 @@ export default {
         this.is_deleting = true
         this.$store.dispatch(`editor/${DELETE_QUESTION}`, this.question.id)
       }
+    },
+    deleteDuplication() {
+      if (this.options) {
+        const options = new Set(
+          this.options
+            .trim()
+            .split(/\r\n|\n/)
+            .map(option => option.trim())
+        )
+        this.options = Array.from(options).join('\n')
+      }
+    },
+    onBlur() {
+      this.deleteDuplication()
+      this.save()
     }
   },
   // TODO: 変更点がない場合、saveメソッドが実行されないようにする

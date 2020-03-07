@@ -1,5 +1,7 @@
 const mix = require('laravel-mix')
 
+require('laravel-mix-polyfill')
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -32,6 +34,11 @@ mix
   .js('resources/js/users_checker.js', 'public/js') // ユーザー登録チェッカー
   .js('resources/js/forms_editor/index.js', 'public/js/forms_editor') // フォームエディタJS
   .sass('resources/sass/forms_editor.scss', 'public/css') // フォームエディタCSS
+  .polyfill({
+    enabled: true,
+    useBuiltIns: 'usage',
+    targets: { ie: 11 }
+  })
   .browserSync({
     proxy: 'localhost',
     snippetOptions: {

@@ -1,70 +1,40 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('v2.layouts.app')
 
-        <title>@yield('title')</title>
+@hasSection ('twitter')
+@push('js')
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+@endpush
+@endif
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #304554;
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .app-name {
-
-            }
-
-            .app-name a {
-                color: #304554;
-                text-decoration: none;
-            }
-
-            .app-name a:hover {
-                text-decoration: underline;
-            }
-
-            .title {
-                font-size: 36px;
-                font-weight: bold;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            <div class="content">
-                <div class="app-name">
-                    <a href="{{ url('/') }}">
-                        {{ config('app.name') }}
-                    </a>
-                </div>
-                <div class="title">
-                    @yield('message')
-                </div>
-            </div>
+@section('content')
+<app-container>
+    <div class="error">
+        <div class="error-title">
+            @yield('top')
         </div>
-    </body>
-</html>
+        <div class="error-message">
+            @yield('message')
+        </div>
+        @hasSection ('contact')
+            <div class="error-contact">
+                @yield('contact')
+                <p><a href="mailto:{{ config('portal.contact_email') }}">{{ config('portal.contact_email') }}</a></p>
+            </div>
+        @endif
+        @hasSection ('back')
+            <div class="error-button">
+                <button class="btn is-primary" onclick="window.history.back();">前のページに戻る</button>
+            </div>
+        @endif
+        @if (!empty(config('portal.admin_twitter')))
+        @hasSection ('twitter')
+        <div class="error-twitter">
+            <a class="twitter-timeline" data-height="100%" data-chrome="noscrollbar noborders" href="https://twitter.com/{{ config('portal.admin_twitter') }}?ref_src=twsrc%5Etfw">
+                Tweets by {{ config('portal.admin_twitter') }}
+            </a>
+        </div>
+        @endif
+        @endif
+    </div>
+</app-container>
+@endsection

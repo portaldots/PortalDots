@@ -4,8 +4,9 @@
 
 @section('content')
 <app-container medium>
-    <list-view header-title="メール認証完了">
-        <list-view-item>
+    <list-view>
+        <template v-slot:title>メール認証完了</template>
+        <list-view-card>
             <p class="text-center text-success">
                 <i class="fas fa-check-circle"></i>
                 <strong>手続きが完了しました！</strong>
@@ -16,7 +17,7 @@
                     ダッシュボードにアクセス
                 </a>
             </p>
-        </list-view-item>
+        </list-view-card>
     </list-view>
 </app-container>
 @endsection

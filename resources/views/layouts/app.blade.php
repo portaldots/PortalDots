@@ -23,7 +23,7 @@
 
     <meta name="format-detection" content="telephone=no">
 </head>
-</head>
+
 <body ontouchstart="">
 
 <nav class="navbar fixed-top navbar-expand navbar-light app-navbar">

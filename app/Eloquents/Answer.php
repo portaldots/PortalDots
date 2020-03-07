@@ -17,7 +17,7 @@ class Answer extends Model
 
     public function details()
     {
-        return $this->belongsToMany(Answer::class);
+        return $this->hasMany(AnswerDetail::class);
     }
 
     public function circle()

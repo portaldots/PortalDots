@@ -105,7 +105,7 @@ export default {
       return `Question${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`
     },
     inputId() {
-      if (['radio', 'checkbox'].includes(this.type)) {
+      if (['radio', 'checkbox'].indexOf(this.type) >= 0) {
         return undefined
       }
       return `question-${this.questionId}`
@@ -117,7 +117,7 @@ export default {
       return `answers[${this.questionId}]`
     },
     computedOptions() {
-      if (['radio', 'select', 'checkbox'].includes(this.type)) {
+      if (['radio', 'select', 'checkbox'].indexOf(this.type) >= 0) {
         return this.options
       }
       return undefined
@@ -162,6 +162,18 @@ export default {
           }
           if (this.allowedTypes && this.allowedTypes.length > 0) {
             text += `対応形式 : ${this.allowedTypes.join(', ')}`
+          }
+          break
+        }
+        case 'checkbox': {
+          if (this.numberMin !== null || this.numberMax !== null) {
+            if (this.numberMin !== null) {
+              text += `${this.numberMin}個以上`
+            }
+            if (this.numberMax !== null) {
+              text += `${this.numberMax}個以下`
+            }
+            text += 'の項目を選択してください'
           }
           break
         }

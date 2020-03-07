@@ -5,6 +5,7 @@ namespace App\Eloquents;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property int $id
@@ -88,6 +89,20 @@ class Form extends Model
     {
         $answer = Answer::where('form_id', $this->id)->where('circle_id', $circle->id)->first();
         return !empty($answer);
+    }
+
+    /**
+     * 未申請の団体(idとnameのみ)を返す関数
+     */
+    public function notAnswered()
+    {
+        return DB::select(
+            'SELECT id, name FROM circles
+                WHERE NOT EXISTS
+                    (SELECT circle_id FROM answers WHERE answers.form_id = :form_id AND answers.circle_id = circles.id)
+            ',
+            ['form_id' => $this->id]
+        );
     }
 
     public function yetOpen()

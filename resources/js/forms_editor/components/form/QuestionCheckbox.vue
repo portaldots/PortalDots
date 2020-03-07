@@ -9,19 +9,30 @@
         <p class="form-text text-muted mb-2">
           {{ description }}
         </p>
-        <div class="form-check mb-1" v-for="option in options" :key="option">
-          <input class="form-check-input" type="checkbox" tabindex="-1" />
-          <p class="form-check-label">
-            {{ option }}
-          </p>
-        </div>
+        <template v-if="options">
+          <div class="form-check mb-1" v-for="option in options" :key="option">
+            <input class="form-check-input" type="checkbox" tabindex="-1" />
+            <p class="form-check-label">
+              {{ option }}
+            </p>
+          </div>
+        </template>
+        <template v-else>
+          <div class="empty-option">
+            <p class="empty-option-text">
+              <i class="fa fa-exclamation-triangle mr-1"></i>
+              <b>選択肢がありません。</b>
+            </p>
+            <p class="empty-option-text">選択肢を1つ以上入力してください。</p>
+          </div>
+        </template>
       </div>
     </template>
     <template v-slot:edit-panel>
       <edit-panel
         :question="question"
-        :label_number_min="false"
-        :label_number_max="false"
+        label_number_min="最低選択数"
+        label_number_max="最大選択数"
         :show_options="true"
       />
     </template>
@@ -57,9 +68,11 @@ export default {
       return this.question.description
     },
     options() {
-      return this.question.options
-        ? this.question.options.trim().split(/\r\n|\n/)
-        : ['(選択肢なし)']
+      if (this.question.options) {
+        const options = new Set(this.question.options.trim().split(/\r\n|\n/))
+        return Array.from(options)
+      }
+      return null
     },
     is_required() {
       return this.question.is_required
