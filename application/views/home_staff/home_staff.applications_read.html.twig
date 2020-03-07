@@ -145,7 +145,14 @@
 
     <section class="panel panel-primary">
         <div class="panel-heading">
-            <h2 class="panel-title">統計情報</h2>
+            <h2 class="panel-title">
+                統計情報
+                <span>
+                    <a href="{{ base_url("staff/forms/#{form.id}/not_answered") }}" class="btn btn-default">
+                        未提出団体を表示
+                    </a>
+                </span>
+            </h2>
         </div>
         <div class="table-responsive">
             <table class="table applications-read-statistics">
