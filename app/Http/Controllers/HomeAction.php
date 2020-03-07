@@ -29,8 +29,13 @@ class HomeAction extends Controller
             ->with('pages', Page::take(self::TAKE_COUNT)->get())
             ->with('remaining_pages_count', max(Page::count() - self::TAKE_COUNT, 0))
             ->with('next_schedule', Schedule::startOrder()->notStarted()->first())
-            ->with('documents', Document::take(self::TAKE_COUNT)->public()->with('schedule')->get())
-            ->with('remaining_documents_count', max(Document::public()->count() - self::TAKE_COUNT, 0))
+            // TODO: PortalDots では Auth::check() による配布資料表示の条件分岐を行わない
+            ->with('documents', Auth::check()
+                                    ? Document::take(self::TAKE_COUNT)->public()->with('schedule')->get()
+                                    : collect([]))
+            ->with('remaining_documents_count', Auth::check()
+                                    ? max(Document::public()->count() - self::TAKE_COUNT, 0)
+                                    : 0)
             ->with('forms', Form::take(self::TAKE_COUNT)->public()->open()->closeOrder()->get())
             ->with('remaining_forms_count', max(Form::public()->open()->count() - self::TAKE_COUNT, 0));
     }
