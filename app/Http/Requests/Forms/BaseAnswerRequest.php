@@ -26,7 +26,7 @@ abstract class BaseAnswerRequest extends FormRequest
      *
      * @return array
      */
-    protected function validationData()
+    public function validationData()
     {
         $all = $this->all();
 
