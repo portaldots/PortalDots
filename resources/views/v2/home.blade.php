@@ -149,6 +149,9 @@
         <list-view-item href="{{ route('pages.show', $page) }}">
             <template v-slot:title>
                 {{ $page->title }}
+                @if ($page->isNew())
+                <span class="badge is-danger">NEW</span>
+                @endif
             </template>
             <template v-slot:meta>
                 @datetime($page->updated_at)
@@ -179,6 +182,9 @@
                 <i class="far fa-file-alt fa-fw"></i>
                 @endif
                 {{ $document->name }}
+                @if ($document->isNew())
+                <span class="badge is-danger">NEW</span>
+                @endif
             </template>
             <template v-slot:meta>
                 @datetime($document->updated_at) 更新

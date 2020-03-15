@@ -15,6 +15,9 @@
         <list-view-item href="{{ route('pages.show', $page) }}">
             <template v-slot:title>
                 {{ $page->title }}
+                @if ($page->isNew())
+                <span class="badge is-danger">NEW</span>
+                @endif
             </template>
             <template v-slot:meta>
                 @datetime($page->updated_at)

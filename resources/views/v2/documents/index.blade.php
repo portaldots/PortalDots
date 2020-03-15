@@ -23,6 +23,9 @@
                 <i class="far fa-file-alt fa-fw"></i>
                 @endif
                 {{ $document->name }}
+                @if ($document->isNew())
+                <span class="badge is-danger">NEW</span>
+                @endif
             </template>
             <template v-slot:meta>
                 @datetime($document->updated_at) 更新

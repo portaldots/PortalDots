@@ -4,9 +4,12 @@ namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Eloquents\Concerns\IsNewTrait;
 
 class Document extends Model
 {
+    use IsNewTrait;
+
     protected $casts = [
         'is_public' => 'bool',
         'is_important' => 'bool',

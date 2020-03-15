@@ -4,9 +4,12 @@ namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Eloquents\Concerns\IsNewTrait;
 
 class Page extends Model
 {
+    use IsNewTrait;
+    
     /**
      * モデルの「初期起動」メソッド
      *
