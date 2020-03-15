@@ -26,6 +26,16 @@ Vue.use(TurbolinksAdapter)
 
 Turbolinks.start()
 
+// ページ移動時、ボタンやフォームコントロールを無効化する
+window.addEventListener('beforeunload', () => {
+  const inputs = document.querySelectorAll('input, select, textarea, button')
+  /* eslint-disable no-restricted-syntax */
+  for (const input of inputs) {
+    input.disabled = 'disabled'
+  }
+  /* eslint-enable */
+})
+
 document.addEventListener('turbolinks:load', () => {
   new Vue({
     components: {

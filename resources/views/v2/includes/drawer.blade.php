@@ -1,27 +1,21 @@
-<a class="drawer-header" href="{{ url('/') }}">
+<a class="drawer-header" href="{{ route('home') }}">
     {{ config('app.name') }}
 </a>
 <nav class="drawer-nav">
+    @if (Auth::check() && Auth::user()->is_staff)
+        <div class="px-spacing">
+            <a href="/home_staff" class="btn is-primary is-block" data-turbolinks="false">
+                スタッフモードへ
+            </a>
+        </div>
+    @endif
     <ul class="drawer-nav__list">
-        @auth
-        {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
         <li class="drawer-nav__item">
-            {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
-            <a href="{{ route('home') }}" class="drawer-nav__link{{ Request::is('login') || Request::is('home*') ? ' is-active' : '' }}">
+            <a href="{{ route('home') }}" class="drawer-nav__link{{ Request::is('/') ? ' is-active' : '' }}">
                 <i class="fas fa-home drawer-nav__icon fa-fw"></i>
                 ホーム
             </a>
         </li>
-        @else
-        {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
-        <li class="drawer-nav__item">
-            {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
-            <a href="{{ route('login') }}?new=1" class="drawer-nav__link{{ Request::is('login') || Request::is('home*') ? ' is-active' : '' }}">
-                <i class="fas fa-home drawer-nav__icon fa-fw"></i>
-                ホーム
-            </a>
-        </li>
-        @endauth
         <li class="drawer-nav__item">
             <a href="{{ route('pages.index') }}" class="drawer-nav__link{{ Request::is('pages*') ? ' is-active' : '' }}">
                 <i class="fas fa-bullhorn drawer-nav__icon fa-fw"></i>
@@ -80,7 +74,7 @@
         <p class="drawer-user__info">
             ログインしていません
         </p>
-        <a href="{{ route('login') }}?new=1" class="btn is-primary is-block">
+        <a href="{{ route('login') }}" class="btn is-primary is-block">
             <strong>ログイン</strong>
         </a>
         @endauth

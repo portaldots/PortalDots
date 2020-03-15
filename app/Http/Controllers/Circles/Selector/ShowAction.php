@@ -32,6 +32,7 @@ class ShowAction extends Controller
                 ->with('error_message', session('error_message'));
         }
 
-        return redirect('/');
+        return redirect()
+            ->route('home');
     }
 }

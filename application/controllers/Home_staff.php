@@ -1177,7 +1177,7 @@ class Home_staff extends MY_Controller
             // POST でないとき
             // 認証コードを作成して送付
             $code = random_int(100000, 999999);
-            $this->session->set_flashdata("staff_verify_code", $code);
+            $_SESSION["staff_verify_code"] = $code;
 
             $vars_email = [];
             $vars_email["name_to"] = $this->_get_login_user()->name_family . " " . $this->_get_login_user()->name_given;
@@ -1190,8 +1190,11 @@ class Home_staff extends MY_Controller
             );
         } else {
             // POST のとき
-            if (isset($_SESSION["staff_verify_code"]) &&
-                (int)$_SESSION["staff_verify_code"] === (int)$this->input->post("verify_code")) {
+            $code_on_session = $_SESSION["staff_verify_code"];
+            unset($_SESSION["staff_verify_code"]);
+
+            if (isset($code_on_session) &&
+                (int)$code_on_session === (int)$this->input->post("verify_code")) {
                 // 認証成功
                 $_SESSION['staff_authorized'] = true;
                 codeigniter_redirect("home_staff/");

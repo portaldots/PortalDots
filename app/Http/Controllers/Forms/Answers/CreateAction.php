@@ -31,8 +31,10 @@ class CreateAction extends Controller
             $circles = Auth::user()->circles;
             if (count($circles) < 1) {
                 // TODO: もうちょっとまともなエラー表示にする
-                abort(403, '団体に所属していないため、アクセスできません');
-                return;
+                return redirect()
+                    ->route('home')
+                    ->with('topAlert.type', 'danger')
+                    ->with('topAlert.title', '団体に所属していないため、このページにアクセスできません');
             } elseif (count($circles) === 1) {
                 return redirect()
                     ->route('forms.answers.create', ['form' => $form,'circle' => $circles[0]]);

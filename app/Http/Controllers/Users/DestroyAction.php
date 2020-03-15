@@ -22,8 +22,9 @@ class DestroyAction extends Controller
         }
 
         if ($user->delete()) {
-            return redirect('/')
-                ->with('success_message', 'アカウントの削除が完了しました。');
+            return redirect()
+                ->route('home')
+                ->with('topAlert.title', 'アカウントの削除が完了しました。');
         }
 
         return redirect()

@@ -51,8 +51,7 @@
 <div class="app" id="v2-app">
     <div class="navbar is-no-drawer">
         @section('navbar')
-        {{-- Turbolinks 化が完了したら  data-turbolinks="false" を外す --}}
-        <a href="{{ url('/') }}" class="navbar-brand" data-turbolinks="false">
+        <a href="{{ route('home') }}" class="navbar-brand">
             {{ config('app.name', 'ホームへ戻る') }}
         </a>
         @show

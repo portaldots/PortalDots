@@ -3,21 +3,60 @@
 @section('content')
 
 @auth
-@if (Auth::user()->areBothEmailsVerified() && count($my_circles) < 1)
-<top-alert type="primary">
-    <template v-slot:title>
-        <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
-        参加登録をしましょう！
-    </template>
+    @unless (Auth::user()->areBothEmailsVerified())
+        <top-alert type="primary" keep-visible>
+            <template v-slot:title>
+                <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+                メール認証を行ってください
+            </template>
 
-    まだ参加登録がお済みでないようですね。まずは参加登録からはじめましょう！
-    <template v-slot:cta>
-        <a href="#" class="btn is-primary-inverse is-no-border is-wide">
-            <strong>参加登録をはじめる</strong>
-        </a>
-    </template>
-</top-alert>
-@endif
+            {{ config('app.name') }}の全機能を利用するには、次のメールアドレス宛に送信された確認メール内のURLにアクセスしてください。
+            <strong>
+            @unless (Auth::user()->hasVerifiedUnivemail())
+                {{ Auth::user()->univemail }}
+                @unless (Auth::user()->hasVerifiedEmail())
+                    •
+                @endunless
+            @endunless
+            @unless (Auth::user()->hasVerifiedEmail())
+                {{ Auth::user()->email }}
+            @endunless
+            </strong>
+
+            <template v-slot:cta>
+                <form action="{{ route('verification.resend') }}" method="post">
+                    @csrf
+                    <button class="btn is-primary-inverse is-no-border is-wide">
+                        <strong>確認メールを再送</strong>
+                    </button>
+                </form>
+            </template>
+        </top-alert>
+    @endunless
+    @if (Auth::user()->areBothEmailsVerified() && count($my_circles) < 1)
+    {{-- <top-alert type="primary">
+        <template v-slot:title>
+            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+            参加登録をしましょう！
+        </template>
+
+        まだ参加登録がお済みでないようですね。まずは参加登録からはじめましょう！
+        <template v-slot:cta>
+            <a href="#" class="btn is-primary-inverse is-no-border is-wide">
+                <strong>参加登録をはじめる</strong>
+            </a>
+        </template>
+    </top-alert> --}}
+    <top-alert type="primary" keep-visible>
+        <template v-slot:title>
+            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+            参加登録が未完了
+        </template>
+
+        団体参加登録がお済みでない場合、申請機能など、{{ config("app.name") }} の一部機能がご利用になれません<br>
+        <small>(参加登録を行ってからこの表示が消えるのに時間がかかることがあります)</small>
+    </top-alert>
+    @endif
 @endauth
 
 @guest
@@ -51,10 +90,9 @@
             </div>
 
             <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                    <label class="form-check-label" for="remember">
+                <div class="form-checkbox">
+                    <label class="form-checkbox__label">
+                        <input class="form-checkbox__input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                         ログインしたままにする
                     </label>
                 </div>

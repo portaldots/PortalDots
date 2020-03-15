@@ -17,8 +17,6 @@
 
 ![スクリーンショット](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/screenshots-home-v2.png)
 
-<p align="center">(このスクリーンショットは開発中の新バージョンのものです。 <a href="https://github.com/SofPyon/inaka-portal/pull/251">#251</a> がマージされることで、この新バージョンになります)</p>
-
 ## これは何？
 - [野田地区理大祭](https://nodaridaisai.com) という大学祭の実行委員会の業務を効率化するためのウェブシステム。
     - 団体向け : 団体向け会議の次回予告、各種配布資料ダウンロード、お知らせの閲覧、各種申請の提出、お問い合わせなどを行うことができる。

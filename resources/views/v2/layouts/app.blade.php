@@ -93,39 +93,6 @@
         </div>
     </div>
     <div class="content">
-        @auth
-            @unless (Auth::user()->areBothEmailsVerified())
-
-                <top-alert type="primary">
-                    <template v-slot:title>
-                        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
-                        メール認証を行ってください
-                    </template>
-
-                    {{ config('app.name') }}の全機能を利用するには、次のメールアドレス宛に送信された確認メール内のURLにアクセスしてください。
-                    <strong>
-                    @unless (Auth::user()->hasVerifiedUnivemail())
-                        {{ Auth::user()->univemail }}
-                        @unless (Auth::user()->hasVerifiedEmail())
-                            •
-                        @endunless
-                    @endunless
-                    @unless (Auth::user()->hasVerifiedEmail())
-                        {{ Auth::user()->email }}
-                    @endunless
-                    </strong>
-
-                    <template v-slot:cta>
-                        <form action="{{ route('verification.resend') }}" method="post">
-                            @csrf
-                            <button class="btn is-primary-inverse is-no-border is-wide">
-                                <strong>確認メールを再送</strong>
-                            </button>
-                        </form>
-                    </template>
-                </top-alert>
-            @endunless
-        @endauth
         @if (Session::has('topAlert.title'))
             <top-alert type="{{ session('topAlert.type', 'primary') }}">
                 <template v-slot:title>

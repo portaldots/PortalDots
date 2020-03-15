@@ -1,12 +1,12 @@
 <template>
-  <div class="radio">
+  <div class="form-radio">
     <label
-      class="radio__label"
+      class="form-radio__label"
       v-for="(option, index) in options"
       :key="`${option}_${index}`"
     >
       <input
-        class="radio__input"
+        class="form-radio__input"
         type="radio"
         :name="inputName"
         :required="required"
@@ -53,19 +53,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.radio {
-  $input-spacing: $spacing-md + $spacing-xs;
-  &__label {
-    display: block;
-    margin: 0 0 $spacing-sm;
-    padding: 0 0 0 #{$input-spacing};
-    position: relative;
-  }
-  &__input {
-    margin: 0.4rem 0 0 #{-$input-spacing};
-    position: absolute;
-  }
-}
-</style>

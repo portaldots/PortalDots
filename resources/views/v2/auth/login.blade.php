@@ -1,15 +1,10 @@
 @extends('v2.layouts.no_drawer')
 
+@section('title', 'ログイン')
+
 @section('content')
 <div class="jumbotron">
     <app-container narrow>
-        <p>
-            <i class="fas fa-info-circle"></i>
-            <strong>ログイン画面が新しくなりました</strong>
-            <br />
-            新たにユーザー登録する必要はありません
-        </p>
-        <hr>
         <h1 class="jumbotron__title">
             {{ config('app.name') }}
         </h1>
@@ -38,10 +33,9 @@
             </div>
 
             <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                    <label class="form-check-label" for="remember">
+                <div class="form-checkbox">
+                    <label class="form-checkbox__label">
+                        <input class="form-checkbox__input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                         ログインしたままにする
                     </label>
                 </div>

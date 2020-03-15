@@ -11,12 +11,8 @@
 |
 */
 
-// ルートURL
-Route::get('/', 'IndexController');
-
 // トップページ
-// TODO: URL は /home に変更する
-Route::get('/home__v2', 'HomeAction')->name('home');
+Route::get('/', 'HomeAction')->name('home');
 
 // お知らせ
 Route::prefix('/pages')
@@ -96,7 +92,7 @@ Route::middleware(['auth'])->group(function () {
 // ログインされており、メールアドレス認証が済んでいる場合のみアクセス可能なルート
 Route::middleware(['auth', 'verified'])->group(function () {
     // 申請
-    Route::prefix('/forms__v2')
+    Route::prefix('/forms')
         ->name('forms.')
         ->group(function () {
             Route::get('/', 'Forms\IndexAction')->name('index');

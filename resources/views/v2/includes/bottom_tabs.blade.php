@@ -1,18 +1,9 @@
 <div class="bottom_tabs">
     <div class="bottom_tabs-container">
-        @auth
-        {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
-        <a href="{{ route('home') }}" class="bottom_tabs-tab{{ Request::is('login') || Request::is('home*') ? ' is-active' : '' }}">
+        <a href="{{ route('home') }}" class="bottom_tabs-tab{{ Request::is('/') ? ' is-active' : '' }}">
             <i class="fas fa-home bottom_tabs-tab__icon"></i>
             <div class="bottom_tabs-tab__label">ホーム</div>
         </a>
-        @else
-        {{-- TODO: Request::is の引数は将来的に '' (空文字) にしたい --}}
-        <a href="{{ route('login') }}?new=1" class="bottom_tabs-tab{{ Request::is('login') || Request::is('home*') ? ' is-active' : '' }}">
-            <i class="fas fa-home bottom_tabs-tab__icon"></i>
-            <div class="bottom_tabs-tab__label">ホーム</div>
-        </a>
-        @endauth
         <a href="{{ route('pages.index') }}" class="bottom_tabs-tab{{ Request::is('pages*') ? ' is-active' : '' }}">
             <i class="fas fa-bullhorn bottom_tabs-tab__icon"></i>
             <div class="bottom_tabs-tab__label">お知らせ</div>

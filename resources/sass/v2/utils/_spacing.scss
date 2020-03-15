@@ -18,6 +18,19 @@
   }
 }
 
+.px-spacing {
+  padding-left: $spacing !important;
+  padding-right: $spacing !important;
+  &-lg {
+    padding-left: $spacing-lg !important;
+    padding-right: $spacing-lg !important;
+  }
+  &-md {
+    padding-left: $spacing-md !important;
+    padding-right: $spacing-md !important;
+  }
+}
+
 .py-spacing {
   padding-bottom: $spacing !important;
   padding-top: $spacing !important;

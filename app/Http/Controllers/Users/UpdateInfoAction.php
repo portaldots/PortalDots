@@ -67,17 +67,13 @@ class UpdateInfoAction extends Controller
         }
 
         if ($changed_univemail || $changed_email) {
-            return redirect('/')
-            ->with('success_message', '確認メールを送信しました');
+            return redirect()
+                ->route('verification.notice')
+                ->with('topAlert.title', '確認メールを送信しました');
         }
 
-        if ($user->areBothEmailsVerified()) {
-            return redirect()
+        return redirect()
             ->route('user.edit')
             ->with('topAlert.title', 'ユーザー情報を更新しました');
-        }
-
-        return redirect('/')
-            ->with('success_message', 'ユーザー情報を更新しました');
     }
 }

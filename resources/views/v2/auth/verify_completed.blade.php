@@ -12,9 +12,8 @@
                 <strong>手続きが完了しました！</strong>
             </p>
             <p class="text-center">
-                {{-- リンク先が Turbolinks に対応したら data-turbolinks="false" は削除する --}}
-                <a href="{{ url('/') }}" class="btn is-primary" data-turbolinks="false">
-                    ダッシュボードにアクセス
+                <a href="{{ route('home') }}" class="btn is-primary">
+                    ホームにアクセス
                 </a>
             </p>
         </list-view-card>

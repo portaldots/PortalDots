@@ -27,6 +27,6 @@ class PostResetPasswordAction extends Controller
         $this->changePasswordService->changePassword($user, $request->new_password);
 
         return redirect()->route('login')
-            ->with('success_message', 'パスワードを変更しました。');
+            ->with('topAlert.title', 'パスワードを変更しました。');
     }
 }

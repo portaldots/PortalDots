@@ -16,11 +16,6 @@ class HomeActionTest extends TestCase
      */
     public function 未ログイン状態でログインフォームが表示される()
     {
-        $this->markTestIncomplete(
-            'このテストコードは PR #251 がマージされるまで Fail と見做されてしまいます。
-            #251 がマージされたら、この markTestIncomplete の呼び出しを除去してください'
-        );
-
         $response = $this->get(route('home'));
         $response->assertStatus(200);
 
