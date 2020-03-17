@@ -13,7 +13,7 @@
     </a>
 </p>
 
-![PortalDots](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/inaka-portal-eyecatch-v2.png)
+![PortalDots](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/portal-dots-eyecatch.png)
 
 ![スクリーンショット](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/screenshots-home-v2.png)
 
