@@ -96,29 +96,8 @@ jobs:
 
       - run: bash <(curl -s https://codecov.io/bash)
 
-  deploy:
-    working_directory: ~/workspace
-
-    docker:
-      # Specify the version you desire here
-      - image: circleci/php:7.3-node-browsers
-
-    steps:
-      - checkout
-
-      - run: sudo apt update
-      - run: sudo apt install rsync
-
-      - run: bash sakura_deploy.sh
-
 workflows:
   version: 2
   build-and-deploy:
     jobs:
       - testcases
-      - deploy:
-          requires:
-            - testcases
-          filters:
-            branches:
-              only: master
