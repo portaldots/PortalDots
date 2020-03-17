@@ -1,35 +1,34 @@
-<h1 align="center">inaka-portal</h1>
+<h1 align="center">PortalDots</h1>
 <p align="center">イベント参加サークルへのお知らせ配信、ウェブフォームによる申請受付ができるオープンソースウェブシステム。</p>
 
 <p align="center">
-    <a href="https://circleci.com/gh/SofPyon/inaka-portal">
-        <img src="https://circleci.com/gh/SofPyon/inaka-portal.svg?style=svg" alt="CircleCI" />
+    <a href="https://circleci.com/gh/portal-dots/PortalDots">
+        <img src="https://circleci.com/gh/portal-dots/PortalDots.svg?style=svg" alt="CircleCI" />
     </a>
-    <a href="https://codecov.io/gh/SofPyon/inaka-portal">
-        <img src="https://codecov.io/gh/SofPyon/inaka-portal/branch/master/graph/badge.svg" />
+    <a href="https://codecov.io/gh/portal-dots/PortalDots">
+        <img src="https://codecov.io/gh/portal-dots/PortalDots/branch/master/graph/badge.svg" />
     </a>
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" />
     </a>
 </p>
 
-![inaka-portal](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/inaka-portal-eyecatch-v2.png)
+![PortalDots](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/portal-dots-eyecatch.png)
 
-![スクリーンショット](https://raw.githubusercontent.com/SofPyon/inaka-portal/master/docs/screenshots-home-v2.png)
+![スクリーンショット](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/screenshots-home-v2.png)
 
 ## これは何？
 - [野田地区理大祭](https://nodaridaisai.com) という大学祭の実行委員会の業務を効率化するためのウェブシステム。
     - 団体向け : 団体向け会議の次回予告、各種配布資料ダウンロード、お知らせの閲覧、各種申請の提出、お問い合わせなどを行うことができる。
     - 実行委員向け : 登録されているユーザー情報の閲覧、参加団体・企画情報の管理など。また、お問い合わせを LINE Notify で受け取る機能もある。
 - 「平成30年度野田地区新入生歓迎ガイダンス」などで実運用されていた。
-- inaka-portal として公開するにあたり、ある程度のリファクタリングなどを施した。が、まだ途中。
 
 ## 開発環境セットアップ方法
 Git、PHP、Composer、Node.js、Yarn、Docker がセットアップ済みである必要があります。
 
 ```bash
-$ git clone git@github.com:SofPyon/inaka-portal.git
-$ cd inaka-portal/
+$ git clone git@github.com:portal-dots/PortalDots.git
+$ cd PortalDots/
 
 # 設定ファイルを作成
 $ cp .env.example .env
@@ -60,20 +59,20 @@ $ composer docker-stop
 - `composer docker` コマンドにより、開発環境が起動します。
 
 ## 開発環境の各種 URL
-- 開発環境 : http://localhost
+- 開発環境 : http://localhost:3000
     - 初回アクセス時、データベースエラーが表示されることがありますが、数回再読み込みすることでエラーは解消するようです。もし解消しない場合、 `composer docker-stop` コマンドを実行してから `composer docker` コマンドを実行し、開発環境を再起動してください。
 - 開発環境から送信されるメールの確認(MailHog) : http://localhost:8025
 - phpMyAdmin : http://localhost:8080
     - 開発環境の DB に作成されるデータベース名は `db_portal_dev`
 
 ## スタッフモード・管理者権限について
-inaka-portal には、登録ユーザーの管理や、お知らせ・会議での配布資料ダウンロードファイルの登録を行うための「スタッフモード」があります。
+PortalDots には、登録ユーザーの管理や、お知らせ・会議での配布資料ダウンロードファイルの登録を行うための「スタッフモード」があります。
 
 また、スタッフモード内の各ページにアクセスできるユーザーを制限する「認可」機能があり、認可に関する設定を行うための「管理者権限」が存在します。
 
-現状、inaka-portal の GUI では、一番最初のスタッフや管理者を登録できませんので、以下の方法でスタッフや管理者を設定してください。
+現状、PortalDots の GUI では、一番最初のスタッフや管理者を登録できませんので、以下の方法でスタッフや管理者を設定してください。
 
-1. inaka-portal 上で、通常通りユーザー登録を行う
+1. PortalDots 上で、通常通りユーザー登録を行う
 1. `users` テーブル上の `is_staff` 列を `1` にする
     - → そのユーザーは「スタッフ」になり、サイドバーにスタッフモードへアクセスするためのボタンが出現する
     - phpMyAdmin などで操作してください
@@ -81,8 +80,8 @@ inaka-portal には、登録ユーザーの管理や、お知らせ・会議で�
 1. `role_user` テーブルに、 `user_id` を管理者にしたいユーザーの ID、 `role_id` を `0` にしたレコードを作成する
     - → そのユーザーは「管理者」になります
 
-## inaka-portal の開発に貢献する
-inaka-portal では、Issue や Pull Request を歓迎します。
+## PortalDots の開発に貢献する
+PortalDots では、Issue や Pull Request を歓迎します。
 
 今のところ、Issue 提出や Pull Request 提出に関して、特段のルールは設けておりません（今後設ける可能性はある）ので、何かございましたらお気軽にお願いします！
 
@@ -123,11 +122,7 @@ inaka-portal では、Issue や Pull Request を歓迎します。
 このプロジェクトは、まだプログラミングスキルが浅かった時に開発されたものを、最近になって多くのリファクタリングを施したものです。今でもあまり良いコードとは言えないかもしれませんが、これでもだいぶマシになったほうです(パスワードがハードコードされていたりした)。
 
 ## SQL
-inaka-portal を動作させるために必要な DB テーブルは、`composer migrate` コマンドによって作成されます。
-
-以前は、 `composer migrate` コマンド実行前に `docker_dev/db/sql/init.sql` に格納されている SQL を実行する必要がありましたが、現在は `init.sql` の実行は不要です。
-
-<!-- `init.sql` は、Docker 初回起動時、自動的に実行されるようになっています。 -->
+PortalDots を動作させるために必要な DB テーブルは、`composer migrate` コマンドによって作成されます。
 
 # ライセンス
 
@@ -138,7 +133,7 @@ MIT License
 ```
 MIT License
 
-Copyright (c) 2019 Soji Takahashi (SofPyon)
+Copyright (c) 2019-2020 Soji Takahashi (SofPyon), hosakou and contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

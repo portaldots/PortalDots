@@ -1,16 +1,16 @@
 {
     "private": true,
-    "name": "inaka-portal",
+    "name": "portaldots",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/SofPyon/inaka-portal.git"
+        "url": "git+https://github.com/portal-dots/PortalDots.git"
     },
     "author": "Soji Takahashi (SofPyon)",
     "license": "MIT License",
     "bugs": {
-        "url": "https://github.com/SofPyon/inaka-portal/issues"
+        "url": "https://github.com/portal-dots/PortalDots/issues"
     },
-    "homepage": "https://github.com/SofPyon/inaka-portal#readme",
+    "homepage": "https://github.com/portal-dots/PortalDots#readme",
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",

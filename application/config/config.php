@@ -44,7 +44,7 @@ if (!defined('PORTAL_CONTACT_EMAIL')) {
 
 # 大学発行メールアドレスのドメイン
 // Notice: 学籍番号@ドメイン という形式のメールアドレスが発行されない大学では
-//   inaka-portal は利用できません。
+//   PortalDots は利用できません。
 if (!defined('PORTAL_UNIVEMAIL_DOMAIN')) {
     define('PORTAL_UNIVEMAIL_DOMAIN', codeigniter_env('PORTAL_UNIVEMAIL_DOMAIN', 'example.com'));
 }

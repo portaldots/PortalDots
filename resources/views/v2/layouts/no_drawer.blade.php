@@ -68,7 +68,7 @@
                 @endif
             </top-alert>
         @endif
-        @if ($errors->any())
+        @if (isset($errors) && $errors->any())
         <top-alert type="danger" container-medium>
             <template v-slot:title>
                 エラーがあります。以下をご確認ください
