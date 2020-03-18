@@ -119,6 +119,13 @@
 </header>
 @endguest
 <app-container>
+    @if(empty($next_schedule) && $pages->isEmpty() && $documents->isEmpty() && $forms->isEmpty())
+    <list-view-empty
+        icon-class="fas fa-home"
+        text="まだ公開コンテンツはありません"
+    />
+    @endif
+
     @isset($next_schedule)
     <list-view>
         <template v-slot:title>次の予定</template>
@@ -204,7 +211,7 @@
     </list-view>
     @endif
 
-    @if (!empty($forms) && !$forms->isEmpty())
+    @if (!$forms->isEmpty())
     <list-view>
         <template v-slot:title>受付中の申請</template>
         @foreach ($forms as $form)
