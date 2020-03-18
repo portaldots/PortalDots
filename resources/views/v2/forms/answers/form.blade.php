@@ -28,24 +28,24 @@
 
     <input type="hidden" name="circle_id" value="{{ $circle->id }}">
 
-    <app-container>
-        <app-header>
-            <template v-slot:title>{{ $form->name }}</template>
-            <div class="markdown">
-                <p class="text-muted">
-                    受付期間 : @datetime($form->open_at)〜@datetime($form->close_at)
-                    @if (!$form->isOpen())
-                    —
-                    <strong class="text-danger">
-                        <i class="fas fa-info-circle"></i>
-                        受付期間外です
-                    </strong>
-                    @endif
-                </p>
-                @markdown($form->description)
-            </div>
-        </app-header>
+    <app-header>
+        <template v-slot:title>{{ $form->name }}</template>
+        <div class="markdown">
+            <p class="text-muted">
+                受付期間 : @datetime($form->open_at)〜@datetime($form->close_at)
+                @if (!$form->isOpen())
+                —
+                <strong class="text-danger">
+                    <i class="fas fa-info-circle"></i>
+                    受付期間外です
+                </strong>
+                @endif
+            </p>
+            @markdown($form->description)
+        </div>
+    </app-header>
 
+    <app-container>
         <list-view>
             <list-view-item>
                 <template v-slot:title>申請団体名</template>
@@ -137,16 +137,16 @@
                 @endif
             @endforeach
         </list-view>
-    </app-container>
 
-    <app-container class="text-center pt-spacing-md pb-spacing-lg">
-        <button type="submit" class="btn is-primary is-wide"{{ !$form->isOpen() || (empty($answer) && $form->max_answers <= count($answers)) ? ' disabled' : '' }}>送信</button>
-        @if (config('app.debug'))
-        <button type="submit" class="btn is-primary-inverse" formnovalidate>
-            <strong class="badge is-primary">開発モード</strong>
-            バリデーションせずに送信
-        </button>
-        @endif
+        <div class="text-center pt-spacing-md pb-spacing">
+            <button type="submit" class="btn is-primary is-wide"{{ !$form->isOpen() || (empty($answer) && $form->max_answers <= count($answers)) ? ' disabled' : '' }}>送信</button>
+            @if (config('app.debug'))
+            <button type="submit" class="btn is-primary-inverse" formnovalidate>
+                <strong class="badge is-primary">開発モード</strong>
+                バリデーションせずに送信
+            </button>
+            @endif
+        </div>
     </app-container>
 </form>
 @endsection

@@ -29,28 +29,20 @@ export default {
 .listview-base-item {
   background: $color-bg-white;
   border-bottom: $listview-border;
-  box-shadow: 0 0.5rem 0.5rem rgba($color-text, 0.05);
   color: $color-text;
   display: block;
   margin: 0;
-  padding: $spacing-md $spacing;
+  padding: $spacing-s $spacing;
   position: relative;
   width: 100%;
+  &:first-child {
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+  }
   &:last-child {
     border-bottom: 0;
-  }
-  @media screen and (max-width: $breakpoint-listview-sm) {
-    box-shadow: none;
-  }
-  @media screen and (min-width: $breakpoint-listview-sm) {
-    &:first-child {
-      border-top-left-radius: $border-radius;
-      border-top-right-radius: $border-radius;
-    }
-    &:last-child {
-      border-bottom-left-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
-    }
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
   }
   &:hover,
   &:active,

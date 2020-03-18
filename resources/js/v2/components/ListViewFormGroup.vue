@@ -45,8 +45,8 @@ export default {
 <style lang="scss" scoped>
 .listview-form-group {
   border: 0;
-  padding-bottom: $spacing-lg / 2;
-  padding-top: $spacing-lg / 2;
+  padding-bottom: $spacing-md;
+  padding-top: $spacing-md;
   &:first-child {
     padding-top: $spacing;
   }
@@ -59,8 +59,7 @@ export default {
   &__label {
     display: block;
     font-weight: bold;
-    line-height: 1.1;
-    margin: 0 0 $spacing-sm;
+    margin: 0 0 $spacing-xs;
   }
   &__description {
     color: $color-muted;

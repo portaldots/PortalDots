@@ -20,29 +20,21 @@ export default {}
 
 <style lang="scss" scoped>
 .listview {
-  margin-left: -$container-padding-x;
-  margin-right: -$container-padding-x;
-  padding: $spacing 0 $spacing-md;
-  @media screen and (max-width: $breakpoint-listview-sm) {
-    padding: $spacing-md 0;
+  padding: $spacing 0 $spacing-sm;
+  &:last-child {
+    padding-bottom: $spacing-lg;
   }
   &-header {
-    padding: 0 $spacing $spacing-md;
+    padding: 0 0 $spacing-sm;
     width: 100%;
     &__title {
       font-size: $font-size-lg;
       font-weight: bold;
-      margin: $spacing-sm 0 0;
+      margin: 0;
     }
     &__description {
       color: $color-muted;
-      margin: $spacing-xs 0 0;
-    }
-  }
-  &-body {
-    @media screen and (max-width: $breakpoint-listview-sm) {
-      border-bottom: $listview-border;
-      border-top: $listview-border;
+      margin: $spacing-xxs 0 0;
     }
   }
 }

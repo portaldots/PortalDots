@@ -32,10 +32,10 @@
                 <input id="new_password_confirmation" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password_confirmation" required autocomplete="new-password">
             </list-view-form-group>
         </list-view>
-    </app-container>
 
-    <app-container class="text-center pt-spacing-md pb-spacing-lg">
-        <button type="submit" class="btn is-primary is-wide">保存</button>
+        <div class="text-center pt-spacing-md pb-spacing">
+            <button type="submit" class="btn is-primary is-wide">保存</button>
+        </div>
     </app-container>
 </form>
 @endsection

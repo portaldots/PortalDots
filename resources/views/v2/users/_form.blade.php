@@ -121,13 +121,12 @@
                 </list-view-form-group>
             </list-view>
         @endisset
-    </app-container>
 
-    <app-container class="text-center pt-spacing-md pb-spacing-lg">
-        <button type="submit" class="btn is-primary is-wide">
-            {{ isset($user) ? '保存' : '登録' }}
-        </button>
+        <div class="text-center pt-spacing-md pb-spacing">
+            <button type="submit" class="btn is-primary is-wide">
+                {{ isset($user) ? '保存' : '登録' }}
+            </button>
+        </div>
     </app-container>
-
 </form>
 @endsection
