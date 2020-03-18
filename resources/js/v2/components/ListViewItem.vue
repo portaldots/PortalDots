@@ -35,7 +35,7 @@ export default {
 <style lang="scss" scoped>
 .listview-item {
   &__title {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: bold;
     margin: 0;
   }

@@ -17,4 +17,14 @@ $heading-borders: true;
     margin-left: 0;
     padding-left: $spacing-md;
   }
+  p, dl, ol, ul, blockquote, pre, table {
+    margin-bottom: $spacing-md;
+  }
+  h1, h2, h3 {
+    line-height: $line-height;
+    padding-top: $spacing-md;
+    &:first-child {
+      padding-top: 0;
+    }
+  }
 }

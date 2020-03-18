@@ -32,8 +32,8 @@ export default {
   flex-direction: column;
   font-weight: bold;
   justify-content: center;
-  padding-bottom: $spacing;
-  padding-top: $spacing;
+  padding-bottom: $spacing-md;
+  padding-top: $spacing-md;
   &:hover,
   &:active,
   &:focus {

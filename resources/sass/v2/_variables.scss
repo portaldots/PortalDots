@@ -13,8 +13,10 @@ $color-primary: #3490dc;
 $color-danger: #EF3F2F;
 $color-text: #22292F;
 $color-muted: #6c757d;
+$color-muted-2: #a7b6c2;
+$color-muted-3: #c3cfd8;
 $color-border: #dae0e6;
-$color-bg-grey: #F8FAFC;
+$color-bg-grey: #f2f3f9;
 $color-bg-light: lighten($color-primary, 45);
 $color-bg-white: #FFF;
 
@@ -22,9 +24,11 @@ $color-bg-white: #FFF;
 $spacing-xl: 6rem;
 $spacing-lg: 2.5rem;
 $spacing: 1.5rem;
+$spacing-s: 1.25rem;
 $spacing-md: 1rem;
 $spacing-sm: 0.5rem;
 $spacing-xs: 0.25rem;
+$spacing-xxs: 0.1rem;
 
 // Parameters
 $drawer-width: 320px;
