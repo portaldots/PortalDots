@@ -39,6 +39,12 @@
         </a>
     </div>
     <app-container>
+        @if ($forms->isEmpty())
+        <list-view-empty
+            icon-class="far fa-edit"
+            text="このリストは空です"
+        />
+        @else
         <list-view>
             @foreach ($forms as $form)
             <list-view-item
@@ -67,6 +73,7 @@
             </list-view-item>
             @endforeach
         </list-view>
+        @endif
     </app-container>
 @endif
 @endsection
