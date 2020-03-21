@@ -2,10 +2,6 @@
 
 @section('title', 'ユーザー登録チェッカー - ' . config('app.name'))
 
-@push('js')
-    <script src="{{ mix('js/users_checker.js') }}" defer></script>
-@endpush
-
 @section('main')
 <div id="vue-user-checker">
     <div class="card mb-3">

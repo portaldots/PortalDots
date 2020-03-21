@@ -1,5 +1,7 @@
 import API from './api'
 
+import { SET_SAVING, SET_SAVED, ENQUEUED, DEQUEUED } from './status'
+
 export const GET_QUESTION_BY_ID = 'GET_QUESTION_BY_ID'
 export const CLOSE = 'CLOSE'
 export const ITEM_HEADER = 'header'
@@ -21,10 +23,12 @@ export const SAVE_FORM = 'SAVE_FORM'
 export const ADD_QUESTION = 'ADD_QUESTION'
 export const SET_OPTIONS = 'SET_OPTIONS'
 
+const START_SAVING = 'START_SAVING;'
+const SET_LOCAL_SAVED = 'SET_LOCAL_SAVED;'
+
 export default {
   namespaced: true,
   state: {
-    // loaded も status に移動させる
     loaded: false,
     form: {},
     questions: [],
@@ -97,12 +101,23 @@ export default {
     }
   },
   actions: {
+    [START_SAVING]({ commit }) {
+      commit(`status/${SET_SAVING}`, null, { root: true })
+      commit(`status/${ENQUEUED}`, null, { root: true })
+    },
+    [SET_LOCAL_SAVED]({ commit, rootState }) {
+      commit(`status/${DEQUEUED}`, null, { root: true })
+      if (rootState.status.request_queued_count === 0) {
+        commit(`status/${SET_SAVED}`, null, { root: true })
+      }
+    },
     async [FETCH]({ commit }) {
       commit(SET_FORM, (await API.get_form()).data)
       commit(SET_QUESTIONS, (await API.get_questions()).data)
       commit(SET_LOADED)
     },
-    async [UPDATE_QUESTIONS_ORDER]({ commit, state }, questions) {
+    async [UPDATE_QUESTIONS_ORDER]({ commit, state, dispatch }, questions) {
+      dispatch(START_SAVING)
       // 現状のquestions配列の状態をバックアップ
       const questions_backup = state.questions
       let count = 0
@@ -120,6 +135,7 @@ export default {
             priority: question.priority
           }))
         )
+        dispatch(SET_LOCAL_SAVED)
       } catch (e) {
         // バックアップをリストア
         commit(SET_QUESTIONS, questions_backup)
@@ -132,20 +148,28 @@ export default {
     [DRAG_END]({ commit }) {
       commit(DRAG_END)
     },
-    async [ADD_QUESTION]({ commit, state }, type) {
+    async [ADD_QUESTION]({ commit, state, dispatch }, type) {
+      dispatch(START_SAVING)
       const question = (await API.add_question(type)).data
       commit(SET_QUESTIONS, [...state.questions, question])
       commit(TOGGLE_OPEN_STATE, { item_id: question.id })
+      dispatch(SET_LOCAL_SAVED)
     },
-    async [DELETE_QUESTION]({ commit }, question_id) {
+    async [DELETE_QUESTION]({ commit, dispatch }, question_id) {
+      dispatch(START_SAVING)
       await API.delete_question(question_id)
       commit(DELETE_QUESTION, question_id)
+      dispatch(SET_LOCAL_SAVED)
     },
-    async [SAVE_QUESTION]({ getters }, question_id) {
+    async [SAVE_QUESTION]({ getters, dispatch }, question_id) {
+      dispatch(START_SAVING)
       await API.update_question(getters[GET_QUESTION_BY_ID](question_id))
+      dispatch(SET_LOCAL_SAVED)
     },
-    async [SAVE_FORM]({ state }) {
+    async [SAVE_FORM]({ state, dispatch }) {
+      dispatch(START_SAVING)
       await API.update_form(state.form)
+      dispatch(SET_LOCAL_SAVED)
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
-  <div class="editor-sidebar editor-sidebar-styling">
-    <div class="editor-sidebar__header bg-gradient-secondary text-white">
+  <div class="editor-sidebar">
+    <div class="editor-sidebar__header text-white">
       ツールパレット
     </div>
     <div class="editor-sidebar__body">
@@ -88,10 +88,17 @@ $editor-sidebar-padding: 1rem;
 
 .editor-sidebar {
   background: #fff;
+  bottom: 0;
   box-shadow: -0.1rem 0 0.1rem rgba(0, 0, 0, 0.07);
   display: flex;
   flex-direction: column;
+  position: fixed;
+  right: 0;
+  top: $app-navbar-height + $editor-header-height;
+  width: $editor-sidebar-width;
+  z-index: 10;
   &__header {
+    background: $color-muted;
     padding: $editor-sidebar-padding;
   }
   &__body {

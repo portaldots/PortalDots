@@ -14,7 +14,7 @@
 
     @prepend('css')
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css" integrity="sha384-REHJTs1r2ErKBuJB0fCK99gCYsVjwxHrSU0N7I1zl9vZbggVJXRMsv/sLlOAGb4M" crossorigin="anonymous">
-        <link href="{{ mix('css/v2/app.css') }}" rel="stylesheet">
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @endprepend
     @stack('css')
 
@@ -23,7 +23,9 @@
 
     <!-- Scripts -->
     @prepend('js')
-        <script src="{{ mix('js/v2/app.js') }}" defer></script>
+        <script src="{{ mix('js/manifest.js') }}" defer></script>
+        <script src="{{ mix('js/vendor.js') }}" defer></script>
+        <script src="{{ mix('js/app.js') }}" defer></script>
     @endprepend
     @if (config('app.debug'))
         @prepend('js')
@@ -65,20 +67,17 @@
         v-bind:class="{'is-open': isDrawerOpen}"
         v-on:click="closeDrawer"
     ></div>
-    <div class="navbar">
+    <app-nav-bar>
         @section('navbar')
-        <button
-            class="navbar-toggle"
+        <app-nav-bar-toggle
             v-on:click="toggleDrawer"
             ref="toggle"
-        >
-            <img src="{{ url('img/drawerToggle.svg') }}" alt="ドロワーを開閉">
-        </button>
+        ></app-nav-bar-toggle>
         <div class="navbar__title">
             @yield('title', config('app.name'))
         </div>
         @show
-    </div>
+    </app-nav-bar>
     <div
         class="drawer"
         v-bind:class="{'is-open': isDrawerOpen}"

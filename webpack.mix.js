@@ -21,23 +21,31 @@ mix
       modules: [path.resolve('./node_modules')]
     }
   })
+  .js('resources/js/app.js', 'public/js') // メインスクリプト
+  .extract([
+    'axios',
+    'bootstrap',
+    'marked',
+    'turbolinks',
+    'vue',
+    'vue-global-events',
+    'vuex'
+  ])
   .options({
-    globalVueStyles: 'resources/sass/v2/_variables.scss'
+    globalVueStyles: 'resources/sass/_variables.scss'
     // ↓申請フォームエディターのレイアウトが崩れてしまうため、
     // purifyCss: true の指定は、一時的にコメントアウトしています
     // purifyCss: true
   })
-  .js('resources/js/app.js', 'public/js') // メインスクリプト
-  .sass('resources/sass/app.scss', 'public/css') // メインスタイル
-  .sass('resources/sass/v2/app.scss', 'public/css/v2') // メインスタイル(v2)
-  .js('resources/js/v2/app.js', 'public/js/v2') // メインスクリプト(v2)
-  .js('resources/js/users_checker.js', 'public/js') // ユーザー登録チェッカー
-  .js('resources/js/forms_editor/index.js', 'public/js/forms_editor') // フォームエディタJS
-  .sass('resources/sass/forms_editor.scss', 'public/css') // フォームエディタCSS
   .polyfill({
     enabled: true,
     useBuiltIns: 'usage',
     targets: { ie: 11 }
+  })
+  .sass('resources/sass/bootstrap.scss', 'public/css') // Bootstrap
+  .sass('resources/sass/app.scss', 'public/css') // メインスタイル
+  .options({
+    extractVueStyles: true
   })
   .browserSync({
     proxy: 'localhost',
