@@ -44,7 +44,7 @@ export default {
 
 <style lang="scss" scoped>
 .listview-form-group {
-  border: 0;
+  border: none !important; // !important がないと、ListViewBaseItem のスタイルが優先されてしまうことがある
   padding-bottom: $spacing-md;
   padding-top: $spacing-md;
   &:first-child {
