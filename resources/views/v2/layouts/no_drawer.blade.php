@@ -14,7 +14,7 @@
 
     @prepend('css')
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css" integrity="sha384-REHJTs1r2ErKBuJB0fCK99gCYsVjwxHrSU0N7I1zl9vZbggVJXRMsv/sLlOAGb4M" crossorigin="anonymous">
-        <link href="{{ mix('css/v2/app.css') }}" rel="stylesheet">
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @endprepend
     @stack('css')
 
@@ -23,7 +23,9 @@
 
     <!-- Scripts -->
     @prepend('js')
-        <script src="{{ mix('js/v2/app.js') }}" defer></script>
+        <script src="{{ mix('js/manifest.js') }}" defer></script>
+        <script src="{{ mix('js/vendor.js') }}" defer></script>
+        <script src="{{ mix('js/app.js') }}" defer></script>
     @endprepend
     @if (config('app.debug'))
         @prepend('js')
@@ -49,13 +51,13 @@
 </div>
 
 <div class="app" id="v2-app">
-    <div class="navbar is-no-drawer">
+    <app-nav-bar no-drawer>
         @section('navbar')
         <a href="{{ route('home') }}" class="navbar-brand">
             {{ config('app.name', 'ホームへ戻る') }}
         </a>
         @show
-    </div>
+    </app-nav-bar>
     <div class="content is-no-drawer">
         @if (Session::has('topAlert.title'))
             <top-alert type="{{ session('topAlert.type', 'primary') }}" container-medium>

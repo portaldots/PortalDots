@@ -1,3 +1,21 @@
+<template>
+  <div class="navbar" :class="{ 'is-no-drawer': noDrawer }">
+    <slot />
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    noDrawer: {
+      type: Boolean,
+      default: false
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
 .navbar {
   align-items: center;
   background: $color-bg-white;
@@ -19,21 +37,6 @@
     left: 0;
     width: 100%;
   }
-  &-toggle {
-    appearance: none;
-    background: 0;
-    border: 0;
-    cursor: pointer;
-    display: none;
-    height: 100%;
-    // ↓ナビバーがもつpaddingを打ち消すネガティブマージン
-    margin-left: -$spacing;
-    padding: $spacing;
-
-    @media screen and (max-width: $breakpoint-drawer-hide) {
-      display: block;
-    }
-  }
   &-brand {
     color: $color-text;
     // ↓ナビバーがもつpaddingを打ち消すネガティブマージン
@@ -46,20 +49,5 @@
       text-decoration: none;
     }
   }
-  &-back {
-    align-items: center;
-    display: flex;
-    // ↓ナビバーがもつpaddingを打ち消すネガティブマージン
-    margin-left: -$spacing;
-    padding: $spacing;
-    &__icon {
-      font-size: 1.25rem;
-      margin-right: $spacing-sm;
-    }
-    &:hover,
-    &:active,
-    &:focus {
-      text-decoration: none;
-    }
-  }
 }
+</style>

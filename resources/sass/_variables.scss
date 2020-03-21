@@ -1,13 +1,11 @@
 $app-navbar-height: 5rem;
 $narrow-container-width: 600px;
+$navbar-brand-height: 3rem;
 
 $enable-shadows: true;
 $enable-gradients: true;
 
-// Body
-$body-bg: #f8fafc;
-$body-color: #304554;
-$light: #f8fafc;
+$editor-header-height: 4rem;
+$editor-sidebar-width: 300px;
 
-// Typography
-$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", メイリオ, Meiryo, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+@import './v2/variables';

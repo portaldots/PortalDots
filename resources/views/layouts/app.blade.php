@@ -8,6 +8,7 @@
 
     @prepend('css')
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        <link href="{{ mix('css/bootstrap.css') }}" rel="stylesheet">
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @endprepend
     @stack('css')
@@ -17,6 +18,8 @@
 
     <!-- Scripts -->
     @prepend('js')
+        <script src="{{ mix('js/manifest.js') }}" defer></script>
+        <script src="{{ mix('js/vendor.js') }}" defer></script>
         <script src="{{ mix('js/app.js') }}" defer></script>
     @endprepend
     @stack('js')
@@ -24,7 +27,7 @@
     <meta name="format-detection" content="telephone=no">
 </head>
 
-<body ontouchstart="">
+<body ontouchstart="" class="@hasSection("editor") body-editor-v1 @else body-v1 @endif">
 
 <nav class="navbar fixed-top navbar-expand navbar-light app-navbar">
     <div class="container-fluid">

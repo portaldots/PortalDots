@@ -42,8 +42,8 @@ module.exports = {
     "no-extra-semi": "error",
     "no-unexpected-multiline": "error",
     "no-unreachable": "error",
+    "import/prefer-default-export": "off",
     // TODO: 以下で warn にしているルールは、最終的には error にする
-    "import/no-cycle": "warn",
     "camelcase": "warn"
   },
 };

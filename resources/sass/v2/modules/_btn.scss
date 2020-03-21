@@ -16,54 +16,56 @@
   }
 }
 
-.btn {
-  appearance: none;
-  background: none;
-  border: 0;
-  border-radius: $border-radius;
-  cursor: pointer;
-  display: inline-block;
-  line-height: 1.15;
-  padding: 0.75rem $spacing-md;
-  text-align: center;
-  text-decoration: none;
-  transition: #{$transition-base-fast} background-color, #{$transition-base-fast} box-shadow;
-  white-space: nowrap;
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.75;
-  }
-  &:hover {
+body:not(.body-editor-v1):not(.body-v1) {
+  .btn {
+    appearance: none;
+    background: none;
+    border: 0;
+    border-radius: $border-radius;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 1.15;
+    padding: 0.75rem $spacing-md;
+    text-align: center;
     text-decoration: none;
-  }
-  &:focus {
-    text-decoration: none;
-  }
-  &.is-primary {
-    @include btn(#fff, $color-primary, lighten($color-primary, 5%), $color-primary, $color-primary);
-  }
-  &.is-primary-inverse {
-    @include btn($color-primary, #fff, lighten($color-primary, 50%), #fff, $color-muted);
-  }
-  &.is-secondary {
-    @include btn($color-text, #fff, $color-bg-grey, $color-border);
-  }
-  &.is-danger {
-    @include btn(#fff, $color-danger, lighten($color-danger, 5%), $color-danger, $color-danger);
-  }
-  &.is-block {
-    display: block;
-    width: 100%;
-  }
-  &.is-no-border {
-    border: none;
-  }
-  &.is-wide {
-    padding-left: $spacing-lg;
-    padding-right: $spacing-lg;
-  }
-  &.is-sm {
-    font-size: 0.9rem;
-    padding: $spacing-xs $spacing-sm;
+    transition: #{$transition-base-fast} background-color, #{$transition-base-fast} box-shadow;
+    white-space: nowrap;
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+    &:hover {
+      text-decoration: none;
+    }
+    &:focus {
+      text-decoration: none;
+    }
+    &.is-primary {
+      @include btn(#fff, $color-primary, lighten($color-primary, 5%), $color-primary, $color-primary);
+    }
+    &.is-primary-inverse {
+      @include btn($color-primary, #fff, lighten($color-primary, 50%), #fff, $color-muted);
+    }
+    &.is-secondary {
+      @include btn($color-text, #fff, $color-bg-grey, $color-border);
+    }
+    &.is-danger {
+      @include btn(#fff, $color-danger, lighten($color-danger, 5%), $color-danger, $color-danger);
+    }
+    &.is-block {
+      display: block;
+      width: 100%;
+    }
+    &.is-no-border {
+      border: none;
+    }
+    &.is-wide {
+      padding-left: $spacing-lg;
+      padding-right: $spacing-lg;
+    }
+    &.is-sm {
+      font-size: 0.9rem;
+      padding: $spacing-xs $spacing-sm;
+    }
   }
 }

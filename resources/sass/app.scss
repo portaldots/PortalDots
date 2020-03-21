@@ -1,84 +1,44 @@
-// Fonts
-//@import url('https://fonts.googleapis.com/css?family=Nunito');
+/**
+*** v2 Styles
+**/
+@import 'v2/app';
 
-// Variables
-@import 'variables';
+/**
+*** Forms Editor
+**/
+@import 'forms_editor';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+/**
+*** v1 Styles
+**/
 
-// あとで別ファイルに切り出す
-//// _global.scss
+.body-v1 {
+  // Variables
+  @import 'variables';
 
-body {
-  padding-top: $app-navbar-height + $spacer;
-}
+  background: #f8fafc;
+  color: #304554;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", メイリオ, Meiryo, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  padding-top: $app-navbar-height + 1rem;
 
-//// _layout_narrow.scss
-
-.narrow-container {
-  max-width: $narrow-container-width;
-}
-
-//// _navbar.scss
-
-.app-navbar {
-  background: #fff;
-  box-shadow: $box-shadow-sm;
-  height: $app-navbar-height;
-  padding-bottom: 0;
-  padding-left: calc(env(safe-area-inset-left) + 1rem);
-  padding-right: calc(env(safe-area-inset-right) + 1rem);
-  padding-top: env(safe-area-inset-top);
-  .nav-link {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+  //// _layout_narrow.scss
+  .narrow-container {
+    max-width: $narrow-container-width;
   }
-}
 
-//// _spnav.scss
-
-.spnav-space {
-  height: 8rem;
-}
-
-.spnav {
-  background: #fff;
-  bottom: 0;
-  box-shadow: 0 -0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  left: 0;
-  position: fixed;
-  width: 100%;
-  &-list {
-    display: flex;
-    justify-content: space-between;
-    list-style: none;
-    margin: 0 auto;
-    max-width: $narrow-container-width - 30px;
-    padding: 0 15px env(safe-area-inset-bottom);
-    width: 100%;
-    .nav-item {
-      flex: 1;
-    }
+  //// _navbar.scss
+  .app-navbar {
+    background: #fff;
+    box-shadow: 0 .125rem .25rem rgba(#000, .075);
+    height: $app-navbar-height;
+    padding-bottom: 0;
+    padding-left: calc(env(safe-area-inset-left) + 1rem);
+    padding-right: calc(env(safe-area-inset-right) + 1rem);
+    padding-top: env(safe-area-inset-top);
     .nav-link {
-      align-items: center;
-      color: $gray-600;
-      display: flex;
-      flex-direction: column;
-      font-weight: bold;
-      padding: 0.5rem;
-      text-align: center;
-      &:hover {
-        color: $gray-800;
-      }
-    }
-    .nav-icon {
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
-    }
-    .nav-label {
-      font-size: 0.6rem;
-      line-height: 1;
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
     }
   }
+
 }

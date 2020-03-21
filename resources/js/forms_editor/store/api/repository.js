@@ -1,10 +1,10 @@
 import Axios from 'axios'
-import vm from '../..'
-import { SET_SAVING, SET_SAVED, ENQUEUED, DEQUEUED, SET_ERROR } from '../status'
 
-const baseURL = JSON.parse(
-  document.querySelector('#forms-editor-config').dataset.apiBaseUrl
-)
+const baseURL = document.querySelector('#forms-editor-config')
+  ? JSON.parse(
+      document.querySelector('#forms-editor-config').dataset.apiBaseUrl
+    )
+  : null
 const token = document.head.querySelector('meta[name="csrf-token"]').content
 
 const axios = Axios.create({
@@ -20,8 +20,6 @@ let isProcessing = false
 axios.interceptors.request.use(config => {
   if (config.method === 'get') return config
 
-  vm.$store.commit(`status/${SET_SAVING}`)
-  vm.$store.commit(`status/${ENQUEUED}`)
   return new Promise(resolve => {
     const interval = setInterval(() => {
       if (!isProcessing) {
@@ -37,16 +35,12 @@ axios.interceptors.response.use(
   // リクエスト成功時
   response => {
     isProcessing = false
-    vm.$store.commit(`status/${DEQUEUED}`)
-    if (vm.$store.state.status.request_queued_count === 0) {
-      vm.$store.commit(`status/${SET_SAVED}`)
-    }
     return response
   },
   // リクエスト失敗時
   error => {
-    vm.$store.commit(`status/${DEQUEUED}`)
-    vm.$store.commit(`status/${SET_ERROR}`)
+    // vm.$store.commit(`status/${DEQUEUED}`)
+    // vm.$store.commit(`status/${SET_ERROR}`)
     throw error
   }
 )
