@@ -8,6 +8,7 @@
         <template v-slot:title>{{ $form->name }} - 未提出団体（{{ count($circles) }}団体）</template>
         @if(empty($circles))
             <list-view-empty
+                icon-class="fas fa-users"
                 text="未提出団体はありません"
             >
         @else
@@ -21,8 +22,8 @@
         @endforeach
         @endif
     </list-view>
-</app-container>
-<app-container class="text-center pt-spacing-md">
-    <a href="{{ url('home_staff/applications/read/'. $form->id) }}" class="btn is-primary is-wide" data-turbolinks="false">回答一覧へもどる</a>
+    <div class="text-center pt-spacing-md pb-spacing">
+        <a href="{{ url('home_staff/applications/read/'. $form->id) }}" class="btn is-primary is-wide" data-turbolinks="false">回答一覧へもどる</a>
+    </div>
 </app-container>
 @endsection
