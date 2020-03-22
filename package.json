@@ -37,6 +37,9 @@
             "stylelint --fix",
             "git add"
         ],
+        "!({**/*mail*/**/*,**/*mail*}).blade.php": [
+            "yarn blade-formatter --write"
+        ],
         "*.php": [
             "composer phpcbf",
             "composer phpcs",
@@ -49,6 +52,7 @@
         }
     },
     "devDependencies": {
+        "blade-formatter": "^1.1.4",
         "browser-sync": "^2.26.7",
         "browser-sync-webpack-plugin": "2.0.1",
         "cross-env": "^7.0",
