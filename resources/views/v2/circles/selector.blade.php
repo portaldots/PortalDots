@@ -1,7 +1,7 @@
 @extends('v2.layouts.app')
 
 @section('title', '団体を選択')
-
+    
 @section('content')
     <app-container>
         <list-view>
