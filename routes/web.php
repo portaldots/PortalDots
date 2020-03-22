@@ -74,11 +74,11 @@ Route::prefix('/password')
 
 // ログインさえされていればアクセスできるルート
 Route::middleware(['auth'])->group(function () {
-    Route::get('/change_password', 'Users\ChangePasswordAction')->name('change_password');
-    Route::post('/change_password', 'Users\PostChangePasswordAction');
     Route::get('/logout', 'Auth\LoginController@showLogout');
     Route::get('/user/edit', 'Users\EditInfoAction')->name('user.edit');
     Route::patch('/user/update', 'Users\UpdateInfoAction')->name('user.update');
+    Route::get('/user/password', 'Users\ChangePasswordAction')->name('user.password');
+    Route::post('/user/password', 'Users\PostChangePasswordAction');
     Route::get('/user/delete', 'Users\DeleteAction')->name('user.delete');
     Route::delete('/user', 'Users\DestroyAction')->name('user.destroy');
     // お問い合わせページ

@@ -5,7 +5,7 @@
 @section('content')
 @include('v2.includes.user_settings_tab_strip')
 
-<form method="POST" action="{{ route('change_password') }}">
+<form method="POST" action="{{ route('user.password') }}">
     @csrf
 
     <app-container>
