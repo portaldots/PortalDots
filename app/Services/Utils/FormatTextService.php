@@ -16,17 +16,14 @@ class FormatTextService
      *
      * このメソッドでやっていることは以下の通り
      *
-     * 1. まず先頭 200 文字のみ残す
-     * 2. 先頭 200 文字を Markdown として解釈し HTML に変換する
-     * 3. 2. で生成されたテキストから HTML を取り除くことで、元々 HTML タグだったテキストだけでなく Markdown の画像構文などを除去する
-     * 4. 3. で生成されたテキストから先頭100 文字のみ残し、残りを「...」で省略する
-     *
-     * ※ 確実に「...」を表示するため、 mb_strimwidth の機能ではなく単に「...」を文字列連結している
+     * 1. $text を Markdown として解釈し HTML に変換する
+     * 2. 1. で生成されたテキストから HTML を取り除くことで、元々 HTML タグだったテキストだけでなく Markdown の画像構文などを除去する
+     * 3. 2. で生成されたテキストから先頭100 文字のみ残し、残りを「...」で省略する
      */
     public static function summary(?string $text): string
     {
         return empty($text) ? ''
-            : mb_strimwidth(strip_tags(ParseMarkdownService::render(mb_strimwidth($text, 0, 200))), 0, 100) . '...';
+            : mb_strimwidth(strip_tags(ParseMarkdownService::render($text)), 0, 100, '...');
     }
 
     /**
