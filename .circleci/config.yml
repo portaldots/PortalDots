@@ -47,7 +47,7 @@ jobs:
       - run: sudo docker-php-ext-install zip
       - run: sudo apt-get install default-mysql-client
 
-      # PHP
+      # Install dependencies
       - restore_cache:
           keys:
             # "composer.lock" can be used if it is committed to the repo
@@ -56,6 +56,16 @@ jobs:
             - v1-dependencies-
 
       - run: composer install -n --prefer-dist
+
+      - restore_cache:
+          keys:
+            - node-v1-{{ checksum "package.json" }}
+            - node-v1-
+
+      - run: yarn install
+
+      # PHP
+      - run: yarn blade-formatter --write resources/views/v2/**/*.blade.php
 
       - run: composer phpcs
 
@@ -67,13 +77,6 @@ jobs:
             - ./vendor
 
       # Frontend Assets
-      - restore_cache:
-          keys:
-            - node-v1-{{ checksum "package.json" }}
-            - node-v1-
-
-      - run: yarn install
-
       - run: yarn dev
 
       - run: yarn eslint-check
