@@ -106,7 +106,7 @@ export function mountV2App() {
           if (newVal) {
             this.$refs.drawer.focus()
           } else {
-            this.$refs.toggle.focus()
+            this.$refs.toggle.$el.focus()
           }
         }
       }
