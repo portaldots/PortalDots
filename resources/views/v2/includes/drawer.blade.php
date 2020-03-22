@@ -50,7 +50,7 @@
             </a>
         </li>
         <li class="drawer-nav__item">
-            <a href="{{ route('user.edit') }}" class="drawer-nav__link{{ Request::is('user*') || Request::is('change_password') ? ' is-active' : '' }}">
+            <a href="{{ route('user.edit') }}" class="drawer-nav__link{{ Request::is('user*') ? ' is-active' : '' }}">
                 <i class="fas fa-cog drawer-nav__icon fa-fw"></i>
                 ユーザー設定
             </a>

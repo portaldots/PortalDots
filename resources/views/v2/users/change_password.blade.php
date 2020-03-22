@@ -5,8 +5,15 @@
 @section('content')
 @include('v2.includes.user_settings_tab_strip')
 
-<form method="POST" action="{{ route('change_password') }}">
+<form method="POST" action="{{ route('user.password') }}">
     @csrf
+
+    {{--
+        ブラウザにおける Autocomplete の UX を向上するため、ユーザー名を隠しフィールドに入れておく。
+        Chrome DevTools で Warning が出るのを防ぐ目的もある。
+        なお、type="hidden" では効力がないらしく、Warning は消えない。そのため、hidden 属性でフィールドを非表示にしている
+    --}}
+    <input hidden type="text" name="username" autocomplete="username" value="{{ Auth::user()->student_id ?? Auth::user()->email }}">
 
     <app-container>
         <list-view>

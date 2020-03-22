@@ -6,8 +6,8 @@
         一般
     </a>
     <a
-        href="{{ route('change_password') }}"
-        class="tab_strip-tab{{ Route::currentRouteName() === 'change_password' ? ' is-active' : '' }}"
+        href="{{ route('user.password') }}"
+        class="tab_strip-tab{{ Route::currentRouteName() === 'user.password' ? ' is-active' : '' }}"
     >
         パスワード
     </a>

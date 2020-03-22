@@ -53,7 +53,7 @@
                                     {{ mb_strtoupper($student_id) }}
                                 </h6>
                             @endif
-                        <a class="dropdown-item" href="{{ route('change_password') }}">パスワードの変更</a>
+                        <a class="dropdown-item" href="{{ route('user.password') }}">パスワードの変更</a>
                         <a class="dropdown-item" href="{{ route('user.edit') }}">登録情報の変更</a>
                         <a class="dropdown-item" href="{{ route('user.delete') }}">アカウントの削除</a>
                         <div class="dropdown-divider"></div>

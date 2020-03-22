@@ -58,7 +58,6 @@
         '/password',
         '/email',
         // Users
-        '/change_password',
         '/user',
         '/contacts',
         '/selector',

@@ -59,7 +59,7 @@
         <list-view-action-btn href="{{ route('user.edit') }}" newtab>
             登録情報の変更
         </list-view-action-btn>
-        <list-view-action-btn href="{{ route('change_password') }}" newtab>
+        <list-view-action-btn href="{{ route('user.password') }}" newtab>
             パスワードの変更
         </list-view-action-btn>
         <list-view-action-btn href="{{ route('user.delete') }}" newtab>
