@@ -106,14 +106,17 @@
             
                         {{-- 【v-bind:value の値について】 --}}
                         {{-- ファイルアップロード済の場合は、アップロードしたファイルにアクセスできるURLをvalueに設定 --}}
-                        <question-item type="{{ $question->type }}" v-bind:question-id="{{ $question->id }}"
-                            name="{{ $question->name }}" description="{{ $question->description }}"
-                            {{ $question->is_required ? 'required' : '' }} @if ($question->type === 'upload' && !empty($answer) &&
+                        <question-item @if ($question->is_required)
+                                required
+                            @endif
+                            @if ($question->type === 'upload' && !empty($answer) &&
                                 !empty($answer_details[$question->id]))
                                 value="{{ strpos($answer_details[$question->id], 'answer_details') === 0 ? route('forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question]) : url('/uploads/applications_form/' . $answer_details[$question->id]) }}"
                             @else
                                 v-bind:value="{{ json_encode(old('answers.' . $question->id, $answer_details[$question->id] ?? null)) }}"
                             @endif
+                            type="{{ $question->type }}" v-bind:question-id="{{ $question->id }}"
+                            name="{{ $question->name }}" description="{{ $question->description }}"
                             v-bind:options="{{ json_encode($question->optionsArray) }}"
                             v-bind:number-min="{{ $question->number_min ?? 'null' }}"
                             v-bind:number-max="{{ $question->number_max ?? 'null' }}"
