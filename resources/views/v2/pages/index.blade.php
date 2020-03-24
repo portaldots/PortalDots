@@ -22,6 +22,18 @@
                         @summary($page->body)
                     </list-view-item>
                 @endforeach
+                @if ($pages->hasPages())
+                    @if ($pages->previousPageUrl())
+                        <list-view-item href="{{ $pages->previousPageUrl() }}">
+                            <template v-slot:title>前のページへ</template>
+                        </list-view-item>
+                    @endif
+                    @if ($pages->nextPageUrl())
+                        <list-view-item href="{{ $pages->nextPageUrl() }}">
+                            <template v-slot:title>次のページへ</template>
+                        </list-view-item>
+                    @endif
+                @endif
             </list-view>
         @endif
     </app-container>
