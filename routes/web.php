@@ -91,6 +91,23 @@ Route::middleware(['auth'])->group(function () {
 
 // ログインされており、メールアドレス認証が済んでいる場合のみアクセス可能なルート
 Route::middleware(['auth', 'verified'])->group(function () {
+    // 企画参加登録
+    Route::prefix('/circles')
+        ->name('circles.')
+        ->group(function () {
+            Route::get('/create', 'Circles\CreateAction')->name('create');
+            Route::post('/', 'Circles\StoreAction')->name('store');
+            Route::get('/{circle}/edit', 'Circles\EditAction')->name('edit');
+            Route::patch('/{circle}', 'Circles\UpdateAction')->name('update');
+            // 企画メンバー登録関連
+            Route::get('/{circle}/users', 'Circles\Users\IndexAction')->name('users.index');
+            Route::get('/{circle}/users/invite/{token}', 'Circles\Users\InviteAction')->name('users.invite');
+            Route::post('/{circle}/users', 'Circles\Users\StoreAction')->name('users.store');
+            // 参加登録の提出
+            Route::get('/{circle}/confirm', 'Circles\ConfirmAction')->name('confirm');
+            Route::post('/{circle}/submit', 'Circles\SubmitAction')->name('submit');
+        });
+
     // 申請
     Route::prefix('/forms')
         ->name('forms.')
