@@ -13,7 +13,7 @@ class IndexAction extends Controller
 {
     public function __invoke(Request $request)
     {
-        $forms = Form::public()->open()->closeOrder()->get();
+        $forms = Form::public()->open()->closeOrder()->paginate(10);
         $circle = Circle::find($request->circle);
         if (empty($circle) || Gate::denies('circle.belongsTo', $circle)) {
             $circles = Auth::user()->circles()->get();

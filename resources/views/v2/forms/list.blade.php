@@ -61,6 +61,18 @@
                             @summary($form->description)
                         </list-view-item>
                     @endforeach
+                    @if ($forms->hasPages())
+                        @if ($forms->previousPageUrl())
+                            <list-view-action-btn href="{{ $forms->appends(['circle' => $circle->id])->previousPageUrl() }}">
+                                前のページへ
+                            </list-view-action-btn>
+                        @endif
+                        @if ($forms->nextPageUrl())
+                            <list-view-action-btn href="{{ $forms->appends(['circle' => $circle->id])->nextPageUrl() }}">
+                                次のページへ
+                            </list-view-action-btn>
+                        @endif
+                    @endif
                 </list-view>
             @endif
         </app-container>
