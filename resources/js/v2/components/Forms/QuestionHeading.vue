@@ -1,5 +1,5 @@
 <template>
-  <ListViewBaseItem class="question-heading">
+  <ListViewBaseItem class="question-heading" noBorder>
     <div class="question-heading__body">
       <h2 class="question-heading__name">{{ name }}</h2>
       <div class="question-heading__description">
