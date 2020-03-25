@@ -28,6 +28,10 @@ class IndexAction extends Controller
             }
         }
 
+        if ($forms->currentPage() > $forms->lastPage()) {
+            return redirect($forms->url($forms->lastPage()));
+        }
+
         return view('v2.forms.list')
             ->with('forms', $forms)
             ->with('circle', $circle)

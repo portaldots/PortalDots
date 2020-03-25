@@ -27,6 +27,11 @@ class AllAction extends Controller
                     ->route('circles.selector.show', ['redirect' => 'forms.all']);
             }
         }
+
+        if ($forms->currentPage() > $forms->lastPage()) {
+            return redirect($forms->url($forms->lastPage()));
+        }
+
         return view('v2.forms.list')
             ->with('forms', $forms)
             ->with('circle', $circle)
