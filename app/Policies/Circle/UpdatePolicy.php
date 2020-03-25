@@ -5,7 +5,7 @@ namespace App\Policies\Circle;
 use App\Eloquents\Circle;
 use App\Eloquents\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Support\Facades\Auth;
+use Gate;
 
 class UpdatePolicy
 {
@@ -22,8 +22,7 @@ class UpdatePolicy
 
     public function __invoke(User $user, Circle $circle)
     {
-        $result = $circle->users()->where('id', $user->id)->first();
-
-        return !empty($result);
+        return Gate::forUser($user)->allows('circle.belongsTo', $circle)
+            && !$circle->hasSubmitted();
     }
 }

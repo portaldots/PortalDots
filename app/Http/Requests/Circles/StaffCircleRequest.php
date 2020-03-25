@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 
-class CheckFormRequest extends FormRequest
+class StaffCircleRequest extends FormRequest
 {
     public function __construct(User $user)
     {

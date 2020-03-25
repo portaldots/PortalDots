@@ -15,6 +15,8 @@ class InviteAction extends Controller
             abort(404);
         }
 
+        $this->authorize('circle.update', $circle);
+
         if ($circle->users->contains(Auth::user())) {
             return redirect()
                 ->route('circles.users.index', ['circle' => $circle])

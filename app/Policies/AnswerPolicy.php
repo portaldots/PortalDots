@@ -20,7 +20,7 @@ class AnswerPolicy
      */
     public function view(User $user, Answer $answer)
     {
-        return Gate::allows('circle.belongsTo', $answer->circle);
+        return Gate::forUser($user)->allows('circle.belongsTo', $answer->circle);
     }
 
     /**
@@ -32,7 +32,7 @@ class AnswerPolicy
      */
     public function update(User $user, Answer $answer)
     {
-        return Gate::allows('circle.belongsTo', $answer->circle);
+        return Gate::forUser($user)->allows('circle.belongsTo', $answer->circle);
     }
 
     /**
@@ -44,6 +44,6 @@ class AnswerPolicy
      */
     public function delete(User $user, Answer $answer)
     {
-        return Gate::allows('circle.belongsTo', $answer->circle);
+        return Gate::forUser($user)->allows('circle.belongsTo', $answer->circle);
     }
 }

@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
-use App\Http\Requests\Circles\CheckFormRequest;
+use App\Http\Requests\Circles\StaffCircleRequest;
 
 class StoreAction extends Controller
 {
@@ -16,7 +16,7 @@ class StoreAction extends Controller
         $this->user = $user;
     }
 
-    public function __invoke(CheckFormRequest $request)
+    public function __invoke(StaffCircleRequest $request)
     {
         $member_ids = str_replace(["\r\n", "\r", "\n"], "\n", $request->members);
         $member_ids = explode("\n", $member_ids);

@@ -18,7 +18,7 @@ class SubmitAction extends Controller
 
     public function __invoke(Circle $circle)
     {
-        $this->authorize('circle.belongsTo', $circle);
+        $this->authorize('circle.update', $circle);
 
         if (!$circle->canSubmit()) {
             return redirect()

@@ -3,8 +3,16 @@
 @section('title', '企画参加登録')
     
 @section('content')
-    <app-header container-medium text-center>
-        <template v-slot:title>企画参加登録</template>
+    <app-header container-medium>
+        <template v-slot:title>
+            企画参加登録
+            <small class="text-muted">(ステップ 2 / 3)</small>
+        </template>
+        @isset ($circle)
+            <div class="text-muted">
+                {{ $circle->name }}
+            </div>
+        @endisset
     </app-header>
     
     <app-container medium>
@@ -64,13 +72,22 @@
         </list-view>
     
         <div class="text-center pt-spacing-md pb-spacing">
+            <a href="{{ route('circles.edit', ['circle' => $circle]) }}" class="btn is-secondary">
+                <i class="fas fa-chevron-left"></i>
+                企画情報の編集
+            </a>
             @unless ($circle->canSubmit())
-                <p class="text-danger">
+                <span class="btn is-primary disabled">
+                    確認画面へ
+                    <i class="fas fa-chevron-right"></i>
+                </span>
+                <p class="text-danger pt-spacing-sm">
                     企画参加登録を提出するには、あと{{ config('portal.users_number_to_submit_circle') - count($circle->users) }}人がメンバーになる必要があります。
                 </p>
             @else
-                <a href="{{ route('circles.confirm', ['circle' => $circle]) }}" class="btn is-primary is-wide">
-                    企画参加登録の最終確認へ進む
+                <a href="{{ route('circles.confirm', ['circle' => $circle]) }}" class="btn is-primary">
+                    確認画面へ
+                    <i class="fas fa-chevron-right"></i>
                 </a>
             @endunless
         </div>

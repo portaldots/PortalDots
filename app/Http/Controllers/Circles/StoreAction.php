@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Circles;
 
 use Auth;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Circles\StoreRequest;
+use App\Http\Requests\Circles\CircleRequest;
 use App\Services\Circles\CirclesService;
 
 class StoreAction extends Controller
@@ -19,7 +19,7 @@ class StoreAction extends Controller
         $this->circlesService = $circlesService;
     }
 
-    public function __invoke(StoreRequest $request)
+    public function __invoke(CircleRequest $request)
     {
         $circle = $this->circlesService->create(
             Auth::user(),

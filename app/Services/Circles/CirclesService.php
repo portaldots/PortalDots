@@ -37,6 +37,16 @@ class CirclesService
         });
     }
 
+    public function update(Circle $circle, string $name, string $name_yomi, string $group_name, string $group_name_yomi)
+    {
+        return $circle->update([
+            'name' => $name,
+            'name_yomi' => $name_yomi,
+            'group_name' => $group_name,
+            'group_name_yomi' => $group_name_yomi,
+        ]);
+    }
+
     public function addMember(Circle $circle, User $user)
     {
         return $circle->users()->save($user, ['is_leader' => false]);

@@ -3,8 +3,16 @@
 @section('title', '企画参加登録')
     
 @section('content')
-    <app-header container-medium text-center>
-        <template v-slot:title>企画参加登録</template>
+    <app-header container-medium>
+        <template v-slot:title>
+            企画参加登録
+            <small class="text-muted">(ステップ 1 / 3)</small>
+        </template>
+        @isset ($circle)
+            <div class="text-muted">
+                {{ $circle->name }}
+            </div>
+        @endisset
     </app-header>
     
     <form method="post" action="{{ empty($circle) ? route('circles.store') : route('circles.update', [$circle]) }}"
@@ -71,7 +79,10 @@
     
             <div class="text-center pt-spacing-md pb-spacing">
                 <div class="pb-spacing-sm">
-                    <button type="submit" class="btn is-primary is-wide">つづいて、メンバーの登録</button>
+                    <button type="submit" class="btn is-primary is-wide">
+                        つづいて、メンバーの登録
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
                 <p class="text-muted">ボタンをクリックすると、ここまでの入力内容が保存されます</p>
             </div>

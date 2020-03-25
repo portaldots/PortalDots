@@ -5,7 +5,7 @@ namespace App\Http\Requests\Circles;
 use App\Eloquents\Circle;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class CircleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

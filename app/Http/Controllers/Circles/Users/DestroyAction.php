@@ -20,7 +20,7 @@ class DestroyAction extends Controller
 
     public function __invoke(Circle $circle, User $user)
     {
-        $this->authorize('circle.belongsTo', $circle);
+        $this->authorize('circle.update', $circle);
 
         if ($user->circles()->findOrFail($circle->id)->pivot->is_leader) {
             return redirect()

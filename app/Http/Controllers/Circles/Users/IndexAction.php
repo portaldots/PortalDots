@@ -10,7 +10,7 @@ class IndexAction extends Controller
 {
     public function __invoke(Circle $circle, Request $request)
     {
-        $this->authorize('circle.belongsTo', $circle);
+        $this->authorize('circle.update', $circle);
 
         $circle->load('users');
 

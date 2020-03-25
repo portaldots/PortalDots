@@ -3,8 +3,16 @@
 @section('title', '企画参加登録')
     
 @section('content')
-    <app-header container-medium text-center>
-        <template v-slot:title>企画参加登録</template>
+    <app-header container-medium>
+        <template v-slot:title>
+            企画参加登録
+            <small class="text-muted">(ステップ 3 / 3)</small>
+        </template>
+        @isset ($circle)
+            <div class="text-muted">
+                {{ $circle->name }}
+            </div>
+        @endisset
     </app-header>
     
     <app-container medium>
@@ -14,15 +22,16 @@
                 以下の情報で参加登録を提出します。<strong>参加登録の提出後は、登録内容の変更ができなくなります。</strong>
                 <hr>
                 <dl>
-                    <dt>企画の名前</dt>
-                    <dd>{{ $circle->name }}</dd>
-                    <dt>企画の名前(よみ)</dt>
-                    <dd>{{ $circle->name_yomi }}</dd>
-                    <dt>企画団体の名前</dt>
-                    <dd>{{ $circle->group_name }}</dd>
-                    <dt>企画団体の名前(よみ)</dt>
-                    <dd>{{ $circle->group_name_yomi }}</dd>
-                    <dt>メンバー</dt>
+                    @foreach ([
+                        'name' => '企画の名前',
+                        'name_yomi' => '企画の名前(よみ)',
+                        'group_name' => '企画団体の名前',
+                        'group_name_yomi' => '企画団体の名前(よみ)',
+                        ] as $field_name => $display_name)
+                        <dt>{{ $display_name }} — <a href="{{ route('circles.edit', ['circle' => $circle]) }}">変更</a></dt>
+                        <dd>{{ $circle->$field_name }}</dd>
+                    @endforeach
+                    <dt>メンバー — <a href="{{ route('circles.users.index', ['circle' => $circle]) }}">変更</a></dt>
                     <dd>
                         <ul>
                             @foreach ($circle->users as $user)
@@ -46,6 +55,7 @@
             @csrf
             <div class="text-center pt-spacing-sm pb-spacing">
                 <a class="btn is-secondary" href="{{ route('circles.users.index', ['circle' => $circle]) }}">
+                    <i class="fas fa-chevron-left"></i>
                     「メンバーを招待」へもどる
                 </a>
                 <button type="submit" class="btn is-primary">
