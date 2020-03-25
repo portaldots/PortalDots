@@ -4,6 +4,7 @@
     :class="{
       'is-success': type === 'success',
       'is-primary': type === 'primary',
+      'is-secondary': type === 'secondary',
       'is-danger': type === 'danger',
       'is-hidden': hidden
     }"
@@ -92,6 +93,13 @@ export default {
   &.is-primary {
     background: $color-primary;
   }
+  &.is-secondary {
+    background: #fff;
+    color: $color-text;
+    & + & {
+      border-top: 1px solid rgba($color-primary, 0.16);
+    }
+  }
   &.is-danger {
     background: $color-danger;
   }
@@ -127,6 +135,7 @@ export default {
   &__message {
     font-size: 1rem;
     margin: $spacing-sm 0 0;
+    opacity: 0.8;
   }
 }
 </style>

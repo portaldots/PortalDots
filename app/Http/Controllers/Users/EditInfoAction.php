@@ -14,6 +14,6 @@ class EditInfoAction extends Controller
         $user = User::find(Auth::id());
         return view('v2.users.edit')
             ->with('user', $user)
-            ->with('circles', $user->circles->all());
+            ->with('circles', $user->circles()->withoutGlobalScope('approved')->get());
     }
 }

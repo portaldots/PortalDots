@@ -9,6 +9,6 @@ class CreateAction extends Controller
 {
     public function __invoke()
     {
-        return '';
+        return view('v2.circles.form');
     }
 }

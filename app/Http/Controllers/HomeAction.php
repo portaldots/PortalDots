@@ -19,7 +19,9 @@ class HomeAction extends Controller
     public function __invoke()
     {
         return view('v2.home')
-            ->with('my_circles', Auth::check() ? Auth::user()->circles : collect([]))
+            ->with('my_circles', Auth::check()
+                                    ? Auth::user()->circles()->withoutGlobalScope('approved')->get()
+                                    : collect([]))
             ->with('pages', Page::take(self::TAKE_COUNT)->get())
             ->with('remaining_pages_count', max(Page::count() - self::TAKE_COUNT, 0))
             ->with('next_schedule', Schedule::startOrder()->notStarted()->first())

@@ -80,6 +80,13 @@ export function mountV2App() {
         },
         closeDrawer() {
           this.isDrawerOpen = false
+        },
+        share(shareData) {
+          if (navigator.share) {
+            navigator.share(shareData)
+          } else {
+            window.alert('お使いのブラウザでは共有機能に対応していません')
+          }
         }
         // registerSubmitHandler() {
         //   const forms = document.querySelectorAll('form')

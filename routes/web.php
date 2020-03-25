@@ -103,6 +103,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{circle}/users', 'Circles\Users\IndexAction')->name('users.index');
             Route::get('/{circle}/users/invite/{token}', 'Circles\Users\InviteAction')->name('users.invite');
             Route::post('/{circle}/users', 'Circles\Users\StoreAction')->name('users.store');
+            Route::delete('/{circle}/users/{user}', 'Circles\Users\DestroyAction')->name('users.destroy');
             // 参加登録の提出
             Route::get('/{circle}/confirm', 'Circles\ConfirmAction')->name('confirm');
             Route::post('/{circle}/submit', 'Circles\SubmitAction')->name('submit');
