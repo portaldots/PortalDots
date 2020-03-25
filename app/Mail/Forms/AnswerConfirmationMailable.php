@@ -32,7 +32,7 @@ class AnswerConfirmationMailable extends Mailable
     public $questions;
 
     /**
-     * 回答した団体
+     * 回答した企画
      *
      * @var Circle
      */

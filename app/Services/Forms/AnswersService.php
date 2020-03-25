@@ -26,13 +26,13 @@ class AnswersService
     }
 
     /**
-     * 団体所属者にメールを送信する
+     * 企画所属者にメールを送信する
      *
      * @return void
      */
     public function sendAll(Answer $answer, User $applicant)
     {
-        // 団体にメールを送る
+        // 企画にメールを送る
         $answer->loadMissing('form.questions');
         $answer->loadMissing('circle.users');
         $answer_details = $this->answerDetailsService->getAnswerDetailsByAnswer($answer);

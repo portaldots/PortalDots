@@ -113,7 +113,7 @@ class StoreActionTest extends TestCase
     /**
      * @test
      */
-    public function 他団体に成り済ました回答はできない()
+    public function 他企画に成り済ました回答はできない()
     {
         $anotherCircle = factory(Circle::class)->create();
 

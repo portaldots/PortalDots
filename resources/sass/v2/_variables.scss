@@ -1,6 +1,7 @@
 // Font Size
 $base-font-size-px: 15;
 $base-font-size: #{$base-font-size-px + 'px'};
+$font-size-xl: #{(24 / $base-font-size-px) + 'rem'};
 $font-size-lg: #{(20 / $base-font-size-px) + 'rem'};
 $font-size: #{(14 / $base-font-size-px) + 'rem'};
 // inputのフォントサイズは16px以上にしないと、フォーカス時 iOS デバイスで

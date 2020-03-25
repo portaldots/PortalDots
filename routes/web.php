@@ -85,7 +85,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/contacts', 'Contacts\CreateAction')->name('contacts');
     Route::post('/contacts', 'Contacts\PostAction')->name('contacts.post');
 
-    // 団体セレクター (GETパラメーターの redirect に Route名 を入れる)
+    // 企画セレクター (GETパラメーターの redirect に Route名 を入れる)
     Route::get('/selector', 'Circles\Selector\ShowAction')->name('circles.selector.show');
 });
 
@@ -169,7 +169,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::post('/send_emails', 'Staff\SendEmails\StoreAction');
         Route::delete('/send_emails', 'Staff\SendEmails\DestroyAction');
 
-        // 団体情報編集
+        // 企画情報編集
         Route::get('/circles/{circle}/edit', 'Staff\Circles\EditAction')->name('circles.edit');
         Route::patch('/circles/{circle}', 'Staff\Circles\UpdateAction')->name('circles.update');
         Route::get('/circles/create', 'Staff\Circles\CreateAction')->name('circles.create');

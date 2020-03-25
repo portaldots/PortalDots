@@ -46,7 +46,7 @@
         <app-container>
             <list-view>
                 <list-view-item>
-                    <template v-slot:title>申請団体名</template>
+                    <template v-slot:title>申請企画名</template>
                     {{ $circle->name }}
                     @if (count(Auth::user()->circles) > 1)
                         {{-- TODO: あとでもうちょっといい感じのコードに書き直す --}}
@@ -56,7 +56,7 @@
                 </list-view-item>
             </list-view>
     
-            {{-- $answers ← 団体 $circle が回答した全回答（回答新規作成画面で使用。変更画面でも使用可能） --}}
+            {{-- $answers ← 企画 $circle が回答した全回答（回答新規作成画面で使用。変更画面でも使用可能） --}}
             {{-- $answer ← 編集対象の回答（回答変更画面で使用） --}}
     
             @if (empty($answer) && count($answers) > 0)
@@ -81,7 +81,7 @@
                 @if (empty($answer) && $form->max_answers > 1)
                     <template v-slot:title>回答を新規作成</template>
                     @if ($form->max_answers - count($answers) > 0)
-                        <template v-slot:description>貴団体はこの申請を、あと{{ $form->max_answers - count($answers) }}つ新規作成できます</template>
+                        <template v-slot:description>貴企画はこの申請を、あと{{ $form->max_answers - count($answers) }}つ新規作成できます</template>
                     @else
                         <template
                             v-slot:description>回答数上限({{ $form->max_answers }}つ)に達したため、これ以上新規作成できません。以前の回答の編集は上記より可能です。</template>

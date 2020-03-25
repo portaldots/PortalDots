@@ -18,7 +18,7 @@
                     招待URL
                 </template>
                 <template v-slot:description>
-                    貴団体の部外者にこのURLを教えないでください
+                    あなたの企画の部外者にこのURLを教えないでください
                 </template>
                 <input id="invitation_url" type="text" class="form-control" name="invitation_url"
                     value="{{ $invitation_url }}" readonly>

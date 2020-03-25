@@ -149,7 +149,7 @@
                 統計情報
                 <span>
                     <a href="{{ base_url("staff/forms/#{form.id}/not_answered") }}" class="btn btn-default">
-                        未提出団体を表示
+                        未提出企画を表示
                     </a>
                 </span>
             </h2>
@@ -162,7 +162,7 @@
                 <colgroup style="width: 80%">
 
                 <tr>
-                    <th>回答団体</th>
+                    <th>回答企画</th>
                     <td class="lead text-center">
                         {{ statistics.count_circle }}
                         <small>/ {{ statistics.count_all_circles }} ({{ statistics.proportion_circle }}%)</small>
@@ -230,7 +230,7 @@
                     <th>操作</th>
                     <th>回答ID</th>
                     <th class="table-sticky">
-                        団体
+                        企画
                         {% if form.type == "booth" %}
                             ・ ブース
                         {% endif %}

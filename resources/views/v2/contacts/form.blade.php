@@ -33,8 +33,8 @@
                         class="form-control is-plaintext">
                 </list-view-form-group>
                 @unless (empty($circles) || count($circles) < 1) <list-view-form-group label-for="circle_id">
-                        <template v-slot:label>団体名</template>
-                        <template v-slot:description>どの団体としてお問い合わせするのか選択してください。</template>
+                        <template v-slot:label>企画の名前</template>
+                        <template v-slot:description>どの企画としてお問い合わせするのか選択してください。</template>
                         <select name="circle_id" id="circle_id" class="form-control">
                             @foreach ($circles as $circle)
                                 @if (!empty(old('circle_id')) && old('circle_id') === $circle->id)

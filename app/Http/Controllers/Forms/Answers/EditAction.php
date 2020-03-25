@@ -19,7 +19,7 @@ class EditAction extends Controller
         AnswersService $answersService,
         AnswerDetailsService $answerDetailsService
     ) {
-        // 他団体の回答を編集できないようにする
+        // 他企画の回答を編集できないようにする
         $this->middleware('can:update,answer');
 
         $this->answersService = $answersService;

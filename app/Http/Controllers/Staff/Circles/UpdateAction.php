@@ -30,8 +30,10 @@ class UpdateAction extends Controller
 
         // 保存処理
         $circle->name = $request->name;
+        $circle->name_yomi = $request->name_yomi;
+        $circle->group_name = $request->group_name;
+        $circle->group_name_yomi = $request->group_name_yomi;
         $circle->notes = $request->notes;
-        $circle->updated_by = Auth::id();
         $circle->users()->detach();
 
         if (!empty($leader)) {
@@ -43,6 +45,6 @@ class UpdateAction extends Controller
         $circle->save();
         return redirect()
             ->route('staff.circles.edit', $circle)
-            ->with('toast', '団体情報を更新しました');
+            ->with('toast', '企画情報を更新しました');
     }
 }

@@ -130,8 +130,8 @@ class Forms_model extends MY_Model
         $form = $this->get_form_by_form_id($form_id);
 
         // 回答者数を取得
-        // (回答者数 : typeがboothなら回答ブース数と回答団体数，circleなら回答団体数を取得．同じ団体が
-        // 1つのフォームに対し2つ以上の回答をしていても，回答団体数は1とカウントする)
+        // (回答者数 : typeがboothなら回答ブース数と回答企画数，circleなら回答企画数を取得．同じ企画が
+        // 1つのフォームに対し2つ以上の回答をしていても，回答企画数は1とカウントする)
         $this->db->select(
             "count( DISTINCT circle_id ) AS count_circle, count( DISTINCT booth_id ) AS count_booth",
             false
@@ -179,7 +179,7 @@ class Forms_model extends MY_Model
             return false;
         }
 
-        // 団体情報とブース情報も取得
+        // 企画情報とブース情報も取得
         $circle = $this->circles->get_circle_info_by_circle_id($answer->circle_id);
         $booth = null;
         if (!empty($answer->circle_id)) {
@@ -255,7 +255,7 @@ class Forms_model extends MY_Model
     /**
      * 検索条件に合致する回答リストを取得する
      * @param int $form_id フォームID
-     * @param int $circle_id 団体ID
+     * @param int $circle_id 企画ID
      * @param int $booth_id ブースID
      * @return array            リスト配列
      */
@@ -287,7 +287,7 @@ class Forms_model extends MY_Model
      * @param array $answers 回答情報
      * @param string $type circle か booth か
      * @param int $form_id フォームID
-     * @param int $circle_id 団体ID
+     * @param int $circle_id 企画ID
      * @param int $booth_id ブースID
      * @param int|bool            insertした回答の回答ID．insertに失敗した場合 false
      */

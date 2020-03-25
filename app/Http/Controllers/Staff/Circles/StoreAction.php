@@ -32,12 +32,13 @@ class StoreAction extends Controller
         // 保存処理
         $circle = Circle::create([
             'name'  => $request->name,
-            'notes' => $request->notes,
-            'created_by' => Auth::id(),
-            'updated_by' => Auth::id(),
+            'name_yomi'  => $request->name_yomi,
+            'group_name'  => $request->group_name,
+            'group_name_yomi'  => $request->group_name_yomi,
+            'notes' => $request->notes
         ]);
         $circle->users()->detach();
-        
+
         if (!empty($leader)) {
             $leader->circles()->attach($circle->id, ['is_leader' => true]);
         }
@@ -47,6 +48,6 @@ class StoreAction extends Controller
 
         return redirect()
             ->route('staff.circles.create')
-            ->with('toast', '団体情報を作成しました');
+            ->with('toast', '企画情報を作成しました');
     }
 }

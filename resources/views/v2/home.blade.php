@@ -4,7 +4,7 @@
     
     @auth
         @unless (Auth::user()->areBothEmailsVerified())
-            <top-alert type="secondary" keep-visible>
+            <top-alert type="primary" keep-visible>
                 <template v-slot:title>
                     <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
                     メール認証を行ってください
@@ -26,7 +26,7 @@
                 <template v-slot:cta>
                     <form action="{{ route('verification.resend') }}" method="post">
                         @csrf
-                        <button class="btn is-primary is-wide">
+                        <button class="btn is-primary-inverse is-no-border is-wide">
                             <strong>確認メールを再送</strong>
                         </button>
                     </form>
@@ -78,7 +78,7 @@
                     </template>
                 </top-alert>
             @elseif ($circle->isPending())
-                <top-alert type="secondary" keep-visible>
+                <top-alert type="primary" keep-visible>
                     <template v-slot:title>
                         <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
                         「{{ $circle->name }}」の参加登録の内容を確認中です
@@ -250,7 +250,7 @@
                         <template v-slot:meta>
                             @datetime($form->close_at) まで受付
                             @if ($form->max_answers > 1)
-                                • 1団体あたり{{ $form->max_answers }}つ回答可能
+                                • 1企画あたり{{ $form->max_answers }}つ回答可能
                             @endif
                         </template>
                         @summary($form->description)

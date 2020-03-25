@@ -17,12 +17,12 @@ class Booths_model extends MY_Model
     }
 
     /**
-     * 指定された団体IDの団体が行うブースの情報を取得する
+     * 指定された企画IDの企画が行うブースの情報を取得する
      *  - circle_name : circles.name
      *  - place_name : places.name ( ブースの場所名 )
      *  - booth_id : booths.id ( ブースID )
      *  - booth_name : booths.name ( ブース名 )
-     * @param int $circle_id 団体ID( circles.id )
+     * @param int $circle_id 企画ID( circles.id )
      * @return object[]               ブース情報オブジェクトの配列。存在しない場合は空配列。
      */
     public function get_booth_info_by_circle_id($circle_id)

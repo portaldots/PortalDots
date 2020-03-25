@@ -92,7 +92,7 @@ class Form extends Model
     }
 
     /**
-     * 未申請の団体(idとnameのみ)を返す関数
+     * 未申請の企画(idとnameのみ)を返す関数
      */
     public function notAnswered()
     {

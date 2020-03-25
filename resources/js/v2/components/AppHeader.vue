@@ -45,7 +45,7 @@ export default {
     text-align: center;
   }
   &__title {
-    font-size: $font-size-lg;
+    font-size: $font-size-xl;
     margin: 0;
   }
   &__body {

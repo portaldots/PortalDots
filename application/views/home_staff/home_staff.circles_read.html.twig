@@ -1,7 +1,7 @@
 {% extends "layout_main.html.twig" %}
 
 {% block title %}
-  団体情報管理 - {{ constant("APP_NAME") }}
+  企画情報管理 - {{ constant("APP_NAME") }}
 {% endblock %}
 
 {% block maincontent %}
@@ -38,7 +38,7 @@
   </style>
 
   <h1 class="main__title">
-    <a href="{{ base_url("home_staff/circles") }}">団体情報管理</a>
+    <a href="{{ base_url("home_staff/circles") }}">企画情報管理</a>
     /
     個別表示
   </h1>
@@ -59,8 +59,21 @@
         </div>
         <div class="col-md-10 circles-read-header-main">
           <h1 class="circles-read-name">
-            {{ circle_info.name }}
+            <ruby>
+              {{ circle_info.name }}
+              <rt>
+                {{ circle_info.name_yomi }}
+              </rt>
+            </ruby>
           </h1>
+          <p>
+            <ruby>
+              {{ circle_info.group_name }}
+              <rt>
+                {{ circle_info.group_name_yomi }}
+              </rt>
+            </ruby>
+          </p>
         </div>
       </div>
     </div>
@@ -68,7 +81,7 @@
 
   <section class="panel panel-default">
     <div class="panel-heading">
-      <h2 class="panel-title">この団体に所属するユーザー</h2>
+      <h2 class="panel-title">この企画に所属するユーザー</h2>
     </div>
     <div class="panel-body">
       <div class="row">

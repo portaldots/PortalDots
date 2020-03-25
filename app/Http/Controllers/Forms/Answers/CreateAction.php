@@ -34,7 +34,7 @@ class CreateAction extends Controller
                 return redirect()
                     ->route('home')
                     ->with('topAlert.type', 'danger')
-                    ->with('topAlert.title', '団体に所属していないため、このページにアクセスできません');
+                    ->with('topAlert.title', '企画に所属していないため、このページにアクセスできません');
             } elseif (count($circles) === 1) {
                 return redirect()
                     ->route('forms.answers.create', ['form' => $form,'circle' => $circles[0]]);

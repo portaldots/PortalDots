@@ -15,7 +15,7 @@ class ContactMailable extends Mailable
     use SerializesModels;
 
     /**
-     * お問い合わせする対象の団体
+     * お問い合わせする対象の企画
      *
      * @var Circle
      */
