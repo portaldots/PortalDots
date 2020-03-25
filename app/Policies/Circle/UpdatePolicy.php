@@ -7,7 +7,7 @@ use App\Eloquents\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
 
-class BelongsPolicy
+class UpdatePolicy
 {
     use HandlesAuthorization;
 
@@ -22,7 +22,7 @@ class BelongsPolicy
 
     public function __invoke(User $user, Circle $circle)
     {
-        $result = $circle->users()->where('circle_user.user_id', $user->id)->first();
+        $result = $circle->users()->where('id', $user->id)->first();
 
         return !empty($result);
     }

@@ -262,12 +262,7 @@
                             {% if form.type == "booth" %}
                                 <br>
                                 <a href="{{ base_url("home_staff/booths/read/#{answer_info.booth_id}") }}">
-                                    {% if answer.booth.name is empty %}
-                                        {{ answer.booth.place_name }}
-                                    {% else %}
-                                        {{ answer.booth.name }}
-                                        ({{ answer.booth.place_name }})
-                                    {% endif %}
+                                  {{ answer.booth.place_name }}
                                 </a>
                             {% endif %}
                         </th>

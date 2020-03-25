@@ -360,12 +360,7 @@ class Home_staff extends MY_Controller
             $string_to_export .= "\t" . $answer->circle->name;
             // ブース名
             if ($vars["form"]->type === "booth") {
-                if (empty($answer->booth->name)) {
-                    $string_to_export .= "\t" . $answer->booth->place_name;
-                } else {
-                    $string_to_export .= "\t" . $answer->booth->name;
-                    $string_to_export .= "(" . $answer->booth->place_name . ")";
-                }
+                $string_to_export .= "\t" . $answer->booth->place_name;
             }
             // 作成日時
             $string_to_export .= "\t" . $answer->created_at;
