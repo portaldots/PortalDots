@@ -24,14 +24,14 @@
                 @endforeach
                 @if ($pages->hasPages())
                     @if ($pages->previousPageUrl())
-                        <list-view-item href="{{ $pages->previousPageUrl() }}">
-                            <template v-slot:title>前のページへ</template>
-                        </list-view-item>
+                        <list-view-action-btn href="{{ $pages->previousPageUrl() }}">
+                            前のページへ
+                        </list-view-action-btn>
                     @endif
                     @if ($pages->nextPageUrl())
-                        <list-view-item href="{{ $pages->nextPageUrl() }}">
-                            <template v-slot:title>次のページへ</template>
-                        </list-view-item>
+                        <list-view-action-btn href="{{ $pages->nextPageUrl() }}">
+                            次のページへ
+                        </list-view-action-btn>
                     @endif
                 @endif
             </list-view>

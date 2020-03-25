@@ -31,16 +31,16 @@
                         @summary($document->description)
                     </list-view-item>
                 @endforeach
-                @if ($pages->hasPages())
-                    @if ($pages->previousPageUrl())
-                        <list-view-item href="{{ $pages->previousPageUrl() }}">
-                            <template v-slot:title>前のページへ</template>
-                        </list-view-item>
+                @if ($documents->hasPages())
+                    @if ($documents->previousPageUrl())
+                        <list-view-action-btn href="{{ $documents->previousPageUrl() }}">
+                            前のページへ
+                        </list-view-action-btn>
                     @endif
-                    @if ($pages->nextPageUrl())
-                        <list-view-item href="{{ $pages->nextPageUrl() }}">
-                            <template v-slot:title>次のページへ</template>
-                        </list-view-item>
+                    @if ($documents->nextPageUrl())
+                        <list-view-action-btn href="{{ $documents->nextPageUrl() }}">
+                            次のページへ
+                        </list-view-action-btn>
                     @endif
                 @endif
             </list-view>
