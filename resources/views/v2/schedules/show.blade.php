@@ -3,10 +3,9 @@
 @section('title', $schedule->name)
     
 @section('navbar')
-    <a href="{{ route('schedules.index') }}" class="navbar-back">
-        <i class="fas fa-chevron-left navbar-back__icon"></i>
+    <app-nav-bar-back href="{{ route('schedules.index') }}">
         スケジュール
-    </a>
+    </app-nav-bar-back>
 @endsection
 
 @section('content')

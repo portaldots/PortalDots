@@ -4,15 +4,13 @@
     
 @section('navbar')
     @if (!empty($answer) && count($answers) > 0 && $form->max_answers > 1)
-        <a href="{{ route('forms.answers.create', ['form' => $form, 'circle' => $circle]) }}" class="navbar-back">
-            <i class="fas fa-chevron-left navbar-back__icon"></i>
+        <app-nav-bar-back href="{{ route('forms.answers.create', ['form' => $form, 'circle' => $circle]) }}">
             回答の新規作成
-        </a>
+        </app-nav-bar-back>
     @else
-        <a href="{{ route('forms.index', ['circle' => $circle]) }}" class="navbar-back">
-            <i class="fas fa-chevron-left navbar-back__icon"></i>
+        <app-nav-bar-back href="{{ route('forms.index', ['circle' => $circle]) }}">
             申請
-        </a>
+        </app-nav-bar-back>
     @endif
 @endsection
 
