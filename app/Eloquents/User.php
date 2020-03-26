@@ -32,10 +32,10 @@ class User extends Authenticatable
     /**
      * バリデーションルール
      */
-    public const STUDENT_ID_RULES = ['filled', 'string'];
-    public const NAME_RULES = ['filled', 'string', 'max:255', 'regex:/^([^\s　]+)([\s　]+)([^\s　]+)$/u'];
+    public const STUDENT_ID_RULES = ['required', 'string'];
+    public const NAME_RULES = ['required', 'string', 'max:255', 'regex:/^([^\s　]+)([\s　]+)([^\s　]+)$/u'];
         // 姓と名の間であれば，何個でもスペースを入れてもよしとする
-    public const NAME_YOMI_RULES = ['filled', 'string', 'max:255', 'regex:/^([ぁ-んァ-ヶー]+)([\s　]+)([ぁ-んァ-ヶー]+)$/u'];
+    public const NAME_YOMI_RULES = ['required', 'string', 'max:255', 'regex:/^([ぁ-んァ-ヶー]+)([\s　]+)([ぁ-んァ-ヶー]+)$/u'];
         // 姓と名の間であれば，何個でもスペースを入れてもよしとする
     public const EMAIL_RULES = ['required', 'string', 'email', 'max:255'];
     public const TEL_RULES = ['required', 'string', 'max:255'];

@@ -28,12 +28,34 @@ class UpdateAction extends Controller
         }
         $members = $this->user->getByStudentIdIn($member_ids);
 
+        $status = $circle->status;
+        $status_set_at = $circle->status_set_at;
+        $status_set_by = $circle->status_set_by;
+
+        if ($request->status === Circle::STATUS_PENDING) {
+            $status = null;
+            $status_set_at = null;
+            $status_set_by = null;
+        } elseif (
+            in_array($request->status, [Circle::STATUS_APPROVED, Circle::STATUS_REJECTED], true) &&
+            $request->status !== $circle->status
+        ) {
+            $status = $request->status;
+            $status_set_at = now();
+            $status_set_by = Auth::id();
+        }
+
         // 保存処理
-        $circle->name = $request->name;
-        $circle->name_yomi = $request->name_yomi;
-        $circle->group_name = $request->group_name;
-        $circle->group_name_yomi = $request->group_name_yomi;
-        $circle->notes = $request->notes;
+        $circle->update([
+            'name'  => $request->name,
+            'name_yomi'  => $request->name_yomi,
+            'group_name'  => $request->group_name,
+            'group_name_yomi'  => $request->group_name_yomi,
+            'status' => $status,
+            'status_set_at' => $status_set_at,
+            'status_set_by' => $status_set_by,
+            'notes' => $request->notes
+        ]);
         $circle->users()->detach();
 
         if (!empty($leader)) {

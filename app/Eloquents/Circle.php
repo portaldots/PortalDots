@@ -10,10 +10,21 @@ class Circle extends Model
     /**
      * バリデーションルール
      */
-    public const NAME_RULES = ['filled', 'string', 'max:255'];
-    public const NAME_YOMI_RULES = ['filled', 'string', 'max:255', 'regex:/^([ぁ-んァ-ヶー]+)$/u'];
-    public const GROUP_NAME_RULES = ['filled', 'string', 'max:255'];
-    public const GROUP_NAME_YOMI_RULES = ['filled', 'string', 'max:255', 'regex:/^([ぁ-んァ-ヶー]+)$/u'];
+    public const NAME_RULES = ['required', 'string', 'max:255'];
+    public const NAME_YOMI_RULES = ['required', 'string', 'max:255', 'regex:/^([ぁ-んァ-ヶー]+)$/u'];
+    public const GROUP_NAME_RULES = ['required', 'string', 'max:255'];
+    public const GROUP_NAME_YOMI_RULES = ['required', 'string', 'max:255', 'regex:/^([ぁ-んァ-ヶー]+)$/u'];
+    public const STATUS_RULES = ['required', 'in:pending,approved,rejected'];
+
+    /**
+     * ステータスを表す文字列
+     */
+    // 確認中（DBには pending という値を入れず、null にする）
+    public const STATUS_PENDING = 'pending';
+    // 受理
+    public const STATUS_APPROVED = 'approved';
+    // 不受理
+    public const STATUS_REJECTED = 'rejected';
 
     protected $fillable = [
         'name',
@@ -21,6 +32,11 @@ class Circle extends Model
         'group_name',
         'group_name_yomi',
         'invitation_token',
+        'submitted_at',
+        'status',
+        'status_set_at',
+        'status_set_by',
+        'notes',
     ];
 
     protected static function boot()

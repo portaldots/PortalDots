@@ -681,13 +681,13 @@ class Home_staff extends MY_Controller
         // 企画情報を取得する
         $circle_info = $this->circles->get_circle_info_by_circle_id($circle_id);
 
-        if ($circle_info !== false) {
+        if ($circle_info !== false && isset($circle_info->submitted_at)) {
             // 存在する場合
             $vars["circle_info"] = $circle_info;
             // この企画に所属するユーザーも取得する
             $vars["users"] = $this->circles->get_user_info_by_circle_id($circle_info->id);
         } else {
-            // 存在しない場合
+            // 存在しない場合か、参加登録が未提出の企画の場合
             show_404();
         }
         $this->_render('home_staff/circles_read', $vars);

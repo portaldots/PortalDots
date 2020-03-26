@@ -29,12 +29,27 @@ class StoreAction extends Controller
 
         $members = $this->user->getByStudentIdIn($member_ids);
 
+        $status = null;
+        $status_set_at = null;
+        $status_set_by = null;
+
+        if (in_array($request->status, [Circle::STATUS_APPROVED, Circle::STATUS_REJECTED], true)) {
+            $status = $request->status;
+            $status_set_at = now();
+            $status_set_by = Auth::id();
+        }
+
         // 保存処理
         $circle = Circle::create([
             'name'  => $request->name,
             'name_yomi'  => $request->name_yomi,
             'group_name'  => $request->group_name,
             'group_name_yomi'  => $request->group_name_yomi,
+            // スタッフモードでの企画作成は、参加登録提出済とみなす
+            'submitted_at' => now(),
+            'status' => $status,
+            'status_set_at' => $status_set_at,
+            'status_set_by' => $status_set_by,
             'notes' => $request->notes
         ]);
         $circle->users()->detach();

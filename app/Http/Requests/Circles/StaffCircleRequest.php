@@ -35,6 +35,7 @@ class StaffCircleRequest extends FormRequest
             'name_yomi' => Circle::NAME_YOMI_RULES,
             'group_name' => Circle::GROUP_NAME_RULES,
             'group_name_yomi' => Circle::GROUP_NAME_YOMI_RULES,
+            'status' => Circle::STATUS_RULES,
             'leader'    => ['nullable', 'exists:users,student_id'],
             'members'   => ['nullable'],
         ];
@@ -54,13 +55,13 @@ class StaffCircleRequest extends FormRequest
             'group_name_yomi' => '企画団体の名前(よみ)',
             'leader' => '企画責任者',
             'members' => '学園祭係(副責任者)',
+            'status' => '参加登録受理',
         ];
     }
 
     public function messages()
     {
         return [
-            'name.unique'   => 'すでに存在する企画の名前です',
             'leader.exists' => 'この学籍番号は登録されていません',
         ];
     }

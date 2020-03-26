@@ -17,5 +17,5 @@ return [
     'codeigniter_upload_dir' => env('PORTAL_UPLOAD_DIR', __DIR__. '/../application/uploads'),
     // 企画参加登録に必要なユーザーの人数
     // 責任者と学園祭係(副責任者)のの合計人数
-    'users_number_to_submit_circle' => env('PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE', 2),
+    'users_number_to_submit_circle' => (int)env('PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE', 2),
 ];

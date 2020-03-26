@@ -49,21 +49,7 @@
         @endif
         
         @foreach ($my_circles as $circle)
-            @if (!$circle->canSubmit())
-                <top-alert type="primary" keep-visible>
-                    <template v-slot:title>
-                        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
-                        「{{ $circle->name }}」の参加登録はまだ途中です
-                    </template>
-                    参加登録を提出するには、学園祭係(副責任者)を招待しましょう。
-                    <template v-slot:cta>
-                        <a href="{{ route('circles.users.index', ['circle' => $circle]) }}"
-                            class="btn is-primary-inverse is-no-border is-wide">
-                            <strong>招待する</strong>
-                        </a>
-                    </template>
-                </top-alert>
-            @elseif (!$circle->hasSubmitted())
+            @if (!$circle->hasSubmitted())
                 <top-alert type="primary" keep-visible>
                     <template v-slot:title>
                         <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
@@ -84,6 +70,20 @@
                         「{{ $circle->name }}」の参加登録の内容を確認中です
                     </template>
                     ただいま参加登録の内容を確認しています。{{ config('portal.admin_name') }}より指示がある場合は従ってください。また、内容確認のためご連絡を差し上げる場合がございます。
+                </top-alert>
+            @elseif (!$circle->canSubmit())
+                <top-alert type="primary" keep-visible>
+                    <template v-slot:title>
+                        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+                        「{{ $circle->name }}」の参加登録はまだ途中です
+                    </template>
+                    参加登録を提出するには、学園祭係(副責任者)を招待しましょう。
+                    <template v-slot:cta>
+                        <a href="{{ route('circles.users.index', ['circle' => $circle]) }}"
+                            class="btn is-primary-inverse is-no-border is-wide">
+                            <strong>招待する</strong>
+                        </a>
+                    </template>
                 </top-alert>
             @endif
         @endforeach

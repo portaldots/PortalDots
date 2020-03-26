@@ -9,6 +9,11 @@
                 {{ session('toast') }}
             </div>
         @endif
+        @if ($errors->any())
+            <div class="alert alert-danger" role="alert">
+                エラーがあります。以下をご確認ください。
+            </div>
+        @endif
         <form method="post"
             action="{{ empty($circle) ? route('staff.circles.new') : route('staff.circles.update', $circle) }}">
             @method(empty($circle) ? 'post' : 'patch' )
@@ -74,15 +79,54 @@
                             @foreach ($errors->get('members') as $message)
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @endforeach
-                            <small>学籍番号を改行して入力することで複数の学園祭係を追加できます</small>
+                            <small>学籍番号を改行して入力することで複数の学園祭係を追加できます。{{ config('portal.users_number_to_submit_circle') - 1 }}人を下回っていても構いません。</small>
                         </div>
                     </div>
-                    <br>
+                    <hr>
+                    <div class="form-group row">
+                        <div class="col-sm-2 col-form-label">参加登録受理</div>
+                        <div class="col-sm-10">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="status" id="statusRadios1"
+                                    value="pending"
+                                    {{ old('status', isset($circle) && $circle->status === null ? 'checked' : '') }}>
+                                <label class="form-check-label" for="statusRadios1">
+                                    <strong>確認中</strong><br>
+                                    <span class="text-muted">ユーザーには参加登録が確認中である旨が表示されます</span>
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="status" id="statusRadios2"
+                                    value="approved"
+                                    {{ old('status', isset($circle) && $circle->status === 'approved' ? 'checked' : '') }}>
+                                <label class="form-check-label" for="statusRadios2">
+                                    <strong>受理</strong><br>
+                                    <span class="text-muted">参加登録を正式に受理します。当該企画は申請機能を利用できるようになります</span>
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="status" id="statusRadios3"
+                                    value="rejected"
+                                    {{ old('status', isset($circle) && $circle->status === 'rejected' ? 'checked' : '') }}>
+                                <label class="form-check-label" for="statusRadios3">
+                                    <strong>不受理</strong><br>
+                                    <span class="text-muted">参加登録を不受理とします。ユーザーには不受理の旨は表示されません。不受理理由などは別途ユーザーへ連絡してください</span>
+                                </label>
+                            </div>
+                            @foreach ($errors->get('status') as $message)
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @endforeach
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="StaffNote">スタッフ用メモ</label>
                         <textarea id="StaffNote" class="form-control" name="notes"
                             rows="5">{{ old('notes', empty($circle) ? '' : $circle->notes) }}</textarea>
                     </div>
+                    @empty ($circle)
+                        <hr>
+                        <p>このページで企画を作成すると、企画参加登録提出済という扱いになります。企画の責任者・学園祭係(副責任者)は企画の情報を修正・削除できません。</p>
+                    @endempty
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">保存</button>
