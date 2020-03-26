@@ -601,6 +601,7 @@ class Home_staff extends MY_Controller
         }
 
         $this->grocery_crud->set_table('circles');
+        $this->grocery_crud->where('submitted_at IS NOT NULL', null, false);
         $this->grocery_crud->set_subject('企画');
         $this->grocery_crud->display_as('id', '企画ID');
         $this->grocery_crud->display_as('name', '企画の名前');

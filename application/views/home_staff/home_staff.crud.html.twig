@@ -21,6 +21,8 @@
         メールの一斉送信
       </a>
     </p>
+  {% elseif main_page_type == 'circles' %}
+    <p>参加登録の提出が完了している企画のみ表示されます</p>
   {% endif %}
 
   {{ output | raw }}
