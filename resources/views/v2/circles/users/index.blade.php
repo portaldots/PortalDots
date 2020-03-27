@@ -18,9 +18,9 @@
     <app-container medium>
         <list-view>
             <template v-slot:title>メンバーを招待</template>
-            <list-view-card>
+            <template v-slot:description>
                 あなたの企画「{{ $circle->name }}」の学園祭係(副責任者)に、以下のURLを共有してください。これは、学園祭係(副責任者)の招待URLです。
-            </list-view-card>
+            </template>
             <list-view-form-group label-for="invitation_url">
                 <template v-slot:label>
                     招待URL
@@ -31,14 +31,10 @@
                 <input id="invitation_url" type="text" class="form-control" name="invitation_url"
                     value="{{ $invitation_url }}" readonly>
             </list-view-form-group>
-        </list-view>
-    
-        <div class="text-center pt-spacing-sm pb-spacing">
-            <button class="btn is-primary-inverse is-wide" v-on:click="share({{ $share_json }})">
-                <i class="far fa-share-square"></i>
+            <list-view-action-btn button v-on:click="share({{ $share_json }})" icon-class="far fa-share-square">
                 URLを共有
-            </button>
-        </div>
+            </list-view-action-btn>
+        </list-view>
     
         <list-view>
             <template v-slot:title>メンバー一覧</template>

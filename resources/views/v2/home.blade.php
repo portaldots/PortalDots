@@ -33,60 +33,6 @@
                 </template>
             </top-alert>
         @endunless
-        @if (Auth::user()->areBothEmailsVerified() && count($my_circles) === 0)
-            <top-alert type="primary" keep-visible>
-                <template v-slot:title>
-                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
-                    参加登録をしましょう！
-                </template>
-                まだ参加登録がお済みでないようですね。まずは参加登録からはじめましょう！
-                <template v-slot:cta>
-                    <a href="{{ route('circles.create') }}" class="btn is-primary-inverse is-no-border is-wide">
-                        <strong>参加登録をはじめる</strong>
-                    </a>
-                </template>
-            </top-alert>
-        @endif
-        
-        @foreach ($my_circles as $circle)
-            @if (!$circle->hasSubmitted())
-                <top-alert type="primary" keep-visible>
-                    <template v-slot:title>
-                        <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
-                        「{{ $circle->name }}」の参加登録を提出する準備が整いました！
-                    </template>
-                    学園祭係(副責任者)の招待が完了しました。登録内容に不備がないかどうかを確認し、参加登録を提出しましょう。
-                    <template v-slot:cta>
-                        <a href="{{ route('circles.confirm', ['circle' => $circle]) }}"
-                            class="btn is-primary-inverse is-no-border is-wide">
-                            <strong>参加登録提出の確認画面へ</strong>
-                        </a>
-                    </template>
-                </top-alert>
-            @elseif ($circle->isPending())
-                <top-alert type="primary" keep-visible>
-                    <template v-slot:title>
-                        <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
-                        「{{ $circle->name }}」の参加登録の内容を確認中です
-                    </template>
-                    ただいま参加登録の内容を確認しています。{{ config('portal.admin_name') }}より指示がある場合は従ってください。また、内容確認のためご連絡を差し上げる場合がございます。
-                </top-alert>
-            @elseif (!$circle->canSubmit())
-                <top-alert type="primary" keep-visible>
-                    <template v-slot:title>
-                        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
-                        「{{ $circle->name }}」の参加登録はまだ途中です
-                    </template>
-                    参加登録を提出するには、学園祭係(副責任者)を招待しましょう。
-                    <template v-slot:cta>
-                        <a href="{{ route('circles.users.index', ['circle' => $circle]) }}"
-                            class="btn is-primary-inverse is-no-border is-wide">
-                            <strong>招待する</strong>
-                        </a>
-                    </template>
-                </top-alert>
-            @endif
-        @endforeach
         
     @endauth
     
@@ -153,6 +99,67 @@
         </header>
     @endguest
     <app-container>
+        @if (Auth::user()->areBothEmailsVerified())
+            <list-view>
+                <template v-slot:title>企画参加登録</template>
+                <template v-slot:description>受付期間 : 20xx/mm/dd(金)〜20xx/mm/dd(水)</template>
+                @if (count($my_circles) === 0)
+                    <list-view-card>
+                        <list-view-empty icon-class="far fa-star" text="参加登録をしましょう！">
+                            <p>
+                                まだ参加登録がお済みでないようですね。<br>
+                                まずは参加登録からはじめましょう！
+                            </p>
+                            <a href="{{ route('circles.create') }}" class="btn is-primary is-wide">
+                                参加登録をはじめる
+                            </a>
+                        </list-view-empty>
+                    </list-view-card>
+                @else
+                    @foreach ($my_circles as $circle)
+                        @if (!$circle->hasSubmitted() && $circle->canSubmit())
+                            <list-view-item href="{{ route('circles.confirm', ['circle' => $circle]) }}">
+                                <template v-slot:title>
+                                    <span class="text-primary">
+                                        <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                        「{{ $circle->name }}」の参加登録を提出する準備が整いました！
+                                    </span>
+                                </template>
+                                <template v-slot:meta>
+                                    学園祭係(副責任者)の招待が完了しました。ここをクリックして登録内容に不備がないかどうかを確認し、参加登録を提出しましょう。
+                                </template>
+                            </list-view-item>
+                        @elseif ($circle->isPending())
+                            <list-view-item>
+                                <template v-slot:title>
+                                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                    「{{ $circle->name }}」の参加登録の内容を確認中です
+                                </template>
+                                <template v-slot:meta>
+                                    ただいま参加登録の内容を確認しています。{{ config('portal.admin_name') }}より指示がある場合は従ってください。また、内容確認のためご連絡を差し上げる場合がございます。
+                                </template>
+                            </list-view-item>
+                        @elseif (!$circle->canSubmit())
+                            <list-view-item href="{{ route('circles.users.index', ['circle' => $circle]) }}">
+                                <template v-slot:title>
+                                    <span class="text-primary">
+                                        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+                                        「{{ $circle->name }}」の参加登録はまだ途中です
+                                    </span>
+                                </template>
+                                <template v-slot:meta>
+                                    参加登録を提出するには、ここをクリックして学園祭係(副責任者)を招待しましょう。
+                                </template>
+                            </list-view-item>
+                        @endif
+                    @endforeach
+                    <list-view-action-btn href="{{ route('circles.create') }}" icon-class="fas fa-plus">
+                        別の企画を参加登録する
+                    </list-view-action-btn>
+                @endif
+            </list-view>
+        @endif
+    
         @if(empty($next_schedule) && $pages->isEmpty() && $documents->isEmpty() && $forms->isEmpty())
             <list-view-empty icon-class="fas fa-home" text="まだ公開コンテンツはありません" />
         @endif
