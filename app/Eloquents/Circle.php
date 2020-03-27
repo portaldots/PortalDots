@@ -53,6 +53,11 @@ class Circle extends Model
         return $this->belongsToMany(User::class)->using(CircleUser::class)->withPivot('is_leader');
     }
 
+    public function leader()
+    {
+        return $this->users()->wherePivot('is_leader', true);
+    }
+
     public function answers()
     {
         return $this->hasMany(Answer::class);
