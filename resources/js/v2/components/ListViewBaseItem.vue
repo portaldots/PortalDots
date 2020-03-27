@@ -1,11 +1,12 @@
 <template>
   <component
-    :is="href ? 'a' : 'div'"
+    :is="componentIs"
     class="listview-base-item"
     :class="{ 'is-no-border': noBorder }"
     v-bind="href ? { href } : {}"
     :target="newtab ? '_blank' : undefined"
     :rel="newtab ? 'noopener' : undefined"
+    @click="onClick"
   >
     <slot />
   </component>
@@ -25,6 +26,21 @@ export default {
     noBorder: {
       type: Boolean,
       default: false
+    },
+    button: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    componentIs() {
+      if (this.button) return 'button'
+      return this.href ? 'a' : 'div'
+    }
+  },
+  methods: {
+    onClick(e) {
+      this.$emit('click', e)
     }
   }
 }
@@ -33,12 +49,17 @@ export default {
 <style lang="scss" scoped>
 .listview-base-item {
   background: $color-bg-white;
+  border: 0;
   color: $color-text;
+  cursor: pointer;
   display: block;
   margin: 0;
   padding: $spacing-s $spacing;
   position: relative;
   width: 100%;
+  &:not(a):not(button) {
+    cursor: default;
+  }
   &::after {
     border-bottom: $listview-border;
     bottom: 0;
@@ -70,13 +91,14 @@ export default {
     color: $color-text;
     text-decoration: none;
   }
-  &:not(a):hover,
-  &:not(a):active,
-  &:not(a):focus {
+  &:not(a):not(button):hover,
+  &:not(a):not(button):active,
+  &:not(a):not(button):focus {
     background: $color-bg-white;
   }
   &.is-action-btn {
     align-items: center;
+    appearance: none;
     color: $color-primary;
     display: flex;
     flex-direction: column;

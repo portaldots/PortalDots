@@ -1,5 +1,12 @@
 <template>
-  <ListViewBaseItem :href="href" :newtab="newtab" class="action-btn">
+  <ListViewBaseItem
+    :href="href"
+    :newtab="newtab"
+    :button="button"
+    class="action-btn"
+    @click="onClick"
+  >
+    <i :class="iconClass" v-if="iconClass" class="action-btn__icon"></i>
     <slot />
   </ListViewBaseItem>
 </template>
@@ -19,6 +26,19 @@ export default {
     newtab: {
       type: Boolean,
       default: false
+    },
+    button: {
+      type: Boolean,
+      default: false
+    },
+    iconClass: {
+      type: String,
+      default: null
+    }
+  },
+  methods: {
+    onClick(e) {
+      this.$emit('click', e)
     }
   }
 }
@@ -29,7 +49,6 @@ export default {
   align-items: center;
   color: $color-primary;
   display: flex;
-  flex-direction: column;
   font-weight: bold;
   justify-content: center;
   padding-bottom: $spacing-md;
@@ -38,6 +57,10 @@ export default {
   &:active,
   &:focus {
     color: $color-primary;
+  }
+  &__icon {
+    font-size: 1.25rem;
+    margin-right: $spacing-sm;
   }
 }
 </style>
