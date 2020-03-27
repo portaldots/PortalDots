@@ -17,6 +17,8 @@ import ListViewEmpty from './components/ListViewEmpty.vue'
 import ListViewFormGroup from './components/ListViewFormGroup.vue'
 import TopAlert from './components/TopAlert.vue'
 import FormWithConfirm from './components/FormWithConfirm.vue'
+import StepsList from './components/StepsList.vue'
+import StepsListItem from './components/StepsListItem.vue'
 
 // Form Questions
 import QuestionItem from './components/Forms/QuestionItem.vue'
@@ -58,7 +60,9 @@ export function mountV2App() {
         TopAlert,
         FormWithConfirm,
         QuestionItem,
-        QuestionHeading
+        QuestionHeading,
+        StepsList,
+        StepsListItem
       },
       data() {
         return {

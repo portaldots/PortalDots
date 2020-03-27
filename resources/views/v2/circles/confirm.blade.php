@@ -3,17 +3,7 @@
 @section('title', '企画参加登録')
     
 @section('content')
-    <app-header container-medium>
-        <template v-slot:title>
-            企画参加登録
-            <small class="text-muted">(ステップ 3 / 3)</small>
-        </template>
-        @isset ($circle)
-            <div class="text-muted">
-                {{ $circle->name }}
-            </div>
-        @endisset
-    </app-header>
+    @include('v2.includes.circle_register_header')
     
     <app-container medium>
         <list-view>

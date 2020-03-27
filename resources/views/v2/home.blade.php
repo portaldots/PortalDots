@@ -122,7 +122,7 @@
                                 <template v-slot:title>
                                     <span class="text-primary">
                                         <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
-                                        「{{ $circle->name }}」の参加登録を提出する準備が整いました！
+                                        ここをクリックして「{{ $circle->name }}」の参加登録を提出しましょう！
                                     </span>
                                 </template>
                                 <template v-slot:meta>
@@ -144,7 +144,7 @@
                                 <template v-slot:title>
                                     <span class="text-primary">
                                         <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
-                                        「{{ $circle->name }}」の参加登録はまだ途中です
+                                        ここをクリックして「{{ $circle->name }}」の学園祭係(副責任者)を招待しましょう！
                                     </span>
                                 </template>
                                 <template v-slot:meta>
