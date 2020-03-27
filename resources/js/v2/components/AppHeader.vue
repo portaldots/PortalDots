@@ -46,6 +46,7 @@ export default {
   }
   &__title {
     font-size: $font-size-xl;
+    font-weight: normal;
     margin: 0;
   }
   &__body {
