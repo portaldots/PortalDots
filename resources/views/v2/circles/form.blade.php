@@ -77,13 +77,10 @@
             </list-view>
     
             <div class="text-center pt-spacing-md pb-spacing">
-                <div class="pb-spacing-sm">
-                    <button type="submit" class="btn is-primary is-wide">
-                        つづいて、メンバーの登録
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-                <p class="text-muted">ボタンをクリックすると、ここまでの入力内容が保存されます</p>
+                <button type="submit" class="btn is-primary is-wide">
+                    保存して次へ
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </app-container>
     </form>
