@@ -98,10 +98,12 @@
         </header>
     @endguest
     <app-container>
-        @if (Auth::check() && Auth::user()->areBothEmailsVerified())
+        @if (Auth::check() && Auth::user()->areBothEmailsVerified() && Auth::user()->can('circle.create'))
             <list-view>
                 <template v-slot:title>企画参加登録</template>
-                <template v-slot:description>受付期間 : 20xx/mm/dd(金)〜20xx/mm/dd(水)</template>
+                <template v-slot:description>
+                    受付期間 : @datetime($circle_custom_form->open_at)〜@datetime($circle_custom_form->close_at)
+                </template>
                 @if (count($my_circles) === 0)
                     <list-view-card>
                         <list-view-empty icon-class="far fa-star" text="参加登録をしましょう！">
@@ -148,6 +150,25 @@
                                 </template>
                                 <template v-slot:meta>
                                     参加登録を提出するには、ここをクリックして学園祭係(副責任者)を招待しましょう。
+                                </template>
+                            </list-view-item>
+                        @elseif ($circle->hasApproved())
+                            <list-view-item>
+                                <template v-slot:title>
+                                    🎉
+                                    「{{ $circle->name }}」の参加登録は受理されました
+                                </template>
+                            </list-view-item>
+                        @elseif ($circle->hasRejected())
+                            <list-view-item href="{{ route('circles.users.index', ['circle' => $circle]) }}">
+                                <template v-slot:title>
+                                    <span class="text-danger">
+                                        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+                                        「{{ $circle->name }}」の参加登録は受理されませんでした
+                                    </span>
+                                </template>
+                                <template v-slot:meta>
+                                    詳細はこちら
                                 </template>
                             </list-view-item>
                         @endif

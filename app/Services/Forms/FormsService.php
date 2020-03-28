@@ -17,7 +17,7 @@ class FormsService
      */
     public function updateForm(int $form_id, array $form)
     {
-        $eloquent = Form::findOrFail($form_id);
+        $eloquent = Form::withoutGlobalScope('withoutCustomForms')->findOrFail($form_id);
         $form['open_at'] = new Carbon($form['open_at']);
         $form['close_at'] = new Carbon($form['close_at']);
         $eloquent->fill($form);

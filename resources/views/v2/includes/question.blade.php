@@ -26,7 +26,7 @@
         v-bind:number-min="{{ $question->number_min ?? 'null' }}"
         v-bind:number-max="{{ $question->number_max ?? 'null' }}"
         v-bind:allowed-types="{{ json_encode($question->allowed_types_array) }}"
-        v-bind:disabled="{{ json_encode(!$form->isOpen() || (empty($answer) && $form->max_answers <= count($answers))) }}"
+        v-bind:disabled="{{ json_encode($is_disabled ?? false) }}"
         @error('answers.'. $question->id)
         invalid="{{ $message }}"
         @enderror

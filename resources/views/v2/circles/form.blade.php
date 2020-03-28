@@ -71,6 +71,9 @@
                     <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
+                @foreach ($questions as $question)
+                    @include('v2.includes.question')
+                @endforeach
             </list-view>
     
             <div class="text-center pt-spacing-md pb-spacing">

@@ -8,7 +8,7 @@ use App\Eloquents\CustomForm;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Gate;
 
-class UpdatePolicy
+class CreatePolicy
 {
     use HandlesAuthorization;
 
@@ -21,13 +21,11 @@ class UpdatePolicy
     {
     }
 
-    public function __invoke(User $user, Circle $circle)
+    public function __invoke(User $user)
     {
         $custom_form = CustomForm::getFormByType('circle');
         return isset($custom_form)
             && $custom_form->is_public
-            && $custom_form->isOpen()
-            && Gate::forUser($user)->allows('circle.belongsTo', $circle)
-            && !$circle->hasSubmitted();
+            && $custom_form->isOpen();
     }
 }

@@ -91,20 +91,19 @@
                 @endisset
     
                 @foreach ($questions as $question)
-                    @include('v2.includes.question')
-                @endforeach
-            </list-view>
+                    @include('v2.includes.question', ['is_disabled' => !$form->isOpen() || (empty($answer) && $form->max_answers
+                <= count($answers))]) @endforeach </list-view>
     
-            <div class="text-center pt-spacing-md pb-spacing">
-                <button type="submit" class="btn is-primary is-wide"
-                    {{ !$form->isOpen() || (empty($answer) && $form->max_answers <= count($answers)) ? ' disabled' : '' }}>送信</button>
-                @if (config('app.debug'))
-                    <button type="submit" class="btn is-primary-inverse" formnovalidate>
-                        <strong class="badge is-primary">開発モード</strong>
-                        バリデーションせずに送信
-                    </button>
-                @endif
-            </div>
+                    <div class="text-center pt-spacing-md pb-spacing">
+                        <button type="submit" class="btn is-primary is-wide"
+                            {{ !$form->isOpen() || (empty($answer) && $form->max_answers <= count($answers)) ? ' disabled' : '' }}>送信</button>
+                        @if (config('app.debug'))
+                            <button type="submit" class="btn is-primary-inverse" formnovalidate>
+                                <strong class="badge is-primary">開発モード</strong>
+                                バリデーションせずに送信
+                            </button>
+                        @endif
+                    </div>
         </app-container>
     </form>
 @endsection
