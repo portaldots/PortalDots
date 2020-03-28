@@ -95,7 +95,7 @@ class CustomForm extends Model
         if (empty($forms[$type])) {
             $custom_form = self::where('type', $type)->first();
             if (!empty($custom_form)) {
-                $forms[$type] = $custom_form->form;
+                $forms[$type] = $custom_form->form()->withoutGlobalScope('withoutCustomForms')->first();
             }
         }
 
