@@ -175,6 +175,12 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::get('/circles/create', 'Staff\Circles\CreateAction')->name('circles.create');
         Route::post('/circles', 'Staff\Circles\StoreAction')->name('circles.new');
 
+        // 参加登録設定
+        Route::get('/circles/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('circles.custom_form.index');
+        Route::post('/circles/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('circles.custom_form.store');
+        Route::get('/circles/custom_form/edit', 'Staff\Circles\CustomForm\EditAction')->name('circles.custom_form.edit');
+        Route::patch('/circles/custom_form', 'Staff\Circles\CustomForm\UpdateAction')->name('circles.custom_form.update');
+
         // ユーザーチェッカー
         Route::get('/users/check', 'Staff\Users\CheckerAction')->name('users.check');
         Route::get('/users/check/list', 'Staff\Users\CheckerListAction')->name('users.check.list');
