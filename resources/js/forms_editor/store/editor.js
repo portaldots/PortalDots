@@ -9,6 +9,7 @@ export const TOGGLE_OPEN_STATE = 'TOGGLE_OPEN_STATE'
 export const SET_LOADED = 'SET_LOADED'
 export const SET_FORM = 'SET_FORM'
 export const SET_QUESTIONS = 'SET_QUESTIONS'
+export const SET_PERMANENT_QUESTIONS = 'SET_PERMANENT_QUESTIONS'
 export const UPDATE_FORM = 'UPDATE_FORM'
 export const UPDATE_QUESTION = 'UPDATE_QUESTION'
 export const DELETE_QUESTION = 'DELETE_QUESTION'
@@ -31,6 +32,7 @@ export default {
   state: {
     loaded: false,
     form: {},
+    permanent_questions: [],
     questions: [],
     // 現在、編集パネルが開いているFormItem
     // ITEM_HEADER or 数値(question id)
@@ -40,7 +42,8 @@ export default {
   },
   getters: {
     [GET_QUESTION_BY_ID]: state => id =>
-      state.questions.find(question => question.id === id)
+      state.questions.find(question => question.id === id) ||
+      state.permanent_questions.find(question => question.id === id)
   },
   mutations: {
     [TOGGLE_OPEN_STATE](state, payload) {
@@ -61,6 +64,9 @@ export default {
     },
     [SET_QUESTIONS](state, questions) {
       state.questions = questions
+    },
+    [SET_PERMANENT_QUESTIONS](state, permanent_questions) {
+      state.permanent_questions = permanent_questions
     },
     [UPDATE_FORM](state, payload) {
       state.form = { ...state.form, [payload.key]: payload.value }
@@ -113,7 +119,15 @@ export default {
     },
     async [FETCH]({ commit }) {
       commit(SET_FORM, (await API.get_form()).data)
-      commit(SET_QUESTIONS, (await API.get_questions()).data)
+      const questions = (await API.get_questions()).data
+      commit(
+        SET_QUESTIONS,
+        questions ? questions.filter(question => !question.is_permanent) : []
+      )
+      commit(
+        SET_PERMANENT_QUESTIONS,
+        questions ? questions.filter(question => question.is_permanent) : []
+      )
       commit(SET_LOADED)
     },
     async [UPDATE_QUESTIONS_ORDER]({ commit, state, dispatch }, questions) {

@@ -83,15 +83,11 @@ export default {
       return this.$store.state.editor.drag
     },
     permanent_questions() {
-      return this.$store.state.editor.questions.filter(
-        question => question.is_permanent
-      )
+      return this.$store.state.editor.permanent_questions
     },
     questions: {
       get() {
-        return this.$store.state.editor.questions.filter(
-          question => !question.is_permanent
-        )
+        return this.$store.state.editor.questions
       },
       set(new_value) {
         this.$store.dispatch(`editor/${UPDATE_QUESTIONS_ORDER}`, new_value)
