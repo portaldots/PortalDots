@@ -160,7 +160,7 @@
                                 </template>
                             </list-view-item>
                         @elseif ($circle->hasRejected())
-                            <list-view-item href="{{ route('circles.users.index', ['circle' => $circle]) }}">
+                            <list-view-item href="{{ route('circles.status', ['circle' => $circle]) }}">
                                 <template v-slot:title>
                                     <span class="text-danger">
                                         <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
