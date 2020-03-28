@@ -33,7 +33,6 @@
                 </template>
             </top-alert>
         @endunless
-        
     @endauth
     
     @guest
@@ -99,7 +98,7 @@
         </header>
     @endguest
     <app-container>
-        @if (Auth::user()->areBothEmailsVerified())
+        @if (Auth::check() && Auth::user()->areBothEmailsVerified())
             <list-view>
                 <template v-slot:title>企画参加登録</template>
                 <template v-slot:description>受付期間 : 20xx/mm/dd(金)〜20xx/mm/dd(水)</template>
