@@ -10,7 +10,7 @@ use Illuminate\Http\UploadedFile;
 use App\Services\Forms\ValidationRulesService;
 use App\Eloquents\Circle;
 
-abstract class BaseAnswerRequest extends FormRequest
+abstract class BaseAnswerRequest extends FormRequest implements AnswerRequestInterface
 {
     private $validationRulesService;
 

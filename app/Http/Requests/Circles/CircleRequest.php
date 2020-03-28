@@ -7,8 +7,9 @@ use App\Eloquents\Circle;
 use App\Eloquents\CustomForm;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Services\Forms\ValidationRulesService;
+use App\Http\Requests\Forms\AnswerRequestInterface;
 
-class CircleRequest extends FormRequest
+class CircleRequest extends FormRequest implements AnswerRequestInterface
 {
     /**
      * Determine if the user is authorized to make this request.

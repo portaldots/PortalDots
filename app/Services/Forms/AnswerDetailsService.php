@@ -7,7 +7,7 @@ namespace App\Services\Forms;
 use App\Eloquents\Form;
 use App\Eloquents\Answer;
 use App\Eloquents\AnswerDetail;
-use App\Http\Requests\Forms\BaseAnswerRequest;
+use App\Http\Requests\Forms\AnswerRequestInterface;
 use Storage;
 
 class AnswerDetailsService
@@ -41,10 +41,10 @@ class AnswerDetailsService
      * 置き換えた $answer_details 配列を return する
      *
      * @param Form $form
-     * @param BaseAnswerRequest $request
+     * @param AnswerRequestInterface $request
      * @return array
      */
-    public function getAnswerDetailsWithFilePathFromRequest(Form $form, BaseAnswerRequest $request)
+    public function getAnswerDetailsWithFilePathFromRequest(Form $form, AnswerRequestInterface $request)
     {
         $form->loadMissing('questions');
         $answer_details = $request->validated()['answers'] ?? [];

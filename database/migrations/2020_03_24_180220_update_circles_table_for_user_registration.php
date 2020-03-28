@@ -17,8 +17,7 @@ class UpdateCirclesTableForUserRegistration extends Migration
             $table->string('name_yomi')->after('name');
             $table->string('group_name')->after('name_yomi');
             $table->string('group_name_yomi')->after('group_name');
-            $table->unsignedBigInteger('answer_id')->nullable()->after('group_name_yomi');
-            $table->string('invitation_token')->nullable()->after('answer_id');
+            $table->string('invitation_token')->nullable()->after('group_name_yomi');
             $table->dateTime('submitted_at')->nullable()->after('invitation_token');
             $table->string('status')->nullable()->after('submitted_at');
             $table->dateTime('status_set_at')->nullable()->after('status');
@@ -40,7 +39,6 @@ class UpdateCirclesTableForUserRegistration extends Migration
                 'name_yomi',
                 'group_name',
                 'group_name_yomi',
-                'answer_id',
                 'invitation_token',
                 'submitted_at',
                 'status',
