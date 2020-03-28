@@ -45,7 +45,9 @@ mix
   .sass('resources/sass/bootstrap.scss', 'public/css') // Bootstrap
   .sass('resources/sass/app.scss', 'public/css') // メインスタイル
   .options({
-    extractVueStyles: true
+    // ↓スタイル適用順序に依存したCSSを書いているVueファイルが多く存在しており、
+    // 場合によって表示が崩れてしまうことがあるため、一時的にコメントアウト
+    // extractVueStyles: true
   })
   .browserSync({
     proxy: 'localhost',
