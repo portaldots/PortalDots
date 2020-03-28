@@ -107,6 +107,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // 参加登録の提出
             Route::get('/{circle}/confirm', 'Circles\ConfirmAction')->name('confirm');
             Route::post('/{circle}/submit', 'Circles\SubmitAction')->name('submit');
+            // 参加登録状況
+            Route::post('/{circle}/status', 'Circles\StatusAction')->name('status');
         });
 
     // 申請
