@@ -81,6 +81,12 @@
                     保存して次へ
                     <i class="fas fa-chevron-right"></i>
                 </button>
+                @if (config('app.debug'))
+                    <button type="submit" class="btn is-primary-inverse" formnovalidate>
+                        <strong class="badge is-primary">開発モード</strong>
+                        バリデーションせずに送信
+                    </button>
+                @endif
             </div>
         </app-container>
     </form>

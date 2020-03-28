@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests\Circles;
 
+use App;
 use App\Eloquents\Circle;
+use App\Eloquents\CustomForm;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\Forms\ValidationRulesService;
 
 class CircleRequest extends FormRequest
 {
@@ -22,14 +25,21 @@ class CircleRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(ValidationRulesService $validationRulesService)
     {
-        return [
+        $rules = [
             'name' => Circle::NAME_RULES,
             'name_yomi' => Circle::NAME_YOMI_RULES,
             'group_name' => Circle::GROUP_NAME_RULES,
             'group_name_yomi' => Circle::GROUP_NAME_YOMI_RULES,
         ];
+
+        $custom_form_rules = $validationRulesService->getRulesFromForm(
+            CustomForm::getFormByType('circle'),
+            $this
+        );
+
+        return \array_merge($rules, $custom_form_rules);
     }
 
     /**
@@ -39,12 +49,19 @@ class CircleRequest extends FormRequest
      */
     public function attributes()
     {
-        return [
+        $attributes = [
             'name' => '企画の名前',
             'name_yomi' => '企画の名前(よみ)',
             'group_name' => '企画団体の名前',
             'group_name_yomi' => '企画団体の名前(よみ)',
         ];
+
+        $validationRulesService = App::make(ValidationRulesService::class);
+        $custom_form_attributes = $validationRulesService->getAttributesFromForm(
+            CustomForm::getFormByType('circle')
+        )->toArray();
+
+        return \array_merge($attributes, $custom_form_attributes);
     }
 
     /**
