@@ -169,17 +169,16 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::post('/send_emails', 'Staff\SendEmails\StoreAction');
         Route::delete('/send_emails', 'Staff\SendEmails\DestroyAction');
 
+        // 参加登録設定
+        Route::get('/circles/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('circles.custom_form.index');
+        Route::post('/circles/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('circles.custom_form.store');
+        Route::patch('/circles/custom_form', 'Staff\Circles\CustomForm\UpdateAction')->name('circles.custom_form.update');
+
         // 企画情報編集
         Route::get('/circles/{circle}/edit', 'Staff\Circles\EditAction')->name('circles.edit');
         Route::patch('/circles/{circle}', 'Staff\Circles\UpdateAction')->name('circles.update');
         Route::get('/circles/create', 'Staff\Circles\CreateAction')->name('circles.create');
         Route::post('/circles', 'Staff\Circles\StoreAction')->name('circles.new');
-
-        // 参加登録設定
-        Route::get('/circles/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('circles.custom_form.index');
-        Route::post('/circles/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('circles.custom_form.store');
-        Route::get('/circles/custom_form/edit', 'Staff\Circles\CustomForm\EditAction')->name('circles.custom_form.edit');
-        Route::patch('/circles/custom_form', 'Staff\Circles\CustomForm\UpdateAction')->name('circles.custom_form.update');
 
         // ユーザーチェッカー
         Route::get('/users/check', 'Staff\Users\CheckerAction')->name('users.check');

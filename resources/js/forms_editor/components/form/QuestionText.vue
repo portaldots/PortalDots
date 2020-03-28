@@ -1,5 +1,10 @@
 <template>
-  <form-item :item_id="question_id" type_label="一行入力">
+  <form-item
+    :item_id="question_id"
+    :hide_handle="is_permanent"
+    :disable_edit="is_permanent"
+    type_label="一行入力"
+  >
     <template v-slot:content>
       <div class="form-group mb-0">
         <label class="mb-1">
@@ -32,7 +37,11 @@ export default {
   props: {
     question_id: {
       required: true,
-      type: Number
+      type: [Number, String]
+    },
+    is_permanent: {
+      required: false,
+      type: Boolean
     }
   },
   components: {

@@ -1,7 +1,7 @@
 <template>
   <div class="editor-loading">
     <i class="far fa-edit editor-loading__brand-icon"></i>
-    <div class="editor-loading__title">申請フォームエディター</div>
+    <div class="editor-loading__title">フォームエディター</div>
     <div class="editor-loading__loading-wrap text-muted">
       <i class="fas fa-sync fa-spin editor-loading__loading"></i>
     </div>

@@ -28,6 +28,7 @@ class Form extends Model
         'description',
         'open_at',
         'close_at',
+        'created_by',
         'type',
         'max_answers',
         'is_public',
@@ -82,6 +83,11 @@ class Form extends Model
     public function answers()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function customForm()
+    {
+        return $this->hasOne(CustomForm::class);
     }
 
     // TODO: 意味的に isAnswered という名前に変えたい

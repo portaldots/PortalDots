@@ -1,7 +1,7 @@
 <template>
   <div class="editor-sidebar">
     <div class="editor-sidebar__header text-white">
-      ツールパレット
+      設問を追加
     </div>
     <div class="editor-sidebar__body">
       <div class="editor-sidebar__tools">

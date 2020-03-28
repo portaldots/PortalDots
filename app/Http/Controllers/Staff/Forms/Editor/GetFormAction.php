@@ -22,6 +22,7 @@ class GetFormAction extends Controller
             'is_public' => $form->is_public,
             'created_at' => $form->created_at,
             'updated_at' => $form->updated_at,
+            'custom_form' => $form->customForm,
         ];
     }
 }

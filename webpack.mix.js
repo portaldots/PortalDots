@@ -33,7 +33,7 @@ mix
   ])
   .options({
     globalVueStyles: 'resources/sass/_variables.scss'
-    // ↓申請フォームエディターのレイアウトが崩れてしまうため、
+    // ↓フォームエディターのレイアウトが崩れてしまうため、
     // purifyCss: true の指定は、一時的にコメントアウトしています
     // purifyCss: true
   })

@@ -3,7 +3,8 @@
     class="form-item"
     :class="{
       'form-item--active': is_edit_panel_open,
-      'form-item--drag': drag
+      'form-item--drag': drag,
+      'form-item--disable-edit': disable_edit
     }"
     :ref="`form_item_${item_id}`"
   >
@@ -13,6 +14,13 @@
     <div class="form-item__content" @click="toggle_open_state">
       <div class="form-item__content__inner">
         <slot name="content" />
+        <p class="text-muted" v-if="custom_form && disable_edit">
+          <small>
+            これは
+            {{ custom_form.form_name }}
+            に固有の項目です。編集・削除はできません。
+          </small>
+        </p>
       </div>
     </div>
     <div
@@ -44,9 +52,17 @@ export default {
       required: false,
       type: Boolean,
       default: false
+    },
+    disable_edit: {
+      required: false,
+      type: Boolean,
+      default: false
     }
   },
   computed: {
+    custom_form() {
+      return this.$store.state.editor.form.custom_form
+    },
     is_saving() {
       return this.$store.state.status.save_status === SAVE_STATUS_SAVING
     },
@@ -71,6 +87,10 @@ export default {
   },
   methods: {
     toggle_open_state() {
+      if (this.disable_edit) {
+        return
+      }
+
       this.$store.commit(`editor/${TOGGLE_OPEN_STATE}`, {
         item_id: this.item_id
       })
@@ -115,14 +135,14 @@ $form-item-padding: 1.5rem;
     top: 0;
     width: 100%;
   }
-  &:hover:not(&--drag),
+  &:hover:not(&--active) {
+    z-index: 20;
+  }
+  &:hover:not(&--drag):not(&--disable-edit),
   &--active {
     border: 1px solid #007bff;
     border-left-width: 5px;
     border-radius: 5px;
-  }
-  &:hover:not(&--active) {
-    z-index: 20;
   }
   &:hover &__handle {
     display: block;
@@ -137,6 +157,9 @@ $form-item-padding: 1.5rem;
       pointer-events: none;
       user-select: none;
     }
+  }
+  &--disable-edit &__content {
+    cursor: auto;
   }
   &__edit-panel {
     background: lighten(#f8fafc, 1%);
