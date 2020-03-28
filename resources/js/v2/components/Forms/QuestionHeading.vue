@@ -28,7 +28,7 @@ export default {
 <style lang="scss" scoped>
 .question-heading {
   border: 0;
-  padding: $spacing 0 0;
+  padding: $spacing 0 1px; // コンテンツの margin-bottom が下にはみ出さないように、padding-bottom を設定
   &:first-child {
     padding-top: 0;
   }

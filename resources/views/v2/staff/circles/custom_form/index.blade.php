@@ -3,7 +3,7 @@
 @section('title', '企画参加登録の設定')
     
 @section('content')
-    <app-container>
+    <app-container medium>
         <list-view>
             <template v-slot:title>企画参加登録のカスタムフォーム</template>
             <template v-slot:description>企画参加登録フォームに独自の設問やテキストを追加できます</template>

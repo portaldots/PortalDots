@@ -101,7 +101,7 @@
                                     {{ old('status', isset($circle) && $circle->status === 'approved' ? 'checked' : '') }}>
                                 <label class="form-check-label" for="statusRadios2">
                                     <strong>受理</strong><br>
-                                    <span class="text-muted">参加登録を正式に受理します。当該企画は申請機能を利用できるようになります</span>
+                                    <span class="text-muted">参加登録を受理します。当該企画は申請機能を利用できるようになります</span>
                                 </label>
                             </div>
                             <div class="form-check mb-3">
@@ -110,7 +110,7 @@
                                     {{ old('status', isset($circle) && $circle->status === 'rejected' ? 'checked' : '') }}>
                                 <label class="form-check-label" for="statusRadios3">
                                     <strong>不受理</strong><br>
-                                    <span class="text-muted">参加登録を不受理とします。ユーザーには不受理の旨は表示されません。不受理理由などは別途ユーザーへ連絡してください</span>
+                                    <span class="text-muted">参加登録を不受理とします。ユーザーには参加登録が受理されなかった旨が表示されます</span>
                                 </label>
                             </div>
                             @foreach ($errors->get('status') as $message)
