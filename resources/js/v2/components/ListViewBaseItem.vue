@@ -58,7 +58,7 @@ export default {
   position: relative;
   width: 100%;
   &:not(a):not(button) {
-    cursor: default;
+    cursor: auto;
   }
   &::after {
     border-bottom: $listview-border;
