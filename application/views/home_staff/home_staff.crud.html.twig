@@ -23,6 +23,11 @@
     </p>
   {% elseif main_page_type == 'circles' %}
     <p>参加登録の提出が完了している企画のみ表示されます</p>
+    <p>
+      <a href="{{ base_url('/staff/circles/custom_form') }}" class="btn btn-primary">
+        企画参加登録機能の設定
+      </a>
+    </p>
   {% endif %}
 
   {{ output | raw }}
