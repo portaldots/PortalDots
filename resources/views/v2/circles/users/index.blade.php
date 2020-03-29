@@ -1,35 +1,42 @@
 @extends('v2.layouts.no_drawer')
 
 @section('title', '企画参加登録')
-    
+
 @section('content')
     @include('v2.includes.circle_register_header')
-    
+
     <app-container medium>
-        <list-view>
-            <template v-slot:title>メンバーを招待</template>
-            <template v-slot:description>
-                あなたの企画「{{ $circle->name }}」の学園祭係(副責任者)に、以下のURLを共有してください。これは、学園祭係(副責任者)の招待URLです。
-            </template>
-            <list-view-form-group label-for="invitation_url">
-                <template v-slot:label>
-                    招待URL
-                </template>
+        <form-with-confirm action="{{ route('circles.users.regenerate', ['circle' => $circle]) }}" method="post"
+            confirm-message="URLを新しくつくりなおすと、既存の招待URLは無効になります。URLを新しくつくりなおしますか？">
+            @csrf
+            <list-view>
+                <template v-slot:title>メンバーを招待</template>
                 <template v-slot:description>
-                    あなたの企画の部外者にこのURLを教えないでください
+                    あなたの企画「{{ $circle->name }}」の学園祭係(副責任者)に、以下のURLを共有してください。これは、学園祭係(副責任者)の招待URLです。
                 </template>
-                <input id="invitation_url" type="text" class="form-control" name="invitation_url"
-                    value="{{ $invitation_url }}" readonly>
-            </list-view-form-group>
-            <list-view-action-btn button v-on:click="share({{ $share_json }})" icon-class="far fa-share-square">
-                URLを共有
-            </list-view-action-btn>
-        </list-view>
-    
+                <list-view-form-group label-for="invitation_url">
+                    <template v-slot:label>
+                        招待URL
+                    </template>
+                    <template v-slot:description>
+                        あなたの企画の部外者にこのURLを教えないでください
+                    </template>
+                    <input id="invitation_url" type="text" class="form-control" name="invitation_url"
+                        value="{{ $invitation_url }}" readonly>
+                </list-view-form-group>
+                <list-view-action-btn button v-on:click="share({{ $share_json }})" icon-class="far fa-share-square">
+                    URLを共有
+                </list-view-action-btn>
+                <list-view-action-btn button submit icon-class="fas fa-redo">
+                    URLを新しくつくりなおす
+                </list-view-action-btn>
+            </list-view>
+        </form-with-confirm>
+
         <list-view>
             <template v-slot:title>メンバー一覧</template>
             <template v-slot:description>「{{ $circle->name }}」に所属するメンバーのリスト</template>
-    
+
             @foreach ($circle->users as $user)
                 <list-view-item>
                     <template v-slot:title>
@@ -56,7 +63,7 @@
                 </list-view-item>
             @endforeach
         </list-view>
-    
+
         <div class="text-center pt-spacing-md pb-spacing">
             <a href="{{ route('circles.edit', ['circle' => $circle]) }}" class="btn is-secondary">
                 <i class="fas fa-chevron-left"></i>

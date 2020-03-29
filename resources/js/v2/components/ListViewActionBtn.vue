@@ -3,6 +3,7 @@
     :href="href"
     :newtab="newtab"
     :button="button"
+    :submit="submit"
     class="action-btn"
     @click="onClick"
   >
@@ -31,6 +32,10 @@ export default {
       type: Boolean,
       default: false
     },
+    submit: {
+      type: Boolean,
+      default: false
+    },
     iconClass: {
       type: String,
       default: null
@@ -53,9 +58,18 @@ export default {
   justify-content: center;
   padding-bottom: $spacing-md;
   padding-top: $spacing-md;
-  &:hover,
-  &:active,
-  &:focus {
+  &:disabled {
+    color: rgba($color-primary, 0.4);
+    cursor: auto;
+    &:hover,
+    &:active,
+    &:focus {
+      background: #fff;
+    }
+  }
+  &:not(:disabled):hover,
+  &:not(:disabled):active,
+  &:not(:disabled):focus {
     color: $color-primary;
   }
   &__icon {

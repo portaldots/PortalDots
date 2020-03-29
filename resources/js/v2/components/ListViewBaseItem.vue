@@ -6,6 +6,7 @@
     v-bind="href ? { href } : {}"
     :target="newtab ? '_blank' : undefined"
     :rel="newtab ? 'noopener' : undefined"
+    :type="submit ? 'submit' : undefined"
     @click="onClick"
   >
     <slot />
@@ -28,6 +29,10 @@ export default {
       default: false
     },
     button: {
+      type: Boolean,
+      default: false
+    },
+    submit: {
       type: Boolean,
       default: false
     }

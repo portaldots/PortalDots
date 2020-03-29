@@ -28,7 +28,7 @@ class CirclesService
                 'name_yomi' => $name_yomi,
                 'group_name' => $group_name,
                 'group_name_yomi' => $group_name_yomi,
-                'invitation_token' => bin2hex(random_bytes(16)),
+                'invitation_token' => $this->generateInvitationToken(),
             ]);
 
             $circle->users()->save($leader, ['is_leader' => true]);
@@ -44,6 +44,13 @@ class CirclesService
             'name_yomi' => $name_yomi,
             'group_name' => $group_name,
             'group_name_yomi' => $group_name_yomi,
+        ]);
+    }
+
+    public function regenerateInvitationToken(Circle $circle)
+    {
+        return $circle->update([
+            'invitation_token' => $this->generateInvitationToken(),
         ]);
     }
 
@@ -72,5 +79,10 @@ class CirclesService
     {
         $circle->submitted_at = now();
         return $circle->save();
+    }
+
+    private function generateInvitationToken()
+    {
+        return bin2hex(random_bytes(16));
     }
 }
