@@ -6,32 +6,32 @@
     @include('v2.includes.circle_register_header')
 
     <app-container medium>
-        <form-with-confirm action="{{ route('circles.users.regenerate', ['circle' => $circle]) }}" method="post"
-            confirm-message="URLを新しくつくりなおすと、既存の招待URLは無効になります。URLを新しくつくりなおしますか？">
-            @csrf
-            <list-view>
-                <template v-slot:title>メンバーを招待</template>
-                <template v-slot:description>
-                    あなたの企画「{{ $circle->name }}」の学園祭係(副責任者)に、以下のURLを共有してください。これは、学園祭係(副責任者)の招待URLです。
+        <list-view>
+            <template v-slot:title>メンバーを招待</template>
+            <template v-slot:description>
+                あなたの企画「{{ $circle->name }}」の学園祭係(副責任者)に、以下のURLを共有してください。これは、学園祭係(副責任者)の招待URLです。
+            </template>
+            <list-view-form-group label-for="invitation_url">
+                <template v-slot:label>
+                    招待URL
                 </template>
-                <list-view-form-group label-for="invitation_url">
-                    <template v-slot:label>
-                        招待URL
-                    </template>
-                    <template v-slot:description>
-                        あなたの企画の部外者にこのURLを教えないでください
-                    </template>
-                    <input id="invitation_url" type="text" class="form-control" name="invitation_url"
-                        value="{{ $invitation_url }}" readonly>
-                </list-view-form-group>
-                <list-view-action-btn button v-on:click="share({{ $share_json }})" icon-class="far fa-share-square">
-                    URLを共有
-                </list-view-action-btn>
+                <template v-slot:description>
+                    あなたの企画の部外者にこのURLを教えないでください
+                </template>
+                <input id="invitation_url" type="text" class="form-control" name="invitation_url"
+                    value="{{ $invitation_url }}" readonly>
+            </list-view-form-group>
+            <list-view-action-btn button v-on:click="share({{ $share_json }})" icon-class="far fa-share-square">
+                URLを共有
+            </list-view-action-btn>
+            <form-with-confirm action="{{ route('circles.users.regenerate', ['circle' => $circle]) }}" method="post"
+                confirm-message="URLを新しくつくりなおすと、既存の招待URLは無効になります。URLを新しくつくりなおしますか？">
+                @csrf
                 <list-view-action-btn button submit icon-class="fas fa-redo">
                     URLを新しくつくりなおす
                 </list-view-action-btn>
-            </list-view>
-        </form-with-confirm>
+            </form-with-confirm>
+        </list-view>
 
         <list-view>
             <template v-slot:title>メンバー一覧</template>
