@@ -20,7 +20,8 @@ class UpdateCirclesTableForUserRegistration extends Migration
             $table->string('invitation_token')->nullable()->after('group_name_yomi');
             $table->dateTime('submitted_at')->nullable()->after('invitation_token');
             $table->string('status')->nullable()->after('submitted_at');
-            $table->dateTime('status_set_at')->nullable()->after('status');
+            $table->longText('status_reason')->nullable()->after('status');
+            $table->dateTime('status_set_at')->nullable()->after('status_reason');
             $table->unsignedBigInteger('status_set_by')->nullable()->after('status_set_at');
 
             $table->dropColumn(['created_by', 'updated_by']);
@@ -42,6 +43,7 @@ class UpdateCirclesTableForUserRegistration extends Migration
                 'invitation_token',
                 'submitted_at',
                 'status',
+                'status_reason',
                 'status_set_at',
                 'status_set_by',
             ]);
