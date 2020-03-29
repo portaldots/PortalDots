@@ -11,11 +11,6 @@
         "url": "https://github.com/portal-dots/PortalDots/issues"
     },
     "homepage": "https://github.com/portal-dots/PortalDots#readme",
-    "config": {
-        "platform": {
-            "ext-gd": "*"
-        }
-    },
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
