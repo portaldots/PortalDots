@@ -19,3 +19,8 @@ $factory->define(Circle::class, function (Faker $faker) {
 $factory->state(Circle::class, 'rejected', [
     'status' => 'rejected',
 ]);
+
+$factory->state(Circle::class, 'notSubmitted', [
+    'submitted_at' => null,
+    'status' => null,
+]);
