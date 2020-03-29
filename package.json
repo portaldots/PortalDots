@@ -13,7 +13,7 @@
     "homepage": "https://github.com/portal-dots/PortalDots#readme",
     "config": {
         "platform": {
-            "ext-gd": "2.0.0"
+            "ext-gd": "*"
         }
     },
     "scripts": {
