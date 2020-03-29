@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Staff\Circles\CustomForm;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Staff\Circles\CustomFormRequest;
 use App\Eloquents\CustomForm;
 use App\Services\Forms\FormsService;
 
@@ -16,7 +16,7 @@ class UpdateAction extends Controller
         $this->formsService = $formsService;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(CustomFormRequest $request)
     {
         $form = CustomForm::getFormByType('circle');
         if (empty($form)) {
