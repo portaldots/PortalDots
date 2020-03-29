@@ -32,16 +32,7 @@
                     </list-view-item>
                 @endforeach
                 @if ($documents->hasPages())
-                    @if ($documents->previousPageUrl())
-                        <list-view-action-btn href="{{ $documents->previousPageUrl() }}">
-                            前のページへ
-                        </list-view-action-btn>
-                    @endif
-                    @if ($documents->nextPageUrl())
-                        <list-view-action-btn href="{{ $documents->nextPageUrl() }}">
-                            次のページへ
-                        </list-view-action-btn>
-                    @endif
+                    <list-view-pagination prev="{{ $documents->previousPageUrl() }}" next="{{ $documents->nextPageUrl() }}" />
                 @endif
             </list-view>
         @endif
