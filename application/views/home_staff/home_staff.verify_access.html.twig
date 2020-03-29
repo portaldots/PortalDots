@@ -31,7 +31,7 @@
     <div class="form-group{% if not empty( error ) %} has-error{% endif %}">
       <label class="control-label" for="input_verify_code">確認コード</label>
       {{ form_error("verify_code", '<p class="text-danger">', '</p>') | raw }}
-      {{ form_input({name:'verify_code', class:'form-control', id:'input_verify_code', required: 'required'}) | raw }}
+      {{ form_input({name:'verify_code', class:'form-control', id:'input_verify_code', required: 'required', inputmode: 'numeric', pattern: '[0-9]*', autocomplete: 'one-time-code'}) | raw }}
     </div>
 
     <p class="text-center">
