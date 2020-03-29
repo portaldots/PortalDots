@@ -32,7 +32,7 @@ class StoreAction extends Controller
     {
         $this->authorize('circle.create');
 
-        DB::transaction(function () use ($request) {
+        return DB::transaction(function () use ($request) {
             $circle = $this->circlesService->create(
                 Auth::user(),
                 $request->name,
@@ -46,9 +46,9 @@ class StoreAction extends Controller
                 $circle,
                 $request
             );
-        });
 
-        return redirect()
-            ->route('circles.users.index', ['circle' => $circle]);
+            return redirect()
+                ->route('circles.users.index', ['circle' => $circle]);
+        });
     }
 }
