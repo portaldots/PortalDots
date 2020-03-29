@@ -15,3 +15,7 @@ $factory->define(Circle::class, function (Faker $faker) {
         'status' => 'approved'
     ];
 });
+
+$factory->state(Circle::class, 'rejected', [
+    'status' => 'rejected',
+]);
