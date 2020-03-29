@@ -48,6 +48,7 @@ class StoreAction extends Controller
             // スタッフモードでの企画作成は、参加登録提出済とみなす
             'submitted_at' => now(),
             'status' => $status,
+            'status_reason' => $request->status_reason,
             'status_set_at' => $status_set_at,
             'status_set_by' => $status_set_by,
             'notes' => $request->notes

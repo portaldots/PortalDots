@@ -34,6 +34,7 @@ class Circle extends Model
         'invitation_token',
         'submitted_at',
         'status',
+        'status_reason',
         'status_set_at',
         'status_set_by',
         'notes',
@@ -92,7 +93,7 @@ class Circle extends Model
     /**
      * 参加登録は提出されているが、スタッフによるチェックがPendingな企画だけに限定するクエリスコープ
      */
-    public function scopePending()
+    public function scopePending($query)
     {
         return $query->whereNotNull('submitted_at')->whereNull('status');
     }
@@ -105,7 +106,7 @@ class Circle extends Model
     /**
      * スタッフによるチェックがApprovedな企画だけに限定するクエリスコープ
      */
-    public function scopeApproved()
+    public function scopeApproved($query)
     {
         return $query->whereNotNull('submitted_at')->where('status', 'approved');
     }
@@ -118,7 +119,7 @@ class Circle extends Model
     /**
      * スタッフによるチェックがRejectedな企画だけに限定するクエリスコープ
      */
-    public function scopeRejected()
+    public function scopeRejected($query)
     {
         return $query->whereNotNull('submitted_at')->where('status', 'rejected');
     }

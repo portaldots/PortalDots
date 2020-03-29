@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', (empty($circle) ? '企画情報新規作成' : '企画情報編集') . ' - ' . config('app.name') )
-    
+
 @section('content')
     <div class="container">
         @if (session('toast'))
@@ -29,7 +29,7 @@
                             </div>
                         </div>
                     @endisset
-    
+
                     @foreach ([
                         'name' => '企画の名前',
                         'name_yomi' => '企画の名前(よみ)',
@@ -55,9 +55,9 @@
                             </div>
                         </div>
                     @endforeach
-    
+
                     <hr>
-    
+
                     <div class="form-group row">
                         <label for="leaderInput" class="col-sm-2 col-form-label">責任者の学籍番号</label>
                         <div class="col-sm-4">
@@ -69,7 +69,7 @@
                             @endforeach
                         </div>
                     </div>
-    
+
                     <div class="form-group row">
                         <label for="membersInput" class="col-sm-2 col-form-label">学園祭係(副責任者)の学籍番号</label>
                         <div class="col-sm-4">
@@ -119,9 +119,16 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="statusReason">不受理に関する詳細(ユーザーに通知)</label>
+                        <textarea id="statusReason" class="form-control" name="status_reason"
+                            rows="5">{{ old('status_reason', empty($circle) ? '' : $circle->status_reason) }}</textarea>
+                        <small>この内容はユーザーに通知されます。参加登録を不受理とする際、ユーザーに伝達したい事項があれば入力してください(Markdown利用可能)</small>
+                    </div>
+                    <div class="form-group">
                         <label for="StaffNote">スタッフ用メモ</label>
                         <textarea id="StaffNote" class="form-control" name="notes"
                             rows="5">{{ old('notes', empty($circle) ? '' : $circle->notes) }}</textarea>
+                        <small>ここに入力された内容はスタッフのみ閲覧できます。スタッフ内で共有したい事項を残しておくメモとしてご活用ください</small>
                     </div>
                     @empty ($circle)
                         <hr>
