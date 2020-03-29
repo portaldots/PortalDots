@@ -1,0 +1,142 @@
+{% extends "layout_main.html.twig" %}
+
+{% block title %}
+  フォーム - {{ constant("APP_NAME") }}
+{% endblock %}
+
+{% macro form_preview_alert( is_preview, form ) %}
+  {% if is_preview == true %}
+    <div class="alert alert-info">
+      <p>
+        <i class="fa fa-eye" aria-hidden="true"></i>
+        <strong>これはフォームのプレビューです。</strong>
+        このフォームから実際に送信することはできません。
+      </p>
+      <p>
+        <a href="{{ base_url("home_staff/applications/read/#{form.id}") }}" class="btn btn-primary">
+          フォーム閲覧ページに戻る
+        </a>
+      </p>
+    </div>
+  {% endif %}
+{% endmacro form_preview_alert %}
+
+{% block maincontent %}
+
+  {% import _self as alerts %}
+
+  {% if post_result == true %}
+    <div class="alert alert-success">
+      <p>
+        <i class="fa fa-check" aria-hidden="true"></i>
+        <strong>申請が送信されました。</strong>
+        以下の内容で申請が送信されました。もし、誤りがある場合、この申請の受付期間内であれば、いつでも以下のフォームで変更できます。
+      </p>
+      <p>
+        <a href="{{ base_url("home/applications/circles/#{circle.id}") }}" class="btn btn-primary">
+          申請一覧に戻る
+        </a>
+      </p>
+    </div>
+  {% endif %}
+
+  {{ alerts.form_preview_alert( is_preview, form ) }}
+
+  {% if validation_errors() is not empty %}
+    <div class="alert alert-danger">
+      エラーが発生しました。以下をご確認ください。
+    </div>
+  {% endif %}
+
+  <h1 class="main__title">{{ form.name }}</h1>
+  <p class="text-muted">
+    受付期間 : {{ form.open_at_string }}〜{{ form.close_at_string }}
+    {% if not form.is_in_period %}
+      <strong class="text-danger">
+        <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+        受付期間外です
+      </strong>
+    {% endif %}
+  </p>
+
+  {% if form.description_html is not empty %}
+    <div class="panel">
+      <div class="panel-body">
+        <div class="markdown-body w-max-md">
+          {{ form.description_html|raw }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <section class="panel">
+    <div class="panel-heading sr-only">
+      <h2 class="panel-title">申請対象</h2>
+    </div>
+    <ul class="list-group">
+      {% if form.max_answers != 1 %}
+        <li class="list-group-item text-muted">
+          {% spaceless %}
+            この申請は、
+            <b>
+              {%- if form.type == "circle" -%}
+                1団体
+              {%- elseif form.type == "booth" -%}
+                1ブース
+              {%- endif -%}
+            </b>
+            につき、
+            <b>
+              {{- form.max_answers -}}
+              申請
+            </b>
+            できます
+          {% endspaceless %}
+        </li>
+      {% endif %}
+      <li class="list-group-item">
+        団体名 :
+        <b>{{ circle.name }}</b>
+      </li>
+      {% if form.type == "booth" %}
+        <li class="list-group-item">
+          ブース :
+          <b>
+            {% if booth.name is empty %}
+              {{ booth.place_name }}
+            {% else %}
+              {{ booth.name }}
+              ({{ booth.place_name }})
+            {% endif %}
+          </b>
+        </li>
+      {% endif %}
+    </ul>
+  </section>
+
+  {% import "macro_applications_form.html.twig" as form_macros %}
+  {{ form_macros.applications_form( form, type, answers, { id: 'js_applications__form' }, false, form_action, answer_info ) }}
+
+  {{ alerts.form_preview_alert( is_preview, form ) }}
+
+{% endblock %}
+
+{% block javascript %}
+  {{ parent() }}
+  <script>
+    {% if is_preview != true %}
+      const $form = $("#js_applications__form");
+      $form.change(function(){
+        // フォームに変更があったとき，ページ移動前イベントを登録
+        $(window).on("beforeunload", function() {
+          return "このままページを移動すると、入力・変更内容が破棄されます。";
+        });
+      });
+
+      $form.on("submit", function(e) {
+        // フォーム送信時ページ移動前イベントを削除
+        $(window).off("beforeunload");
+      });
+    {% endif %}
+  </script>
+{% endblock %}
