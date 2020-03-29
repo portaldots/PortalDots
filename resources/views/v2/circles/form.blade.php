@@ -1,16 +1,16 @@
 @extends('v2.layouts.no_drawer')
 
 @section('title', '企画参加登録')
-    
+
 @section('content')
     @include('v2.includes.circle_register_header')
-    
+
     <form method="post" action="{{ empty($circle) ? route('circles.store') : route('circles.update', [$circle]) }}"
         enctype="multipart/form-data">
         @csrf
-    
+
         @method(empty($circle) ? 'post' : 'patch' )
-    
+
         <app-container medium>
             <list-view>
                 <template v-slot:title>企画情報を入力</template>
@@ -75,7 +75,7 @@
                     @include('v2.includes.question')
                 @endforeach
             </list-view>
-    
+
             <div class="text-center pt-spacing-md pb-spacing">
                 <button type="submit" class="btn is-primary is-wide">
                     保存して次へ
