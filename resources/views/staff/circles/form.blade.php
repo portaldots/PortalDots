@@ -84,6 +84,16 @@
                     </div>
                     <hr>
                     <div class="form-group row">
+                        <span class="col-sm-2 col-form-label">カスタムフォームへの回答</span>
+                        <div class="col-sm-10">
+                            <p>
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                この画面ではまだカスタムフォームの回答を表示・編集できません。今後のアップデートでカスタムフォームの表示・編集もこの画面で可能にする予定です。
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
                         <div class="col-sm-2 col-form-label">参加登録受理</div>
                         <div class="col-sm-10">
                             <div class="form-check mb-3">
