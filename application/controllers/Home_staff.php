@@ -198,7 +198,7 @@ class Home_staff extends MY_Controller
             if ($vars["form"] === false) {
                 $this->_error("申請フォームエラー", "このフォームは存在しません。", 404);
             }
-            $this->_render('home/applications_form', $vars);
+            $this->_render('home_staff/applications_form', $vars);
             return;
         }
 
