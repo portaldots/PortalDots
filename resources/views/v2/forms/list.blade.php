@@ -61,6 +61,10 @@
                             @summary($form->description)
                         </list-view-item>
                     @endforeach
+                    @if ($forms->hasPages())
+                        <list-view-pagination prev="{{ $forms->appends(['circle' => $circle->id])->previousPageUrl() }}"
+                            next="{{ $forms->appends(['circle' => $circle->id])->nextPageUrl() }}" />
+                    @endif
                 </list-view>
             @endif
         </app-container>

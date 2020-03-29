@@ -22,6 +22,9 @@
                         @summary($page->body)
                     </list-view-item>
                 @endforeach
+                @if ($pages->hasPages())
+                    <list-view-pagination prev="{{ $pages->previousPageUrl() }}" next="{{ $pages->nextPageUrl() }}" />
+                @endif
             </list-view>
         @endif
     </app-container>

@@ -31,6 +31,9 @@
                         @summary($document->description)
                     </list-view-item>
                 @endforeach
+                @if ($documents->hasPages())
+                    <list-view-pagination prev="{{ $documents->previousPageUrl() }}" next="{{ $documents->nextPageUrl() }}" />
+                @endif
             </list-view>
         @endif
     </app-container>

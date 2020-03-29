@@ -10,7 +10,13 @@ class IndexAction extends Controller
 {
     public function __invoke()
     {
+        $documents = Document::public()->with('schedule')->paginate(10);
+
+        if ($documents->currentPage() > $documents->lastPage()) {
+            return redirect($documents->url($documents->lastPage()));
+        }
+
         return view('v2.documents.index')
-            ->with('documents', Document::public()->with('schedule')->get());
+            ->with('documents', $documents);
     }
 }

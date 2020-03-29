@@ -13,7 +13,7 @@ class IndexAction extends Controller
 {
     public function __invoke(Request $request)
     {
-        $forms = Form::public()->open()->closeOrder()->get();
+        $forms = Form::public()->open()->closeOrder()->paginate(10);
         $circle = Circle::find($request->circle);
         if (empty($circle) || Gate::denies('circle.belongsTo', $circle)) {
             $circles = Auth::user()->circles()->get();
@@ -26,6 +26,10 @@ class IndexAction extends Controller
                 return redirect()
                     ->route('circles.selector.show', ['redirect' => 'forms.index']);
             }
+        }
+
+        if ($forms->currentPage() > $forms->lastPage()) {
+            return redirect($forms->url($forms->lastPage()));
         }
 
         return view('v2.forms.list')
