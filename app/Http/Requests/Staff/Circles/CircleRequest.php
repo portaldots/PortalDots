@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Circles;
+namespace App\Http\Requests\Staff\Circles;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 
-class StaffCircleRequest extends FormRequest
+class CircleRequest extends FormRequest
 {
     public function __construct(User $user)
     {

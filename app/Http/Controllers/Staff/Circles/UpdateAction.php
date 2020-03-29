@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
 use App\Eloquents\User;
-use App\Http\Requests\Circles\StaffCircleRequest;
+use App\Http\Requests\Staff\Circles\CircleRequest;
 use Illuminate\Support\Facades\Auth;
 
 class UpdateAction extends Controller
@@ -16,7 +16,7 @@ class UpdateAction extends Controller
         $this->user = $user;
     }
 
-    public function __invoke(Circle $circle, StaffCircleRequest $request)
+    public function __invoke(Circle $circle, CircleRequest $request)
     {
         $member_ids = str_replace(["\r\n", "\r", "\n"], "\n", $request->members);
         $member_ids = explode("\n", $member_ids);
