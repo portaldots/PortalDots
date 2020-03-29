@@ -85,6 +85,11 @@ class Circle extends Model
         return $query->whereNull('submitted_at');
     }
 
+    public function scopeSubmitted($query)
+    {
+        return $query->whereNotNull('submitted_at');
+    }
+
     public function hasSubmitted()
     {
         return isset($this->submitted_at);
