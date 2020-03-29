@@ -133,10 +133,12 @@
                             <span class="label label-success">公開</span>
                         {% endif %}
                     </p>
-                    <hr>
-                    <div>
-                        {{ form.description_html | raw }}
-                    </div>
+                    {% if form.description_html is not empty %}
+                      <hr>
+                      <div>
+                          {{ form.description_html | raw }}
+                      </div>
+                    {% endif %}
                 </div>
                 <div class="col-md-4 text-center">
                     <ul class="list-unstyled text-muted">
