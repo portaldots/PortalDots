@@ -40,7 +40,7 @@ export default {
     color: $color-primary;
     display: block;
     font-weight: bold;
-    padding: $spacing-s $spacing;
+    padding: $spacing-md;
     width: 100%;
     &:hover,
     &:active,
