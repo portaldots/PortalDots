@@ -38,7 +38,9 @@
             "git add"
         ],
         "!({**/*mail*/**/*,**/*mail*}).blade.php": [
-            "yarn blade-formatter --write"
+            "yarn blade-formatter --write",
+            "composer phpcbf",
+            "git add"
         ],
         "*.php": [
             "composer phpcbf",
