@@ -15,7 +15,9 @@ class AnswerDetailsService
     public function getAnswerDetailsByAnswer(Answer $answer)
     {
         $raw_details = AnswerDetail::where('answer_id', $answer->id)->get();
-        $answer->loadMissing('form.questions');
+        $answer->loadMissing(['form' => function ($query) {
+            $query->withoutGlobalScope('withoutCustomForms');
+        }], 'form.questions');
         $result = [];
 
         // チェックボックスの設問については、回答が配列になるようにする
