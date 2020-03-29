@@ -540,7 +540,7 @@ class Home_staff extends MY_Controller
     }
 
     /**
-     * メール認証の完了を調べる関数
+     * メール認証の完了がしているかどうか表示するための Grocery CRUD コールバック関数
      */
     public function _crud_email_verified($value, $row)
     {
@@ -605,8 +605,9 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->set_subject('企画');
         $this->grocery_crud->display_as('id', '企画ID');
         $this->grocery_crud->display_as('name', '企画の名前');
+        $this->grocery_crud->display_as('name_yomi', '企画の名前(よみ)');
         $this->grocery_crud->display_as('group_name', '企画団体の名前');
-        $this->grocery_crud->display_as('answer_id', 'ｶｽﾀﾑﾌｫｰﾑ回答ID');
+        $this->grocery_crud->display_as('group_name_yomi', '企画団体の名前(よみ)');
         $this->grocery_crud->display_as('submitted_at', '参加登録提出日時');
         $this->grocery_crud->display_as('status', '登録受理状況');
         $this->grocery_crud->display_as('status_set_at', '登録受理状況設定日時');
@@ -618,7 +619,6 @@ class Home_staff extends MY_Controller
             'name_yomi',
             'group_name',
             'group_name_yomi',
-            'answer_id',
             'submitted_at',
             'status',
             'status_set_at',
@@ -638,6 +638,9 @@ class Home_staff extends MY_Controller
             $this->grocery_crud->callback_column('name', array($this, '_crud_circle_name_yomi'));
             $this->grocery_crud->callback_column('group_name', array($this, '_crud_circle_group_name_yomi'));
         }
+
+        // 登録受理状況
+        $this->grocery_crud->callback_column('status', array($this, '_crud_circle_status'));
 
         $this->grocery_crud->columns($columns);
 
@@ -659,11 +662,24 @@ class Home_staff extends MY_Controller
     }
 
     /**
-     * 名にふりがなをふるための Grocery CRUD コールバック関数
+     * 企画団体の名前にふりがなをふるための Grocery CRUD コールバック関数
      */
     public function _crud_circle_group_name_yomi($value, $row)
     {
         return "<ruby>" . $value . "<rt>" . $row->group_name_yomi . "</rt></ruby>";
+    }
+
+    /**
+     * 登録受理状況を表示するための Grocery CRUD コールバック関数
+     */
+    public function _crud_circle_status($value, $row)
+    {
+        if ($row->status === 'approved') {
+            return '<span class="text-success">受理</span>';
+        } elseif ($row->status === 'rejected') {
+            return '<span class="text-danger">不受理</span>';
+        }
+        return '<span class="text-muted">確認中</span>';
     }
 
     /**
