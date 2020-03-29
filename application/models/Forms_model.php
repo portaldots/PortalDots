@@ -114,6 +114,10 @@ class Forms_model extends MY_Model
         $return = $form_info;
         $return->questions = $questions_for_return;
 
+        // カスタムフォームに関する情報を付加
+        $this->db->where('form_id', $form_info->id);
+        $return->custom_form = $this->db->get('custom_forms')->row();
+
         return $return;
     }
 
@@ -137,6 +141,8 @@ class Forms_model extends MY_Model
             false
         );
         $this->db->where("form_id", $form_id);
+        // 参加登録が提出済の企画による回答のみ取得する
+        $this->db->where("EXISTS (SELECT * FROM circles WHERE circles.id = answers.circle_id AND circles.submitted_at IS NOT NULL)", null, false);
         $result = $this->db->get("answers")->row();
         if ($form->type === "circle") {
             // type が circle の場合
@@ -163,6 +169,18 @@ class Forms_model extends MY_Model
         }
 
         return $return;
+    }
+
+    /**
+     * 指定されたタイプに関するカスタムフォーム設定を取得する
+     *
+     * @param string $type
+     * @return object
+     */
+    public function get_custom_form_by_type($type)
+    {
+        $this->db->where('type', $type);
+        return $this->db->get('custom_forms')->row();
     }
 
     /**
@@ -270,6 +288,10 @@ class Forms_model extends MY_Model
         if (!empty($booth_id)) {
             $this->db->where("booth_id", $booth_id);
         }
+
+        // 参加登録が提出済の企画による回答のみ取得する
+        $this->db->where("EXISTS (SELECT * FROM circles WHERE circles.id = answers.circle_id AND circles.submitted_at IS NOT NULL)", null, false);
+
         $query = $this->db->get("answers");
 
         // TODO: N+1問題の解決

@@ -27,6 +27,11 @@
       <a href="{{ base_url('/staff/circles/custom_form') }}" class="btn btn-primary">
         企画参加登録機能の設定
       </a>
+      {% if custom_form is not empty %}
+      <a href="{{ base_url("/home_staff/applications/read/#{custom_form.form_id}") }}" class="btn btn-primary">
+        カスタムフォームへの回答一覧
+      </a>
+      {% endif %}
     </p>
   {% endif %}
 

@@ -16,6 +16,7 @@ class Circles_model extends MY_Model
     public function count_all()
     {
         $this->db->select("count(id) AS c", false);
+        $this->db->where("submitted_at IS NOT NULL", null, false);
         return (int)$this->db->get("circles")->row()->c ?? 0;
     }
 

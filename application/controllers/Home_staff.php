@@ -292,7 +292,7 @@ class Home_staff extends MY_Controller
     {
 
         $vars = [];
-        $vars["page_title"] = "申請管理";
+        $vars["page_title"] = "回答一覧";
         $vars["main_page_type"] = "applications";
 
         $this->forms->include_private = true;
@@ -652,6 +652,9 @@ class Home_staff extends MY_Controller
         }
 
         $vars += (array)$this->grocery_crud->render();
+
+        // カスタムフォームが存在する場合、カスタムフォーム設定もビューにわたす
+        $vars['custom_form'] = $this->forms->get_custom_form_by_type('circle');
 
         $this->_render('home_staff/crud', $vars);
     }
