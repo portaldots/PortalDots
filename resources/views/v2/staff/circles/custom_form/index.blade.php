@@ -1,7 +1,13 @@
 @extends('v2.layouts.no_drawer')
 
 @section('title', '企画参加登録の設定')
-    
+
+@section('navbar')
+    <app-nav-bar-back inverse href="{{ url('home_staff/circles') }}" data-turbolinks="false">
+        企画情報管理
+    </app-nav-bar-back>
+@endsection
+
 @section('content')
     <app-container medium>
         <list-view>
@@ -46,7 +52,7 @@
                     <template v-slot:description>
                         この設定がオンの場合かつ上記の受付期間内のとき、ユーザーに企画参加登録画面が表示されます。
                     </template>
-    
+
                     <div class="form-checkbox">
                         <label class="form-checkbox__label">
                             <input id="is_public" type="checkbox"
@@ -56,7 +62,7 @@
                             公開する
                         </label>
                     </div>
-    
+
                     @error('is_public')
                     <template v-slot:invalid>{{ $message }}</template>
                     @enderror
@@ -66,9 +72,5 @@
                 <button type="submit" class="btn is-primary is-wide">保存</button>
             </div>
         </form>
-        <hr>
-        <div class="text-center pt-spacing-md pb-spacing">
-            <a href="{{ url('home_staff/circles') }}" data-turbolinks="false">企画一覧へもどる</a>
-        </div>
     </app-container>
 @endsection

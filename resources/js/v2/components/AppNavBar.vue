@@ -1,6 +1,7 @@
 <template>
-  <div class="navbar" :class="{ 'is-no-drawer': noDrawer }">
+  <div class="navbar" :class="{ 'is-no-drawer': noDrawer, 'is-staff': staff }">
     <slot />
+    <span class="badge is-muted" v-if="staff">staff</span>
   </div>
 </template>
 
@@ -8,6 +9,10 @@
 export default {
   props: {
     noDrawer: {
+      type: Boolean,
+      default: false
+    },
+    staff: {
       type: Boolean,
       default: false
     }
@@ -32,6 +37,10 @@ export default {
     left: 0;
     width: 100%;
   }
+  &.is-staff {
+    background: $color-text;
+    color: #fff;
+  }
 
   @media screen and (max-width: $breakpoint-drawer-hide) {
     left: 0;
@@ -47,6 +56,14 @@ export default {
     &:focus {
       color: $color-text;
       text-decoration: none;
+    }
+  }
+  &.is-staff &-brand {
+    color: #fff;
+    &:hover,
+    &:active,
+    &:focus {
+      color: #fff;
     }
   }
 }

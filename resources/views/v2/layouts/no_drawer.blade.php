@@ -39,7 +39,7 @@
                     }
                 };
             }
-    
+
         </script>
         @endprepend
     @endif
@@ -55,7 +55,7 @@
     </div>
 
     <div class="app" id="v2-app">
-        <app-nav-bar no-drawer>
+        <app-nav-bar no-drawer @staffpage staff @endstaffpage>
             @section('navbar')
                 <a href="{{ route('home') }}" class="navbar-brand">
                     {{ config('app.name', 'ホームへ戻る') }}
@@ -68,7 +68,7 @@
                     <template v-slot:title>
                         {{ session('topAlert.title') }}
                     </template>
-    
+
                     @if (Session::has('topAlert.body'))
                         {{ session('topAlert.body') }}
                     @endif

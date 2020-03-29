@@ -2,6 +2,12 @@
 
 @section('title', 'アップロードファイルの一括ダウンロード')
 
+@section('navbar')
+    <app-nav-bar-back inverse href="{{ url('home_staff/applications/read/' . $form->id) }}" data-turbolinks="false">
+        {{ $form->name }}
+    </app-nav-bar-back>
+@endsection
+
 @section('content')
     <app-container medium>
         <list-view>
@@ -26,9 +32,5 @@
                 </list-view-action-btn>
             </form>
         </list-view>
-    </app-container>
-    <app-container class="text-center pt-spacing-md">
-        <a href="{{ url('home_staff/applications/read/' . $form->id) }}" class="btn is-primary is-wide"
-            data-turbolinks="false">回答一覧へもどる</a>
     </app-container>
 @endsection
