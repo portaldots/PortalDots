@@ -141,8 +141,8 @@ class Forms_model extends MY_Model
             false
         );
         $this->db->where("form_id", $form_id);
-        // 参加登録が提出済の企画による回答のみ取得する
-        $this->db->where("EXISTS (SELECT * FROM circles WHERE circles.id = answers.circle_id AND circles.submitted_at IS NOT NULL)", null, false);
+        // 参加登録が受理されている企画による回答のみ取得する
+        $this->db->where("EXISTS (SELECT * FROM circles WHERE circles.id = answers.circle_id AND circles.status = 'approved')", null, false);
         $result = $this->db->get("answers")->row();
         if ($form->type === "circle") {
             // type が circle の場合
