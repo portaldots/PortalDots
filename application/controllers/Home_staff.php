@@ -204,6 +204,9 @@ class Home_staff extends MY_Controller
 
         $this->grocery_crud->set_table('forms');
 
+        // カスタムフォームは一覧に表示しない
+        $this->grocery_crud->where('NOT EXISTS (SELECT * FROM custom_forms WHERE form_id = forms.id)', null, false);
+
         $this->grocery_crud->set_subject('フォーム');
         $this->grocery_crud->display_as('id', 'フォームID');
         $this->grocery_crud->display_as('name', 'フォーム名');
