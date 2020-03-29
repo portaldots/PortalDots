@@ -15,6 +15,7 @@ import ListViewItem from './components/ListViewItem.vue'
 import ListViewActionBtn from './components/ListViewActionBtn.vue'
 import ListViewEmpty from './components/ListViewEmpty.vue'
 import ListViewFormGroup from './components/ListViewFormGroup.vue'
+import ListViewPagination from './components/ListViewPagination.vue'
 import TopAlert from './components/TopAlert.vue'
 import FormWithConfirm from './components/FormWithConfirm.vue'
 
@@ -55,6 +56,7 @@ export function mountV2App() {
         ListViewActionBtn,
         ListViewEmpty,
         ListViewFormGroup,
+        ListViewPagination,
         TopAlert,
         FormWithConfirm,
         QuestionItem,

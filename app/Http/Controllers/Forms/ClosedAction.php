@@ -13,7 +13,7 @@ class ClosedAction extends Controller
 {
     public function __invoke(Request $request)
     {
-        $forms = Form::public()->closed()->closeOrder()->get();
+        $forms = Form::public()->closed()->closeOrder()->paginate(10);
         $circle = Circle::find($request->circle);
         if (empty($circle) || Gate::denies('circle.belongsTo', $circle)) {
             $circles = Auth::user()->circles()->get();
@@ -26,6 +26,10 @@ class ClosedAction extends Controller
                 return redirect()
                     ->route('circles.selector.show', ['redirect' => 'forms.closed']);
             }
+        }
+
+        if ($forms->currentPage() > $forms->lastPage()) {
+            return redirect($forms->url($forms->lastPage()));
         }
 
         return view('v2.forms.list')
