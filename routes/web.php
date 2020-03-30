@@ -158,6 +158,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::post('/circles', 'Staff\Circles\StoreAction')->name('circles.new');
 
         Route::get('/circles/{circle}/email', 'Staff\Circles\SendEmails\IndexAction')->name('circles.email');
+        Route::post('/circles/{circle}/email', 'Staff\Circles\SendEmails\SendAction');
 
         // ユーザーチェッカー
         Route::get('/users/check', 'Staff\Users\CheckerAction')->name('users.check');

@@ -3,8 +3,9 @@
 @section('title', 'メール送信フォーム')
     
 @section('content')
-<form method="post" action="#">
+<form method="post" action="{{ route('staff.circles.email', ['circle' => $circle]) }}">
     @csrf
+    <input type="hidden" name="circle_id" value="{{ $circle->id }}">
     <app-container>
         <list-view>
             <list-view-form-group label-for="recipient">
