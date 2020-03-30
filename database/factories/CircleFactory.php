@@ -23,4 +23,5 @@ $factory->state(Circle::class, 'rejected', [
 $factory->state(Circle::class, 'notSubmitted', [
     'submitted_at' => null,
     'status' => null,
+    'invitation_token' => bin2hex(random_bytes(16)),
 ]);

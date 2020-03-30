@@ -12,6 +12,12 @@ use Storage;
 
 class AnswerDetailsService
 {
+    /**
+     * $answer に紐づく、設問に対する回答を取得
+     *
+     * @param Answer $answer
+     * @return array
+     */
     public function getAnswerDetailsByAnswer(Answer $answer)
     {
         $raw_details = AnswerDetail::where('answer_id', $answer->id)->get();
