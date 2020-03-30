@@ -157,6 +157,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::get('/circles/create', 'Staff\Circles\CreateAction')->name('circles.create');
         Route::post('/circles', 'Staff\Circles\StoreAction')->name('circles.new');
 
+        Route::get('/circles/{circle}/email', 'Staff\Circles\SendEmails\IndexAction')->name('circles.email');
+
         // ユーザーチェッカー
         Route::get('/users/check', 'Staff\Users\CheckerAction')->name('users.check');
         Route::get('/users/check/list', 'Staff\Users\CheckerListAction')->name('users.check.list');
