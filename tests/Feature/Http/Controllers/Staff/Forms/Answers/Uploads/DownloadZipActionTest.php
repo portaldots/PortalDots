@@ -56,7 +56,7 @@ class DownloadZipActionTest extends TestCase
     public function ダウンロードできるファイルがない時に適切にエラー表示される()
     {
         $this->mock(DownloadZipService::class, function ($mock) {
-        $mock->shouldReceive('makeZip')
+            $mock->shouldReceive('makeZip')
             ->once()
             ->andThrow(new NoDownloadFileExistException());
         });
@@ -74,7 +74,7 @@ class DownloadZipActionTest extends TestCase
     public function ZipArchive非対応時に適切にエラー表示される()
     {
         $this->mock(DownloadZipService::class, function ($mock) {
-        $mock->shouldReceive('makeZip')
+            $mock->shouldReceive('makeZip')
             ->once()
             ->andThrow(new ZipArchiveNotSupportedException());
         });

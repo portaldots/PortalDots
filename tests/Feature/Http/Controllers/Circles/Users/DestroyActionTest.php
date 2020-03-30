@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Circles;
+namespace Tests\Feature\Http\Controllers\Circles\Users;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -57,7 +57,8 @@ class DestroyActionTest extends TestCase
     /**
      * @test
      */
-    public function リーダーではないメンバーが自分自身を削除することができる() {
+    public function リーダーではないメンバーが自分自身を削除することができる()
+    {
         $this->assertDatabaseHas('circle_user', [
             'circle_id' => $this->circle->id,
             'user_id' => $this->nonLeader->id,
@@ -84,7 +85,8 @@ class DestroyActionTest extends TestCase
     /**
      * @test
      */
-    public function リーダーが別のメンバーを削除する() {
+    public function リーダーが別のメンバーを削除する()
+    {
         $this->assertDatabaseHas('circle_user', [
             'circle_id' => $this->circle->id,
             'user_id' => $this->nonLeader->id,
@@ -111,7 +113,8 @@ class DestroyActionTest extends TestCase
     /**
      * @test
      */
-    public function リーダーは自分自身を削除できない() {
+    public function リーダーは自分自身を削除できない()
+    {
         $response = $this
                     ->actingAs($this->user)
                     ->delete(

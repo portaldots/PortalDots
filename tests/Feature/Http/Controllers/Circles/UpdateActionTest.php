@@ -54,8 +54,6 @@ class UpdateActionTest extends TestCase
      */
     public function メンバーは企画の情報を更新できる()
     {
-        $this->withoutExceptionHandling();
-
         $this->assertDatabaseHas('circles', [
             'name' => $this->circle->name,
             'name_yomi' => $this->circle->name_yomi,
