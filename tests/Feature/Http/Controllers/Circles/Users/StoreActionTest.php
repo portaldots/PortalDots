@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controllers\Circles\Users;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\Http\Controllers\Circles\BaseTestCase;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use App\Eloquents\User;
@@ -13,14 +13,12 @@ use App\Eloquents\Form;
 use App\Eloquents\CustomForm;
 use App\Eloquents\Answer;
 
-class StoreActionTest extends TestCase
+class StoreActionTest extends BaseTestCase
 {
     use RefreshDatabase;
 
     private $user;
     private $circle;
-    private $form;
-    private $customForm;
     private $answer;
     private $nonLeader;
 
@@ -30,14 +28,6 @@ class StoreActionTest extends TestCase
 
         $this->user = factory(User::class)->create();
         $this->circle = factory(Circle::class)->states('notSubmitted')->create();
-        $this->form = factory(Form::class)->create([
-            'open_at' => new CarbonImmutable('2020-01-26 11:42:51'),
-            'close_at' => new CarbonImmutable('2020-03-26 15:23:31'),
-        ]);
-        $this->customForm = factory(CustomForm::class)->create([
-            'type' => 'circle',
-            'form_id' => $this->form->id,
-        ]);
         $this->answer = factory(Answer::class)->create([
             'form_id' => $this->form->id,
             'circle_id' => $this->circle->id,

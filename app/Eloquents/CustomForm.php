@@ -14,6 +14,8 @@ class CustomForm extends Model
 
     protected $appends = ['form_name'];
 
+    private static $noCacheWhenGetFormByTypeFlag = false;
+
     /**
      * type カラムに入りうる文字列
      *
@@ -84,6 +86,18 @@ class CustomForm extends Model
         return self::getAllowedTypesDict()[$this->type];
     }
 
+    /**
+     * getFormByType を実行する際、キャッシュせず常にDBからFormを取得するようにする
+     *
+     * 主にテストケースを書く際に利用する。テスト以外では原則として利用しない
+     *
+     * @return void
+     */
+    public static function noCacheWhenGetFormByType()
+    {
+        static::$noCacheWhenGetFormByTypeFlag = true;
+    }
+
     public static function getFormByType(string $type): ?Form
     {
         static $forms = [];
@@ -92,7 +106,7 @@ class CustomForm extends Model
             throw new InvalidArgumentException();
         }
 
-        if (empty($forms[$type])) {
+        if (empty($forms[$type]) || static::$noCacheWhenGetFormByTypeFlag) {
             $custom_form = self::where('type', $type)->first();
             if (!empty($custom_form)) {
                 $forms[$type] = $custom_form->form()->withoutGlobalScope('withoutCustomForms')->first();
