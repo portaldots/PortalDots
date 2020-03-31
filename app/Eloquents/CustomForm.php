@@ -14,7 +14,7 @@ class CustomForm extends Model
 
     protected $appends = ['form_name'];
 
-    private static $noCacheWhenGetFormByTypeFlag = false;
+    private static $noCacheForm = false;
 
     /**
      * type カラムに入りうる文字列
@@ -93,9 +93,9 @@ class CustomForm extends Model
      *
      * @return void
      */
-    public static function noCacheWhenGetFormByType()
+    public static function noCacheForm()
     {
-        static::$noCacheWhenGetFormByTypeFlag = true;
+        static::$noCacheForm = true;
     }
 
     public static function getFormByType(string $type): ?Form
@@ -106,7 +106,7 @@ class CustomForm extends Model
             throw new InvalidArgumentException();
         }
 
-        if (empty($forms[$type]) || static::$noCacheWhenGetFormByTypeFlag) {
+        if (empty($forms[$type]) || static::$noCacheForm) {
             $custom_form = self::where('type', $type)->first();
             if (!empty($custom_form)) {
                 $forms[$type] = $custom_form->form()->withoutGlobalScope('withoutCustomForms')->first();

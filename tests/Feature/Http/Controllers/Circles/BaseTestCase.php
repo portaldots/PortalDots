@@ -29,14 +29,6 @@ abstract class BaseTestCase extends TestCase
             'form_id' => $this->form->id,
         ]);
 
-        CustomForm::noCacheWhenGetFormByType();
-    }
-
-    public function tearDown(): void
-    {
-        $this->customForm->delete();
-        $this->form->delete();
-
-        parent::tearDown();
+        CustomForm::noCacheForm();
     }
 }
