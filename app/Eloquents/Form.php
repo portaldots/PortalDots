@@ -114,7 +114,9 @@ class Form extends Model
     {
         return DB::select(
             'SELECT id, name FROM circles
-                WHERE NOT EXISTS
+                WHERE
+                    status = \'approved\'
+                    AND NOT EXISTS
                     (SELECT circle_id FROM answers WHERE answers.form_id = :form_id AND answers.circle_id = circles.id)
             ',
             ['form_id' => $this->id]
