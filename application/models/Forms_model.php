@@ -144,28 +144,30 @@ class Forms_model extends MY_Model
         // 参加登録が受理されている企画による回答のみ取得する
         $this->db->where("EXISTS (SELECT * FROM circles WHERE circles.id = answers.circle_id AND circles.status = 'approved')", null, false);
         $result = $this->db->get("answers")->row();
-        if ($form->type === "circle") {
-            // type が circle の場合
-            $return->form_type = "circle";
-            $return->count_circle = $result->count_circle;
-            $return->count_booth = null;
-            // 母数を取得する
-            $return->count_all_circles = $this->circles->count_all();
-            $return->count_all_booths = null;
-            // 回答率を計算する
-            $return->proportion_circle = round(($return->count_circle / $return->count_all_circles) * 100, 1);
-            $return->proportion_booth = null;
-        } else {
+
+        $return->form_type = $form->type;
+        $return->count_circle = $result->count_circle;
+        $return->count_booth = null;
+
+        // 母数を取得する
+        $return->count_all_circles = $this->circles->count_all();
+        $return->count_all_booths = null;
+
+        // 回答率を計算する
+        $return->proportion_circle = $return->count_all_circles === 0
+            ? 0
+            : round(($return->count_circle / $return->count_all_circles) * 100, 1);
+        $return->proportion_booth = null;
+
+        if ($form->type === "booth") {
             // type が booth の場合
-            $return->form_type = "booth";
-            $return->count_circle = $result->count_circle;
             $return->count_booth = $result->count_booth;
             // 母数を取得する
-            $return->count_all_circles = $this->circles->count_all();
             $return->count_all_booths = $this->booths->count_all();
             // 回答率を計算する
-            $return->proportion_circle = round(($return->count_circle / $return->count_all_circles) * 100, 1);
-            $return->proportion_booth = round(($return->count_booth / $return->count_all_booths) * 100, 1);
+            $return->proportion_booth = $return->count_all_booths === 0
+                ? 0
+                : round(($return->count_booth / $return->count_all_booths) * 100, 1);
         }
 
         return $return;
