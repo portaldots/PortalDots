@@ -19,7 +19,7 @@ class EditAction extends Controller
         AnswersService $answersService,
         AnswerDetailsService $answerDetailsService
     ) {
-        // 他団体の回答を編集できないようにする
+        // 他企画の回答を編集できないようにする
         $this->middleware('can:update,answer');
 
         $this->answersService = $answersService;
@@ -34,11 +34,10 @@ class EditAction extends Controller
         }
 
         $circle = $answer->circle;
-        $questions = $form->questions()->get();
         return view('v2.forms.answers.form')
             ->with('circle', $circle)
             ->with('form', $form)
-            ->with('questions', $questions)
+            ->with('questions', $form->questions()->get())
             ->with('answers', $this->answersService->getAnswersByCircle($form, $circle))
             ->with('answer', $answer)
             ->with('answer_details', $this->answerDetailsService->getAnswerDetailsByAnswer($answer));

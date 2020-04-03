@@ -9,7 +9,7 @@
             <template v-slot:title>アカウント削除</template>
             <list-view-card class="text-center">
                 @if ($belong)
-                    <p class="card-text">団体に所属しているため、アカウント削除はできません。</p>
+                    <p class="card-text">企画に所属しているか、参加登録の途中のため、アカウント削除はできません。</p>
                     <p class="card-text">詳細については「{{ config('portal.admin_name') }}」までお問い合わせください</p>
                     <div>
                         <a href="{{ route('home') }}" class="btn is-primary">ホームに戻る</a>

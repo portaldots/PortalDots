@@ -83,7 +83,7 @@ class EditActionTest extends TestCase
     /**
      * @test
      */
-    public function 自分が所属していない団体の回答にはアクセスできない()
+    public function 自分が所属していない企画の回答にはアクセスできない()
     {
         $anotherUser = factory(User::class)->create();
         $anotherCircle = factory(Circle::class)->create();

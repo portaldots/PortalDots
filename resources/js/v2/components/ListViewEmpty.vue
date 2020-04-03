@@ -2,6 +2,9 @@
   <div class="listview-empty">
     <i :class="`${iconClass} listview-empty__icon`"></i>
     <p class="listview-empty__text">{{ text }}</p>
+    <div class="listview-empty__body" v-if="$slots.default">
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -33,6 +36,9 @@ export default {
   &__text {
     font-weight: bold;
     margin: 0;
+  }
+  &__body {
+    margin: 0.5rem 0 0;
   }
 }
 </style>

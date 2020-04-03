@@ -7,7 +7,9 @@
       <span class="badge is-danger" v-if="required">必須</span>
     </template>
     <template #description>
-      <p class="question-item__description is-text-color">{{ description }}</p>
+      <p class="question-item__description is-text-color" v-if="description">
+        {{ description }}
+      </p>
       <p class="question-item__description" v-if="validationNotice">
         {{ validationNotice }}
       </p>

@@ -21,6 +21,28 @@
         メールの一斉送信
       </a>
     </p>
+  {% elseif main_page_type == 'circles' %}
+    <p>参加登録の提出が完了している企画のみ表示されます</p>
+    {% if custom_form is empty %}
+      <div class="alert alert-info">
+        <p><strong>企画参加登録をウェブ化して時短しませんか？</strong></p>
+        <p>企画参加登録を「{{ constant("APP_NAME") }}」上で受け付けることで、参加登録にかかる事務作業を時短することができます。</p>
+        <p>
+          <a href="{{ base_url('/staff/circles/custom_form') }}" class="btn btn-primary">
+            企画参加登録機能を有効にする
+          </a>
+        </p>
+      </div>
+    {% else %}
+      <p>
+        <a href="{{ base_url('/staff/circles/custom_form') }}" class="btn btn-primary">
+          企画参加登録機能の設定
+        </a>
+        <a href="{{ base_url("/home_staff/applications/read/#{custom_form.form_id}") }}" class="btn btn-primary">
+          カスタムフォームへの回答一覧
+        </a>
+      </p>
+    {% endif %}
   {% endif %}
 
   {{ output | raw }}

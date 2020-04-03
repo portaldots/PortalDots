@@ -4,7 +4,8 @@
 
 @component('mail::panel')
 - 回答ID : {{ $answer->id }}
-- 団体名 : {{ $circle->name }}
+- 企画の名前 : {{ $circle->name }}
+- 企画団体の名前 : {{ $circle->group_name }}
 - 回答者 : {{ $applicant->name }}
 - 日時 : @datetime($answer->updated_at)
 @endcomponent

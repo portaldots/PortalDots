@@ -17,12 +17,12 @@ class Booths_model extends MY_Model
     }
 
     /**
-     * 指定された団体IDの団体が行うブースの情報を取得する
+     * 指定された企画IDの企画が行うブースの情報を取得する
      *  - circle_name : circles.name
      *  - place_name : places.name ( ブースの場所名 )
      *  - booth_id : booths.id ( ブースID )
      *  - booth_name : booths.name ( ブース名 )
-     * @param int $circle_id 団体ID( circles.id )
+     * @param int $circle_id 企画ID( circles.id )
      * @return object[]               ブース情報オブジェクトの配列。存在しない場合は空配列。
      */
     public function get_booth_info_by_circle_id($circle_id)
@@ -32,7 +32,6 @@ class Booths_model extends MY_Model
             "places.name AS place_name",
             "places.type AS place_type",
             "booths.id AS booth_id",
-            "booths.name AS booth_name",
             "booths.created_at AS created_at",
             "booths.created_by AS created_by",
             "booths.updated_at AS updated_at",
@@ -58,7 +57,6 @@ class Booths_model extends MY_Model
             "booths.id AS id",
             "booths.place_id AS place_id",
             "booths.circle_id AS circle_id",
-            "booths.name AS name",
             "places.name AS place_name",
             "booths.created_at AS created_at",
             "booths.created_by AS created_by",

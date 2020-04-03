@@ -50,8 +50,7 @@ textarea {
       background: transparent;
       border: 0;
       box-shadow: none;
-      padding-left: 0;
-      padding-right: 0;
+      padding: $spacing-xxs 0;
     }
     &:focus {
       border-color: $color-primary;

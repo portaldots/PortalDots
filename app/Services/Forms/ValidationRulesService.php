@@ -13,7 +13,7 @@ class ValidationRulesService
     /**
      * バリデーションルール配列を取得する
      *
-     * 回答の下書き保存用の簡易バリデーションとしたい場合、第二引数を false にする
+     * 回答の下書き保存用の簡易バリデーションとしたい場合、$isStrict 引数の値を false にする
      *
      * @param Form $form
      * @param Request $request

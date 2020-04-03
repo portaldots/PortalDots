@@ -69,7 +69,7 @@
             <tr>
                 <th>回答ID</th>
                 <th class="table-sticky">
-                    団体
+                    企画
                     {% if form.type == "booth" %}
                         ・ ブース
                     {% endif %}
@@ -89,12 +89,7 @@
                         {{ answer.circle.name }} (ID : {{ answer.circle.id }})
                         {% if form.type == "booth" %}
                             <br>
-                            {% if answer.booth.name is empty %}
-                                {{ answer.booth.place_name }}
-                            {% else %}
-                                {{ answer.booth.name }}
-                                ({{ answer.booth.place_name }})
-                            {% endif %}
+                            {{ answer.booth.place_name }}
                         {% endif %}
                     </th>
                     {% for question in form.questions if question.type is not same as("heading") %}

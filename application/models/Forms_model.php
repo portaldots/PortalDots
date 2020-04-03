@@ -114,6 +114,10 @@ class Forms_model extends MY_Model
         $return = $form_info;
         $return->questions = $questions_for_return;
 
+        // カスタムフォームに関する情報を付加
+        $this->db->where('form_id', $form_info->id);
+        $return->custom_form = $this->db->get('custom_forms')->row();
+
         return $return;
     }
 
@@ -130,39 +134,55 @@ class Forms_model extends MY_Model
         $form = $this->get_form_by_form_id($form_id);
 
         // 回答者数を取得
-        // (回答者数 : typeがboothなら回答ブース数と回答団体数，circleなら回答団体数を取得．同じ団体が
-        // 1つのフォームに対し2つ以上の回答をしていても，回答団体数は1とカウントする)
+        // (回答者数 : typeがboothなら回答ブース数と回答企画数，circleなら回答企画数を取得．同じ企画が
+        // 1つのフォームに対し2つ以上の回答をしていても，回答企画数は1とカウントする)
         $this->db->select(
             "count( DISTINCT circle_id ) AS count_circle, count( DISTINCT booth_id ) AS count_booth",
             false
         );
         $this->db->where("form_id", $form_id);
+        // 参加登録が受理されている企画による回答のみ取得する
+        $this->db->where("EXISTS (SELECT * FROM circles WHERE circles.id = answers.circle_id AND circles.status = 'approved')", null, false);
         $result = $this->db->get("answers")->row();
-        if ($form->type === "circle") {
-            // type が circle の場合
-            $return->form_type = "circle";
-            $return->count_circle = $result->count_circle;
-            $return->count_booth = null;
-            // 母数を取得する
-            $return->count_all_circles = $this->circles->count_all();
-            $return->count_all_booths = null;
-            // 回答率を計算する
-            $return->proportion_circle = round(($return->count_circle / $return->count_all_circles) * 100, 1);
-            $return->proportion_booth = null;
-        } else {
+
+        $return->form_type = $form->type;
+        $return->count_circle = $result->count_circle;
+        $return->count_booth = null;
+
+        // 母数を取得する
+        $return->count_all_circles = $this->circles->count_all();
+        $return->count_all_booths = null;
+
+        // 回答率を計算する
+        $return->proportion_circle = $return->count_all_circles === 0
+            ? 0
+            : round(($return->count_circle / $return->count_all_circles) * 100, 1);
+        $return->proportion_booth = null;
+
+        if ($form->type === "booth") {
             // type が booth の場合
-            $return->form_type = "booth";
-            $return->count_circle = $result->count_circle;
             $return->count_booth = $result->count_booth;
             // 母数を取得する
-            $return->count_all_circles = $this->circles->count_all();
             $return->count_all_booths = $this->booths->count_all();
             // 回答率を計算する
-            $return->proportion_circle = round(($return->count_circle / $return->count_all_circles) * 100, 1);
-            $return->proportion_booth = round(($return->count_booth / $return->count_all_booths) * 100, 1);
+            $return->proportion_booth = $return->count_all_booths === 0
+                ? 0
+                : round(($return->count_booth / $return->count_all_booths) * 100, 1);
         }
 
         return $return;
+    }
+
+    /**
+     * 指定されたタイプに関するカスタムフォーム設定を取得する
+     *
+     * @param string $type
+     * @return object
+     */
+    public function get_custom_form_by_type($type)
+    {
+        $this->db->where('type', $type);
+        return $this->db->get('custom_forms')->row();
     }
 
     /**
@@ -179,7 +199,7 @@ class Forms_model extends MY_Model
             return false;
         }
 
-        // 団体情報とブース情報も取得
+        // 企画情報とブース情報も取得
         $circle = $this->circles->get_circle_info_by_circle_id($answer->circle_id);
         $booth = null;
         if (!empty($answer->circle_id)) {
@@ -255,7 +275,7 @@ class Forms_model extends MY_Model
     /**
      * 検索条件に合致する回答リストを取得する
      * @param int $form_id フォームID
-     * @param int $circle_id 団体ID
+     * @param int $circle_id 企画ID
      * @param int $booth_id ブースID
      * @return array            リスト配列
      */
@@ -270,6 +290,10 @@ class Forms_model extends MY_Model
         if (!empty($booth_id)) {
             $this->db->where("booth_id", $booth_id);
         }
+
+        // 参加登録が提出済の企画による回答のみ取得する
+        $this->db->where("EXISTS (SELECT * FROM circles WHERE circles.id = answers.circle_id AND circles.submitted_at IS NOT NULL)", null, false);
+
         $query = $this->db->get("answers");
 
         // TODO: N+1問題の解決
@@ -287,7 +311,7 @@ class Forms_model extends MY_Model
      * @param array $answers 回答情報
      * @param string $type circle か booth か
      * @param int $form_id フォームID
-     * @param int $circle_id 団体ID
+     * @param int $circle_id 企画ID
      * @param int $booth_id ブースID
      * @param int|bool            insertした回答の回答ID．insertに失敗した場合 false
      */

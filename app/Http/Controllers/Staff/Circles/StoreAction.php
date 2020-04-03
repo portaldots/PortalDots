@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
-use App\Http\Requests\Circles\CheckFormRequest;
+use App\Http\Requests\Staff\Circles\CircleRequest;
 
 class StoreAction extends Controller
 {
@@ -16,7 +16,7 @@ class StoreAction extends Controller
         $this->user = $user;
     }
 
-    public function __invoke(CheckFormRequest $request)
+    public function __invoke(CircleRequest $request)
     {
         $member_ids = str_replace(["\r\n", "\r", "\n"], "\n", $request->members);
         $member_ids = explode("\n", $member_ids);
@@ -29,15 +29,32 @@ class StoreAction extends Controller
 
         $members = $this->user->getByStudentIdIn($member_ids);
 
+        $status = null;
+        $status_set_at = null;
+        $status_set_by = null;
+
+        if (in_array($request->status, [Circle::STATUS_APPROVED, Circle::STATUS_REJECTED], true)) {
+            $status = $request->status;
+            $status_set_at = now();
+            $status_set_by = Auth::id();
+        }
+
         // 保存処理
         $circle = Circle::create([
             'name'  => $request->name,
-            'notes' => $request->notes,
-            'created_by' => Auth::id(),
-            'updated_by' => Auth::id(),
+            'name_yomi'  => $request->name_yomi,
+            'group_name'  => $request->group_name,
+            'group_name_yomi'  => $request->group_name_yomi,
+            // スタッフモードでの企画作成は、参加登録提出済とみなす
+            'submitted_at' => now(),
+            'status' => $status,
+            'status_reason' => $request->status_reason,
+            'status_set_at' => $status_set_at,
+            'status_set_by' => $status_set_by,
+            'notes' => $request->notes
         ]);
         $circle->users()->detach();
-        
+
         if (!empty($leader)) {
             $leader->circles()->attach($circle->id, ['is_leader' => true]);
         }
@@ -47,6 +64,6 @@ class StoreAction extends Controller
 
         return redirect()
             ->route('staff.circles.create')
-            ->with('toast', '団体情報を作成しました');
+            ->with('toast', '企画情報を作成しました');
     }
 }

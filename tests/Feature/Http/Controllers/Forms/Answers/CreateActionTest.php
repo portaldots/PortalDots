@@ -78,7 +78,7 @@ class CreateActionTest extends TestCase
     /**
      * @test
      */
-    public function 自分が所属していない団体のページにはアクセスできない()
+    public function 自分が所属していない企画のページにはアクセスできない()
     {
         $anotherUser = factory(User::class)->create();
         $anotherCircle = factory(Circle::class)->create();

@@ -18,8 +18,9 @@ class UpdateQuestionAction extends Controller
 
     // TODO: ちゃんとバリデーションする
     // TODO: is_required は null にできないよ！的な SQL エラーが発生しないようにする
-    public function __invoke(Form $form, Request $request)
+    public function __invoke(int $form_id, Request $request)
     {
+        $form = Form::withoutGlobalScope('withoutCustomForms')->findOrFail($form_id);
         $question_id = (int)$request->question['id'];
         $question = $request->question;
         unset($question['created_at'], $question['updated_at'], $question['id']);

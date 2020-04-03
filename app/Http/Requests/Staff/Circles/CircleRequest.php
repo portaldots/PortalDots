@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Circles;
+namespace App\Http\Requests\Staff\Circles;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Eloquents\User;
+use App\Eloquents\Circle;
 
-class CheckFormRequest extends FormRequest
+class CircleRequest extends FormRequest
 {
     public function __construct(User $user)
     {
@@ -30,18 +31,37 @@ class CheckFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'      => ['required', 'max:255'],
+            'name' => Circle::NAME_RULES,
+            'name_yomi' => Circle::NAME_YOMI_RULES,
+            'group_name' => Circle::GROUP_NAME_RULES,
+            'group_name_yomi' => Circle::GROUP_NAME_YOMI_RULES,
+            'status' => Circle::STATUS_RULES,
             'leader'    => ['nullable', 'exists:users,student_id'],
             'members'   => ['nullable'],
+        ];
+    }
+
+    /**
+     * バリデーションエラーのカスタム属性の取得
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'name' => '企画の名前',
+            'name_yomi' => '企画の名前(よみ)',
+            'group_name' => '企画団体の名前',
+            'group_name_yomi' => '企画団体の名前(よみ)',
+            'leader' => '企画責任者',
+            'members' => '学園祭係(副責任者)',
+            'status' => '参加登録受理',
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => '団体名は必ず入力してください',
-            'name.unique'   => 'すでに存在する団体名です',
-            'name.max'      => '255文字以下で入力してください',
             'leader.exists' => 'この学籍番号は登録されていません',
         ];
     }

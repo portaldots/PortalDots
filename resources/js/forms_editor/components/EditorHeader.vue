@@ -1,7 +1,7 @@
 <template>
   <header class="editor-header editor-header-styling">
     <div class="editor-header__title">
-      申請フォームエディター
+      フォームエディター
     </div>
     <div class="editor-header__status" v-if="!is_error">
       <span class="text-muted editor-header__status__saving" v-if="is_saving">

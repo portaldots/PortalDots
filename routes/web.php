@@ -85,12 +85,33 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/contacts', 'Contacts\CreateAction')->name('contacts');
     Route::post('/contacts', 'Contacts\PostAction')->name('contacts.post');
 
-    // 団体セレクター (GETパラメーターの redirect に Route名 を入れる)
+    // 企画セレクター (GETパラメーターの redirect に Route名 を入れる)
     Route::get('/selector', 'Circles\Selector\ShowAction')->name('circles.selector.show');
 });
 
 // ログインされており、メールアドレス認証が済んでいる場合のみアクセス可能なルート
 Route::middleware(['auth', 'verified'])->group(function () {
+    // 企画参加登録
+    Route::prefix('/circles')
+        ->name('circles.')
+        ->group(function () {
+            Route::get('/create', 'Circles\CreateAction')->name('create');
+            Route::post('/', 'Circles\StoreAction')->name('store');
+            Route::get('/{circle}/edit', 'Circles\EditAction')->name('edit');
+            Route::patch('/{circle}', 'Circles\UpdateAction')->name('update');
+            // 企画メンバー登録関連
+            Route::get('/{circle}/users', 'Circles\Users\IndexAction')->name('users.index');
+            Route::get('/{circle}/users/invite/{token}', 'Circles\Users\InviteAction')->name('users.invite');
+            Route::post('/{circle}/users', 'Circles\Users\StoreAction')->name('users.store');
+            Route::delete('/{circle}/users/{user}', 'Circles\Users\DestroyAction')->name('users.destroy');
+            Route::post('/{circle}/users/regenerate', 'Circles\Users\RegenerateTokenAction')->name('users.regenerate');
+            // 参加登録の提出
+            Route::get('/{circle}/confirm', 'Circles\ConfirmAction')->name('confirm');
+            Route::post('/{circle}/submit', 'Circles\SubmitAction')->name('submit');
+            // 参加登録状況
+            Route::get('/{circle}/status', 'Circles\StatusAction')->name('status');
+        });
+
     // 申請
     Route::prefix('/forms')
         ->name('forms.')
@@ -125,7 +146,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                     ->name('answers.')
                     ->group(function () {
                         Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index');
-                        Route::get('/uploads/download_zip', 'Staff\Forms\Answers\Uploads\DownloadZipAction')->name('uploads.download_zip');
+                        Route::post('/uploads/download_zip', 'Staff\Forms\Answers\Uploads\DownloadZipAction')->name('uploads.download_zip');
                     });
 
                 // 申請フォームエディタ
@@ -151,7 +172,12 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::post('/send_emails', 'Staff\SendEmails\StoreAction');
         Route::delete('/send_emails', 'Staff\SendEmails\DestroyAction');
 
-        // 団体情報編集
+        // 参加登録設定
+        Route::get('/circles/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('circles.custom_form.index');
+        Route::post('/circles/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('circles.custom_form.store');
+        Route::patch('/circles/custom_form', 'Staff\Circles\CustomForm\UpdateAction')->name('circles.custom_form.update');
+
+        // 企画情報編集
         Route::get('/circles/{circle}/edit', 'Staff\Circles\EditAction')->name('circles.edit');
         Route::patch('/circles/{circle}', 'Staff\Circles\UpdateAction')->name('circles.update');
         Route::get('/circles/create', 'Staff\Circles\CreateAction')->name('circles.create');

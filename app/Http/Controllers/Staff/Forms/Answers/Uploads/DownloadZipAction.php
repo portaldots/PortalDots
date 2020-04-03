@@ -21,15 +21,22 @@ class DownloadZipAction extends Controller
         $this->downloadZipService = $downloadZipService;
     }
 
-    public function __invoke(Form $form)
+    public function __invoke(int $form_id)
     {
+        $form = Form::withoutGlobalScope('withoutCustomForms')->findOrFail($form_id);
+
         $form->load('answers.details');
+        $form->load(['answers.circle' => function ($query) {
+            $query->withoutGlobalScope('approved');
+        }]);
         $form->load(['questions' => function ($query) {
             $query->where('type', 'upload');
         }]);
 
         $upload_question_ids = $form->questions->pluck('id')->all();
-        $flatten_details = $form->answers->pluck('details')->flatten();
+        $flatten_details = $form->answers->filter(function ($answer) {
+            return !empty($answer->circle->submitted_at);
+        })->pluck('details')->flatten();
 
         $uploaded_file_paths = [];
 

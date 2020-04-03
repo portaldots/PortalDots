@@ -77,9 +77,15 @@
     </style>
 
     <h1 class="main__title">
+      {% if form.custom_form is empty %}
         <a href="{{ base_url("home_staff/applications") }}">申請管理</a>
         /
         {{ form.name }}
+      {% elseif form.custom_form.type is same as('circle') %}
+        <a href="{{ base_url("home_staff/circles") }}">企画情報管理</a>
+        /
+        カスタムフォーム回答
+      {% endif %}
     </h1>
 
     <header class="panel panel-default">
@@ -89,12 +95,14 @@
                     <p>
                         <i class="fa fa-pencil-square-o fa-fw fa-5x" aria-hidden="true"></i>
                     </p>
-                    <p>
-                        <a href="{{ base_url("home_staff/applications/edit/#{form.id}") }}" class="btn btn-primary">
-                            <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
-                            編集
-                        </a>
-                    </p>
+                    {% if form.custom_form is empty %}
+                      <p>
+                          <a href="{{ base_url("home_staff/applications/edit/#{form.id}") }}" class="btn btn-primary">
+                              <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
+                              編集
+                          </a>
+                      </p>
+                    {% endif %}
                     <p>
                         <a href="{{ editor_url }}" class="btn btn-default">
                             <i class="fa fa-edit fa-fw" aria-hidden="true"></i>
@@ -113,93 +121,101 @@
                         {{ form.close_at_string }}
                     </p>
                     <p class="text-muted">
-                        申請フォームのURL :
-                        <a href="{{ public_form_url }}" target="_blank" rel="noopener">
-                            {{ public_form_url }}
-                        </a>
+                        {% if form.custom_form is empty %}
+                          申請フォームのURL :
+                          <a href="{{ public_form_url }}" target="_blank" rel="noopener">
+                              {{ public_form_url }}
+                          </a>
+                        {% endif %}
                         {% if (form.is_public == 0) %}
                             <span class="label label-danger">非公開</span>
                         {% else %}
                             <span class="label label-success">公開</span>
                         {% endif %}
                     </p>
-                    <hr>
-                    <div>
-                        {{ form.description_html | raw }}
-                    </div>
+                    {% if form.description_html is not empty %}
+                      <hr>
+                      <div>
+                          {{ form.description_html | raw }}
+                      </div>
+                    {% endif %}
                 </div>
                 <div class="col-md-4 text-center">
                     <ul class="list-unstyled text-muted">
                         <li>作成 : {{ form.created_at }}</li>
                         <li>変更 : {{ form.updated_at }}</li>
                     </ul>
-                    <a href="{{ base_url("home_staff/applications/preview/#{form.id}") }}"
-                       class="btn btn-info btn-wide">
-                        <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
-                        フォームをプレビュー
-                    </a>
+                    {% if form.custom_form is empty %}
+                      <a href="{{ base_url("home_staff/applications/preview/#{form.id}") }}"
+                        class="btn btn-info btn-wide">
+                          <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
+                          フォームをプレビュー
+                      </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </header>
 
-    <section class="panel panel-primary">
-        <div class="panel-heading">
-            <h2 class="panel-title">
-                統計情報
-                <span>
-                    <a href="{{ base_url("staff/forms/#{form.id}/not_answered") }}" class="btn btn-default">
-                        未提出団体を表示
-                    </a>
-                </span>
-            </h2>
-        </div>
-        <div class="table-responsive">
-            <table class="table applications-read-statistics">
+    {% if form.custom_form is empty %}
+      <section class="panel panel-primary">
+          <div class="panel-heading">
+              <h2 class="panel-title">
+                  統計情報
+                  <span>
+                      <a href="{{ base_url("staff/forms/#{form.id}/not_answered") }}" class="btn btn-default">
+                          未提出企画を表示
+                      </a>
+                  </span>
+              </h2>
+          </div>
+          <div class="table-responsive">
+              <table class="table applications-read-statistics">
 
-                <colgroup style="width: 10%">
-                <colgroup style="width: 10%;">
-                <colgroup style="width: 80%">
+                  <colgroup style="width: 10%">
+                  <colgroup style="width: 10%;">
+                  <colgroup style="width: 80%">
 
-                <tr>
-                    <th>回答団体</th>
-                    <td class="lead text-center">
-                        {{ statistics.count_circle }}
-                        <small>/ {{ statistics.count_all_circles }} ({{ statistics.proportion_circle }}%)</small>
-                    </td>
-                    <td>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-success" role="progressbar"
-                                 aria-valuenow="{{ statistics.count_circle }}" aria-valuemin="0"
-                                 aria-valuemax="{{ statistics.count_all_circles }}"
-                                 style="width: {{ statistics.proportion_circle }}%">
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+                  <tr>
+                      <th>回答企画</th>
+                      <td class="lead text-center">
+                          {{ statistics.count_circle }}
+                          <small>/ {{ statistics.count_all_circles }} ({{ statistics.proportion_circle }}%)</small>
+                      </td>
+                      <td>
+                          <div class="progress">
+                              <div class="progress-bar progress-bar-success" role="progressbar"
+                                  aria-valuenow="{{ statistics.count_circle }}" aria-valuemin="0"
+                                  aria-valuemax="{{ statistics.count_all_circles }}"
+                                  style="width: {{ statistics.proportion_circle }}%">
+                              </div>
+                          </div>
+                      </td>
+                  </tr>
 
-                {% if statistics.form_type == "booth" %}
-                    <tr>
-                        <th>回答ブース</th>
-                        <td class="lead text-center">
-                            {{ statistics.count_booth }}
-                            <small>/ {{ statistics.count_all_booths }} ({{ statistics.proportion_booth }}%)</small>
-                        </td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-success progress-bar-striped"
-                                     role="progressbar"
-                                     aria-valuenow="{{ statistics.count_booth }}" aria-valuemin="0"
-                                     aria-valuemax="{{ statistics.count_all_booths }}"
-                                     style="width: {{ statistics.proportion_booth }}%">
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                {% endif %}
-            </table>
-        </div>
-    </section>
+                  {% if statistics.form_type == "booth" %}
+                      <tr>
+                          <th>回答ブース</th>
+                          <td class="lead text-center">
+                              {{ statistics.count_booth }}
+                              <small>/ {{ statistics.count_all_booths }} ({{ statistics.proportion_booth }}%)</small>
+                          </td>
+                          <td>
+                              <div class="progress">
+                                  <div class="progress-bar progress-bar-success progress-bar-striped"
+                                      role="progressbar"
+                                      aria-valuenow="{{ statistics.count_booth }}" aria-valuemin="0"
+                                      aria-valuemax="{{ statistics.count_all_booths }}"
+                                      style="width: {{ statistics.proportion_booth }}%">
+                                  </div>
+                              </div>
+                          </td>
+                      </tr>
+                  {% endif %}
+              </table>
+          </div>
+      </section>
+    {% endif %}
 
     <section class="panel panel-default">
         <div class="panel-heading">
@@ -230,7 +246,7 @@
                     <th>操作</th>
                     <th>回答ID</th>
                     <th class="table-sticky">
-                        団体
+                        企画
                         {% if form.type == "booth" %}
                             ・ ブース
                         {% endif %}
@@ -262,12 +278,7 @@
                             {% if form.type == "booth" %}
                                 <br>
                                 <a href="{{ base_url("home_staff/booths/read/#{answer_info.booth_id}") }}">
-                                    {% if answer.booth.name is empty %}
-                                        {{ answer.booth.place_name }}
-                                    {% else %}
-                                        {{ answer.booth.name }}
-                                        ({{ answer.booth.place_name }})
-                                    {% endif %}
+                                  {{ answer.booth.place_name }}
                                 </a>
                             {% endif %}
                         </th>

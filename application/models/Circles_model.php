@@ -1,24 +1,28 @@
 <?php
 
 /**
- * 団体関連モデル
+ * 企画関連モデル
+ *
+ * もともと Circle は企画を意味していたが、企画単位での参加登録を受け付ける
+ * システムに改修したため、モデル上の名前は Circle だが、企画を意味している
  */
 class Circles_model extends MY_Model
 {
 
     /**
-     * 全団体数を取得する
-     * @return int 全団体数
+     * 全企画数を取得する
+     * @return int 全企画数
      */
     public function count_all()
     {
         $this->db->select("count(id) AS c", false);
+        $this->db->where("status", "approved");
         return (int)$this->db->get("circles")->row()->c ?? 0;
     }
 
     /**
-     * 全ての団体情報を取得する
-     * @return object[] 団体情報オブジェクトの配列。存在しない場合は空配列。
+     * 全ての企画情報を取得する
+     * @return object[] 企画情報オブジェクトの配列。存在しない場合は空配列。
      */
     public function get_all()
     {
@@ -27,9 +31,9 @@ class Circles_model extends MY_Model
     }
 
     /**
-     * 指定されたユーザーIDのユーザーが所属している団体の情報を取得する
+     * 指定されたユーザーIDのユーザーが所属している企画の情報を取得する
      * @param  int         $user_id ユーザーID( users.id )
-     * @return object[]             団体情報オブジェクトの配列。存在しない場合は空配列。
+     * @return object[]             企画情報オブジェクトの配列。存在しない場合は空配列。
      */
     public function get_circle_info_by_user_id($user_id)
     {
@@ -42,8 +46,8 @@ class Circles_model extends MY_Model
     }
 
     /**
-     * 指定された団体IDに所属しているユーザーの情報を取得する
-     * @param  int      $circle_id 団体ID( circles.id )
+     * 指定された企画IDに所属しているユーザーの情報を取得する
+     * @param  int      $circle_id 企画ID( circles.id )
      * @return object[]            ユーザー情報オブジェクトの配列。存在しない場合は空配列。
      */
     public function get_user_info_by_circle_id($circle_id)
@@ -60,9 +64,9 @@ class Circles_model extends MY_Model
     }
 
     /**
-     * 指定された団体IDの団体の情報を取得する
-     * @param  int         $circle_id 団体ID( circles.id )
-     * @return object|bool            団体情報オブジェクトの配列。存在しない場合 false
+     * 指定された企画IDの企画の情報を取得する
+     * @param  int         $circle_id 企画ID( circles.id )
+     * @return object|bool            企画情報オブジェクトの配列。存在しない場合 false
      */
     public function get_circle_info_by_circle_id($circle_id)
     {
@@ -76,8 +80,8 @@ class Circles_model extends MY_Model
     }
 
     /**
-     * 指定された団体IDの団体情報を編集することができるか
-     * @param  int $circle_id 団体ID( circles.id )
+     * 指定された企画IDの企画情報を編集することができるか
+     * @param  int $circle_id 企画ID( circles.id )
      * @param  int $user_id   ユーザーID( users.id )
      * @return bool           編集可能の場合 true
      */
