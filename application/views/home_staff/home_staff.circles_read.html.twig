@@ -136,7 +136,7 @@
       </div>
     </div>
     <div class="panel-footer">
-      <a href="mailto:{{ mailto_string }}" class="btn btn-success">
+      <a href="{{ base_url("staff/circles/#{circle_info.id}/email") }}" class="btn btn-success">
         <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
         全員にメールを送信(To)
       </a>

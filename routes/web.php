@@ -183,6 +183,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::get('/circles/create', 'Staff\Circles\CreateAction')->name('circles.create');
         Route::post('/circles', 'Staff\Circles\StoreAction')->name('circles.new');
 
+        // 企画所属者宛のメール送信
         Route::get('/circles/{circle}/email', 'Staff\Circles\SendEmails\IndexAction')->name('circles.email');
         Route::post('/circles/{circle}/email', 'Staff\Circles\SendEmails\SendAction');
 
