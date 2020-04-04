@@ -25,7 +25,7 @@ class SendEmailsRequest extends FormRequest
     public function rules()
     {
         return [
-            'circle_id' => ['exists:circles,id'],
+            'recipient' => ['required'],
             'title' => ['required'],
             'message' => ['required'],
         ];
@@ -39,7 +39,7 @@ class SendEmailsRequest extends FormRequest
     public function attributes()
     {
         return [
-            'circle_id' => '団体',
+            'recipient' => '宛先',
             'title' => '件名',
             'message' => '本文',
         ];
@@ -55,16 +55,5 @@ class SendEmailsRequest extends FormRequest
         return [
             'required' => ':attribute は必須項目です',
         ];
-    }
-
-    public function withValidator($validator)
-    {
-        $circle = Circle::find($this->circle_id);
-        
-        if (!empty($circle) || $circle->users->empty()) {
-            $validator->after(function ($validator) {
-                $validator->errors()->add('circle_id', 'この団体はメンバーがいないため送信できません');
-            });
-        }
     }
 }
