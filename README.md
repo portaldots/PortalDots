@@ -24,7 +24,7 @@
 - 「平成30年度野田地区新入生歓迎ガイダンス」などで実運用されていた。
 
 ## 開発環境セットアップ方法
-Git、PHP、Composer、Node.js、Yarn、Docker がセットアップ済みである必要があります。
+Git、PHP(7.3以上)、Composer、Node.js、Yarn、Docker がセットアップ済みである必要があります。
 
 ```bash
 $ git clone git@github.com:portal-dots/PortalDots.git
@@ -39,28 +39,28 @@ $ composer install
 $ yarn install
 
 # 開発環境を起動する
-$ composer docker
+$ yarn docker
 
 # マイグレーション
 #
 # ⚠️ α版注）データベース構造に関して、現在破壊的な変更を継続して行なっています。
 # 　もしデータベースエラーが発生する場合、開発環境を再ビルドしてから
-# 　代わりに `composer migrate:refresh` コマンドを実行してください。
-$ composer migrate
+# 　代わりに `yarn migrate:refresh` コマンドを実行してください。
+$ yarn migrate
 
 # フロントエンド用アセットのコンパイル
 $ yarn watch
 # Ctrl-C で停止
 
 # 開発環境を停止する
-$ composer docker-stop
+$ yarn docker-stop
 ```
 
-- `composer docker` コマンドにより、開発環境が起動します。
+- `yarn docker` コマンドにより、開発環境が起動します。
 
 ## 開発環境の各種 URL
 - 開発環境 : http://localhost:3000
-    - 初回アクセス時、データベースエラーが表示されることがありますが、数回再読み込みすることでエラーは解消するようです。もし解消しない場合、 `composer docker-stop` コマンドを実行してから `composer docker` コマンドを実行し、開発環境を再起動してください。
+    - 初回アクセス時、データベースエラーが表示されることがありますが、数回再読み込みすることでエラーは解消するようです。もし解消しない場合、 `yarn docker-stop` コマンドを実行してから `yarn docker` コマンドを実行し、開発環境を再起動してください。
 - 開発環境から送信されるメールの確認(MailHog) : http://localhost:8025
 - phpMyAdmin : http://localhost:8080
     - 開発環境の DB に作成されるデータベース名は `db_portal_dev`
