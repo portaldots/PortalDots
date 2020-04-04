@@ -1,13 +1,6 @@
 version: '3'
 
 services:
-  php-cli:
-    container_name: portal_php_cli
-    build: ./web
-    volumes:
-      - ../:/var/www/html
-      - ./data/web/logs:/docker_web_logs
-
   web:
     container_name: portal_web
     build: ./web
