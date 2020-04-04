@@ -33,7 +33,6 @@ export default {}
       margin: 0;
     }
     &__description {
-      color: $color-muted;
       margin: $spacing-xxs 0 0;
     }
   }

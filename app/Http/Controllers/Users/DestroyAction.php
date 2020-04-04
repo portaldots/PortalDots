@@ -13,12 +13,12 @@ class DestroyAction extends Controller
     {
         $user = User::find(Auth::id());
 
-        $circles = $user->circles->all();
+        $circles = $user->circles()->withoutGlobalScope('approved')->all();
 
         if (!empty($circles)) {
             return redirect()
                 ->route('user.delete')
-                ->with('topAlert.title', '団体に所属しているため、アカウント削除はできません。');
+                ->with('topAlert.title', '企画に所属しているため、アカウント削除はできません。');
         }
 
         if ($user->delete()) {

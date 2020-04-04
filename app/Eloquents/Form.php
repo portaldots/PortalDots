@@ -5,6 +5,7 @@ namespace App\Eloquents;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -28,6 +29,7 @@ class Form extends Model
         'description',
         'open_at',
         'close_at',
+        'created_by',
         'type',
         'max_answers',
         'is_public',
@@ -41,6 +43,15 @@ class Form extends Model
         'max_answers' => 'int',
         'is_public' => 'bool',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('withoutCustomForms', function (Builder $builder) {
+            $builder->doesntHave('customForm');
+        });
+    }
 
     /**
      * 公開中のものを取得
@@ -84,6 +95,11 @@ class Form extends Model
         return $this->hasMany(Answer::class);
     }
 
+    public function customForm()
+    {
+        return $this->hasOne(CustomForm::class);
+    }
+
     // TODO: 意味的に isAnswered という名前に変えたい
     public function answered(Circle $circle)
     {
@@ -92,13 +108,15 @@ class Form extends Model
     }
 
     /**
-     * 未申請の団体(idとnameのみ)を返す関数
+     * 未申請の企画(idとnameのみ)を返す関数
      */
     public function notAnswered()
     {
         return DB::select(
             'SELECT id, name FROM circles
-                WHERE NOT EXISTS
+                WHERE
+                    status = \'approved\'
+                    AND NOT EXISTS
                     (SELECT circle_id FROM answers WHERE answers.form_id = :form_id AND answers.circle_id = circles.id)
             ',
             ['form_id' => $this->id]

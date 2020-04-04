@@ -9,10 +9,20 @@
         <p class="mb-4">
           <i class="far fa-edit fa-3x"></i>
         </p>
-        <p class="lead">右側の[ツールパレット]から設問を追加しましょう</p>
+        <p class="lead">右側の[設問を追加]から設問を追加しましょう</p>
         <p class="mb-0">
-          このフォームには設問が1つもありません。ツールパレットから設問を追加してください。
+          このフォームには設問が1つもありません。[設問を追加]から設問を追加してください。
         </p>
+      </div>
+      <div v-if="permanent_questions">
+        <component
+          v-for="question in permanent_questions"
+          :is="question_component_name(question.type)"
+          :question_id="question.id"
+          :key="question.id"
+          :is_permanent="question.is_permanent || undefined"
+          class="question"
+        />
       </div>
       <draggable
         tag="div"
@@ -29,6 +39,7 @@
             :is="question_component_name(question.type)"
             :question_id="question.id"
             :key="question.id"
+            :is_permanent="question.is_permanent || undefined"
             class="question"
           />
         </transition-group>
@@ -70,6 +81,9 @@ export default {
     },
     drag() {
       return this.$store.state.editor.drag
+    },
+    permanent_questions() {
+      return this.$store.state.editor.permanent_questions
     },
     questions: {
       get() {

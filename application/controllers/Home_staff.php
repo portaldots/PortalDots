@@ -25,7 +25,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->display_as('body', '本文');
         $this->grocery_crud->display_as('booth_id', 'ブースID');
         $this->grocery_crud->display_as('place_id', '場所');
-        $this->grocery_crud->display_as('circle_id', '団体');
+        $this->grocery_crud->display_as('circle_id', '企画');
         $this->grocery_crud->display_as('genre', 'ジャンル');
         $this->grocery_crud->display_as('image_filename', '画像');
         $this->grocery_crud->display_as('description', '紹介');
@@ -198,11 +198,14 @@ class Home_staff extends MY_Controller
             if ($vars["form"] === false) {
                 $this->_error("申請フォームエラー", "このフォームは存在しません。", 404);
             }
-            $this->_render('home/applications_form', $vars);
+            $this->_render('home_staff/applications_form', $vars);
             return;
         }
 
         $this->grocery_crud->set_table('forms');
+
+        // カスタムフォームは一覧に表示しない
+        $this->grocery_crud->where('NOT EXISTS (SELECT * FROM custom_forms WHERE form_id = forms.id)', null, false);
 
         $this->grocery_crud->set_subject('フォーム');
         $this->grocery_crud->display_as('id', 'フォームID');
@@ -289,7 +292,7 @@ class Home_staff extends MY_Controller
     {
 
         $vars = [];
-        $vars["page_title"] = "申請管理";
+        $vars["page_title"] = "回答一覧";
         $vars["main_page_type"] = "applications";
 
         $this->forms->include_private = true;
@@ -333,7 +336,7 @@ class Home_staff extends MY_Controller
     private function _application_read_csv($vars)
     {
         // カラム名
-        $string_to_export = "ID\t団体ID\t団体名";
+        $string_to_export = "ID\t企画ID\t企画の名前";
 
         if ($vars["form"]->type === "booth") {
             $string_to_export .= "\tブース名";
@@ -354,18 +357,13 @@ class Home_staff extends MY_Controller
         foreach ($vars["answers"] as $answer) {
             // 回答ID
             $string_to_export .= $answer->id;
-            // 団体ID
+            // 企画ID
             $string_to_export .= "\t" . $answer->circle->id;
-            // 団体名
+            // 企画の名前
             $string_to_export .= "\t" . $answer->circle->name;
             // ブース名
             if ($vars["form"]->type === "booth") {
-                if (empty($answer->booth->name)) {
-                    $string_to_export .= "\t" . $answer->booth->place_name;
-                } else {
-                    $string_to_export .= "\t" . $answer->booth->name;
-                    $string_to_export .= "(" . $answer->booth->place_name . ")";
-                }
+                $string_to_export .= "\t" . $answer->booth->place_name;
             }
             // 作成日時
             $string_to_export .= "\t" . $answer->created_at;
@@ -545,7 +543,7 @@ class Home_staff extends MY_Controller
     }
 
     /**
-     * メール認証の完了を調べる関数
+     * メール認証の完了がしているかどうか表示するための Grocery CRUD コールバック関数
      */
     public function _crud_email_verified($value, $row)
     {
@@ -573,7 +571,7 @@ class Home_staff extends MY_Controller
         if ($userinfo !== false) {
             // 存在する場合
             $vars["user_read"] = $userinfo;
-            // このユーザーが所属する団体も取得する
+            // このユーザーが所属する企画も取得する
             $vars["circles"] = $this->circles->get_circle_info_by_user_id($userinfo->id);
         } else {
             // 存在しない場合
@@ -584,12 +582,12 @@ class Home_staff extends MY_Controller
     }
 
     /**
-     * 団体情報ページ
+     * 企画情報ページ
      */
     public function circles()
     {
         $vars = [];
-        $vars["page_title"] = "団体情報管理";
+        $vars["page_title"] = "企画情報管理";
         $vars["main_page_type"] = "circles";
 
         if ($this->uri->segment(3) === "read") {
@@ -606,32 +604,92 @@ class Home_staff extends MY_Controller
         }
 
         $this->grocery_crud->set_table('circles');
-        $this->grocery_crud->set_subject('団体');
-        $this->grocery_crud->display_as('id', '団体ID');
-        $this->grocery_crud->display_as('name', '団体名');
+        $this->grocery_crud->where('submitted_at IS NOT NULL', null, false);
+        $this->grocery_crud->set_subject('企画');
+        $this->grocery_crud->display_as('id', '企画ID');
+        $this->grocery_crud->display_as('name', '企画の名前');
+        $this->grocery_crud->display_as('name_yomi', '企画の名前(よみ)');
+        $this->grocery_crud->display_as('group_name', '企画団体の名前');
+        $this->grocery_crud->display_as('group_name_yomi', '企画団体の名前(よみ)');
+        $this->grocery_crud->display_as('submitted_at', '参加登録提出日時');
+        $this->grocery_crud->display_as('status', '登録受理状況');
+        $this->grocery_crud->display_as('status_set_at', '登録受理状況設定日時');
+        $this->grocery_crud->display_as('status_set_by', '登録受理状況設定ユーザー');
 
-        $this->grocery_crud->columns(
+        $columns = [
             'id',
             'name',
+            'name_yomi',
+            'group_name',
+            'group_name_yomi',
+            'submitted_at',
+            'status',
+            'status_set_at',
+            'status_set_by',
             'created_at',
-            'created_by',
             'updated_at',
-            'updated_by',
-            'notes'
-        );
+            'notes',
+        ];
+
+        if ($this->grocery_crud->getstate() === 'list' || $this->grocery_crud->getstate() === 'ajax_list' ||
+            $this->grocery_crud->getstate() === 'print') {
+            // list 表示の場合、よみがなカラムを表示しない
+            $columns = array_diff($columns, ['name_yomi', 'group_name_yomi']);
+            $columns = array_values($columns);
+
+            // よみがなはルビとして表示する
+            $this->grocery_crud->callback_column('name', array($this, '_crud_circle_name_yomi'));
+            $this->grocery_crud->callback_column('group_name', array($this, '_crud_circle_group_name_yomi'));
+        }
+
+        // 登録受理状況
+        $this->grocery_crud->callback_column('status', array($this, '_crud_circle_status'));
+
+        $this->grocery_crud->columns($columns);
 
         if ($this->grocery_crud->getstate() !== 'edit' && $this->grocery_crud->getstate() !== 'add') {
-            $this->grocery_crud->set_relation('created_by', 'users', '{student_id} {name_family} {name_given}');
-            $this->grocery_crud->set_relation('updated_by', 'users', '{student_id} {name_family} {name_given}');
+            $this->grocery_crud->set_relation('status_set_by', 'users', '{student_id} {name_family} {name_given}');
         }
 
         $vars += (array)$this->grocery_crud->render();
+
+        // カスタムフォームが存在する場合、カスタムフォーム設定もビューにわたす
+        $vars['custom_form'] = $this->forms->get_custom_form_by_type('circle');
 
         $this->_render('home_staff/crud', $vars);
     }
 
     /**
-     * 団体情報ページ(個別表示)
+     * 企画の名前にふりがなをふるための Grocery CRUD コールバック関数
+     */
+    public function _crud_circle_name_yomi($value, $row)
+    {
+        return "<ruby>" . $value . "<rt>" . $row->name_yomi . "</rt></ruby>";
+    }
+
+    /**
+     * 企画団体の名前にふりがなをふるための Grocery CRUD コールバック関数
+     */
+    public function _crud_circle_group_name_yomi($value, $row)
+    {
+        return "<ruby>" . $value . "<rt>" . $row->group_name_yomi . "</rt></ruby>";
+    }
+
+    /**
+     * 登録受理状況を表示するための Grocery CRUD コールバック関数
+     */
+    public function _crud_circle_status($value, $row)
+    {
+        if ($row->status === 'approved') {
+            return '<span class="text-success">受理</span>';
+        } elseif ($row->status === 'rejected') {
+            return '<span class="text-danger">不受理</span>';
+        }
+        return '<span class="text-muted">確認中</span>';
+    }
+
+    /**
+     * 企画情報ページ(個別表示)
      *
      * circles/read/:id として使用
      */
@@ -639,19 +697,19 @@ class Home_staff extends MY_Controller
     {
 
         $vars = [];
-        $vars["page_title"] = "団体情報管理";
+        $vars["page_title"] = "企画情報管理";
         $vars["main_page_type"] = "circles";
 
-        // 団体情報を取得する
+        // 企画情報を取得する
         $circle_info = $this->circles->get_circle_info_by_circle_id($circle_id);
 
-        if ($circle_info !== false) {
+        if ($circle_info !== false && isset($circle_info->submitted_at)) {
             // 存在する場合
             $vars["circle_info"] = $circle_info;
-            // この団体に所属するユーザーも取得する
+            // この企画に所属するユーザーも取得する
             $vars["users"] = $this->circles->get_user_info_by_circle_id($circle_info->id);
         } else {
-            // 存在しない場合
+            // 存在しない場合か、参加登録が未提出の企画の場合
             show_404();
         }
         $this->_render('home_staff/circles_read', $vars);
@@ -664,19 +722,17 @@ class Home_staff extends MY_Controller
     {
 
         $vars = [];
-        $vars["page_title"] = "企画情報管理";
+        $vars["page_title"] = "ブース情報管理";
         $vars["main_page_type"] = "booths";
 
         $this->grocery_crud->set_table('booths');
-        $this->grocery_crud->set_subject('企画');
-        $this->grocery_crud->display_as('id', '企画ID');
-        $this->grocery_crud->display_as('name', '企画名');
+        $this->grocery_crud->set_subject('ブース');
+        $this->grocery_crud->display_as('id', 'ブースID');
 
         $this->grocery_crud->columns(
             'id',
             'place_id',
             'circle_id',
-            'name',
             'created_at',
             'created_by',
             'updated_at',
@@ -686,7 +742,6 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->fields(
             'place_id',
             'circle_id',
-            'name',
             'created_at',
             'created_by',
             'updated_at',
@@ -710,7 +765,7 @@ class Home_staff extends MY_Controller
         // ファイル表示リンクにする
         $this->grocery_crud->callback_column('image_filename', array($this, '_crud_download_image_filename'));
 
-        // 存在しない団体IDが設定されている場合、団体不明という表示にする
+        // 存在しない企画IDが設定されている場合、企画不明という表示にする
         $this->grocery_crud->callback_column(
             $this->_unique_field_name('circle_id'),
             [$this, '_crud_unknown_circle_id']
@@ -722,12 +777,12 @@ class Home_staff extends MY_Controller
     }
 
     /**
-     * 存在しない団体IDが設定されている場合、団体不明という表示にするための Grocery CRUD コールバック関数
+     * 存在しない企画IDが設定されている場合、企画不明という表示にするための Grocery CRUD コールバック関数
      */
     public function _crud_unknown_circle_id($value, $row)
     {
         if ($value === "(ID:)") {
-            return "<span class='text-muted'>(団体不明)</span>";
+            return "<span class='text-muted'>(企画不明)</span>";
         } else {
             return $value;
         }
@@ -1264,12 +1319,12 @@ class Home_staff extends MY_Controller
                 ],
                 "circles" => [
                     "icon" => "users",
-                    "name" => "団体情報管理",
+                    "name" => "企画情報管理",
                     "url" => "home_staff/circles",
                 ],
                 "booths" => [
                     "icon" => "star",
-                    "name" => "企画情報管理",
+                    "name" => "ブース情報管理",
                     "url" => "home_staff/booths",
                 ],
                 "places" => [

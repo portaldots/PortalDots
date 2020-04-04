@@ -4,6 +4,7 @@
     :item_id="item_id"
     type_label="フォームの設定"
     :hide_handle="true"
+    :disable_edit="!!custom_form"
   >
     <template v-slot:content>
       <h1 class="form-header__name">{{ computed_name }}</h1>
@@ -23,9 +24,9 @@
         </div>
       </div>
       <div class="form-group row">
-        <label for="inputDescription" class="col-sm-2 col-form-label"
-          >説明</label
-        >
+        <label for="inputDescription" class="col-sm-2 col-form-label">
+          説明
+        </label>
         <div class="col-sm-10">
           <textarea
             class="form-control"
@@ -57,6 +58,9 @@ export default {
   computed: {
     item_id() {
       return ITEM_HEADER
+    },
+    custom_form() {
+      return this.$store.state.editor.form.custom_form
     },
     name: {
       get() {

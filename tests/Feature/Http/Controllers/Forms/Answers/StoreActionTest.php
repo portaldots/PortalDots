@@ -89,6 +89,9 @@ class StoreActionTest extends TestCase
      */
     public function 非公開のフォームには回答できない()
     {
+        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+
         $privateForm = factory(Form::class)->states('private')->create();
 
         $response = $this
@@ -113,8 +116,11 @@ class StoreActionTest extends TestCase
     /**
      * @test
      */
-    public function 他団体に成り済ました回答はできない()
+    public function 他企画に成り済ました回答はできない()
     {
+        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+
         $anotherCircle = factory(Circle::class)->create();
 
         $response = $this
@@ -134,5 +140,35 @@ class StoreActionTest extends TestCase
         ]);
 
         $response->assertStatus(403);
+    }
+
+    /**
+     * @test
+     */
+    public function 参加登録が不受理となった企画は回答できない()
+    {
+        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+
+        $rejectedCircle = factory(Circle::class)->states('rejected')->create();
+        $this->user->circles()->attach($rejectedCircle->id, ['is_leader' => true]);
+
+        $response = $this
+                    ->actingAs($this->user)
+                    ->post(
+                        route('forms.answers.store', [
+                            'form' => $this->form,
+                        ]),
+                        [
+                            'circle_id' => $rejectedCircle->id,
+                        ]
+                    );
+
+        $this->assertDatabaseMissing('answers', [
+            'form_id' => $this->form->id,
+            'circle_id' => $rejectedCircle->id,
+        ]);
+
+        $response->assertStatus(404);
     }
 }

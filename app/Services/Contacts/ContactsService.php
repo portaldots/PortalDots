@@ -14,7 +14,7 @@ class ContactsService
     /**
      * お問い合わせを作成する
      *
-     * @param Circle|null $circle お問い合わせ対象の団体
+     * @param Circle|null $circle お問い合わせ対象の企画
      * @param User $sender お問い合わせを作成したユーザー
      * @param string $contactBody お問い合わせ本文
      * @return bool
@@ -22,12 +22,12 @@ class ContactsService
     public function create(?Circle $circle, User $sender, string $contactBody)
     {
         if (isset($circle) && is_iterable($circle->users) && count($circle->users) > 0) {
-            // 団体に所属するユーザー全員に確認メールを送信する
+            // 企画に所属するユーザー全員に確認メールを送信する
             foreach ($circle->users as $user) {
                 $this->send($user, $circle, $sender, $contactBody);
             }
         } else {
-            // 団体に所属していないユーザーの場合
+            // 企画に所属していないユーザーの場合
             $this->send($sender, null, $sender, $contactBody);
         }
 
@@ -38,7 +38,7 @@ class ContactsService
      * メールを送信する
      *
      * @param User $recipient メールを送信する宛先
-     * @param Circle|null $circle お問い合わせ対象の団体
+     * @param Circle|null $circle お問い合わせ対象の企画
      * @param User $sender お問い合わせを作成したユーザー
      * @param string $contactBody お問い合わせ本文
      * @return void
@@ -56,7 +56,7 @@ class ContactsService
     /**
      * スタッフ用控えをスタッフに送信する
      *
-     * @param Circle|null $circle お問い合わせ対象の団体
+     * @param Circle|null $circle お問い合わせ対象の企画
      * @param User $sender お問い合わせを作成したユーザー
      * @param string $contactBody お問い合わせ本文
      * @return void

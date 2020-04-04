@@ -45,7 +45,7 @@ class DownloadZipActionTest extends TestCase
 
         $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
-            ->get(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
+            ->post(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
 
         $response->assertOk();
     }
@@ -56,14 +56,14 @@ class DownloadZipActionTest extends TestCase
     public function ダウンロードできるファイルがない時に適切にエラー表示される()
     {
         $this->mock(DownloadZipService::class, function ($mock) {
-        $mock->shouldReceive('makeZip')
+            $mock->shouldReceive('makeZip')
             ->once()
             ->andThrow(new NoDownloadFileExistException());
         });
 
         $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
-            ->get(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
+            ->post(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
 
         $response->assertSessionHas('topAlert.title');
     }
@@ -74,14 +74,14 @@ class DownloadZipActionTest extends TestCase
     public function ZipArchive非対応時に適切にエラー表示される()
     {
         $this->mock(DownloadZipService::class, function ($mock) {
-        $mock->shouldReceive('makeZip')
+            $mock->shouldReceive('makeZip')
             ->once()
             ->andThrow(new ZipArchiveNotSupportedException());
         });
 
         $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
-            ->get(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
+            ->post(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
 
         $response->assertSessionHas('topAlert.title');
     }
@@ -92,7 +92,7 @@ class DownloadZipActionTest extends TestCase
     public function スタッフ以外はダウンロードできない()
     {
         $response = $this->actingAs(factory(User::class)->create())
-            ->get(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
+            ->post(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
 
         $response->assertStatus(403);
     }

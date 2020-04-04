@@ -83,7 +83,6 @@ class DownloadZipServiceTest extends TestCase
             ]);
             Storage::putFileAs('answer_details', $example_file, $filename);
         }
-
     }
 
     public function tearDown(): void
@@ -139,7 +138,6 @@ class DownloadZipServiceTest extends TestCase
             $mock->shouldReceive('close')
                 ->ordered()
                 ->once();
-
         });
 
         $downloadZipService = App::make(DownloadZipService::class);
@@ -158,7 +156,11 @@ class DownloadZipServiceTest extends TestCase
             'answer_details/foobar2.png',
         ];
 
-        $downloadZipService->makeZip($this->form, array_merge($uploaded_file_paths, $no_exist_file_paths, $another_uploaded_file_paths));
+        $downloadZipService->makeZip($this->form, array_merge(
+            $uploaded_file_paths,
+            $no_exist_file_paths,
+            $another_uploaded_file_paths
+        ));
     }
 
     /**

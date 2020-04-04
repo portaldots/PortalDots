@@ -7,14 +7,14 @@
         <header class="header">
             <app-container>
                 <h1 class="header__title">
-                    団体参加登録が未完了です
+                    企画参加登録が未完了です
                 </h1>
             </app-container>
         </header>
         <app-container>
-            <p>団体参加登録が済んでいないため、申請を行うことができません</p>
+            <p>企画参加登録が済んでいないため、申請を行うことができません</p>
             <p>詳細については「{{ config('portal.admin_name') }}」までお問い合わせください</p>
-            <p>※ すでに団体参加登録を行った場合でも反映に時間がかかることがあります</p>
+            <p>※ すでに企画参加登録を行った場合でも反映に時間がかかることがあります</p>
             <p><a href="{{ route('home') }}" class="btn is-primary is-block">ホームに戻る</a></p>
         </app-container>
     @else
@@ -55,7 +55,7 @@
                                     @datetime($form->close_at) まで受付
                                 @endif
                                 @if ($form->max_answers > 1)
-                                    • 1団体あたり{{ $form->max_answers }}つ回答可能
+                                    • 1企画あたり{{ $form->max_answers }}つ回答可能
                                 @endif
                             </template>
                             @summary($form->description)

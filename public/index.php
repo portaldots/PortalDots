@@ -61,6 +61,8 @@
         '/user',
         '/contacts',
         '/selector',
+        // Circles
+        '/circles',
         // Staff
         '/staff',
         // Debugbar

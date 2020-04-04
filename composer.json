@@ -12,7 +12,8 @@
         "laravel/tinker": "^2.0",
         "phpgangsta/googleauthenticator": "dev-master",
         "twig/twig": "^2.0",
-        "vlucas/phpdotenv": "^3.3"
+        "vlucas/phpdotenv": "^3.3",
+        "simplesoftwareio/simple-qrcode": "~2"
     },
 	"require-dev": {
         "facade/ignition": "^1.4",

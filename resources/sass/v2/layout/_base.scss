@@ -41,3 +41,20 @@ hr {
 p {
   margin: 0 0 1rem;
 }
+
+dt {
+  font-weight: bold;
+  margin: $spacing-md 0 0;
+  &:first-child {
+    margin: 0;
+  }
+}
+
+dd {
+  margin: 0;
+  margin: $spacing-sm 0 $spacing-md;
+}
+
+li {
+  margin: 0 0 $spacing-sm;
+}

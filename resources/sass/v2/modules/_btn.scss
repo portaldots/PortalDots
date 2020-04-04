@@ -2,15 +2,18 @@
   background: $background;
   border: 1px solid $border-color;
   color: $color;
-  &:not([disabled]):hover {
+  &:not([disabled]):hover,
+  &:not(.disabled):hover {
     background: $hover-background;
   }
   @if ($shadow-color-base) {
     box-shadow: 0 0.25rem 0.75rem rgba($shadow-color-base, 0.25);
-    &:not([disabled]):hover {
+    &:not([disabled]):hover,
+    &:not(.disabled):hover {
       box-shadow: 0 0.5rem 0.75rem rgba($shadow-color-base, 0.4);
     }
-    &:not([disabled]):active {
+    &:not([disabled]):active,
+    &:not(.disabled):active {
       box-shadow: 0 0.1rem 0.3rem rgba($shadow-color-base, 0.6);
     }
   }
@@ -30,9 +33,11 @@ body:not(.body-editor-v1):not(.body-v1) {
     text-decoration: none;
     transition: #{$transition-base-fast} background-color, #{$transition-base-fast} box-shadow;
     white-space: nowrap;
-    &:disabled {
+    &:disabled,
+    &.disabled {
       cursor: not-allowed;
       opacity: 0.75;
+      pointer-events: none;
     }
     &:hover {
       text-decoration: none;

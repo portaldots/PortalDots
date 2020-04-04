@@ -50,5 +50,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('circle.belongsTo', 'App\Policies\Circle\BelongsPolicy');
+        Gate::define('circle.update', 'App\Policies\Circle\UpdatePolicy');
+        Gate::define('circle.create', 'App\Policies\Circle\CreatePolicy');
     }
 }

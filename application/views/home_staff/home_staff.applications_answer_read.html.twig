@@ -42,7 +42,7 @@
         </div>
         <ul class="list-group">
           <li class="list-group-item">
-            団体名 :
+            企画の名前 :
             <b>{{ answer_info.circle.name }}</b>
           </li>
           {% if booth %}
@@ -107,7 +107,7 @@
 
           <a class="list-group-item" href="javascript:window.print();">回答を印刷</a>
 
-          <a class="list-group-item" href="{{ base_url("home_staff/circles/read/#{answer_info.circle_id}") }}">団体情報</a>
+          <a class="list-group-item" href="{{ base_url("home_staff/circles/read/#{answer_info.circle_id}") }}">企画情報</a>
 
           {% if form.type == "booth" %}
             <a class="list-group-item" href="{{ base_url("home_staff/booths/read/#{answer_info.booth_id}") }}">ブース情報</a>

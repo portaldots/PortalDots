@@ -10,7 +10,7 @@ use App\Eloquents\Answer;
 use App\Eloquents\AnswerDetail;
 use App\Eloquents\User;
 use App\Services\Forms\AnswerDetailsService;
-use App\Http\Requests\Forms\BaseAnswerRequest;
+use App\Http\Requests\Forms\AnswerRequestInterface;
 use App\Mail\Forms\AnswerConfirmationMailable;
 use Illuminate\Database\Eloquent\Collection;
 use DB;
@@ -26,13 +26,13 @@ class AnswersService
     }
 
     /**
-     * 団体所属者にメールを送信する
+     * 企画所属者にメールを送信する
      *
      * @return void
      */
     public function sendAll(Answer $answer, User $applicant)
     {
-        // 団体にメールを送る
+        // 企画にメールを送る
         $answer->loadMissing('form.questions');
         $answer->loadMissing('circle.users');
         $answer_details = $this->answerDetailsService->getAnswerDetailsByAnswer($answer);
@@ -86,7 +86,7 @@ class AnswersService
         return Answer::where('form_id', $form->id)->where('circle_id', $circle->id)->get();
     }
 
-    public function createAnswer(Form $form, Circle $circle, BaseAnswerRequest $request)
+    public function createAnswer(Form $form, Circle $circle, AnswerRequestInterface $request)
     {
         return DB::transaction(function () use ($form, $circle, $request) {
             $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
@@ -102,7 +102,7 @@ class AnswersService
         });
     }
 
-    public function updateAnswer(Form $form, Answer $answer, BaseAnswerRequest $request)
+    public function updateAnswer(Form $form, Answer $answer, AnswerRequestInterface $request)
     {
         return DB::transaction(function () use ($form, $answer, $request) {
             $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);

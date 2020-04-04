@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Auth;
+use Request;
 
 class BladeServiceProvider extends ServiceProvider
 {
@@ -29,7 +30,7 @@ class BladeServiceProvider extends ServiceProvider
         // @staffpage 〜 @endstaffpage
         // の中は、スタッフページの場合のみ表示される
         Blade::if('staffpage', function () {
-            return strpos(request()->path(), 'staff') !== 0;
+            return Request::is('staff*');
         });
 
         // 渡された引数の文字列をMarkdownとして解釈し、

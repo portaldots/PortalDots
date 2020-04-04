@@ -2,6 +2,7 @@
   <ListViewBaseItem
     class="listview-form-group"
     :class="{ 'is-invalid': $slots.invalid }"
+    noBorder
   >
     <component
       :is="labelFor ? 'label' : 'div'"
@@ -48,10 +49,10 @@ export default {
   padding-bottom: $spacing-md;
   padding-top: $spacing-md;
   &:first-child {
-    padding-top: $spacing;
+    padding-top: $spacing-s;
   }
   &:last-child {
-    padding-bottom: $spacing;
+    padding-bottom: $spacing-s;
   }
   &.is-invalid {
     color: $color-danger;
