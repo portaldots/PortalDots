@@ -1,4 +1,6 @@
 {
+    "name": "portal-dots/portaldots",
+    "description": "",
     "type": "project",
     "license": "MIT",
 	"require": {
@@ -54,27 +56,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
 	"scripts": {
-		"docker": [
-			"cd docker_dev && docker-compose up -d"
-		],
-		"docker-build": [
-			"cd docker_dev && docker-compose up -d --build"
-		],
-		"docker-stop": [
-			"cd docker_dev && docker-compose down"
-		],
-        "migrate": [
-            "cd docker_dev && docker-compose run web php artisan migrate"
-        ],
-        "migrate:status": [
-            "cd docker_dev && docker-compose run web php artisan migrate:status"
-        ],
-        "migrate:rollback": [
-            "cd docker_dev && docker-compose run web php artisan migrate:rollback"
-        ],
-        "migrate:refresh": [
-            "cd docker_dev && docker-compose run web php artisan migrate:refresh"
-        ],
         "phpcs": [
             "phpcs --standard=phpcs.xml ./"
         ],
