@@ -12,6 +12,13 @@
     },
     "homepage": "https://github.com/portal-dots/PortalDots#readme",
     "scripts": {
+        "docker": "cd docker_dev && docker-compose up -d --build",
+        "docker-bash": "cd docker_dev/ && docker-compose exec web bash",
+        "docker-stop": "cd docker_dev && docker-compose down",
+        "migrate": "cd docker_dev && docker-compose run web php artisan migrate",
+        "migrate:status": "cd docker_dev && docker-compose run web php artisan migrate:status",
+        "migrate:rollback": "cd docker_dev && docker-compose run web php artisan migrate:rollback",
+        "migrate:refresh": "cd docker_dev && docker-compose run web php artisan migrate:refresh",
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch": "npm run development -- --watch",
@@ -19,7 +26,6 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "docker-bash": "cd docker_dev/ && docker-compose exec web bash",
         "eslint-check": "eslint --ext js,vue ./resources",
         "stylelint-check": "stylelint ./resources/**/*.{vue,scss}"
     },
