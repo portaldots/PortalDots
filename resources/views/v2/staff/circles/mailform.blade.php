@@ -3,8 +3,8 @@
 @section('title', 'メール送信フォーム')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url("home_staff/circles/#{$circle->id}/read") }}" data-turbolinks="false">
-        {{ $circle->name }}
+    <app-nav-bar-back inverse href="{{ url("home_staff/circles/{$circle->id}/read") }}" data-turbolinks="false">
+        企画情報 - {{ $circle->name }}
     </app-nav-bar-back>
 @endsection
     
