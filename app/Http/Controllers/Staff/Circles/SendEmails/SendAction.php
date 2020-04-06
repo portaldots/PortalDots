@@ -22,6 +22,6 @@ class SendAction extends Controller
         
         // ここにメール送信処理を記述
         return redirect()->route('staff.circles.email', ['circle' => $circle])
-            ->with('topAlert.title', "件名： {$request->title} を {$circle->name} に送信しました。");
+            ->with('topAlert.title', "件名：「{$request->title}」を {$circle->name} に送信しました。");
     }
 }
