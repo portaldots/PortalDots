@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Circles;
 
-use App\Eloquents\Circle;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SendEmailsRequest extends FormRequest
@@ -25,7 +24,7 @@ class SendEmailsRequest extends FormRequest
     public function rules()
     {
         return [
-            'recipient' => ['required'],
+            'recipient' => ['required', 'in:all,leader'],
             'title' => ['required'],
             'message' => ['required'],
         ];
@@ -54,6 +53,7 @@ class SendEmailsRequest extends FormRequest
     {
         return [
             'required' => ':attribute は必須項目です',
+            'in' => ':attribute の値が不正です',
         ];
     }
 }
