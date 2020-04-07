@@ -20,21 +20,21 @@ class SendAction extends Controller
 
     public function __invoke(Circle $circle, SendEmailsRequest $request)
     {
-        if (count($circle->users()->get()) === 0) {
-            return redirect()
-                ->route('staff.circles.email', ['circle' => $circle])
-                ->with('topAlert.title', '送信に失敗しました')
-                ->with('topAlert.type', 'danger')
-                ->with('topAlert.body', 'この企画に登録されているユーザーが存在しません')
-                ->withInput();
-        }
-        
         if ($request->recipient === 'all') {
             $recipients = $circle->users()->get();
             $body = "-----\n企画名: **{$circle->name}**\n\nこのメッセージは企画責任者・副責任者に送信されています\n\n-----\n";
         } else {
-            $recipients = $circle->users()->wherePivot('is_leader', true)->get();
+            $recipients = $circle->leader()->get();
             $body = "-----\n企画名: **{$circle->name}**\n\nこのメッセージは企画責任者のみに送信されています\n\n-----\n";
+        }
+
+        if ($recipients->isEmpty()) {
+            return redirect()
+                ->route('staff.circles.email', ['circle' => $circle])
+                ->with('topAlert.title', '送信に失敗しました')
+                ->with('topAlert.type', 'danger')
+                ->with('topAlert.body', '宛先が存在しないため送信できませんでした')
+                ->withInput();
         }
 
         $recipients->push(Auth::user());
