@@ -25,8 +25,8 @@ class SendEmailsRequest extends FormRequest
     {
         return [
             'recipient' => ['required', 'in:all,leader'],
-            'title' => ['required'],
-            'message' => ['required'],
+            'subject' => ['required'],
+            'body' => ['required'],
         ];
     }
 
@@ -39,8 +39,8 @@ class SendEmailsRequest extends FormRequest
     {
         return [
             'recipient' => '宛先',
-            'title' => '件名',
-            'message' => '本文',
+            'subject' => '件名',
+            'body' => '本文',
         ];
     }
 

@@ -14,7 +14,7 @@
     <app-container>
         <list-view>
             <list-view-form-group label-for="circle">
-                <template v-slot:label>団体名</template>
+                <template v-slot:label>企画名</template>
                 <input type="text" id="circle" readonly value="{{ $circle->name }}" class="form-control is-plaintext">
             </list-view-form-group>
 
@@ -47,38 +47,37 @@
                 @enderror
             </list-view-form-group>
 
-            <list-view-form-group label-for="title">
+            <list-view-form-group label-for="subject">
                 <template v-slot:label>件名</template>
                 <input
                     type="text"
-                    id="title"
-                    name="title"
-                    class="form-control @error('title') is-invalid @enderror"
-                    value="{{ old('title') }}"
+                    id="subject"
+                    name="subject"
+                    class="form-control @error('subject') is-invalid @enderror"
+                    value="{{ old('subject') }}"
                     required>
 
-                @error('title')
+                @error('subject')
                     <template v-slot:invalid>{{ $message }}</template>
                 @enderror
             </list-view-form-group>
 
-            <list-view-form-group label-for="message">
+            <list-view-form-group label-for="body">
                 <template v-slot:label>本文</template>
-                <template v-slot:description>Markdown も使用できます。</template>
+                <template v-slot:description>企画名は本文の最初に自動で挿入されます (Markdown 使用可能)</template>
                 <textarea
                     rows="10"
-                    id="message"
-                    name="message"
-                    class="form-control @error('message') is-invalid @enderror"
-                    required>{{ old('message') }}</textarea>
-                @error('message')
+                    id="body"
+                    name="body"
+                    class="form-control @error('body') is-invalid @enderror"
+                    required>{{ old('body') }}</textarea>
+                @error('body')
                     <template v-slot:invalid>{{ $message }}</template>
                 @enderror
             </list-view-form-group>
         </list-view>
         <div class="text-center pt-spacing-md pb-spacing">
             <button type="submit" class="btn is-primary is-wide">送信</button>
-            <a href="{{ url('home_staff/circles/read/' . $circle->id) }}" data-turbolinks="false" class="btn is-primary-inverse">団体詳細へ戻る</a>
         </div>
     </app-container>
 </form>
