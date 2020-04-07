@@ -64,7 +64,7 @@
 
             <list-view-form-group label-for="body">
                 <template v-slot:label>本文</template>
-                <template v-slot:description>企画名は本文の最初に自動で挿入されます (Markdown 使用可能)</template>
+                <template v-slot:description>企画名は本文の最初に自動で挿入されます(Markdown利用可能)</template>
                 <textarea
                     rows="10"
                     id="body"

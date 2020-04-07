@@ -10,6 +10,9 @@ class IndexAction extends Controller
 {
     public function __invoke(Circle $circle)
     {
+        if ($circle->users()->get()->isEmpty()) {
+            return redirect("home_staff/circles/read/{$circle->id}");
+        }
         return view('v2.staff.circles.mailform')
             ->with('circle', $circle);
     }

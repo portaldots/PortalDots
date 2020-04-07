@@ -47,7 +47,7 @@ class SendAction extends Controller
         );
 
         return redirect()->route('staff.circles.email', ['circle' => $circle])
-            ->with('topAlert.title', "件名：「{$request->subject}」を {$circle->name} 宛で送信予約しました")
+            ->with('topAlert.title', "件名：「{$request->subject}」を送信予約しました")
             ->with('topAlert.body', 'メールを送信するのに時間がかかる場合があります。');
     }
 }
