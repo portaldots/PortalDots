@@ -108,7 +108,7 @@
                                     {% if answer.answers[question.id] is not empty %}
                                         <a href="{{
                                             strpos(answer.answers[question.id], 'answer_details') is same as(0)
-                                                  ? base_url( "forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
+                                                  ? base_url( "staff/forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
                                                   : base_url( "uploads/applications_form/#{answer.answers[question.id]}" )
                                           }}"
                                           target="_blank">{{ answer.answers[question.id] }}</a>

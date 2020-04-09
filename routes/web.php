@@ -145,6 +145,11 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::prefix('/answers')
                     ->name('answers.')
                     ->group(function () {
+                        Route::get('/{answer}/edit', 'Staff\Forms\Answers\EditAction')->name('edit');
+                        Route::patch('/{answer}', 'Staff\Forms\Answers\UpdateAction')->name('update');
+                        Route::get('/create', 'Staff\Forms\Answers\CreateAction')->name('create');
+                        Route::post('/', 'Staff\Forms\Answers\StoreAction')->name('store');
+                        Route::get('/{answer}/uploads/{question}', 'Staff\Forms\Answers\Uploads\ShowAction')->name('uploads.show');
                         Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index');
                         Route::post('/uploads/download_zip', 'Staff\Forms\Answers\Uploads\DownloadZipAction')->name('uploads.download_zip');
                     });

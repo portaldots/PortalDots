@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Forms\Answers\Uploads;
+namespace App\Http\Controllers\Staff\Forms\Answers\Uploads;
 
 use Storage;
 use Gate;
@@ -15,8 +15,7 @@ class ShowAction extends Controller
     public function __invoke(Request $request, int $form_id, Answer $answer, int $question_id)
     {
         // Form と Question については、DB から情報を取ってくる必要がないので、int で受け取る
-        $circle = $answer->circle()->withoutGlobalScope('approved')->first();
-        if (Gate::denies('circle.belongsTo', $circle)) {
+        if (Auth::check() && !Auth::user()->is_staff) {
             abort(404);
         }
 

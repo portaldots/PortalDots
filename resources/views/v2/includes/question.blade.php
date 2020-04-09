@@ -8,7 +8,7 @@
     {{-- 【v-bind:question-id の値について】 --}}
     {{-- Vue に String ではなく Number 型であると認識させるため --}}
     {{-- v-bind を利用 --}}
-    
+
     {{-- 【v-bind:value の値について】 --}}
     {{-- ファイルアップロード済の場合は、アップロードしたファイルにアクセスできるURLをvalueに設定 --}}
     <question-item @if ($question->is_required)
@@ -16,7 +16,7 @@
         @endif
         @if ($question->type === 'upload' && !empty($answer) &&
             !empty($answer_details[$question->id]))
-            value="{{ strpos($answer_details[$question->id], 'answer_details') === 0 ? route('forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question]) : url('/uploads/applications_form/' . $answer_details[$question->id]) }}"
+            value="{{ strpos($answer_details[$question->id], 'answer_details') === 0 ? route($show_upload_route ?? 'forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question]) : url('/uploads/applications_form/' . $answer_details[$question->id]) }}"
         @else
             v-bind:value="{{ json_encode(old('answers.' . $question->id, $answer_details[$question->id] ?? null)) }}"
         @endif
