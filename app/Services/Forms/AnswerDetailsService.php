@@ -6,6 +6,7 @@ namespace App\Services\Forms;
 
 use App\Eloquents\Form;
 use App\Eloquents\Answer;
+use App\Eloquents\Question;
 use App\Eloquents\AnswerDetail;
 use App\Http\Requests\Forms\AnswerRequestInterface;
 use Storage;
@@ -30,7 +31,7 @@ class AnswerDetailsService
         foreach ($raw_details as $raw_detail) {
             $question = $answer->form->questions->firstWhere('id', $raw_detail->question_id);
 
-            if ($question->type === 'checkbox') {
+            if ($question instanceof Question && $question->type === 'checkbox') {
                 if (empty($result[$raw_detail->question_id]) || !is_array($result[$raw_detail->question_id])) {
                     $result[$raw_detail->question_id] = [];
                 }
