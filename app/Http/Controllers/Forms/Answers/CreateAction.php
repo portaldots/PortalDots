@@ -21,9 +21,8 @@ class CreateAction extends Controller
 
     public function __invoke(Form $form, Request $request)
     {
-        if (! $form->is_public) {
+        if (! $form->is_public || isset($form->customForm)) {
             abort(404);
-            return;
         }
 
         $circle = null;

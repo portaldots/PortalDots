@@ -10,6 +10,10 @@ class ShowAction extends Controller
 {
     public function __invoke(Form $form)
     {
+        if (isset($form->customForm)) {
+            abort(404);
+        }
+
         $circles = $form->notAnswered();
 
         return view('v2.staff.forms.answers.notanswered.index')
