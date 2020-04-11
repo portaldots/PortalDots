@@ -41,7 +41,7 @@
                     <a href="{{ route('staff.forms.answers.create', ['form' => $form]) }}">変更</a>
                 </list-view-item>
                 <list-view-card>
-                    @if ($form->is_public)
+                    @if ($form->is_public && empty($form->customForm))
                         <div class="text-danger">
                             <i class="fas fa-info-circle"></i>
                             スタッフとして回答します。この画面で回答を作成・編集すると、企画のメンバーには「スタッフによって回答が作成・編集された」という旨のメールが送信されます。
@@ -49,7 +49,11 @@
                     @else
                         <div class="text-muted">
                             <i class="fas fa-info-circle"></i>
-                            非公開フォームのため、この画面で回答を作成・編集しても、その旨は企画のメンバーに通知されません。
+                            @if (isset($form->customForm))
+                                この画面で回答を作成・編集しても、その旨は企画のメンバーに通知されません。
+                            @else
+                                非公開フォームのため、この画面で回答を作成・編集しても、その旨は企画のメンバーに通知されません。
+                            @endif
                         </div>
                     @endif
                 </list-view-card>
