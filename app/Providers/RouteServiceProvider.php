@@ -17,20 +17,6 @@ class RouteServiceProvider extends ServiceProvider
     protected $namespace = 'App\Http\Controllers';
 
     /**
-     * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        parent::boot();
-
-        Route::bind('circle', function ($id) {
-            return \App\Eloquents\Circle::withoutGlobalScopes()->where('circles.id', $id)->firstOrFail();
-        });
-    }
-
-    /**
      * Define the routes for the application.
      *
      * @return void

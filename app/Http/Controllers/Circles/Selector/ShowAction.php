@@ -19,7 +19,7 @@ class ShowAction extends Controller
         $redirect = $request->redirect;
         if (isset($redirect) && $this->router->has($redirect)) {
             $user = Auth::user();
-            $circles = $user->circles()->get();
+            $circles = $user->circles()->approved()->get();
 
             if (count($circles) <= 1) {
                 return redirect()
