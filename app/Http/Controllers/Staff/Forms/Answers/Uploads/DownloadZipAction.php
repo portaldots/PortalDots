@@ -24,9 +24,7 @@ class DownloadZipAction extends Controller
     public function __invoke(Form $form)
     {
         $form->load('answers.details');
-        $form->load(['answers.circle' => function ($query) {
-            $query->withoutGlobalScope('approved');
-        }]);
+        $form->load('answers.circle');
         $form->load(['questions' => function ($query) {
             $query->where('type', 'upload');
         }]);

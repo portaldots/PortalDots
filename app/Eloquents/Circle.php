@@ -40,15 +40,6 @@ class Circle extends Model
         'notes',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope('approved', function (Builder $builder) {
-            $builder->whereNotNull('submitted_at')->where('status', 'approved');
-        });
-    }
-
     public function users()
     {
         return $this->belongsToMany(User::class)->using(CircleUser::class)->withPivot('is_leader');

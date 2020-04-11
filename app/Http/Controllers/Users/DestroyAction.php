@@ -13,7 +13,7 @@ class DestroyAction extends Controller
     {
         $user = User::find(Auth::id());
 
-        $circles = $user->circles()->withoutGlobalScope('approved')->all();
+        $circles = $user->circles()->all();
 
         if (!empty($circles)) {
             return redirect()

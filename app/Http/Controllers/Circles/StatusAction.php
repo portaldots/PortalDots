@@ -11,7 +11,7 @@ class StatusAction extends Controller
 {
     public function __invoke(Circle $circle)
     {
-        $circle = Auth::user()->circles()->withoutGlobalScope('approved')->rejected()->findOrFail($circle->id);
+        $circle = Auth::user()->circles()->rejected()->findOrFail($circle->id);
 
         // status_reason が空の場合、このページはアクセス不可(というより 404 )とする
         if (empty($circle->status_reason)) {

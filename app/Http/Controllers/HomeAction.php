@@ -22,7 +22,7 @@ class HomeAction extends Controller
         return view('v2.home')
             ->with('circle_custom_form', CustomForm::getFormByType('circle'))
             ->with('my_circles', Auth::check()
-                                    ? Auth::user()->circles()->withoutGlobalScope('approved')->get()
+                                    ? Auth::user()->circles()->get()
                                     : collect([]))
             ->with('pages', Page::take(self::TAKE_COUNT)->get())
             ->with('remaining_pages_count', max(Page::count() - self::TAKE_COUNT, 0))

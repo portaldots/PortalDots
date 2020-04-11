@@ -30,7 +30,7 @@ class EditAction extends Controller
             return;
         }
 
-        $circle = $answer->circle()->withoutGlobalScope('approved')->first();
+        $circle = $answer->circle()->first();
         return view('v2.staff.forms.answers.form')
             ->with('circle', $circle)
             ->with('form', $form)
