@@ -48,11 +48,15 @@ class AnswerDetailsService
      * 置き換えた $answer_details 配列を return する
      *
      * @param Form $form
-     * @param AnswerRequestInterface $request
+     * @param AnswerRequestInterface|null $request
      * @return array
      */
-    public function getAnswerDetailsWithFilePathFromRequest(Form $form, AnswerRequestInterface $request)
+    public function getAnswerDetailsWithFilePathFromRequest(Form $form, ?AnswerRequestInterface $request = null)
     {
+        if (empty($request)) {
+            return [];
+        }
+
         $form->loadMissing('questions');
         $answer_details = $request->validated()['answers'] ?? [];
         foreach ($form->questions as $question) {

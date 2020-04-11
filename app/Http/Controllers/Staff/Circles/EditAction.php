@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Staff\Circles;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
+use App\Eloquents\CustomForm;
 
 class EditAction extends Controller
 {
@@ -21,6 +22,7 @@ class EditAction extends Controller
         }
 
         return view('staff.circles.form')
+            ->with('custom_form', CustomForm::getFormByType('circle'))
             ->with('circle', $circle)
             ->with('leader', $circle->users->filter(function ($user) {
                 return $user->pivot->is_leader;

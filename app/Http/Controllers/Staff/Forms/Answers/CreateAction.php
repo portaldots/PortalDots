@@ -12,6 +12,9 @@ use App\Services\Forms\AnswersService;
 
 class CreateAction extends Controller
 {
+    /**
+     * @var AnswersService
+     */
     private $answersService;
 
     public function __construct(AnswersService $answersService)
@@ -21,11 +24,6 @@ class CreateAction extends Controller
 
     public function __invoke(Form $form, Request $request)
     {
-        // カスタムフォームの編集は許可しない
-        if (isset($form->customForm)) {
-            abort(404);
-        }
-
         $circle = null;
         if (empty($request->circle)) {
             $circles = Circle::all();
@@ -36,8 +34,17 @@ class CreateAction extends Controller
             $circle = Circle::findOrFail($request->circle);
         }
 
-        // すでに回答済だった場合
         $answers = $this->answersService->getAnswersByCircle($form, $circle);
+
+        // カスタムフォームの場合で、かつ対応するanswerが作成されていない場合
+        // 作成した上でUpdate画面へリダイレクト
+        if (isset($form->customForm) && count($answers) === 0) {
+            $answer = $this->answersService->createAnswer($form, $circle);
+            return redirect()
+                ->route('staff.forms.answers.edit', ['form' => $form, 'answer' => $answer]);
+        }
+
+        // すでに回答済だった場合
         if ($form->max_answers === 1 && count($answers) === 1) {
             // 最大回答回数 1 かつ 現時点での回答数が 1 の場合に限り、
             // 編集画面へリダイレクトする。

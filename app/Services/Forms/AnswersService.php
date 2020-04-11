@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Mail;
 
 class AnswersService
 {
+    /**
+     * @var AnswerDetailsService
+     */
     private $answerDetailsService;
 
     public function __construct(AnswerDetailsService $answerDetailsService)
@@ -121,7 +124,7 @@ class AnswersService
         return Answer::where('form_id', $form->id)->where('circle_id', $circle->id)->get();
     }
 
-    public function createAnswer(Form $form, Circle $circle, AnswerRequestInterface $request)
+    public function createAnswer(Form $form, Circle $circle, ?AnswerRequestInterface $request = null)
     {
         return DB::transaction(function () use ($form, $circle, $request) {
             $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
@@ -137,7 +140,7 @@ class AnswersService
         });
     }
 
-    public function updateAnswer(Form $form, Answer $answer, AnswerRequestInterface $request)
+    public function updateAnswer(Form $form, Answer $answer, ?AnswerRequestInterface $request = null)
     {
         return DB::transaction(function () use ($form, $answer, $request) {
             $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
