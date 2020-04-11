@@ -263,8 +263,9 @@
                             ・ ブース
                         {% endif %}
                     </th>
-                    <th>作成日時</th>
-                    <th>更新日時</th>
+                    <th>企画団体</th>
+                    <th>回答作成日時</th>
+                    <th>回答更新日時</th>
                     {% for question in form.questions if question.type is not same as("heading") %}
                         <th>
                             {{ question.name }}
@@ -288,7 +289,10 @@
                         <td>{{ answer.id }}</td>
                         <th class="table-sticky">
                             <a href="{{ base_url("home_staff/circles/read/#{answer.circle_id}") }}">
+                              <ruby>
                                 {{ answer.circle.name }}
+                                <rt>{{ answer.circle.name_yomi }}</rt>
+                              </ruby>
                             </a>
                             (ID : {{ answer.circle.id }})
                             {% if form.type == "booth" %}
@@ -298,6 +302,12 @@
                                 </a>
                             {% endif %}
                         </th>
+                        <td>
+                          <ruby>
+                            {{ answer.circle.group_name }}
+                            <rt>{{ answer.circle.group_name_yomi }}</rt>
+                          </ruby>
+                        </td>
                         <td>{{ answer.created_at }}</td>
                         <td>{{ answer.updated_at }}</td>
                         {% for question in form.questions if question.type is not same as("heading") %}
