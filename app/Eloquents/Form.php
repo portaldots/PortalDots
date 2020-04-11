@@ -44,13 +44,12 @@ class Form extends Model
         'is_public' => 'bool',
     ];
 
-    protected static function boot()
+    /**
+     * カスタムフォームは含めない
+     */
+    public function scopeWithoutCustomForms($query)
     {
-        parent::boot();
-
-        static::addGlobalScope('withoutCustomForms', function (Builder $builder) {
-            $builder->doesntHave('customForm');
-        });
+        return $query->doesntHave('customForm');
     }
 
     /**

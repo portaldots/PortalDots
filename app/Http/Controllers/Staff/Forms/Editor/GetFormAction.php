@@ -8,10 +8,8 @@ use App\Http\Controllers\Controller;
 
 class GetFormAction extends Controller
 {
-    public function __invoke(int $form_id)
+    public function __invoke(Form $form)
     {
-        $form = Form::withoutGlobalScope('withoutCustomForms')->findOrFail($form_id);
-
         return [
             'id' => $form->id,
             'name' => $form->name,

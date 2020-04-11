@@ -23,6 +23,11 @@ class StoreAction extends Controller
 
     public function __invoke(Form $form, AnswerRequest $request)
     {
+        // カスタムフォームの編集は許可しない
+        if (isset($form->customForm)) {
+            abort(404);
+        }
+
         $circle = Circle::findOrFail($request->circle_id);
         $answer = $this->answersService->createAnswer($form, $circle, $request);
         if ($answer) {

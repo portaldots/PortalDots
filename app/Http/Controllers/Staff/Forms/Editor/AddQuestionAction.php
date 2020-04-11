@@ -16,9 +16,8 @@ class AddQuestionAction extends Controller
         $this->questionsService = $questionsService;
     }
 
-    public function __invoke(int $form_id, Request $request)
+    public function __invoke(Form $form, Request $request)
     {
-        $form = Form::withoutGlobalScope('withoutCustomForms')->findOrFail($form_id);
         $question = $this->questionsService->addQuestion($form, $request->type);
         return [
             'id' => $question->id,

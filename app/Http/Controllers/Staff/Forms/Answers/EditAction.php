@@ -23,10 +23,8 @@ class EditAction extends Controller
         $this->answerDetailsService = $answerDetailsService;
     }
 
-    public function __invoke(int $form_id, Answer $answer)
+    public function __invoke(Form $form, Answer $answer)
     {
-        // カスタムフォームの編集はできるようにする
-        $form = Form::withoutGlobalScope('withoutCustomForms')->findOrFail($form_id);
         if ($form->id !== $answer->form_id) {
             abort(404);
             return;

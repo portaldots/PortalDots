@@ -11,9 +11,8 @@ use App\Http\Controllers\Controller;
 
 class GetQuestionsAction extends Controller
 {
-    public function __invoke(int $form_id)
+    public function __invoke(Form $form)
     {
-        $form = Form::withoutGlobalScope('withoutCustomForms')->findOrFail($form_id);
         $questions = $form->questions()->get();
         $questions_on_db = $questions->map(function (Question $question) {
             return [

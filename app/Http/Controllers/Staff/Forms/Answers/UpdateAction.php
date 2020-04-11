@@ -19,14 +19,8 @@ class UpdateAction extends Controller
         $this->answersService = $answersService;
     }
 
-    // カスタムフォームの場合、AnswerRequest の $this->route('form') で
-    // 現在のフォームを取得することができない
-    // →グローバルスコープを使うのをやめる
-    public function __invoke(int $form_id, Answer $answer, AnswerRequest $request)
+    public function __invoke(Form $form, Answer $answer, AnswerRequest $request)
     {
-        // カスタムフォームの編集はできるようにする
-        $form = Form::withoutGlobalScope('withoutCustomForms')->findOrFail($form_id);
-
         $this->answersService->updateAnswer($form, $answer, $request);
         if ($form->is_public && empty($form->customForm)) {
             // フォームが公開されている場合にのみ確認メールを送信する

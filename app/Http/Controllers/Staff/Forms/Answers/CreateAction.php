@@ -21,6 +21,11 @@ class CreateAction extends Controller
 
     public function __invoke(Form $form, Request $request)
     {
+        // カスタムフォームの編集は許可しない
+        if (isset($form->customForm)) {
+            abort(404);
+        }
+
         $circle = null;
         if (empty($request->circle)) {
             $circles = Circle::all();
