@@ -11,6 +11,11 @@ class EditAction extends Controller
 {
     public function __invoke(Circle $circle)
     {
+        if (!$circle->hasSubmitted()) {
+            // 参加登録が未提出の企画の情報は閲覧・編集できない
+            abort(404);
+        }
+
         $circle->load('users');
 
         $member_ids = '';

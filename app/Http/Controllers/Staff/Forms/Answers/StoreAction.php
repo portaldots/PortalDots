@@ -28,7 +28,7 @@ class StoreAction extends Controller
             abort(404);
         }
 
-        $circle = Circle::findOrFail($request->circle_id);
+        $circle = Circle::submitted()->findOrFail($request->circle_id);
         $answer = $this->answersService->createAnswer($form, $circle, $request);
         if ($answer) {
             if ($form->is_public) {

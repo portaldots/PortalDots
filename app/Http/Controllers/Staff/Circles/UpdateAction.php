@@ -18,6 +18,11 @@ class UpdateAction extends Controller
 
     public function __invoke(Circle $circle, CircleRequest $request)
     {
+        if (!$circle->hasSubmitted()) {
+            // 参加登録が未提出の企画の情報は閲覧・編集できない
+            abort(404);
+        }
+
         $member_ids = str_replace(["\r\n", "\r", "\n"], "\n", $request->members);
         $member_ids = explode("\n", $member_ids);
         $member_ids = array_unique(array_filter($member_ids, "strlen"));

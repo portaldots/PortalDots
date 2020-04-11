@@ -30,7 +30,7 @@ class EditAction extends Controller
             return;
         }
 
-        $circle = $answer->circle()->first();
+        $circle = $answer->circle()->submitted()->firstOrFail();
         return view('v2.staff.forms.answers.form')
             ->with('circle', $circle)
             ->with('form', $form)

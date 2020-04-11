@@ -21,6 +21,9 @@ class UpdateAction extends Controller
 
     public function __invoke(Form $form, Answer $answer, AnswerRequest $request)
     {
+        // 回答に紐づく企画が参加登録未提出の場合、回答の更新を拒否する
+        $answer->circle()->submitted()->firstOrFail();
+
         $this->answersService->updateAnswer($form, $answer, $request);
         if ($form->is_public && empty($form->customForm)) {
             // フォームが公開されている場合にのみ確認メールを送信する

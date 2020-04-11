@@ -31,7 +31,7 @@ class CreateAction extends Controller
                 ->with('url', route('staff.forms.answers.create', ['form' => $form]))
                 ->with('circles', $circles);
         } else {
-            $circle = Circle::findOrFail($request->circle);
+            $circle = Circle::submitted()->findOrFail($request->circle);
         }
 
         $answers = $this->answersService->getAnswersByCircle($form, $circle);
