@@ -31,9 +31,8 @@ class SendAction extends Controller
         if ($recipients->isEmpty()) {
             return redirect()
                 ->route('staff.circles.email', ['circle' => $circle])
-                ->with('topAlert.title', '送信に失敗しました')
                 ->with('topAlert.type', 'danger')
-                ->with('topAlert.body', '宛先が存在しないため送信できませんでした')
+                ->with('topAlert.title', '宛先が存在しないため送信できませんでした')
                 ->withInput();
         }
 
