@@ -4,7 +4,7 @@
 
 @section('navbar')
     <app-nav-bar-back inverse href="{{ url("home_staff/circles/read/{$circle->id}") }}" data-turbolinks="false">
-        企画情報 - {{ $circle->name }}
+        {{ $circle->name }}
     </app-nav-bar-back>
 @endsection
     
