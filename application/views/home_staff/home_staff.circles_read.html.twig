@@ -84,6 +84,9 @@
       <h2 class="panel-title">この企画に所属するユーザー</h2>
     </div>
     <div class="panel-body">
+      {% if users is empty %}
+        この企画には誰も所属していません
+      {% endif %}
       <div class="row">
         {% set mailto_string = "" %}
         {% for user in users %}
@@ -135,12 +138,14 @@
         {% endfor %}
       </div>
     </div>
-    <div class="panel-footer">
-      <a href="mailto:{{ mailto_string }}" class="btn btn-success">
-        <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
-        全員にメールを送信(To)
-      </a>
-    </div>
+    {% if users is not empty %}
+      <div class="panel-footer">
+        <a href="{{ base_url("staff/circles/#{circle_info.id}/email") }}" class="btn btn-success">
+          <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
+          この企画にメールを送信
+        </a>
+      </div>
+    {% endif %}
   </section>
 
 {% endblock %}
