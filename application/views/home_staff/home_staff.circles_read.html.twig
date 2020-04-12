@@ -84,6 +84,9 @@
       <h2 class="panel-title">この企画に所属するユーザー</h2>
     </div>
     <div class="panel-body">
+      {% if users is empty %}
+        この企画には誰も所属していません
+      {% endif %}
       <div class="row">
         {% set mailto_string = "" %}
         {% for user in users %}
