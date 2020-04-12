@@ -23,10 +23,8 @@ class SendAction extends Controller
     {
         if ($request->recipient === 'all') {
             $recipients = $circle->users()->get();
-            $body = "-----\n企画名: **{$circle->name}**\n\nこのメッセージは企画責任者・副責任者に送信されています\n\n-----\n";
         } else {
             $recipients = $circle->leader()->get();
-            $body = "-----\n企画名: **{$circle->name}**\n\nこのメッセージは企画責任者のみに送信されています\n\n-----\n";
         }
 
         if ($recipients->isEmpty()) {
@@ -37,17 +35,15 @@ class SendAction extends Controller
                 ->withInput();
         }
 
-        $body .= $request->body;
-
         $this->sendEmailService->bulkEnqueue(
             $request->subject,
-            $body,
+            $request->body,
             $recipients
         );
 
         $this->sendEmailService->bulkEnqueue(
             '【スタッフ用控え】' . $request->subject,
-            $body,
+            $request->body,
             new Collection([Auth::user()])
         );
 

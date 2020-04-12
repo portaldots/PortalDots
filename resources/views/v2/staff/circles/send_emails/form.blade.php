@@ -64,13 +64,13 @@
 
             <list-view-form-group label-for="body">
                 <template v-slot:label>本文</template>
-                <template v-slot:description>企画名は本文の最初に自動で挿入されます(Markdown利用可能)</template>
+                <template v-slot:description>Markdown利用可能</template>
                 <textarea
                     rows="10"
                     id="body"
                     name="body"
                     class="form-control @error('body') is-invalid @enderror"
-                    required>{{ old('body') }}</textarea>
+                    required>{{ old('body', "{$circle->name} 様") }}</textarea>
                 @error('body')
                     <template v-slot:invalid>{{ $message }}</template>
                 @enderror
