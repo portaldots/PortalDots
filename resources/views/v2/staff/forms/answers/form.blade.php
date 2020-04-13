@@ -6,6 +6,7 @@
     <app-nav-bar-back inverse href="{{ url('/home_staff/applications/read/' . $form->id) }}" data-turbolinks="false">
         {{ $form->name }}
     </app-nav-bar-back>
+@endsection
 
 @section('content')
     <form method="post"
