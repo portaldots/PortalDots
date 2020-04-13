@@ -5,7 +5,9 @@ const baseURL = document.querySelector('#forms-editor-config')
       document.querySelector('#forms-editor-config').dataset.apiBaseUrl
     )
   : null
-const token = document.head.querySelector('meta[name="csrf-token"]').content
+const token = document.head.querySelector('meta[name="csrf-token"]')
+  ? document.head.querySelector('meta[name="csrf-token"]').content
+  : null
 
 const axios = Axios.create({
   baseURL,
