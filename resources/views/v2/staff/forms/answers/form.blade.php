@@ -66,7 +66,7 @@
                 <list-view>
                     <template v-slot:title>以前の回答を閲覧・変更</template>
                     @foreach ($answers as $_)
-                        <list-view-item href="{{ route('forms.answers.edit', ['form' => $form, 'answer' => $_]) }}">
+                        <list-view-item href="{{ route('staff.forms.answers.edit', ['form' => $form, 'answer' => $_]) }}">
                             <template v-slot:title>
                                 @datetime($_->created_at) に新規作成した回答 — 回答ID : {{ $_->id }}
                             </template>
