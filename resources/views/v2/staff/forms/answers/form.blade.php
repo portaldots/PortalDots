@@ -3,16 +3,9 @@
 @section('title', $form->name . ' — 申請')
 
 @section('navbar')
-    @if (!empty($answer) && count($answers) > 0 && $form->max_answers > 1)
-        <app-nav-bar-back inverse href="{{ route('staff.forms.answers.create', ['form' => $form, 'circle' => $circle]) }}">
-            回答の新規作成
-        </app-nav-bar-back>
-    @else
-        <app-nav-bar-back inverse href="{{ url('/home_staff/applications/read/' . $form->id) }}" data-turbolinks="false">
-            {{ $form->name }}
-        </app-nav-bar-back>
-    @endif
-@endsection
+    <app-nav-bar-back inverse href="{{ url('/home_staff/applications/read/' . $form->id) }}" data-turbolinks="false">
+        {{ $form->name }}
+    </app-nav-bar-back>
 
 @section('content')
     <form method="post"
