@@ -15,9 +15,6 @@ class ShowAction extends Controller
     public function __invoke(Request $request, int $form_id, Answer $answer, int $question_id)
     {
         // Form と Question については、DB から情報を取ってくる必要がないので、int で受け取る
-        if (Auth::check() && !Auth::user()->is_staff) {
-            abort(404);
-        }
 
         $file_path = AnswerDetail::select('answer')
             ->where('answer_id', $answer->id)
