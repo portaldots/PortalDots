@@ -56,7 +56,7 @@ class Handler extends ExceptionHandler
         // 対応していないので、200 を返す
         if (
             !empty($request->headers->get('Turbolinks-Referrer'))
-            && in_array($response->getStatusCode(), [403, 404, 500 , 503], true)
+            && in_array($response->getStatusCode(), [403, 404, 500, 503], true)
         ) {
             $response->setStatusCode(200);
         }
