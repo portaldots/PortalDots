@@ -147,5 +147,24 @@
       </div>
     {% endif %}
   </section>
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">この企画の回答済み申請</h2>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        {% for form in forms %}
+        <div class="col-lg-4 col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <h3 class="circles_read_user_name">{{ form.name }}</h3>
+              {{ form.form_id }}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
 
 {% endblock %}

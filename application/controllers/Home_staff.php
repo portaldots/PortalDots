@@ -708,6 +708,8 @@ class Home_staff extends MY_Controller
             $vars["circle_info"] = $circle_info;
             // この企画に所属するユーザーも取得する
             $vars["users"] = $this->circles->get_user_info_by_circle_id($circle_info->id);
+            // この企画が回答済みである申請を取得する
+            $vars["forms"] = $this->forms->get_answered_forms_by_circle_id($circle_info->id);
         } else {
             // 存在しない場合か、参加登録が未提出の企画の場合
             show_404();
