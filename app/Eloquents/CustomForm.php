@@ -109,7 +109,7 @@ class CustomForm extends Model
         if (empty($forms[$type]) || static::$noCacheForm) {
             $custom_form = self::where('type', $type)->first();
             if (!empty($custom_form)) {
-                $forms[$type] = $custom_form->form()->withoutGlobalScope('withoutCustomForms')->first();
+                $forms[$type] = $custom_form->form()->first();
             }
         }
 

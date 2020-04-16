@@ -22,7 +22,7 @@ class DestroyAction extends Controller
     {
         $this->authorize('circle.update', $circle);
 
-        if ($user->circles()->withoutGlobalScope('approved')->findOrFail($circle->id)->pivot->is_leader) {
+        if ($user->circles()->findOrFail($circle->id)->pivot->is_leader) {
             return redirect()
                 ->route('circles.users.index', ['circle' => $circle])
                 ->with('topAlert.type', 'danger')

@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Forms\Answers;
+namespace App\Http\Controllers\Staff\Forms\Answers;
 
 use Auth;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Form;
 use App\Eloquents\Circle;
-use App\Http\Requests\Forms\StoreAnswerRequest;
+use App\Http\Requests\Staff\Forms\AnswerRequest;
 use App\Services\Forms\AnswersService;
 
 class StoreAction extends Controller
 {
+    /**
+     * @var AnswersService
+     */
     private $answersService;
 
     public function __construct(AnswersService $answersService)
@@ -18,18 +21,22 @@ class StoreAction extends Controller
         $this->answersService = $answersService;
     }
 
-    public function __invoke(Form $form, StoreAnswerRequest $request)
+    public function __invoke(Form $form, AnswerRequest $request)
     {
+        // カスタムフォームの作成は許可しない
         if (isset($form->customForm)) {
             abort(404);
         }
 
-        $circle = Circle::approved()->findOrFail($request->circle_id);
+        $circle = Circle::submitted()->findOrFail($request->circle_id);
         $answer = $this->answersService->createAnswer($form, $circle, $request);
         if ($answer) {
-            $this->answersService->sendAll($answer, Auth::user());
+            if ($form->is_public) {
+                // フォームが公開されている場合にのみ確認メールを送信する
+                $this->answersService->sendAll($answer, Auth::user(), true);
+            }
             return redirect()
-                ->route('forms.answers.edit', ['form' => $form, 'answer' => $answer])
+                ->route('staff.forms.answers.edit', ['form' => $form, 'answer' => $answer])
                 ->with('topAlert.title', '回答を作成しました — 回答ID : ' . $answer->id)
                 ->with('topAlert.body', '以下のフォームより、回答を修正することもできます');
         }

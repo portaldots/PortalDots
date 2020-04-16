@@ -12,6 +12,6 @@ class CreateAction extends Controller
     public function __invoke()
     {
         return view('v2.contacts.form')
-            ->with('circles', Auth::user()->circles()->withoutGlobalScope('approved')->get());
+            ->with('circles', Auth::user()->circles()->get());
     }
 }

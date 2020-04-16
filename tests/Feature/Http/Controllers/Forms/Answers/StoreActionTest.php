@@ -10,6 +10,7 @@ use Carbon\CarbonImmutable;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
+use App\Eloquents\CustomForm;
 
 class StoreActionTest extends TestCase
 {
@@ -82,6 +83,38 @@ class StoreActionTest extends TestCase
             '受付終了後' => [new CarbonImmutable('2020-03-26 15:23:32'), false],
             '受付終了してだいぶ経過' => [new CarbonImmutable('2020-08-14 02:35:31'), false],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function カスタムフォームとして登録されているフォームには回答できない()
+    {
+        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+
+        $customForm = factory(CustomForm::class)->create([
+            'type' => 'circle',
+            'form_id' => $this->form->id,
+        ]);
+
+        $response = $this
+                    ->actingAs($this->user)
+                    ->post(
+                        route('forms.answers.store', [
+                            'form' => $this->form->id,
+                        ]),
+                        [
+                            'circle_id' => $this->circle->id,
+                        ]
+                    );
+
+        $this->assertDatabaseMissing('answers', [
+            'form_id' => $this->form->id,
+            'circle_id' => $this->circle->id,
+        ]);
+
+        $response->assertStatus(404);
     }
 
     /**

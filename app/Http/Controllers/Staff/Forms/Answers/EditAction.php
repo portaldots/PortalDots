@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Forms\Answers;
+namespace App\Http\Controllers\Staff\Forms\Answers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,22 +19,19 @@ class EditAction extends Controller
         AnswersService $answersService,
         AnswerDetailsService $answerDetailsService
     ) {
-        // 他企画の回答を編集できないようにする
-        $this->middleware('can:update,answer');
-
         $this->answersService = $answersService;
         $this->answerDetailsService = $answerDetailsService;
     }
 
     public function __invoke(Form $form, Answer $answer)
     {
-        if (! $form->is_public || $form->id !== $answer->form_id || isset($form->customForm)) {
+        if ($form->id !== $answer->form_id) {
             abort(404);
             return;
         }
 
-        $circle = $answer->circle()->approved()->firstOrFail();
-        return view('v2.forms.answers.form')
+        $circle = $answer->circle()->submitted()->firstOrFail();
+        return view('v2.staff.forms.answers.form')
             ->with('circle', $circle)
             ->with('form', $form)
             ->with('questions', $form->questions()->get())

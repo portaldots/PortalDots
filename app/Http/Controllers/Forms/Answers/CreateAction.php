@@ -21,14 +21,13 @@ class CreateAction extends Controller
 
     public function __invoke(Form $form, Request $request)
     {
-        if (! $form->is_public) {
+        if (! $form->is_public || isset($form->customForm)) {
             abort(404);
-            return;
         }
 
         $circle = null;
         if (empty($request->circle)) {
-            $circles = Auth::user()->circles;
+            $circles = Auth::user()->circles()->approved()->get();
             if (count($circles) < 1) {
                 // TODO: もうちょっとまともなエラー表示にする
                 return redirect()
@@ -44,7 +43,7 @@ class CreateAction extends Controller
                     ->with('circles', $circles);
             }
         } else {
-            $circle = Circle::findOrFail($request->circle);
+            $circle = Circle::approved()->findOrFail($request->circle);
             if (Gate::denies('circle.belongsTo', $circle)) {
                 // TODO: もうちょっとまともなエラー表示にする
                 abort(403);

@@ -336,14 +336,14 @@ class Home_staff extends MY_Controller
     private function _application_read_csv($vars)
     {
         // カラム名
-        $string_to_export = "ID\t企画ID\t企画の名前";
+        $string_to_export = "ID\t企画ID\t企画の名前\t企画の名前(よみ)\t企画団体の名前\t企画団体の名前(よみ)";
 
         if ($vars["form"]->type === "booth") {
             $string_to_export .= "\tブース名";
         }
 
-        $string_to_export .= "\t作成日時";
-        $string_to_export .= "\t更新日時";
+        $string_to_export .= "\t回答作成日時";
+        $string_to_export .= "\t回答更新日時";
 
         foreach ($vars["form"]->questions as $question) {
             if ($question->type !== 'heading') {
@@ -361,6 +361,12 @@ class Home_staff extends MY_Controller
             $string_to_export .= "\t" . $answer->circle->id;
             // 企画の名前
             $string_to_export .= "\t" . $answer->circle->name;
+            // 企画の名前(よみ)
+            $string_to_export .= "\t" . $answer->circle->name_yomi;
+            // 企画団体の名前
+            $string_to_export .= "\t" . $answer->circle->group_name;
+            // 企画団体の名前(よみ)
+            $string_to_export .= "\t" . $answer->circle->group_name_yomi;
             // ブース名
             if ($vars["form"]->type === "booth") {
                 $string_to_export .= "\t" . $answer->booth->place_name;

@@ -8,9 +8,8 @@ use App\Http\Controllers\Controller;
 
 class IndexAction extends Controller
 {
-    public function __invoke(int $form_id)
+    public function __invoke(Form $form)
     {
-        $form = Form::withoutGlobalScope('withoutCustomForms')->findOrFail($form_id);
         return view('staff.forms.editor')
             ->with('form', $form);
     }

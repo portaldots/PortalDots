@@ -15,6 +15,10 @@
             margin-top: .5rem;
         }
 
+        .applications-read-name small {
+          font-size: 1.25rem;
+        }
+
         .applications-read-send-email {
             padding-left: 40px;
             padding-right: 40px;
@@ -113,6 +117,11 @@
                 <div class="col-md-6 applications-read-header-main">
                     <h1 class="applications-read-name">
                         {{ form.name }}
+                        {% if (form.is_public == 0) %}
+                            <small class="label label-danger">非公開</small>
+                        {% else %}
+                            <small class="label label-success">公開</small>
+                        {% endif %}
                     </h1>
                     <p class="text-muted">
                         受付期間 :
@@ -126,11 +135,6 @@
                           <a href="{{ public_form_url }}" target="_blank" rel="noopener">
                               {{ public_form_url }}
                           </a>
-                        {% endif %}
-                        {% if (form.is_public == 0) %}
-                            <span class="label label-danger">非公開</span>
-                        {% else %}
-                            <span class="label label-success">公開</span>
                         {% endif %}
                     </p>
                     {% if form.description_html is not empty %}
@@ -222,6 +226,14 @@
             <h2 class="panel-title">回答一覧</h2>
         </div>
         <div class="panel-body">
+          {% if form.custom_form is empty %}
+                <div class="pull-left">
+                    <a href="{{ base_url("/staff/forms/#{form.id}/answers/create") }}" class="btn btn-primary">
+                        <span class="fa fa-plus" aria-hidden="true"></span>
+                        新しい回答を作成
+                    </a>
+                </div>
+            {% endif %}
             <div class="pull-right">
                 <a href="{{ base_url("/staff/forms/#{form.id}/answers/uploads") }}" class="btn btn-primary">
                     <span class="fa fa-file-archive-o" aria-hidden="true"></span>
@@ -251,8 +263,9 @@
                             ・ ブース
                         {% endif %}
                     </th>
-                    <th>作成日時</th>
-                    <th>更新日時</th>
+                    <th>企画団体</th>
+                    <th>回答作成日時</th>
+                    <th>回答更新日時</th>
                     {% for question in form.questions if question.type is not same as("heading") %}
                         <th>
                             {{ question.name }}
@@ -264,15 +277,22 @@
                 {% for answer in answers %}
                     <tr>
                         <td>
+                            <a href="{{ base_url("staff/forms/#{form.id}/answers/#{answer.id}/edit") }}"
+                              class="btn btn-primary">
+                              <span class="fa fa-pencil" aria-hidden="true"></span>
+                            </a>
                             <a href="{{ base_url("home_staff/applications_answer_read/#{answer.id}") }}"
-                               class="btn btn-info">
-                                <span class="fa fa-eye" aria-hidden="true"></span>
+                              class="btn btn-info">
+                              <span class="fa fa-eye" aria-hidden="true"></span>
                             </a>
                         </td>
                         <td>{{ answer.id }}</td>
                         <th class="table-sticky">
                             <a href="{{ base_url("home_staff/circles/read/#{answer.circle_id}") }}">
+                              <ruby>
                                 {{ answer.circle.name }}
+                                <rt>{{ answer.circle.name_yomi }}</rt>
+                              </ruby>
                             </a>
                             (ID : {{ answer.circle.id }})
                             {% if form.type == "booth" %}
@@ -282,6 +302,12 @@
                                 </a>
                             {% endif %}
                         </th>
+                        <td>
+                          <ruby>
+                            {{ answer.circle.group_name }}
+                            <rt>{{ answer.circle.group_name_yomi }}</rt>
+                          </ruby>
+                        </td>
                         <td>{{ answer.created_at }}</td>
                         <td>{{ answer.updated_at }}</td>
                         {% for question in form.questions if question.type is not same as("heading") %}
@@ -323,7 +349,7 @@
                                         {% if answer.answers[question.id] is not empty %}
                                             <a href="{{
                                                 strpos(answer.answers[question.id], 'answer_details') is same as(0)
-                                                      ? base_url( "forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
+                                                      ? base_url( "staff/forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
                                                       : base_url( "uploads/applications_form/#{answer.answers[question.id]}" )
                                               }}"
                                               target="_blank">{{ str_replace('answer_details/', 'answer_details__', answer.answers[question.id]) }}</a>
@@ -341,6 +367,11 @@
                 {% endfor %}
                 </tbody>
             </table>
+            {% if answers is empty %}
+            <div class="well well-sm text-center lead text-muted" style="margin-bottom: 0; padding: 3rem 0;">
+                まだ回答はありません
+            </div>
+            {% endif %}
         </div>
     </section>
 

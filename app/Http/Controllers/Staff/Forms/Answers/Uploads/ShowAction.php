@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Forms\Answers\Uploads;
+namespace App\Http\Controllers\Staff\Forms\Answers\Uploads;
 
 use Storage;
 use Gate;
@@ -15,10 +15,6 @@ class ShowAction extends Controller
     public function __invoke(Request $request, int $form_id, Answer $answer, int $question_id)
     {
         // Form と Question については、DB から情報を取ってくる必要がないので、int で受け取る
-        $circle = $answer->circle()->first();
-        if (Gate::denies('circle.belongsTo', $circle)) {
-            abort(404);
-        }
 
         $file_path = AnswerDetail::select('answer')
             ->where('answer_id', $answer->id)

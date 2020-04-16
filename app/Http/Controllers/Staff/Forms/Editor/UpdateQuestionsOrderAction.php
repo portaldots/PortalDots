@@ -16,9 +16,8 @@ class UpdateQuestionsOrderAction extends Controller
         $this->questionsService = $questionsService;
     }
 
-    public function __invoke(int $form_id, Request $request)
+    public function __invoke(Form $form, Request $request)
     {
-        $form = Form::withoutGlobalScope('withoutCustomForms')->findOrFail($form_id);
         $this->questionsService->updateQuestionsOrder(
             $form,
             collect($request->questions)->mapWithKeys(function ($question) {
