@@ -50,6 +50,17 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        $response = parent::render($request, $exception);
+
+        // ステータスコードがエラーとなるページへのアクセスは Turbolinks に
+        // 対応していないので、200 を返す
+        if (
+            !empty($request->headers->get('Turbolinks-Referrer'))
+            && in_array($response->getStatusCode(), [403, 404, 500, 503], true)
+        ) {
+            $response->setStatusCode(200);
+        }
+
+        return $response;
     }
 }
