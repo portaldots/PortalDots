@@ -842,6 +842,11 @@
     "@types/unist" "*"
     "@types/vfile-message" "*"
 
+"@voerro/vue-tagsinput@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@voerro/vue-tagsinput/-/vue-tagsinput-2.2.0.tgz#f72d74548e17b883690d6d0b3633715db0df342e"
+  integrity sha512-Ywy+gFzcAABCUlMOra1pYMO6RFbKCiu3pYK/y+XhA/UmLtK4aLC5GrQMYg6UTqaHpQK2lUyf3cSbo+evr1zVzg==
+
 "@vue/component-compiler-utils@^3.1.0":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@vue/component-compiler-utils/-/component-compiler-utils-3.1.1.tgz#d4ef8f80292674044ad6211e336a302e4d2a6575"
