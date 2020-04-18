@@ -5,7 +5,10 @@ namespace Tests\Feature\Http\Controllers;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Carbon\CarbonImmutable;
 use App\Eloquents\User;
+use App\Eloquents\Form;
+use App\Eloquents\CustomForm;
 
 class HomeActionTest extends TestCase
 {
@@ -53,5 +56,35 @@ class HomeActionTest extends TestCase
         $response->assertDontSee('ログインしていません');
         $response->assertDontSee('メール認証');
         $response->assertDontSee('確認メールを再送');
+    }
+
+    /**
+     * @test
+     */
+    public function カスタムフォームは一覧に表示されない()
+    {
+        $customFormName = 'this is custom form';
+        $normalFormName = 'this is normal form';
+
+        // カスタムフォームを作成
+        $form = factory(Form::class)->create([
+            'name' => $customFormName
+        ]);
+        $customForm = factory(CustomForm::class)->create([
+            'type' => 'circle',
+            'form_id' => $form->id,
+        ]);
+
+        CustomForm::noCacheForm();
+
+        // カスタムフォームではない通常のフォームも作成
+        $normalForm = factory(Form::class)->create([
+            'name' => $normalFormName
+        ]);
+
+        $response = $this->get(route('home'));
+
+        $response->assertDontSee($customFormName);
+        $response->assertSee($normalFormName);
     }
 }

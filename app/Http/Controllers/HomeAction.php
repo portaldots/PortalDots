@@ -34,7 +34,7 @@ class HomeAction extends Controller
             ->with('remaining_documents_count', Auth::check()
                                     ? max(Document::public()->count() - self::TAKE_COUNT, 0)
                                     : 0)
-            ->with('forms', Form::take(self::TAKE_COUNT)->public()->open()->closeOrder()->get())
+            ->with('forms', Form::take(self::TAKE_COUNT)->public()->open()->withoutCustomForms()->closeOrder()->get())
             ->with('remaining_forms_count', max(Form::public()->open()->count() - self::TAKE_COUNT, 0));
     }
 }
