@@ -1,16 +1,16 @@
 @extends('v2.layouts.no_drawer')
 
 @section('title', '企画参加登録')
-
+    
 @section('content')
     @include('v2.includes.circle_register_header')
-
+    
     <form method="post" action="{{ empty($circle) ? route('circles.store') : route('circles.update', [$circle]) }}"
         enctype="multipart/form-data">
         @csrf
-
+    
         @method(empty($circle) ? 'post' : 'patch' )
-
+    
         <app-container medium>
             <list-view>
                 <template v-slot:title>企画情報を入力</template>
@@ -19,9 +19,9 @@
                     <i class="fas fa-exclamation-circle"></i>
                     企画情報の入力は、団体責任者の方が行ってください。団体責任者以外の方は、企画情報の入力は不要です。団体責任者の方の指示に従ってください。
                 </list-view-card>
-                <list-view-form-group label-for="name">
+                <list-view-form-group label-for="leader">
                     <template v-slot:label>団体責任者</template>
-                    <input type="text" id="name" readonly
+                    <input type="text" id="leader" readonly
                         value="{{ isset($circle) ? $circle->leader[0]->name : Auth::user()->name }}"
                         class="form-control is-plaintext">
                 </list-view-form-group>
@@ -75,7 +75,7 @@
                     @include('v2.includes.question')
                 @endforeach
             </list-view>
-
+    
             <div class="text-center pt-spacing-md pb-spacing">
                 <button type="submit" class="btn is-primary is-wide">
                     保存して次へ
