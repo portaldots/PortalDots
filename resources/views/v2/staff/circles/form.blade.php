@@ -100,19 +100,19 @@
                     <div class="form-radio">
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="status" id="statusRadios1" value="pending"
-                                {{ old('status', isset($circle) && $circle->status === null ? 'checked' : '') }}>
+                                {{ old('status', isset($circle) ? $circle->status : null) === null ? 'checked' : '' }}>
                             <strong>確認中</strong><br>
                             <span class="text-muted">ユーザーには参加登録が確認中である旨が表示されます</span>
                         </label>
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="status" id="statusRadios2" value="approved"
-                                {{ old('status', isset($circle) && $circle->status === 'approved' ? 'checked' : '') }}>
+                                {{ old('status', isset($circle) ? $circle->status : null) === 'approved' ? 'checked' : '' }}>
                             <strong>受理</strong><br>
                             <span class="text-muted">参加登録を受理します。当該企画は申請機能を利用できるようになります</span>
                         </label>
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="status" id="statusRadios3" value="rejected"
-                                {{ old('status', isset($circle) && $circle->status === 'rejected' ? 'checked' : '') }}>
+                                {{ old('status', isset($circle) ? $circle->status : null) === 'rejected' ? 'checked' : '' }}>
                             <strong>不受理</strong><br>
                             <span class="text-muted">参加登録を不受理とします。ユーザーには参加登録が受理されなかった旨が表示されます</span>
                         </label>
