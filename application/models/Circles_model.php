@@ -40,6 +40,7 @@ class Circles_model extends MY_Model
       // select * from circle_user join circles on circles.id = circle_user.circle_id where circle_user.user_id = ?
         $this->db->from("circle_user");
         $this->db->join("circles", "circles.id = circle_user.circle_id");
+        $this->db->where("circles.submitted_at !=", null);
         $this->db->where("circle_user.user_id", $user_id);
         $query = $this->db->get();
         return $query->result();
