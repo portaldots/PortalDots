@@ -19,9 +19,9 @@
                     <i class="fas fa-exclamation-circle"></i>
                     企画情報の入力は、団体責任者の方が行ってください。団体責任者以外の方は、企画情報の入力は不要です。団体責任者の方の指示に従ってください。
                 </list-view-card>
-                <list-view-form-group label-for="name">
+                <list-view-form-group label-for="leader">
                     <template v-slot:label>団体責任者</template>
-                    <input type="text" id="name" readonly
+                    <input type="text" id="leader" readonly
                         value="{{ isset($circle) ? $circle->leader[0]->name : Auth::user()->name }}"
                         class="form-control is-plaintext">
                 </list-view-form-group>
