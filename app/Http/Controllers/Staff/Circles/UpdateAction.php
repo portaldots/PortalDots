@@ -73,6 +73,6 @@ class UpdateAction extends Controller
         $circle->save();
         return redirect()
             ->route('staff.circles.edit', $circle)
-            ->with('toast', '企画情報を更新しました');
+            ->with('topAlert.title', '企画情報を更新しました');
     }
 }

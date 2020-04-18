@@ -10,7 +10,7 @@ class CreateAction extends Controller
 {
     public function __invoke()
     {
-        return view('staff.circles.form')
+        return view('v2.staff.circles.form')
             ->with('custom_form', CustomForm::getFormByType('circle'));
     }
 }

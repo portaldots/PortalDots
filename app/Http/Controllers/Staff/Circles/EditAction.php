@@ -26,7 +26,7 @@ class EditAction extends Controller
             $member_ids .= $member->student_id . "\r\n";
         }
 
-        return view('staff.circles.form')
+        return view('v2.staff.circles.form')
             ->with('custom_form', CustomForm::getFormByType('circle'))
             ->with('circle', $circle)
             ->with('leader', $circle->users->filter(function ($user) {
