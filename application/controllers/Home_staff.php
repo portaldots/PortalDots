@@ -124,7 +124,6 @@ class Home_staff extends MY_Controller
      */
     public function index()
     {
-
         $vars = [];
         $vars["main_page_type"] = "index";
         $vars["xs_navbar_title"] = "スタッフモードホーム";
@@ -137,7 +136,6 @@ class Home_staff extends MY_Controller
      */
     public function pages()
     {
-
         $vars = [];
         $vars["page_title"] = "お知らせ管理";
         $vars["main_page_type"] = "pages";
@@ -290,7 +288,6 @@ class Home_staff extends MY_Controller
      */
     public function _applications_read($form_id, $mode = null)
     {
-
         $vars = [];
         $vars["page_title"] = "回答一覧";
         $vars["main_page_type"] = "applications";
@@ -424,7 +421,6 @@ class Home_staff extends MY_Controller
      */
     public function applications_answer_read($answer_id)
     {
-
         $vars = [];
         $vars["page_title"] = "申請管理";
         $vars["main_page_type"] = "applications";
@@ -453,7 +449,6 @@ class Home_staff extends MY_Controller
      */
     public function users()
     {
-
         $vars = [];
         $vars["page_title"] = "ユーザー情報管理";
         $vars["main_page_type"] = "users";
@@ -566,7 +561,6 @@ class Home_staff extends MY_Controller
      */
     public function _users_read($user_id)
     {
-
         $vars = [];
         $vars["page_title"] = "ユーザー情報管理";
         $vars["main_page_type"] = "users";
@@ -617,6 +611,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->display_as('name_yomi', '企画の名前(よみ)');
         $this->grocery_crud->display_as('group_name', '企画団体の名前');
         $this->grocery_crud->display_as('group_name_yomi', '企画団体の名前(よみ)');
+        $this->grocery_crud->display_as('tags', 'タグ');
         $this->grocery_crud->display_as('submitted_at', '参加登録提出日時');
         $this->grocery_crud->display_as('status', '登録受理状況');
         $this->grocery_crud->display_as('status_set_at', '登録受理状況設定日時');
@@ -628,6 +623,7 @@ class Home_staff extends MY_Controller
             'name_yomi',
             'group_name',
             'group_name_yomi',
+            'tags',
             'submitted_at',
             'status',
             'status_set_at',
@@ -647,6 +643,9 @@ class Home_staff extends MY_Controller
             $this->grocery_crud->callback_column('name', array($this, '_crud_circle_name_yomi'));
             $this->grocery_crud->callback_column('group_name', array($this, '_crud_circle_group_name_yomi'));
         }
+
+        // タグ一覧
+        $this->grocery_crud->set_relation_n_n('tags', 'circle_tag', 'tags', 'circle_id', 'tag_id', 'name');
 
         // 登録受理状況
         $this->grocery_crud->callback_column('status', array($this, '_crud_circle_status'));
@@ -701,7 +700,6 @@ class Home_staff extends MY_Controller
      */
     public function _circles_read($circle_id)
     {
-
         $vars = [];
         $vars["page_title"] = "企画情報管理";
         $vars["main_page_type"] = "circles";
@@ -726,7 +724,6 @@ class Home_staff extends MY_Controller
      */
     public function booths()
     {
-
         $vars = [];
         $vars["page_title"] = "ブース情報管理";
         $vars["main_page_type"] = "booths";
@@ -799,7 +796,6 @@ class Home_staff extends MY_Controller
      */
     public function places()
     {
-
         $vars = [];
         $vars["page_title"] = "場所情報管理";
         $vars["main_page_type"] = "places";
@@ -853,7 +849,7 @@ class Home_staff extends MY_Controller
     /**
      * 場所タイプ入力テキストボックスを表示させるための Grocery CRUD コールバック関数
      */
-    function _crud_place_type_edit($value, $primary_key)
+    public function _crud_place_type_edit($value, $primary_key)
     {
         $selected = [
             'option-0' => '',
@@ -874,7 +870,6 @@ class Home_staff extends MY_Controller
      */
     public function documents()
     {
-
         $vars = [];
         $vars["page_title"] = "配布資料管理";
         $vars["main_page_type"] = "documents";
@@ -942,7 +937,6 @@ class Home_staff extends MY_Controller
      */
     public function schedules()
     {
-
         $vars = [];
         $vars["page_title"] = "スケジュール管理";
         $vars["main_page_type"] = "schedules";
@@ -984,7 +978,6 @@ class Home_staff extends MY_Controller
      */
     public function roles()
     {
-
         $this->_admin_only();
 
         $vars = [];
@@ -1014,7 +1007,6 @@ class Home_staff extends MY_Controller
      */
     public function auth_config($mode = null, $mode2 = null)
     {
-
         $this->_admin_only();
 
         $vars = [];
@@ -1067,7 +1059,6 @@ class Home_staff extends MY_Controller
      */
     public function _auth_config_new()
     {
-
         $this->_admin_only();
 
         $vars = [];
@@ -1103,7 +1094,6 @@ class Home_staff extends MY_Controller
      */
     public function _auth_config_add_role($id, $is_authorized, $role_id)
     {
-
         $this->_admin_only();
         $this->load->library("form_validation");
 
@@ -1148,7 +1138,6 @@ class Home_staff extends MY_Controller
      */
     public function _auth_config_delete_page($id)
     {
-
         $this->_admin_only();
         if ($this->auth_model->delete_auth_staff_page($id)) {
             echo "success";
@@ -1162,7 +1151,6 @@ class Home_staff extends MY_Controller
      */
     public function _auth_config_delete_role($id)
     {
-
         $this->_admin_only();
         if ($this->auth_model->delete_auth_staff_role($id)) {
             echo "success";
@@ -1176,7 +1164,6 @@ class Home_staff extends MY_Controller
      */
     public function _auth_config_toggle_mode($id, $is_authorized)
     {
-
         $this->_admin_only();
         if ($this->auth_model->edit_auth_staff_page(
             $this->input->post("id"),
@@ -1193,7 +1180,6 @@ class Home_staff extends MY_Controller
      */
     public function ess()
     {
-
         $this->_admin_only();
 
         $vars = [];
@@ -1228,7 +1214,6 @@ class Home_staff extends MY_Controller
      */
     public function verify_access()
     {
-
         $vars = [];
         $vars["main_page_type"] = "verify_access";
         $vars["xs_navbar_title"] = "スタッフ認証";
