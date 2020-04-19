@@ -733,10 +733,12 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->set_subject('企画タグ');
         $this->grocery_crud->display_as('id', 'タグID');
         $this->grocery_crud->display_as('name', 'タグ');
+        $this->grocery_crud->display_as('circles', '企画');
 
         $this->grocery_crud->columns(
             'id',
             'name',
+            'circles',
             'created_at',
             'updated_at',
         );
@@ -751,6 +753,22 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->required_fields('name');
 
         $this->grocery_crud->callback_before_delete(array($this, '_crud_tags_before_delete'));
+
+        $this->grocery_crud->set_relation_n_n('circles', 'circle_tag', 'circles', 'tag_id', 'circle_id', '{name} (ID: {circle_id})');
+
+        $this->grocery_crud->callback_read_field('circles', function ($value, $primary_key) {
+            return '<ul>'.
+                implode('', array_map(function ($circle_label) {
+                    // - 半角スペースは &nbsp; に自動変換されるらしい
+                    // - 今回は正規表現を使って無理やり対処しているが、Laravel 化した際は正規表現を使わないで対処したい
+                    preg_match('/\(ID:&nbsp;(\d+)\)$/', $circle_label, $matches);
+                    return "<li>
+                        <a href=\"/home_staff/circles/read/{$matches[1]}\">{$circle_label}</a>
+                    </li>";
+                }, $value))
+                . '</ul>';
+        });
+
 
         $vars += (array)$this->grocery_crud->render();
 
