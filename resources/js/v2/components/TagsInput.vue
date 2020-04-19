@@ -4,7 +4,7 @@
       v-model="inputTag"
       :tags="tags"
       @tags-changed="tagsChanged"
-      :add-on-key="[13]"
+      :add-on-key="[13, ',']"
       :separators="separators"
       placeholder="タグを追加"
     />
@@ -48,7 +48,7 @@ export default {
   computed: {
     separators() {
       // eslint-disable-next-line no-irregular-whitespace
-      return [';', ',', ' ', '　']
+      return [';', '、', ' ', '　']
     }
   }
 }
