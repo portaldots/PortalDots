@@ -721,6 +721,53 @@ class Home_staff extends MY_Controller
     }
 
     /**
+     * 企画タグページ
+     */
+    public function tags()
+    {
+        $vars = [];
+        $vars["page_title"] = "企画タグ管理";
+        $vars["main_page_type"] = "tags";
+
+        $this->grocery_crud->set_table('tags');
+        $this->grocery_crud->set_subject('企画タグ');
+        $this->grocery_crud->display_as('id', 'タグID');
+        $this->grocery_crud->display_as('name', 'タグ');
+
+        $this->grocery_crud->columns(
+            'id',
+            'name',
+            'created_at',
+            'updated_at',
+        );
+        $this->grocery_crud->fields(
+            'name',
+            'created_at',
+            'updated_at',
+        );
+        $this->grocery_crud->change_field_type('created_at', 'invisible');
+        $this->grocery_crud->change_field_type('updated_at', 'invisible');
+
+        $this->grocery_crud->required_fields('name');
+
+        $this->grocery_crud->callback_before_delete(array($this, '_crud_tags_before_delete'));
+
+        $vars += (array)$this->grocery_crud->render();
+
+        $this->_render('home_staff/crud', $vars);
+    }
+
+    /**
+     * タグが削除される前に実行する Grocery CRUD コールバック関数
+     */
+    public function _crud_tags_before_delete($id)
+    {
+        $this->db->where('tag_id', $id);
+        $this->db->delete('circle_tag');
+        return true;
+    }
+
+    /**
      * ブース情報ページ
      */
     public function booths()
@@ -1313,6 +1360,11 @@ class Home_staff extends MY_Controller
                     "icon" => "users",
                     "name" => "企画情報管理",
                     "url" => "home_staff/circles",
+                ],
+                "tags" => [
+                    "icon" => "tag",
+                    "name" => "企画タグ管理",
+                    "url" => "home_staff/tags",
                 ],
                 "booths" => [
                     "icon" => "star",
