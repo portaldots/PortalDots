@@ -1,4 +1,5 @@
 <template>
+  <!-- このコンポーネントは使わない。あとで、このファイルは消す。 -->
   <TagsInput
     element-id="tags"
     v-model="selectedTags"
