@@ -62,6 +62,12 @@
                         @endempty
                     </list-view-form-group>
                 @endif
+                <list-view-form-group>
+                    <template v-slot:label>タグ(複数可)</template>
+                    <template
+                        v-slot:description>企画をタグで分類できます。タグに応じて、閲覧可能なお知らせ、ダウンロード可能な配布資料、回答可能な申請フォームを制限することもできます。</template>
+                    <tags-textbox></tags-textbox>
+                </list-view-form-group>
             </list-view>
 
             <list-view>
