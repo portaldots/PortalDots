@@ -76,7 +76,7 @@ class ChangeInfoRequest extends FormRequest
     {
         $user = Auth::user();
         $circles = $user->circles()->get();
-        if (!empty($circles)) {
+        if (!$circles->isEmpty()) {
             $validator->after(function ($validator) use ($user) {
                 if (!empty($this->name) && $this->name !== $user->name) {
                     $validator->errors()->add('name', '企画に所属しているか、参加登録の途中のため修正できません');
