@@ -710,7 +710,8 @@ class Home_staff extends MY_Controller
         if ($circle_info !== false && isset($circle_info->submitted_at)) {
             // 存在する場合
             $vars["circle_info"] = $circle_info;
-            // この企画に所属するユーザーも取得する
+            // この企画のタグ・所属するユーザーも取得する
+            $vars["tags"] = $this->circles->get_tags_by_circle_id($circle_info->id);
             $vars["users"] = $this->circles->get_user_info_by_circle_id($circle_info->id);
         } else {
             // 存在しない場合か、参加登録が未提出の企画の場合
