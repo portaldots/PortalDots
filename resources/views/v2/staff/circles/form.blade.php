@@ -63,10 +63,16 @@
                     </list-view-form-group>
                 @endif
                 <list-view-form-group>
-                    <template v-slot:label>タグ(複数可)</template>
-                    <template
-                        v-slot:description>企画をタグで分類できます。タグに応じて、閲覧可能なお知らせ、ダウンロード可能な配布資料、回答可能な申請フォームを制限することもできます。</template>
-                    <tags-textbox></tags-textbox>
+                    <template v-slot:label>
+                        タグ
+                        <small class="text-muted">
+                            スペース区切りで複数入力可
+                        </small>
+                    </template>
+                    <template v-slot:description>
+                        企画をタグで分類できます(例 : <code>ステージ企画</code>、<code>模擬店</code>、<code>講義棟教室</code>、<code>食品販売</code>)。<br>
+                        タグに応じて、閲覧可能なお知らせ、ダウンロード可能な配布資料、回答可能な申請フォームを制限することもできます。</template>
+                    <tags-input input-name="tags"></tags-input>
                 </list-view-form-group>
             </list-view>
 
