@@ -101,6 +101,16 @@ export default {
   .ti-tag {
     background: $color-primary;
   }
+  .ti-autocomplete {
+    box-shadow: 0 0.25rem 0.75rem rgba($color-muted, 0.25);
+  }
+  .ti-item {
+    margin: 0;
+    padding: $spacing-xs $spacing-md;
+    > div {
+      padding: 0;
+    }
+  }
   .ti-selected-item {
     background: $color-primary;
   }
