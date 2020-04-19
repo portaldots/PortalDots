@@ -6,6 +6,8 @@
       @tags-changed="tagsChanged"
       :add-on-key="[13, ',']"
       :separators="separators"
+      :autocomplete-items="filteredItems"
+      :is-duplicate="isDuplicate"
       placeholder="タグを追加"
     />
     <template v-if="inputName">
@@ -31,6 +33,14 @@ export default {
     inputName: {
       type: String,
       default: null
+    },
+    defaultTags: {
+      type: Array,
+      default: () => []
+    },
+    autocompleteItems: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -39,16 +49,30 @@ export default {
       tags: []
     }
   },
+  mounted() {
+    this.tags = this.defaultTags
+  },
   methods: {
     tagsChanged(newTags) {
       this.tags = newTags
       this.$emit('tags-changed', newTags)
+    },
+    isDuplicate(tags, tag) {
+      return (
+        tags.map(t => t.text.toLowerCase()).indexOf(tag.text.toLowerCase()) !==
+        -1
+      )
     }
   },
   computed: {
     separators() {
       // eslint-disable-next-line no-irregular-whitespace
       return [';', '、', ' ', '　']
+    },
+    filteredItems() {
+      return this.autocompleteItems.filter(i => {
+        return i.text.toLowerCase().indexOf(this.inputTag.toLowerCase()) !== -1
+      })
     }
   }
 }
@@ -78,6 +102,9 @@ export default {
     box-shadow: $default-box-shadow, 0 0 0 3px rgba($color-primary, 0.25);
   }
   .ti-tag {
+    background: $color-primary;
+  }
+  .ti-selected-item {
     background: $color-primary;
   }
 }

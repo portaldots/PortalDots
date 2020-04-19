@@ -40,6 +40,11 @@ class Circle extends Model
         'notes',
     ];
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class)->using(CircleUser::class)->withPivot('is_leader');

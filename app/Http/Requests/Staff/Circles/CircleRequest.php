@@ -36,6 +36,7 @@ class CircleRequest extends FormRequest
             'group_name' => Circle::GROUP_NAME_RULES,
             'group_name_yomi' => Circle::GROUP_NAME_YOMI_RULES,
             'status' => Circle::STATUS_RULES,
+            'tags'    => ['nullable', 'array'],
             'leader'    => ['nullable', 'exists:users,student_id'],
             'members'   => ['nullable'],
         ];

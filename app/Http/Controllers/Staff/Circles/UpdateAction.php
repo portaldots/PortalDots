@@ -8,12 +8,24 @@ use App\Eloquents\Circle;
 use App\Eloquents\User;
 use App\Http\Requests\Staff\Circles\CircleRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Circles\CirclesService;
 
 class UpdateAction extends Controller
 {
-    public function __construct(User $user)
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * @var CirclesService
+     */
+    private $circlesService;
+
+    public function __construct(User $user, CirclesService $circlesService)
     {
         $this->user = $user;
+        $this->circlesService = $circlesService;
     }
 
     public function __invoke(Circle $circle, CircleRequest $request)
@@ -71,6 +83,10 @@ class UpdateAction extends Controller
             $member->circles()->attach($circle->id, ['is_leader' => false]);
         }
         $circle->save();
+
+        // タグの保存
+        $this->circlesService->saveTags($circle, $request->tags);
+
         return redirect()
             ->route('staff.circles.edit', $circle)
             ->with('topAlert.title', '企画情報を更新しました');

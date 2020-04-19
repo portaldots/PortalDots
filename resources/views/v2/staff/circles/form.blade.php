@@ -74,7 +74,8 @@
                             class="badge is-primary">模擬店</span>、<span class="badge is-primary">講義棟教室</span>、<span
                             class="badge is-primary">食品販売</span>)。<br>
                         タグに応じて、閲覧可能なお知らせ、ダウンロード可能な配布資料、回答可能な申請フォームを制限することもできます。</template>
-                    <tags-input input-name="tags"></tags-input>
+                    <tags-input input-name="tags" :default-tags="{{ $default_tags }}"
+                        :autocomplete-items="{{ $tags_autocomplete_items }}"></tags-input>
                 </list-view-form-group>
             </list-view>
 
