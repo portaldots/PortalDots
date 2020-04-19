@@ -19,7 +19,7 @@
                     <template v-slot:label>学籍番号</template>
                     <template v-slot:description>
                         @if (!$circles->isEmpty())
-                            企画に所属しているか、参加登録の途中のため修正できません
+                            企画に所属しているため修正できません
                         @endif
                     </template>
                     <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror"
@@ -32,7 +32,7 @@
                 <list-view-form-group label-for="name">
                     <template v-slot:label>名前</template>
                     <template v-slot:description>
-                        {{ !$circles->isEmpty() ? '企画に所属しているか、参加登録の途中のため修正できません' : '姓と名の間にはスペースを入れてください' }}
+                        {{ !$circles->isEmpty() ? '企画に所属しているため修正できません' : '姓と名の間にはスペースを入れてください' }}
                     </template>
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
                         value="{{ old('name', isset($user) ? $user->name : '') }}"
@@ -45,7 +45,7 @@
                 <list-view-form-group label-for="name_yomi">
                     <template v-slot:label>名前(よみ)</template>
                     <template v-slot:description>
-                        {{ !$circles->isEmpty() ? '企画に所属しているか、参加登録の途中のため修正できません' : '姓と名の間にはスペースを入れてください' }}
+                        {{ !$circles->isEmpty() ? '企画に所属しているため修正できません' : '姓と名の間にはスペースを入れてください' }}
                     </template>
                     <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror"
                         name="name_yomi" value="{{ old('name_yomi', isset($user) ? $user->name_yomi : '') }}"
