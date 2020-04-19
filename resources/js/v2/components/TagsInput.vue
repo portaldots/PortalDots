@@ -93,9 +93,6 @@ export default {
     padding: $spacing-sm $spacing-md;
     transition: #{$transition-base-fast} background-color,
       #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color;
-    .ti-new-tag-input {
-      caret-color: $color-primary;
-    }
   }
   &.ti-focus .ti-input {
     border-color: $color-primary;
@@ -106,6 +103,15 @@ export default {
   }
   .ti-selected-item {
     background: $color-primary;
+  }
+  .ti-new-tag-input-wrapper {
+    &:first-child {
+      margin-left: 0;
+      padding-left: 0;
+    }
+  }
+  .ti-new-tag-input {
+    caret-color: $color-primary;
   }
 }
 </style>
