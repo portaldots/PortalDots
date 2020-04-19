@@ -70,7 +70,9 @@
                         </small>
                     </template>
                     <template v-slot:description>
-                        企画をタグで分類できます(例 : <code>ステージ企画</code>、<code>模擬店</code>、<code>講義棟教室</code>、<code>食品販売</code>)。<br>
+                        企画をタグで分類できます(例 : <span class="badge is-primary">ステージ企画</span>、<span
+                            class="badge is-primary">模擬店</span>、<span class="badge is-primary">講義棟教室</span>、<span
+                            class="badge is-primary">食品販売</span>)。<br>
                         タグに応じて、閲覧可能なお知らせ、ダウンロード可能な配布資料、回答可能な申請フォームを制限することもできます。</template>
                     <tags-input input-name="tags"></tags-input>
                 </list-view-form-group>
