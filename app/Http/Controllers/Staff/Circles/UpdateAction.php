@@ -85,7 +85,7 @@ class UpdateAction extends Controller
         $circle->save();
 
         // タグの保存
-        $this->circlesService->saveTags($circle, $request->tags);
+        $this->circlesService->saveTags($circle, $request->tags ?? []);
 
         return redirect()
             ->route('staff.circles.edit', $circle)
