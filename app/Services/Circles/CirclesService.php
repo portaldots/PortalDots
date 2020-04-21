@@ -7,6 +7,7 @@ namespace App\Services\Circles;
 use DB;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
+use App\Eloquents\Tag;
 
 class CirclesService
 {
@@ -84,5 +85,26 @@ class CirclesService
     private function generateInvitationToken()
     {
         return bin2hex(random_bytes(16));
+    }
+
+    /**
+     * 指定された企画についてタグを保存する
+     */
+    public function saveTags(Circle $circle, array $tags)
+    {
+        // 検索時は大文字小文字の区別をしない
+        // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
+        $exist_tags = Tag::whereIn('name', $tags)->get();
+
+        $diff = array_udiff($tags, $exist_tags->pluck('name')->all(), 'strcasecmp');
+
+        foreach ($diff as $insert) {
+            Tag::create(['name' => $insert]);
+        }
+
+        // $tags 配列の順番で保存するため、もう一度 DB からタグ一覧を取得する
+        $tags_on_db = Tag::whereIn('name', $tags)->get();
+
+        $circle->tags()->sync($tags_on_db->pluck('id')->all());
     }
 }

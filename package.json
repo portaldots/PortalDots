@@ -91,6 +91,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@johmun/vue-tags-input": "^2.1.0",
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
         "laravel-mix": "^4.0.7",

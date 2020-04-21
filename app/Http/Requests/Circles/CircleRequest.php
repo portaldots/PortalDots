@@ -73,9 +73,9 @@ class CircleRequest extends FormRequest implements AnswerRequestInterface
     public function messages()
     {
         return [
-            'name_yomi.regex' => 'ひらがなで記入してください',
-            'group_name_yomi.regex' => 'ひらがなで記入してください',
-            // ひらがなもカタカナも入力可能だが，説明が面倒なので，エラー上ではひらがなでの記入を促す
+            'name_yomi.regex' => 'ひらがなで入力してください',
+            'group_name_yomi.regex' => 'ひらがなで入力してください',
+            // ひらがなもカタカナも入力可能だが，説明が面倒なので，エラー上ではひらがなでの入力を促す
         ];
     }
 }

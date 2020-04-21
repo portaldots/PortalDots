@@ -36,6 +36,7 @@ class CircleRequest extends FormRequest
             'group_name' => Circle::GROUP_NAME_RULES,
             'group_name_yomi' => Circle::GROUP_NAME_YOMI_RULES,
             'status' => Circle::STATUS_RULES,
+            'tags'    => ['nullable', 'array'],
             'leader'    => ['nullable', 'exists:users,student_id'],
             'members'   => ['nullable'],
         ];
@@ -62,6 +63,9 @@ class CircleRequest extends FormRequest
     public function messages()
     {
         return [
+            'name_yomi.regex' => 'ひらがなで入力してください',
+            'group_name_yomi.regex' => 'ひらがなで入力してください',
+            // ひらがなもカタカナも入力可能だが，説明が面倒なので，エラー上ではひらがなでの入力を促す
             'leader.exists' => 'この学籍番号は登録されていません',
         ];
     }
@@ -84,11 +88,11 @@ class CircleRequest extends FormRequest
         }
         $validator->after(function ($validator) use ($non_registered_member_ids, $unverified_student_ids) {
             if (!empty($non_registered_member_ids)) {
-                $validator->errors()->add('members', '未登録：' . implode(' ', $non_registered_member_ids));
+                $validator->errors()->add('members', '未登録 : ' . implode(' ', $non_registered_member_ids));
             }
 
             if (!empty($unverified_student_ids)) {
-                $validator->errors()->add('members', 'メール未認証：' . implode(' ', $unverified_student_ids));
+                $validator->errors()->add('members', 'メール未認証 : ' . implode(' ', $unverified_student_ids));
             }
         });
     }

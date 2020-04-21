@@ -58,3 +58,12 @@ dd {
 li {
   margin: 0 0 $spacing-sm;
 }
+
+code {
+  background: rgba($color-success, 0.1);
+  border-radius: $border-radius;
+  color: $color-success;
+  display: inline-block;
+  line-height: 1;
+  padding: $spacing-xxs $spacing-xs;
+}

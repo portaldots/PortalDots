@@ -8,12 +8,24 @@ use Illuminate\Support\Facades\Auth;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Http\Requests\Staff\Circles\CircleRequest;
+use App\Services\Circles\CirclesService;
 
 class StoreAction extends Controller
 {
-    public function __construct(User $user)
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * @var CirclesService
+     */
+    private $circlesService;
+
+    public function __construct(User $user, CirclesService $circlesService)
     {
         $this->user = $user;
+        $this->circlesService = $circlesService;
     }
 
     public function __invoke(CircleRequest $request)
@@ -62,8 +74,11 @@ class StoreAction extends Controller
             $member->circles()->attach($circle->id, ['is_leader' => false]);
         }
 
+        // タグの保存
+        $this->circlesService->saveTags($circle, $request->tags ?? []);
+
         return redirect()
             ->route('staff.circles.create')
-            ->with('toast', '企画情報を作成しました');
+            ->with('topAlert.title', '企画情報を作成しました');
     }
 }

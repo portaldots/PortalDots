@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
 use App\Eloquents\CustomForm;
+use App\Eloquents\Tag;
 
 class EditAction extends Controller
 {
@@ -26,12 +27,18 @@ class EditAction extends Controller
             $member_ids .= $member->student_id . "\r\n";
         }
 
-        return view('staff.circles.form')
+        return view('v2.staff.circles.form')
             ->with('custom_form', CustomForm::getFormByType('circle'))
             ->with('circle', $circle)
             ->with('leader', $circle->users->filter(function ($user) {
                 return $user->pivot->is_leader;
             })->first())
-            ->with('members', $member_ids);
+            ->with('members', $member_ids)
+            ->with('default_tags', $circle->tags->pluck('name')->map(function ($item) {
+                return ['text' => $item];
+            })->toJson())
+            ->with('tags_autocomplete_items', Tag::get()->pluck('name')->map(function ($item) {
+                return ['text' => $item];
+            })->toJson());
     }
 }

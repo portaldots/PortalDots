@@ -20,6 +20,7 @@ import TopAlert from './components/TopAlert.vue'
 import FormWithConfirm from './components/FormWithConfirm.vue'
 import StepsList from './components/StepsList.vue'
 import StepsListItem from './components/StepsListItem.vue'
+import TagsInput from './components/TagsInput.vue'
 
 // Form Questions
 import QuestionItem from './components/Forms/QuestionItem.vue'
@@ -64,7 +65,8 @@ export function mountV2App() {
         QuestionItem,
         QuestionHeading,
         StepsList,
-        StepsListItem
+        StepsListItem,
+        TagsInput
       },
       data() {
         return {

@@ -122,7 +122,7 @@
                             <list-view-item href="{{ route('circles.confirm', ['circle' => $circle]) }}">
                                 <template v-slot:title>
                                     <span class="text-primary">
-                                        <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                        📮
                                         ここをクリックして「{{ $circle->name }}」の参加登録を提出しましょう！
                                     </span>
                                 </template>
@@ -133,7 +133,7 @@
                         @elseif ($circle->isPending())
                             <list-view-item>
                                 <template v-slot:title>
-                                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                    💭
                                     「{{ $circle->name }}」の参加登録の内容を確認中です
                                 </template>
                                 <template v-slot:meta>
@@ -144,7 +144,7 @@
                             <list-view-item href="{{ route('circles.users.index', ['circle' => $circle]) }}">
                                 <template v-slot:title>
                                     <span class="text-primary">
-                                        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+                                        📩
                                         ここをクリックして「{{ $circle->name }}」の学園祭係(副責任者)を招待しましょう！
                                     </span>
                                 </template>
@@ -166,7 +166,7 @@
                                 >
                                 <template v-slot:title>
                                     <span class="text-danger">
-                                        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+                                        ⚠️
                                         「{{ $circle->name }}」の参加登録は受理されませんでした
                                     </span>
                                 </template>
