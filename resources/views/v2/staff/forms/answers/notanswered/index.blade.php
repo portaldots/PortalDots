@@ -1,7 +1,7 @@
 @extends('v2.layouts.no_drawer')
 
 @section('title', '未提出企画一覧')
-    
+
 @section('navbar')
     <app-nav-bar-back inverse href="{{ url('home_staff/applications/read/' . $form->id) }}" data-turbolinks="false">
         {{ $form->name }}
