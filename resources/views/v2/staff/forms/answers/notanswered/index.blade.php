@@ -12,7 +12,7 @@
     <app-container>
         <list-view>
             <template v-slot:title>未提出企画（{{ count($circles) }}企画）</template>
-            @if(empty($circles))
+            @if($circles->isEmpty())
                 <list-view-empty icon-class="fas fa-users" text="未提出企画はありません"></list-view-empty>
             @else
                 @foreach ($circles as $circle)

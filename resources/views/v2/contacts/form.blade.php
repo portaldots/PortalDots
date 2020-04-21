@@ -32,7 +32,7 @@
                     <input type="email" id="email" readonly value="{{ Auth::user()->email }}"
                         class="form-control is-plaintext">
                 </list-view-form-group>
-                @unless (empty($circles) || count($circles) < 1) <list-view-form-group label-for="circle_id">
+                @unless ($circles->isEmpty() || count($circles) < 1) <list-view-form-group label-for="circle_id">
                         <template v-slot:label>企画の名前</template>
                         <template v-slot:description>どの企画としてお問い合わせするのか選択してください。</template>
                         <select name="circle_id" id="circle_id" class="form-control">

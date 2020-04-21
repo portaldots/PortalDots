@@ -15,7 +15,7 @@ class DestroyAction extends Controller
 
         $circles = $user->circles()->all();
 
-        if (!empty($circles)) {
+        if (!$circles->isEmpty()) {
             return redirect()
                 ->route('user.delete')
                 ->with('topAlert.title', '企画に所属しているため、アカウント削除はできません。');
