@@ -20,7 +20,11 @@ class StoreAction extends Controller
 
     public function __invoke(Form $form, StoreAnswerRequest $request)
     {
-        $circle = Circle::findOrFail($request->circle_id);
+        if (isset($form->customForm)) {
+            abort(404);
+        }
+
+        $circle = Circle::approved()->findOrFail($request->circle_id);
         $answer = $this->answersService->createAnswer($form, $circle, $request);
         if ($answer) {
             $this->answersService->sendAll($answer, Auth::user());

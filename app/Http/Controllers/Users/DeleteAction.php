@@ -11,9 +11,9 @@ class DeleteAction extends Controller
     public function __invoke()
     {
         $user = Auth::user();
-        $circles = $user->circles()->withoutGlobalScope('approved')->get();
+        $circles = $user->circles()->get();
 
         return view('v2.users.delete')
-            ->with('belong', !empty($circles));
+            ->with('belong', !$circles->isEmpty());
     }
 }

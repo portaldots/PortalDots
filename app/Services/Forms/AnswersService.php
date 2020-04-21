@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Mail;
 
 class AnswersService
 {
+    /**
+     * @var AnswerDetailsService
+     */
     private $answerDetailsService;
 
     public function __construct(AnswerDetailsService $answerDetailsService)
@@ -28,9 +31,12 @@ class AnswersService
     /**
      * 企画所属者にメールを送信する
      *
+     * @param Answer $answer
+     * @param User $applicant
+     * @param boolean $isEditedByStaff 回答がスタッフによって修正された場合はtrue
      * @return void
      */
-    public function sendAll(Answer $answer, User $applicant)
+    public function sendAll(Answer $answer, User $applicant, bool $isEditedByStaff = false)
     {
         // 企画にメールを送る
         $answer->loadMissing('form.questions');
@@ -45,7 +51,9 @@ class AnswersService
                 $applicant,
                 $answer,
                 $answer_details,
-                $recipient
+                $recipient,
+                false,
+                $isEditedByStaff
             );
         }
 
@@ -59,11 +67,27 @@ class AnswersService
                 $applicant,
                 $answer,
                 $answer_details,
-                $creator
+                $creator,
+                true,
+                $isEditedByStaff
             );
         }
     }
 
+    /**
+     * ユーザーにメールを送信する
+     *
+     * @param Form $form
+     * @param Collection $questions
+     * @param Circle $circle
+     * @param User $applicant
+     * @param Answer $answer
+     * @param array $answer_details
+     * @param User $recipient
+     * @param boolean $isForStaff スタッフ用控えとして送信する場合はtrue
+     * @param boolean $isEditedByStaff 回答がスタッフによって修正された場合はtrue
+     * @return void
+     */
     private function sendToUser(
         Form $form,
         Collection $questions,
@@ -71,13 +95,27 @@ class AnswersService
         User $applicant,
         Answer $answer,
         array $answer_details,
-        User $recipient
+        User $recipient,
+        bool $isForStaff,
+        bool $isEditedByStaff
     ) {
+        $subject = '申請「' . $form->name . '」を承りました';
+        if ($isForStaff) {
+            $subject = '【スタッフ用控え】' . $subject;
+        }
         Mail::to($recipient)
             ->send(
-                (new AnswerConfirmationMailable($form, $questions, $circle, $applicant, $answer, $answer_details))
+                (new AnswerConfirmationMailable(
+                    $form,
+                    $questions,
+                    $circle,
+                    $applicant,
+                    $answer,
+                    $answer_details,
+                    $isEditedByStaff
+                ))
                     ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
-                    ->subject('申請「' . $form->name . '」を承りました')
+                    ->subject($subject)
             );
     }
 
@@ -86,7 +124,7 @@ class AnswersService
         return Answer::where('form_id', $form->id)->where('circle_id', $circle->id)->get();
     }
 
-    public function createAnswer(Form $form, Circle $circle, AnswerRequestInterface $request)
+    public function createAnswer(Form $form, Circle $circle, ?AnswerRequestInterface $request = null)
     {
         return DB::transaction(function () use ($form, $circle, $request) {
             $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
@@ -102,7 +140,7 @@ class AnswersService
         });
     }
 
-    public function updateAnswer(Form $form, Answer $answer, AnswerRequestInterface $request)
+    public function updateAnswer(Form $form, Answer $answer, ?AnswerRequestInterface $request = null)
     {
         return DB::transaction(function () use ($form, $answer, $request) {
             $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);

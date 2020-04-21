@@ -74,6 +74,11 @@
               </rt>
             </ruby>
           </p>
+          <p>
+            {% for tag in tags %}
+              <span class="label label-primary">{{ tag.name }}</span>
+            {% endfor %}
+          </p>
         </div>
       </div>
     </div>

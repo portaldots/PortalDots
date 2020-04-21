@@ -74,6 +74,7 @@
                         ・ ブース
                     {% endif %}
                 </th>
+                <th>企画団体</th>
                 {% for question in form.questions if question.type is not same as ("heading") %}
                     <th>
                         {{ question.name }}
@@ -86,12 +87,22 @@
                 <tr>
                     <td>{{ answer.id }}</td>
                     <th class="table-sticky">
-                        {{ answer.circle.name }} (ID : {{ answer.circle.id }})
-                        {% if form.type == "booth" %}
-                            <br>
-                            {{ answer.booth.place_name }}
-                        {% endif %}
+                      <ruby>
+                        {{ answer.circle.name }}
+                        <rt>{{ answer.circle.name_yomi }}</rt>
+                      </ruby>
+                      (ID : {{ answer.circle.id }})
+                      {% if form.type == "booth" %}
+                        <br>
+                        {{ answer.booth.place_name }}
+                      {% endif %}
                     </th>
+                    <td>
+                      <ruby>
+                        {{ answer.circle.group_name }}
+                        <rt>{{ answer.circle.group_name_yomi }}</rt>
+                      </ruby>
+                    </td>
                     {% for question in form.questions if question.type is not same as("heading") %}
                         <td class="applications-read-answer-td">
                             <div class="applications-read-answer-td__inner">
@@ -108,7 +119,7 @@
                                     {% if answer.answers[question.id] is not empty %}
                                         <a href="{{
                                             strpos(answer.answers[question.id], 'answer_details') is same as(0)
-                                                  ? base_url( "forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
+                                                  ? base_url( "staff/forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
                                                   : base_url( "uploads/applications_form/#{answer.answers[question.id]}" )
                                           }}"
                                           target="_blank">{{ answer.answers[question.id] }}</a>

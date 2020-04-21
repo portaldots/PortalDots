@@ -13,10 +13,10 @@ class AllAction extends Controller
 {
     public function __invoke(Request $request)
     {
-        $forms = Form::public()->closeOrder()->paginate(10);
-        $circle = Circle::find($request->circle);
+        $forms = Form::public()->withoutCustomForms()->closeOrder()->paginate(10);
+        $circle = Circle::approved()->find($request->circle);
         if (empty($circle) || Gate::denies('circle.belongsTo', $circle)) {
-            $circles = Auth::user()->circles()->get();
+            $circles = Auth::user()->circles()->approved()->get();
             if (count($circles) < 1) {
                 return view('v2.forms.list');
             } elseif (count($circles) === 1) {

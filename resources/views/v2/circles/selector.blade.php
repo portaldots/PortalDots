@@ -1,7 +1,8 @@
-@extends('v2.layouts.app')
+{{-- TODO: 将来的には、スタッフモード専用のドロワーが表示されるようにしたい --}}
+@extends(Request::is('staff*') ? 'v2.layouts.no_drawer' : 'v2.layouts.app')
 
 @section('title', '企画を選択')
-    
+
 @section('content')
     <app-container>
         <list-view>

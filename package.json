@@ -27,7 +27,8 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "eslint-check": "eslint --ext js,vue ./resources",
-        "stylelint-check": "stylelint ./resources/**/*.{vue,scss}"
+        "stylelint-check": "stylelint ./resources/**/*.{vue,scss}",
+        "phpunit": "cd docker_dev && docker-compose run web ./vendor/bin/phpunit"
     },
     "lint-staged": {
         "*.js": [
@@ -90,6 +91,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@johmun/vue-tags-input": "^2.1.0",
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
         "laravel-mix": "^4.0.7",

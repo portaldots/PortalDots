@@ -37,9 +37,10 @@ class Circles_model extends MY_Model
      */
     public function get_circle_info_by_user_id($user_id)
     {
-      // select * from circle_user join circles on circles.id = circle_user.circle_id where circle_user.user_id = ?
+        // select * from circle_user join circles on circles.id = circle_user.circle_id where circle_user.user_id = ?
         $this->db->from("circle_user");
         $this->db->join("circles", "circles.id = circle_user.circle_id");
+        $this->db->where("circles.submitted_at !=", null);
         $this->db->where("circle_user.user_id", $user_id);
         $query = $this->db->get();
         return $query->result();
@@ -77,6 +78,19 @@ class Circles_model extends MY_Model
         } else {
             return false;
         }
+    }
+
+    /**
+     * 指定された企画IDのタグ情報を取得する
+     *
+     * @param int $circle_id
+     * @return array
+     */
+    public function get_tags_by_circle_id($circle_id)
+    {
+        $this->db->where("circle_id", $circle_id);
+        $this->db->join("tags", "tags.id = circle_tag.tag_id");
+        return $this->db->get("circle_tag")->result();
     }
 
     /**

@@ -8,16 +8,33 @@ use App\Eloquents\Circle;
 use App\Eloquents\User;
 use App\Http\Requests\Staff\Circles\CircleRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Circles\CirclesService;
 
 class UpdateAction extends Controller
 {
-    public function __construct(User $user)
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * @var CirclesService
+     */
+    private $circlesService;
+
+    public function __construct(User $user, CirclesService $circlesService)
     {
         $this->user = $user;
+        $this->circlesService = $circlesService;
     }
 
     public function __invoke(Circle $circle, CircleRequest $request)
     {
+        if (!$circle->hasSubmitted()) {
+            // 参加登録が未提出の企画の情報は閲覧・編集できない
+            abort(404);
+        }
+
         $member_ids = str_replace(["\r\n", "\r", "\n"], "\n", $request->members);
         $member_ids = explode("\n", $member_ids);
         $member_ids = array_unique(array_filter($member_ids, "strlen"));
@@ -66,8 +83,12 @@ class UpdateAction extends Controller
             $member->circles()->attach($circle->id, ['is_leader' => false]);
         }
         $circle->save();
+
+        // タグの保存
+        $this->circlesService->saveTags($circle, $request->tags ?? []);
+
         return redirect()
             ->route('staff.circles.edit', $circle)
-            ->with('toast', '企画情報を更新しました');
+            ->with('topAlert.title', '企画情報を更新しました');
     }
 }

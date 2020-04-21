@@ -21,6 +21,10 @@ class UpdateAction extends Controller
 
     public function __invoke(Form $form, Answer $answer, UpdateAnswerRequest $request)
     {
+        if (isset($form->customForm)) {
+            abort(404);
+        }
+
         $this->answersService->updateAnswer($form, $answer, $request);
         $this->answersService->sendAll($answer, Auth::user());
         return back()

@@ -28,12 +28,12 @@ class EditAction extends Controller
 
     public function __invoke(Form $form, Answer $answer)
     {
-        if (! $form->is_public || $form->id !== $answer->form_id) {
+        if (! $form->is_public || $form->id !== $answer->form_id || isset($form->customForm)) {
             abort(404);
             return;
         }
 
-        $circle = $answer->circle;
+        $circle = $answer->circle()->approved()->firstOrFail();
         return view('v2.forms.answers.form')
             ->with('circle', $circle)
             ->with('form', $form)

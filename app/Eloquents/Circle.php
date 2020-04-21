@@ -40,13 +40,9 @@ class Circle extends Model
         'notes',
     ];
 
-    protected static function boot()
+    public function tags()
     {
-        parent::boot();
-
-        static::addGlobalScope('approved', function (Builder $builder) {
-            $builder->whereNotNull('submitted_at')->where('status', 'approved');
-        });
+        return $this->belongsToMany(Tag::class);
     }
 
     public function users()

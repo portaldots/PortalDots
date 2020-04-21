@@ -19,7 +19,7 @@ class StoreAnswerRequest extends BaseAnswerRequest
     {
         $answersService = App::make(AnswersService::class);
         $form = $this->route('form');
-        $circle = Circle::findOrFail($this->circle_id);
+        $circle = Circle::approved()->findOrFail($this->circle_id);
         $answers = $answersService->getAnswersByCircle($form, $circle);
         return Gate::allows('circle.belongsTo', $circle) &&
             $form->is_public && $form->isOpen() && $form->max_answers > count($answers);

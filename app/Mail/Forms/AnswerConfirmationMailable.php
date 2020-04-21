@@ -60,6 +60,13 @@ class AnswerConfirmationMailable extends Mailable
     public $answer_details;
 
     /**
+     * スタッフによって回答が編集されたことを伝えるための確認メールであるか
+     *
+     * @var bool
+     */
+    public $isEditedByStaff;
+
+    /**
      * Create a new message instance.
      *
      * @return void
@@ -70,7 +77,8 @@ class AnswerConfirmationMailable extends Mailable
         Circle $circle,
         User $applicant,
         Answer $answer,
-        array $answer_details
+        array $answer_details,
+        bool $isEditedByStaff
     ) {
         $this->form = $form;
         $this->questions = $questions;
@@ -78,6 +86,7 @@ class AnswerConfirmationMailable extends Mailable
         $this->applicant = $applicant;
         $this->answer = $answer;
         $this->answer_details = $answer_details;
+        $this->isEditedByStaff = $isEditedByStaff;
     }
 
     /**
