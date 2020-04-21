@@ -75,7 +75,7 @@ class ChangeInfoRequest extends FormRequest
     public function withValidator($validator)
     {
         $user = Auth::user();
-        $circles = $user->circles()->Submitted()->get();
+        $circles = $user->circles()->submitted()->get();
         if (!$circles->isEmpty()) {
             $validator->after(function ($validator) use ($user) {
                 if (!empty($this->name) && $this->name !== $user->name) {
