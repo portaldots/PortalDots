@@ -1244,40 +1244,6 @@ class Home_staff extends MY_Controller
     }
 
     /**
-     * Execute SQL Statements( Admin's access only )
-     */
-    public function ess()
-    {
-        $this->_admin_only();
-
-        $vars = [];
-        $vars["main_page_type"] = "ess";
-
-        # GA テスト
-        echo "<pre>";
-        $ga = new PHPGangsta_GoogleAuthenticator();
-        $secret = $ga->createSecret();
-        echo "Secret is: " . $secret . "\n\n";
-
-        $qrCodeUrl = $ga->getQRCodeGoogleUrl(APP_NAME, $secret);
-        echo "QR-Code: <img src='" . $qrCodeUrl . "'>'\n\n";
-
-        $oneCode = $ga->getCode($secret);
-        echo "Checking Code '$oneCode' and Secret '$secret':\n";
-
-        $checkResult = $ga->verifyCode($secret, $oneCode, 2);    // 2 = 2*30sec clock tolerance
-        if ($checkResult) {
-            echo 'OK';
-        } else {
-            echo 'FAILED';
-        }
-        echo "</pre>";
-        # End GA テスト
-
-        $this->_render('home_staff/ess', $vars);
-    }
-
-    /**
      * スタッフ認証ページ
      */
     public function verify_access()
@@ -1431,12 +1397,6 @@ class Home_staff extends MY_Controller
                         "icon" => "key",
                         "name" => "認可設定(Admin)",
                         "url" => "home_staff/auth_config",
-                    ];
-                $vars["_sidebar_menu"]["ess"] =
-                    [
-                        "icon" => "terminal",
-                        "name" => "ESS(Admin)", // Execute SQL Statements
-                        "url" => "home_staff/ess",
                     ];
             } else {
                 // 現在ログインしているユーザーが認可されていないページへのリンクをサイドバーから削除する
