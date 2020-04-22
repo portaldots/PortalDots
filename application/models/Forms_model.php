@@ -238,6 +238,7 @@ class Forms_model extends MY_Model
         $this->db->select('answers.id, answers.form_id, forms.name');
         $this->db->where('circle_id', $circle_id);
         $this->db->join('forms', 'forms.id = answers.form_id');
+        $this->db->order_by('answers.form_id', 'ASC');
         $answered_forms = $this->db->get('answers')->result();
 
         if (empty($answered_forms)) {
