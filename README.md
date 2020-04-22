@@ -1,4 +1,4 @@
-# ![PortalDots](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/readme/logo.png)
+# <img src="https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/readme/logo.png" alt="PortalDots" height="40" />
 学園祭実行委員会と参加企画との間のコミュニケーションを支援するオープンソースウェブシステム。
 
 <p>
