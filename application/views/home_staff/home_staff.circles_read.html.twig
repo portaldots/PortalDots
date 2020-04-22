@@ -152,5 +152,17 @@
       </div>
     {% endif %}
   </section>
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">この企画の回答済み申請</h2>
+    </div>
+    <div class="panel-body">
+      <ul>
+        {% for answer in answers %}
+          <li><a href="{{ base_url("home_staff/applications_answer_read/#{answer.id}") }}">{{ answer.name }} (回答ID: {{ answer.id }})</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
 
 {% endblock %}

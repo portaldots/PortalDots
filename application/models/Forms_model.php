@@ -231,6 +231,24 @@ class Forms_model extends MY_Model
     }
 
     /**
+     * 団体IDから回答済みフォームを取得する
+     */
+    public function get_answered_forms_by_circle_id($circle_id)
+    {
+        $this->db->select('answers.id, answers.form_id, forms.name');
+        $this->db->where('circle_id', $circle_id);
+        $this->db->join('forms', 'forms.id = answers.form_id');
+        $this->db->order_by('answers.form_id', 'ASC');
+        $answered_forms = $this->db->get('answers')->result();
+
+        if (empty($answered_forms)) {
+            return false;
+        }
+
+        return $answered_forms;
+    }
+
+    /**
      * 指定した回答IDの回答の次の回答情報を取得する(ページング用，スタッフ用)
      * @param int $answer_id 回答ID
      * @param int $form_id フォームID
