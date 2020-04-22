@@ -235,9 +235,10 @@ class Forms_model extends MY_Model
      */
     public function get_answered_forms_by_circle_id($circle_id)
     {
-        $this->db->from('answers')->where('circle_id', $circle_id);
+        $this->db->select('answers.id, answers.form_id, forms.name');
+        $this->db->where('circle_id', $circle_id);
         $this->db->join('forms', 'forms.id = answers.form_id');
-        $answered_forms = $this->db->get()->result();
+        $answered_forms = $this->db->get('answers')->result();
 
         if (empty($answered_forms)) {
             return false;
