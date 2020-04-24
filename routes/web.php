@@ -195,4 +195,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         // ユーザーチェッカー
         Route::get('/users/check', 'Staff\Users\CheckerAction')->name('users.check');
         Route::get('/users/check/list', 'Staff\Users\CheckerListAction')->name('users.check.list');
+
+        // スタッフが手動でメール認証を完了する
+        Route::get('/users/{user}/verify', 'Staff\Users\Verify\IndexAction')->name('users.verify');
+        Route::patch('/users/{user}', 'Staff\Users\Verify\UpdateAction')->name('users.verify.update');
     });
