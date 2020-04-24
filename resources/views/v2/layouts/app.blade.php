@@ -14,6 +14,7 @@
     </title>
 
     @prepend('css')
+    <link href="{{ mix('css/fontawesome.css') }}" rel="stylesheet">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @endprepend
     @stack('css')
@@ -28,10 +29,18 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
     @endprepend
     @if (config('app.debug'))
-        {{-- Laravel Debugbar か Turbolinks かは不明だが、jQuery.noConflict() --}}
-        {{-- を呼び出すコードがどこかにあるらしい。jQuery は導入していないため、 --}}
-        {{-- jQuery.noConflict() が呼び出されるとエラーになってしまうので、 --}}
-        {{-- ダミーの関数を用意する。 --}}
+        {{
+    // Laravel Debugbar か Turbolinks かは不明だが、jQuery.noConflict() //
+     }}
+        {{
+    // を呼び出すコードがどこかにあるらしい。jQuery は導入していないため、 //
+     }}
+        {{
+    // jQuery.noConflict() が呼び出されるとエラーになってしまうので、 //
+     }}
+        {{
+    // ダミーの関数を用意する。 //
+     }}
         @prepend('js')
         <script defer>
             if (typeof jQuery === 'undefined') {

@@ -43,6 +43,7 @@ mix
     targets: { ie: 11 }
   })
   .sass('resources/sass/bootstrap.scss', 'public/css') // Bootstrap
+  .sass('resources/sass/fontawesome.scss', 'public/css') // Font Awesome
   .sass('resources/sass/app.scss', 'public/css') // メインスタイル
   .options({
     // ↓スタイル適用順序に依存したCSSを書いているVueファイルが多く存在しており、

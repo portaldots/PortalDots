@@ -14,6 +14,7 @@
     </title>
 
     @prepend('css')
+    <link href="{{ mix('css/fontawesome.css') }}" rel="stylesheet">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @endprepend
     @stack('css')

@@ -9,6 +9,7 @@
 
     @prepend('css')
     <link href="{{ mix('css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/fontawesome.css') }}" rel="stylesheet">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @endprepend
     @stack('css')
@@ -59,7 +60,7 @@
                             <a class="dropdown-item" href="{{ route('user.delete') }}">アカウントの削除</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                                         document.getElementById('logout-form').submit();">
                                 ログアウト
                             </a>
                         </div>
