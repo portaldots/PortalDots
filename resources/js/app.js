@@ -1,4 +1,5 @@
 import 'bootstrap'
+import '@fortawesome/fontawesome-free/js/all'
 
 import { mountV2App } from './v2/app'
 import { mountFormsEditor } from './forms_editor'

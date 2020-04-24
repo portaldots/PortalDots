@@ -14,8 +14,6 @@
     </title>
 
     @prepend('css')
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"
-        integrity="sha384-REHJTs1r2ErKBuJB0fCK99gCYsVjwxHrSU0N7I1zl9vZbggVJXRMsv/sLlOAGb4M" crossorigin="anonymous">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @endprepend
     @stack('css')
@@ -43,7 +41,7 @@
                     }
                 };
             }
-
+    
         </script>
         @endprepend
     @endif
@@ -90,7 +88,7 @@
                     <template v-slot:title>
                         {{ session('topAlert.title') }}
                     </template>
-
+    
                     @if (Session::has('topAlert.body'))
                         {{ session('topAlert.body') }}
                     @endif
