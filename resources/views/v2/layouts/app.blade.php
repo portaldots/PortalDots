@@ -29,18 +29,10 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
     @endprepend
     @if (config('app.debug'))
-        {{
-    // Laravel Debugbar か Turbolinks かは不明だが、jQuery.noConflict() //
-     }}
-        {{
-    // を呼び出すコードがどこかにあるらしい。jQuery は導入していないため、 //
-     }}
-        {{
-    // jQuery.noConflict() が呼び出されるとエラーになってしまうので、 //
-     }}
-        {{
-    // ダミーの関数を用意する。 //
-     }}
+        {{-- Laravel Debugbar か Turbolinks かは不明だが、jQuery.noConflict() --}}
+        {{-- を呼び出すコードがどこかにあるらしい。jQuery は導入していないため、 --}}
+        {{-- jQuery.noConflict() が呼び出されるとエラーになってしまうので、 --}}
+        {{-- ダミーの関数を用意する。 --}}
         @prepend('js')
         <script defer>
             if (typeof jQuery === 'undefined') {
@@ -50,7 +42,7 @@
                     }
                 };
             }
-    
+
         </script>
         @endprepend
     @endif
@@ -97,7 +89,7 @@
                     <template v-slot:title>
                         {{ session('topAlert.title') }}
                     </template>
-    
+
                     @if (Session::has('topAlert.body'))
                         {{ session('topAlert.body') }}
                     @endif
