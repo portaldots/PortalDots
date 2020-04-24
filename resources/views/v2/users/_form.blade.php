@@ -58,7 +58,7 @@
                 <list-view-form-group label-for="email">
                     <template v-slot:label>連絡先メールアドレス</template>
                     <template v-slot:description>
-                        連絡先メールアドレスとして学校発行のメールアドレスもご利用になれます
+                        {{ $user->is_verified_by_staff ? '連絡先メールアドレスに学校発行のメールアドレスは使用できません' : '連絡先メールアドレスとして学校発行のメールアドレスもご利用になれます' }}
                     </template>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
                         value="{{ old('email', isset($user) ? $user->email : '') }}" required autocomplete="email">
