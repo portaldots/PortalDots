@@ -40,7 +40,7 @@
 
  use Symfony\Component\HttpFoundation\IpUtils;
 
-// 一部 Laravel にルーティング
+ // 一部 Laravel にルーティング
 (function () {
     // 以下の配列にあげたパスの他、
     // Laravel 側でメンテナンスモードが有効になっている場合も、
@@ -67,6 +67,8 @@
         '/staff',
         // Debugbar
         '/_debugbar',
+        // インストーラー
+        '/install',
     ];
 
     if (file_exists($down_path = __DIR__. '/../storage/framework/down')) {
@@ -92,8 +94,16 @@
 
 if (file_exists(__DIR__. '/../.env')) {
     Dotenv\Dotenv::create(__DIR__ . '/../')->load();
+
+    if (codeigniter_env('APP_NOT_INSTALLED') === 'true') {
+        // Laravel 側のインストーラーへルーティング
+        require __DIR__. '/index_laravel.php';
+        exit;
+    }
 } else {
-    die('.env file not found');
+    // Laravel 側のインストーラーへルーティング
+    require __DIR__. '/index_laravel.php';
+    exit;
 }
 
 function codeigniter_env($key, $default = null)

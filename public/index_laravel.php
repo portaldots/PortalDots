@@ -38,6 +38,15 @@ require __DIR__.'/../vendor/autoload.php';
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
 /*
+.env ファイルが作成されていない場合は作成する
+*/
+if (!file_exists($app->environmentPath() . '/.env')) {
+    $artisan = app(Illuminate\Contracts\Console\Kernel::class);
+    copy($app->environmentPath() . '/.env.prod', $app->environmentPath() . '/.env');
+    $artisan->call('key:generate');
+}
+
+/*
 |--------------------------------------------------------------------------
 | Run The Application
 |--------------------------------------------------------------------------
