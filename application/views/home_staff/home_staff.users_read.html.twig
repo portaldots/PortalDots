@@ -70,6 +70,13 @@
           </p>
         </div>
         <div class="col-md-6 users-read-header-main">
+          {% if user_read.univemail_verified_at is not null and user_read.email_verified_at is not null %}
+            <span class="label label-success">メール認証済み</span>
+          {% elseif user_read.is_verified_by_staff %}
+            <span class="label label-warning">スタッフにより本人確認済み</span>
+          {% else %}
+            <span class="label label-danger">メール未認証</span>
+          {% endif %}
           {% if user_read.student_id is not empty %}
             <p class="lead users-read-student-id">{{ user_read.student_id }}</p>
           {% else %}
