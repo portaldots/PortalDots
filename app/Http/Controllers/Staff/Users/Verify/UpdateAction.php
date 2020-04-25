@@ -18,6 +18,9 @@ class UpdateAction extends Controller
         }
 
         $user->is_verified_by_staff = true;
+        if ($user->univemail === $user->email) {
+            $user->email_verified_at = null;
+        }
         if ($user->markUnivemailAsVerified()) {
             return redirect()->route('staff.users.verify', ['user' => $user])
                 ->with('topAlert.title', '本人確認を完了しました');
