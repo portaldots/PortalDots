@@ -12,8 +12,11 @@
     <app-container medium>
         @if ($user->hasVerifiedUnivemail())
             <list-view>
+                <template v-slot:title>
+                    {{ $user->name }}（{{ $user->student_id }}）
+                </template>
                 <list-view-card>
-                    <p>{{ $user->name }}（{{ $user->student_id }}）は本人確認が済んでいるユーザーです</p>
+                    <p>{{ $user->is_verified_by_staff ? 'スタッフによって本人確認が済んでいるユーザーです' : '学校発行のメールによって本人確認が済んでいるユーザーです' }}</p>
                 </list-view-card>
                 <list-view-action-btn href="{{ url("home_staff/users/read/{$user->id}") }}">
                     ユーザーの詳細に戻る
