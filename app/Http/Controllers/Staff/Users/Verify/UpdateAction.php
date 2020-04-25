@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Staff\Users\Verify;
 use App\Eloquents\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UpdateAction extends Controller
 {
