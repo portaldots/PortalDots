@@ -17,7 +17,7 @@ class UpdateAction extends Controller
                 ->with('topAlert.type', 'danger');
         }
 
-        $user->univemail_verified_by = Auth::id();
+        $user->is_verified_by_staff = true;
         if ($user->markUnivemailAsVerified()) {
             return redirect()->route('staff.users.verify', ['user' => $user])
                 ->with('topAlert.title', '本人確認を完了しました');

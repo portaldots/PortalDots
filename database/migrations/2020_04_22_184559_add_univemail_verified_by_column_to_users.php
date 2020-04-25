@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUnivemailVerifiedByColumnToUsers extends Migration
+class AddIsVerifiedByStaffColumnToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddUnivemailVerifiedByColumnToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('univemail_verified_by')->nullable()->after('univemail_verified_at');
+            $table->unsignedBigInteger('is_verified_by_staff')->default(false)->after('univemail_verified_at');
         });
     }
 
@@ -26,7 +26,7 @@ class AddUnivemailVerifiedByColumnToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('univemail_verified_by');
+            $table->dropColumn('is_verified_by_staff');
         });
     }
 }

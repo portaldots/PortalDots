@@ -47,7 +47,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'student_id', 'name', 'email', 'tel', 'password', 'univemail_verified_by'
+        'student_id', 'name', 'email', 'tel', 'password',
     ];
 
     /**
@@ -67,6 +67,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'is_staff' => 'bool',
+        'is_verified_by_staff' => 'bool',
     ];
 
     public function circles()
@@ -253,13 +254,5 @@ class User extends Authenticatable
     public function getIsSignedUpAttribute()
     {
         return !empty($this->signed_up_at);
-    }
-
-    /**
-     * スタッフによってメール認証を完了とされているか
-     */
-    public function getIsVerifiedByStaffAttribute()
-    {
-        return !empty($this->univemail_verified_by);
     }
 }
