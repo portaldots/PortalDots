@@ -32,6 +32,7 @@ class UpdateInfoAction extends Controller
             if ($user->student_id !== $request->student_id) {
                 $user->student_id = $request->student_id;
                 $user->univemail_verified_at = null;
+                $user->univemail_verified_by = null;
                 $changed_univemail = true;
             }
         }
