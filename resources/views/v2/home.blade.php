@@ -4,15 +4,14 @@
 
     @auth
         @unless (Auth::user()->areBothEmailsVerified())
-            @if (Auth::user()->is_verified_by_staff)
+            @if (Auth::user()->is_verified_by_staff && Auth::user()->email === Auth::user()->univemail)
                 <top-alert type="primary" keep-visible>
                     <template v-slot:title>
                         <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
                         連絡先メールアドレスを変更してください
                     </template>
                     <template v-slot:cta>
-                        <a  href="{{ route('user.edit') }}"
-                            class="btn is-primary-inverse is-no-border is-wide">
+                        <a href="{{ route('user.edit') }}" class="btn is-primary-inverse is-no-border is-wide">
                             <strong>登録情報を変更する</strong>
                         </a>
                     </template>
