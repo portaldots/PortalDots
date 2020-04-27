@@ -28,7 +28,7 @@
     <meta name="format-detection" content="telephone=no">
 </head>
 
-<body ontouchstart="" class="@hasSection(" editor") body-editor-v1 @else body-v1 @endif">
+<body ontouchstart="" class="@hasSection("editor") body-editor-v1 @else body-v1 @endif">
 
     <nav class="navbar fixed-top navbar-expand navbar-light app-navbar">
         <div class="container-fluid">
