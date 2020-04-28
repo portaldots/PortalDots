@@ -43,6 +43,9 @@ mix
     targets: { ie: 11 }
   })
   .sass('resources/sass/bootstrap.scss', 'public/css') // Bootstrap
+  .sass('resources/sass/fontawesome.scss', 'public/css') // Font Awesome
+  // ↓ CodeIgniterを廃止したらこの行は削除する
+  .sass('resources/sass/fontawesome.v4.scss', 'public/css') // Font Awesome Ver4
   .sass('resources/sass/app.scss', 'public/css') // メインスタイル
   .options({
     // ↓スタイル適用順序に依存したCSSを書いているVueファイルが多く存在しており、

@@ -91,9 +91,11 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.13.0",
         "@johmun/vue-tags-input": "^2.1.0",
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
+        "font-awesome": "^4.7.0",
         "laravel-mix": "^4.0.7",
         "laravel-mix-polyfill": "^2.0.0",
         "marked": "^0.6.2",

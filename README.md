@@ -1,7 +1,7 @@
-<h1 align="center">PortalDots</h1>
-<p align="center">イベント参加サークルへのお知らせ配信、ウェブフォームによる申請受付ができるオープンソースウェブシステム。</p>
+# <img src="https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/readme/logo.png" alt="PortalDots" height="40" />
+学園祭実行委員会と参加企画との間のコミュニケーションを支援するオープンソースウェブシステム。
 
-<p align="center">
+<p>
     <a href="https://circleci.com/gh/portal-dots/PortalDots">
         <img src="https://circleci.com/gh/portal-dots/PortalDots.svg?style=svg" alt="CircleCI" />
     </a>
@@ -13,17 +13,59 @@
     </a>
 </p>
 
-![PortalDots](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/portal-dots-eyecatch.png)
+## PortalDotsとは
+PortalDots(ポータルドット)は、 **学園祭実行委員会と参加企画担当者との間のコミュニケーションを支援するウェブシステム** です。お知らせメールの一斉配信や各種申請の受付をオンラインで簡単に行うことができます。
 
-![スクリーンショット](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/screenshots-home-v2.png)
+開発は **東京理科大の学園祭実行委員経験者が主導するボランティア** の開発チームによって行っています。また、オープンソース([MIT License](https://github.com/portal-dots/PortalDots/blob/master/LICENSE))としており、無料・再配布自由としています。また、 **どなたでも開発に参加いただけます** 。
 
-## これは何？
-- [野田地区理大祭](https://nodaridaisai.com) という大学祭の実行委員会の業務を効率化するためのウェブシステム。
-    - 団体向け : 団体向け会議の次回予告、各種配布資料ダウンロード、お知らせの閲覧、各種申請の提出、お問い合わせなどを行うことができる。
-    - 実行委員向け : 登録されているユーザー情報の閲覧、参加団体・企画情報の管理など。また、お問い合わせを LINE Notify で受け取る機能もある。
-- 「平成30年度野田地区新入生歓迎ガイダンス」などで実運用されていた。
+## スクリーンショット
+![PortalDotsスクリーンショット](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/readme/main_screenshot.png)
 
-## 開発環境セットアップ方法
+![ホーム](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/readme/screenshot_home.png)
+
+![フォームエディター](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/readme/screenshot_form_editor.png)
+
+![企画参加登録](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/readme/screenshot_circle_register.png)
+
+## セットアップ方法
+※もしご不明な点がありましたら、 [PortalDots 公式 LINE アカウント](https://lin.ee/aeee9s9) または **portal-dots at hrgrweb dot com** (at と dot はそれぞれ `@` と `.` に置き換える)にてサポートいたします。お気軽にご連絡ください。
+
+1. PHP(7.3以上)、MySQL が利用できるサーバーを用意します。 [さくらのレンタルサーバー](https://www.sakura.ne.jp/) スタンダードプランなどがおすすめです。
+1. [https://github.com/portal-dots/PortalDots/releases] から、最新バージョンの PortalDots をダウンロードします。 **Assets** をクリックし、 **PortalDots_v[バージョン番号].zip** というファイルをダウンロードしてください。
+1. 展開したZIPファイルの中身をサーバーにアップロードします。
+1. アップロードした先のページをブラウザで開きます。セットアップガイドが表示されますので、指示に従ってインストールを進めてください。
+1. 後述する方法に従い、管理者アカウントを作成する。
+
+### スタッフモード・管理者権限について
+PortalDots には、登録ユーザーの管理や、お知らせ・配布資料ダウンロードファイルの登録を行うための「スタッフモード」があります。
+
+また、スタッフモード内の各ページにアクセスできるユーザーを制限する「認可」機能があり、認可に関する設定を行うための「管理者権限」が存在します。
+
+現状、PortalDots の画面上では、一番最初のスタッフや管理者を登録できませんので、以下の方法でスタッフや管理者を設定してください。
+
+1. PortalDots 上で、通常通りユーザー登録を行う
+1. データベース管理ツール(phpMyAdmin など) で、 `users` テーブル上の `is_staff` 列を `1` にする
+    - → そのユーザーは「スタッフ」になり、サイドバーにスタッフモードへアクセスするためのボタンが出現する
+1. `roles` テーブルに、 `id` が `0` のレコードを作成する (`name` は `管理者` など、お好きなものを設定してください)
+1. `role_user` テーブルに、 `user_id` を管理者にしたいユーザーの ID、 `role_id` を `0` にしたレコードを作成する
+    - → そのユーザーは「管理者」になります
+
+## お問い合わせ先
+PortalDots 開発チーム（有志による個人開発チーム）
+
+- [PortalDots 公式 LINE アカウント](https://lin.ee/aeee9s9)
+- メール : **portal-dots at hrgrweb dot com** (at と dot はそれぞれ `@` と `.` に置き換える)
+- 代表 Twitter : [@sofpyon](https://twitter.com/sofpyon)
+
+-----
+
+## 開発者向け情報
+### PortalDots の開発に貢献(Contribution)する
+PortalDots では、新規機能・既存機能改良の提案、バグの報告や Pull Request を歓迎します。
+
+詳しくは [コントリビューションガイドライン](https://github.com/portal-dots/PortalDots/blob/master/CONTRIBUTING.md) をご覧ください。
+
+### 開発環境セットアップ方法
 Git、PHP(7.3以上)、Composer、Node.js、Yarn、Docker がセットアップ済みである必要があります。
 
 ```bash
@@ -48,7 +90,7 @@ $ yarn docker
 # 　代わりに `yarn migrate:refresh` コマンドを実行してください。
 $ yarn migrate
 
-# フロントエンド用アセットのコンパイル
+# フロントエンド開発サーバーの起動
 $ yarn watch
 # Ctrl-C で停止
 
@@ -58,97 +100,17 @@ $ yarn docker-stop
 
 - `yarn docker` コマンドにより、開発環境が起動します。
 
-## 開発環境の各種 URL
+### 開発環境の各種 URL
 - 開発環境 : http://localhost:3000
     - 初回アクセス時、データベースエラーが表示されることがありますが、数回再読み込みすることでエラーは解消するようです。もし解消しない場合、 `yarn docker-stop` コマンドを実行してから `yarn docker` コマンドを実行し、開発環境を再起動してください。
 - 開発環境から送信されるメールの確認(MailHog) : http://localhost:8025
 - phpMyAdmin : http://localhost:8080
     - 開発環境の DB に作成されるデータベース名は `db_portal_dev`
 
-## スタッフモード・管理者権限について
-PortalDots には、登録ユーザーの管理や、お知らせ・会議での配布資料ダウンロードファイルの登録を行うための「スタッフモード」があります。
+-----
 
-また、スタッフモード内の各ページにアクセスできるユーザーを制限する「認可」機能があり、認可に関する設定を行うための「管理者権限」が存在します。
-
-現状、PortalDots の GUI では、一番最初のスタッフや管理者を登録できませんので、以下の方法でスタッフや管理者を設定してください。
-
-1. PortalDots 上で、通常通りユーザー登録を行う
-1. `users` テーブル上の `is_staff` 列を `1` にする
-    - → そのユーザーは「スタッフ」になり、サイドバーにスタッフモードへアクセスするためのボタンが出現する
-    - phpMyAdmin などで操作してください
-1. `roles` テーブルに、 `id` が `0` のレコードを作成する (`name` は `管理者` など、お好きなものを設定してください)
-1. `role_user` テーブルに、 `user_id` を管理者にしたいユーザーの ID、 `role_id` を `0` にしたレコードを作成する
-    - → そのユーザーは「管理者」になります
-
-## PortalDots の開発に貢献する
-PortalDots では、Issue や Pull Request を歓迎します。
-
-今のところ、Issue 提出や Pull Request 提出に関して、特段のルールは設けておりません（今後設ける可能性はある）ので、何かございましたらお気軽にお願いします！
-
-## 既知の問題
-- ~~メール文面等に「新歓実行委員会」などという単語がハードコーディングされている箇所がある可能性があります~~ **(おそらく解消済)**
-- ~~スタッフモードのフォーム作成ページから申請フォームを作成できない~~ **(フォームエディターで申請フォームを作成できます)**
-    - ~~申請フォームを作成するには、スタッフモードの [申請] ページでフォームを新規作成した上で、データベース上の `questions` にデータを手動で登録する必要があります。~~
-- 「ブース単位」で受け付ける申請フォームが作成できない
-- 申請フォームの回答数制限が機能していない
-    - 回答数制限は「1」を設定してください
-- ~~一度、スタッフモードにアクセスするための 2 段階認証をクリアすると、ログアウト後も、 2 段階認証がクリアされた状態が継続してしまう~~ **(解消済)**
-    - ~~この問題は、現在実運用されている [新歓ウェブポータル](https://swp.x0.com) には存在しません~~
-- 管理者権限を持った状態でスタッフモードにアクセスすると、サイドバーに「ESS」という謎の項目が出現し、それをクリックすると謎のウェブページが表示される
-    - ESS は、おそらく "Execute SQL Statements" の略称として付けられたと見られており、某サークルとは一切関係ありません。
-- PHPDoc の内容と実際のシグネチャが一致していないものがある
-- 中途半端に phpcs によるコード整形を行なったため、一部のコードが崩れている
-- LINE Notify への通知機能で、`try-catch` による適切な例外処理が行われていない
-
-その他の問題は、開発者の GitHub プライベートリポジトリの issue で管理されています。今後、このリポジトリに issue を移行するかもしれません。
-
-## 将来的に実装したい機能
-- 場所登録機能
-    - 上記と同様です
-
-## 雑多なメモ書き
-- ~~平文のパスワードを格納する時の変数名は `$plain_password` とする~~
-    - Laravel のコードでは `$password` が標準っぽい？
-- (CodeIgniter) `$this->db` のメソッドはモデルで実行、 `$this->input` はコントローラでのみ使う
-- (CodeIgniter) `_validate_*` 系メソッド(独自バリデータ)は必ず `public` にすること。 `private` や `protected` ではエラーになる
-- 「イベント」という用語と「スケジュール」という用語が混同していますが，ほぼ同じ意味(だと思います)
-- 変数名は snake_case にする
-
-## その他
-このプロジェクトは、まだプログラミングスキルが浅かった時に開発されたものを、最近になって多くのリファクタリングを施したものです。今でもあまり良いコードとは言えないかもしれませんが、これでもだいぶマシになったほうです(パスワードがハードコードされていたりした)。
-
-## SQL
-PortalDots を動作させるために必要な DB テーブルは、`composer migrate` コマンドによって作成されます。
-
-# ライセンス
-
-(このセクションは書きかけです)
-
-MIT License
-
-```
-MIT License
-
-Copyright (c) 2019-2020 Soji Takahashi (SofPyon), hosakou and contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+## ライセンス
+[MIT License](https://github.com/portal-dots/PortalDots/blob/master/LICENSE)
 
 - CodeIgniter - MIT License、一部改変
 - Grocery CRUD - MIT License、一部改変
