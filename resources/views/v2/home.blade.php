@@ -1,7 +1,7 @@
 @extends('v2.layouts.app')
 
 @section('content')
-
+    
     @auth
         @unless (Auth::user()->areBothEmailsVerified())
             @if (Auth::user()->is_verified_by_staff && Auth::user()->email === Auth::user()->univemail)
@@ -10,6 +10,7 @@
                         <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
                         連絡先メールアドレスを変更してください
                     </template>
+                    現在登録されている連絡先メールアドレスは{{ config('app.name') }}からの連絡を受け取れない可能性があります。
                     <template v-slot:cta>
                         <a href="{{ route('user.edit') }}" class="btn is-primary-inverse is-no-border is-wide">
                             <strong>登録情報を変更する</strong>
@@ -22,7 +23,7 @@
                         <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
                         メール認証を行ってください
                     </template>
-
+                
                     {{ config('app.name') }}の全機能を利用するには、次のメールアドレス宛に送信された確認メール内のURLにアクセスしてください。
                     <strong>
                         @unless (Auth::user()->hasVerifiedUnivemail())
@@ -35,7 +36,7 @@
                             {{ Auth::user()->email }}
                         @endunless
                     </strong>
-
+                
                     <template v-slot:cta>
                         <form action="{{ route('verification.resend') }}" method="post">
                             @csrf
@@ -48,7 +49,7 @@
             @endif
         @endunless
     @endauth
-
+    
     @guest
         <header class="jumbotron">
             <app-container narrow>
@@ -60,7 +61,7 @@
                 </p>
                 <form method="post" action="{{ route('login') }}">
                     @csrf
-
+        
                     @if ($errors->any())
                         <div class="text-danger">
                             @foreach ($errors->all() as $error)
@@ -68,19 +69,19 @@
                             @endforeach
                         </div>
                     @endif
-
+        
                     <div class="form-group">
                         <label for="login_id" class="sr-only">学籍番号・連絡先メールアドレス</label>
                         <input id="login_id" type="text" class="form-control" name="login_id" value="{{ old('login_id') }}"
                             required autocomplete="username" autofocus placeholder="学籍番号・連絡先メールアドレス">
                     </div>
-
+        
                     <div class="form-group">
                         <label for="password" class="sr-only">パスワード</label>
                         <input id="password" type="password" class="form-control" name="password" required
                             autocomplete="current-password" placeholder="パスワード">
                     </div>
-
+        
                     <div class="form-group">
                         <div class="form-checkbox">
                             <label class="form-checkbox__label">
@@ -90,13 +91,13 @@
                             </label>
                         </div>
                     </div>
-
+        
                     <p>
                         <a href="{{ route('password.request') }}">
                             パスワードをお忘れの場合はこちら
                         </a>
                     </p>
-
+        
                     <div class="form-group">
                         <button type="submit" class="btn is-primary is-block">
                             <strong>ログイン</strong>
@@ -198,11 +199,11 @@
                 @endif
             </list-view>
         @endif
-
+    
         @if(empty($next_schedule) && $pages->isEmpty() && $documents->isEmpty() && $forms->isEmpty())
             <list-view-empty icon-class="fas fa-home" text="まだ公開コンテンツはありません" />
         @endif
-
+    
         @isset($next_schedule)
             <list-view>
                 <template v-slot:title>次の予定</template>
@@ -225,7 +226,7 @@
                 </list-view-action-btn>
             </list-view>
         @endisset
-
+    
         @if (!$pages->isEmpty())
             <list-view>
                 <template v-slot:title>お知らせ</template>
@@ -250,7 +251,7 @@
                 @endif
             </list-view>
         @endif
-
+    
         @if (!$documents->isEmpty())
             <list-view>
                 <template v-slot:title>最近の配布資料</template>
@@ -284,7 +285,7 @@
                 @endif
             </list-view>
         @endif
-
+    
         @if (!$forms->isEmpty())
             <list-view>
                 <template v-slot:title>受付中の申請</template>
