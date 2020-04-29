@@ -25,7 +25,7 @@ class UpdateAction extends Controller
             (int)$request->DB_PORT,
             $request->DB_DATABASE,
             $request->DB_USERNAME,
-            $request->DB_PASSWORD,
+            $request->DB_PASSWORD
         )) {
             return redirect()
                 ->back()
