@@ -55,7 +55,7 @@
                     <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
-                <list-view-form-group label-for="email">
+                <list-view-form-group label-for="email" {{ $user->is_verified_by_staff ? 'danger' : '' }}>
                     <template v-slot:label>連絡先メールアドレス</template>
                     <template v-slot:description>
                         {{ $user->is_verified_by_staff ? '連絡先メールアドレスに学校発行のメールアドレスは使用できません' : '連絡先メールアドレスとして学校発行のメールアドレスもご利用になれます' }}
