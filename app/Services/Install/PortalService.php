@@ -16,7 +16,6 @@ class PortalService extends AbstractService
             'PORTAL_ADMIN_NAME',
             'PORTAL_CONTACT_EMAIL',
             'PORTAL_UNIVEMAIL_DOMAIN',
-            'PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE',
         ];
     }
 }
