@@ -29,8 +29,7 @@ class ChangeInfoRequest extends FormRequest
         return [
             'student_id' => array_merge(
                 User::STUDENT_ID_RULES,
-                ['sometimes', Rule::unique('users')->ignore(Auth::user()),
-                    ]
+                [Rule::unique('users')->ignore(Auth::user())]
             ),
             'name' => User::NAME_RULES,
             'name_yomi' => User::NAME_YOMI_RULES,

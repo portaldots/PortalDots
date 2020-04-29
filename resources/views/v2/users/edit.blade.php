@@ -21,7 +21,7 @@
                     </template>
                     <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror"
                         name="student_id" value="{{ old('student_id', $user->student_id) }}"
-                        {{ !$circles->isEmpty() ? 'disabled' : '' }} required autocomplete="username">
+                        {{ !$circles->isEmpty() ? 'readonly' : '' }} required autocomplete="username">
                     @error('student_id')
                     <template v-slot:invalid>{{ $message }}</template>
                     @enderror
@@ -32,7 +32,7 @@
                         {{ !$circles->isEmpty() ? '企画に所属しているため修正できません' : '姓と名の間にはスペースを入れてください' }}
                     </template>
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                        value="{{ old('name', $user->name) }}" {{ !$circles->isEmpty() ? 'disabled' : '' }} required
+                        value="{{ old('name', $user->name) }}" {{ !$circles->isEmpty() ? 'readonly' : '' }} required
                         autocomplete="name">
                     @error('name')
                     <template v-slot:invalid>{{ $message }}</template>
@@ -45,7 +45,7 @@
                     </template>
                     <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror"
                         name="name_yomi" value="{{ old('name_yomi', $user->name_yomi) }}"
-                        {{ !$circles->isEmpty() ? 'disabled' : '' }} required>
+                        {{ !$circles->isEmpty() ? 'readonly' : '' }} required>
                     @error('name_yomi')
                     <template v-slot:invalid>{{ $message }}</template>
                     @enderror
