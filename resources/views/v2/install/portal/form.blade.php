@@ -32,7 +32,7 @@
                                         'APP_URL' => 'このページの URL から /install/portal を抜いたもの',
                                         'PORTAL_ADMIN_NAME' => '',
                                         'PORTAL_CONTACT_EMAIL' => 'ユーザーからの問い合わせはこのメールアドレスに届きます',
-                                        'PORTAL_UNIVEMAIL_DOMAIN' => '例 : ed.tus.ac.jp',
+                                        'PORTAL_UNIVEMAIL_DOMAIN' => '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります',
                                         'PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE' => 'ユーザーが PortalDots の「企画参加登録」機能を利用する際、参加登録を提出するのに必要な企画担当者の最低人数'
                                     ][$key] }}
                         </template>
