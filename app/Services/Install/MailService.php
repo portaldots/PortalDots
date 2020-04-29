@@ -10,7 +10,7 @@ use App\Mail\Install\TestMailMailable;
 
 class MailService extends AbstractService
 {
-    protected function getEnvKeys(): array
+    public function getEnvKeys(): array
     {
         return [
             'MAIL_HOST',

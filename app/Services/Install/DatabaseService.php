@@ -10,7 +10,7 @@ use Jackiedo\DotenvEditor\DotenvEditor;
 
 class DatabaseService extends AbstractService
 {
-    protected function getEnvKeys(): array
+    public function getEnvKeys(): array
     {
         return [
             'DB_HOST',

@@ -8,7 +8,7 @@ use Jackiedo\DotenvEditor\DotenvEditor;
 
 abstract class AbstractService
 {
-    abstract protected function getEnvKeys(): array;
+    abstract public function getEnvKeys(): array;
 
     /**
      * @var DotenvEditor

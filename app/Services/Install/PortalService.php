@@ -8,7 +8,7 @@ use Jackiedo\DotenvEditor\DotenvEditor;
 
 class PortalService extends AbstractService
 {
-    protected function getEnvKeys(): array
+    public function getEnvKeys(): array
     {
         return [
             'APP_NAME',
