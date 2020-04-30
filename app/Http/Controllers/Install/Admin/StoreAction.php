@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class StoreAction extends Controller
 {
-    public function __innvoke()
+    public function __invoke()
     {
     }
 }
