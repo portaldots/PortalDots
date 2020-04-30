@@ -25,6 +25,12 @@ abstract class AbstractService
         $result = [];
 
         foreach ($this->getEnvKeys() as $key) {
+            // $key に PASSWORD という文字列が含まれている場合は、
+            // セキュリティのため値を取得しない
+            if (strpos($key, 'PASSWORD') !== false) {
+                $result[$key] = '';
+                continue;
+            }
             $result[$key] = $this->editor->getValue($key);
         }
 
