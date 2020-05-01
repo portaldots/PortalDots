@@ -25,7 +25,10 @@ class PostTestAction extends Controller
                 ->route('install.mail.edit');
         }
 
-        if (session('install_password') !== $request->install_password) {
+        // プレーンテキストでテストメールが送信される場合、Markdown の * がパスワードの
+        // 前後に表示されてしまう。 * も含めて入力された場合、 * は無視して
+        // パスワードの比較を行う
+        if (session('install_password') !== str_replace('*', '', $request->install_password)) {
             return redirect()
                 ->route('install.mail.test')
                 ->with('topAlert.type', 'danger')
