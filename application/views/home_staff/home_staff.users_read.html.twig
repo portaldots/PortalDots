@@ -116,13 +116,6 @@
               メールを送信する
             </a>
           </p>
-          {% if user_read.univemail_verified_at is empty %}
-            <p>
-              <a href="{{ base_url("staff/users/#{user_read.id}/verify") }}" class="btn btn-primary btn-lg users-read-send-email">
-                本人確認を完了する
-              </a>
-            </p>
-          {% endif %}
         </div>
       </div>
     </div>
