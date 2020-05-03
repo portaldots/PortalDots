@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'staffAuthed' => \App\Http\Middleware\RedirectIfStaffNotAuthenticated::class,
         'checkEnv' => \App\Http\Middleware\CheckEnv::class,
+        'notInstalled' => \App\Http\Middleware\DenyIfInstalled::class,
     ];
 
     /**
@@ -75,6 +76,7 @@ class Kernel extends HttpKernel
      */
     protected $middlewarePriority = [
         \App\Http\Middleware\CheckEnv::class,
+        \App\Http\Middleware\DenyIfInstalled::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \App\Http\Middleware\InjectSessionFromCodeIgniter::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,

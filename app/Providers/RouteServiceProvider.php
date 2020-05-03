@@ -39,7 +39,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapInstallRoutes()
     {
-        Route::middleware('web')
+        Route::middleware(['web', 'notInstalled'])
              ->namespace($this->namespace)
              ->group(base_path('routes/install.php'));
     }
