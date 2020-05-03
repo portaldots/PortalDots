@@ -50,10 +50,10 @@
                     <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
-                <list-view-form-group label-for="email">
+                <list-view-form-group label-for="email" {{ $user->is_verified_by_staff ? 'danger' : '' }}>
                     <template v-slot:label>連絡先メールアドレス</template>
                     <template v-slot:description>
-                        連絡先メールアドレスとして学校発行のメールアドレスもご利用になれます
+                        {{  $user->is_verified_by_staff ? '連絡先メールアドレスとして学校発行のメールアドレスは使用できません' : '連絡先メールアドレスとして学校発行のメールアドレスもご利用になれます'}}
                     </template>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
                         value="{{ old('email', $user->email) }}" required autocomplete="email">
