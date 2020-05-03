@@ -469,11 +469,11 @@ class Home_staff extends MY_Controller
         $columns = [
             'id',
             'student_id',
-            'identify',
             'name_family',
             'name_family_yomi',
             'name_given',
             'name_given_yomi',
+            'identify',
             'verify',
             'email',
             'tel',
