@@ -22,7 +22,17 @@ class UpdateAction extends Controller
     public function __invoke(Request $request)
     {
         $this->mailService->updateInfo($request->all());
-        $this->sendTestMail();
+        try {
+            $this->sendTestMail();
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('topAlert.type', 'danger')
+                ->with('topAlert.title', '設定をご確認ください')
+                ->with('topAlert.body', '入力された情報でメールを送信できませんでした。入力内容が正しいかご確認ください');
+        }
+
         return redirect()
             ->route('install.mail.test');
     }
