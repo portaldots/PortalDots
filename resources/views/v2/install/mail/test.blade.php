@@ -13,7 +13,10 @@
                 <template v-slot:title>テストメールの受信確認</template>
                 <list-view-card>
                     {{ config('portal.contact_email') }} に対して確認メールを送信しました。<br>
-                    確認メールに記載されているパスワードを入力してください。
+                    確認メールに記載されているパスワードを入力してください。<br>
+                    メールが届かない場合、
+                    <a href="{{ route('install.mail.edit') }}">メール設定に誤りがないかご確認ください</a>。
+                </a>
                 </list-view-card>
                 <list-view-form-group label-for="install_password">
                     <template v-slot:label>
