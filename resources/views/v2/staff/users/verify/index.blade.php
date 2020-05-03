@@ -31,10 +31,10 @@
                     <p>本人確認は済んでいますか？</p>
                     <ul>
                         @if ($user->email === $user->univemail)
-                            <li><strong>連絡先メールを学校発行のメールアドレスでは無いものに変更するように伝えてください</strong></li>
+                            <li><strong>連絡先メールアドレスを学校発行メールアドレス以外に変更するよう、ユーザーに伝えてください</strong></li>
                         @endif
-                        <li>このユーザーは「{{ config('app.name') }}」の 連絡先メール として学校発行のメールアドレスを使用できなくなります</li>
-                        <li>学籍番号を変更した場合は再度メールでの認証が必要になります</li>
+                        <li>このユーザーは「{{ config('app.name') }}」の連絡先メールアドレスとして学校発行のメールアドレスを使用できなくなります</li>
+                        <li>ユーザーが「{{ config('app.name') }}」に登録している学籍番号を変更した場合、本人確認未完了状態に戻ります</li>
                     </ul>
                 </list-view-card>
                 <form action="{{ route('staff.users.verify.update', ['user' => $user]) }}" method="post">
