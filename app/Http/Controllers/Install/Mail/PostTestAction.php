@@ -8,16 +8,6 @@ use App\Services\Install\RunInstallService;
 
 class PostTestAction extends Controller
 {
-    /**
-     * @var RunInstallService
-     */
-    private $editor;
-
-    public function __construct(RunInstallService $runInstallService)
-    {
-        $this->runInstallService = $runInstallService;
-    }
-
     public function __invoke(Request $request)
     {
         if (empty(session('install_password'))) {
@@ -34,7 +24,5 @@ class PostTestAction extends Controller
                 ->with('topAlert.type', 'danger')
                 ->with('topAlert.title', 'パスワードが違います');
         }
-
-        $this->runInstallService->run();
     }
 }
