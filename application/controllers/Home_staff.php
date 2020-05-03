@@ -551,7 +551,7 @@ class Home_staff extends MY_Controller
      */
     public function _crud_email_verified($value, $row)
     {
-        if (empty($row->email_verified_at) || empty($row->univemail_verified_at)) {
+        if (empty($row->email_verified_at)) {
             return '<span class="text-danger">未認証</span>';
         }
         return '<span class="text-success">認証済み</span>';
