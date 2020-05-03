@@ -24,5 +24,8 @@ class PostTestAction extends Controller
                 ->with('topAlert.type', 'danger')
                 ->with('topAlert.title', 'パスワードが違います');
         }
+
+        return redirect()
+            ->route('install.admin.create');
     }
 }
