@@ -42,7 +42,7 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 */
 if (!file_exists($app->environmentPath() . '/.env')) {
     $artisan = app(Illuminate\Contracts\Console\Kernel::class);
-    copy($app->environmentPath() . '/.env.prod', $app->environmentPath() . '/.env');
+    copy($app->environmentPath() . '/.env.production', $app->environmentPath() . '/.env');
     $artisan->call('key:generate');
 }
 
