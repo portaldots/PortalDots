@@ -11,7 +11,7 @@ class EditAction extends Controller
     /**
      * @var DatabaseService
      */
-    private $editor;
+    private $databaseService;
 
     public function __construct(DatabaseService $databaseService)
     {
