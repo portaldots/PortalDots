@@ -17,10 +17,10 @@
                 <template v-slot:description>参加を登録される企画の情報を入力してください。</template>
                 <list-view-card>
                     <i class="fas fa-exclamation-circle"></i>
-                    企画情報の入力は、団体責任者の方が行ってください。団体責任者以外の方は、企画情報の入力は不要です。団体責任者の方の指示に従ってください。
+                    企画情報の入力は、企画責任者の方が行ってください。企画責任者以外の方は、企画情報の入力は不要です。企画責任者の方の指示に従ってください。
                 </list-view-card>
                 <list-view-form-group label-for="leader">
-                    <template v-slot:label>団体責任者</template>
+                    <template v-slot:label>企画責任者</template>
                     <input type="text" id="leader" readonly
                         value="{{ isset($circle) ? $circle->leader[0]->name : Auth::user()->name }}"
                         class="form-control is-plaintext">
