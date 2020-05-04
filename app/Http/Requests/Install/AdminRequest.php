@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Install;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Eloquents\User;
 
 class AdminRequest extends FormRequest
 {
