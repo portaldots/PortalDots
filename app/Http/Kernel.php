@@ -64,7 +64,7 @@ class Kernel extends HttpKernel
         'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'staffAuthed' => \App\Http\Middleware\RedirectIfStaffNotAuthenticated::class,
         'checkEnv' => \App\Http\Middleware\CheckEnv::class,
-        'notInstalled' => \App\Http\Middleware\DenyIfInstalled::class,
+        'install' => \App\Http\Middleware\DenyIfInstalled::class,
     ];
 
     /**
