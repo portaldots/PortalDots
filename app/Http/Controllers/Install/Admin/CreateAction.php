@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 class CreateAction extends Controller
 {
-    public function __invoke()
+    public function __invoke(Request $request)
     {
+        return view('v2.install.admin.form');
     }
 }
