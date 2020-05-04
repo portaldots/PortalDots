@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Eloquents\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Services\Auth\RegisterService;
 use App\Services\Auth\EmailService;
 use App\Services\Auth\VerifyService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -38,6 +38,11 @@ class RegisterController extends Controller
     protected $redirectTo = '/';
 
     /**
+     * @var RegisterService
+     */
+    private $registerService;
+
+    /**
      * @var EmailService
      */
     private $emailService;
@@ -50,13 +55,18 @@ class RegisterController extends Controller
     /**
      * Create a new controller instance.
      *
+     * @param  RegisterService  $registerService
      * @param  EmailService  $emailService
      * @param  VerifyService  $verifyService
      * @return void
      */
-    public function __construct(EmailService $emailService, VerifyService $verifyService)
-    {
+    public function __construct(
+        RegisterService $registerService,
+        EmailService $emailService,
+        VerifyService $verifyService
+    ) {
         $this->middleware('guest');
+        $this->registerService = $registerService;
         $this->emailService = $emailService;
         $this->verifyService = $verifyService;
     }
@@ -74,14 +84,14 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request): RedirectResponse
     {
-        $user = new User();
-        $user->student_id = $request->student_id;
-        $user->name = $request->name;
-        $user->name_yomi = $request->name_yomi;
-        $user->email = $request->email;
-        $user->tel = $request->tel;
-        $user->password = Hash::make($request->password);
-        $user->save();
+        $user = $this->registerService->create(
+            $request->student_id,
+            $request->name,
+            $request->name_yomi,
+            $request->email,
+            $request->tel,
+            $request->password
+        );
 
         event(new Registered($user));
 
