@@ -20,11 +20,9 @@ class EditAction extends Controller
 
     public function __invoke(Request $request)
     {
+        // 開発環境で http: が表示されないことがあるが、開発環境以外では
+        // 正常に表示されるので問題がない
         $url = url('/');
-
-        if (strpos($url, 'http:') !== 0 && strpos($url, 'https:') !== 0) {
-            $url = ($request->isSecure() ? 'https:' : 'http:') . $url;
-        }
 
         return view('v2.install.portal.form')
             ->with('portal', $this->portalService->getInfo())
