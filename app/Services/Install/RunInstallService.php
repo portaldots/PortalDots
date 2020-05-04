@@ -28,7 +28,17 @@ class RunInstallService
     {
         Artisan::call('migrate', ['--force' => true]);
 
-        $this->editor->deleteKey('APP_NOT_INSTALLED');
+        $this->editor->setKey('APP_NOT_INSTALLED', 'false');
         $this->editor->save();
+    }
+
+    /**
+     * 未インストール状態に戻す
+     *
+     * 何らかのエラーが発生し、未インストール状態に戻したい時に利用する
+     */
+    public function rollback()
+    {
+        $this->editor->setKey('APP_NOT_INSTALLED', 'true');
     }
 }
