@@ -55,6 +55,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->display_as('leader', '責任者');
         $this->grocery_crud->display_as('members', '所属者');
         $this->grocery_crud->display_as('is_staff', 'スタッフ');
+        $this->grocery_crud->display_as('is_admin', '管理者');
         $this->grocery_crud->display_as('notes', 'ｽﾀｯﾌ用ﾒﾓ');
 
         // id順に表示する
@@ -476,6 +477,7 @@ class Home_staff extends MY_Controller
             'email',
             'tel',
             'is_staff',
+            'is_admin',
             'created_at',
             'updated_at',
             'notes'
@@ -500,7 +502,8 @@ class Home_staff extends MY_Controller
             'notes'
         ];
         if ($this->_get_login_user()->is_admin) {
-            // 管理者のみ、Rolesの設定をできるようにする
+            // 管理者のみ、管理者権限・Rolesの設定をできるようにする
+            $fields[] = 'is_admin';
             $fields[] = 'roles';
         }
         $this->grocery_crud->fields($fields);
@@ -1393,6 +1396,12 @@ class Home_staff extends MY_Controller
                         "url" => "home_staff/roles",
                     ];
                 $vars["_sidebar_menu"]["auth_config"] =
+                    [
+                        "icon" => "key",
+                        "name" => "認可設定(Admin)",
+                        "url" => "home_staff/auth_config",
+                    ];
+                $vars["_sidebar_menu"]["system"] =
                     [
                         "icon" => "key",
                         "name" => "認可設定(Admin)",
