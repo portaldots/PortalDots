@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Install\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Install\AdminRequest;
 use App\Services\Auth\RegisterService;
 use App\Services\Install\RunInstallService;
 use App\Eloquents\User;
@@ -28,7 +28,7 @@ class StoreAction extends Controller
         $this->runInstallService = $runInstallService;
     }
 
-    public function __invoke(RegisterRequest $request)
+    public function __invoke(AdminRequest $request)
     {
         try {
             $this->runInstallService->run();
