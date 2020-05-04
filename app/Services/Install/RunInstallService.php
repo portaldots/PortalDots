@@ -19,6 +19,11 @@ class RunInstallService
         $this->editor = $editor;
     }
 
+    /**
+     * データベースのマイグレーションなど、PortalDots の初回起動時処理を行う
+     *
+     * @return void
+     */
     public function run()
     {
         Artisan::call('migrate', ['--force' => true]);
