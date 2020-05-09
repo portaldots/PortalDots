@@ -5,14 +5,13 @@ namespace App\Http\Controllers\Install\Mail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\Install\MailService;
-use Config;
 
 class UpdateAction extends Controller
 {
     /**
      * @var MailService
      */
-    private $editor;
+    private $mailService;
 
     public function __construct(MailService $mailService)
     {
@@ -23,7 +22,7 @@ class UpdateAction extends Controller
     {
         $this->mailService->updateInfo($request->all());
         try {
-            $this->sendTestMail();
+            $this->sendTestMail($request->all());
         } catch (\Exception $e) {
             return redirect()
                 ->back()
@@ -37,17 +36,17 @@ class UpdateAction extends Controller
             ->route('install.mail.test');
     }
 
-    private function sendTestMail()
+    private function sendTestMail(array $config)
     {
         $password = (string)mt_rand(100000, 999999);
         session(['install_password' => $password]);
 
-        Config::set('host', 'MAIL_HOST');
-        Config::set('port', 'MAIL_PORT');
-        Config::set('username', 'MAIL_USERNAME');
-        Config::set('password', 'MAIL_PASSWORD');
-        Config::set('from.address', 'MAIL_FROM_ADDRESS');
-        Config::set('from.name', 'MAIL_FROM_NAME');
+        config(['host' => $config['MAIL_HOST']]);
+        config(['port' => $config['MAIL_PORT']]);
+        config(['username' => $config['MAIL_USERNAME']]);
+        config(['password' => $config['MAIL_PASSWORD']]);
+        config(['from.address' => $config['MAIL_FROM_ADDRESS']]);
+        config(['from.name' => $config['MAIL_FROM_NAME']]);
 
         $this->mailService->sendTestMail($password);
     }
