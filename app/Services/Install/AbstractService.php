@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Install;
 
 use Jackiedo\DotenvEditor\DotenvEditor;
+use Artisan;
 
 abstract class AbstractService
 {
@@ -47,5 +48,7 @@ abstract class AbstractService
         }
 
         $this->editor->save();
+
+        Artisan::call('config:cache');
     }
 }
