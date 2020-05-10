@@ -22,7 +22,7 @@
             @endif
             @hasSection ('back')
                 <div class="error-button">
-                    <button class="btn is-primary" onclick="window.history.back();">前のページに戻る</button>
+                    <a class="btn is-primary" href="{{ url()->previous() }}">前のページに戻る</a>
                 </div>
             @endif
             @if (!empty(config('portal.admin_twitter')))
