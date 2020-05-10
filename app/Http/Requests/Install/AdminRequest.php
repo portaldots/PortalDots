@@ -25,10 +25,10 @@ class AdminRequest extends FormRequest
     public function rules()
     {
         return [
-            'student_id' => User::STUDENT_ID_RULES,
+            'student_id' => array_merge(User::STUDENT_ID_RULES, ['unique:users']),
             'name' => User::NAME_RULES,
             'name_yomi' => User::NAME_YOMI_RULES,
-            'email' => User::EMAIL_RULES,
+            'email' => array_merge(User::EMAIL_RULES, ['unique:users']),
             'tel' => User::TEL_RULES,
             'password' => array_merge(User::PASSWORD_RULES, ['confirmed']),
         ];

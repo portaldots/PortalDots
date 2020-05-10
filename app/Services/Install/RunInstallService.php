@@ -40,5 +40,6 @@ class RunInstallService
     public function rollback()
     {
         $this->editor->setKey('APP_NOT_INSTALLED', 'true');
+        $this->editor->save();
     }
 }
