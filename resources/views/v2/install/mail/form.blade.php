@@ -48,7 +48,7 @@
                 </button>
                 <p class="pt-spacing-md">
                     「テストメールを送信」をクリックすると、PortalDots から {{ config('portal.contact_email') }} へテストメールが送信されます。<br>
-                    <strong>PortalDots のインストールを完了するには、テストメールに記載されているパスワードが必要になります。</strong>
+                    正常にメールを受け取ることができるかどうか、ご確認ください。
                 </p>
             </div>
         </app-container>

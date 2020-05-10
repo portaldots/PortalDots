@@ -13,22 +13,13 @@ class TestMailMailable extends Mailable
     use Queueable;
     use SerializesModels;
 
-    /**
-     * PortalDots のインストールを完了させるためのパスワード
-     *
-     * @var string
-     */
-    public $password;
+    private $from_address;
+    private $from_name;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct(
-        string $password
-    ) {
-        $this->password = $password;
+    public function __construct(string $from_address, string $from_name)
+    {
+        $this->from_address = $from_address;
+        $this->from_name = $from_name;
     }
 
     /**
@@ -38,6 +29,8 @@ class TestMailMailable extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.install.test_mail');
+        return $this
+            ->from($this->from_address, $this->from_name)
+            ->markdown('emails.install.test_mail');
     }
 }

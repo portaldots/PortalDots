@@ -7,6 +7,8 @@ namespace App\Services\Install;
 use Jackiedo\DotenvEditor\DotenvEditor;
 use Mail;
 use App\Mail\Install\TestMailMailable;
+use Swift_SmtpTransport;
+use Swift_Mailer;
 
 class MailService extends AbstractService
 {
@@ -22,13 +24,15 @@ class MailService extends AbstractService
         ];
     }
 
-    public function sendTestMail(string $password)
-    {
+    public function sendTestMail(
+        Swift_SmtpTransport $transport,
+        string $from_address,
+        string $from_name
+    ) {
+        Mail::setSwiftMailer(new Swift_Mailer($transport));
         Mail::to(config('portal.contact_email'))
             ->send(
-                (new TestMailMailable(
-                    $password
-                ))
+                (new TestMailMailable($from_address, $from_name))
                     ->subject('PortalDots テストメール')
             );
     }
