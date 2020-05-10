@@ -36,11 +36,11 @@
  * @filesource
  */
 
- require_once(__DIR__. '/../vendor/autoload.php');
+require_once(__DIR__. '/../vendor/autoload.php');
 
- use Symfony\Component\HttpFoundation\IpUtils;
+use Symfony\Component\HttpFoundation\IpUtils;
 
- // 一部 Laravel にルーティング
+// 一部 Laravel にルーティング
 (function () {
     // 以下の配列にあげたパスの他、
     // Laravel 側でメンテナンスモードが有効になっている場合も、
