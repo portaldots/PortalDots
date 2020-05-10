@@ -1869,11 +1869,11 @@ abstract class CI_DB_driver {
 		// with an alias. While we're at it, we will escape the components
 		if (strpos($item, '.') !== FALSE)
 		{
-            $has_backquotes = FALSE;
-            if(strpos($item, '`') !== FALSE){
-                $has_backquotes = TRUE;
-                $item = str_replace('`', '', $item);
-            }
+			$has_backquotes = FALSE;
+			if(strpos($item, '`') !== FALSE){
+				$has_backquotes = TRUE;
+				$item = str_replace('`', '', $item);
+			}
 			$parts = explode('.', $item);
 
 			// Does the first segment of the exploded item match
@@ -1940,12 +1940,12 @@ abstract class CI_DB_driver {
 				{
 					if($has_backquotes)
 					{
-                        $parts[$i] = '`'.$this->dbprefix.$parts[$i].'`';
-                    }
-                    else
-                    {
-                        $parts[$i] = $this->dbprefix.$parts[$i];
-                    }
+						$parts[$i] = '`'.$this->dbprefix.$parts[$i].'`';
+					}
+					else
+					{
+						$parts[$i] = $this->dbprefix.$parts[$i];
+					}
 				}
 
 				// Put the parts back together
