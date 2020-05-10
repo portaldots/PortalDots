@@ -1403,9 +1403,9 @@ class Home_staff extends MY_Controller
                     ];
                 $vars["_sidebar_menu"]["system"] =
                     [
-                        "icon" => "key",
-                        "name" => "認可設定(Admin)",
-                        "url" => "home_staff/auth_config",
+                        "icon" => "gear",
+                        "name" => "ポータル情報設定(Admin)",
+                        "url" => "admin/portal",
                     ];
             } else {
                 // 現在ログインしているユーザーが認可されていないページへのリンクをサイドバーから削除する

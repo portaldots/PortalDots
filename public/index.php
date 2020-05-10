@@ -65,6 +65,7 @@ use Symfony\Component\HttpFoundation\IpUtils;
         '/circles',
         // Staff
         '/staff',
+        '/admin',
         // Debugbar
         '/_debugbar',
         // インストーラー
