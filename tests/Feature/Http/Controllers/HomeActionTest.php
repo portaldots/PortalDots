@@ -39,7 +39,7 @@ class HomeActionTest extends TestCase
         $response = $this->actingAs($user)->get(route('home'));
 
         $response->assertSee('メール認証');
-        $response->assertSee('確認メールを再送');
+        $response->assertSee('もっと詳しく');
         $response->assertSee($user->email);
         $response->assertSee($user->univemail);
     }
