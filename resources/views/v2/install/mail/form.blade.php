@@ -17,16 +17,7 @@
                 @foreach ($mail as $key => $value)
                     <list-view-form-group label-for="name">
                         <template v-slot:label>
-                            {{
-                                [
-                                    'MAIL_HOST' => 'メールサーバーのホスト',
-                                    'MAIL_PORT' => 'メールサーバーのポート',
-                                    'MAIL_USERNAME' => 'メールユーザー名',
-                                    'MAIL_PASSWORD' => 'メールパスワード',
-                                    'MAIL_FROM_ADDRESS' => 'PortalDots から配信されるメールの差出人メールアドレス',
-                                    'MAIL_FROM_NAME' => 'PortalDots から配信されるメールの差出人の名前',
-                                ][$key]
-                            }}
+                            {{ $labels[$key] }}
                         </template>
                         <input id="{{ $key }}" type="text" class="form-control @error($key) is-invalid @enderror" name="{{ $key }}"
                             value="{{ old($key, $key === 'MAIL_FROM_NAME' && empty($value) ? config('app.name') : $value ) }}" required>

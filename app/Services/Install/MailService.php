@@ -12,7 +12,7 @@ use Swift_Mailer;
 
 class MailService extends AbstractService
 {
-    public function getEnvKeys(): array
+    protected function getEnvKeys(): array
     {
         return [
             'MAIL_HOST',
@@ -21,6 +21,30 @@ class MailService extends AbstractService
             'MAIL_PASSWORD',
             'MAIL_FROM_ADDRESS',
             'MAIL_FROM_NAME',
+        ];
+    }
+
+    public function getValidationRules(): array
+    {
+        return [
+            'MAIL_HOST' => ['required'],
+            'MAIL_PORT' => ['required'],
+            'MAIL_USERNAME' => ['required'],
+            'MAIL_PASSWORD' => ['required'],
+            'MAIL_FROM_ADDRESS' => ['required'],
+            'MAIL_FROM_NAME' => ['required'],
+        ];
+    }
+
+    public function getFormLabels(): array
+    {
+        return [
+            'MAIL_HOST' => 'メールサーバーのホスト',
+            'MAIL_PORT' => 'メールサーバーのポート',
+            'MAIL_USERNAME' => 'メールユーザー名',
+            'MAIL_PASSWORD' => 'メールパスワード',
+            'MAIL_FROM_ADDRESS' => 'PortalDots から配信されるメールの差出人メールアドレス',
+            'MAIL_FROM_NAME' => 'PortalDots から配信されるメールの差出人の名前',
         ];
     }
 

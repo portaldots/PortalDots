@@ -20,13 +20,7 @@
                 @foreach ($database as $key => $value)
                     <list-view-form-group label-for="name">
                         <template v-slot:label>
-                            {{ [
-                                        'DB_HOST' => 'データベースのホスト名',
-                                        'DB_PORT' => 'ポート番号',
-                                        'DB_DATABASE' => 'データベース名',
-                                        'DB_USERNAME' => 'データベースユーザー名',
-                                        'DB_PASSWORD' => 'データベースパスワード'
-                                    ][$key] }}
+                            {{ $labels[$key] }}
                         </template>
                         <template v-slot:description>
                             {{ [

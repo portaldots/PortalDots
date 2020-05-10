@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Install;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\Install\MailService;
+use App;
 
 class MailRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class MailRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,10 +23,14 @@ class MailRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(MailService $mailService)
     {
-        return [
-            //
-        ];
+        return $mailService->getValidationRules();
+    }
+
+    public function attributes()
+    {
+        $mailService = App::make(MailService::class);
+        return $mailService->getFormLabels();
     }
 }

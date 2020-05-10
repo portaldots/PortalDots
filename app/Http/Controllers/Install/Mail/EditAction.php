@@ -21,6 +21,7 @@ class EditAction extends Controller
     public function __invoke(Request $request)
     {
         return view('v2.install.mail.form')
+            ->with('labels', $this->databaseService->getFormLabels())
             ->with('mail', $this->mailService->getInfo());
     }
 }

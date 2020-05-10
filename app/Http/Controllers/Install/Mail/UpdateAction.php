@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Install\Mail;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Install\MailRequest;
 use App\Services\Install\MailService;
 use Swift_TransportException;
 use Swift_SmtpTransport;
@@ -20,7 +20,7 @@ class UpdateAction extends Controller
         $this->mailService = $mailService;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(MailRequest $request)
     {
         try {
             $this->sendTestMail($request->all());

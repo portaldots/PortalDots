@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Install;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\Install\DatabaseService;
+use App;
 
 class DatabaseRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class DatabaseRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,10 +23,14 @@ class DatabaseRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(DatabaseService $databaseService)
     {
-        return [
-            //
-        ];
+        return $databaseService->getValidationRules();
+    }
+
+    public function attributes()
+    {
+        $databaseService = App::make(DatabaseService::class);
+        return $databaseService->getFormLabels();
     }
 }

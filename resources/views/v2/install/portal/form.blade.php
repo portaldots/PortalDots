@@ -17,13 +17,7 @@
                 @foreach ($portal as $key => $value)
                     <list-view-form-group label-for="name">
                         <template v-slot:label>
-                            {{ [
-                                        'APP_NAME' => 'ポータルの名前',
-                                        'APP_URL' => 'ポータルのURL',
-                                        'PORTAL_ADMIN_NAME' => '実行委員会の名称',
-                                        'PORTAL_CONTACT_EMAIL' => '実行委員会のメールアドレス',
-                                        'PORTAL_UNIVEMAIL_DOMAIN' => '学校発行メールアドレスのドメイン'
-                                    ][$key] }}
+                            {{ $labels[$key] }}
                         </template>
                         <template v-slot:description>
                             {{ [

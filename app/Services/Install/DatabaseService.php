@@ -10,7 +10,7 @@ use Jackiedo\DotenvEditor\DotenvEditor;
 
 class DatabaseService extends AbstractService
 {
-    public function getEnvKeys(): array
+    protected function getEnvKeys(): array
     {
         return [
             'DB_HOST',
@@ -18,6 +18,28 @@ class DatabaseService extends AbstractService
             'DB_DATABASE',
             'DB_USERNAME',
             'DB_PASSWORD',
+        ];
+    }
+
+    public function getValidationRules(): array
+    {
+        return [
+            'DB_HOST' => ['required'],
+            'DB_PORT' => ['required'],
+            'DB_DATABASE' => ['required'],
+            'DB_USERNAME' => ['required'],
+            'DB_PASSWORD' => ['required'],
+        ];
+    }
+
+    public function getFormLabels(): array
+    {
+        return [
+            'DB_HOST' => 'データベースのホスト名',
+            'DB_PORT' => 'ポート番号',
+            'DB_DATABASE' => 'データベース名',
+            'DB_USERNAME' => 'データベースユーザー名',
+            'DB_PASSWORD' => 'データベースパスワード'
         ];
     }
 

@@ -8,7 +8,11 @@ use Jackiedo\DotenvEditor\DotenvEditor;
 
 abstract class AbstractService
 {
-    abstract public function getEnvKeys(): array;
+    abstract protected function getEnvKeys(): array;
+
+    abstract public function getValidationRules(): array;
+
+    abstract public function getFormLabels(): array;
 
     /**
      * @var DotenvEditor

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Portal;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Install\PortalRequest;
 use App\Services\Install\PortalService;
 
 class UpdateAction extends Controller
@@ -18,7 +18,7 @@ class UpdateAction extends Controller
         $this->portalService = $portalService;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(PortalRequest $request)
     {
         $this->portalService->updateInfo($request->all());
         return redirect()

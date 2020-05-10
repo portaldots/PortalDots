@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Install;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\Install\PortalService;
+use App;
 
 class PortalRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class PortalRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,10 +23,14 @@ class PortalRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(PortalService $portalService)
     {
-        return [
-            //
-        ];
+        return $portalService->getValidationRules();
+    }
+
+    public function attributes()
+    {
+        $portalService = App::make(PortalService::class);
+        return $portalService->getFormLabels();
     }
 }
