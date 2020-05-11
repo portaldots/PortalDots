@@ -38,7 +38,7 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch(`editor/${FETCH}`)
-    if (this.$store.state.editor.questions.length === 0) {
+    if (this.$store.state.editor.questions.length === 0 && !this.custom_form) {
       this.$store.commit(`editor/${TOGGLE_OPEN_STATE}`, {
         item_id: ITEM_HEADER
       })
@@ -54,6 +54,9 @@ export default {
     is_saving() {
       return this.$store.state.status.save_status === SAVE_STATUS_SAVING
       // is_saving の状態は、以下で watch されている
+    },
+    custom_form() {
+      return this.$store.state.editor.form.custom_form
     }
   },
   watch: {
