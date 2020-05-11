@@ -24,6 +24,7 @@ class CustomFormRequest extends FormRequest
     public function rules()
     {
         return [
+            'users_number_to_submit_circle' => ['required', 'integer', 'min:1'],
             'open_at' => ['required', 'date'],
             'close_at' => ['required', 'date'],
             'is_public' => ['boolean'],
@@ -38,6 +39,7 @@ class CustomFormRequest extends FormRequest
     public function attributes()
     {
         return [
+            'users_number_to_submit_circle' => '企画参加登録を提出するために必要な企画担当者の最低人数',
             'open_at' => '受付開始日時',
             'close_at' => '受付終了日時',
             'is_public' => '参加登録画面の公開設定',
