@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App;
 use Artisan;
 use Jackiedo\DotenvEditor\DotenvEditor;
 
@@ -31,12 +30,6 @@ class DenyIfInstalled
      */
     public function handle($request, Closure $next)
     {
-        // テストの妨げになるため、ユニットテスト実行中は
-        // このミドルウェアを適用しない
-        if (App::runningUnitTests()) {
-            return $next($request);
-        }
-
         if (!$this->editor->keyExists('APP_NOT_INSTALLED') || $this->editor->getValue('APP_NOT_INSTALLED') !== 'true') {
             abort(404);
         }
