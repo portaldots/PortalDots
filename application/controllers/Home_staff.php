@@ -1337,11 +1337,6 @@ class Home_staff extends MY_Controller
                     "name" => "ユーザー情報管理",
                     "url" => "home_staff/users",
                 ],
-                "users_checker" => [
-                    "icon" => "address-book-o",
-                    "name" => "ユーザー登録チェッカー",
-                    "url" => "staff/users/check",
-                ],
                 "circles" => [
                     "icon" => "users",
                     "name" => "企画情報管理",
