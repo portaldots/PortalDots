@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Staff\Forms\Editor;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use App\Eloquents\Question;
 
 class AddQuestionRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class AddQuestionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +26,19 @@ class AddQuestionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'type' => ['required', Rule::in(Question::QUESTION_TYPES)],
+        ];
+    }
+
+    /**
+     * バリデーションエラーのカスタム属性の取得
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'type' => '設問タイプ',
         ];
     }
 }

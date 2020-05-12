@@ -13,7 +13,7 @@ class UpdateQuestionsOrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,21 @@ class UpdateQuestionsOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'questions.*.id' => ['required', 'integer'],
+            'questions.*.priority' => ['required', 'integer'],
+        ];
+    }
+
+    /**
+     * バリデーションエラーのカスタム属性の取得
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'questions.*.id' => '設問ID',
+            'questions.*.priority' => '設問表示順優先度',
         ];
     }
 }

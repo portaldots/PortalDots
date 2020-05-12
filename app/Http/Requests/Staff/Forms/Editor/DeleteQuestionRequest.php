@@ -13,7 +13,7 @@ class DeleteQuestionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,19 @@ class DeleteQuestionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'question' => ['required', 'integer'],
+        ];
+    }
+
+    /**
+     * バリデーションエラーのカスタム属性の取得
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'question' => '設問ID',
         ];
     }
 }

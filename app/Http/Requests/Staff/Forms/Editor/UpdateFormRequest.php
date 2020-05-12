@@ -13,7 +13,7 @@ class UpdateFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,25 @@ class UpdateFormRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'form.name' => ['required', 'string'],
+            'form.description' => ['nullable', 'string'],
+            'form.is_public' => ['required', 'boolean'],
+            'form.max_answers' => ['required', 'integer'],
+        ];
+    }
+
+    /**
+     * バリデーションエラーのカスタム属性の取得
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'form.name' => 'タイトル',
+            'form.description' => '説明',
+            'form.is_public' => '公開',
+            'form.max_answers' => '回答可能数',
         ];
     }
 }

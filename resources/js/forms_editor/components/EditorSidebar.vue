@@ -4,17 +4,17 @@
       設問を追加
     </div>
     <div class="editor-sidebar__body">
-      <div class="editor-sidebar__tools">
+      <div class="editor-sidebar__types">
         <button
-          v-for="tool in tools"
-          :key="tool.type"
-          class="btn editor-sidebar__tool border-light"
-          @click="add_question(tool.type)"
+          v-for="type in types"
+          :key="type.value"
+          class="btn editor-sidebar__type border-light"
+          @click="add_question(type.value)"
         >
           <i
-            :class="`${tool.icon} fa-fw text-muted editor-sidebar__tool__icon`"
+            :class="`${type.icon} fa-fw text-muted editor-sidebar__type__icon`"
           ></i>
-          <span class="editor-sidebar__tool__label">{{ tool.label }}</span>
+          <span class="editor-sidebar__type__label">{{ type.label }}</span>
         </button>
       </div>
     </div>
@@ -35,45 +35,45 @@ export default {
     is_saving() {
       return this.$store.state.status.save_status === SAVE_STATUS_SAVING
     },
-    tools() {
+    types() {
       return [
         {
-          type: 'heading',
+          value: 'heading',
           icon: 'fas fa-heading',
           label: 'セクション見出し'
         },
         {
-          type: 'text',
+          value: 'text',
           icon: 'fas fa-grip-lines',
           label: '一行入力'
         },
         {
-          type: 'number',
+          value: 'number',
           icon: 'fas fa-dice',
           label: '整数入力'
         },
         {
-          type: 'textarea',
+          value: 'textarea',
           icon: 'fas fa-align-justify',
           label: '複数行入力'
         },
         {
-          type: 'radio',
+          value: 'radio',
           icon: 'far fa-dot-circle',
           label: '単一選択(ラジオボタン)'
         },
         {
-          type: 'select',
+          value: 'select',
           icon: 'far fa-list-alt',
           label: '単一選択(ドロップダウン)'
         },
         {
-          type: 'checkbox',
+          value: 'checkbox',
           icon: 'far fa-check-square',
           label: '複数選択(チェックボックス)'
         },
         {
-          type: 'upload',
+          value: 'upload',
           icon: 'far fa-file',
           label: 'ファイルアップロード'
         }
@@ -108,7 +108,7 @@ $editor-sidebar-padding: 1rem;
     overflow-y: scroll;
     padding: $editor-sidebar-padding;
   }
-  &__tool {
+  &__type {
     align-items: center;
     box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.07);
     display: flex;
