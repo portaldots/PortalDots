@@ -2,6 +2,16 @@
   <div class="editor-content editor-content-styling">
     <div class="editor-preview">
       <form-header />
+      <div v-if="permanent_questions">
+        <component
+          v-for="question in permanent_questions"
+          :is="question_component_name(question.type)"
+          :question_id="question.id"
+          :key="question.id"
+          :is_permanent="question.is_permanent || undefined"
+          class="question"
+        />
+      </div>
       <div
         class="editor-content__no-question text-muted"
         v-if="questions.length === 0"
@@ -13,16 +23,6 @@
         <p class="mb-0">
           このフォームには設問が1つもありません。[設問を追加]から設問を追加してください。
         </p>
-      </div>
-      <div v-if="permanent_questions">
-        <component
-          v-for="question in permanent_questions"
-          :is="question_component_name(question.type)"
-          :question_id="question.id"
-          :key="question.id"
-          :is_permanent="question.is_permanent || undefined"
-          class="question"
-        />
       </div>
       <draggable
         tag="div"
