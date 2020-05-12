@@ -11,9 +11,9 @@
           class="btn btn-primary btn-sm"
           @click="toggle_permanent_questions"
         >
-          <template v-if="is_permanent_questions_visible"
-            >固有の設問を非表示</template
-          >
+          <template v-if="is_permanent_questions_visible">
+            固有の設問を非表示
+          </template>
           <template v-else>固有の設問を表示</template>
         </button>
       </div>
