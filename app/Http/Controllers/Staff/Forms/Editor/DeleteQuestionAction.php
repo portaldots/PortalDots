@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Staff\Forms\Editor;
 
 use App\Eloquents\Form;
 use App\Services\Forms\QuestionsService;
-use Illuminate\Http\Request;
+use App\Http\Requests\Staff\Forms\Editor\DeleteQuestionRequest;
 use App\Http\Controllers\Controller;
 
 class DeleteQuestionAction extends Controller
@@ -16,7 +16,7 @@ class DeleteQuestionAction extends Controller
         $this->questionsService = $questionsService;
     }
 
-    public function __invoke(Form $form, Request $request)
+    public function __invoke(Form $form, DeleteQuestionRequest $request)
     {
         $question_id = (int)$request->question;
         $this->questionsService->deleteQuestion($question_id);
