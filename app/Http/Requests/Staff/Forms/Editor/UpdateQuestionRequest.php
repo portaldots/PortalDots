@@ -46,14 +46,14 @@ class UpdateQuestionRequest extends FormRequest
     public function attributes()
     {
         return [
-            'question.allowed_types' => '許可される拡張子',
-            'question.description' => '説明',
-            'question.is_required' => '回答必須',
+            'question.allowed_types' => '設問の許可される拡張子',
+            'question.description' => '設問の説明',
+            'question.is_required' => '設問の回答必須',
             'question.name' => '設問名',
-            'question.number_max' => '最大数',
-            'question.number_min' => '最低数',
-            'question.options' => '選択肢',
-            'question.priority' => '設問表示順優先度',
+            'question.number_max' => '設問の最大数',
+            'question.number_min' => '設問の最低数',
+            'question.options' => '設問の選択肢',
+            'question.priority' => '設問の設問表示順優先度',
             'question.type' => '設問タイプ',
         ];
     }

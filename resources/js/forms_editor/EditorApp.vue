@@ -9,7 +9,7 @@
     <editor-header />
     <editor-content />
     <editor-sidebar />
-    <editor-error v-show="is_error" />
+    <editor-error v-show="is_unexpected_error" />
   </div>
 </template>
 
@@ -48,8 +48,8 @@ export default {
     loaded() {
       return this.$store.state.editor.loaded
     },
-    is_error() {
-      return this.$store.state.status.is_error
+    is_unexpected_error() {
+      return this.$store.state.status.is_unexpected_error
     },
     is_saving() {
       return this.$store.state.status.save_status === SAVE_STATUS_SAVING
@@ -67,7 +67,7 @@ export default {
         window.removeEventListener('beforeunload', on_before_unload)
       }
     },
-    is_error(value) {
+    is_unexpected_error(value) {
       if (value) {
         window.removeEventListener('beforeunload', on_before_unload)
       }

@@ -39,10 +39,10 @@ class UpdateFormRequest extends FormRequest
     public function attributes()
     {
         return [
-            'form.name' => 'タイトル',
-            'form.description' => '説明',
-            'form.is_public' => '公開',
-            'form.max_answers' => '回答可能数',
+            'form.name' => 'フォームのタイトル',
+            'form.description' => 'フォームの説明',
+            'form.is_public' => 'フォームの公開状況',
+            'form.max_answers' => 'フォームの回答可能数',
         ];
     }
 }
