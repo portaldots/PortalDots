@@ -6,6 +6,7 @@ import {
   SET_SAVED,
   ENQUEUED,
   DEQUEUED,
+  SET_UNEXPECTED_ERROR,
   SET_VALIDATION_ERROR
 } from './status'
 
@@ -159,6 +160,15 @@ export default {
       } catch (e) {
         // バックアップをリストア
         commit(SET_QUESTIONS, questions_backup)
+        if (e.status === UNPROCESSABLE_ENTITY) {
+          commit(
+            `status/${SET_VALIDATION_ERROR}`,
+            e.data.errors[Object.keys(e.data.errors)[0]][0],
+            { root: true }
+          )
+        } else {
+          commit(`status/${SET_UNEXPECTED_ERROR}`, null, { root: true })
+        }
       } finally {
         dispatch(SET_LOCAL_SAVED)
       }
@@ -172,14 +182,37 @@ export default {
     },
     async [ADD_QUESTION]({ commit, state, dispatch }, type) {
       dispatch(START_SAVING)
-      const question = (await API.add_question(type)).data
-      commit(SET_QUESTIONS, [...state.questions, question])
-      commit(TOGGLE_OPEN_STATE, { item_id: question.id })
-      dispatch(SET_LOCAL_SAVED)
+      try {
+        const question = (await API.add_question(type)).data
+        commit(SET_QUESTIONS, [...state.questions, question])
+        commit(TOGGLE_OPEN_STATE, { item_id: question.id })
+      } catch (e) {
+        if (e.status === UNPROCESSABLE_ENTITY) {
+          commit(
+            `status/${SET_VALIDATION_ERROR}`,
+            e.data.errors[Object.keys(e.data.errors)[0]][0],
+            { root: true }
+          )
+        } else {
+          commit(`status/${SET_UNEXPECTED_ERROR}`, null, { root: true })
+        }
+      } finally {
+        dispatch(SET_LOCAL_SAVED)
+      }
     },
     async [DELETE_QUESTION]({ commit, dispatch }, question_id) {
       dispatch(START_SAVING)
-      await API.delete_question(question_id)
+      await API.delete_question(question_id).catch(e => {
+        if (e.status === UNPROCESSABLE_ENTITY) {
+          commit(
+            `status/${SET_VALIDATION_ERROR}`,
+            e.data.errors[Object.keys(e.data.errors)[0]][0],
+            { root: true }
+          )
+        } else {
+          commit(`status/${SET_UNEXPECTED_ERROR}`, null, { root: true })
+        }
+      })
       commit(DELETE_QUESTION, question_id)
       dispatch(SET_LOCAL_SAVED)
     },
@@ -193,6 +226,8 @@ export default {
               e.data.errors[Object.keys(e.data.errors)[0]][0],
               { root: true }
             )
+          } else {
+            commit(`status/${SET_UNEXPECTED_ERROR}`, null, { root: true })
           }
         }
       )
@@ -207,6 +242,8 @@ export default {
             e.data.errors[Object.keys(e.data.errors)[0]][0],
             { root: true }
           )
+        } else {
+          commit(`status/${SET_UNEXPECTED_ERROR}`, null, { root: true })
         }
       })
       dispatch(SET_LOCAL_SAVED)
