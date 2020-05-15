@@ -14,7 +14,7 @@ class AddIsVerifiedByStaffColumnToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('is_verified_by_staff')->default(false)->after('univemail_verified_at');
+            $table->boolean('is_verified_by_staff')->default(false)->after('univemail_verified_at');
         });
     }
 
