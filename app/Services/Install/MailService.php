@@ -39,8 +39,8 @@ class MailService extends AbstractService
     public function getFormLabels(): array
     {
         return [
-            'MAIL_HOST' => 'メールサーバーのホスト',
-            'MAIL_PORT' => 'メールサーバーのポート',
+            'MAIL_HOST' => 'メールサーバー(SMTP)のホスト',
+            'MAIL_PORT' => 'メールサーバー(SMTP)のポート',
             'MAIL_USERNAME' => 'メールユーザー名',
             'MAIL_PASSWORD' => 'メールパスワード',
             'MAIL_FROM_ADDRESS' => 'PortalDots から配信されるメールの差出人メールアドレス',
