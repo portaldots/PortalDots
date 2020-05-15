@@ -34,11 +34,11 @@
                     戻る
                 </a>
                 <button type="submit" class="btn is-primary is-wide">
-                    <strong>テストメールを送信</strong>
+                    保存して次へ
                     <i class="fas fa-chevron-right"></i>
                 </button>
                 <p class="pt-spacing-md">
-                    「テストメールを送信」をクリックすると、PortalDots から {{ config('portal.contact_email') }} へテストメールが送信されます。<br>
+                    「保存して次へ」をクリックすると、PortalDots から {{ config('portal.contact_email') }} へテストメールが送信されます。<br>
                     正常にメールを受け取ることができるかどうか、ご確認ください。
                 </p>
             </div>

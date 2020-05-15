@@ -13,7 +13,7 @@
         <app-container medium>
             <list-view>
                 <template v-slot:title>ポータルの情報</template>
-                <template v-slot:description>ポータルや実行委員会について教えてください</template>
+                <template v-slot:description>ポータルや実行委員会について教えてください。</template>
                 @foreach ($portal as $key => $value)
                     <list-view-form-group label-for="name">
                         <template v-slot:label>
