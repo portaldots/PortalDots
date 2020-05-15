@@ -25,7 +25,7 @@ class EditAction extends Controller
         $url = url('/');
 
         return view('v2.install.portal.form')
-            ->with('labels', $this->databaseService->getFormLabels())
+            ->with('labels', $this->portalService->getFormLabels())
             ->with('portal', $this->portalService->getInfo())
             ->with('suggested_app_url', $url);
     }
