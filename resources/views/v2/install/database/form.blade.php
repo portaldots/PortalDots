@@ -12,7 +12,7 @@
 
         <app-container medium>
             <list-view>
-                <template v-slot:title>データベース設定</template>
+                <template v-slot:title>MySQLデータベース設定</template>
                 <template v-slot:description>
                     PortalDots のデータを保存するためのデータベースの設定をします。<br>
                     利用しているサーバーサービスのマニュアルを参考に入力してください。
