@@ -55,7 +55,7 @@ class UpdateInfoAction extends Controller
                 ->withInput();
         }
 
-        if ($user->univemail === $user->email) {
+        if ($user->univemail === $user->email && !$user->is_verified_by_staff) {
             $this->verifyService->markEmailAsVerified($user, $user->email);
         }
 
