@@ -1,9 +1,9 @@
 @extends('v2.layouts.no_drawer')
 
 @section('title', 'スタッフによるメール認証')
-
+    
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url("home_staff/users") }}" data-turbolinks="false">
+    <app-nav-bar-back inverse href="{{ url('home_staff/users') }}" data-turbolinks="false">
         ユーザー情報管理
     </app-nav-bar-back>
 @endsection
@@ -30,9 +30,6 @@
                 <list-view-card>
                     <p>本人確認は済んでいますか？</p>
                     <ul>
-                        @if ($user->email === $user->univemail)
-                            <li><strong>連絡先メールアドレスを学校発行メールアドレス以外に変更するよう、ユーザーに伝えてください</strong></li>
-                        @endif
                         <li>このユーザーは「{{ config('app.name') }}」の連絡先メールアドレスとして学校発行のメールアドレスを使用できなくなります</li>
                         <li>ユーザーが「{{ config('app.name') }}」に登録している学籍番号を変更した場合、本人確認未完了状態に戻ります</li>
                     </ul>
