@@ -24,11 +24,14 @@ class AdminRequest extends FormRequest
      */
     public function rules()
     {
+        // このバリデーションが実行されるタイミングでは、まだマイグレーション
+        // が行われていない。そのため、ここでは unique ルールなど、
+        // データベースへの接続が必要なルールを追加しないこと。
         return [
-            'student_id' => array_merge(User::STUDENT_ID_RULES, ['unique:users']),
+            'student_id' => User::STUDENT_ID_RULES,
             'name' => User::NAME_RULES,
             'name_yomi' => User::NAME_YOMI_RULES,
-            'email' => array_merge(User::EMAIL_RULES, ['unique:users']),
+            'email' => User::EMAIL_RULES,
             'tel' => User::TEL_RULES,
             'password' => array_merge(User::PASSWORD_RULES, ['confirmed']),
         ];
