@@ -3,7 +3,10 @@
     <div class="editor-header__title">
       フォームエディター
     </div>
-    <div class="editor-header__status" v-if="!is_error">
+    <div
+      class="editor-header__status"
+      v-if="!is_unexpected_error && !validation_error"
+    >
       <span class="text-muted editor-header__status__saving" v-if="is_saving">
         <i class="fas fa-sync fa-spin fa-fw"></i>
         保存中...
@@ -14,6 +17,11 @@
       <span class="text-success editor-header__status__saved" v-if="is_saved">
         <i class="fas fa-check fa-fw"></i>
         保存しました
+      </span>
+    </div>
+    <div class="editor-header__status" v-else-if="validation_error">
+      <span class="text-danger editor-header__status__error">
+        <strong>{{ validation_error }}</strong>
       </span>
     </div>
     <div class="editor-header__status" v-else>
@@ -66,8 +74,11 @@ export default {
     is_saved() {
       return this.save_status === SAVE_STATUS_SAVED
     },
-    is_error() {
-      return this.$store.state.status.is_error
+    is_unexpected_error() {
+      return this.$store.state.status.is_unexpected_error
+    },
+    validation_error() {
+      return this.$store.state.status.validation_error
     },
     preview_url() {
       const form_id = this.$store.state.editor.form.id

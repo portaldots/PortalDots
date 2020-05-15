@@ -114,8 +114,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$form-item-padding: 1.5rem;
-
 .form-item {
   background: #fff;
   border: 1px solid transparent;
@@ -152,7 +150,7 @@ $form-item-padding: 1.5rem;
   }
   &__content {
     cursor: pointer;
-    padding: $form-item-padding;
+    padding: $spacing;
     &__inner {
       pointer-events: none;
       user-select: none;
@@ -167,7 +165,7 @@ $form-item-padding: 1.5rem;
     box-shadow: inset 0 0.3rem 0.25rem -0.2rem rgba(0, 0, 0, 0.07);
     display: none;
     overflow: hidden;
-    padding: $form-item-padding;
+    padding: $spacing;
     &--open {
       display: block;
     }
