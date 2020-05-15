@@ -32,6 +32,7 @@ class UpdateInfoAction extends Controller
             if ($user->student_id !== $request->student_id) {
                 $user->student_id = $request->student_id;
                 $user->univemail_verified_at = null;
+                $user->is_verified_by_staff = false;
                 $changed_univemail = true;
             }
         }
@@ -54,7 +55,7 @@ class UpdateInfoAction extends Controller
                 ->withInput();
         }
 
-        if ($user->univemail === $user->email) {
+        if ($user->univemail === $user->email && !$user->is_verified_by_staff) {
             $this->verifyService->markEmailAsVerified($user, $user->email);
         }
 

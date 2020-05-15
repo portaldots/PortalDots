@@ -68,6 +68,7 @@ class User extends Authenticatable
     protected $casts = [
         'is_staff' => 'bool',
         'is_admin' => 'bool',
+        'is_verified_by_staff' => 'bool',
     ];
 
     public function circles()
@@ -84,18 +85,6 @@ class User extends Authenticatable
     public function scopeVerified($query)
     {
         return $query->whereNotNull('email_verified_at')->whereNotNull('univemail_verified_at');
-    }
-
-    /**
-     * $student_id から始まる学籍番号のユーザーだけに限定するクエリスコープ
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $student_id
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeByStudentIdStartWith($query, $student_id)
-    {
-        return $query->where('student_id', 'LIKE', "{$student_id}%");
     }
 
     /**

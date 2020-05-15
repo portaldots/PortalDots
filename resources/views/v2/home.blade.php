@@ -7,6 +7,7 @@
             <top-alert type="primary" keep-visible>
                 <template v-slot:title>
                     <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+                    {{ Auth::user()->is_verified_by_staff ? '連絡先メールアドレスを変更するか、' : '' }}
                     メール認証を行ってください
                 </template>
 

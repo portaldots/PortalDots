@@ -3,6 +3,31 @@
     <div class="editor-preview">
       <form-header />
       <div
+        class="editor-content__permanent-questions-info"
+        v-if="has_permanent_questions"
+      >
+        このフォームには「{{ form_name }}」固有の設問が含まれます。
+        <button
+          class="btn btn-primary btn-sm"
+          @click="toggle_permanent_questions"
+        >
+          <template v-if="is_permanent_questions_visible">
+            固有の設問を非表示
+          </template>
+          <template v-else>固有の設問を表示</template>
+        </button>
+      </div>
+      <div v-if="has_permanent_questions && is_permanent_questions_visible">
+        <component
+          v-for="question in permanent_questions"
+          :is="question_component_name(question.type)"
+          :question_id="question.id"
+          :key="question.id"
+          :is_permanent="question.is_permanent || undefined"
+          class="question question--permanent"
+        />
+      </div>
+      <div
         class="editor-content__no-question text-muted"
         v-if="questions.length === 0"
       >
@@ -13,16 +38,6 @@
         <p class="mb-0">
           このフォームには設問が1つもありません。[設問を追加]から設問を追加してください。
         </p>
-      </div>
-      <div v-if="permanent_questions">
-        <component
-          v-for="question in permanent_questions"
-          :is="question_component_name(question.type)"
-          :question_id="question.id"
-          :key="question.id"
-          :is_permanent="question.is_permanent || undefined"
-          class="question"
-        />
       </div>
       <draggable
         tag="div"
@@ -75,6 +90,11 @@ export default {
     QuestionSelect,
     QuestionCheckbox
   },
+  data() {
+    return {
+      is_permanent_questions_visible: false
+    }
+  },
   computed: {
     is_saving() {
       return this.$store.state.status.save_status === SAVE_STATUS_SAVING
@@ -84,6 +104,12 @@ export default {
     },
     permanent_questions() {
       return this.$store.state.editor.permanent_questions
+    },
+    has_permanent_questions() {
+      return this.$store.state.editor.permanent_questions.length > 0
+    },
+    form_name() {
+      return this.$store.state.editor.form.name
     },
     questions: {
       get() {
@@ -99,6 +125,9 @@ export default {
       return `Question${question_type
         .charAt(0)
         .toUpperCase()}${question_type.slice(1)}`
+    },
+    toggle_permanent_questions() {
+      this.is_permanent_questions_visible = !this.is_permanent_questions_visible
     },
     on_drag_start() {
       this.$store.dispatch(`editor/${DRAG_START}`)
@@ -116,6 +145,18 @@ export default {
   &__no-question {
     padding: 3rem;
     text-align: center;
+  }
+  &__permanent-questions-info {
+    background: $color-bg-light;
+    display: flex;
+    justify-content: space-between;
+    padding: $spacing-md $spacing;
+  }
+}
+
+.question {
+  &--permanent {
+    background: $color-bg-light;
   }
 }
 

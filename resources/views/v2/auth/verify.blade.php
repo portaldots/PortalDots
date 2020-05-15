@@ -1,7 +1,7 @@
 @extends('v2.layouts.no_drawer')
 
 @section('title', 'メール認証のお願い')
-    
+
 @section('content')
     <app-container medium>
         <list-view>
@@ -13,20 +13,22 @@
                     分以内</strong>に、確認メールに記載されている URL にアクセスしてください。
             </list-view-card>
             {{-- 大学提供メールアドレス --}}
-            <list-view-item>
-                <template v-slot:title>
-                    {{ Auth::user()->univemail }}
-                </template>
-                @if (Auth::user()->hasVerifiedUnivemail())
-                    <i class="fas fa-check text-success"></i>
-                    認証完了
-                @else
-                    <i class="fas fa-exclamation-circle text-danger"></i>
-                    メールを確認してください
-                @endif
-            </list-view-item>
+            @unless (Auth::user()->is_verified_by_staff)
+                <list-view-item>
+                    <template v-slot:title>
+                        {{ Auth::user()->univemail }}
+                    </template>
+                    @if (Auth::user()->hasVerifiedUnivemail())
+                        <i class="fas fa-check text-success"></i>
+                        認証完了
+                    @else
+                        <i class="fas fa-exclamation-circle text-danger"></i>
+                        メールを確認してください
+                    @endif
+                </list-view-item>
+            @endunless
             {{-- 連絡先メールアドレス --}}
-            @if (Auth::user()->email !== Auth::user()->univemail)
+            @if (Auth::user()->email !== Auth::user()->univemail || Auth::user()->is_verified_by_staff)
                 <list-view-item>
                     <template v-slot:title>
                         {{ Auth::user()->email }}
@@ -41,7 +43,7 @@
                 </list-view-item>
             @endif
         </list-view>
-    
+
         <list-view>
             <template v-slot:title>確認メールの再送</template>
             <list-view-card>
@@ -54,7 +56,7 @@
                 </form>
             </list-view-card>
         </list-view>
-    
+
         <list-view>
             <template v-slot:title>誤った情報でユーザー登録してしまった場合</template>
             <list-view-action-btn href="{{ route('user.edit') }}" newtab>
