@@ -1,17 +1,17 @@
 @extends('v2.layouts.app')
 
 @section('title', 'ユーザー設定')
-
+    
 @section('content')
     @include('v2.includes.user_settings_tab_strip')
     <form method="POST" action="{{ route('user.update') }}">
         @method('patch')
         @csrf
-
+    
         <app-container>
             <list-view>
                 <template v-slot:title>一般設定</template>
-
+    
                 <list-view-form-group label-for="student_id">
                     <template v-slot:label>学籍番号</template>
                     <template v-slot:description>
@@ -50,10 +50,10 @@
                     <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
-                <list-view-form-group label-for="email" {{ $user->is_verified_by_staff ? 'danger' : '' }}>
+                <list-view-form-group label-for="email">
                     <template v-slot:label>連絡先メールアドレス</template>
                     <template v-slot:description>
-                        {{  $user->is_verified_by_staff ? '連絡先メールアドレスとして学校発行のメールアドレスは使用できません' : '連絡先メールアドレスとして学校発行のメールアドレスもご利用になれます'}}
+                        連絡先メールアドレスとして学校発行のメールアドレスもご利用になれます
                     </template>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
                         value="{{ old('email', $user->email) }}" required autocomplete="email">
@@ -70,7 +70,7 @@
                     @enderror
                 </list-view-form-group>
             </list-view>
-
+    
             <list-view>
                 <template v-slot:description>変更を保存するには、現在のパスワードを入力してください</template>
                 <list-view-form-group label-for="password">
@@ -82,7 +82,7 @@
                     @enderror
                 </list-view-form-group>
             </list-view>
-
+    
             <div class="text-center pt-spacing-md pb-spacing">
                 <button type="submit" class="btn is-primary is-wide">
                     保存

@@ -4,49 +4,35 @@
     
     @auth
         @unless (Auth::user()->areBothEmailsVerified())
-            @if (Auth::user()->is_verified_by_staff && Auth::user()->email === Auth::user()->univemail)
-                <top-alert type="primary" keep-visible>
-                    <template v-slot:title>
-                        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
-                        連絡先メールアドレスを変更してください
-                    </template>
-                    現在登録されている連絡先メールアドレスは{{ config('app.name') }}からの連絡を受け取れない可能性があります。
-                    <template v-slot:cta>
-                        <a href="{{ route('user.edit') }}" class="btn is-primary-inverse is-no-border is-wide">
-                            <strong>登録情報を変更する</strong>
-                        </a>
-                    </template>
-                </top-alert>
-            @else
-                <top-alert type="primary" keep-visible>
-                    <template v-slot:title>
-                        <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
-                        メール認証を行ってください
-                    </template>
-                
-                    {{ config('app.name') }}の全機能を利用するには、次のメールアドレス宛に送信された確認メール内のURLにアクセスしてください。
-                    <strong>
-                        @unless (Auth::user()->hasVerifiedUnivemail())
-                            {{ Auth::user()->univemail }}
-                            @unless (Auth::user()->hasVerifiedEmail())
-                                •
-                            @endunless
-                        @endunless
+            <top-alert type="primary" keep-visible>
+                <template v-slot:title>
+                    <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+                    {{ Auth::user()->is_verified_by_staff ? '連絡先メールアドレスを変更するか、' : '' }}
+                    メール認証を行ってください
+                </template>
+            
+                {{ config('app.name') }}の全機能を利用するには、次のメールアドレス宛に送信された確認メール内のURLにアクセスしてください。
+                <strong>
+                    @unless (Auth::user()->hasVerifiedUnivemail())
+                        {{ Auth::user()->univemail }}
                         @unless (Auth::user()->hasVerifiedEmail())
-                            {{ Auth::user()->email }}
+                            •
                         @endunless
-                    </strong>
-                
-                    <template v-slot:cta>
-                        <form action="{{ route('verification.resend') }}" method="post">
-                            @csrf
-                            <button class="btn is-primary-inverse is-no-border is-wide">
-                                <strong>確認メールを再送</strong>
-                            </button>
-                        </form>
-                    </template>
-                </top-alert>
-            @endif
+                    @endunless
+                    @unless (Auth::user()->hasVerifiedEmail())
+                        {{ Auth::user()->email }}
+                    @endunless
+                </strong>
+            
+                <template v-slot:cta>
+                    <form action="{{ route('verification.resend') }}" method="post">
+                        @csrf
+                        <button class="btn is-primary-inverse is-no-border is-wide">
+                            <strong>確認メールを再送</strong>
+                        </button>
+                    </form>
+                </template>
+            </top-alert>
         @endunless
     @endauth
     

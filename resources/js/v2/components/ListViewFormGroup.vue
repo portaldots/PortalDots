@@ -11,11 +11,7 @@
     >
       <slot name="label" />
     </component>
-    <div
-      class="listview-form-group__description"
-      :class="{ 'is-danger': danger }"
-      v-if="$slots.description"
-    >
+    <div class="listview-form-group__description" v-if="$slots.description">
       <slot name="description" />
     </div>
     <div class="listview-form-group__body">
@@ -42,10 +38,6 @@ export default {
     labelFor: {
       type: String,
       default: null
-    },
-    danger: {
-      type: Boolean,
-      default: false
     }
   }
 }
@@ -81,10 +73,5 @@ export default {
   &__invalid-message {
     font-weight: bold;
   }
-}
-
-.is-danger {
-  color: $color-danger;
-  font-weight: bold;
 }
 </style>

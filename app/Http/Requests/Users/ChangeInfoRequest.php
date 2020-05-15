@@ -90,12 +90,5 @@ class ChangeInfoRequest extends FormRequest
                 }
             });
         }
-        if ($user->is_verified_by_staff && $this->student_id === $user->student_id) {
-            $validator->after(function ($validator) use ($user) {
-                if (strcasecmp($this->email, $user->univemail) === 0) {
-                    $validator->errors()->add('email', '学校発行のメールアドレスは連絡先メールアドレスとしてご利用になれません');
-                }
-            });
-        }
     }
 }
