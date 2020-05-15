@@ -463,6 +463,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->set_subject('ユーザー');
         $this->grocery_crud->display_as('id', 'ユーザーID');
 
+        $this->grocery_crud->display_as('identify', '本人確認');
         $this->grocery_crud->display_as('verify', 'メール認証');
 
         $columns = [
@@ -472,6 +473,7 @@ class Home_staff extends MY_Controller
             'name_family_yomi',
             'name_given',
             'name_given_yomi',
+            'identify',
             'verify',
             'email',
             'tel',
@@ -520,6 +522,7 @@ class Home_staff extends MY_Controller
             $this->grocery_crud->callback_column('name_given', array($this, '_crud_name_given_yomi'));
         }
 
+        $this->grocery_crud->callback_column('identify', array($this, '_crud_user_identify'));
         $this->grocery_crud->callback_column('verify', array($this, '_crud_email_verified'));
 
         $vars += (array)$this->grocery_crud->render();
@@ -548,10 +551,18 @@ class Home_staff extends MY_Controller
      */
     public function _crud_email_verified($value, $row)
     {
-        if (empty($row->email_verified_at) || empty($row->univemail_verified_at)) {
+        if (empty($row->email_verified_at)) {
             return '<span class="text-danger">未認証</span>';
         }
         return '<span class="text-success">認証済み</span>';
+    }
+
+    public function _crud_user_identify($value, $row)
+    {
+        if ($row->univemail_verified_at) {
+            return '<span class="text-success">確認済み</span>';
+        }
+        return '<span class="text-danger">未確認</span> - <a href="/staff/users/'. $row->id. '/verify">本人確認を完了する</a>';
     }
 
     /**
