@@ -170,6 +170,9 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                     });
 
                 Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction');
+
+                // フォームの複製
+                Route::get('/copy', 'Staff\Forms\Copy\StoreAction')->name('copy');
             });
 
         // メール一斉送信
