@@ -13,20 +13,22 @@
                     分以内</strong>に、確認メールに記載されている URL にアクセスしてください。
             </list-view-card>
             {{-- 大学提供メールアドレス --}}
-            <list-view-item>
-                <template v-slot:title>
-                    {{ Auth::user()->univemail }}
-                </template>
-                @if (Auth::user()->hasVerifiedUnivemail())
-                    <i class="fas fa-check text-success"></i>
-                    認証完了
-                @else
-                    <i class="fas fa-exclamation-circle text-danger"></i>
-                    メールを確認してください
-                @endif
-            </list-view-item>
+            @unless (Auth::user()->is_verified_by_staff)
+                <list-view-item>
+                    <template v-slot:title>
+                        {{ Auth::user()->univemail }}
+                    </template>
+                    @if (Auth::user()->hasVerifiedUnivemail())
+                        <i class="fas fa-check text-success"></i>
+                        認証完了
+                    @else
+                        <i class="fas fa-exclamation-circle text-danger"></i>
+                        メールを確認してください
+                    @endif
+                </list-view-item>
+            @endunless
             {{-- 連絡先メールアドレス --}}
-            @if (Auth::user()->email !== Auth::user()->univemail)
+            @if (Auth::user()->email !== Auth::user()->univemail || Auth::user()->is_verified_by_staff)
                 <list-view-item>
                     <template v-slot:title>
                         {{ Auth::user()->email }}

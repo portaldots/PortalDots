@@ -1,6 +1,14 @@
 import API from './api'
+import { UNPROCESSABLE_ENTITY } from './api/repository'
 
-import { SET_SAVING, SET_SAVED, ENQUEUED, DEQUEUED } from './status'
+import {
+  SET_SAVING,
+  SET_SAVED,
+  ENQUEUED,
+  DEQUEUED,
+  SET_UNEXPECTED_ERROR,
+  SET_VALIDATION_ERROR
+} from './status'
 
 export const GET_QUESTION_BY_ID = 'GET_QUESTION_BY_ID'
 export const CLOSE = 'CLOSE'
@@ -149,10 +157,20 @@ export default {
             priority: question.priority
           }))
         )
-        dispatch(SET_LOCAL_SAVED)
       } catch (e) {
         // バックアップをリストア
         commit(SET_QUESTIONS, questions_backup)
+        if (e.status === UNPROCESSABLE_ENTITY) {
+          commit(
+            `status/${SET_VALIDATION_ERROR}`,
+            e.data.errors[Object.keys(e.data.errors)[0]][0],
+            { root: true }
+          )
+        } else {
+          commit(`status/${SET_UNEXPECTED_ERROR}`, null, { root: true })
+        }
+      } finally {
+        dispatch(SET_LOCAL_SAVED)
       }
     },
     [DRAG_START]({ commit }) {
@@ -164,25 +182,70 @@ export default {
     },
     async [ADD_QUESTION]({ commit, state, dispatch }, type) {
       dispatch(START_SAVING)
-      const question = (await API.add_question(type)).data
-      commit(SET_QUESTIONS, [...state.questions, question])
-      commit(TOGGLE_OPEN_STATE, { item_id: question.id })
-      dispatch(SET_LOCAL_SAVED)
+      try {
+        const question = (await API.add_question(type)).data
+        commit(SET_QUESTIONS, [...state.questions, question])
+        commit(TOGGLE_OPEN_STATE, { item_id: question.id })
+      } catch (e) {
+        if (e.status === UNPROCESSABLE_ENTITY) {
+          commit(
+            `status/${SET_VALIDATION_ERROR}`,
+            e.data.errors[Object.keys(e.data.errors)[0]][0],
+            { root: true }
+          )
+        } else {
+          commit(`status/${SET_UNEXPECTED_ERROR}`, null, { root: true })
+        }
+      } finally {
+        dispatch(SET_LOCAL_SAVED)
+      }
     },
     async [DELETE_QUESTION]({ commit, dispatch }, question_id) {
       dispatch(START_SAVING)
-      await API.delete_question(question_id)
+      await API.delete_question(question_id).catch(e => {
+        if (e.status === UNPROCESSABLE_ENTITY) {
+          commit(
+            `status/${SET_VALIDATION_ERROR}`,
+            e.data.errors[Object.keys(e.data.errors)[0]][0],
+            { root: true }
+          )
+        } else {
+          commit(`status/${SET_UNEXPECTED_ERROR}`, null, { root: true })
+        }
+      })
       commit(DELETE_QUESTION, question_id)
       dispatch(SET_LOCAL_SAVED)
     },
-    async [SAVE_QUESTION]({ getters, dispatch }, question_id) {
+    async [SAVE_QUESTION]({ getters, commit, dispatch }, question_id) {
       dispatch(START_SAVING)
-      await API.update_question(getters[GET_QUESTION_BY_ID](question_id))
+      await API.update_question(getters[GET_QUESTION_BY_ID](question_id)).catch(
+        e => {
+          if (e.status === UNPROCESSABLE_ENTITY) {
+            commit(
+              `status/${SET_VALIDATION_ERROR}`,
+              e.data.errors[Object.keys(e.data.errors)[0]][0],
+              { root: true }
+            )
+          } else {
+            commit(`status/${SET_UNEXPECTED_ERROR}`, null, { root: true })
+          }
+        }
+      )
       dispatch(SET_LOCAL_SAVED)
     },
-    async [SAVE_FORM]({ state, dispatch }) {
+    async [SAVE_FORM]({ state, commit, dispatch }) {
       dispatch(START_SAVING)
-      await API.update_form(state.form)
+      await API.update_form(state.form).catch(e => {
+        if (e.status === UNPROCESSABLE_ENTITY) {
+          commit(
+            `status/${SET_VALIDATION_ERROR}`,
+            e.data.errors[Object.keys(e.data.errors)[0]][0],
+            { root: true }
+          )
+        } else {
+          commit(`status/${SET_UNEXPECTED_ERROR}`, null, { root: true })
+        }
+      })
       dispatch(SET_LOCAL_SAVED)
     }
   }

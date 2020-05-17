@@ -1,5 +1,7 @@
 import Axios from 'axios'
 
+export const UNPROCESSABLE_ENTITY = 422
+
 const baseURL = document.querySelector('#forms-editor-config')
   ? JSON.parse(
       document.querySelector('#forms-editor-config').dataset.apiBaseUrl
@@ -41,9 +43,10 @@ axios.interceptors.response.use(
   },
   // リクエスト失敗時
   error => {
-    // vm.$store.commit(`status/${DEQUEUED}`)
-    // vm.$store.commit(`status/${SET_ERROR}`)
-    throw error
+    if (error.response.status === UNPROCESSABLE_ENTITY) {
+      isProcessing = false
+    }
+    return Promise.reject(error.response)
   }
 )
 
