@@ -86,4 +86,26 @@ textarea {
     display: block;
     margin: $spacing-xs 0;
   }
+  &-append {
+    display: flex;
+    &__body {
+      background: $color-bg-grey;
+      color: $color-muted;
+      white-space: nowrap;
+      width: auto;
+    }
+    .form-control {
+      border-radius: 0;
+      border-right: none;
+      &:first-child {
+        border-bottom-left-radius: 0.25rem;
+        border-top-left-radius: 0.25rem;
+      }
+      &:last-child {
+        border-bottom-right-radius: 0.25rem;
+        border-right: 1px solid $color-border;
+        border-top-right-radius: 0.25rem;
+      }
+    }
+  }
 }

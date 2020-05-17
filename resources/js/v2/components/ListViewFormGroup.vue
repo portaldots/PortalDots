@@ -14,8 +14,17 @@
     <div class="listview-form-group__description" v-if="$slots.description">
       <slot name="description" />
     </div>
-    <div class="listview-form-group__body">
+    <div
+      class="listview-form-group__body"
+      :class="{ 'form-append': $slots.append_before || $slots.append_after }"
+    >
+      <div class="form-control form-append__body" v-if="$slots.append_before">
+        <slot name="append_before" />
+      </div>
       <slot />
+      <div class="form-control form-append__body" v-if="$slots.append_after">
+        <slot name="append_after" />
+      </div>
     </div>
     <div
       class="listview-form-group__invalid-message"
