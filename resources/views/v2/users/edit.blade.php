@@ -25,7 +25,7 @@
                     @error('student_id')
                     <template v-slot:invalid>{{ $message }}</template>
                     @enderror
-                    <template v-slot:append_after>
+                    <template v-slot:append>
                         {{ '@' . config('portal.univemail_domain') }}
                     </template>
                 </list-view-form-group>

@@ -16,14 +16,14 @@
     </div>
     <div
       class="listview-form-group__body"
-      :class="{ 'form-append': $slots.append_before || $slots.append_after }"
+      :class="{ 'form-append': $slots.prepend || $slots.append }"
     >
-      <div class="form-control form-append__body" v-if="$slots.append_before">
-        <slot name="append_before" />
+      <div class="form-control form-append__body" v-if="$slots.prepend">
+        <slot name="prepend" />
       </div>
       <slot />
-      <div class="form-control form-append__body" v-if="$slots.append_after">
-        <slot name="append_after" />
+      <div class="form-control form-append__body" v-if="$slots.append">
+        <slot name="append" />
       </div>
     </div>
     <div
