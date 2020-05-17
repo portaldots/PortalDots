@@ -15,5 +15,5 @@
     <hr>
     <p>設定ファイル(.env)内のデータベース設定が正しいかご確認ください。</p>
     <hr>
-    <p>Powered by PortalDots</p>
+    <p><?= htmlspecialchars(APP_NAME, ENT_QUOTES, 'UTF-8') ?> • Powered by PortalDots</p>
 </div>

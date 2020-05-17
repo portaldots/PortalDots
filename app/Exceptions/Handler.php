@@ -71,17 +71,18 @@ class Handler extends ExceptionHandler
             // にも書かれている。このファイルを修正する際は、
             //  application/views/errors/html/error_db.php
             // に書かれている同様のHTMLコードも修正すること。
-            return response('
+            $app_name = config('app.name');
+            return response("
                 <!doctype html>
-                <meta charset="utf-8">
+                <meta charset=\"utf-8\">
                 <title>データベース接続エラー</title>
-                <div style="text-align: center">
+                <div style=\"text-align: center\">
                     <h1>データベースと接続できません</h1>
                     <hr>
                     <p>設定ファイル(.env)内のデータベース設定が正しいかご確認ください。</p>
                     <hr>
-                    <p>Powered by PortalDots</p>
-                </div>');
+                    <p>{$app_name} • Powered by PortalDots</p>
+                </div>");
         }
 
         $response = parent::render($request, $exception);
