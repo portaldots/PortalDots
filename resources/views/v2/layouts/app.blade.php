@@ -103,12 +103,12 @@
                 </top-alert>
             @endif
             @yield('content')
+            @include('v2.includes.footer')
         </div>
         @section('bottom_tabs')
             @include('v2.includes.bottom_tabs')
         @show
     </div>
-
 </body>
 
 </html>

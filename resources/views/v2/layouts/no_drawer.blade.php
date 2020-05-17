@@ -38,7 +38,7 @@
                     }
                 };
             }
-    
+
         </script>
         @endprepend
     @endif
@@ -67,7 +67,7 @@
                     <template v-slot:title>
                         {{ session('topAlert.title') }}
                     </template>
-    
+
                     @if (Session::has('topAlert.body'))
                         {{ session('topAlert.body') }}
                     @endif
@@ -81,6 +81,7 @@
                 </top-alert>
             @endif
             @yield('content')
+            @include('v2.includes.footer')
         </div>
     </div>
 

@@ -1,5 +1,8 @@
 .content {
+  display: flex;
+  flex-direction: column;
   margin-left: $drawer-width;
+  min-height: 100vh;
   padding: $navbar-height 0 $spacing-lg;
   &.is-no-drawer {
     margin-left: 0;

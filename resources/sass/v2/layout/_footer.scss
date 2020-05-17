@@ -1,0 +1,18 @@
+.footer {
+    // margin: $spacing-md 0;
+    text-align: center;
+    &__credit {
+        color: $color-muted-2;
+        margin: $spacing-md 0;
+    }
+    &__link {
+        color: $color-muted-2;
+        font-weight: 600;
+        transition: linear 0.1s;
+        &:hover,
+        &:focus {
+            color: darken($color-muted-2, 10%);
+            text-decoration: none;
+        }
+    }
+}
