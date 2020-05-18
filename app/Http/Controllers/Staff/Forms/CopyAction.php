@@ -32,6 +32,6 @@ class CopyAction extends Controller
 
         $form_copy->questions()->createMany($questions_copy->toArray());
 
-        return redirect("/home_staff/applications/read/{$form_copy->id}");
+        return redirect("/home_staff/applications/read/{$form_copy->id}?copied=1");
     }
 }

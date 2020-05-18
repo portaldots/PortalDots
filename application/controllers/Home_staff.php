@@ -292,7 +292,7 @@ class Home_staff extends MY_Controller
         $vars = [];
         $vars["page_title"] = "回答一覧";
         $vars["main_page_type"] = "applications";
-
+        $vars["copied"] = $_GET['copied'] ?? '0';
         $this->forms->include_private = true;
 
         // フォーム情報を取得する

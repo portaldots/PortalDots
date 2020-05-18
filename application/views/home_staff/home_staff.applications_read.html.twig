@@ -91,7 +91,11 @@
         カスタムフォーム回答
       {% endif %}
     </h1>
-
+    {% if copied == '1' %}
+        <div class="alert alert-success" role="alert">
+            <i class="fa fa-check" aria-hidden="true"></i> コピーに成功しました
+        </div>
+    {% endif %}
     <header class="panel panel-default">
         <div class="panel-body">
             <div class="row">
