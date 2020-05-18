@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Forms\Copy;
+namespace App\Http\Controllers\Staff\Forms;
 
 use App\Eloquents\Form;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class IndexAction extends Controller
+class CopyConfirmAction extends Controller
 {
     public function __invoke(Form $form)
     {

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Forms\Copy;
+namespace App\Http\Controllers\Staff\Forms;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Eloquents\Form;
 use Illuminate\Support\Facades\Auth;
 
-class StoreAction extends Controller
+class CopyAction extends Controller
 {
     public function __invoke(Form $form)
     {
