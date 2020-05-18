@@ -3301,6 +3301,7 @@ class Grocery_CRUD extends grocery_CRUD_States
     protected $unset_edit_fields	= null;
     protected $unset_read_fields	= null;
     protected $set_editor			= false;
+    protected $set_copy_url			= false;
 
     /* Callbacks */
     protected $callback_before_insert 	= null;
