@@ -47,7 +47,9 @@ class StoreAction extends Controller
             $user->save();
 
             return redirect('/')
-                ->with('topAlert.title', 'インストール完了しました！');
+                ->with('topAlert.keepVisible', true)
+                ->with('topAlert.title', 'インストールが完了しました！')
+                ->with('topAlert.body', 'まず、作成した管理者ユーザーの学籍番号とパスワードでログインしましょう');
         } catch (\Exception $e) {
             $this->runInstallService->rollback();
 
