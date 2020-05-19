@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Install\Admin;
 
+use Illuminate\Auth\Events\Registered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Install\AdminRequest;
 use App\Services\Auth\RegisterService;
+use App\Services\Auth\EmailService;
 use App\Services\Install\RunInstallService;
 use App\Eloquents\User;
+use Auth;
 
 class StoreAction extends Controller
 {
@@ -16,15 +19,22 @@ class StoreAction extends Controller
     private $registerService;
 
     /**
+     * @var EmailService
+     */
+    private $emailService;
+
+    /**
      * @var RunInstallService
      */
     private $runInstallService;
 
     public function __construct(
         RegisterService $registerService,
+        EmailService $emailService,
         RunInstallService $runInstallService
     ) {
         $this->registerService = $registerService;
+        $this->emailService = $emailService;
         $this->runInstallService = $runInstallService;
     }
 
@@ -46,10 +56,21 @@ class StoreAction extends Controller
             $user->is_admin = true;
             $user->save();
 
-            return redirect('/')
+            event(new Registered($user));
+
+            // メール認証に関する処理
+            if ($user->univemail === $user->email) {
+                $this->verifyService->markEmailAsVerified($user, $user->email);
+            }
+            $this->emailService->sendAll($user);
+
+            Auth::login($user);
+
+            return redirect()
+                ->route('verification.notice')
                 ->with('topAlert.keepVisible', true)
                 ->with('topAlert.title', 'インストールが完了しました！')
-                ->with('topAlert.body', 'まず、作成した管理者ユーザーの学籍番号とパスワードでログインしましょう');
+                ->with('topAlert.body', '最後に、管理者ユーザーのメール認証を行ってください');
         } catch (\Exception $e) {
             $this->runInstallService->rollback();
 
