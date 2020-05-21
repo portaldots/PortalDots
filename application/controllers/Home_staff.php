@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\CarbonImmutable;
+
 /**
  * ホーム(スタッフ用)コントローラ
  */
@@ -259,6 +261,9 @@ class Home_staff extends MY_Controller
             ['booth' => 'booth:ブース申請', 'circle' => 'circle:サークル申請']
         );
 
+        // 受付開始日時と終了日時のバリデーション
+        $this->grocery_crud->set_rules('close_at', '受付終了日時', 'callback__crud_form_check_dates['. $this->input->post('open_at', true). ']');
+
         $this->grocery_crud->unset_delete();
         $this->grocery_crud->set_editor();
 
@@ -279,6 +284,22 @@ class Home_staff extends MY_Controller
         } else {
             return $value = "(不正な値:{$row->type})";
         }
+    }
+
+    /**
+     * フォームの受付終了日時が受付開始日時より後かどうかを判断するための Grocery CRUD コールバック関数
+     */
+    public function _crud_form_check_dates($close_at, $open_at)
+    {
+        $carbon_close_at = new CarbonImmutable($close_at);
+        $carbon_open_at = new CarbonImmutable($open_at);
+
+        if ($carbon_close_at->lt($carbon_open_at)) {
+            $this->form_validation->set_message('_crud_form_check_dates', '受付終了日時は受付開始日時より後にしてください');
+            return false;
+        }
+
+        return true;
     }
 
     /**
