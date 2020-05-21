@@ -25,7 +25,7 @@ class CustomFormRequest extends FormRequest
     {
         return [
             'open_at' => ['required', 'date'],
-            'close_at' => ['required', 'date', 'after_or_equal:open_at'],
+            'close_at' => ['required', 'date', 'after:open_at'],
             'is_public' => ['boolean'],
         ];
     }

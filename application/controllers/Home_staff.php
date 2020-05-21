@@ -294,8 +294,8 @@ class Home_staff extends MY_Controller
         $carbon_close_at = new CarbonImmutable($close_at);
         $carbon_open_at = new CarbonImmutable($open_at);
 
-        if ($carbon_close_at->lt($carbon_open_at)) {
-            $this->form_validation->set_message('_crud_form_check_dates', '受付終了日時には、受付開始日時以降の日付を指定してください。');
+        if ($carbon_close_at->lte($carbon_open_at)) {
+            $this->form_validation->set_message('_crud_form_check_dates', '受付終了日時には、受付開始日時より後の日付を指定してください。');
             return false;
         }
 
