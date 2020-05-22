@@ -84,3 +84,47 @@ export default {
   }
 }
 </style>
+
+<style lang="scss">
+.form-addon {
+  display: flex;
+  flex-wrap: wrap;
+  &__body {
+    align-items: center;
+    background-color: $color-bg-grey;
+    border: 1px solid $color-border;
+    border-radius: $border-radius;
+    color: $color-muted;
+    display: flex;
+    font-size: $font-size-input;
+    justify-content: center;
+    line-height: 1.6;
+    max-width: 100%;
+    overflow: auto;
+    padding: $spacing-sm $spacing-md;
+    text-align: center;
+    word-break: keep-all;
+    &:first-child {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+      margin-right: -1px;
+    }
+    &:last-child {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+      margin-left: -1px;
+    }
+  }
+  .form-control {
+    flex: 1 1 0%;
+    &:not(:first-child) {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+    }
+    &:not(:last-child) {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+}
+</style>
