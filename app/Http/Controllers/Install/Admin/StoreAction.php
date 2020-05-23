@@ -49,35 +49,6 @@ class StoreAction extends Controller
     {
         try {
             $this->runInstallService->run();
-
-            $user = $this->registerService->create(
-                $request->student_id,
-                $request->name,
-                $request->name_yomi,
-                $request->email,
-                $request->tel,
-                $request->password
-            );
-
-            $user->is_staff = true;
-            $user->is_admin = true;
-            $user->save();
-
-            event(new Registered($user));
-
-            // メール認証に関する処理
-            if ($user->univemail === $user->email) {
-                $this->verifyService->markEmailAsVerified($user, $user->email);
-            }
-            $this->emailService->sendAll($user);
-
-            Auth::login($user);
-
-            return redirect()
-                ->route('verification.notice')
-                ->with('topAlert.keepVisible', true)
-                ->with('topAlert.title', 'インストールが完了しました！')
-                ->with('topAlert.body', '最後に、管理者ユーザーのメール認証を行ってください');
         } catch (\Exception $e) {
             $this->runInstallService->rollback();
 
@@ -87,5 +58,34 @@ class StoreAction extends Controller
                 ->with('topAlert.type', 'danger')
                 ->with('topAlert.title', '不明なエラーが発生しました');
         }
+
+        $user = $this->registerService->create(
+            $request->student_id,
+            $request->name,
+            $request->name_yomi,
+            $request->email,
+            $request->tel,
+            $request->password
+        );
+
+        $user->is_staff = true;
+        $user->is_admin = true;
+        $user->save();
+
+        event(new Registered($user));
+
+        // メール認証に関する処理
+        if ($user->univemail === $user->email) {
+            $this->verifyService->markEmailAsVerified($user, $user->email);
+        }
+        $this->emailService->sendAll($user);
+
+        Auth::login($user);
+
+        return redirect()
+            ->route('verification.notice')
+            ->with('topAlert.keepVisible', true)
+            ->with('topAlert.title', 'インストールが完了しました！')
+            ->with('topAlert.body', '最後に、管理者ユーザーのメール認証を行ってください');
     }
 }
