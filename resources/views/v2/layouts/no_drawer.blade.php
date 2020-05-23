@@ -10,7 +10,7 @@
         @hasSection ('title')
             @yield('title') —
         @endif
-        {{ config('app.name') }}
+        {{ empty(config('app.name')) ? 'PortalDots' : config('app.name') }}
     </title>
 
     @prepend('css')
