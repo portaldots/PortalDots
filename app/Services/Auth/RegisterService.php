@@ -18,6 +18,8 @@ class RegisterService
      * @param string $email ユーザーの連絡先メールアドレス
      * @param string $tel ユーザーの電話番号
      * @param string $plain_password ハッシュ化していないパスワード
+     * @param bool $is_staff スタッフとして登録するか
+     * @param bool $is_admin 管理者ユーザーとして登録するか
      * @return User
      */
     public function create(
@@ -26,7 +28,9 @@ class RegisterService
         string $name_yomi,
         string $email,
         string $tel,
-        string $plain_password
+        string $plain_password,
+        bool $is_staff = false,
+        bool $is_admin = false
     ) {
         return User::create([
             'student_id' => $student_id,
@@ -35,6 +39,8 @@ class RegisterService
             'email' => $email,
             'tel' => $tel,
             'password' => Hash::make($plain_password),
+            'is_staff' => $is_staff,
+            'is_admin' => $is_admin
         ]);
     }
 }

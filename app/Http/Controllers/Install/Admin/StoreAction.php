@@ -10,6 +10,7 @@ use App\Services\Auth\EmailService;
 use App\Services\Install\RunInstallService;
 use App\Eloquents\User;
 use Auth;
+use DB;
 
 class StoreAction extends Controller
 {
@@ -65,12 +66,10 @@ class StoreAction extends Controller
             $request->name_yomi,
             $request->email,
             $request->tel,
-            $request->password
+            $request->password,
+            true,
+            true
         );
-
-        $user->is_staff = true;
-        $user->is_admin = true;
-        $user->save();
 
         event(new Registered($user));
 
