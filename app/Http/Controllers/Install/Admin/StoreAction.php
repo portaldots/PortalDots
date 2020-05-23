@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Install\AdminRequest;
 use App\Services\Auth\RegisterService;
 use App\Services\Auth\EmailService;
+use App\Services\Auth\VerifyService;
 use App\Services\Install\RunInstallService;
 use App\Eloquents\User;
 use Auth;
