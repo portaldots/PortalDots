@@ -14,8 +14,17 @@
     <div class="listview-form-group__description" v-if="$slots.description">
       <slot name="description" />
     </div>
-    <div class="listview-form-group__body">
+    <div
+      class="listview-form-group__body"
+      :class="{ 'form-addon': $slots.prepend || $slots.append }"
+    >
+      <div class="form-addon__body" v-if="$slots.prepend">
+        <slot name="prepend" />
+      </div>
       <slot />
+      <div class="form-addon__body" v-if="$slots.append">
+        <slot name="append" />
+      </div>
     </div>
     <div
       class="listview-form-group__invalid-message"
@@ -72,6 +81,50 @@ export default {
   }
   &__invalid-message {
     font-weight: bold;
+  }
+}
+</style>
+
+<style lang="scss">
+.form-addon {
+  display: flex;
+  flex-wrap: wrap;
+  &__body {
+    align-items: center;
+    background-color: $color-bg-grey;
+    border: 1px solid $color-border;
+    border-radius: $border-radius;
+    color: $color-muted;
+    display: flex;
+    font-size: $font-size-input;
+    justify-content: center;
+    line-height: 1.6;
+    max-width: 100%;
+    overflow: auto;
+    padding: $spacing-sm $spacing-md;
+    text-align: center;
+    word-break: keep-all;
+    &:first-child {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+      margin-right: -1px;
+    }
+    &:last-child {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+      margin-left: -1px;
+    }
+  }
+  .form-control {
+    flex: 1 1 0%;
+    &:not(:first-child) {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+    }
+    &:not(:last-child) {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
   }
 }
 </style>
