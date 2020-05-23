@@ -28,14 +28,21 @@ class StoreAction extends Controller
      */
     private $runInstallService;
 
+    /**
+     * @var VerifyService
+     */
+    private $verifyService;
+
     public function __construct(
         RegisterService $registerService,
         EmailService $emailService,
-        RunInstallService $runInstallService
+        RunInstallService $runInstallService,
+        VerifyService $verifyService
     ) {
         $this->registerService = $registerService;
         $this->emailService = $emailService;
         $this->runInstallService = $runInstallService;
+        $this->verifyService = $verifyService;
     }
 
     public function __invoke(AdminRequest $request)
