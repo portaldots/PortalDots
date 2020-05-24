@@ -27,6 +27,14 @@ class IndexActionTest extends TestCase
      */
     public function 企画参加登録機能が無効の状態()
     {
+        $this->assertDatabaseMissing('forms', [
+            'name' => '企画参加登録',
+        ]);
+
+        $this->assertDatabaseMissing('custom_forms', [
+            'type' => 'circle',
+        ]);
+
         $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->get(route('staff.circles.custom_form.index'));
