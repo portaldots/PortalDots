@@ -1,10 +1,10 @@
 @extends('v2.layouts.no_drawer')
 
 @section('title', '企画参加登録')
-    
+
 @section('content')
     @include('v2.includes.circle_register_header')
-    
+
     <app-container medium>
         <list-view>
             <template v-slot:title>参加登録の提出</template>
@@ -29,9 +29,9 @@
                                     {{ $user->name }}
                                     ({{ $user->student_id }})
                                     @if ($user->pivot->is_leader)
-                                        <span class="badge is-primary">責任者</span>
+                                        <app-badge primary>責任者</app-badge>
                                     @else
-                                        <span class="badge is-muted">学園祭係(副責任者)</span>
+                                        <app-badge muted>学園祭係(副責任者)</app-badge>
                                     @endif
                                 </li>
                             @endforeach
@@ -40,7 +40,7 @@
                 </dl>
             </list-view-card>
         </list-view>
-    
+
         <form action="{{ route('circles.submit', ['circle' => $circle]) }}" method="post">
             @csrf
             <div class="text-center pt-spacing-sm pb-spacing">

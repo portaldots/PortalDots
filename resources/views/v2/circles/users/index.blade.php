@@ -50,9 +50,9 @@
                         {{ $user->name }}
                         ({{ $user->student_id }})
                         @if ($user->pivot->is_leader)
-                            <span class="badge is-primary">責任者</span>
+                            <app-badge primary>責任者</app-badge>
                         @else
-                            <span class="badge is-muted">学園祭係(副責任者)</span>
+                            <app-badge muted>学園祭係(副責任者)</app-badge>
                         @endif
                     </template>
                     @unless ($user->pivot->is_leader)

@@ -221,7 +221,7 @@
                         <template v-slot:title>
                             {{ $page->title }}
                             @if ($page->isNew())
-                                <span class="badge is-danger">NEW</span>
+                                <app-badge danger>NEW</app-badge>
                             @endif
                         </template>
                         <template v-slot:meta>
@@ -251,7 +251,7 @@
                             @endif
                             {{ $document->name }}
                             @if ($document->isNew())
-                                <span class="badge is-danger">NEW</span>
+                                <app-badge danger>NEW</app-badge>
                             @endif
                         </template>
                         <template v-slot:meta>
