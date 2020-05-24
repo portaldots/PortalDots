@@ -70,9 +70,9 @@
                 <div>{{ Auth::user()->name }}としてログイン中</div>
                 @if (Auth::user()->is_staff)
                     <div>
-                        <span class="badge is-primary">スタッフ</span>
+                        <app-badge primary>スタッフ</app-badge>
                         @if (Auth::user()->is_admin)
-                            <span class="badge is-danger">管理者</span>
+                            <app-badge danger>管理者</app-badge>
                         @endif
                     </div>
                 @endif

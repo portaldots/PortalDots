@@ -9,6 +9,7 @@ import AppNavBar from './components/AppNavBar.vue'
 import AppNavBarToggle from './components/AppNavBarToggle.vue'
 import AppNavBarBack from './components/AppNavBarBack.vue'
 import AppContainer from './components/AppContainer.vue'
+import AppBadge from './components/AppBadge.vue'
 import ListView from './components/ListView.vue'
 import ListViewCard from './components/ListViewCard.vue'
 import ListViewItem from './components/ListViewItem.vue'
@@ -53,6 +54,7 @@ export function mountV2App() {
         AppNavBarToggle,
         AppNavBarBack,
         AppContainer,
+        AppBadge,
         ListView,
         ListViewCard,
         ListViewItem,

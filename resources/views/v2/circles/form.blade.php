@@ -28,7 +28,7 @@
                 <list-view-form-group label-for="name">
                     <template v-slot:label>
                         企画の名前
-                        <span class="badge is-danger">必須</span>
+                        <app-badge danger>必須</app-badge>
                     </template>
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
                         value="{{ old('name', isset($circle) ? $circle->name : '') }}" required>
@@ -39,7 +39,7 @@
                 <list-view-form-group label-for="name_yomi">
                     <template v-slot:label>
                         企画の名前(よみ)
-                        <span class="badge is-danger">必須</span>
+                        <app-badge danger>必須</app-badge>
                     </template>
                     <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror"
                         name="name_yomi" value="{{ old('name_yomi', isset($circle) ? $circle->name_yomi : '') }}" required>
@@ -50,7 +50,7 @@
                 <list-view-form-group label-for="group_name">
                     <template v-slot:label>
                         企画団体の名前
-                        <span class="badge is-danger">必須</span>
+                        <app-badge danger>必須</app-badge>
                     </template>
                     <input id="group_name" type="text" class="form-control @error('group_name') is-invalid @enderror"
                         name="group_name" value="{{ old('group_name', isset($circle) ? $circle->group_name : '') }}"
@@ -62,7 +62,7 @@
                 <list-view-form-group label-for="group_name_yomi">
                     <template v-slot:label>
                         企画団体の名前(よみ)
-                        <span class="badge is-danger">必須</span>
+                        <app-badge danger>必須</app-badge>
                     </template>
                     <input id="group_name_yomi" type="text"
                         class="form-control @error('group_name_yomi') is-invalid @enderror" name="group_name_yomi"
@@ -83,7 +83,7 @@
                 </button>
                 @if (config('app.debug'))
                     <button type="submit" class="btn is-primary-inverse" formnovalidate>
-                        <strong class="badge is-primary">開発モード</strong>
+                        <app-badge primary strong>開発モード</app-badge>
                         バリデーションせずに送信
                     </button>
                 @endif
