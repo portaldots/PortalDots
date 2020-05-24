@@ -55,6 +55,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->display_as('leader', '責任者');
         $this->grocery_crud->display_as('members', '所属者');
         $this->grocery_crud->display_as('is_staff', 'スタッフ');
+        $this->grocery_crud->display_as('is_admin', '管理者');
         $this->grocery_crud->display_as('notes', 'ｽﾀｯﾌ用ﾒﾓ');
 
         // id順に表示する
@@ -203,7 +204,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->set_table('forms');
 
         // カスタムフォームは一覧に表示しない
-        $this->grocery_crud->where('NOT EXISTS (SELECT * FROM custom_forms WHERE form_id = forms.id)', null, false);
+        $this->grocery_crud->where("NOT EXISTS (SELECT * FROM {$this->db->dbprefix}custom_forms WHERE form_id = {$this->db->dbprefix}forms.id)", null, false);
 
         $this->grocery_crud->set_subject('フォーム');
         $this->grocery_crud->display_as('id', 'フォームID');
@@ -478,6 +479,7 @@ class Home_staff extends MY_Controller
             'email',
             'tel',
             'is_staff',
+            'is_admin',
             'created_at',
             'updated_at',
             'notes'
@@ -502,7 +504,8 @@ class Home_staff extends MY_Controller
             'notes'
         ];
         if ($this->_get_login_user()->is_admin) {
-            // 管理者のみ、Rolesの設定をできるようにする
+            // 管理者のみ、管理者権限・Rolesの設定をできるようにする
+            $fields[] = 'is_admin';
             $fields[] = 'roles';
         }
         $this->grocery_crud->fields($fields);
@@ -1403,6 +1406,12 @@ class Home_staff extends MY_Controller
                         "icon" => "key",
                         "name" => "認可設定(Admin)",
                         "url" => "home_staff/auth_config",
+                    ];
+                $vars["_sidebar_menu"]["system"] =
+                    [
+                        "icon" => "gear",
+                        "name" => "ポータル情報設定(Admin)",
+                        "url" => "admin/portal",
                     ];
             } else {
                 // 現在ログインしているユーザーが認可されていないページへのリンクをサイドバーから削除する

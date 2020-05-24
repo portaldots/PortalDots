@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class ResendAction extends Controller
 {
+    /**
+     * @var EmailService
+     */
     private $emailService;
 
     public function __construct(EmailService $emailService)

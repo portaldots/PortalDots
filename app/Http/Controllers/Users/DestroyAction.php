@@ -11,9 +11,15 @@ class DestroyAction extends Controller
 {
     public function __invoke()
     {
-        $user = User::find(Auth::id());
+        $user = Auth::user();
 
-        $circles = $user->circles()->all();
+        $circles = $user->circles;
+
+        if ($user->is_admin) {
+            return redirect()
+                ->route('user.delete')
+                ->with('topAlert.title', '管理者ユーザーの削除はできません。');
+        }
 
         if (!$circles->isEmpty()) {
             return redirect()
