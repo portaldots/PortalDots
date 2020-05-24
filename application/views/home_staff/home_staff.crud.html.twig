@@ -15,13 +15,13 @@
 
   <h1 class="main__title">{{ page_title }}</h1>
 
-  {% if main_page_type == 'pages' %}
+  {% if main_page_type == 'pages' and _crud_state == 'list' %}
     <p>
       <a href="{{ base_url('/staff/send_emails') }}" class="btn btn-primary">
-        メールの一斉送信
+        お知らせをメールで一斉送信
       </a>
     </p>
-  {% elseif main_page_type == 'circles' %}
+  {% elseif main_page_type == 'circles' and _crud_state == 'list' %}
     <p>参加登録の提出が完了している企画のみ表示されます</p>
     {% if custom_form is empty %}
       <div class="alert alert-info">

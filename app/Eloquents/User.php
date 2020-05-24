@@ -47,7 +47,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'student_id', 'name', 'email', 'tel', 'password',
+        'student_id', 'name', 'name_yomi', 'email', 'tel', 'password', 'is_staff', 'is_admin',
     ];
 
     /**
@@ -67,6 +67,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'is_staff' => 'bool',
+        'is_admin' => 'bool',
         'is_verified_by_staff' => 'bool',
     ];
 

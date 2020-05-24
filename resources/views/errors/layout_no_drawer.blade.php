@@ -18,7 +18,6 @@
             @hasSection ('contact')
                 <div class="error-contact">
                     @yield('contact')
-                    <p><a href="mailto:{{ config('portal.contact_email') }}">{{ config('portal.contact_email') }}</a></p>
                 </div>
             @endif
             @hasSection ('back')

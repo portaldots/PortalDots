@@ -67,3 +67,7 @@ code {
   line-height: 1;
   padding: $spacing-xxs $spacing-xs;
 }
+
+summary {
+  cursor: pointer;
+}

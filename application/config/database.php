@@ -80,7 +80,7 @@ $db['default'] = array(
     'password' => codeigniter_env('DB_PASSWORD'),
     'database' => codeigniter_env('DB_DATABASE'),
     'dbdriver' => codeigniter_env('', 'mysqli'),
-    'dbprefix' => codeigniter_env('DB_DBPREFIX', ''),
+    'dbprefix' => codeigniter_env('DB_PREFIX', ''),
     'pconnect' => codeigniter_env('DB_PCONNECT', false),
     'db_debug' => codeigniter_env('DB_DB_DEBUG', ENVIRONMENT !== 'production'),
     'cache_on' => codeigniter_env('DB_CACHE_ON', false),

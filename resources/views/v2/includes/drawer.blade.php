@@ -66,9 +66,17 @@
 <div class="drawer-adj">
     <div class="drawer-user">
         @auth
-            <p class="drawer-user__info">
-                {{ Auth::user()->name }}としてログイン中
-            </p>
+            <div class="drawer-user__info">
+                <div>{{ Auth::user()->name }}としてログイン中</div>
+                @if (Auth::user()->is_staff)
+                    <div>
+                        <app-badge primary>スタッフ</app-badge>
+                        @if (Auth::user()->is_admin)
+                            <app-badge danger>管理者</app-badge>
+                        @endif
+                    </div>
+                @endif
+            </div>
             <form action="{{ route('logout') }}" method="post">
                 @csrf
                 <button type="submit" class="btn is-secondary is-block">

@@ -1,7 +1,7 @@
 @extends('v2.layouts.no_drawer')
 
 @section('title', 'スタッフによるメール認証')
-    
+
 @section('navbar')
     <app-nav-bar-back inverse href="{{ url('home_staff/users') }}" data-turbolinks="false">
         ユーザー情報管理
