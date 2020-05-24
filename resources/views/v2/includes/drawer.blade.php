@@ -72,7 +72,7 @@
                     <div>
                         <app-badge primary>スタッフ</app-badge>
                         @if (Auth::user()->is_admin)
-                            <app-badge is-danger>管理者</app-badge>
+                            <app-badge danger>管理者</app-badge>
                         @endif
                     </div>
                 @endif
