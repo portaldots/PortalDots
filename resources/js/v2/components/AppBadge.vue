@@ -5,7 +5,8 @@
       'is-primary': primary,
       'is-danger': danger,
       'is-success': success,
-      'is-muted': muted
+      'is-muted': muted,
+      'is-strong': strong
     }"
   >
     <slot />
@@ -28,6 +29,10 @@ export default {
       default: false
     },
     muted: {
+      type: Boolean,
+      default: false
+    },
+    strong: {
       type: Boolean,
       default: false
     }
@@ -58,6 +63,9 @@ export default {
   &.is-muted {
     background: $color-muted;
     color: #fff;
+  }
+  &.is-strong {
+    font-weight: bolder;
   }
 }
 </style>
