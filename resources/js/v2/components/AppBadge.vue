@@ -6,7 +6,8 @@
       'is-danger': danger,
       'is-success': success,
       'is-muted': muted,
-      'is-strong': strong
+      'is-strong': strong,
+      'is-small': small
     }"
   >
     <slot />
@@ -33,6 +34,10 @@ export default {
       default: false
     },
     strong: {
+      type: Boolean,
+      default: false
+    },
+    small: {
       type: Boolean,
       default: false
     }
@@ -66,6 +71,9 @@ export default {
   }
   &.is-strong {
     font-weight: bolder;
+  }
+  &.is-small {
+    font-size: 80%;
   }
 }
 </style>
