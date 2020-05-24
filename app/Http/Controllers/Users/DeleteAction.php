@@ -14,6 +14,7 @@ class DeleteAction extends Controller
         $circles = $user->circles()->get();
 
         return view('v2.users.delete')
+            ->with('is_admin', $user->is_admin)
             ->with('belong', !$circles->isEmpty());
     }
 }

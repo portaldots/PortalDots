@@ -32,6 +32,6 @@ class StoreAction extends Controller
 
         return redirect()
             ->route('staff.send_emails')
-            ->with('toast', '一斉メール送信の予約が完了しました');
+            ->with('topAlert.title', '一斉メール送信の予約が完了しました');
     }
 }

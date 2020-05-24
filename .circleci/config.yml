@@ -24,6 +24,7 @@ jobs:
       # - image: redis:2.8.19
 
     environment:
+      - APP_NOT_INSTALLED: false
       - APP_NAME: 継続的インテグレーション祭
       - APP_DEBUG: true
       - APP_ENV: testing

@@ -49,6 +49,11 @@ class AuthServiceProvider extends ServiceProvider
             return $user->is_staff === true;
         });
 
+        // 管理者
+        Gate::define('admin', function (User $user) {
+            return $user->is_admin === true;
+        });
+
         Gate::define('circle.belongsTo', 'App\Policies\Circle\BelongsPolicy');
         Gate::define('circle.update', 'App\Policies\Circle\UpdatePolicy');
         Gate::define('circle.create', 'App\Policies\Circle\CreatePolicy');

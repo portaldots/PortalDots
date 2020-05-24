@@ -1,7 +1,7 @@
 @extends('v2.layouts.no_drawer')
 
 @section('title', 'メール認証のお願い')
-    
+
 @section('content')
     <app-container medium>
         <list-view>
@@ -43,7 +43,7 @@
                 </list-view-item>
             @endif
         </list-view>
-    
+
         <list-view>
             <template v-slot:title>確認メールの再送</template>
             <list-view-card>
@@ -56,7 +56,7 @@
                 </form>
             </list-view-card>
         </list-view>
-    
+
         <list-view>
             <template v-slot:title>誤った情報でユーザー登録してしまった場合</template>
             <list-view-action-btn href="{{ route('user.edit') }}" newtab>

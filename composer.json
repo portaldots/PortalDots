@@ -10,12 +10,13 @@
         "doctrine/dbal": "^2.10",
         "ezyang/htmlpurifier": "^4.9",
         "fideloper/proxy": "^4.0",
+        "jackiedo/dotenv-editor": "^1.1",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^2.0",
         "phpgangsta/googleauthenticator": "dev-master",
+        "simplesoftwareio/simple-qrcode": "~2",
         "twig/twig": "^2.0",
-        "vlucas/phpdotenv": "^3.3",
-        "simplesoftwareio/simple-qrcode": "~2"
+        "vlucas/phpdotenv": "^3.3"
     },
 	"require-dev": {
         "facade/ignition": "^1.4",
