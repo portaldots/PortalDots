@@ -27,8 +27,6 @@ class IndexActionTest extends TestCase
      */
     public function 企画参加登録機能が無効の状態()
     {
-        // dd(Form::all(), CustomForm::all(), CustomForm::getFormByType('circle'));
-
         $this->assertDatabaseMissing('forms', [
             'name' => '企画参加登録',
         ]);
