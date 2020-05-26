@@ -66,6 +66,28 @@ class DestroyActionTest extends TestCase
     /**
      * @test
      */
+    public function スタッフユーザーは削除できない()
+    {
+        $this->user->is_staff = true;
+        $this->user->save();
+
+        $this->assertDatabaseHas('users', [
+            'id' => $this->user->id,
+            'is_staff' => 1,
+        ]);
+
+        $response = $this->actingAs($this->user)
+            ->delete(route('user.destroy'));
+
+        $this->assertDatabaseHas('users', [
+            'id' => $this->user->id,
+            'is_staff' => 1,
+        ]);
+    }
+
+    /**
+     * @test
+     */
     public function 企画に所属しているユーザーは削除できない()
     {
         $circle = factory(Circle::class)->create();

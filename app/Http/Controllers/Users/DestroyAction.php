@@ -15,10 +15,10 @@ class DestroyAction extends Controller
 
         $circles = $user->circles;
 
-        if ($user->is_admin) {
+        if ($user->is_admin || $user->is_staff) {
             return redirect()
                 ->route('user.delete')
-                ->with('topAlert.title', '管理者ユーザーの削除はできません。');
+                ->with('topAlert.title', '管理者ユーザー・スタッフの削除はできません。');
         }
 
         if (!$circles->isEmpty()) {
