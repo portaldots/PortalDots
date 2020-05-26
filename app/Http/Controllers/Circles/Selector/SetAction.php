@@ -4,18 +4,26 @@ namespace App\Http\Controllers\Circles\Selector;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
 use App\Services\Circles\SelectorService;
 use App\Eloquents\Circle;
+use Gate;
 
 class SetAction extends Controller
 {
+    /**
+     * @var Router
+     */
+    private $router;
+
     /**
      * @var SelectorService
      */
     private $selectorService;
 
-    public function __construct(SelectorService $selectorService)
+    public function __construct(Router $router, SelectorService $selectorService)
     {
+        $this->router = $router;
         $this->selectorService = $selectorService;
     }
 

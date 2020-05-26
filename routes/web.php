@@ -96,7 +96,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['circleSelected'])
         ->group(function () {
             Route::get('/hogehoge', function () {
-                return response('hello world');
+                return response('hello world'. e(session('selector_service__circle_id')));
             })->name('test');
         });
 

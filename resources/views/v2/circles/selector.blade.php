@@ -1,5 +1,6 @@
-{{-- TODO: 将来的には、スタッフモード専用のドロワーが表示されるようにしたい --}}
-@extends(Request::is('staff*') ? 'v2.layouts.no_drawer' : 'v2.layouts.app')
+{{-- TODO: このコードのままだと、スタッフモード内の、企画を選択させる画面でバグる！！！！ --}}
+
+@extends('v2.layouts.no_drawer')
 
 @section('title', '企画を選択')
 
