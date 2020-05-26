@@ -87,10 +87,19 @@ Route::middleware(['auth'])->group(function () {
 
     // 企画セレクター (GETパラメーターの redirect に Route名 を入れる)
     Route::get('/selector', 'Circles\Selector\ShowAction')->name('circles.selector.show');
+    Route::get('/selector/set', 'Circles\Selector\SetAction')->name('circles.selector.set');
 });
 
 // ログインされており、メールアドレス認証が済んでいる場合のみアクセス可能なルート
 Route::middleware(['auth', 'verified'])->group(function () {
+    // テスト
+    Route::middleware(['circleSelected'])
+        ->group(function () {
+            Route::get('/hogehoge', function () {
+                return response('hello world');
+            })->name('test');
+        });
+
     // 企画参加登録
     Route::prefix('/circles')
         ->name('circles.')

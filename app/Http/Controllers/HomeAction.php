@@ -24,7 +24,7 @@ class HomeAction extends Controller
             ->with('my_circles', Auth::check()
                                     ? Auth::user()->circles()->get()
                                     : collect([]))
-            ->with('pages', Page::take(self::TAKE_COUNT)->get())
+            ->with('pages', Page::byCircle(null)->take(self::TAKE_COUNT)->get())
             ->with('remaining_pages_count', max(Page::count() - self::TAKE_COUNT, 0))
             ->with('next_schedule', Schedule::startOrder()->notStarted()->first())
             // TODO: PortalDots では Auth::check() による配布資料表示の条件分岐を行わない

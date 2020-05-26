@@ -6,12 +6,24 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Circles\SelectorService;
 
 class ShowAction extends Controller
 {
-    public function __construct(Router $router)
+    /**
+     * @var Router
+     */
+    private $router;
+
+    /**
+     * @var SelectorService
+     */
+    private $selectorService;
+
+    public function __construct(Router $router, SelectorService $selectorService)
     {
         $this->router = $router;
+        $this->selectorService = $selectorService;
     }
 
     public function __invoke(Request $request)
@@ -22,12 +34,16 @@ class ShowAction extends Controller
             $circles = $user->circles()->approved()->get();
 
             if (count($circles) <= 1) {
+                if (count($circles) === 1) {
+                    $this->selectorService->setCircle($circles[0]);
+                }
+
                 return redirect()
                     ->route($redirect);
             }
 
             return view('v2.circles.selector')
-                ->with('url', route($redirect))
+                ->with('redirect', $redirect)
                 ->with('circles', $circles)
                 ->with('error_message', session('error_message'));
         }
