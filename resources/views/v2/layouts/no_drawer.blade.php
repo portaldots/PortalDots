@@ -47,7 +47,7 @@
     <meta name="format-detection" content="telephone=no">
 </head>
 
-<body>
+<body class="no-drawer">
 
     <div class="loading" id="loading">
         <div class="loading-circle"></div>
