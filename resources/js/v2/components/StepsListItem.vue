@@ -17,28 +17,25 @@ export default {
 
 <style lang="scss" scoped>
 .steps-list-item {
-  $item-space: 0.3rem;
-  $steps-list-color: $color-muted;
   $circle-size: 1.4rem;
 
   align-items: center;
-  background: #fff;
-  border: 1px solid #{$steps-list-color};
+  background: $color-bg-white;
   border-radius: $border-radius;
   display: flex;
   flex: 1;
   flex-direction: column;
   justify-content: center;
-  margin: 0 #{$item-space};
-  padding: #{$circle-size + $spacing-sm + $spacing-xs} 0 $spacing-sm;
+  margin: 0 #{$steps-list-item-space};
+  padding: #{$circle-size + $spacing-s} 0 $spacing-sm;
   position: relative;
   text-align: center;
   &::before {
     align-items: center;
-    background: #fff;
-    border: 1px solid $steps-list-color;
+    background: $color-bg-white;
+    border: 1px solid $color-primary;
     border-radius: 50%;
-    color: $steps-list-color;
+    color: $color-primary;
     content: counter(steps-list);
     counter-increment: steps-list;
     display: flex;
@@ -54,31 +51,22 @@ export default {
     transform: translateX(-50%);
     width: $circle-size;
   }
-  &::after {
-    background: #fff;
-    border: 1px solid $steps-list-color;
-    border-bottom: 0;
-    border-left: 0;
+  &.is-active {
+    font-weight: bold;
+    &::before {
+      background: $color-primary;
+      color: $color-bg-white;
+    }
+  }
+  &:not(:last-child)::after {
+    background: $color-primary;
     content: '';
     display: block;
-    height: 0.75rem;
+    height: 2px;
+    left: 50%;
     position: absolute;
-    right: -0.5rem;
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
-    width: 0.75rem;
-    z-index: 2;
-  }
-  &:last-child::after {
-    display: none;
-  }
-  &.is-active {
-    background: $steps-list-color;
-    color: #fff;
-    font-weight: bold;
-    &::after {
-      background: $steps-list-color;
-    }
+    right: 150%;
+    top: 0;
   }
 }
 </style>
