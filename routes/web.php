@@ -92,14 +92,6 @@ Route::middleware(['auth'])->group(function () {
 
 // ログインされており、メールアドレス認証が済んでいる場合のみアクセス可能なルート
 Route::middleware(['auth', 'verified'])->group(function () {
-    // テスト
-    Route::middleware(['circleSelected'])
-        ->group(function () {
-            Route::get('/hogehoge', function () {
-                return response('hello world'. e(session('selector_service__circle_id')));
-            })->name('test');
-        });
-
     // 企画参加登録
     Route::prefix('/circles')
         ->name('circles.')
@@ -123,6 +115,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // 申請
     Route::prefix('/forms')
+        ->middleware(['circleSelected'])
         ->name('forms.')
         ->group(function () {
             Route::get('/', 'Forms\IndexAction')->name('index');
