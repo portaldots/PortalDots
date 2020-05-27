@@ -22,4 +22,9 @@ class SelectorService
     {
         return Circle::find(session(self::SESSION_KEY_CIRCLE_ID, null)) ?? null;
     }
+
+    public function reset()
+    {
+        session([self::SESSION_KEY_CIRCLE_ID => null]);
+    }
 }
