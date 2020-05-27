@@ -4,9 +4,14 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use App\Services\Circles\SelectorService;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public $singletons = [
+        SelectorService::class => SelectorService::class,
+    ];
+
     /**
      * Register any application services.
      *

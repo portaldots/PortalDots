@@ -28,27 +28,17 @@ class ShowAction extends Controller
 
     public function __invoke(Request $request)
     {
-        $redirect = $request->redirect;
-        if (isset($redirect) && $this->router->has($redirect)) {
+        $redirect_to = $request->redirect_to;
+        if (isset($redirect_to)) {
             $user = Auth::user();
             $circles = $user->circles()->approved()->get();
 
-            if (count($circles) <= 1) {
-                if (count($circles) === 1) {
-                    $this->selectorService->setCircle($circles[0]);
-                }
-
-                return redirect()
-                    ->route($redirect);
-            }
-
             return view('v2.circles.selector')
-                ->with('redirect', $redirect)
+                ->with('redirect_to', $redirect_to)
                 ->with('circles', $circles)
                 ->with('error_message', session('error_message'));
         }
 
-        return redirect()
-            ->route('home');
+        abort(404);
     }
 }

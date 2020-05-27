@@ -1,6 +1,13 @@
-<a class="drawer-header" href="{{ route('home') }}">
-    {{ config('app.name') }}
-</a>
+@inject('selectorService', 'App\Services\Circles\SelectorService')
+@auth
+    <a class="drawer-header" href="{{ route('circles.selector.show', ['redirect_to' => Request::path()]) }}">
+        {{ $selectorService->getCircle()->name }}
+    </a>
+@else
+    <a class="drawer-header" href="{{ route('home') }}">
+        {{ config('app.name') }}
+    </a>
+@endauth
 <nav class="drawer-nav">
     @if (Auth::check() && Auth::user()->is_staff)
         <div class="px-spacing">

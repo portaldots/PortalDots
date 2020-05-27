@@ -24,6 +24,8 @@ class StoreAction extends Controller
             abort(404);
         }
 
+        // ユーザーが企画に所属しているかどうかの検証は
+        // StoreAnswerRequest で行っている
         $circle = Circle::approved()->findOrFail($request->circle_id);
         $answer = $this->answersService->createAnswer($form, $circle, $request);
         if ($answer) {

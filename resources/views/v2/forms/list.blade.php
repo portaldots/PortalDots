@@ -23,7 +23,7 @@
         @else
             <list-view>
                 @foreach ($forms as $form)
-                    <list-view-item href="{{ route('forms.answers.create', ['form' => $form, 'circle' => $circle]) }}">
+                    <list-view-item href="{{ route('forms.answers.create', ['form' => $form]) }}">
                         <template v-slot:title>
                             {{ $form->name }}
                             @if ($form->answered($circle))

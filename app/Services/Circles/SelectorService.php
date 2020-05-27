@@ -13,6 +13,11 @@ class SelectorService
 {
     private const SESSION_KEY_CIRCLE_ID = 'selector_service__circle_id';
 
+    /**
+     * @var Circle|null
+     */
+    private $circle = null;
+
     public function setCircle(Circle $circle)
     {
         session([self::SESSION_KEY_CIRCLE_ID => $circle->id]);
@@ -20,7 +25,19 @@ class SelectorService
 
     public function getCircle()
     {
-        return Circle::find(session(self::SESSION_KEY_CIRCLE_ID, null)) ?? null;
+        $circle_id = session(self::SESSION_KEY_CIRCLE_ID, null);
+
+        if (empty($circle_id)) {
+            // キャッシュを削除した上で null を返す
+            $this->circle = null;
+            return null;
+        }
+
+        if (empty($this->circle)) {
+            $this->circle = Circle::find($circle_id) ?? null;
+        }
+
+        return $this->circle;
     }
 
     public function reset()

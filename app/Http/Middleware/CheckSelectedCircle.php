@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Auth;
+use Gate;
 use App\Services\Circles\SelectorService;
 
 class CheckSelectedCircle
@@ -27,12 +28,20 @@ class CheckSelectedCircle
      */
     public function handle($request, Closure $next)
     {
+        if (!Auth::check()) {
+            return $next($request);
+        }
+
+        if (Gate::denies('circle.belongsTo', $this->selectorService->getCircle())) {
+            $this->selectorService->reset();
+        }
+
         if (
-            Auth::check() && Auth::user()->circles()->approved()->count() > 0
-            && empty($this->selectorService->getCircle())
+            Auth::user()->circles()->approved()->count() > 0 &&
+            empty($this->selectorService->getCircle())
         ) {
             return redirect()
-                ->route('circles.selector.show', ['redirect' => $request->route()->getName()]);
+                ->route('circles.selector.show', ['redirect_to' => Request::path()]);
         }
 
         return $next($request);

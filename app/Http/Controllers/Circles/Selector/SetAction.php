@@ -29,19 +29,28 @@ class SetAction extends Controller
 
     public function __invoke(Request $request)
     {
-        $redirect = $request->redirect;
-        if (isset($redirect) && $this->router->has($redirect)) {
+        $redirect_to = $request->redirect_to;
+        if (isset($redirect_to)) {
+            $url = $this->getSanitizedUrl($redirect_to);
             $circle = Circle::approved()->findOrFail($request->circle);
 
             if (Gate::allows('circle.belongsTo', $circle)) {
                 $this->selectorService->setCircle($circle);
 
-                return redirect()
-                    ->route($redirect);
+                return redirect($url);
             }
         }
 
-        return redirect()
-            ->route('home');
+        abort(404);
+    }
+
+    private function getSanitizedUrl($url)
+    {
+        // $urlが「//evil.example.com/evil」のような文字列になっている場合、
+        // PortalDots 外のページへリダイレクトしてしまう(オープンリダイレクト脆弱性)
+        // のため、先頭にスラッシュがついている場合は取り除く。
+        //
+        // 先頭のスラッシュを取り除いた上で、スラッシュを1つだけ先頭に追加する。
+        return '/' . str_replace("\n", '', preg_replace('/^\/+/', '', $url));
     }
 }

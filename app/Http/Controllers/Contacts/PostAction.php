@@ -22,6 +22,8 @@ class PostAction extends Controller
 
     public function __invoke(ContactFormRequest $request)
     {
+        // ユーザーが企画に所属しているかどうかの検証は
+        // ContactFormRequest で行っている
         $circle = !empty($request->circle_id) ? Circle::find($request->circle_id) : null;
         $sender = Auth::user();
 

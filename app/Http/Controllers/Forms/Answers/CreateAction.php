@@ -9,47 +9,44 @@ use App\Http\Controllers\Controller;
 use App\Eloquents\Form;
 use App\Eloquents\Circle;
 use App\Services\Forms\AnswersService;
+use App\Services\Circles\SelectorService;
 
 class CreateAction extends Controller
 {
+    /**
+     * @var AnswersService
+     */
     private $answersService;
 
-    public function __construct(AnswersService $answersService)
-    {
+    /**
+     * @var SelectorService
+     */
+    private $selectorService;
+
+    public function __construct(
+        AnswersService $answersService,
+        SelectorService $selectorService
+    ) {
         $this->answersService = $answersService;
+        $this->selectorService = $selectorService;
     }
 
-    public function __invoke(Form $form, Request $request)
+    public function __invoke(Form $form)
     {
         if (! $form->is_public || isset($form->customForm)) {
             abort(404);
         }
 
-        $circle = null;
-        if (empty($request->circle)) {
-            $circles = Auth::user()->circles()->approved()->get();
-            if (count($circles) < 1) {
-                // TODO: もうちょっとまともなエラー表示にする
-                return redirect()
-                    ->route('home')
-                    ->with('topAlert.type', 'danger')
-                    ->with('topAlert.title', '企画に所属していないため、このページにアクセスできません');
-            } elseif (count($circles) === 1) {
-                return redirect()
-                    ->route('forms.answers.create', ['form' => $form,'circle' => $circles[0]]);
-            } else {
-                return view('v2.circles.selector')
-                    ->with('url', route('forms.answers.create', ['form' => $form]))
-                    ->with('circles', $circles);
-            }
-        } else {
-            $circle = Circle::approved()->findOrFail($request->circle);
-            if (Gate::denies('circle.belongsTo', $circle)) {
-                // TODO: もうちょっとまともなエラー表示にする
-                abort(403);
-                return;
-            }
+        $circles = Auth::user()->circles()->approved()->get();
+        if (count($circles) < 1) {
+            // TODO: もうちょっとまともなエラー表示にする
+            return redirect()
+                ->route('home')
+                ->with('topAlert.type', 'danger')
+                ->with('topAlert.title', '企画に所属していないため、このページにアクセスできません');
         }
+
+        $circle = $this->selectorService->getCircle();
 
         // すでに回答済だった場合
         $answers = $this->answersService->getAnswersByCircle($form, $circle);
