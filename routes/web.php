@@ -12,11 +12,12 @@
 */
 
 // トップページ
-Route::get('/', 'HomeAction')->name('home');
+Route::get('/', 'HomeAction')->middleware(['circleSelected'])->name('home');
 
 // お知らせ
 Route::prefix('/pages')
     ->name('pages.')
+    ->middleware(['circleSelected'])
     ->group(function () {
         Route::get('/', 'Pages\IndexAction')->name('index');
         Route::get('/{page}', 'Pages\ShowAction')->name('show');
@@ -25,7 +26,7 @@ Route::prefix('/pages')
 // 配布資料
 Route::prefix('/documents')
     ->name('documents.')
-    ->middleware(['auth', 'verified'])  // TODO: PortalDots ではミドルウェアを外す
+    ->middleware(['circleSelected'])
     ->group(function () {
         Route::get('/', 'Documents\IndexAction')->name('index');
         Route::get('/{document}', 'Documents\ShowAction')->name('show');
@@ -34,6 +35,7 @@ Route::prefix('/documents')
 // スケジュール
 Route::prefix('/schedules')
     ->name('schedules.')
+    ->middleware(['circleSelected'])
     ->group(function () {
         Route::get('/', 'Schedules\IndexAction')->name('index');
         Route::get('/ended', 'Schedules\EndedAction')->name('ended');
