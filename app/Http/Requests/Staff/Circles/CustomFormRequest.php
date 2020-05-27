@@ -26,7 +26,7 @@ class CustomFormRequest extends FormRequest
         return [
             'users_number_to_submit_circle' => ['required', 'integer', 'min:1'],
             'open_at' => ['required', 'date'],
-            'close_at' => ['required', 'date'],
+            'close_at' => ['required', 'date', 'after:open_at'],
             'is_public' => ['boolean'],
         ];
     }
