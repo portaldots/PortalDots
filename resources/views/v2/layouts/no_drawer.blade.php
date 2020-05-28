@@ -10,7 +10,7 @@
         @hasSection ('title')
             @yield('title') —
         @endif
-        {{ config('app.name') }}
+        {{ empty(config('app.name')) ? 'PortalDots' : config('app.name') }}
     </title>
 
     @prepend('css')
@@ -38,7 +38,7 @@
                     }
                 };
             }
-    
+
         </script>
         @endprepend
     @endif
@@ -63,11 +63,12 @@
         </app-nav-bar>
         <div class="content is-no-drawer">
             @if (Session::has('topAlert.title'))
-                <top-alert type="{{ session('topAlert.type', 'primary') }}" container-medium>
+                <top-alert type="{{ session('topAlert.type', 'primary') }}" container-medium
+                    {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}>
                     <template v-slot:title>
                         {{ session('topAlert.title') }}
                     </template>
-    
+
                     @if (Session::has('topAlert.body'))
                         {{ session('topAlert.body') }}
                     @endif

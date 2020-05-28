@@ -25,12 +25,9 @@
                 </strong>
 
                 <template v-slot:cta>
-                    <form action="{{ route('verification.resend') }}" method="post">
-                        @csrf
-                        <button class="btn is-primary-inverse is-no-border is-wide">
-                            <strong>確認メールを再送</strong>
-                        </button>
-                    </form>
+                    <a href="{{ route('verification.notice') }}" class="btn is-primary-inverse is-no-border is-wide">
+                        <strong>もっと詳しく</strong>
+                    </a>
                 </template>
             </top-alert>
         @endunless
@@ -221,7 +218,7 @@
                         <template v-slot:title>
                             {{ $page->title }}
                             @if ($page->isNew())
-                                <span class="badge is-danger">NEW</span>
+                                <app-badge danger>NEW</app-badge>
                             @endif
                         </template>
                         <template v-slot:meta>
@@ -251,7 +248,7 @@
                             @endif
                             {{ $document->name }}
                             @if ($document->isNew())
-                                <span class="badge is-danger">NEW</span>
+                                <app-badge danger>NEW</app-badge>
                             @endif
                         </template>
                         <template v-slot:meta>

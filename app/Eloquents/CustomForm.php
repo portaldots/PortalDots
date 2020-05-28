@@ -110,6 +110,11 @@ class CustomForm extends Model
             $custom_form = self::where('type', $type)->first();
             if (!empty($custom_form)) {
                 $forms[$type] = $custom_form->form()->first();
+            } else {
+                // キャッシュ後にカスタムフォームが削除されると、
+                // $noCacheForm を true にしてもキャッシュが返されてしまう
+                // 問題があったため、ここで明示的に null を代入する
+                $forms[$type] = null;
             }
         }
 

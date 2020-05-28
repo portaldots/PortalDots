@@ -1,7 +1,7 @@
 @extends('v2.layouts.app')
 
 @section('title', 'お知らせ')
-    
+
 @section('content')
     <app-container>
         @if ($pages->isEmpty())
@@ -13,7 +13,7 @@
                         <template v-slot:title>
                             {{ $page->title }}
                             @if ($page->isNew())
-                                <span class="badge is-danger">NEW</span>
+                                <app-badge danger>NEW</app-badge>
                             @endif
                         </template>
                         <template v-slot:meta>

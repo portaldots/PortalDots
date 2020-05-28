@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\CarbonImmutable;
+
 /**
  * ホーム(スタッフ用)コントローラ
  */
@@ -55,6 +57,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->display_as('leader', '責任者');
         $this->grocery_crud->display_as('members', '所属者');
         $this->grocery_crud->display_as('is_staff', 'スタッフ');
+        $this->grocery_crud->display_as('is_admin', '管理者');
         $this->grocery_crud->display_as('notes', 'ｽﾀｯﾌ用ﾒﾓ');
 
         // id順に表示する
@@ -203,7 +206,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->set_table('forms');
 
         // カスタムフォームは一覧に表示しない
-        $this->grocery_crud->where('NOT EXISTS (SELECT * FROM custom_forms WHERE form_id = forms.id)', null, false);
+        $this->grocery_crud->where("NOT EXISTS (SELECT * FROM {$this->db->dbprefix}custom_forms WHERE form_id = {$this->db->dbprefix}forms.id)", null, false);
 
         $this->grocery_crud->set_subject('フォーム');
         $this->grocery_crud->display_as('id', 'フォームID');
@@ -259,6 +262,9 @@ class Home_staff extends MY_Controller
             ['booth' => 'booth:ブース申請', 'circle' => 'circle:サークル申請']
         );
 
+        // 受付開始日時と終了日時のバリデーション
+        $this->grocery_crud->set_rules('close_at', '受付終了日時', 'callback__crud_form_check_dates['. $this->input->post('open_at', true). ']');
+
         $this->grocery_crud->unset_delete();
         $this->grocery_crud->set_editor();
         $this->grocery_crud->set_copy_url();
@@ -280,6 +286,22 @@ class Home_staff extends MY_Controller
         } else {
             return $value = "(不正な値:{$row->type})";
         }
+    }
+
+    /**
+     * フォームの受付終了日時が受付開始日時より後かどうかを判断するための Grocery CRUD コールバック関数
+     */
+    public function _crud_form_check_dates($close_at, $open_at)
+    {
+        $carbon_close_at = new CarbonImmutable($close_at);
+        $carbon_open_at = new CarbonImmutable($open_at);
+
+        if ($carbon_close_at->lte($carbon_open_at)) {
+            $this->form_validation->set_message('_crud_form_check_dates', '受付終了日時には、受付開始日時より後の日付を指定してください。');
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -479,6 +501,7 @@ class Home_staff extends MY_Controller
             'email',
             'tel',
             'is_staff',
+            'is_admin',
             'created_at',
             'updated_at',
             'notes'
@@ -503,7 +526,8 @@ class Home_staff extends MY_Controller
             'notes'
         ];
         if ($this->_get_login_user()->is_admin) {
-            // 管理者のみ、Rolesの設定をできるようにする
+            // 管理者のみ、管理者権限・Rolesの設定をできるようにする
+            $fields[] = 'is_admin';
             $fields[] = 'roles';
         }
         $this->grocery_crud->fields($fields);
@@ -1404,6 +1428,12 @@ class Home_staff extends MY_Controller
                         "icon" => "key",
                         "name" => "認可設定(Admin)",
                         "url" => "home_staff/auth_config",
+                    ];
+                $vars["_sidebar_menu"]["system"] =
+                    [
+                        "icon" => "gear",
+                        "name" => "ポータル情報設定(Admin)",
+                        "url" => "admin/portal",
                     ];
             } else {
                 // 現在ログインしているユーザーが認可されていないページへのリンクをサイドバーから削除する

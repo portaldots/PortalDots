@@ -4892,11 +4892,14 @@ class Grocery_CRUD extends grocery_CRUD_States
      */
     public function set_relation_n_n($field_name, $relation_table, $selection_table, $primary_key_alias_to_this_table, $primary_key_alias_to_selection_table, $title_field_selection_table, $priority_field_relation_table = null, $where_clause = null)
     {
+        $CI =& get_instance();
+        $db =& $CI->db;
+
         $this->relation_n_n[$field_name] =
             (object)array(
                 'field_name' => $field_name,
-                'relation_table' => $relation_table,
-                'selection_table' => $selection_table,
+                'relation_table' => $db->dbprefix.$relation_table,
+                'selection_table' => $db->dbprefix.$selection_table,
                 'primary_key_alias_to_this_table' => $primary_key_alias_to_this_table,
                 'primary_key_alias_to_selection_table' => $primary_key_alias_to_selection_table ,
                 'title_field_selection_table' => $title_field_selection_table ,

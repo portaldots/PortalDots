@@ -133,7 +133,6 @@ export default {
   &__message {
     font-size: 1rem;
     margin: $spacing-xs 0 0;
-    opacity: 0.8;
   }
 }
 </style>

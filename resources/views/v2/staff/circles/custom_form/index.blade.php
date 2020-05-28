@@ -23,6 +23,19 @@
             @method('patch')
             <list-view>
                 <template v-slot:title>企画参加登録の設定</template>
+                <list-view-form-group label-for="users_number_to_submit_circle">
+                    <template v-slot:label>企画参加登録を提出するために必要な企画担当者の最低人数</template>
+                    <template v-slot:description>
+                        企画責任者と学園祭係(副責任者)の合計人数です。企画責任者に加え、学園祭係(副責任者)の登録を最低2人必要とする場合、<code>3</code>と入力してください
+                    </template>
+                    <input id="users_number_to_submit_circle" type="number"
+                        class="form-control @error('users_number_to_submit_circle') is-invalid @enderror"
+                        name="users_number_to_submit_circle" min="1" step="1"
+                        value="{{ old('users_number_to_submit_circle', $users_number_to_submit_circle) }}" required>
+                    @error('users_number_to_submit_circle')
+                    <template v-slot:invalid>{{ $message }}</template>
+                    @enderror
+                </list-view-form-group>
                 <list-view-form-group label-for="open_at">
                     <template v-slot:label>受付開始日時</template>
                     <template v-slot:description>

@@ -91,7 +91,7 @@
                 <button type="submit" class="btn is-primary is-wide">送信</button>
                 @if (config('app.debug'))
                     <button type="submit" class="btn is-primary-inverse" formnovalidate>
-                        <strong class="badge is-primary">開発モード</strong>
+                        <app-badge primary strong>開発モード</app-badge>
                         バリデーションせずに送信
                     </button>
                 @endif

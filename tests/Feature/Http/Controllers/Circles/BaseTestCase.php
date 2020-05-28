@@ -27,7 +27,5 @@ abstract class BaseTestCase extends TestCase
             'type' => 'circle',
             'form_id' => $this->form->id,
         ]);
-
-        CustomForm::noCacheForm();
     }
 }

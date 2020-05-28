@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use PDOException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -50,6 +51,40 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof PDOException) {
+            // データベース接続エラー
+            //
+            // そのまま Blade ファイルによるエラーページを表示してしまうと、
+            // Blade ファイル内からデータベース接続が行われ、エラーページを
+            // 正常に表示することができない。そのため、Blade ファイルを使わず
+            // にエラーを表示する。
+            //
+            // このエラーが表示される状況の例は以下の通り。
+            //  1. データベース設定が間違っている
+            //  2. 接続先のデータベースにPortalDotsで利用するテーブルがない
+            //     →データベース内のデータを全削除した上でテーブルを作り直す
+            //       コマンド : php artisan migrate:refresh
+            //
+            // (CodeIgniterを完全に廃止した場合、以下のコメントは削除する)
+            // 同じHTMLコードが
+            //  application/views/errors/html/error_db.php
+            // にも書かれている。このファイルを修正する際は、
+            //  application/views/errors/html/error_db.php
+            // に書かれている同様のHTMLコードも修正すること。
+            $app_name = config('app.name');
+            return response("
+                <!doctype html>
+                <meta charset=\"utf-8\">
+                <title>データベース接続エラー</title>
+                <div style=\"text-align: center\">
+                    <h1>データベースと接続できません</h1>
+                    <hr>
+                    <p>設定ファイル(.env)内のデータベース設定が正しいかご確認ください。</p>
+                    <hr>
+                    <p>{$app_name} • Powered by PortalDots</p>
+                </div>");
+        }
+
         $response = parent::render($request, $exception);
 
         // ステータスコードがエラーとなるページへのアクセスは Turbolinks に

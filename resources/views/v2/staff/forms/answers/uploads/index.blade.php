@@ -13,7 +13,7 @@
         <list-view>
             <template v-slot:title>
                 アップロードファイルの一括ダウンロード
-                <small class="badge is-muted">BETA</small>
+                <app-badge muted small>BETA</app-badge>
             </template>
 
             <list-view-card>

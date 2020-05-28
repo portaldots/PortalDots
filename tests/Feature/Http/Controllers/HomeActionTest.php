@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Carbon\CarbonImmutable;
+use Jackiedo\DotenvEditor\DotenvEditor;
 use App\Eloquents\User;
 use App\Eloquents\Form;
 use App\Eloquents\CustomForm;
@@ -13,6 +14,21 @@ use App\Eloquents\CustomForm;
 class HomeActionTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @test
+     */
+    public function 未インストール状態の場合はインストーラが表示される()
+    {
+        $this->mock(DotenvEditor::class, function ($mock) {
+            $mock->shouldReceive('keyExists')->once()->with('APP_NOT_INSTALLED')->andReturn(true);
+            // boolean の true ではなく、文字列の 'true' である点に注意
+            $mock->shouldReceive('getValue')->once()->with('APP_NOT_INSTALLED')->andReturn('true');
+        });
+
+        $response = $this->get(route('home'));
+        $response->assertRedirect(route('install.index'));
+    }
 
     /**
      * @test
@@ -39,7 +55,7 @@ class HomeActionTest extends TestCase
         $response = $this->actingAs($user)->get(route('home'));
 
         $response->assertSee('メール認証');
-        $response->assertSee('確認メールを再送');
+        $response->assertSee('もっと詳しく');
         $response->assertSee($user->email);
         $response->assertSee($user->univemail);
     }
