@@ -18,8 +18,11 @@ class SelectorService
      */
     private $circle = null;
 
-    public function setCircle(Circle $circle)
+    public function setCircle(?Circle $circle = null)
     {
+        if (empty($circle)) {
+            return;
+        }
         session([self::SESSION_KEY_CIRCLE_ID => $circle->id]);
     }
 
