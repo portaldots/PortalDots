@@ -33,8 +33,8 @@ $spacing-xxs: 0.1rem;
 
 // Parameters
 $drawer-width: 320px;
+$drawer-width-narrow: 280px;
 $navbar-height: 5rem;
-$content-width: calc(100vw - #{$drawer-width});
 $transition-base: 0.3s ease;
 $transition-base-fast: 0.15s ease;
 $border-radius: 0.25rem;
@@ -51,7 +51,8 @@ $container-width-narrow: 400px;
 $container-width-medium: 800px;
 
 // Media Breakpoints
-$breakpoint-drawer-hide: 1240px;
+$breakpoint-drawer-narrow: 1240px;
+$breakpoint-drawer-hide: 1000px;
 $breakpoint-listview-sm: 860px;
 $breakpoint-bottom-tabs: $breakpoint-drawer-hide;
 $breakpoint-top-alert-col: 860px;
