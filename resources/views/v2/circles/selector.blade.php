@@ -5,9 +5,10 @@
 @section('title', '企画を選択')
 
 @section('content')
-    <app-container>
+    <app-container medium>
         <list-view>
             <template v-slot:title>企画を選択</template>
+            <template v-slot:description>ログインする企画を選択してください。</template>
             @foreach ($circles as $circle)
                 <list-view-item
                     href="{{ route('circles.selector.set', ['redirect_to' => $redirect_to, 'circle' => $circle]) }}">

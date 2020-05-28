@@ -96,6 +96,14 @@
         </header>
     @endguest
     <app-container>
+        @if (Auth::check() && Auth::user()->is_staff)
+            <list-view>
+                <list-view-action-btn href="{{ url('/home_staff') }}" data-turbolinks="false">
+                    スタッフモードへ
+                </list-view-action-btn>
+            </list-view>
+        @endif
+
         @if (Auth::check() && Auth::user()->areBothEmailsVerified() && Auth::user()->can('circle.create'))
             <list-view>
                 <template v-slot:title>企画参加登録</template>

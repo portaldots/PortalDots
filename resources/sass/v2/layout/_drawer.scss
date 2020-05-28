@@ -58,22 +58,54 @@
       text-decoration: none;
     }
   }
-  &-nav {
-    padding: $spacing-md 0;
-    &__list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
+  &-circle-selector {
+    @include divider(true);
+
+    display: block;
+    padding: $spacing;
+    padding-top: #{$navbar-height + $spacing};
+    transition: #{$transition-base-fast} background-color;
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: none;
     }
+    &__name {
+      color: $color-text;
+      font-weight: bold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    &__subline {
+      color: $color-muted;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    &__link {
+      font-size: 0.9rem;
+      margin: $spacing-xs 0 0;
+    }
+    &:hover {
+      background: $color-bg-light;
+    }
+  }
+  &-nav {
+    padding: $spacing-sm 0;
     &__link {
       color: $color-text;
       display: block;
-      margin: $spacing 0;
-      padding: $spacing-sm $spacing;
+      padding: $spacing-s $spacing;
+      transition: #{$transition-base-fast} background-color;
+      &:hover {
+        background: $color-bg-light;
+      }
       &:hover,
       &:focus,
       &:active {
         color: $color-text;
+        outline: 0;
         text-decoration: none;
       }
       &.is-active {
@@ -85,12 +117,12 @@
 
           background: $color-primary;
           border-radius: 0 $bar-width $bar-width 0;
+          bottom: $spacing-sm;
           content: "";
           display: block;
-          height: 100%;
           left: 0;
           position: absolute;
-          top: 0;
+          top: $spacing-sm;
           width: $bar-width;
         }
       }
@@ -99,6 +131,9 @@
       font-size: 1.2rem;
       margin-right: $spacing-sm;
       opacity: 0.5;
+    }
+    &__link:focus &__icon {
+      outline: $focus-outline;
     }
   }
   &-user {

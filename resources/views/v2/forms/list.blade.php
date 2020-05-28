@@ -26,11 +26,13 @@
                     <list-view-item href="{{ route('forms.answers.create', ['form' => $form]) }}">
                         <template v-slot:title>
                             {{ $form->name }}
-                            @if ($form->answered($circle))
-                                <app-badge success>提出済</app-badge>
-                            @endif
-                            @if ($form->yetOpen())
-                                <app-badge muted>受付開始前</app-badge>
+                            @if (isset($circle))
+                                @if ($form->answered($circle))
+                                    <app-badge success>提出済</app-badge>
+                                @endif
+                                @if ($form->yetOpen())
+                                    <app-badge muted>受付開始前</app-badge>
+                                @endif
                             @endif
                         </template>
                         <template v-slot:meta>
