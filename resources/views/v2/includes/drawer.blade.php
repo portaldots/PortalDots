@@ -15,11 +15,7 @@
             <div class="drawer-circle-selector__name">{{ $selectorService->getCircle()->name }}</div>
             <div class="drawer-circle-selector__subline">{{ $selectorService->getCircle()->group_name }}</div>
             <div class="drawer-circle-selector__link">
-                企画の切り替え
-                @if (Auth::user()->can('circle.create'))
-                    /
-                    企画参加登録
-                @endif
+                ログイン先の企画の切り替え
                 <i class="fas fa-chevron-right"></i>
             </div>
         </a>

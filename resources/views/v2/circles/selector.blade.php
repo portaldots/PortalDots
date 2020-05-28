@@ -18,6 +18,23 @@
                     </template>
                 </list-view-item>
             @endforeach
+            @if (Gate::allows('circle.create'))
+                <list-view-action-btn href="{{ route('circles.create') }}" icon-class="fas fa-plus">
+                    別の企画を参加登録する
+                </list-view-action-btn>
+            @endif
         </list-view>
+
+        @if (!$not_submitted_circles->isEmpty())
+            <list-view class="pt-spacing-lg">
+                <template v-slot:description>
+                    <div class="text-muted">
+                        <i class="fas fa-info-circle fa-fw"></i>
+                        以下の企画参加登録は提出されていません。提出期限(<strong>@datetime($circle_custom_form->close_at)</strong>)までに提出してください。
+                    </div>
+                </template>
+                @each('v2.includes.circle_list_view_item_with_status', $not_submitted_circles, 'circle')
+            </list-view>
+        @endif
     </app-container>
 @endsection

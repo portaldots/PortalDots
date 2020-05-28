@@ -98,19 +98,43 @@
     <app-container>
         @if (Auth::check() && Auth::user()->is_staff)
             <list-view>
+                <template v-slot:title>
+                    スタッフメニュー
+                    <small class="text-muted">(スタッフにのみ表示)</small>
+                </template>
                 <list-view-action-btn href="{{ url('/home_staff') }}" data-turbolinks="false">
                     スタッフモードへ
                 </list-view-action-btn>
             </list-view>
         @endif
 
-        @if (Auth::check() && Auth::user()->areBothEmailsVerified() && Auth::user()->can('circle.create'))
+        @if (Gate::allows('circle.create'))
             <list-view>
                 <template v-slot:title>企画参加登録</template>
                 <template v-slot:description>
                     受付期間 : @datetime($circle_custom_form->open_at)〜@datetime($circle_custom_form->close_at)
                 </template>
-                @if (count($my_circles) === 0)
+                @if (!Auth::check())
+                    <list-view-card>
+                        <list-view-empty text="企画参加登録するには、まずログインしてください">
+                            <p>
+                                {{ config('app.name') }}の利用がはじめての場合は<a href="{{ route('register') }}">ユーザー登録</a>を行ってください。<br>
+                                <a href="{{ route('login') }}">ログインはこちら</a>
+                            </p>
+                        </list-view-empty>
+                    </list-view-card>
+                @elseif (!Auth::user()->areBothEmailsVerified())
+                    <list-view-card>
+                        <list-view-empty icon-class="far fa-envelope" text="メール認証が未完了です">
+                            <p>
+                                参加登録を行うには、まずメール認証を完了させてください。
+                            </p>
+                            <a href="{{ route('verification.notice') }}" class="btn is-primary is-wide">
+                                <strong>もっと詳しく</strong>
+                            </a>
+                        </list-view-empty>
+                    </list-view-card>
+                @elseif (count($my_circles) === 0)
                     <list-view-card>
                         <list-view-empty icon-class="far fa-star" text="参加登録をしましょう！">
                             <p>
@@ -118,72 +142,12 @@
                                 まずは参加登録からはじめましょう！
                             </p>
                             <a href="{{ route('circles.create') }}" class="btn is-primary is-wide">
-                                参加登録をはじめる
+                                <strong>参加登録をはじめる</strong>
                             </a>
                         </list-view-empty>
                     </list-view-card>
                 @else
-                    @foreach ($my_circles as $circle)
-                        @if (!$circle->hasSubmitted() && $circle->canSubmit())
-                            <list-view-item href="{{ route('circles.confirm', ['circle' => $circle]) }}">
-                                <template v-slot:title>
-                                    <span class="text-primary">
-                                        📮
-                                        ここをクリックして「{{ $circle->name }}」の参加登録を提出しましょう！
-                                    </span>
-                                </template>
-                                <template v-slot:meta>
-                                    学園祭係(副責任者)の招待が完了しました。ここをクリックして登録内容に不備がないかどうかを確認し、参加登録を提出しましょう。
-                                </template>
-                            </list-view-item>
-                        @elseif ($circle->isPending())
-                            <list-view-item>
-                                <template v-slot:title>
-                                    💭
-                                    「{{ $circle->name }}」の参加登録の内容を確認中です
-                                </template>
-                                <template v-slot:meta>
-                                    ただいま参加登録の内容を確認しています。{{ config('portal.admin_name') }}より指示がある場合は従ってください。また、内容確認のためご連絡を差し上げる場合がございます。
-                                </template>
-                            </list-view-item>
-                        @elseif (!$circle->hasSubmitted() && !$circle->canSubmit())
-                            <list-view-item href="{{ route('circles.users.index', ['circle' => $circle]) }}">
-                                <template v-slot:title>
-                                    <span class="text-primary">
-                                        📩
-                                        ここをクリックして「{{ $circle->name }}」の学園祭係(副責任者)を招待しましょう！
-                                    </span>
-                                </template>
-                                <template v-slot:meta>
-                                    参加登録を提出するには、ここをクリックして学園祭係(副責任者)を招待しましょう。
-                                </template>
-                            </list-view-item>
-                        @elseif ($circle->hasApproved())
-                            <list-view-item>
-                                <template v-slot:title>
-                                    🎉
-                                    「{{ $circle->name }}」の参加登録は受理されました
-                                </template>
-                            </list-view-item>
-                        @elseif ($circle->hasRejected())
-                            <list-view-item @isset ($circle->status_reason)
-                                    href="{{ route('circles.status', ['circle' => $circle]) }}"
-                                @endisset
-                                >
-                                <template v-slot:title>
-                                    <span class="text-danger">
-                                        ⚠️
-                                        「{{ $circle->name }}」の参加登録は受理されませんでした
-                                    </span>
-                                </template>
-                                @isset ($circle->status_reason)
-                                    <template v-slot:meta>
-                                        詳細はこちら
-                                    </template>
-                                @endisset
-                            </list-view-item>
-                        @endif
-                    @endforeach
+                    @each('v2.includes.circle_list_view_item_with_status', $my_circles, 'circle')
                     <list-view-action-btn href="{{ route('circles.create') }}" icon-class="fas fa-plus">
                         別の企画を参加登録する
                     </list-view-action-btn>
