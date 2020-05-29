@@ -14,6 +14,6 @@ class DestroyAction extends Controller
 
         return redirect()
             ->route('staff.send_emails')
-            ->with('toast', '一斉メール送信をキャンセルしました');
+            ->with('topAlert.title', '一斉メール送信をキャンセルしました');
     }
 }

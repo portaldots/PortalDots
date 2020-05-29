@@ -132,7 +132,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 });
 
-// スタッフページ（二段階認証も済んでいる状態）
+// スタッフページ（多要素認証も済んでいる状態）
 Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
     ->prefix('/staff')
     ->name('staff.')
@@ -195,4 +195,14 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         // スタッフが手動でメール認証を完了する
         Route::get('/users/{user}/verify', 'Staff\Users\Verify\IndexAction')->name('users.verify');
         Route::patch('/users/{user}', 'Staff\Users\Verify\UpdateAction')->name('users.verify.update');
+    });
+
+// 管理者ページ（多要素認証も済んでいる状態）
+Route::middleware(['auth', 'verified', 'can:admin', 'staffAuthed'])
+    ->prefix('/admin')
+    ->name('admin.')
+    ->group(function () {
+        // ポータル情報編集
+        Route::get('/portal', 'Admin\Portal\EditAction')->name('portal.edit');
+        Route::patch('/portal', 'Admin\Portal\UpdateAction')->name('portal.update');
     });

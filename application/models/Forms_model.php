@@ -142,7 +142,7 @@ class Forms_model extends MY_Model
         );
         $this->db->where("form_id", $form_id);
         // 参加登録が受理されている企画による回答のみ取得する
-        $this->db->where("EXISTS (SELECT * FROM circles WHERE circles.id = answers.circle_id AND circles.status = 'approved')", null, false);
+        $this->db->where("EXISTS (SELECT * FROM {$this->db->dbprefix}circles WHERE {$this->db->dbprefix}circles.id = {$this->db->dbprefix}answers.circle_id AND {$this->db->dbprefix}circles.status = 'approved')", null, false);
         $result = $this->db->get("answers")->row();
 
         $return->form_type = $form->type;
@@ -310,7 +310,7 @@ class Forms_model extends MY_Model
         }
 
         // 参加登録が提出済の企画による回答のみ取得する
-        $this->db->where("EXISTS (SELECT * FROM circles WHERE circles.id = answers.circle_id AND circles.submitted_at IS NOT NULL)", null, false);
+        $this->db->where("EXISTS (SELECT * FROM {$this->db->dbprefix}circles WHERE {$this->db->dbprefix}circles.id = {$this->db->dbprefix}answers.circle_id AND {$this->db->dbprefix}circles.submitted_at IS NOT NULL)", null, false);
 
         $query = $this->db->get("answers");
 

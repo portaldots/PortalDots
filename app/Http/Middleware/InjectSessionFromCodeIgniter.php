@@ -3,10 +3,12 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use PDOException;
 use DB;
 use Auth;
 use Cookie;
 use App;
+use Jackiedo\DotenvEditor\DotenvEditor;
 
 /**
  * CodeIgniter 側で保存されたセッションを Laravel 側で扱えるようにする
@@ -51,7 +53,16 @@ class InjectSessionFromCodeIgniter
     {
         // テストの妨げになるため、ユニットテスト実行中は
         // このミドルウェアを適用しない
-        if (App::runningUnitTests()) {
+        // また、PortalDots が未インストールの状態の場合も、このミドルウェアを
+        // 適用しない
+        $dotenvEditor = app(DotenvEditor::class);
+        if (
+            App::runningUnitTests() ||
+            (
+                $dotenvEditor->keyExists('APP_NOT_INSTALLED') &&
+                $dotenvEditor->getValue('APP_NOT_INSTALLED') === 'true'
+            )
+        ) {
             return $next($request);
         }
 

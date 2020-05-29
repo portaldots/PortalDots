@@ -10,7 +10,7 @@
         @hasSection ('title')
             @yield('title') —
         @endif
-        {{ config('app.name') }}
+        {{ empty(config('app.name')) ? 'PortalDots' : config('app.name') }}
     </title>
 
     @prepend('css')
@@ -85,7 +85,8 @@
         </div>
         <div class="content">
             @if (Session::has('topAlert.title'))
-                <top-alert type="{{ session('topAlert.type', 'primary') }}">
+                <top-alert type="{{ session('topAlert.type', 'primary') }}"
+                    {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}>
                     <template v-slot:title>
                         {{ session('topAlert.title') }}
                     </template>

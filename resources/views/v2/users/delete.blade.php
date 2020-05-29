@@ -1,14 +1,19 @@
 @extends('v2.layouts.app')
 
 @section('title', 'ユーザー設定')
-    
+
 @section('content')
     @include('v2.includes.user_settings_tab_strip')
     <app-container>
         <list-view>
             <template v-slot:title>アカウント削除</template>
             <list-view-card class="text-center">
-                @if ($belong)
+                @if ($is_admin || $is_staff)
+                    <p class="card-text">管理者ユーザー・スタッフはアカウント削除できません。</p>
+                    <div>
+                        <a href="{{ route('home') }}" class="btn is-primary">ホームに戻る</a>
+                    </div>
+                @elseif ($belong)
                     <p class="card-text">企画に所属しているか、参加登録の途中のため、アカウント削除はできません。</p>
                     <p class="card-text">詳細については「{{ config('portal.admin_name') }}」までお問い合わせください</p>
                     <div>

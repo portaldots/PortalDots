@@ -1,7 +1,7 @@
 @extends('v2.layouts.app')
 
 @section('title', '申請')
-    
+
 @section('content')
     @if(empty($circle))
         <header class="header">
@@ -42,10 +42,10 @@
                             <template v-slot:title>
                                 {{ $form->name }}
                                 @if ($form->answered($circle))
-                                    <span class="badge is-success">提出済</span>
+                                    <app-badge success>提出済</app-badge>
                                 @endif
                                 @if ($form->yetOpen())
-                                    <span class="badge is-muted">受付開始前</span>
+                                    <app-badge muted>受付開始前</app-badge>
                                 @endif
                             </template>
                             <template v-slot:meta>

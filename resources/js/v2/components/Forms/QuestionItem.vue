@@ -4,7 +4,7 @@
     <!-- TODO: せっかくVue使ってるので、バリデーションエラーは即座に表示したい -->
     <template #label>
       {{ name }}
-      <span class="badge is-danger" v-if="required">必須</span>
+      <AppBadge danger v-if="required">必須</AppBadge>
     </template>
     <template #description>
       <p class="question-item__description is-text-color" v-if="description">
@@ -35,6 +35,7 @@
 
 <script>
 import ListViewFormGroup from '../ListViewFormGroup.vue'
+import AppBadge from '../AppBadge.vue'
 
 import QuestionText from './QuestionText.vue'
 import QuestionTextarea from './QuestionTextarea.vue'
@@ -47,6 +48,7 @@ import QuestionCheckbox from './QuestionCheckbox.vue'
 export default {
   components: {
     ListViewFormGroup,
+    AppBadge,
     QuestionText,
     QuestionTextarea,
     QuestionUpload,

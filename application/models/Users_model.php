@@ -17,10 +17,7 @@ class Users_model extends MY_Model
         if ($query->num_rows() === 1) {
             $result = $query->result()[0];
             $result->roles = $this->get_role_user_by_user_id($user_id);
-            $result->is_admin = false;
-            if (is_array($result->roles) && in_array("0", $result->roles, true)) {
-                $result->is_admin = true;
-            }
+            $result->is_admin = (bool)$result->is_admin;
             return $result;
         } else {
             return false;

@@ -1,7 +1,7 @@
 @extends('v2.layouts.app')
 
 @section('title', '配布資料')
-    
+
 @section('content')
     <app-container>
         @if ($documents->isEmpty())
@@ -18,7 +18,7 @@
                             @endif
                             {{ $document->name }}
                             @if ($document->isNew())
-                                <span class="badge is-danger">NEW</span>
+                                <app-badge danger>NEW</app-badge>
                             @endif
                         </template>
                         <template v-slot:meta>

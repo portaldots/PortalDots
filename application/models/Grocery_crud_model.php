@@ -50,7 +50,7 @@ class Grocery_crud_model  extends CI_Model  {
     	if($this->table_name === null)
     		return false;
 
-    	$select = "`{$this->table_name}`.*";
+    	$select = "`{$this->db->dbprefix}{$this->table_name}`.*";
 
     	//set_relation special queries
     	if(!empty($this->relation))
@@ -80,11 +80,12 @@ class Grocery_crud_model  extends CI_Model  {
     	if(!empty($this->relation_n_n))
     	{
 			$select = $this->relation_n_n_queries($select);
-    	}
-
+        }
+        
     	$this->db->select($select, false);
 
-    	$results = $this->db->get($this->table_name)->result();
+        $query = $this->db->get($this->table_name);
+    	$results = $query ? $query->result() : [];
 
     	return $results;
     }
@@ -129,8 +130,8 @@ class Grocery_crud_model  extends CI_Model  {
     		//Sorry Codeigniter but you cannot help me with the subquery!
     		$select .= ", (SELECT GROUP_CONCAT(DISTINCT $field) FROM $selection_table "
     			."LEFT JOIN $relation_table ON $relation_table.$primary_key_alias_to_selection_table = $selection_table.$primary_key_selection_table "
-    			."WHERE $relation_table.$primary_key_alias_to_this_table = `{$this->table_name}`.$this_table_primary_key GROUP BY $relation_table.$primary_key_alias_to_this_table) AS $field_name";
-    	}
+    			."WHERE $relation_table.$primary_key_alias_to_this_table = `{$this->db->dbprefix}{$this->table_name}`.$this_table_primary_key GROUP BY $relation_table.$primary_key_alias_to_this_table) AS $field_name";
+        }
 
     	return $select;
     }
@@ -183,7 +184,7 @@ class Grocery_crud_model  extends CI_Model  {
     	//set_relation_n_n special queries. We prefer sub queries from a simple join for the relation_n_n as it is faster and more stable on big tables.
     	if(!empty($this->relation_n_n))
     	{
-    		$select = "{$this->table_name}." . $key;
+    		$select = "{$this->db->dbprefix}{$this->table_name}." . $key;
     		$select = $this->relation_n_n_queries($select);
 
     		$this->db->select($select,false);
@@ -191,7 +192,8 @@ class Grocery_crud_model  extends CI_Model  {
             $this->db->select($this->table_name . '.' . $key);
         }
         
-        return $this->db->get($this->table_name)->num_rows();
+        $query = $this->db->get($this->table_name);
+        return $query ? $query->num_rows() : 0;
     }
 
     function set_basic_table($table_name = null)
@@ -433,7 +435,7 @@ class Grocery_crud_model  extends CI_Model  {
     function get_field_types_basic_table()
     {
     	$db_field_types = array();
-    	foreach($this->db->query("SHOW COLUMNS FROM `{$this->table_name}`")->result() as $db_field_type)
+    	foreach($this->db->query("SHOW COLUMNS FROM `{$this->db->dbprefix}{$this->table_name}`")->result() as $db_field_type)
     	{
     		$type = explode("(",$db_field_type->Type);
     		$db_type = $type[0];
