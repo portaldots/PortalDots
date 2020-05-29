@@ -1,9 +1,12 @@
 .footer {
-    // margin: $spacing-md 0;
     text-align: center;
     &__credit {
         color: $color-muted-2;
-        margin: $spacing-md 0;
+        margin-top: $spacing-lg;
+
+        @media screen and (max-width: $breakpoint-bottom-tabs) {
+          padding-bottom: $spacing-lg;
+        }
     }
     &__link {
         color: $color-muted-2;
