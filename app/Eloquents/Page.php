@@ -27,11 +27,14 @@ class Page extends Model
     /**
      * 指定した企画が閲覧できるお知らせの一覧を取得できるクエリスコープ
      *
+     * $circle を省略した場合、閲覧できる企画が限られているお知らせを
+     * 除くお知らせの一覧が取得される
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param Circle|null $circle
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeByCircle($query, ?Circle $circle)
+    public function scopeByCircle($query, ?Circle $circle = null)
     {
         $query = self::select('pages.*', 'page_viewable_tags.tag_id')
             ->leftJoin('page_viewable_tags', 'pages.id', '=', 'page_viewable_tags.page_id')
