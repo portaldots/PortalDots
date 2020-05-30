@@ -9,6 +9,7 @@ use App\Eloquents\Schedule;
 use App\Eloquents\Document;
 use App\Eloquents\Form;
 use App\Eloquents\CustomForm;
+use App\Services\Circles\SelectorService;
 
 class HomeAction extends Controller
 {
@@ -17,14 +18,26 @@ class HomeAction extends Controller
      */
     private const TAKE_COUNT = 5;
 
+    /**
+     * @var SelectorService
+     */
+    private $selectorService;
+
+    public function __construct(SelectorService $selectorService)
+    {
+        $this->selectorService = $selectorService;
+    }
+
     public function __invoke()
     {
+        $circle = $this->selectorService->getCircle();
+
         return view('v2.home')
             ->with('circle_custom_form', CustomForm::getFormByType('circle'))
             ->with('my_circles', Auth::check()
                                     ? Auth::user()->circles()->get()
                                     : collect([]))
-            ->with('pages', Page::byCircle(null)->take(self::TAKE_COUNT)->get())
+            ->with('pages', Page::byCircle($circle)->take(self::TAKE_COUNT)->get())
             ->with('remaining_pages_count', max(Page::count() - self::TAKE_COUNT, 0))
             ->with('next_schedule', Schedule::startOrder()->notStarted()->first())
             ->with('documents', Document::take(self::TAKE_COUNT)->public()->with('schedule')->get())
