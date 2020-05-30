@@ -22,6 +22,7 @@ import FormWithConfirm from './components/FormWithConfirm.vue'
 import StepsList from './components/StepsList.vue'
 import StepsListItem from './components/StepsListItem.vue'
 import TagsInput from './components/TagsInput.vue'
+import MarkdownEditor from './components/MarkdownEditor.vue'
 
 // Form Questions
 import QuestionItem from './components/Forms/QuestionItem.vue'
@@ -68,7 +69,8 @@ export function mountV2App() {
         QuestionHeading,
         StepsList,
         StepsListItem,
-        TagsInput
+        TagsInput,
+        MarkdownEditor
       },
       data() {
         return {
@@ -78,12 +80,11 @@ export function mountV2App() {
       mounted() {
         const loading = document.querySelector('#loading')
         loading.classList.add('is-done')
-
-        // フォーム送信時に送信ボタンを disabled にする
-        // this.$nextTick(() => {
-        //   this.registerSubmitHandler()
-        // })
       },
+      // destroyed() {
+      //   const loading = document.querySelector('#loading')
+      //   loading.classList.remove('is-done')
+      // },
       methods: {
         toggleDrawer() {
           this.isDrawerOpen = !this.isDrawerOpen
@@ -98,24 +99,6 @@ export function mountV2App() {
             window.alert('お使いのブラウザでは共有機能に対応していません')
           }
         }
-        // registerSubmitHandler() {
-        //   const forms = document.querySelectorAll('form')
-        //   const submits = document.querySelectorAll(
-        //     'button[type="submit"], input[type="submit"]'
-        //   )
-        //   const handler = () => {
-        //     /* eslint-disable no-restricted-syntax */
-        //     for (const submit of submits) {
-        //       submit.disabled = true
-        //     }
-        //     /* eslint-enable */
-        //   }
-        //   /* eslint-disable no-restricted-syntax */
-        //   for (const form of forms) {
-        //     form.addEventListener('submit', handler)
-        //   }
-        //   /* eslint- enable */
-        // }
       },
       watch: {
         isDrawerOpen(newVal) {

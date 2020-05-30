@@ -2,6 +2,7 @@
   <span
     class="badge"
     :class="{
+      'is-outline': outline,
       'is-primary': primary,
       'is-danger': danger,
       'is-success': success,
@@ -17,6 +18,10 @@
 <script>
 export default {
   props: {
+    outline: {
+      type: Boolean,
+      default: false
+    },
     primary: {
       type: Boolean,
       default: false
@@ -53,21 +58,15 @@ export default {
   line-height: 1.75;
   padding: 0 0.4em;
   text-align: center;
-  &.is-primary {
-    background: $color-primary;
-    color: #fff;
-  }
-  &.is-danger {
-    background: $color-danger;
-    color: #fff;
-  }
-  &.is-success {
-    background: $color-success;
-    color: #fff;
-  }
-  &.is-muted {
-    background: $color-muted;
-    color: #fff;
+  @each $state, $color in $semantic-colors {
+    &.is-outline.is-#{$state} {
+      border: 1px solid $color;
+      color: $color;
+    }
+    &:not(.is-outline).is-#{$state} {
+      background: $color;
+      color: #fff;
+    }
   }
   &.is-strong {
     font-weight: bolder;

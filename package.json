@@ -100,6 +100,7 @@
         "laravel-mix-polyfill": "^2.0.0",
         "marked": "^0.6.2",
         "replace": "^1.1.1",
+        "simplemde": "^1.11.2",
         "turbolinks": "^5.2.0",
         "vue": "^2.5.17",
         "vue-global-events": "^1.1.2",

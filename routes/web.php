@@ -141,6 +141,27 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
     ->prefix('/staff')
     ->name('staff.')
     ->group(function () {
+        // Markdown ガイド
+        //
+        // 外部サイトにしてしまうとリンク切れが発生する恐れがあるため、
+        // PortalDots 内部に Markdown ガイドを用意した
+        //
+        // このページのURLを変更する場合は
+        // resources/js/v2/components/MarkdownEditor.vue
+        // 内に含まれるこのページへのURLも修正すること
+        Route::view('/markdown-guide', 'v2.staff.markdown_guide')
+            ->name('markdown-guide');
+
+        // お知らせ
+        Route::prefix('/pages')
+            ->name('pages.')
+            ->group(function () {
+                Route::get('/create', 'Staff\Pages\CreateAction')->name('create');
+                Route::post('/', 'Staff\Pages\StoreAction')->name('store');
+                Route::get('/{page}', 'Staff\Pages\EditAction')->name('edit');
+                Route::patch('/{page}', 'Staff\Pages\UpdateAction')->name('update');
+            });
+
         // 申請
         Route::prefix('/forms/{form}')
             ->name('forms.')
@@ -190,7 +211,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::get('/circles/{circle}/edit', 'Staff\Circles\EditAction')->name('circles.edit');
         Route::patch('/circles/{circle}', 'Staff\Circles\UpdateAction')->name('circles.update');
         Route::get('/circles/create', 'Staff\Circles\CreateAction')->name('circles.create');
-        Route::post('/circles', 'Staff\Circles\StoreAction')->name('circles.new');
+        Route::post('/circles', 'Staff\Circles\StoreAction')->name('circles.store');
 
         // 企画所属者宛のメール送信
         Route::get('/circles/{circle}/email', 'Staff\Circles\SendEmails\IndexAction')->name('circles.email');

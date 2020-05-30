@@ -21,6 +21,12 @@ $color-border: #dae0e6;
 $color-bg-grey: #f3f4fa;
 $color-bg-light: #efefef;
 $color-bg-white: #FFF;
+$semantic-colors: (
+  primary: $color-primary,
+  danger: $color-danger,
+  success: $color-success,
+  muted: $color-muted
+);
 
 // Spacing (WIP)
 $spacing-xl: 4rem;

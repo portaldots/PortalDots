@@ -15,7 +15,7 @@
             </div>
         @endif
         <form method="post"
-            action="{{ empty($circle) ? route('staff.circles.new') : route('staff.circles.update', $circle) }}">
+            action="{{ empty($circle) ? route('staff.circles.store') : route('staff.circles.update', $circle) }}">
             @method(empty($circle) ? 'post' : 'patch' )
             @csrf
             <div class="card">
