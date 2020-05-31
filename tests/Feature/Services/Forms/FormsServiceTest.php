@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\App;
 
 class FormsServiceTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -31,7 +33,7 @@ class FormsServiceTest extends TestCase
     /**
      * @test
      */
-    public function 申請の複製ができるか()
+    public function copyForm_申請の複製ができる()
     {
         $form = $this->actingAs($this->user)->FormService->copyForm($this->form);
 
