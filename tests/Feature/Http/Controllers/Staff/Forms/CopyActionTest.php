@@ -27,7 +27,7 @@ class CopyActionTest extends TestCase
     public function FormsServiceのcopyFormが呼び出せる()
     {
         $this->mock(FormsService::class, function ($mock) {
-            $mock->shouldReceive('copyForm')->once()->andReturn($this->form);
+            $mock->shouldReceive('copyForm')->once()->with($this->form)->andReturn($this->form);
         });
 
         $responce = $this->actingAs($this->staff)
