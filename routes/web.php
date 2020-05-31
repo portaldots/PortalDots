@@ -195,6 +195,12 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                     });
 
                 Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction');
+
+                // フォームの複製
+                // TODO: CopyConfirmAction は、CodeIgniter から CopyAction へ直接 POST できない都合で挟んだクッションページなので、
+                // スタッフモードが Laravel 化したら CopyConfirmAction は消す。
+                Route::get('/copy', 'Staff\Forms\CopyConfirmAction')->name('copy');
+                Route::post('/copy', 'Staff\Forms\CopyAction');
             });
 
         // メール一斉送信

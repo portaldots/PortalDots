@@ -8,8 +8,8 @@
         <list-view>
             <template v-slot:title>アカウント削除</template>
             <list-view-card class="text-center">
-                @if ($is_admin)
-                    <p class="card-text">管理者ユーザーはアカウント削除できません。</p>
+                @if ($is_admin || $is_staff)
+                    <p class="card-text">管理者ユーザー・スタッフはアカウント削除できません。</p>
                     <div>
                         <a href="{{ route('home') }}" class="btn is-primary">ホームに戻る</a>
                     </div>
