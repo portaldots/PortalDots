@@ -9,32 +9,39 @@ $font-size: #{(14 / $base-font-size-px) + 'rem'};
 $font-size-input: #{(16 / $base-font-size-px) + 'rem'};
 
 // Color
-$color-success: #36B34E;
-$color-primary: #3490dc;
-$color-danger: #EF3F2F;
+$color-success: #1BA24E;
+$color-primary: #1879F4;
+$color-danger: #DB3C3E;
+$color-warning: #FE750A;
 $color-text: #22292F;
 $color-muted: #6c757d;
 $color-muted-2: #a7b6c2;
 $color-muted-3: #c3cfd8;
 $color-border: #dae0e6;
-$color-bg-grey: #f2f3f9;
-$color-bg-light: lighten($color-primary, 45);
+$color-bg-grey: #f3f4fa;
+$color-bg-light: #efefef;
 $color-bg-white: #FFF;
+$semantic-colors: (
+  primary: $color-primary,
+  danger: $color-danger,
+  success: $color-success,
+  muted: $color-muted
+);
 
 // Spacing (WIP)
-$spacing-xl: 6rem;
-$spacing-lg: 2.5rem;
+$spacing-xl: 4rem;
+$spacing-lg: 2rem;
 $spacing: 1.5rem;
-$spacing-s: 1.25rem;
+$spacing-s: 1.2rem;
 $spacing-md: 1rem;
 $spacing-sm: 0.5rem;
-$spacing-xs: 0.25rem;
+$spacing-xs: 0.2rem;
 $spacing-xxs: 0.1rem;
 
 // Parameters
 $drawer-width: 320px;
+$drawer-width-narrow: 280px;
 $navbar-height: 5rem;
-$content-width: calc(100vw - #{$drawer-width});
 $transition-base: 0.3s ease;
 $transition-base-fast: 0.15s ease;
 $border-radius: 0.25rem;
@@ -43,6 +50,7 @@ $bottom-tabs-container-width: 600px;
 $listview-border: 1px solid $color-border;
 $container-padding-x: $spacing;
 $container-padding-y: 0;
+$focus-outline: 3px solid rgba($color-primary, 0.25);
 
 // Container Width
 $container-width: 1024px;
@@ -50,7 +58,8 @@ $container-width-narrow: 400px;
 $container-width-medium: 800px;
 
 // Media Breakpoints
-$breakpoint-drawer-hide: 1240px;
+$breakpoint-drawer-narrow: 1240px;
+$breakpoint-drawer-hide: 1000px;
 $breakpoint-listview-sm: 860px;
 $breakpoint-bottom-tabs: $breakpoint-drawer-hide;
 $breakpoint-top-alert-col: 860px;
