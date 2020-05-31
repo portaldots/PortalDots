@@ -1,12 +1,15 @@
 .content {
-  margin-left: $drawer-width;
-  padding: $navbar-height 0 $spacing-lg;
+  padding: $navbar-height 0 $spacing-lg $drawer-width;
   &.is-no-drawer {
-    margin-left: 0;
+    padding-left: 0;
+  }
+
+  @media screen and (max-width: $breakpoint-drawer-narrow) {
+    padding-left: $drawer-width-narrow;
   }
 
   @media screen and (max-width: $breakpoint-drawer-hide) {
-    margin-left: 0;
+    padding-left: 0;
   }
 
   @media screen and (max-width: $breakpoint-bottom-tabs) {
