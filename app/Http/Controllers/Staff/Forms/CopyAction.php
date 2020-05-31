@@ -21,13 +21,6 @@ class CopyAction extends Controller
     {
         $form_copy = $this->formsService->copyForm($form);
 
-        if (empty($form_copy)) {
-            return redirect()
-            ->route('staff.forms.copy', ['form' => $form])
-            ->with('topAlert.title', '保存に失敗しました')
-            ->with('topAlert.type', 'danger');
-        }
-
         return redirect("/home_staff/applications/read/{$form_copy->id}?copied=1");
     }
 }
