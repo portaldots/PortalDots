@@ -35,6 +35,6 @@ class CopyActionTest extends TestCase
             ->post(route('staff.forms.copy', ['form' => $this->form]));
 
         // CodeIgniter を廃止したら↓を書き換える
-        $responce->assertRedirect("/home_staff/applications/read/1?copied=1");
+        $responce->assertRedirect("/home_staff/applications/read/{$this->form->id}?copied=1");
     }
 }
