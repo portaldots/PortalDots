@@ -70,8 +70,6 @@ use Symfony\Component\HttpFoundation\IpUtils;
         '/_debugbar',
         // インストーラー
         '/install',
-        // テスト（↓プルリクマージ前に消す）
-        '/hogehoge',
     ];
 
     if (file_exists($down_path = __DIR__. '/../storage/framework/down')) {
