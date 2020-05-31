@@ -18,16 +18,19 @@ class CopyActionTest extends TestCase
     {
         parent::setUp();
         $this->form = factory(Form::class)->create();
+        $this->form_copy = factory(Form::class)->create();
         $this->staff = factory(User::class)->states('staff')->create();
     }
 
     /**
      * @test
      */
-    public function FormsServiceのcopyFormが呼び出せる()
+    public function FormsServiceのcopyFormが呼び出される()
     {
         $this->mock(FormsService::class, function ($mock) {
-            $mock->shouldReceive('copyForm')->once()->with($this->form)->andReturn($this->form);
+            $mock->shouldReceive('copyForm')->once()->with(Mockery::on(function ($arg) {
+                return $this->form->id === $arg->id;
+            }))->andReturn($this->form_copy);
         });
 
         $responce = $this->actingAs($this->staff)
@@ -35,6 +38,6 @@ class CopyActionTest extends TestCase
             ->post(route('staff.forms.copy', ['form' => $this->form]));
 
         // CodeIgniter を廃止したら↓を書き換える
-        $responce->assertRedirect("/home_staff/applications/read/{$this->form->id}?copied=1");
+        $responce->assertRedirect("/home_staff/applications/read/{$this->form_copy->id}?copied=1");
     }
 }
