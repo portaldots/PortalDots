@@ -1444,6 +1444,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
         $data->unset_export			= $this->unset_export;
         $data->unset_print			= $this->unset_print;
         $data->set_editor			= $this->set_editor;
+        $data->set_copy_url			= $this->set_copy_url;
 
         $default_per_page = $this->config->default_per_page;
         $data->paging_options = $this->config->paging_options;
@@ -1460,6 +1461,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
             $data->list[$num_row]->delete_url = $data->delete_url.'/'.$row->{$data->primary_key};
             $data->list[$num_row]->read_url = $data->read_url.'/'.$row->{$data->primary_key};
             $data->list[$num_row]->editor_url = $this->getFormEditorUrl($row->{$data->primary_key});
+            $data->list[$num_row]->copy_form_url = base_url("/staff/forms/{$row->{$data->primary_key}}/copy");
         }
 
         if (!$ajax) {
@@ -3299,6 +3301,7 @@ class Grocery_CRUD extends grocery_CRUD_States
     protected $unset_edit_fields	= null;
     protected $unset_read_fields	= null;
     protected $set_editor			= false;
+    protected $set_copy_url			= false;
 
     /* Callbacks */
     protected $callback_before_insert 	= null;
@@ -3682,6 +3685,16 @@ class Grocery_CRUD extends grocery_CRUD_States
     public function set_editor() // フォームエディター用に作成
     {
         $this->set_editor = true;
+
+        return $this;
+    }
+
+    /**
+     * 申請コピー用のボタンを配置するための関数
+     */
+    public function set_copy_url()
+    {
+        $this->set_copy_url = true;
 
         return $this;
     }

@@ -33,7 +33,7 @@ class UpdateAction extends Controller
             abort(404);
         }
 
-        $this->editor->setKey('PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE', $request->users_number_to_submit_circle);
+        $this->editor->setKey('PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE', (int)$request->users_number_to_submit_circle);
         $this->editor->save();
 
         $this->formsService->updateForm($form->id, [

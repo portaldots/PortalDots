@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use App\Eloquents\CustomForm;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -11,6 +12,8 @@ abstract class TestCase extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        CustomForm::noCacheForm();
 
         $_SERVER["REMOTE_ADDR"] = '127.0.0.1';
         $_SERVER['SERVER_NAME'] = 'PHP.UNIT.TEST';

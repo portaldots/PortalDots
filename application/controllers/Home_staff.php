@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\CarbonImmutable;
+
 /**
  * ホーム(スタッフ用)コントローラ
  */
@@ -260,8 +262,12 @@ class Home_staff extends MY_Controller
             ['booth' => 'booth:ブース申請', 'circle' => 'circle:サークル申請']
         );
 
+        // 受付開始日時と終了日時のバリデーション
+        $this->grocery_crud->set_rules('close_at', '受付終了日時', 'callback__crud_form_check_dates['. $this->input->post('open_at', true). ']');
+
         $this->grocery_crud->unset_delete();
         $this->grocery_crud->set_editor();
+        $this->grocery_crud->set_copy_url();
 
         $vars += (array)$this->grocery_crud->render();
 
@@ -283,6 +289,22 @@ class Home_staff extends MY_Controller
     }
 
     /**
+     * フォームの受付終了日時が受付開始日時より後かどうかを判断するための Grocery CRUD コールバック関数
+     */
+    public function _crud_form_check_dates($close_at, $open_at)
+    {
+        $carbon_close_at = new CarbonImmutable($close_at);
+        $carbon_open_at = new CarbonImmutable($open_at);
+
+        if ($carbon_close_at->lte($carbon_open_at)) {
+            $this->form_validation->set_message('_crud_form_check_dates', '受付終了日時には、受付開始日時より後の日付を指定してください。');
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * 申請フォーム情報ページ(個別表示)
      *
      * applications/read/:id として使用
@@ -292,7 +314,7 @@ class Home_staff extends MY_Controller
         $vars = [];
         $vars["page_title"] = "回答一覧";
         $vars["main_page_type"] = "applications";
-
+        $vars["copied"] = $_GET['copied'] ?? '0';
         $this->forms->include_private = true;
 
         // フォーム情報を取得する
