@@ -352,9 +352,7 @@
                                     {% elseif question.type == "upload" %}
                                         {% if answer.answers[question.id] is not empty %}
                                             <a href="{{
-                                                strpos(answer.answers[question.id], 'answer_details') is same as(0)
-                                                      ? base_url( "staff/forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
-                                                      : base_url( "uploads/applications_form/#{answer.answers[question.id]}" )
+                                                base_url( "staff/forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
                                               }}"
                                               target="_blank">{{ str_replace('answer_details/', '', answer.answers[question.id]) }}</a>
                                         {% else %}
