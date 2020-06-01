@@ -35,6 +35,10 @@ export default {
       type: Boolean,
       default: false
     },
+    warning: {
+      type: Boolean,
+      default: false
+    },
     muted: {
       type: Boolean,
       default: false
@@ -66,6 +70,9 @@ export default {
     }
     &:not(.is-outline).is-#{$state} {
       background: $color;
+      // outlineバッジに比べ一回り小さく見えてしまわないように、
+      // outlineバッジと同様のborderをつける
+      border: 1px solid $color;
       color: #fff;
     }
   }
