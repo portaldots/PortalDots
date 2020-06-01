@@ -143,6 +143,15 @@ class Home_staff extends MY_Controller
         $vars["page_title"] = "お知らせ管理";
         $vars["main_page_type"] = "pages";
 
+        if ($this->uri->segment(3) === "add") {
+            codeigniter_redirect("/staff/pages/create");
+        }
+
+        if ($this->uri->segment(3) === "edit") {
+            $page_id = (int)$this->uri->segment(4);
+            codeigniter_redirect("/staff/pages/$page_id/edit");
+        }
+
         $this->grocery_crud->set_table('pages');
         $this->grocery_crud->set_subject('ページ');
         $this->grocery_crud->display_as('id', 'ページID');
