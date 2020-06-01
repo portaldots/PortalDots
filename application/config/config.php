@@ -60,8 +60,6 @@ if (!defined('PORTAL_UPLOAD_DIR')) {
 // PORTAL_UPLOAD_DIR と似た設定ですが、設定方法が異なります。
 // 先頭にスラッシュ(/)をつけることは で き ま せ ん。
 // public/index.php からみたディレクトリを指定してください。
-// ただし、さくらのレンタルサーバーにデプロイする場合、sakura_deploy.sh ファイルに
-// 記載されている PORTAL_UPLOAD_DIR_CRUD についての指示に従ってください
 if (!defined('PORTAL_UPLOAD_DIR_CRUD')) {
     define('PORTAL_UPLOAD_DIR_CRUD', codeigniter_env('PORTAL_UPLOAD_DIR_CRUD', '../application/uploads'));
 }
