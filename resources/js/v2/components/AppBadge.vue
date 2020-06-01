@@ -6,6 +6,7 @@
       'is-primary': primary,
       'is-danger': danger,
       'is-success': success,
+      'is-warning': warning,
       'is-muted': muted,
       'is-strong': strong,
       'is-small': small
@@ -31,6 +32,10 @@ export default {
       default: false
     },
     success: {
+      type: Boolean,
+      default: false
+    },
+    warning: {
       type: Boolean,
       default: false
     },
@@ -65,6 +70,9 @@ export default {
     }
     &:not(.is-outline).is-#{$state} {
       background: $color;
+      // outlineバッジに比べ一回り小さく見えてしまわないように、
+      // outlineバッジと同様のborderをつける
+      border: 1px solid $color;
       color: #fff;
     }
   }

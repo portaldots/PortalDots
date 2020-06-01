@@ -9,11 +9,11 @@ $font-size: #{(14 / $base-font-size-px) + 'rem'};
 $font-size-input: #{(16 / $base-font-size-px) + 'rem'};
 
 // Color
-$color-success: #1BA24E;
+$color-text: #22292F;
 $color-primary: #1879F4;
 $color-danger: #DB3C3E;
+$color-success: #1BA24E;
 $color-warning: #FE750A;
-$color-text: #22292F;
 $color-muted: #6c757d;
 $color-muted-2: #a7b6c2;
 $color-muted-3: #c3cfd8;
@@ -25,6 +25,7 @@ $semantic-colors: (
   primary: $color-primary,
   danger: $color-danger,
   success: $color-success,
+  warning: $color-warning,
   muted: $color-muted
 );
 
