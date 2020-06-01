@@ -42,9 +42,7 @@
                         本文&nbsp;
                         <app-badge outline muted>Markdown</app-badge>
                     </template>
-                    <markdown-editor input-name="body" default-value="{{ '<script>
-                        console.log("This is a XSS attack!");
-                </script>' }}" />
+                    <markdown-editor input-name="body" default-value="{{ '' }}" />
                     @if ($errors->has('body'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('body') as $message)
