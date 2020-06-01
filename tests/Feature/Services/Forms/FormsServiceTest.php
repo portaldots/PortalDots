@@ -19,7 +19,7 @@ class FormsServiceTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->FormService = App::make(FormsService::class);
+        $this->formsService = App::make(FormsService::class);
         $this->user = factory(User::class)->create();
         $this->form = factory(Form::class)->create([
             'name' => 'テスト申請',
@@ -35,7 +35,7 @@ class FormsServiceTest extends TestCase
      */
     public function copyForm_申請の複製ができる()
     {
-        $form = $this->actingAs($this->user)->FormService->copyForm($this->form);
+        $form = $this->formsService->copyForm($this->form, $this->user);
 
         $this->assertInstanceOf(Form::class, $form);
 
