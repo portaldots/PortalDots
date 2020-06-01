@@ -2,6 +2,13 @@
     {{ config('app.name') }}
 </a>
 <nav class="drawer-nav">
+    @if (Auth::check() && Auth::user()->is_staff)
+        <div class="px-spacing py-spacing">
+            <a href="/home_staff" class="btn is-primary is-block" data-turbolinks="false">
+                スタッフモードへ
+            </a>
+        </div>
+    @endif
     <a href="{{ route('home') }}" class="drawer-nav__link{{ Request::is('/') ? ' is-active' : '' }}">
         <i class="fas fa-home drawer-nav__icon fa-fw"></i>
         ホーム
