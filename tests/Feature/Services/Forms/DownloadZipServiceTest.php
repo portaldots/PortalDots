@@ -20,7 +20,7 @@ use App\Services\Forms\Exceptions\ZipArchiveNotSupportedException;
 
 class DownloadZipServiceTest extends TestCase
 {
-    // use RefreshDatabase;
+    use RefreshDatabase;
 
     private $form;
     private $answer;
