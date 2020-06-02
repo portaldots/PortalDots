@@ -117,7 +117,7 @@ class DownloadZipServiceTest extends TestCase
 
                 $mock->shouldReceive('addFile')
                     ->ordered()
-                    ->with(Storage::path("answer_details/{$filename}"), "{$filename}")
+                    ->with(Storage::path("answer_details/{$filename}"), $filename)
                     ->once();
 
                 if (++$count > 4) {
