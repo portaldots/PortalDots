@@ -51,14 +51,6 @@ class DownloadZipService
             ) {
                 // Project v2 申請フォームからアップロードされたファイル
                 return [$fullpath, str_replace('answer_details/', '', $path)];
-            } elseif (
-                file_exists($fullpath = config('portal.codeigniter_upload_dir') . '/form_file/' . basename($path)) &&
-                is_file($fullpath)
-            ) {
-                // CodeIgniter 申請フォームからアップロードされたファイル
-                //
-                // 将来的に、この elseif 節は廃止する
-                return [$fullpath, basename($path)];
             }
             return null;
         }, $uploaded_file_paths);
