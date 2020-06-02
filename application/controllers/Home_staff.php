@@ -1306,7 +1306,7 @@ class Home_staff extends MY_Controller
             );
         } else {
             // POST のとき
-            $code_on_session = $_SESSION["staff_verify_code"];
+            $code_on_session = isset($_SESSION["staff_verify_code"]) ? $_SESSION["staff_verify_code"] : null;
             unset($_SESSION["staff_verify_code"]);
 
             if (isset($code_on_session) &&
