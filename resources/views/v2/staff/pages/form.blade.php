@@ -86,17 +86,21 @@
 
             <list-view>
                 <template v-slot:title>メール配信</template>
+                <list-view-card>
+                    <i class="fas fa-exclamation-circle"></i>
+                    メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
+                </list-view-card>
                 <list-view-form-group>
                     <div class="form-checkbox">
                         <label class="form-checkbox__label">
-                            <input class="form-checkbox__input" type="checkbox" name="send_email" value="true">
+                            <input class="form-checkbox__input" type="checkbox" name="send_emails" value="true">
                             <strong>保存後にこのお知らせを「閲覧可能なユーザー」で指定したユーザー全員にメール配信</strong><br>
                             <span class="text-muted">このお知らせを保存したタイミングでの内容が配信されます。お知らせを編集しても、メール配信が完了するまで編集内容は反映されません。</span>
                         </label>
                     </div>
-                    @if ($errors->has('send_email'))
+                    @if ($errors->has('send_emails'))
                         <template v-slot:invalid>
-                            @foreach ($errors->get('send_email') as $message)
+                            @foreach ($errors->get('send_emails') as $message)
                                 <div>{{ $message }}</div>
                             @endforeach
                         </template>
