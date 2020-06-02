@@ -423,7 +423,7 @@ class Home_staff extends MY_Controller
                 } elseif ($question->type === "upload") {
                     // ファイルアップロード
                     $string_to_export .= "\t" .
-                        str_replace('answer_details/', 'answer_details__', $answer->answers[$question->id] ?? '');
+                        str_replace('answer_details/', '', $answer->answers[$question->id] ?? '');
                 } else {
                     // Not多肢選択式、Notファイルアップロード
                     $string_to_export .= "\t" .
@@ -1315,7 +1315,7 @@ class Home_staff extends MY_Controller
             );
         } else {
             // POST のとき
-            $code_on_session = $_SESSION["staff_verify_code"];
+            $code_on_session = isset($_SESSION["staff_verify_code"]) ? $_SESSION["staff_verify_code"] : null;
             unset($_SESSION["staff_verify_code"]);
 
             if (isset($code_on_session) &&

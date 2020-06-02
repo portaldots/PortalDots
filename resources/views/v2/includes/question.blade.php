@@ -16,7 +16,7 @@
         @endif
         @if ($question->type === 'upload' && !empty($answer) &&
             !empty($answer_details[$question->id]))
-            value="{{ strpos($answer_details[$question->id], 'answer_details') === 0 ? route($show_upload_route ?? 'forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question]) : url('/uploads/applications_form/' . $answer_details[$question->id]) }}"
+            value="{{ route($show_upload_route ?? 'forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question]) }}"
         @else
             v-bind:value="{{ json_encode(old('answers.' . $question->id, $answer_details[$question->id] ?? null)) }}"
         @endif

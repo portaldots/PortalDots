@@ -40,56 +40,25 @@ require_once(__DIR__. '/../vendor/autoload.php');
 
 use Symfony\Component\HttpFoundation\IpUtils;
 
-// 一部 Laravel にルーティング
+// ほとんどのページは Laravel にルーティング
+// スタッフモード等、一部のページのみ CodeIgniter へルーティング
 (function () {
-    // 以下の配列にあげたパスの他、
-    // Laravel 側でメンテナンスモードが有効になっている場合も、
-    // Laravel にルーティングされる
-    $LARAVEL_PATHS = [
-        // Home
-        '/pages',
-        '/documents',
-        '/schedules',
-        '/forms',
-        // Auth
-        '/login',
-        '/logout',
-        '/register',
-        '/password',
-        '/email',
-        // Users
-        '/user',
-        '/contacts',
-        '/selector',
-        // Circles
-        '/circles',
-        // Staff
-        '/staff',
-        '/admin',
-        // Debugbar
-        '/_debugbar',
-        // インストーラー
-        '/install',
-    ];
+    $request_uri = $_SERVER['REQUEST_URI'];
 
+    // メンテナンス中表示をするか判定
+    $is_maintenance = false;
     if (file_exists($down_path = __DIR__. '/../storage/framework/down')) {
         $data = json_decode(file_get_contents($down_path), true);
 
         if (!isset($data['allowed']) || !IpUtils::checkIp($_SERVER['REMOTE_ADDR'], (array) $data['allowed'])) {
             // メンテナンスモードが有効の場合、かつ許可 IP アドレスからのアクセスではない場合、Laravel へルーティング
-            require __DIR__. '/index_laravel.php';
-            exit;
+            $is_maintenance = true;
         }
     }
 
-    $request_uri = $_SERVER['REQUEST_URI'];
-
-    foreach ($LARAVEL_PATHS as $path) {
-        $path = str_replace('/', '\/', preg_quote($path));
-        if ($request_uri === '/' || preg_match('/^'. $path. '/', $request_uri)) {
-            require __DIR__. '/index_laravel.php';
-            exit;
-        }
+    if (!preg_match('/^\/home_staff/', $request_uri) || $is_maintenance) {
+        require __DIR__. '/index_laravel.php';
+        exit;
     }
 })();
 
