@@ -146,9 +146,7 @@
                         {% if not form.is_in_period or question.is_required %}</span>{% endif %}
                         |
                         <a href="{{
-                          strpos(answers[question.id], 'answer_details') is same as(0)
-                                ? base_url( "staff/forms/#{form.id}/answers/#{answer_info.id}/uploads/#{question.id}" )
-                                : base_url( "uploads/applications_form/#{answers[question.id]}" )
+                          base_url( "staff/forms/#{form.id}/answers/#{answer_info.id}/uploads/#{question.id}" )
                         }}" target="_blank">
                             アップロードされたファイルを表示...
                         </a>
