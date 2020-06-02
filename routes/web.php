@@ -201,6 +201,9 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         // スタッフが手動でメール認証を完了する
         Route::get('/users/{user}/verify', 'Staff\Users\Verify\IndexAction')->name('users.verify');
         Route::patch('/users/{user}', 'Staff\Users\Verify\UpdateAction')->name('users.verify.update');
+
+        // お問い合わせのメールリスト
+        Route::get('/contacts/emails', 'Staff\Contacts\Emails\IndexAction')->name('contacts.emails.index');
     });
 
 // 管理者ページ（多要素認証も済んでいる状態）
