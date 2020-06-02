@@ -78,27 +78,6 @@ class CreateActionTest extends TestCase
     /**
      * @test
      */
-    public function 自分が所属していない企画のページにはアクセスできない()
-    {
-        $anotherUser = factory(User::class)->create();
-        $anotherCircle = factory(Circle::class)->create();
-        $anotherUser->circles()->attach($anotherCircle->id, ['is_leader' => true]);
-
-        $response = $this
-                    ->actingAs($anotherUser)
-                    ->get(
-                        route('forms.answers.create', [
-                            'form' => $this->form,
-                            'circle' => $this->circle
-                        ])
-                    );
-
-        $response->assertStatus(403);
-    }
-
-    /**
-     * @test
-     */
     public function 非公開のフォームにはアクセスできない()
     {
         $privateForm = factory(Form::class)->states('private')->create();
