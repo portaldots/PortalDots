@@ -17,7 +17,7 @@
             <list-view-card>
                 件数によっては時間がかかる場合があります
             </list-view-card>
-            <form action="#" method="post">
+            <form action="{{ route('staff.circles.export') }}" method="post">
                 @method('post')
                 @csrf
                 <list-view-action-btn button submit>

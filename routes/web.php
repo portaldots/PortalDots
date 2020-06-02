@@ -200,6 +200,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
 
         // 企画情報エクスポート
         Route::get('/circles/export', 'Staff\Circles\Export\IndexAction')->name('circles.export');
+        Route::post('/circles/export', 'Staff\Circles\Export\ExportAction');
 
         // スタッフが手動でメール認証を完了する
         Route::get('/users/{user}/verify', 'Staff\Users\Verify\IndexAction')->name('users.verify');
