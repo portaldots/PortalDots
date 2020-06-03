@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Circles\Export;
+namespace App\Http\Controllers\Staff\Circles;
 
 use App\Exports\CirclesExport;
 use App\Http\Controllers\Controller;
