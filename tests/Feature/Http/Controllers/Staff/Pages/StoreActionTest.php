@@ -49,7 +49,10 @@ EOL
 
         $response->assertRedirect(route('staff.pages.create'));
 
-        $this->assertDatabaseHas('pages', $this->content);
+        $content_on_db = $this->content;
+        $content_on_db['created_by'] = $this->staff->id;
+
+        $this->assertDatabaseHas('pages', $content_on_db);
     }
 
     /**

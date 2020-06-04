@@ -10,6 +10,14 @@ class Page extends Model
 {
     use IsNewTrait;
 
+    protected $fillable = [
+        'title',
+        'body',
+        'created_by',
+        'updated_by',
+        'notes',
+    ];
+
     /**
      * モデルの「初期起動」メソッド
      *

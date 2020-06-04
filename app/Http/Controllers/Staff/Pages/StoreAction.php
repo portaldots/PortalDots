@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Staff\Pages;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Staff\Pages\PageRequest;
 
 class StoreAction extends Controller
 {
-    public function __invoke()
+    public function __invoke(PageRequest $request)
     {
-        return response('hello');
+        $values = $request->validated();
     }
 }

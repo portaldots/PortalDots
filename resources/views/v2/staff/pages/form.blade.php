@@ -42,7 +42,7 @@
                         本文&nbsp;
                         <app-badge outline muted>Markdown</app-badge>
                     </template>
-                    <markdown-editor input-name="body" default-value="{{ '' }}" />
+                    <markdown-editor input-name="body" default-value="{{ '' }}"></markdown-editor>
                     @if ($errors->has('body'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('body') as $message)
@@ -54,28 +54,15 @@
             </list-view>
 
             <list-view>
-                <template v-slot:title>お知らせを閲覧可能なユーザー</template>
                 <list-view-form-group>
-                    <div class="form-radio">
-                        <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="viewable_setting" value="all"
-                                {{ old('viewable_setting', isset($page) ? $page->viewable_setting : 'all') === 'all' ? 'checked' : '' }}>
-                            <strong>すべてのユーザー</strong><br>
-                            <span class="text-muted">ログインしていないユーザーも含め、全員に公開されます。</span>
-                        </label>
-                        <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="viewable_setting" value="tags"
-                                {{ old('viewable_setting', isset($page) ? $page->viewable_setting : 'all') === 'tags' ? 'checked' : '' }}>
-                            <strong>特定のタグを持つ企画</strong><br>
-                            <span class="text-muted">以下で指定するタグのうち、1つ以上該当する企画に公開されます。</span>
-                            <tags-input input-name="viewable_tags" placeholder="この入力欄とラジオボタンの実装はWIP"></tags-input>
-                        </label>
-                    </div>
-                    @if ($errors->has('viewable_setting') || $errors->has('viewable_tags'))
+                    <template v-slot:label>お知らせを閲覧可能なユーザー</template>
+                    <template v-slot:description>
+                        空欄の場合、未ログインユーザーを含む全員に公開されます。
+                        タグを指定した場合、指定したタグのうち、1つ以上該当する企画に公開されます。
+                    </template>
+                    <tags-input input-name="viewable_tags" placeholder="すべてのユーザー"></tags-input>
+                    @if ($errors->has('viewable_tags'))
                         <template v-slot:invalid>
-                            @foreach ($errors->get('viewable_setting') as $message)
-                                <div>{{ $message }}</div>
-                            @endforeach
                             @foreach ($errors->get('viewable_tags') as $message)
                                 <div>{{ $message }}</div>
                             @endforeach
@@ -85,11 +72,6 @@
             </list-view>
 
             <list-view>
-                <template v-slot:title>メール配信</template>
-                <list-view-card>
-                    <i class="fas fa-exclamation-circle"></i>
-                    メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
-                </list-view-card>
                 <list-view-form-group>
                     <div class="form-checkbox">
                         <label class="form-checkbox__label">
@@ -106,6 +88,10 @@
                         </template>
                     @endif
                 </list-view-form-group>
+                <list-view-card>
+                    <i class="fas fa-exclamation-circle"></i>
+                    メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
+                </list-view-card>
             </list-view>
 
             <list-view>
