@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use App\Eloquents\Circle;
+use App\Eloquents\ContactEmails;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactFormRequest;
 use App\Services\Contacts\ContactsService;
@@ -24,8 +25,14 @@ class PostAction extends Controller
     {
         $circle = !empty($request->circle_id) ? Circle::find($request->circle_id) : null;
         $sender = Auth::user();
+        $recipient =
+            ContactEmails::find($request->recipient) ??
+            new ContactEmails([
+                'email' => config('portal.contact_email'),
+                'name' => config('portal.admin_name'),
+            ]);
 
-        $this->contactsService->create($circle, $sender, $request->contact_body);
+        $this->contactsService->create($circle, $sender, $request->contact_body, $recipient);
 
         return redirect()
             ->route('contacts')

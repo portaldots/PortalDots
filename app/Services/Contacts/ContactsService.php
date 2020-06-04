@@ -6,6 +6,7 @@ namespace App\Services\Contacts;
 
 use Illuminate\Support\Facades\Mail;
 use App\Eloquents\Circle;
+use App\Eloquents\ContactEmails;
 use App\Eloquents\User;
 use App\Mail\Contacts\ContactMailable;
 
@@ -17,9 +18,10 @@ class ContactsService
      * @param Circle|null $circle お問い合わせ対象の企画
      * @param User $sender お問い合わせを作成したユーザー
      * @param string $contactBody お問い合わせ本文
+     * @param ContactEmails $recipient お問い合わせの宛先
      * @return bool
      */
-    public function create(?Circle $circle, User $sender, string $contactBody)
+    public function create(?Circle $circle, User $sender, string $contactBody, ContactEmails $recipient)
     {
         if (isset($circle) && is_iterable($circle->users) && count($circle->users) > 0) {
             // 企画に所属するユーザー全員に確認メールを送信する
@@ -31,7 +33,7 @@ class ContactsService
             $this->send($sender, null, $sender, $contactBody);
         }
 
-        $this->sendToStaff($circle, $sender, $contactBody);
+        $this->sendToStaff($circle, $sender, $contactBody, $recipient);
     }
 
     /**
@@ -59,13 +61,14 @@ class ContactsService
      * @param Circle|null $circle お問い合わせ対象の企画
      * @param User $sender お問い合わせを作成したユーザー
      * @param string $contactBody お問い合わせ本文
+     * @param ContactEmails $recipient お問い合わせの宛先
      * @return void
      */
-    private function sendToStaff(?Circle $circle, User $sender, string $contactBody)
+    private function sendToStaff(?Circle $circle, User $sender, string $contactBody, ContactEmails $recipient)
     {
         $senderText = isset($circle) ? $circle->name : $sender->name;
 
-        Mail::to(config('portal.contact_email'), config('portal.admin_name'))
+        Mail::to($recipient->email, $recipient->name)
             ->send(
                 (new ContactMailable($circle, $sender, $contactBody))
                     ->replyTo($sender)

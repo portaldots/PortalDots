@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Eloquents\Circle;
+use App\Eloquents\ContactEmails;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
@@ -40,5 +41,14 @@ class ContactFormRequest extends FormRequest
         return [
             'contact_body.required' => 'お問い合わせ内容は必ず入力してください',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if (!($this->recipient === '0' || ContactEmails::find($this->recipient))) {
+                $validator->errors()->add('recipient', '宛先を選択肢から選んでください');
+            }
+        });
     }
 }

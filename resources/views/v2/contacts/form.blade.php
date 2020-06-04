@@ -1,18 +1,29 @@
 @extends('v2.layouts.app')
 
 @section('title', 'お問い合わせ')
-    
+
 @section('content')
     <form method="post" action="{{ route('contacts.post') }}">
         @csrf
-    
+
         <app-container>
             <list-view>
                 <template v-slot:title>お問い合わせ</template>
                 <list-view-form-group label-for="recipient">
                     <template v-slot:label>宛先</template>
-                    <input type="text" id="recipient" readonly value="{{ config('portal.admin_name') }}"
-                        class="form-control is-plaintext">
+                    <select id="recipient" name="recipient" class="form-control @error('recipient') is-invalid @enderror ">
+                        <option value="0">{{ config('portal.admin_name') }}</option>
+                        @foreach ($recipients as $recipient)
+                            <option value="{{ $recipient->id }}" {{ old('recipient', 0) == $recipient->id ? 'selected' : '' }}>
+                                {{ $recipient->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('recipient')
+                    <template v-slot:invalid>
+                        {{ $message }}
+                    </template>
+                    @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="name">
                     <template v-slot:label>名前</template>
@@ -52,7 +63,7 @@
                         <textarea name="contact_body" id="contact_body"
                             class="form-control {{ $errors->has('contact_body') ? 'is-invalid' : '' }}" rows="10"
                             required>{{ old('contact_body') }}</textarea>
-    
+
                         @if ($errors->has('contact_body'))
                             <template v-slot:invalid>
                                 @foreach ($errors->get('contact_body') as $message)
