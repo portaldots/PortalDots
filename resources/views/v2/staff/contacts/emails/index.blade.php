@@ -1,6 +1,6 @@
 @extends('v2.layouts.no_drawer')
 
-@section('title', 'お問い合わせ - メールリスト')
+@section('title', 'お問い合わせ - メールアドレス一覧')
 
 @section('navbar')
     <app-nav-bar-back inverse href="{{ url('/home_staff') }}" data-turbolinks="false">
@@ -12,7 +12,7 @@
     <app-container medium>
         <list-view>
             <template v-slot:title>
-                お問い合わせ - メールリスト
+                お問い合わせ - メールアドレス一覧
             </template>
 
             <list-view-card>
@@ -26,7 +26,7 @@
                     {{ $email->email }}
                 </list-view-item>
             @endforeach
-            <list-view-action-btn href="#">
+            <list-view-action-btn href="{{ route('staff.contacts.emails.create') }}">
                 <i class="fas fa-plus"></i>
                 メールアドレスを追加
             </list-view-action-btn>

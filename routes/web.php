@@ -204,6 +204,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
 
         // お問い合わせのメールリスト
         Route::get('/contacts/emails', 'Staff\Contacts\Emails\IndexAction')->name('contacts.emails.index');
+        Route::get('/contacts/emails/create', 'Staff\Contacts\Emails\CreateAction')->name('contacts.emails.create');
+        Route::post('/contacts/emails/create', 'Staff\Contacts\Emails\StoreAction');
     });
 
 // 管理者ページ（多要素認証も済んでいる状態）
