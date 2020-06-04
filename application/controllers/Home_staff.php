@@ -1403,6 +1403,11 @@ class Home_staff extends MY_Controller
                     "name" => "スケジュール管理",
                     "url" => "home_staff/schedules",
                 ],
+                "contact-emails" => [
+                    "icon" => "at",
+                    "name" => "お問い合わせ メール管理",
+                    "url" => "staff/contacts/emails",
+                ],
                 // "contact" => [
                 //   "icon" => "envelope-o",
                 //   "name" => "お問い合わせ管理",
