@@ -51,6 +51,7 @@
                             <template v-slot:label>お問い合わせ項目</template>
                             <template v-slot:description>以下のリストから項目を選択してください</template>
                             <select id="subject" name="subject" class="form-control @error('subject') is-invalid @enderror ">
+                                <option hidden>選択してください</option>
                                 @foreach ($subjects as $subject)
                                     <option value="{{ $subject->id }}" {{ old('subject', 0) == $subject->id ? 'selected' : '' }}>
                                         {{ $subject->name }}
