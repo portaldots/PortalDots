@@ -206,6 +206,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::get('/contacts/emails', 'Staff\Contacts\Emails\IndexAction')->name('contacts.emails.index');
         Route::get('/contacts/emails/create', 'Staff\Contacts\Emails\CreateAction')->name('contacts.emails.create');
         Route::post('/contacts/emails/create', 'Staff\Contacts\Emails\StoreAction');
+        Route::get('/contacts/emails/{contact_email}/edit', 'Staff\Contacts\Emails\EditAction')->name('contacts.emails.edit');
+        Route::patch('/contacts/emails/{contact_email}', 'Staff\Contacts\Emails\UpdateAction')->name('contacts.emails.update');
     });
 
 // 管理者ページ（多要素認証も済んでいる状態）

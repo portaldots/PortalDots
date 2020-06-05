@@ -10,7 +10,11 @@
 
 @section('content')
     <app-container medium>
-        <form action="{{ route( isset($email) ? '#' : 'staff.contacts.emails.create') }}" method="post">
+        <form
+            action="{{ isset($email)
+                ? route('staff.contacts.emails.update', ['contact_email' => $email])
+                : route('staff.contacts.emails.create') }}"
+            method="post">
         @csrf
         @method(isset($email) ? 'patch' : 'post')
             <list-view>
@@ -31,18 +35,35 @@
                         class="form-control @error('name') is-invalid @enderror"
                         value="{{ old('name', $email->name ?? '') }}"
                         required>
+                        @error('name')
+                        <template v-slot:invalid>
+                            {{ $message }}
+                        </template>
+                        @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="email">
                     <template v-slot:label>
                         メールアドレス
+                    </template>
+                    <template v-slot:description>
+                        @isset($email)
+                            メールアドレスを変更すると変更後のメールアドレスにメールが送信されます
+                        @else
+                            保存した際に設定したメールアドレスにメールが送信されます
+                        @endisset
                     </template>
                     <input
                         type="email"
                         name="email"
                         id="email"
                         class="form-control @error('email') is-invalid @enderror"
-                        value="{{ old('email', $email->emails ?? '') }}"
+                        value="{{ old('email', $email->email ?? '') }}"
                         required>
+                        @error('email')
+                        <template v-slot:invalid>
+                            {{ $message }}
+                        </template>
+                        @enderror
                 </list-view-form-group>
             </list-view>
             <div class="text-center pt-spacing-md pb-spacing">

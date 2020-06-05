@@ -19,7 +19,7 @@
                 <p>ここでメールアドレスを設定するとポータルからのお問い合わせを振り分けることができます。</p>
             </list-view-card>
             @foreach ($emails as $email)
-                <list-view-item href="#">
+                <list-view-item href="{{ route('staff.contacts.emails.edit', ['contact_email' => $email]) }}">
                     <template v-slot:title>
                         {{ $email->name }}
                     </template>
