@@ -29,7 +29,7 @@ class PostAction extends Controller
             ContactEmails::find($request->subject) ??
             new ContactEmails([
                 'email' => config('portal.contact_email'),
-                'name' => config('portal.admin_name'),
+                'name' => 'その他',
             ]);
 
         $this->contactsService->create($circle, $sender, $request->contact_body, $subject);
