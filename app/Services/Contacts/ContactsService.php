@@ -18,10 +18,10 @@ class ContactsService
      * @param Circle|null $circle お問い合わせ対象の企画
      * @param User $sender お問い合わせを作成したユーザー
      * @param string $contactBody お問い合わせ本文
-     * @param ContactEmails $recipient お問い合わせの宛先
+     * @param ContactEmails $subject お問い合わせ項目
      * @return bool
      */
-    public function create(?Circle $circle, User $sender, string $contactBody, ContactEmails $recipient)
+    public function create(?Circle $circle, User $sender, string $contactBody, ContactEmails $subject)
     {
         if (isset($circle) && is_iterable($circle->users) && count($circle->users) > 0) {
             // 企画に所属するユーザー全員に確認メールを送信する
@@ -33,7 +33,7 @@ class ContactsService
             $this->send($sender, null, $sender, $contactBody);
         }
 
-        $this->sendToStaff($circle, $sender, $contactBody, $recipient);
+        $this->sendToStaff($circle, $sender, $contactBody, $subject);
     }
 
     /**
@@ -61,14 +61,14 @@ class ContactsService
      * @param Circle|null $circle お問い合わせ対象の企画
      * @param User $sender お問い合わせを作成したユーザー
      * @param string $contactBody お問い合わせ本文
-     * @param ContactEmails $recipient お問い合わせの宛先
+     * @param ContactEmails $subject お問い合わせ項目
      * @return void
      */
-    private function sendToStaff(?Circle $circle, User $sender, string $contactBody, ContactEmails $recipient)
+    private function sendToStaff(?Circle $circle, User $sender, string $contactBody, ContactEmails $subject)
     {
         $senderText = isset($circle) ? $circle->name : $sender->name;
 
-        Mail::to($recipient->email, $recipient->name)
+        Mail::to($subject->email, $subject->name)
             ->send(
                 (new ContactMailable($circle, $sender, $contactBody))
                     ->replyTo($sender)

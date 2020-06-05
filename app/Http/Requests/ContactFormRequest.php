@@ -46,8 +46,8 @@ class ContactFormRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if (!($this->recipient === '0' || ContactEmails::find($this->recipient))) {
-                $validator->errors()->add('recipient', '宛先を選択肢から選んでください');
+            if (!($this->subject === '0' || ContactEmails::find($this->subject))) {
+                $validator->errors()->add('subject', 'お問い合わせ項目を選択肢から選んでください');
             }
         });
     }

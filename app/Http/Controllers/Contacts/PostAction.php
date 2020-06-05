@@ -25,14 +25,14 @@ class PostAction extends Controller
     {
         $circle = !empty($request->circle_id) ? Circle::find($request->circle_id) : null;
         $sender = Auth::user();
-        $recipient =
-            ContactEmails::find($request->recipient) ??
+        $subject =
+            ContactEmails::find($request->subject) ??
             new ContactEmails([
                 'email' => config('portal.contact_email'),
                 'name' => config('portal.admin_name'),
             ]);
 
-        $this->contactsService->create($circle, $sender, $request->contact_body, $recipient);
+        $this->contactsService->create($circle, $sender, $request->contact_body, $subject);
 
         return redirect()
             ->route('contacts')

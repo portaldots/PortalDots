@@ -11,19 +11,8 @@
                 <template v-slot:title>お問い合わせ</template>
                 <list-view-form-group label-for="recipient">
                     <template v-slot:label>宛先</template>
-                    <select id="recipient" name="recipient" class="form-control @error('recipient') is-invalid @enderror ">
-                        <option value="0">{{ config('portal.admin_name') }}</option>
-                        @foreach ($recipients as $recipient)
-                            <option value="{{ $recipient->id }}" {{ old('recipient', 0) == $recipient->id ? 'selected' : '' }}>
-                                {{ $recipient->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('recipient')
-                    <template v-slot:invalid>
-                        {{ $message }}
-                    </template>
-                    @enderror
+                    <input type="text" id="recipient" readonly value="{{ config('portal.admin_name') }}"
+                        class="form-control is-plaintext">
                 </list-view-form-group>
                 <list-view-form-group label-for="name">
                     <template v-slot:label>名前</template>
@@ -56,6 +45,27 @@
                             @endforeach
                         </select>
                         </list-view-form-group>
+                    @endunless
+                    @unless($subjects->isEmpty())
+                        <list-view-form-group label-for="subject">
+                            <template v-slot:label>お問い合わせ項目</template>
+                            <template v-slot:description>以下のリストから項目を選択してください</template>
+                            <select id="subject" name="subject" class="form-control @error('subject') is-invalid @enderror ">
+                                <option value="0">全般</option>
+                                @foreach ($subjects as $subject)
+                                    <option value="{{ $subject->id }}" {{ old('subject', 0) == $subject->id ? 'selected' : '' }}>
+                                        {{ $subject->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('subject')
+                            <template v-slot:invalid>
+                                {{ $message }}
+                            </template>
+                            @enderror
+                        </list-view-form-group>
+                    @else
+                        <input type="hidden" id="subject" name="subject" value="0">
                     @endunless
                     <list-view-form-group label-for="contact_body">
                         <template v-slot:label>お問い合わせ内容</template>

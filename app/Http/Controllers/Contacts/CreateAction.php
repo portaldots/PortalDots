@@ -14,6 +14,6 @@ class CreateAction extends Controller
     {
         return view('v2.contacts.form')
             ->with('circles', Auth::user()->circles()->get())
-            ->with('recipients', ContactEmails::all());
+            ->with('subjects', ContactEmails::all());
     }
 }
