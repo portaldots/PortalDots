@@ -5,6 +5,7 @@ namespace App\Eloquents;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Collection;
 use App\Eloquents\Circle;
 use App\Eloquents\CircleUser;
 
@@ -74,6 +75,25 @@ class User extends Authenticatable
     public function circles()
     {
         return $this->belongsToMany(Circle::class)->using(CircleUser::class)->withPivot('is_leader');
+    }
+
+    /**
+     * 指定したタグ（複数可）を持つ企画に所属するユーザーだけに限定するクエリスコープ
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param Collection|null $tags
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByTags($query, ?Collection $tags = null)
+    {
+        if (empty($tags) || $tags->isEmpty()) {
+            return $query;
+        }
+
+        return self::leftJoin('circle_user', 'users.id', '=', 'circle_user.user_id')
+            ->leftJoin('circles', 'circle_user.circle_id', '=', 'circles.id')
+            ->leftJoin('circle_tag', 'circles.id', '=', 'circle_tag.circle_id')
+            ->whereIn('circle_tag.tag_id', $tags->pluck('id')->all());
     }
 
     /**
