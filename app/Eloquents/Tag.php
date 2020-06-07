@@ -12,7 +12,7 @@ class Tag extends Model
 
     public function circles()
     {
-        $this->belongsToMany(Circle::class);
+        return $this->belongsToMany(Circle::class);
     }
 
     public function pages()
