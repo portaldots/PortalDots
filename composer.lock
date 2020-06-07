@@ -739,16 +739,16 @@
         },
         {
             "name": "jackiedo/dotenv-editor",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JackieDo/Laravel-Dotenv-Editor.git",
-                "reference": "f54431c5a86d341e15c6b96c384133ea3c4ff67d"
+                "reference": "44062c804e6fa777c01d9fba3bd8fe9a57ec25f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JackieDo/Laravel-Dotenv-Editor/zipball/f54431c5a86d341e15c6b96c384133ea3c4ff67d",
-                "reference": "f54431c5a86d341e15c6b96c384133ea3c4ff67d",
+                "url": "https://api.github.com/repos/JackieDo/Laravel-Dotenv-Editor/zipball/44062c804e6fa777c01d9fba3bd8fe9a57ec25f0",
+                "reference": "44062c804e6fa777c01d9fba3bd8fe9a57ec25f0",
                 "shasum": ""
             },
             "require": {
@@ -789,7 +789,7 @@
                 "dotenv-editor",
                 "laravel"
             ],
-            "time": "2020-04-14T08:52:20+00:00"
+            "time": "2020-06-07T00:55:45+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -6254,6 +6254,5 @@
         "php": "^7.3.6",
         "ext-mbstring": "*"
     },
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }
