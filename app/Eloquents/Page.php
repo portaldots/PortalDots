@@ -32,6 +32,12 @@ class Page extends Model
         });
     }
 
+    public function viewableTags()
+    {
+        return $this->belongsToMany(Tag::class, 'page_viewable_tags')
+            ->using(PageViewableTag::class);
+    }
+
     /**
      * 指定した企画が閲覧できるお知らせの一覧を取得できるクエリスコープ
      *

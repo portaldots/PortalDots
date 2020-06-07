@@ -14,4 +14,10 @@ class Tag extends Model
     {
         $this->belongsToMany(Circle::class);
     }
+
+    public function pages()
+    {
+        return $this->belongsToMany(Page::class, 'page_viewable_tags')
+            ->using(PageViewableTag::class);
+    }
 }
