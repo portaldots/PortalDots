@@ -75,7 +75,7 @@
                 <list-view-form-group>
                     <div class="form-checkbox">
                         <label class="form-checkbox__label">
-                            <input class="form-checkbox__input" type="checkbox" name="send_emails" value="true">
+                            <input class="form-checkbox__input" type="checkbox" name="send_emails" value="1">
                             <strong>保存後にこのお知らせを「閲覧可能なユーザー」で指定したユーザー全員にメール配信</strong><br>
                             <span class="text-muted">このお知らせを保存したタイミングでの内容が配信されます。お知らせを編集しても、メール配信が完了するまで編集内容は反映されません。</span>
                         </label>

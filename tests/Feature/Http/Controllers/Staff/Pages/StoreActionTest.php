@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Eloquents\Tag;
+use App\Eloquents\Circle;
 use App\Eloquents\User;
 use App\Eloquents\Page;
 use App\Eloquents\Email;
@@ -18,14 +19,14 @@ class StoreActionTest extends TestCase
     private $staff;
 
     private $content = [
-        'title' => 'お知らせ作成テスト123',
-        'body' => <<< EOL
-        これはお知らせです。
+    'title' => 'お知らせ作成テスト123',
+    'body' => <<< EOL
+これはお知らせです。
 
-        # 見出しです。
-        - リストです
-        - リストです
-            - リストです
+# 見出しです。
+- リストです
+- リストです
+    - リストです
 EOL
     ];
 
@@ -63,15 +64,14 @@ EOL
         $this->assertSame(0, Page::count());
 
         // 送信先用にたくさんユーザーを作成する
-        factory(User::class, 442);
+        factory(User::class, 40)->create();
 
         $post_content = $this->content;
-        $post_content['send_emails'] = 'true';
+        $post_content['send_emails'] = '1';
 
         $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.pages.store'), $post_content);
-
 
         $this->assertDatabaseHas('pages', $this->content);
 
@@ -86,30 +86,41 @@ EOL
         $tags_count = 4;
         $tags = factory(Tag::class, $tags_count)->create();
 
+        // 送信先用にたくさんユーザーを作成する
+        $users = factory(User::class, 40)->create();
+        $circles = factory(Circle::class, 40)->create();
+        $tags = factory(Tag::class, 10)->create();
+
+        for ($i = 0; $i < count($circles); ++$i) {
+            $circles[$i]->tags()->attach($tags[$i % 10]);
+            $circles[$i]->users()->attach($users[$i & 40]);
+        }
+
         $this->assertSame(0, DB::table('page_viewable_tags')->count());
 
         $post_content = $this->content;
-        $post_content['viewable_tags'] = $tags->pluck('name')->toArray();
+        $post_content['send_emails'] = '1';
+        // $tags[2] と $tags[5] の2つを、閲覧可能なタグとして指定する
+        // （該当する企画数は 8）
+        $post_content['viewable_tags'] = [$tags[2]->name, $tags[5]->name];
 
         $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.pages.store'), $post_content);
 
-        $this->assertSame($tags_count, DB::table('page_viewable_tags')->count());
+        $this->assertSame(2, DB::table('page_viewable_tags')->count());
+        $this->assertSame(
+            User::byTags(
+                Tag::whereIn('id', [$tags[2]->id, $tags[5]->id])->get()
+            )->count(),
+            Email::count()
+        );
     }
 
     /**
      * @test
      */
-    public function 特定タグの企画に対し一斉送信予約する()
-    {
-        $this->markTestIncomplete('プルリクマージ前にこのテストも書く');
-    }
-
-    /**
-     * @test
-     */
-    public function 未作成のタグを指定した場合はエラーになる()
+    public function 未作成のタグを指定した場合は無視される()
     {
         $tag = factory(Tag::class)->create();
 
@@ -123,8 +134,8 @@ EOL
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.pages.store'), $post_content);
 
-        // 未作成のタグが1つでも混じっていた場合、一切保存しない
-        $this->assertSame(0, Page::count());
-        $this->assertSame(0, DB::table('page_viewable_tags')->count());
+        $this->assertSame(1, Page::count());
+        // 未作成のタグが混じっていた場合、作成済みタグのみ保存される
+        $this->assertSame(1, DB::table('page_viewable_tags')->count());
     }
 }
