@@ -34,7 +34,7 @@ class StoreAction extends Controller
                 $values['body'],
                 Auth::user(),
                 $values['notes'] ?? '',
-                $values['viewable_tags'] ?? [],
+                $values['viewable_tags'] ?? []
             );
 
             if ($values['send_emails'] ?? false) {
