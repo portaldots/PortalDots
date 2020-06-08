@@ -96,7 +96,7 @@
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
         "font-awesome": "^4.7.0",
-        "laravel-mix": "^4.0.7",
+        "laravel-mix": "^5.0.4",
         "laravel-mix-polyfill": "^2.0.0",
         "marked": "^0.6.2",
         "replace": "^1.1.1",
