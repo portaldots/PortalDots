@@ -14,4 +14,9 @@ use DB;
 
 class StoreActionTest extends TestCase
 {
+    // リクエストの内容が createPage メソッドに渡されるか
+
+    // バリデーションエラーがちゃんと発生するか
+
+    // 一斉配信予約した場合は sendEmailsByPage が呼ばれるか
 }
