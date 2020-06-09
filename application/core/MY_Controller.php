@@ -52,7 +52,7 @@ class MY_Controller extends CI_Controller
         //オプションを指定して、twigインスタンス生成
         $option = [
             'cache' => false,
-            'debug' => ( ENVIRONMENT === 'development' ) ? true : false
+            'debug' => (ENVIRONMENT === 'development') ? true : false
         ];
         $this->twig = new Twig_Environment($loader, $option);
 
