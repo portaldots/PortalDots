@@ -128,7 +128,11 @@ if (!defined('MAIL_PORT')) {
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = codeigniter_env('APP_URL', 'http://localhost/');
+if (ENVIRONMENT === 'development') {
+    $config['base_url'] = '/';
+} else {
+    $config['base_url'] = codeigniter_env('APP_URL', 'http://localhost/');
+}
 
 /*
 |--------------------------------------------------------------------------
