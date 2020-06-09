@@ -9,25 +9,12 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 class CirclesExport implements FromCollection, WithHeadings, WithMapping
 {
-    private $headings = [
-        'id' => 'id',
-        'name' => '企画名',
-        'name_yomi' => '企画名（よみ）',
-        'group_name' => '団体名',
-        'group_name_yomi' => '団体名（よみ）',
-        'status' => 'ステータス',
-        'notes' => 'スタッフメモ',
-        'leader_id' => '責任者 ユーザーID',
-        'leader_student_id' => '責任者 学籍番号',
-        'leader_name' => '責任者 氏名',
-    ];
-
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        return Circle::Submitted()->with('leader')->get();
+        return Circle::submitted()->with('leader', 'tags')->get();
     }
 
     /**
@@ -35,19 +22,38 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
     */
     public function map($circle): array
     {
+        $tags = [];
+
+        foreach ($circle->tags->all() as $tag) {
+            $tags[] = $tag->name;
+        }
+
         $leader = $circle->leader->first();
 
+        if ($circle->status === 'approved') {
+            $status = '受理';
+        } elseif ($circle->status === 'rejected') {
+            $status = '不受理';
+        } else {
+            $status = '確認中';
+        }
+
         return [
-            'id' => $circle->id,
-            'name' => $circle->name,
-            'name_yomi' => $circle->name_yomi,
-            'group_name' => $circle->group_name,
-            'group_name_yomi' => $circle->group_name_yomi,
-            'status' => $circle->status,
-            'notes' => $circle->notes,
-            'leader_id' => $leader->id ?? null,
-            'leader_student_id' => $leader->student_id ?? null,
-            'leader_name' => $leader->name ?? null,
+            $circle->id,
+            $circle->name,
+            $circle->name_yomi,
+            $circle->group_name,
+            $circle->group_name_yomi,
+            join(',', $tags),
+            $circle->submitted_at,
+            $status,
+            $circle->status_set_by,
+            $circle->created_at,
+            $circle->updated_at,
+            $circle->notes,
+            $leader->id ?? null,
+            $leader->student_id ?? null,
+            $leader->name ?? null,
         ];
     }
 
@@ -56,6 +62,22 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
      */
     public function headings(): array
     {
-        return $this->headings;
+        return [
+            '企画ID',
+            '企画の名前',
+            '企画の名前（よみ）',
+            '企画団体の名前',
+            '企画団体の名前（よみ）',
+            'タグ',
+            '参加登録提出日時',
+            '登録受理状況',
+            '登録受理状況設定者ID',
+            '作成日時',
+            '更新日時',
+            'スタッフメモ',
+            '責任者 ユーザーID',
+            '責任者 学籍番号',
+            '責任者 氏名',
+        ];
     }
 }
