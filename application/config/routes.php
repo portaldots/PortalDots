@@ -62,9 +62,6 @@ $route["forms/(:num)/answers/(:num)/edit"] = "home/Applications_form/index/$1/$2
 // ...企画ID/b:ブースID/forms/フォームID/タイプ => applications_form/フォームID/企画ID/タイプ/ブースID
 // $route["home/applications/(:num)/b:(:num)/forms/(:num)/(:any)"] = "home/Applications_form/index/$3/$1/$4/$2";
 
-// Uploads
-$route['uploads/applications_form/(:any)'] = 'uploads/applications_form/index/$1';
-
 // Schedules
 $route['home/schedules/(:num)/(:num)/(:num)'] = 'home/schedules/index/$1/$2/$3';
 $route['home/schedules/(:num)/(:num)'] = 'home/schedules/index/$1/$2';

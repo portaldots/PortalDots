@@ -414,7 +414,7 @@ class Home_staff extends MY_Controller
                 } elseif ($question->type === "upload") {
                     // ファイルアップロード
                     $string_to_export .= "\t" .
-                        str_replace('answer_details/', 'answer_details__', $answer->answers[$question->id] ?? '');
+                        str_replace('answer_details/', '', $answer->answers[$question->id] ?? '');
                 } else {
                     // Not多肢選択式、Notファイルアップロード
                     $string_to_export .= "\t" .

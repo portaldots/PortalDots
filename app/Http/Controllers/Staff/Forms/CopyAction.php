@@ -19,7 +19,7 @@ class CopyAction extends Controller
 
     public function __invoke(Form $form)
     {
-        $form_copy = $this->formsService->copyForm($form);
+        $form_copy = $this->formsService->copyForm($form, Auth::user());
 
         return redirect("/home_staff/applications/read/{$form_copy->id}?copied=1");
     }

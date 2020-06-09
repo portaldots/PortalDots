@@ -20,7 +20,7 @@ use App\Services\Forms\Exceptions\ZipArchiveNotSupportedException;
 
 class DownloadZipServiceTest extends TestCase
 {
-    // use RefreshDatabase;
+    use RefreshDatabase;
 
     private $form;
     private $answer;
@@ -117,7 +117,7 @@ class DownloadZipServiceTest extends TestCase
 
                 $mock->shouldReceive('addFile')
                     ->ordered()
-                    ->with(Storage::path("answer_details/{$filename}"), "answer_details__{$filename}")
+                    ->with(Storage::path("answer_details/{$filename}"), $filename)
                     ->once();
 
                 if (++$count > 4) {
@@ -131,7 +131,7 @@ class DownloadZipServiceTest extends TestCase
 
                 $mock->shouldReceive('addFile')
                     ->ordered()
-                    ->with(Storage::path("answer_details/{$filename}"), "answer_details__{$filename}")
+                    ->with(Storage::path("answer_details/{$filename}"), $filename)
                     ->once();
             }
 
