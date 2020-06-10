@@ -17,7 +17,7 @@ class ShowAction extends Controller
         }
 
         // basename: ディレクトリ・トラバーサル脆弱性対策
-        $path = config('portal.codeigniter_upload_dir') . '/documents/' . basename($document->filename);
+        $path = config('portal.codeigniter_upload_dir') . '/documents/' . basename($document->path);
 
         return response()->file($path);
     }

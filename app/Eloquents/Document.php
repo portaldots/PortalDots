@@ -15,6 +15,19 @@ class Document extends Model
         'is_important' => 'bool',
     ];
 
+    protected $fillable = [
+        'name',
+        'description',
+        'path',
+        'size',
+        'extension',
+        'created_by',
+        'updated_by',
+        'is_public',
+        'is_important',
+        'notes',
+    ];
+
     /**
      * モデルの「初期起動」メソッド
      *
