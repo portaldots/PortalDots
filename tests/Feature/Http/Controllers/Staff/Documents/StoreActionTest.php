@@ -60,7 +60,7 @@ class StoreActionTest extends TestCase
 
         $responce = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
-            ->post(route('staff.documents.store', [
+            ->post(route('staff.documents.store'), [
                 'name' => 'document name',
                 'description' => 'document description',
                 'file' => $file,
@@ -68,7 +68,7 @@ class StoreActionTest extends TestCase
                 'is_important' => '1',
                 'schedule_id' => null,
                 'notes' => 'notes',
-            ]));
+            ]);
 
         $responce->assertSessionHasNoErrors();
 

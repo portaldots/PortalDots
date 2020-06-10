@@ -34,5 +34,9 @@ class StoreAction extends Controller
             !empty($validated['schedule_id']) ? Schedule::findOrFail($validated['schedule_id']) : null,
             $validated['notes']
         );
+
+        return redirect()
+            ->route('staff.documents.create')
+            ->with('topAlert.title', '配布資料を作成しました');
     }
 }
