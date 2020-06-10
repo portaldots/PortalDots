@@ -21,7 +21,7 @@ class CreatePolicy
     {
     }
 
-    public function __invoke(User $user)
+    public function __invoke(?User $user)
     {
         $custom_form = CustomForm::getFormByType('circle');
         return isset($custom_form)
