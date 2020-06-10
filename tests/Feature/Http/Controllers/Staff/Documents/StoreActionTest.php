@@ -30,7 +30,7 @@ class StoreActionTest extends TestCase
     /**
      * @test
      */
-    public function DocumentsServiceのcreateFormが呼び出される()
+    public function DocumentsServiceのcreateDocumentが呼び出される()
     {
         Storage::fake('local');
 

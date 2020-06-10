@@ -30,7 +30,7 @@ class UpdateActionTest extends TestCase
     /**
      * @test
      */
-    public function DocumentsServiceのupdateFormが呼び出される()
+    public function DocumentsServiceのupdateDocumentが呼び出される()
     {
         $document = factory(Document::class)->create();
 
