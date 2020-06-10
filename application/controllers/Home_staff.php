@@ -1071,8 +1071,7 @@ class Home_staff extends MY_Controller
     public function _crud_download_document($value, $row)
     {
         if (!empty($row->path)) {
-            return $value = '<a href="'. base_url("documents/". $row->id). '"  target="_blank">'.
-                $row->path. '</a>';
+            return $value = '<a href="'. base_url("documents/". $row->id). '"  target="_blank">表示</a>';
         }
         return $value = "-";
     }

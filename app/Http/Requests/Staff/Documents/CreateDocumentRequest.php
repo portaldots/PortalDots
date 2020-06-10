@@ -4,7 +4,7 @@ namespace App\Http\Requests\Staff\Documents;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DocumentRequest extends FormRequest
+class CreateDocumentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,8 +27,8 @@ class DocumentRequest extends FormRequest
             'name' => ['required', 'string'],
             'description' => ['nullable', 'string'],
             'file' => ['required', 'file'],
-            'is_public' => ['nullable', 'boolean'],
-            'is_important' => ['nullable', 'boolean'],
+            'is_public' => ['required', 'boolean'],
+            'is_important' => ['required', 'boolean'],
             'schedule_id' => ['nullable', 'exists:schedules,id'],
             'notes' => ['nullable', 'string'],
         ];

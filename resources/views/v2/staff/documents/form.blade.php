@@ -50,18 +50,27 @@
                         </template>
                     @endif
                 </list-view-form-group>
-                <list-view-form-group label-for="file">
-                    <template v-slot:label>ファイル</template>
-                    <input id="file" class="form-control @error('file') is-invalid @enderror" type="file"
-                        name="file" required>
-                    @if ($errors->has('file'))
-                        <template v-slot:invalid>
-                            @foreach ($errors->get('file') as $message)
-                                {{ $message }}
-                            @endforeach
-                        </template>
-                    @endif
-                </list-view-form-group>
+                @empty($document)
+                    <list-view-form-group label-for="file">
+                        <template v-slot:label>ファイル</template>
+                        <input id="file" class="form-control @error('file') is-invalid @enderror" type="file"
+                            name="file" required>
+                        @if ($errors->has('file'))
+                            <template v-slot:invalid>
+                                @foreach ($errors->get('file') as $message)
+                                    {{ $message }}
+                                @endforeach
+                            </template>
+                        @endif
+                    </list-view-form-group>
+                @else
+                    <list-view-form-group>
+                        <template v-slot:label>ファイル</template>
+                        <template v-slot:description>{{ $document->extension }}ファイル • {{ $document->size }}バイト</template>
+                        {{-- TOOD: スタッフ用のファイル表示 Action を別途用意する --}}
+                        <a href="{{ route('documents.show', ['document' => $document]) }}" class="btn is-primary" target="_blank" rel="noopener">表示</a>
+                    </list-view-form-group>
+                @endempty
             </list-view>
             <list-view>
                 <list-view-form-group>

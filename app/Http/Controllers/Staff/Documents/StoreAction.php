@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Staff\Documents;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Services\Documents\DocumentsService;
-use App\Http\Requests\Staff\Documents\DocumentRequest;
+use App\Http\Requests\Staff\Documents\CreateDocumentRequest;
 use App\Eloquents\Schedule;
 
 class StoreAction extends Controller
@@ -20,7 +20,7 @@ class StoreAction extends Controller
         $this->documentsService = $documentsService;
     }
 
-    public function __invoke(DocumentRequest $request)
+    public function __invoke(CreateDocumentRequest $request)
     {
         $validated = $request->validated();
 
