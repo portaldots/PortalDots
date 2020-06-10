@@ -27,6 +27,10 @@
                                 •
                                 {{ $document->schedule->name }}で配布
                             @endisset
+                            <br>
+                            {{ strtoupper($document->extension) }}ファイル
+                            •
+                            @filesize($document->size)
                         </template>
                         @summary($document->description)
                     </list-view-item>
