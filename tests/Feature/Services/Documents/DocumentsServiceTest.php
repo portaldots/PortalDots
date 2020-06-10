@@ -60,7 +60,7 @@ class DocumentsServiceTest extends TestCase
             'description' => '第２回会議にて配布した資料のPDFバージョンです',
             'path' => "documents/{$file->hashName()}",
             'size' => $filesize * 1024, // 単位 : バイト
-            // 'extension' => 'pdf',    // fake file だと getExtension メソッドが機能しないらしい
+            'extension' => 'pdf',
             'created_by' => $this->staff->id,
             'updated_by' => $this->staff->id,
             'is_public' => true,
