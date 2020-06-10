@@ -25,9 +25,14 @@ class UpdateDocumentRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = App::make(CreateDocumentRequest::class)->rules();
-        Arr::forget($rules, 'file');
-        return $rules;
+        return [
+            'name' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
+            'is_public' => ['required', 'boolean'],
+            'is_important' => ['required', 'boolean'],
+            'schedule_id' => ['nullable', 'exists:schedules,id'],
+            'notes' => ['nullable', 'string'],
+        ];
     }
 
     /**
@@ -37,11 +42,20 @@ class UpdateDocumentRequest extends FormRequest
      */
     public function attributes()
     {
-        return App::make(CreateDocumentRequest::class)->attributes();
+        return [
+            'name' => '配布資料名',
+            'description' => '説明',
+            'is_public' => '公開',
+            'is_important' => '重要',
+            'schedule_id' => 'イベント',
+            'notes' => 'スタッフ用メモ',
+        ];
     }
 
     public function messages()
     {
-        return App::make(CreateDocumentRequest::class)->messages();
+        return [
+            'schedule_id.exists' => '指定されたイベントは見つかりません',
+        ];
     }
 }

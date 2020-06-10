@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Documents\DocumentsService;
 use App\Http\Requests\Staff\Documents\UpdateDocumentRequest;
 use App\Eloquents\Schedule;
+use App\Eloquents\Document;
 
 class UpdateAction extends Controller
 {

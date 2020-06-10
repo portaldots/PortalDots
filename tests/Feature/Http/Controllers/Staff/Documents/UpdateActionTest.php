@@ -36,7 +36,9 @@ class UpdateActionTest extends TestCase
 
         $this->mock(DocumentsService::class, function ($mock) use ($document) {
             $mock->shouldReceive('updateDocument')->once()->with(
-                $document,
+                Mockery::on(function ($arg) use ($document) {
+                    return $document->id === $arg->id;
+                }),
                 'document name',
                 'document description',
                 Mockery::on(function ($arg) {
@@ -46,7 +48,7 @@ class UpdateActionTest extends TestCase
                 true,
                 null,
                 'notes'
-            )->andReturn($document);
+            )->andReturn(true);
         });
 
         $responce = $this->actingAs($this->staff)
