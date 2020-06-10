@@ -978,6 +978,16 @@ class Home_staff extends MY_Controller
         $vars["page_title"] = "配布資料管理";
         $vars["main_page_type"] = "documents";
 
+        if ($this->uri->segment(3) === "edit") {
+            $circle_id = $this->uri->segment(4);
+            $edit_url = ['staff', 'documents', $circle_id, 'edit'];
+            codeigniter_redirect(base_url($edit_url));
+        } elseif ($this->uri->segment(3) === "add") {
+            $edit_url = ['staff', 'documents', 'create'];
+            codeigniter_redirect(base_url($edit_url));
+        }
+
+
         $this->grocery_crud->set_table('documents');
         $this->grocery_crud->set_subject('配布資料');
         $this->grocery_crud->display_as('id', '配布資料ID');
