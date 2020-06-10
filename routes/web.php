@@ -201,6 +201,16 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         // スタッフが手動でメール認証を完了する
         Route::get('/users/{user}/verify', 'Staff\Users\Verify\IndexAction')->name('users.verify');
         Route::patch('/users/{user}', 'Staff\Users\Verify\UpdateAction')->name('users.verify.update');
+
+        // 配布資料
+        Route::prefix('/documents')
+            ->name('documents.')
+            ->group(function () {
+                // Route::get('/{document}/edit', 'Staff\Documents\EditAction')->name('edit');
+                // Route::patch('/{document}', 'Staff\Documents\UpdateAction')->name('update');
+                Route::get('/create', 'Staff\Documents\CreateAction')->name('create');
+                Route::post('/', 'Staff\Documents\StoreAction')->name('store');
+            });
     });
 
 // 管理者ページ（多要素認証も済んでいる状態）

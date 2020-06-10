@@ -40,7 +40,7 @@ class DocumentsServiceTest extends TestCase
         Storage::fake('local');
 
         $filesize = 1;  // 単位 : KiB
-        $file = UploadedFile::fake()->create('第２回.pdf', 1, 'application/pdf');
+        $file = UploadedFile::fake()->create('第２回.pdf', $filesize, 'application/pdf');
 
         $document = $this->documentsService->createDocument(
             '第２回会議資料',
