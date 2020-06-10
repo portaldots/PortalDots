@@ -104,7 +104,7 @@
                             <input class="form-radio__input" type="radio" name="is_important" id="isImportantRadios1" value="1"
                                 {{ old('is_important', isset($document) ? $document->is_important : false) === true ? 'checked' : '' }}>
                             <strong>重要</strong><br>
-                            <span class="text-muted">ユーザーには配布資料名が赤色で表示されます</span>
+                            <span class="text-muted">ユーザーには配布資料が強調されて表示されます</span>
                         </label>
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="is_important" id="isImportantRadios2" value="0"
