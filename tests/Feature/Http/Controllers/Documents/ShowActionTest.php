@@ -15,7 +15,7 @@ class ShowActionTest extends TestCase
     use RefreshDatabase;
 
     private $document;
-    private $staff;
+    private $user;
 
     public function setUp(): void
     {
@@ -30,6 +30,9 @@ class ShowActionTest extends TestCase
             'size' => $file->getSize(),
             'extension' => $file->getClientOriginalExtension(),
         ]);
+
+        // ユーザー
+        $this->user = factory(User::class)->create();
     }
 
     /**
@@ -37,7 +40,8 @@ class ShowActionTest extends TestCase
      */
     public function ダウンロードできる()
     {
-        $response = $this->get(route('documents.show', [
+        $response = $this->actingAs($this->user)
+            ->get(route('documents.show', [
                 'document' => $this->document
             ]));
 
@@ -52,7 +56,8 @@ class ShowActionTest extends TestCase
         $this->document->is_public = false;
         $this->document->save();
 
-        $response = $this->get(route('documents.show', [
+        $response = $this->actingAs($this->user)
+            ->get(route('documents.show', [
                 'document' => $this->document
             ]));
 
