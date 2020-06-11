@@ -45,9 +45,9 @@ class UpdateDocumentRequest extends FormRequest
         return [
             'name' => '配布資料名',
             'description' => '説明',
-            'is_public' => '公開',
-            'is_important' => '重要',
-            'schedule_id' => 'イベント',
+            'is_public' => '公開設定',
+            'is_important' => 'この配布資料は重要かどうか',
+            'schedule_id' => '配布したイベント',
             'notes' => 'スタッフ用メモ',
         ];
     }
