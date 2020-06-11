@@ -63,4 +63,16 @@ class ShowActionTest extends TestCase
 
         $response->assertStatus(404);
     }
+
+    /**
+     * @test
+     */
+    public function 未ログイン状態ではダウンロードできない()
+    {
+        $response = $this->get(route('documents.show', [
+                'document' => $this->document
+            ]));
+
+        $response->assertStatus(302);
+    }
 }
