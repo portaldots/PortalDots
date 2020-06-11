@@ -987,7 +987,6 @@ class Home_staff extends MY_Controller
             codeigniter_redirect(base_url($edit_url));
         }
 
-
         $this->grocery_crud->set_table('documents');
         $this->grocery_crud->set_subject('配布資料');
         $this->grocery_crud->display_as('id', '配布資料ID');
