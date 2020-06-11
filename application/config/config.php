@@ -49,13 +49,6 @@ if (!defined('PORTAL_UNIVEMAIL_DOMAIN')) {
     define('PORTAL_UNIVEMAIL_DOMAIN', codeigniter_env('PORTAL_UNIVEMAIL_DOMAIN', 'example.com'));
 }
 
-# ファイルアップロード先ディレクトリ(フォルダ)
-// 必ず、ア ク セ ス 禁 止 の デ ィ レ ク ト リ を指定してください。
-// 末尾のスラッシュ(/)は不要です。
-if (!defined('PORTAL_UPLOAD_DIR')) {
-    define('PORTAL_UPLOAD_DIR', codeigniter_env('PORTAL_UPLOAD_DIR', __DIR__. '/../uploads'));
-}
-
 # LINE Notify スタッフ同報設定
 // ポータルに関する各種お知らせをLINE Notifyで通知できるようにするための機能です。
 // 特定個人に対してLINEする機能ではありません。あくまでもスタッフ同報用です。
