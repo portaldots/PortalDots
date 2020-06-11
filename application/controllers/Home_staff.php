@@ -1036,8 +1036,6 @@ class Home_staff extends MY_Controller
 
         $this->grocery_crud->required_fields('name', 'path');
 
-        $this->grocery_crud->set_field_upload('path', PORTAL_UPLOAD_DIR_CRUD . '/documents');
-
         $this->grocery_crud->callback_before_delete(array($this, '_crud_documents_before_delete'));
 
         // ファイル表示リンクにする
