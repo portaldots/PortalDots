@@ -50,7 +50,7 @@
                     <template v-slot:label>配布したイベント</template>
                     <select id="schedule_id" class="form-control @error('schedule_id') is-invalid @enderror" type="text"
                         name="schedule_id">
-                        <option {{ old('schedule_id', empty($document) ? null : $document->schedule_id) === null ? 'selected' : '' }}>指定しない</option>
+                        <option value="" {{ old('schedule_id', empty($document) ? null : $document->schedule_id) === null ? 'selected' : '' }}>指定しない</option>
                         @foreach($schedules as $_)
                             <option
                                 value="{{ $_->id }}"
@@ -101,12 +101,12 @@
                     <div class="form-radio">
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="is_public" id="isPublicRadios1" value="1"
-                                {{ old('is_public', isset($document) ? $document->is_public : true) === true ? 'checked' : '' }}>
+                                {{ (bool)old('is_public', isset($document) ? $document->is_public : true) === true ? 'checked' : '' }}>
                             <strong>公開</strong>
                         </label>
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="is_public" id="isPublicRadios2" value="0"
-                                {{ old('is_public', isset($document) ? $document->is_public : true) === false ? 'checked' : '' }}>
+                                {{ (bool)old('is_public', isset($document) ? $document->is_public : true) === false ? 'checked' : '' }}>
                             <strong>非公開</strong>
                         </label>
                     </div>
@@ -125,13 +125,13 @@
                     <div class="form-radio">
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="is_important" id="isImportantRadios1" value="1"
-                                {{ old('is_important', isset($document) ? $document->is_important : false) === true ? 'checked' : '' }}>
+                                {{ (bool)old('is_important', isset($document) ? $document->is_important : false) === true ? 'checked' : '' }}>
                             <strong>重要</strong><br>
                             <span class="text-muted">ユーザーには配布資料が強調されて表示されます</span>
                         </label>
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="is_important" id="isImportantRadios2" value="0"
-                                {{ old('is_important', isset($document) ? $document->is_important : false) === false ? 'checked' : '' }}>
+                                {{ (bool)old('is_important', isset($document) ? $document->is_important : false) === false ? 'checked' : '' }}>
                             <strong>重要ではない</strong>
                         </label>
                     </div>
