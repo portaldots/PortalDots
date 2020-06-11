@@ -151,8 +151,6 @@
                 </list-view-form-group>
             </list-view>
 
-            {{-- TODO: スケジュール入力欄 --}}
-
             <list-view>
                 <list-view-form-group label-for="notes">
                     <template v-slot:label>スタッフ用メモ</template>
