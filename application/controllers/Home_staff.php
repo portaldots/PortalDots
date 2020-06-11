@@ -1038,12 +1038,27 @@ class Home_staff extends MY_Controller
 
         $this->grocery_crud->set_field_upload('path', PORTAL_UPLOAD_DIR_CRUD . '/documents');
 
+        $this->grocery_crud->callback_before_delete(array($this, '_crud_documents_before_delete'));
+
         // ファイル表示リンクにする
         $this->grocery_crud->callback_column('path', array($this, '_crud_download_document'));
 
         $vars += (array)$this->grocery_crud->render();
 
         $this->_render('home_staff/crud', $vars);
+    }
+
+    /**
+     * 配布資料が削除される前に実行する Grocery CRUD コールバック関数
+     */
+    public function _crud_documents_before_delete($id)
+    {
+        $this->db->select('path');
+        $this->db->where('id', $id);
+        $document = $this->db->get('documents')->row();
+        unlink(APPPATH . '../storage/app/documents/'. basename($document->path));
+
+        return true;
     }
 
     /**
