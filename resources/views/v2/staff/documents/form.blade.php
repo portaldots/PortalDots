@@ -27,7 +27,10 @@
             <list-view>
                 @empty($document)
                     <list-view-form-group label-for="file">
-                        <template v-slot:label>ファイル</template>
+                        <template v-slot:label>
+                            ファイル
+                            <app-badge danger>必須</app-badge>
+                        </template>
                         <input id="file" class="form-control @error('file') is-invalid @enderror" type="file"
                             name="file" required>
                         @if ($errors->has('file'))
@@ -46,6 +49,22 @@
                         <a href="{{ route('documents.show', ['document' => $document]) }}" class="btn is-primary" target="_blank" rel="noopener">表示</a>
                     </list-view-form-group>
                 @endempty
+                <list-view-form-group label-for="name">
+                    <template v-slot:label>
+                        配布資料名
+                        <app-badge danger>必須</app-badge>
+                    </template>
+                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text"
+                        name="name" value="{{ old('name', empty($document) ? '' : $document->name) }}"
+                        required>
+                    @if ($errors->has('name'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('name') as $message)
+                                {{ $message }}
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
                 <list-view-form-group label-for="schedule_id">
                     <template v-slot:label>配布したイベント</template>
                     <select id="schedule_id" class="form-control @error('schedule_id') is-invalid @enderror" type="text"
@@ -64,19 +83,6 @@
                     @if ($errors->has('schedule_id'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('schedule_id') as $message)
-                                {{ $message }}
-                            @endforeach
-                        </template>
-                    @endif
-                </list-view-form-group>
-                <list-view-form-group label-for="name">
-                    <template v-slot:label>配布資料名</template>
-                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text"
-                        name="name" value="{{ old('name', empty($document) ? '' : $document->name) }}"
-                        required>
-                    @if ($errors->has('name'))
-                        <template v-slot:invalid>
-                            @foreach ($errors->get('name') as $message)
                                 {{ $message }}
                             @endforeach
                         </template>
