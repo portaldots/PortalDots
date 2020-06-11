@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Controllers\Staff\Documents;
 
 use App\Eloquents\Document;
 use App\Eloquents\User;
+use App\Eloquents\Schedule;
 use App\Services\Documents\DocumentsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -43,7 +44,9 @@ class StoreActionTest extends TestCase
             'extension' => 'pdf',
         ]);
 
-        $this->mock(DocumentsService::class, function ($mock) use ($document) {
+        $schedule = factory(Schedule::class)->create();
+
+        $this->mock(DocumentsService::class, function ($mock) use ($document, $schedule) {
             $mock->shouldReceive('createDocument')->once()->with(
                 'document name',
                 'document description',
@@ -53,7 +56,9 @@ class StoreActionTest extends TestCase
                 }),
                 false,
                 true,
-                null,
+                Mockery::on(function ($arg) use ($schedule) {
+                    return $schedule->id === $arg->id && $schedule->name === $arg->name;
+                }),
                 'notes'
             )->andReturn($document);
         });
@@ -66,7 +71,7 @@ class StoreActionTest extends TestCase
                 'file' => $file,
                 'is_public' => '0',
                 'is_important' => '1',
-                'schedule_id' => null,
+                'schedule_id' => $schedule->id,
                 'notes' => 'notes',
             ]);
 

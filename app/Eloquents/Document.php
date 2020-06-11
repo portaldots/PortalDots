@@ -25,6 +25,7 @@ class Document extends Model
         'updated_by',
         'is_public',
         'is_important',
+        'schedule_id',
         'notes',
     ];
 
