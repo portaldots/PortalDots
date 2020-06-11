@@ -1060,6 +1060,17 @@ class Home_staff extends MY_Controller
     }
 
     /**
+     * ドキュメントファイルのダウンロードリンクを表示させるための Grocery CRUD コールバック関数
+     */
+    public function _crud_download_document($value, $row)
+    {
+        if (!empty($row->path)) {
+            return $value = '<a href="'. base_url("staff/documents/". $row->id). '"  target="_blank">表示</a>';
+        }
+        return $value = "-";
+    }
+
+    /**
      * スケジュール情報ページ
      */
     public function schedules()
@@ -1086,17 +1097,6 @@ class Home_staff extends MY_Controller
         $vars += (array)$this->grocery_crud->render();
 
         $this->_render('home_staff/crud', $vars);
-    }
-
-    /**
-     * ドキュメントファイルのダウンロードリンクを表示させるための Grocery CRUD コールバック関数
-     */
-    public function _crud_download_document($value, $row)
-    {
-        if (!empty($row->path)) {
-            return $value = '<a href="'. base_url("documents/". $row->id). '"  target="_blank">表示</a>';
-        }
-        return $value = "-";
     }
 
     /**

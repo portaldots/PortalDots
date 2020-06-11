@@ -46,7 +46,7 @@
                         <template v-slot:label>ファイル</template>
                         <template v-slot:description>{{ strtoupper($document->extension) }}ファイル • @filesize($document->size)</template>
                         {{-- TOOD: スタッフ用のファイル表示 Action を別途用意する --}}
-                        <a href="{{ route('documents.show', ['document' => $document]) }}" class="btn is-primary" target="_blank" rel="noopener">表示</a>
+                        <a href="{{ route('staff.documents.show', ['document' => $document]) }}" class="btn is-primary" target="_blank" rel="noopener">表示</a>
                     </list-view-form-group>
                 @endempty
                 <list-view-form-group label-for="name">
