@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Documents;
 
-use Auth;
 use Storage;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Document;
 

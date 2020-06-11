@@ -25,7 +25,6 @@ Route::prefix('/pages')
 // 配布資料
 Route::prefix('/documents')
     ->name('documents.')
-    ->middleware(['auth', 'verified'])  // TODO: PortalDots ではミドルウェアを外す
     ->group(function () {
         Route::get('/', 'Documents\IndexAction')->name('index');
         Route::get('/{document}', 'Documents\ShowAction')->name('show');
