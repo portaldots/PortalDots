@@ -32,7 +32,7 @@
                             •
                             @filesize($document->size)
                         </template>
-                        @summary($document->description)
+                        {{ $document->description }}
                     </list-view-item>
                 @endforeach
                 @if ($documents->hasPages())
