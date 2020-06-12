@@ -45,6 +45,9 @@ class StoreAction extends Controller
 
         return redirect()
             ->route('staff.pages.create')
-            ->with('topAlert.title', 'お知らせを作成しました');
+            ->with('topAlert.title', 'お知らせを作成しました')
+            ->with('topAlert.body', ($values['send_emails'] ?? false)
+                ? 'また、このお知らせの一斉送信を予約しました'
+                : null);
     }
 }

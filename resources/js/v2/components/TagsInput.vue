@@ -9,7 +9,10 @@
       :autocomplete-items="filteredItems"
       :add-only-from-autocomplete="addOnlyFromAutocomplete"
       :is-duplicate="isDuplicate"
-      :placeholder="placeholder"
+      :placeholder="
+        tags.length === 0 && placeholderEmpty ? placeholderEmpty : placeholder
+      "
+      :autocomplete-min-length="0"
     />
     <template v-if="inputName">
       <input
@@ -50,6 +53,10 @@ export default {
     placeholder: {
       type: String,
       default: 'タグを追加'
+    },
+    placeholderEmpty: {
+      type: String,
+      required: false
     }
   },
   data() {

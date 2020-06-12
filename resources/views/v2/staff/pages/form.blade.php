@@ -42,7 +42,7 @@
                         本文&nbsp;
                         <app-badge outline muted>Markdown</app-badge>
                     </template>
-                    <markdown-editor input-name="body" default-value="{{ '' }}"></markdown-editor>
+                    <markdown-editor input-name="body" default-value="{{ empty($page) ? '' : $page->body }}"></markdown-editor>
                     @if ($errors->has('body'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('body') as $message)
@@ -60,7 +60,14 @@
                         空欄の場合、未ログインユーザーを含む全員に公開されます。
                         タグを指定した場合、指定したタグのうち、1つ以上該当する企画に公開されます。
                     </template>
-                    <tags-input input-name="viewable_tags" placeholder="すべてのユーザー"></tags-input>
+                    <tags-input
+                        input-name="viewable_tags"
+                        placeholder="企画タグを指定"
+                        placeholder-empty="企画タグを指定 (空欄の場合すべてのユーザーに公開)"
+                        v-bind:default-tags="{{ $default_tags }}"
+                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}"
+                        add-only-from-autocomplete
+                    ></tags-input>
                     @if ($errors->has('viewable_tags'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('viewable_tags') as $message)

@@ -63,7 +63,7 @@ class PagesService
      * @param Page $page 更新するお知らせ
      * @param string $title タイトル
      * @param string $body 本文
-     * @param User $created_by 作成者
+     * @param User $updated_by 更新者
      * @param string $notes スタッフ用メモ
      * @param array|null $viewable_tags お知らせを閲覧可能な企画のタグ
      * @return bool
@@ -72,16 +72,15 @@ class PagesService
         Page $page,
         string $title,
         string $body,
-        User $created_by,
+        User $updated_by,
         string $notes,
         ?array $viewable_tags = null
     ): bool {
-        return DB::transaction(function () use ($page, $title, $body, $created_by, $notes, $viewable_tags) {
+        return DB::transaction(function () use ($page, $title, $body, $updated_by, $notes, $viewable_tags) {
             $page->update([
                 'title' => $title,
                 'body' => $body,
-                'created_by' => $created_by->id,
-                'updated_by' => $created_by->id,
+                'updated_by' => $updated_by->id,
                 'notes' => $notes,
             ]);
 

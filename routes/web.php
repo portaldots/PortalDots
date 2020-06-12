@@ -158,7 +158,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             ->group(function () {
                 Route::get('/create', 'Staff\Pages\CreateAction')->name('create');
                 Route::post('/', 'Staff\Pages\StoreAction')->name('store');
-                Route::get('/{page}', 'Staff\Pages\EditAction')->name('edit');
+                Route::get('/{page}/edit', 'Staff\Pages\EditAction')->name('edit');
                 Route::patch('/{page}', 'Staff\Pages\UpdateAction')->name('update');
             });
 
