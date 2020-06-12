@@ -17,6 +17,15 @@ $step = 3;
     @isset ($circle)
         <p class="text-muted">
             {{ $circle->name }}
+
+            @php
+            $this_user = $circle->users()->wherePivot('user_id', Auth::id())->first();
+            @endphp
+
+            @if (!empty($this_user) && $this_user->pivot->is_leader)
+                —
+                <a href="{{ route('circles.delete', ['circle' => $circle]) }}">この参加登録を削除</a>
+            @endif
         </p>
     @endisset
     <steps-list>
