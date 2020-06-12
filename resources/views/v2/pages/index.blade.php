@@ -11,7 +11,7 @@
                 @foreach ($pages as $page)
                     <list-view-item
                         href="{{ route('pages.show', $page) }}"
-                        {{ $page->usersWhoRead->isEmpty() ? 'unread' : '' }}
+                        {{ Auth::check() && $page->usersWhoRead->isEmpty() ? 'unread' : '' }}
                     >
                         <template v-slot:title>
                             @if (!$page->viewableTags->isEmpty())
