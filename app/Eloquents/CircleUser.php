@@ -9,4 +9,8 @@ use App\Eloquents\User;
 class CircleUser extends Pivot
 {
     public $incrementing = true;
+
+    protected $casts = [
+        'is_leader' => 'bool',
+    ];
 }
