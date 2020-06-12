@@ -39,6 +39,14 @@ class Page extends Model
     }
 
     /**
+     * このお知らせを読んだユーザー
+     */
+    public function usersWhoRead()
+    {
+        return $this->belongsToMany(User::class, 'reads')->using(Read::class);
+    }
+
+    /**
      * 指定した企画が閲覧できるお知らせの一覧を取得できるクエリスコープ
      *
      * $circle を省略した場合、閲覧できる企画が限られているお知らせを

@@ -78,6 +78,14 @@ class User extends Authenticatable
     }
 
     /**
+     * このユーザーが読んだお知らせ
+     */
+    public function pagesRead()
+    {
+        return $this->belongsToMany(Page::class, 'reads')->using(Read::class);
+    }
+
+    /**
      * 指定したタグ（複数可）を持つ企画に所属するユーザーだけに限定するクエリスコープ
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

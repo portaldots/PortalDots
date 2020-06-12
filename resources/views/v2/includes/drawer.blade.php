@@ -33,6 +33,11 @@
     <a href="{{ route('pages.index') }}" class="drawer-nav__link{{ Request::is('pages*') ? ' is-active' : '' }}">
         <i class="fas fa-bullhorn drawer-nav__icon fa-fw"></i>
         お知らせ
+        @if ($pages_unread_count > 0)
+            <app-badge primary pill strong class="drawer-nav__badge">
+                {{ $pages_unread_count }}
+            </app-badge>
+        @endif
     </a>
     <a href="{{ route('documents.index') }}"
         class="drawer-nav__link{{ Request::is('documents*') ? ' is-active' : '' }}">

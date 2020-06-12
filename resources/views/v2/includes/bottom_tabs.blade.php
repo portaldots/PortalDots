@@ -6,7 +6,12 @@
         </a>
         <a href="{{ route('pages.index') }}" class="bottom_tabs-tab{{ Request::is('pages*') ? ' is-active' : '' }}">
             <i class="fas fa-bullhorn bottom_tabs-tab__icon"></i>
-            <div class="bottom_tabs-tab__label">お知らせ</div>
+            <div class="bottom_tabs-tab__label">
+                @if ($pages_unread_count > 0)
+                    <small class="text-primary">●</small>
+                @endif
+                お知らせ
+            </div>
         </a>
         <a href="{{ route('documents.index') }}"
             class="bottom_tabs-tab{{ Request::is('documents*') ? ' is-active' : '' }}">

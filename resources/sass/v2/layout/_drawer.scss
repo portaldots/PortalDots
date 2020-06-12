@@ -139,6 +139,9 @@
     &__link:focus &__icon {
       outline: $focus-outline;
     }
+    &__badge {
+      float: right;
+    }
   }
   &-user {
     @include divider(false);
