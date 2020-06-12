@@ -1,6 +1,6 @@
 @extends('v2.layouts.no_drawer')
 
-@section('title', empty($page) ? '新規作成 — お知らせ' : "{$page->name} — お知らせ")
+@section('title', empty($page) ? '新規作成 — お知らせ' : "{$page->title} — お知らせ")
 
 @section('navbar')
     <app-nav-bar-back inverse href="{{ url('/home_staff/pages') }}" data-turbolinks="false">

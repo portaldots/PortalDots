@@ -11,6 +11,11 @@
                 @foreach ($pages as $page)
                     <list-view-item href="{{ route('pages.show', $page) }}">
                         <template v-slot:title>
+                            @if (!$page->viewableTags->isEmpty())
+                                <app-badge muted outline>限定公開</app-badge>
+                            @else
+                                <app-badge primary outline>全員に公開</app-badge>
+                            @endif
                             {{ $page->title }}
                             @if ($page->isNew())
                                 <app-badge danger>NEW</app-badge>

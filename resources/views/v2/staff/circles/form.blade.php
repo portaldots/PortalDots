@@ -73,7 +73,8 @@
                     <template v-slot:description>
                         企画をタグで分類できます(例 : <app-badge primary>ステージ企画</app-badge>、<app-badge primary>模擬店</app-badge>、<app-badge
                             primary>講義棟教室</app-badge>、<app-badge primary>食品販売</app-badge>)。<br>
-                        タグに応じて、閲覧可能なお知らせ、ダウンロード可能な配布資料、回答可能な申請フォームを制限することもできます。</template>
+                        タグに応じて、閲覧可能なお知らせ、ダウンロード可能な配布資料、回答可能な申請フォームを制限することもできます。
+                    </template>
                     <tags-input input-name="tags" v-bind:default-tags="{{ $default_tags }}"
                         v-bind:autocomplete-items="{{ $tags_autocomplete_items }}"></tags-input>
                 </list-view-form-group>

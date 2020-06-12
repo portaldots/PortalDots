@@ -52,7 +52,8 @@ class Page extends Model
     {
         $query = self::select('pages.*', 'page_viewable_tags.tag_id')
             ->leftJoin('page_viewable_tags', 'pages.id', '=', 'page_viewable_tags.page_id')
-            ->whereNull('page_viewable_tags.tag_id');
+            ->whereNull('page_viewable_tags.tag_id')
+            ->with('viewableTags');
 
         if (empty($circle)) {
             return $query;
