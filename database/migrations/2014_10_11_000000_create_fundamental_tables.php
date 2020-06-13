@@ -93,7 +93,7 @@ class CreateFundamentalTables extends Migration
             CREATE TABLE `{$prefix}documents` (
             `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
             `name` varchar(255) NOT NULL DEFAULT '',
-            `description` tinytext,
+            `description` text,
             `filename` varchar(255) NOT NULL DEFAULT '',
             `created_at` datetime NOT NULL,
             `created_by` int(11) unsigned NOT NULL,

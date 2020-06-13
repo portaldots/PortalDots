@@ -108,6 +108,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // 参加登録の提出
             Route::get('/{circle}/confirm', 'Circles\ConfirmAction')->name('confirm');
             Route::post('/{circle}/submit', 'Circles\SubmitAction')->name('submit');
+            // 参加登録の削除
+            Route::get('/{circle}/delete', 'Circles\DeleteAction')->name('delete');
+            Route::delete('/{circle}', 'Circles\DestroyAction')->name('destroy');
             // 参加登録状況
             Route::get('/{circle}/status', 'Circles\StatusAction')->name('status');
         });
@@ -208,6 +211,17 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::post('/contacts/emails/create', 'Staff\Contacts\Emails\StoreAction');
         Route::get('/contacts/emails/{contact_email}/edit', 'Staff\Contacts\Emails\EditAction')->name('contacts.emails.edit');
         Route::patch('/contacts/emails/{contact_email}', 'Staff\Contacts\Emails\UpdateAction')->name('contacts.emails.update');
+
+        // 配布資料
+        Route::prefix('/documents')
+            ->name('documents.')
+            ->group(function () {
+                Route::get('/create', 'Staff\Documents\CreateAction')->name('create');
+                Route::post('/', 'Staff\Documents\StoreAction')->name('store');
+                Route::get('/{document}/edit', 'Staff\Documents\EditAction')->name('edit');
+                Route::patch('/{document}', 'Staff\Documents\UpdateAction')->name('update');
+                Route::get('/{document}', 'Staff\Documents\ShowAction')->name('show');
+            });
     });
 
 // 管理者ページ（多要素認証も済んでいる状態）

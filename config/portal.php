@@ -12,9 +12,6 @@ return [
     // 大学提供メールアドレスのドメイン
     // @ より後ろの文字列を指定
     'univemail_domain' => env('PORTAL_UNIVEMAIL_DOMAIN'),
-    // CodeIgniter 側でアップロードされるファイルのパス
-    // TODO: CodeIgniter 側のコードが完全廃止できたら、以下の行は削除する
-    'codeigniter_upload_dir' => env('PORTAL_UPLOAD_DIR', __DIR__. '/../application/uploads'),
     // 企画参加登録に必要なユーザーの人数
     // 責任者と学園祭係(副責任者)のの合計人数
     'users_number_to_submit_circle' => (int)env('PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE', 2),

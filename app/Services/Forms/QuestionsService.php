@@ -67,19 +67,11 @@ class QuestionsService
             $question['is_required'] = false;
         }
 
-        // CodeIgniter 側の in_list バリデーションルールを使いたいが、
-        // CodeIgniter ではバリデーションルールを単なる文字列で表す。
-        // そのため、CodeIgniter のバリデーションの邪魔になる文字列は
-        // 削除する
-        // TODO: CodeIgniter を廃止したら、str_replace をする処理は削除する
         if (!empty($question['options'])) {
             $options = array_unique(
                 array_map(
                     'trim',
-                    explode(
-                        "\n",
-                        str_replace([',', '[', ']', ' ', "\t"], '', $question['options'])
-                    )
+                    explode("\n", $question['options'])
                 )
             );
             $question['options'] = implode("\n", $options);

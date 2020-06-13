@@ -1,7 +1,7 @@
 @extends('v2.layouts.app')
 
 @section('title', $schedule->name)
-    
+
 @section('navbar')
     <app-nav-bar-back href="{{ route('schedules.index') }}">
         スケジュール
@@ -28,7 +28,7 @@
         <app-container>
             <list-view>
                 <template v-slot:title>配布資料</template>
-        
+
                 @foreach ($schedule->documents as $document)
                     <list-view-item href="{{ route('documents.show', ['document' => $document]) }}" newtab>
                         <template v-slot:title>
@@ -45,8 +45,12 @@
                                 •
                                 {{ $document->schedule->name }}で配布
                             @endisset
+                            <br>
+                            {{ strtoupper($document->extension) }}ファイル
+                            •
+                            @filesize($document->size)
                         </template>
-                        @summary($document->description)
+                        {{ $document->description }}
                     </list-view-item>
                 @endforeach
             </list-view>
