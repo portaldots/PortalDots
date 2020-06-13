@@ -11,7 +11,7 @@ class ExportAction extends Controller
 {
     public function __invoke()
     {
-        $now = config('app.env') === 'testing' ? 'test' : now()->format('Y-m-d_H-i-s');
+        $now = now()->format('Y-m-d_H-i-s');
         return Excel::download(new CirclesExport(), "circles_{$now}.csv");
     }
 }

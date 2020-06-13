@@ -8,6 +8,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportActionTest extends TestCase
@@ -17,17 +19,18 @@ class ExportActionTest extends TestCase
     private $staff;
     private $user;
     private $circle;
-    private $circle_notsubmit;
+    private $circle_not_submitted;
 
     public function setUp(): void
     {
         parent::setUp();
+        Carbon::setTestNow(new CarbonImmutable('2019-08-21 14:52:38'));
 
         $this->staff = factory(User::class)->states('staff')->create();
 
         $this->user = factory(User::class)->create();
         $this->circle = factory(Circle::class)->create();
-        $this->circle_notsubmit = factory(Circle::class)->states('notSubmitted')->create();
+        $this->circle_not_submitted = factory(Circle::class)->states('notSubmitted')->create();
 
         $this->user->circles()->attach($this->circle->id, ['is_leader' => true]);
     }
@@ -42,9 +45,11 @@ class ExportActionTest extends TestCase
             ->withSession(['staff_authorized' => true])
             ->get('/staff/circles/export');
 
-        Excel::assertDownloaded("circles_test.csv", function (CirclesExport $export) {
+        $now = now()->format('Y-m-d_H-i-s');
+
+        Excel::assertDownloaded("circles_{$now}.csv", function (CirclesExport $export) {
             return $export->collection()->contains('name', $this->circle->name)
-                && $export->collection()->contains('name', '<>', $this->circle_notsubmit->name);
+                && $export->collection()->contains('name', '<>', $this->circle_not_submitted->name);
         });
     }
 }
