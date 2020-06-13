@@ -1,4 +1,3 @@
-{{-- TODO: このコードのままだと、スタッフモード内の、企画を選択させる画面でバグる！！！！ --}}
 @section('no_circle_selector', true)
 
 @extends('v2.layouts.no_drawer')
