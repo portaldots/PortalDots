@@ -1,4 +1,6 @@
+@inject('selectorService', 'App\Services\Circles\SelectorService')
 @inject('readsService', 'App\Services\Pages\ReadsService')
+
 <div class="bottom_tabs">
     <div class="bottom_tabs-container">
         <a href="{{ route('home') }}" class="bottom_tabs-tab{{ Request::is('/') ? ' is-active' : '' }}">
@@ -19,12 +21,12 @@
             <i class="far fa-file-alt bottom_tabs-tab__icon"></i>
             <div class="bottom_tabs-tab__label">配布資料</div>
         </a>
-        @auth
+        @if (Auth::check() && !empty($selectorService->getCircle()))
             <a href="{{ route('forms.index') }}" class="bottom_tabs-tab{{ Request::is('forms*') ? ' is-active' : '' }}">
                 <i class="far fa-edit bottom_tabs-tab__icon"></i>
                 <div class="bottom_tabs-tab__label">申請</div>
             </a>
-        @endauth
+        @endif
         <a href="{{ route('schedules.index') }}"
             class="bottom_tabs-tab{{ Request::is('schedules*') ? ' is-active' : '' }}">
             <i class="far fa-calendar-alt bottom_tabs-tab__icon"></i>

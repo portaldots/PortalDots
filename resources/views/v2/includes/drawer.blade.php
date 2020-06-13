@@ -1,4 +1,4 @@
-
+@inject('selectorService', 'App\Services\Circles\SelectorService')
 @inject('readsService', 'App\Services\Pages\ReadsService')
 
 <a class="drawer-header" href="{{ route('home') }}">
@@ -30,12 +30,12 @@
         <i class="far fa-file-alt drawer-nav__icon fa-fw"></i>
         配布資料
     </a>
-    @auth
+    @if (Auth::check() && !empty($selectorService->getCircle()))
         <a href="{{ route('forms.index') }}" class="drawer-nav__link{{ Request::is('forms*') ? ' is-active' : '' }}">
             <i class="far fa-edit drawer-nav__icon fa-fw"></i>
             申請
         </a>
-    @endauth
+    @endif
     <a href="{{ route('schedules.index') }}"
         class="drawer-nav__link{{ Request::is('schedules*') ? ' is-active' : '' }}">
         <i class="far fa-calendar-alt drawer-nav__icon fa-fw"></i>
