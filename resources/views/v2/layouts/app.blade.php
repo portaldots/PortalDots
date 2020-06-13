@@ -1,5 +1,3 @@
-@inject('selectorService', 'App\Services\Circles\SelectorService')
-
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -86,17 +84,7 @@
             </div>
         </div>
         <div class="content">
-            {{-- サークル選択 --}}
-            @auth
-                @if (count($selectorService->getSelectableCirclesList(Auth::user(), Request::path())) >= 2)
-                    <circle-selector-dropdown
-                        v-bind:circles="{{ $selectorService->getJsonForCircleSelectorDropdown(Auth::user(), Request::path()) }}"
-                        selected-circle-name="{{ $selectorService->getCircle()->name }}"
-                        selected-circle-group-name="{{ $selectorService->getCircle()->group_name }}"
-                    ></circle-selector-dropdown>
-                @endif
-            @endauth
-            {{-- サークル選択おわり --}}
+            @include('v2.includes.top_circle_selector')
             @if (Session::has('topAlert.title'))
                 <top-alert type="{{ session('topAlert.type', 'primary') }}"
                     {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}>

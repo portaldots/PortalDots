@@ -1,3 +1,5 @@
+@section('no_circle_selector', true)
+
 <div class="tab_strip">
     <a href="{{ route('user.edit') }}"
         class="tab_strip-tab{{ Route::currentRouteName() === 'user.edit' ? ' is-active' : '' }}">

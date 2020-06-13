@@ -2,6 +2,8 @@
 
 @section('title', $form->name . ' — 申請')
 
+@section('no_circle_selector', true)
+
 @section('navbar')
     @if (!empty($answer) && count($answers) > 0 && $form->max_answers > 1)
         <app-nav-bar-back href="{{ route('forms.answers.create', ['form' => $form]) }}">
@@ -46,7 +48,7 @@
                 <list-view-form-group>
                     <template v-slot:label>申請企画名</template>
                     <input type="text" readonly value="{{ $circle->name }}({{ $circle->group_name }})" class="form-control">
-                    @if (Auth::user()->circles()->approved()->count() > 1)
+                    @if (empty($answer) && Auth::user()->circles()->approved()->count() > 1)
                         <template v-slot:append>
                             <a href="{{ route('circles.selector.show', ['redirect_to' => Request::path()]) }}">変更</a>
                         </template>
