@@ -74,7 +74,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
             '登録受理状況設定者ID',
             '作成日時',
             '更新日時',
-            'スタッフメモ',
+            'スタッフ用メモ',
             '責任者 ユーザーID',
             '責任者 学籍番号',
             '責任者 氏名',
