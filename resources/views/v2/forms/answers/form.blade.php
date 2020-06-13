@@ -39,6 +39,12 @@
                         </strong>
                     @endif
                 </p>
+                @if (!$form->answerableTags->isEmpty())
+                    <p class="text-muted">
+                        <app-badge primary outline>限定公開</app-badge>
+                        このフォームは、限られた企画のみ回答可能です。
+                    </p>
+                @endif
                 @markdown($form->description)
             </div>
         </app-header>
