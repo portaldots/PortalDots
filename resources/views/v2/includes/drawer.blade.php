@@ -1,4 +1,6 @@
 @inject('selectorService', 'App\Services\Circles\SelectorService')
+@inject('readsService', 'App\Services\Pages\ReadsService')
+
 @auth
     @if (empty($selectorService->getCircle()))
         <div class="drawer-header">
@@ -33,9 +35,9 @@
     <a href="{{ route('pages.index') }}" class="drawer-nav__link{{ Request::is('pages*') ? ' is-active' : '' }}">
         <i class="fas fa-bullhorn drawer-nav__icon fa-fw"></i>
         お知らせ
-        @if ($pages_unread_count > 0)
+        @if ($readsService->getUnreadsCountOnSelectedCircle() > 0)
             <app-badge primary pill strong class="drawer-nav__badge">
-                {{ $pages_unread_count }}
+                {{ $readsService->getUnreadsCountOnSelectedCircle() }}
             </app-badge>
         @endif
     </a>

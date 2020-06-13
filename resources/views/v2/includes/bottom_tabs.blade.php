@@ -1,3 +1,4 @@
+@inject('readsService', 'App\Services\Pages\ReadsService')
 <div class="bottom_tabs">
     <div class="bottom_tabs-container">
         <a href="{{ route('home') }}" class="bottom_tabs-tab{{ Request::is('/') ? ' is-active' : '' }}">
@@ -7,7 +8,7 @@
         <a href="{{ route('pages.index') }}" class="bottom_tabs-tab{{ Request::is('pages*') ? ' is-active' : '' }}">
             <i class="fas fa-bullhorn bottom_tabs-tab__icon"></i>
             <div class="bottom_tabs-tab__label">
-                @if ($pages_unread_count > 0)
+                @if ($readsService->getUnreadsCountOnSelectedCircle() > 0)
                     <i class="fas fa-circle bottom_tabs-tab__notifier"></i>
                 @endif
                 お知らせ

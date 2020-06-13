@@ -37,26 +37,6 @@ class BladeServiceProvider extends ServiceProvider
             return Request::is('staff*');
         });
 
-        // お知らせの未読数を表示するためのビューコンポーザ
-        FacadeView::composer('*', function (View $view) use ($selectorService) {
-            $pages_unread_count = 0;
-
-            if (Auth::check()) {
-                $pages = Page::byCircle($selectorService->getCircle())
-                    ->with(['usersWhoRead' => function ($query) {
-                        $query->where('user_id', Auth::id());
-                    }])->get();
-                $pages_unread_count = $pages->reduce(function (int $carry, Page $page) {
-                    if ($page->usersWhoRead->isEmpty()) {
-                        return $carry + 1;
-                    }
-                    return $carry;
-                }, 0);
-            }
-
-            $view->with('pages_unread_count', $pages_unread_count);
-        });
-
         // 渡された引数の文字列をMarkdownとして解釈し、
         // HTMLに変換した文字列を表示する
         Blade::directive('markdown', function ($expression) {

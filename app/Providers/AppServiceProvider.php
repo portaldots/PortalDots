@@ -5,11 +5,13 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use App\Services\Circles\SelectorService;
+use App\Services\Pages\ReadsService;
 
 class AppServiceProvider extends ServiceProvider
 {
     public $singletons = [
         SelectorService::class => SelectorService::class,
+        ReadsService::class => ReadsService::class,
     ];
 
     /**

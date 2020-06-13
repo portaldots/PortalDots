@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Page;
 use App\Services\Circles\SelectorService;
+use App\Services\Pages\ReadsService;
 
 class ShowAction extends Controller
 {
@@ -15,17 +16,25 @@ class ShowAction extends Controller
      */
     private $selectorService;
 
-    public function __construct(SelectorService $selectorService)
-    {
+    /**
+     * @var ReadsService
+     */
+    private $readsService;
+
+    public function __construct(
+        SelectorService $selectorService,
+        ReadsService $readsService
+    ) {
         $this->selectorService = $selectorService;
+        $this->readsService = $readsService;
     }
 
     public function __invoke(Page $page)
     {
         $this->authorize('view', [$page, $this->selectorService->getCircle()]);
 
-        if ($page->usersWhoRead()->where('user_id', Auth::id())->doesntExist()) {
-            $page->usersWhoRead()->attach(Auth::id(), ['created_at' => now()]);
+        if (Auth::check()) {
+            $this->readsService->markAsRead($page, Auth::user());
         }
 
         return view('v2.pages.show')
