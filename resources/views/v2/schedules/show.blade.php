@@ -2,6 +2,8 @@
 
 @section('title', $schedule->name)
 
+@section('no_circle_selector', true)
+
 @section('navbar')
     <app-nav-bar-back href="{{ route('schedules.index') }}">
         スケジュール
