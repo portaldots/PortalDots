@@ -37,6 +37,8 @@ class CreateAction extends Controller
             abort(404);
         }
 
+        $this->authorize('view', [$form, $this->selectorService->getCircle()]);
+
         $circles = Auth::user()->circles()->approved()->get();
         if (count($circles) < 1) {
             // TODO: もうちょっとまともなエラー表示にする

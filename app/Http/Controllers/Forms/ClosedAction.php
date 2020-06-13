@@ -24,10 +24,17 @@ class ClosedAction extends Controller
 
     public function __invoke(Request $request)
     {
-        $forms = Form::public()->withoutCustomForms()->closed()->closeOrder()->paginate(10);
+        $circle = $this->selectorService->getCircle();
 
-        // TODO: 所属している企画が存在しない場合、エラーを表示する
+        $forms = Form::byCircle($circle)->public()->withoutCustomForms()->closed()->closeOrder()->paginate(10);
 
+        if (empty($this->selectorService->getCircle())) {
+            // TODO: もうちょっとまともなエラー表示にする
+            return redirect()
+                ->route('home')
+                ->with('topAlert.type', 'danger')
+                ->with('topAlert.title', '企画に所属していないため、このページにアクセスできません');
+        }
 
         if ($forms->currentPage() > $forms->lastPage()) {
             return redirect($forms->url($forms->lastPage()));

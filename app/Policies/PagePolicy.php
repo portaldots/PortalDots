@@ -16,7 +16,7 @@ class PagePolicy
      *
      * @param  User|null  $user
      * @param  Page  $page
-     * @param  Circle|null  $page
+     * @param  Circle|null  $circle
      * @return bool
      */
     public function view(?User $user, Page $page, ?Circle $circle): bool

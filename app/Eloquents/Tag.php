@@ -20,4 +20,10 @@ class Tag extends Model
         return $this->belongsToMany(Page::class, 'page_viewable_tags')
             ->using(PageViewableTag::class);
     }
+
+    public function forms()
+    {
+        return $this->belongsToMany(Form::class, 'page_viewable_tags')
+            ->using(FormAnswerableTag::class);
+    }
 }
