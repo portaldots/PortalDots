@@ -1,33 +1,17 @@
-@inject('selectorService', 'App\Services\Circles\SelectorService')
+
 @inject('readsService', 'App\Services\Pages\ReadsService')
 
-@auth
-    @if (empty($selectorService->getCircle()))
-        <div class="drawer-header">
-            @if (Auth::user()->can('circle.create'))
-                <a href="{{ route('circles.create') }}" class="btn is-primary is-block">
-                    <strong>企画参加登録</strong>
-                </a>
-            @else
-                企画未所属
-            @endif
-        </div>
-    @else
-        <a class="drawer-circle-selector" href="{{ route('circles.selector.show', ['redirect_to' => Request::path()]) }}">
-            <div class="drawer-circle-selector__name">{{ $selectorService->getCircle()->name }}</div>
-            <div class="drawer-circle-selector__subline">{{ $selectorService->getCircle()->group_name }}</div>
-            <div class="drawer-circle-selector__link">
-                ログイン先の企画の切り替え
-                <i class="fas fa-chevron-right"></i>
-            </div>
-        </a>
-    @endif
-@else
-    <a class="drawer-header" href="{{ route('home') }}">
-        {{ config('app.name') }}
-    </a>
-@endauth
+<a class="drawer-header" href="{{ route('home') }}">
+    {{ config('app.name') }}
+</a>
 <nav class="drawer-nav">
+    @if (Auth::check() && Auth::user()->is_staff)
+        <div class="px-spacing py-spacing">
+            <a href="/home_staff" class="btn is-primary is-block" data-turbolinks="false">
+                スタッフモードへ
+            </a>
+        </div>
+    @endif
     <a href="{{ route('home') }}" class="drawer-nav__link{{ Request::is('/') ? ' is-active' : '' }}">
         <i class="fas fa-home drawer-nav__icon fa-fw"></i>
         ホーム

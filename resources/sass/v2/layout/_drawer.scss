@@ -62,39 +62,6 @@
       text-decoration: none;
     }
   }
-  &-circle-selector {
-    @include divider(true);
-
-    display: block;
-    padding: $spacing;
-    padding-top: #{$navbar-height + $spacing};
-    transition: #{$transition-base-fast} background-color;
-    &:hover,
-    &:focus,
-    &:active {
-      text-decoration: none;
-    }
-    &__name {
-      color: $color-text;
-      font-weight: bold;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    &__subline {
-      color: $color-muted;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    &__link {
-      font-size: 0.9rem;
-      margin: $spacing-xs 0 0;
-    }
-    &:hover {
-      background: $color-bg-light;
-    }
-  }
   &-nav {
     padding: $spacing-sm 0;
     &__link {
