@@ -69,7 +69,7 @@ export default {
 <style lang="scss" scoped>
 .selector {
   background: $color-bg-white;
-  box-shadow: 0 0 0.5rem rgba($color-text, 0.15);
+  border-bottom: 1px solid $color-border;
   padding: $spacing 0;
   &-dropdown {
     display: block;
