@@ -258,6 +258,11 @@
                 @foreach ($forms as $form)
                     <list-view-item href="{{ route('forms.answers.create', ['form' => $form]) }}">
                         <template v-slot:title>
+                            @if (!$form->answerableTags->isEmpty())
+                                <app-badge primary outline>限定公開</app-badge>
+                            @else
+                                <app-badge muted outline>全員に公開</app-badge>
+                            @endif
                             {{ $form->name }}
                         </template>
                         <template v-slot:meta>
