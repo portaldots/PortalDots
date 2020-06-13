@@ -1,7 +1,7 @@
 @extends('v2.layouts.app')
 
 @section('title', $page->title)
-    
+
 @section('navbar')
     <app-nav-bar-back href="{{ route('pages.index') }}">
         お知らせ

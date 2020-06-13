@@ -1,7 +1,7 @@
 @extends('v2.layouts.app')
 
 @section('title', 'スケジュール')
-    
+
 @section('content')
     <div class="tab_strip">
         <a href="{{ route('schedules.index') }}"

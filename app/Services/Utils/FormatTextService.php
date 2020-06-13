@@ -52,4 +52,29 @@ class FormatTextService
         }
         return self::DAYS[$dayId];
     }
+
+    /**
+     * バイト数値からユーザーフレンドリーなファイルサイズ文字列にする
+     */
+    public static function filesize(int $filesize): string
+    {
+        $per = 1024;
+
+        $unit = 'KB';
+        $result = $filesize / $per;
+
+        if ($filesize >= $per ** 2) {
+            $unit = 'MB';
+            $result /= $per;
+        }
+
+        if ($filesize >= $per ** 3) {
+            $unit = 'GB';
+            $result /= $per;
+        }
+
+        $result = round($result, 2);
+
+        return "{$result}{$unit}";
+    }
 }
