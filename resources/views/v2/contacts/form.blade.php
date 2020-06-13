@@ -1,11 +1,11 @@
 @extends('v2.layouts.app')
 
 @section('title', 'お問い合わせ')
-    
+
 @section('content')
     <form method="post" action="{{ route('contacts.post') }}">
         @csrf
-    
+
         <app-container>
             <list-view>
                 <template v-slot:title>お問い合わせ</template>
@@ -52,7 +52,7 @@
                         <textarea name="contact_body" id="contact_body"
                             class="form-control {{ $errors->has('contact_body') ? 'is-invalid' : '' }}" rows="10"
                             required>{{ old('contact_body') }}</textarea>
-    
+
                         @if ($errors->has('contact_body'))
                             <template v-slot:invalid>
                                 @foreach ($errors->get('contact_body') as $message)

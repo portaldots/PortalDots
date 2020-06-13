@@ -45,7 +45,6 @@
             "git add"
         ],
         "!({**/*mail*/**/*,**/*mail*}).blade.php": [
-            "yarn blade-formatter --write",
             "shx sed -i 's/[ \t]*$//'",
             "git add"
         ],

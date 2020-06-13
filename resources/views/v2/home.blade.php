@@ -96,13 +96,33 @@
         </header>
     @endguest
     <app-container>
-        @if (Auth::check() && Auth::user()->areBothEmailsVerified() && Auth::user()->can('circle.create'))
+        @if (Gate::allows('circle.create'))
             <list-view>
                 <template v-slot:title>企画参加登録</template>
                 <template v-slot:description>
                     受付期間 : @datetime($circle_custom_form->open_at)〜@datetime($circle_custom_form->close_at)
                 </template>
-                @if (count($my_circles) === 0)
+                @if (!Auth::check())
+                    <list-view-card>
+                        <list-view-empty text="企画参加登録するには、まずログインしてください">
+                            <p>
+                                {{ config('app.name') }}の利用がはじめての場合は<a href="{{ route('register') }}">ユーザー登録</a>を行ってください。<br>
+                                <a href="{{ route('login') }}">ログインはこちら</a>
+                            </p>
+                        </list-view-empty>
+                    </list-view-card>
+                @elseif (!Auth::user()->areBothEmailsVerified())
+                    <list-view-card>
+                        <list-view-empty icon-class="far fa-envelope" text="メール認証が未完了です">
+                            <p>
+                                参加登録を行うには、まずメール認証を完了させてください。
+                            </p>
+                            <a href="{{ route('verification.notice') }}" class="btn is-primary is-wide">
+                                <strong>もっと詳しく</strong>
+                            </a>
+                        </list-view-empty>
+                    </list-view-card>
+                @elseif (count($my_circles) === 0)
                     <list-view-card>
                         <list-view-empty icon-class="far fa-star" text="参加登録をしましょう！">
                             <p>
@@ -110,7 +130,7 @@
                                 まずは参加登録からはじめましょう！
                             </p>
                             <a href="{{ route('circles.create') }}" class="btn is-primary is-wide">
-                                参加登録をはじめる
+                                <strong>参加登録をはじめる</strong>
                             </a>
                         </list-view-empty>
                     </list-view-card>
@@ -257,8 +277,12 @@
                                 •
                                 {{ $document->schedule->name }}で配布
                             @endisset
+                            <br>
+                            {{ strtoupper($document->extension) }}ファイル
+                            •
+                            @filesize($document->size)
                         </template>
-                        @summary($document->description)
+                        {{ $document->description }}
                     </list-view-item>
                 @endforeach
                 @if ($remaining_documents_count > 0)
@@ -269,7 +293,7 @@
             </list-view>
         @endif
 
-        @if (!$forms->isEmpty())
+        @if (!$forms->isEmpty() && Auth::check() && Auth::user()->circles()->approved()->count() > 0)
             <list-view>
                 <template v-slot:title>受付中の申請</template>
                 @foreach ($forms as $form)
