@@ -8,7 +8,7 @@
             <i class="fas fa-bullhorn bottom_tabs-tab__icon"></i>
             <div class="bottom_tabs-tab__label">
                 @if ($pages_unread_count > 0)
-                    <small class="text-primary">●</small>
+                    <i class="fas fa-circle bottom_tabs-tab__notifier"></i>
                 @endif
                 お知らせ
             </div>

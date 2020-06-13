@@ -46,6 +46,10 @@ body {
       font-weight: bold;
       padding: 0 $spacing-sm;
     }
+    &__notifier {
+      color: $color-primary;
+      transform: scale(0.75);
+    }
     &.is-active {
       @include link-style-reset($color-primary);
 
