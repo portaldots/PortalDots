@@ -236,8 +236,12 @@
                                 •
                                 {{ $document->schedule->name }}で配布
                             @endisset
+                            <br>
+                            {{ strtoupper($document->extension) }}ファイル
+                            •
+                            @filesize($document->size)
                         </template>
-                        @summary($document->description)
+                        {{ $document->description }}
                     </list-view-item>
                 @endforeach
                 @if ($remaining_documents_count > 0)
@@ -248,7 +252,7 @@
             </list-view>
         @endif
 
-        @if (!$forms->isEmpty())
+        @if (!$forms->isEmpty() && Auth::check() && Auth::user()->circles()->approved()->count() > 0)
             <list-view>
                 <template v-slot:title>受付中の申請</template>
                 @foreach ($forms as $form)

@@ -5,24 +5,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |--------------------------------------------------------------------------
 | ポータル設定
 |--------------------------------------------------------------------------
-|
-| ポータルに関する各種設定を行います。実際の設定は、 application/.env
-| ファイル上で行なってください。
-|
-| 注意 : これは Codeigniter の機能では あ り ま せ ん。Ridaisai Portal(RP) の独自機能です。
-|       また、「ポータル設定」を完了しただけで 満 足 し な い で く だ さ い。「ポータル設定」以外に
-|       必要な設定は以下の通りです。
-|
-| [ 「ポータル設定」以外に必要な設定項目 ]
-|  - 本ファイル( application/config.php )
-|     - Base Site URL : ルートURLの設定
-|     - Encryption Key : 暗号化用キー
-|       ( https://randomkeygen.com/ にアクセスし、「CodeIgniter Encryption Keys」の中
-|         から１つ任意のキーを選び、コピペしてください )
-|           ↑ この方法はセキュリティ上の問題がある可能性があります
-|  - application/database.php
-|     - データベースの設定
-|
 */
 # ポータルの名前
 if (!defined('APP_NAME')) {
@@ -47,21 +29,6 @@ if (!defined('PORTAL_CONTACT_EMAIL')) {
 //   PortalDots は利用できません。
 if (!defined('PORTAL_UNIVEMAIL_DOMAIN')) {
     define('PORTAL_UNIVEMAIL_DOMAIN', codeigniter_env('PORTAL_UNIVEMAIL_DOMAIN', 'example.com'));
-}
-
-# ファイルアップロード先ディレクトリ(フォルダ)
-// 必ず、ア ク セ ス 禁 止 の デ ィ レ ク ト リ を指定してください。
-// 末尾のスラッシュ(/)は不要です。
-if (!defined('PORTAL_UPLOAD_DIR')) {
-    define('PORTAL_UPLOAD_DIR', codeigniter_env('PORTAL_UPLOAD_DIR', __DIR__. '/../uploads'));
-}
-
-# Grocery CRUD ファイルアップロード先ディレクトリ(フォルダ)
-// PORTAL_UPLOAD_DIR と似た設定ですが、設定方法が異なります。
-// 先頭にスラッシュ(/)をつけることは で き ま せ ん。
-// public/index.php からみたディレクトリを指定してください。
-if (!defined('PORTAL_UPLOAD_DIR_CRUD')) {
-    define('PORTAL_UPLOAD_DIR_CRUD', codeigniter_env('PORTAL_UPLOAD_DIR_CRUD', '../application/uploads'));
 }
 
 # LINE Notify スタッフ同報設定

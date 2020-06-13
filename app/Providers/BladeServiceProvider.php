@@ -78,5 +78,10 @@ class BladeServiceProvider extends ServiceProvider
         Blade::directive('dayByDayId', function ($expression) {
             return "<?php echo e(App\Services\Utils\FormatTextService::getDayByDayId((int)($expression), true)); ?>";
         });
+
+        // 渡された引数のバイト数値からユーザーフレンドリーなファイルサイズ文字列にする
+        Blade::directive('filesize', function ($expression) {
+            return "<?php echo e(App\Services\Utils\FormatTextService::filesize((int)($expression))); ?>";
+        });
     }
 }

@@ -987,11 +987,20 @@ class Home_staff extends MY_Controller
         $vars["page_title"] = "配布資料管理";
         $vars["main_page_type"] = "documents";
 
+        if ($this->uri->segment(3) === "edit") {
+            $circle_id = $this->uri->segment(4);
+            $edit_url = ['staff', 'documents', $circle_id, 'edit'];
+            codeigniter_redirect(base_url($edit_url));
+        } elseif ($this->uri->segment(3) === "add") {
+            $edit_url = ['staff', 'documents', 'create'];
+            codeigniter_redirect(base_url($edit_url));
+        }
+
         $this->grocery_crud->set_table('documents');
         $this->grocery_crud->set_subject('配布資料');
         $this->grocery_crud->display_as('id', '配布資料ID');
         $this->grocery_crud->display_as('name', '配布資料名');
-        $this->grocery_crud->display_as('filename', 'ファイル');
+        $this->grocery_crud->display_as('path', 'ファイル');
         $this->grocery_crud->display_as('schedule_id', 'イベント');
         $this->grocery_crud->display_as('description', '説明');
 
@@ -999,7 +1008,7 @@ class Home_staff extends MY_Controller
             'id',
             'name',
             'description',
-            'filename',
+            'path',
             'schedule_id',
             'is_public',
             'is_important',
@@ -1012,7 +1021,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->fields(
             'name',
             'description',
-            'filename',
+            'path',
             'schedule_id',
             'is_public',
             'is_important',
@@ -1033,16 +1042,40 @@ class Home_staff extends MY_Controller
             $this->grocery_crud->set_relation('updated_by', 'users', '{student_id} {name_family} {name_given}');
         }
 
-        $this->grocery_crud->required_fields('name', 'filename');
+        $this->grocery_crud->required_fields('name', 'path');
 
-        $this->grocery_crud->set_field_upload('filename', PORTAL_UPLOAD_DIR_CRUD . '/documents');
+        $this->grocery_crud->callback_before_delete(array($this, '_crud_documents_before_delete'));
 
         // ファイル表示リンクにする
-        $this->grocery_crud->callback_column('filename', array($this, '_crud_download_document'));
+        $this->grocery_crud->callback_column('path', array($this, '_crud_download_document'));
 
         $vars += (array)$this->grocery_crud->render();
 
         $this->_render('home_staff/crud', $vars);
+    }
+
+    /**
+     * 配布資料が削除される前に実行する Grocery CRUD コールバック関数
+     */
+    public function _crud_documents_before_delete($id)
+    {
+        $this->db->select('path');
+        $this->db->where('id', $id);
+        $document = $this->db->get('documents')->row();
+        unlink(APPPATH . '../storage/app/documents/'. basename($document->path));
+
+        return true;
+    }
+
+    /**
+     * ドキュメントファイルのダウンロードリンクを表示させるための Grocery CRUD コールバック関数
+     */
+    public function _crud_download_document($value, $row)
+    {
+        if (!empty($row->path)) {
+            return $value = '<a href="'. base_url("staff/documents/". $row->id). '"  target="_blank">表示</a>';
+        }
+        return $value = "-";
     }
 
     /**
@@ -1072,18 +1105,6 @@ class Home_staff extends MY_Controller
         $vars += (array)$this->grocery_crud->render();
 
         $this->_render('home_staff/crud', $vars);
-    }
-
-    /**
-     * ドキュメントファイルのダウンロードリンクを表示させるための Grocery CRUD コールバック関数
-     */
-    public function _crud_download_document($value, $row)
-    {
-        if (!empty($row->filename)) {
-            return $value = '<a href="'. base_url("documents/". $row->id). '"  target="_blank">'.
-                $row->filename. '</a>';
-        }
-        return $value = "-";
     }
 
     /**
