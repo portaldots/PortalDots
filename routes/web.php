@@ -206,11 +206,11 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::prefix('/documents')
             ->name('documents.')
             ->group(function () {
-                Route::get('/{document}', 'Staff\Documents\ShowAction')->name('show');
-                Route::get('/{document}/edit', 'Staff\Documents\EditAction')->name('edit');
-                Route::patch('/{document}', 'Staff\Documents\UpdateAction')->name('update');
                 Route::get('/create', 'Staff\Documents\CreateAction')->name('create');
                 Route::post('/', 'Staff\Documents\StoreAction')->name('store');
+                Route::get('/{document}/edit', 'Staff\Documents\EditAction')->name('edit');
+                Route::patch('/{document}', 'Staff\Documents\UpdateAction')->name('update');
+                Route::get('/{document}', 'Staff\Documents\ShowAction')->name('show');
             });
     });
 
