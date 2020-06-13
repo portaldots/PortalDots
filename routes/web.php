@@ -14,6 +14,8 @@
 // トップページ
 Route::get('/', 'HomeAction')->middleware(['circleSelected'])->name('home');
 
+Route::view('/hoge', 'v2.hoge');
+
 // お知らせ
 Route::prefix('/pages')
     ->name('pages.')

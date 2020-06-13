@@ -6,10 +6,13 @@ import TurbolinksAdapter from './vue-turbolinks'
 
 import AppHeader from './components/AppHeader.vue'
 import AppNavBar from './components/AppNavBar.vue'
-import AppNavBarToggle from './components/AppNavBarToggle.vue'
 import AppNavBarBack from './components/AppNavBarBack.vue'
+import AppNavBarToggle from './components/AppNavBarToggle.vue'
+import CircleSelectorDropdown from './components/CircleSelectorDropdown.vue'
 import AppContainer from './components/AppContainer.vue'
 import AppBadge from './components/AppBadge.vue'
+import AppDropdown from './components/AppDropdown.vue'
+import AppDropdownItem from './components/AppDropdownItem.vue'
 import ListView from './components/ListView.vue'
 import ListViewCard from './components/ListViewCard.vue'
 import ListViewItem from './components/ListViewItem.vue'
@@ -52,10 +55,13 @@ export function mountV2App() {
         GlobalEvents,
         AppHeader,
         AppNavBar,
-        AppNavBarToggle,
         AppNavBarBack,
+        AppNavBarToggle,
+        CircleSelectorDropdown,
         AppContainer,
         AppBadge,
+        AppDropdown,
+        AppDropdownItem,
         ListView,
         ListViewCard,
         ListViewItem,
