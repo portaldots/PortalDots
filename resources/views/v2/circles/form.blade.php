@@ -14,7 +14,7 @@
         <app-container medium>
             <list-view>
                 <template v-slot:title>企画情報を入力</template>
-                <template v-slot:description>参加を登録される企画の情報を入力してください。</template>
+                <template v-slot:description>参加登録する企画の情報を入力してください。</template>
                 <list-view-card>
                     <i class="fas fa-exclamation-circle"></i>
                     企画情報の入力は、企画責任者の方が行ってください。企画責任者以外の方は、企画情報の入力は不要です。企画責任者の方の指示に従ってください。

@@ -65,8 +65,8 @@ if($success_message !== null){?>
 		</div>
 		<?php }?>
 		<div class="pull-right">
-			<?php if(!$unset_export) { ?>
-      	<a class="btn btn-success" href="<?php echo $export_url; ?>" download>
+			<?php if(!$unset_export || isset($this->export_url)) { ?>
+      	<a class="btn btn-success" href="<?php echo $this->export_url ?? $export_url; ?>" <?php isset($this->export_url) ? '' : 'download' ?>>
 					<i class="fa fa-file-excel-o" aria-hidden="true"></i>
 					<?php echo $this->l('list_export');?></span>
       	</a>
