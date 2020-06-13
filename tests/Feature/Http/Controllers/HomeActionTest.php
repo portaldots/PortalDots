@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Carbon\CarbonImmutable;
 use Jackiedo\DotenvEditor\DotenvEditor;
 use App\Eloquents\User;
+use App\Eloquents\Circle;
 use App\Eloquents\Form;
 use App\Eloquents\CustomForm;
 
@@ -98,7 +99,10 @@ class HomeActionTest extends TestCase
             'name' => $normalFormName
         ]);
 
-        $response = $this->get(route('home'));
+        $circle = factory(Circle::class)->create();
+        $user = factory(User::class)->create();
+        $user->circles()->attach($circle, ['is_leader' => true]);
+        $response = $this->actingAs($user)->get(route('home'));
 
         $response->assertDontSee($customFormName);
         $response->assertSee($normalFormName);
