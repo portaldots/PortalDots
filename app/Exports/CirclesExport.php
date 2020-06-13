@@ -22,12 +22,6 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
     */
     public function map($circle): array
     {
-        $tags = [];
-
-        foreach ($circle->tags->all() as $tag) {
-            $tags[] = $tag->name;
-        }
-
         $leader = $circle->leader->first();
 
         if ($circle->status === 'approved') {
@@ -44,7 +38,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
             $circle->name_yomi,
             $circle->group_name,
             $circle->group_name_yomi,
-            join(',', $tags),
+            $circle->tags->implode('name', ','),
             $circle->submitted_at,
             $status,
             $circle->status_set_by,
