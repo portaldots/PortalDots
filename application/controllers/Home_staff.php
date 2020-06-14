@@ -639,6 +639,9 @@ class Home_staff extends MY_Controller
             codeigniter_redirect(base_url($edit_url));
         }
 
+        // Laravel側で実装したエクスポート機能を利用する
+        $this->set_export_url("/staff/circles/export");
+
         $this->grocery_crud->set_table('circles');
         $this->grocery_crud->where('submitted_at IS NOT NULL', null, false);
         $this->grocery_crud->set_subject('企画');
@@ -1481,5 +1484,15 @@ class Home_staff extends MY_Controller
     public function _unique_field_name($field_name)
     {
         return $this->grocery_crud->_unique_field_name($field_name);
+    }
+
+    /**
+     * 出力用のURLを変更する関数
+     * @param string $url
+     */
+    private function set_export_url(string $url)
+    {
+        $this->grocery_crud->unset_export();
+        $this->grocery_crud->export_url = $url;
     }
 }
