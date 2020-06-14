@@ -141,13 +141,15 @@
                         </template>
                     @endif
                 </list-view-form-group>
-                <list-view-form-group label-for="status_reason">
-                    <template v-slot:label>不受理に関する詳細(ユーザーに通知)</template>
-                    <template
-                        v-slot:description>この内容はユーザーに通知されます。参加登録を不受理とする際、ユーザーに伝達したい事項があれば入力してください(Markdown利用可能)</template>
-                    <textarea id="status_reason" class="form-control @error('status_reason') is-invalid @enderror"
-                        name="status_reason"
-                        rows="5">{{ old('status_reason', empty($circle) ? '' : $circle->status_reason) }}</textarea>
+                <list-view-form-group>
+                    <template v-slot:label>
+                        不受理に関する詳細(ユーザーに通知)&nbsp;
+                        <app-badge outline muted>Markdown</app-badge>
+                    </template>
+                    <template v-slot:description>
+                        この内容はユーザーに通知されます。参加登録を不受理とする際、ユーザーに伝達したい事項があれば入力してください。
+                    </template>
+                    <markdown-editor input-name="status_reason" default-value="{{ old('status_reason', empty($circle) ? '' : $circle->status_reason) }}"></markdown-editor>
                     @if ($errors->has('status_reason'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('status_reason') as $message)
