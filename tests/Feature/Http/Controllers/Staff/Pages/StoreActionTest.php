@@ -41,7 +41,7 @@ class StoreActionTest extends TestCase
             )->andReturn(new Page());
         });
 
-        $responce = $this->actingAs($this->staff)
+        $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.pages.store'), [
                 'title' => 'お知らせのタイトル',
@@ -59,7 +59,7 @@ class StoreActionTest extends TestCase
      */
     public function タイトルと本文が未入力だとエラーが発生する()
     {
-        $responce = $this->actingAs($this->staff)
+        $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.pages.store'), [
                 // 何もフォームの値を送らない
@@ -95,7 +95,7 @@ class StoreActionTest extends TestCase
             );
         });
 
-        $responce = $this->actingAs($this->staff)
+        $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.pages.store'), [
                 'title' => $page->title,

@@ -35,11 +35,11 @@ class CopyActionTest extends TestCase
             }))->andReturn($this->form_copy);
         });
 
-        $responce = $this->actingAs($this->staff)
+        $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.forms.copy', ['form' => $this->form]));
 
         // CodeIgniter を廃止したら↓を書き換える
-        $responce->assertRedirect("/home_staff/applications/read/{$this->form_copy->id}?copied=1");
+        $response->assertRedirect("/home_staff/applications/read/{$this->form_copy->id}?copied=1");
     }
 }

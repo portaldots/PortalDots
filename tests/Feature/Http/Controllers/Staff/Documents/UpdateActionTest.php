@@ -56,7 +56,7 @@ class UpdateActionTest extends TestCase
             )->andReturn(true);
         });
 
-        $responce = $this->actingAs($this->staff)
+        $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->patch(route('staff.documents.update', ['document' => $document]), [
                 'name' => 'document name',
@@ -67,8 +67,8 @@ class UpdateActionTest extends TestCase
                 'notes' => 'notes',
             ]);
 
-        $responce->assertSessionHasNoErrors();
+        $response->assertSessionHasNoErrors();
 
-        $responce->assertRedirect(route('staff.documents.edit', ['document' => $document]));
+        $response->assertRedirect(route('staff.documents.edit', ['document' => $document]));
     }
 }

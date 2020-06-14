@@ -63,7 +63,7 @@ class StoreActionTest extends TestCase
             )->andReturn($document);
         });
 
-        $responce = $this->actingAs($this->staff)
+        $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.documents.store'), [
                 'name' => 'document name',
@@ -75,8 +75,8 @@ class StoreActionTest extends TestCase
                 'notes' => 'notes',
             ]);
 
-        $responce->assertSessionHasNoErrors();
+        $response->assertSessionHasNoErrors();
 
-        $responce->assertRedirect(route('staff.documents.create'));
+        $response->assertRedirect(route('staff.documents.create'));
     }
 }
