@@ -29,6 +29,7 @@ export default {
     margin-left: -#{$spacing-md};
     padding: $spacing-md $spacing-md $spacing-md #{$circle-size +
       ($spacing-md * 1.75)};
+    text-align: left;
   }
   &::before {
     align-items: center;
