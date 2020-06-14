@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Staff\Contacts\Emails;
 
-use App\Eloquents\ContactEmails;
+use App\Eloquents\ContactEmail;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\Contacts\Emails\EmailsRequest;
 use App\Mail\Contacts\EmailsMailable;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Mail;
 
 class UpdateAction extends Controller
 {
-    public function __invoke(ContactEmails $contact_email, EmailsRequest $request)
+    public function __invoke(ContactEmail $contact_email, EmailsRequest $request)
     {
         $old_email = $contact_email->email;
 

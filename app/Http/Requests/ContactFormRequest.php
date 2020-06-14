@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Eloquents\Circle;
-use App\Eloquents\ContactEmails;
+use App\Eloquents\ContactEmail;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
@@ -46,7 +46,7 @@ class ContactFormRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if (!($this->subject === '0' || ContactEmails::find($this->subject))) {
+            if (!($this->subject === '0' || ContactEmail::find($this->subject))) {
                 $validator->errors()->add('subject', 'お問い合わせ項目を選択肢から選んでください');
             }
         });

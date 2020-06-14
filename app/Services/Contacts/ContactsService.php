@@ -6,7 +6,7 @@ namespace App\Services\Contacts;
 
 use Illuminate\Support\Facades\Mail;
 use App\Eloquents\Circle;
-use App\Eloquents\ContactEmails;
+use App\Eloquents\ContactEmail;
 use App\Eloquents\User;
 use App\Mail\Contacts\ContactMailable;
 use App\Mail\Contacts\EmailsMailable;
@@ -19,10 +19,10 @@ class ContactsService
      * @param Circle|null $circle お問い合わせ対象の企画
      * @param User $sender お問い合わせを作成したユーザー
      * @param string $contactBody お問い合わせ本文
-     * @param ContactEmails $subject お問い合わせ項目
+     * @param ContactEmail $subject お問い合わせ項目
      * @return bool
      */
-    public function create(?Circle $circle, User $sender, string $contactBody, ContactEmails $subject)
+    public function create(?Circle $circle, User $sender, string $contactBody, ContactEmail $subject)
     {
         if (isset($circle) && is_iterable($circle->users) && count($circle->users) > 0) {
             // 企画に所属するユーザー全員に確認メールを送信する
@@ -62,10 +62,10 @@ class ContactsService
      * @param Circle|null $circle お問い合わせ対象の企画
      * @param User $sender お問い合わせを作成したユーザー
      * @param string $contactBody お問い合わせ本文
-     * @param ContactEmails $subject お問い合わせ項目
+     * @param ContactEmail $subject お問い合わせ項目
      * @return void
      */
-    private function sendToStaff(?Circle $circle, User $sender, string $contactBody, ContactEmails $subject)
+    private function sendToStaff(?Circle $circle, User $sender, string $contactBody, ContactEmail $subject)
     {
         $senderText = isset($circle) ? $circle->name : $sender->name;
 
@@ -78,11 +78,11 @@ class ContactsService
     }
 
     /**
-     * ContactEmails の新規作成・アップデート時にメール送信を確認する
+     * ContactEmail の新規作成・アップデート時にメール送信を確認する
      *
-     * @param ContactEmails $contactEmail
+     * @param ContactEmail $contactEmail
      */
-    public function sendContactEmail(ContactEmails $contactEmail)
+    public function sendContactEmail(ContactEmail $contactEmail)
     {
         Mail::to($contactEmail->email, $contactEmail->name)
             ->send(

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Eloquents\Circle;
-use App\Eloquents\ContactEmails;
+use App\Eloquents\ContactEmail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +14,6 @@ class CreateAction extends Controller
     {
         return view('v2.contacts.form')
             ->with('circles', Auth::user()->circles()->get())
-            ->with('subjects', ContactEmails::all());
+            ->with('subjects', ContactEmail::all());
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Mail\Contacts;
 
-use App\Eloquents\ContactEmails;
+use App\Eloquents\ContactEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -32,10 +32,10 @@ class EmailsMailable extends Mailable
      *
      * @return void
      */
-    public function __construct(ContactEmails $contactEmails)
+    public function __construct(ContactEmail $contact_email)
     {
-        $this->name = $contactEmails->name;
-        $this->email = $contactEmails->email;
+        $this->name = $contact_email->name;
+        $this->email = $contact_email->email;
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Staff\Contacts\Emails;
 
-use App\Eloquents\ContactEmails;
+use App\Eloquents\ContactEmail;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\Contacts\Emails\EmailsRequest;
 use App\Mail\Contacts\EmailsMailable;
@@ -24,7 +24,7 @@ class StoreAction extends Controller
     {
 
         $email = DB::transaction(function () use ($request) {
-            $email = ContactEmails::create([
+            $email = ContactEmail::create([
                 'name' => $request->name,
                 'email' => $request->email,
             ]);

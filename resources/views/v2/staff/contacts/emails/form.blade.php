@@ -1,6 +1,6 @@
 @extends('v2.layouts.no_drawer')
 
-@section('title', 'お問い合わせ - '. isset($contact_email) ? $contact_email->name : 'メールアドレス追加')
+@section('title', 'お問い合わせ - '. empty($contact_email) ? 'メールアドレス追加' : $contact_email->name )
 
 @section('navbar')
     <app-nav-bar-back inverse href="{{ route('staff.contacts.emails.index') }}">
