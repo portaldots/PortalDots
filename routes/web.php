@@ -108,6 +108,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // 参加登録の提出
             Route::get('/{circle}/confirm', 'Circles\ConfirmAction')->name('confirm');
             Route::post('/{circle}/submit', 'Circles\SubmitAction')->name('submit');
+            // 参加登録の削除
+            Route::get('/{circle}/delete', 'Circles\DeleteAction')->name('delete');
+            Route::delete('/{circle}', 'Circles\DestroyAction')->name('destroy');
             // 参加登録状況
             Route::get('/{circle}/status', 'Circles\StatusAction')->name('status');
         });
@@ -170,6 +173,34 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                     });
 
                 Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction');
+
+                // フォームの複製
+                // TODO: CopyConfirmAction は、CodeIgniter から CopyAction へ直接 POST できない都合で挟んだクッションページなので、
+                // スタッフモードが Laravel 化したら CopyConfirmAction は消す。
+                Route::get('/copy', 'Staff\Forms\CopyConfirmAction')->name('copy');
+                Route::post('/copy', 'Staff\Forms\CopyAction');
+            });
+
+        Route::prefix('/circles')
+            ->name('circles.')
+            ->group(function () {
+                // 参加登録設定
+                Route::get('/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('custom_form.index');
+                Route::post('/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('custom_form.store');
+                Route::patch('/custom_form', 'Staff\Circles\CustomForm\UpdateAction')->name('custom_form.update');
+
+                // 企画情報編集
+                Route::get('/{circle}/edit', 'Staff\Circles\EditAction')->name('edit');
+                Route::patch('/{circle}', 'Staff\Circles\UpdateAction')->name('update');
+                Route::get('/create', 'Staff\Circles\CreateAction')->name('create');
+                Route::post('/', 'Staff\Circles\StoreAction')->name('new');
+
+                // 企画所属者宛のメール送信
+                Route::get('/{circle}/email', 'Staff\Circles\SendEmails\IndexAction')->name('email');
+                Route::post('/{circle}/email', 'Staff\Circles\SendEmails\SendAction');
+
+                // 企画情報エクスポート
+                Route::get('/export', 'Staff\Circles\ExportAction')->name('export');
             });
 
         // メール一斉送信
@@ -177,24 +208,20 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::post('/send_emails', 'Staff\SendEmails\StoreAction');
         Route::delete('/send_emails', 'Staff\SendEmails\DestroyAction');
 
-        // 参加登録設定
-        Route::get('/circles/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('circles.custom_form.index');
-        Route::post('/circles/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('circles.custom_form.store');
-        Route::patch('/circles/custom_form', 'Staff\Circles\CustomForm\UpdateAction')->name('circles.custom_form.update');
-
-        // 企画情報編集
-        Route::get('/circles/{circle}/edit', 'Staff\Circles\EditAction')->name('circles.edit');
-        Route::patch('/circles/{circle}', 'Staff\Circles\UpdateAction')->name('circles.update');
-        Route::get('/circles/create', 'Staff\Circles\CreateAction')->name('circles.create');
-        Route::post('/circles', 'Staff\Circles\StoreAction')->name('circles.new');
-
-        // 企画所属者宛のメール送信
-        Route::get('/circles/{circle}/email', 'Staff\Circles\SendEmails\IndexAction')->name('circles.email');
-        Route::post('/circles/{circle}/email', 'Staff\Circles\SendEmails\SendAction');
-
         // スタッフが手動でメール認証を完了する
         Route::get('/users/{user}/verify', 'Staff\Users\Verify\IndexAction')->name('users.verify');
         Route::patch('/users/{user}', 'Staff\Users\Verify\UpdateAction')->name('users.verify.update');
+
+        // 配布資料
+        Route::prefix('/documents')
+            ->name('documents.')
+            ->group(function () {
+                Route::get('/create', 'Staff\Documents\CreateAction')->name('create');
+                Route::post('/', 'Staff\Documents\StoreAction')->name('store');
+                Route::get('/{document}/edit', 'Staff\Documents\EditAction')->name('edit');
+                Route::patch('/{document}', 'Staff\Documents\UpdateAction')->name('update');
+                Route::get('/{document}', 'Staff\Documents\ShowAction')->name('show');
+            });
     });
 
 // 管理者ページ（多要素認証も済んでいる状態）

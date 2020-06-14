@@ -1,6 +1,10 @@
 <template>
   <button class="navbar-toggle" @click="onClick">
-    <img src="../../../img/drawerToggle.svg" alt="ドロワーを開閉" />
+    <img
+      src="../../../img/drawerToggle.svg"
+      alt="ドロワーを開閉"
+      class="navbar-toggle__icon"
+    />
   </button>
 </template>
 
@@ -28,6 +32,13 @@ export default {
 
   @media screen and (max-width: $breakpoint-drawer-hide) {
     display: block;
+  }
+  &:focus {
+    outline: 0;
+  }
+  &:focus &__icon {
+    outline: $focus-outline;
+    outline-offset: $spacing-xs;
   }
 }
 </style>

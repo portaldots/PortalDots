@@ -53,14 +53,18 @@ export default {
 
 <style lang="scss" scoped>
 .listview-base-item {
+  $listview-border: 1px solid $color-border;
+
   background: $color-bg-white;
   border: 0;
+  box-shadow: 0 1px 2px $color-border;
   color: $color-text;
   cursor: pointer;
   display: block;
   margin: 0;
   padding: $spacing-s $spacing;
   position: relative;
+  transition: #{$transition-base-fast} background-color;
   width: 100%;
   &:not(a):not(button) {
     cursor: auto;

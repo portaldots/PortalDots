@@ -9,6 +9,8 @@ use Jackiedo\DotenvEditor\DotenvEditor;
 
 class HomeActionTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * @test
      */

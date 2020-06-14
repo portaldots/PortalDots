@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 class ShowActionTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * @test
      */

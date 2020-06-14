@@ -17,7 +17,7 @@ body {
 * {
   box-sizing: border-box;
   &:focus {
-    outline: 3px solid rgba($color-primary, 0.25);
+    outline: $focus-outline;
   }
 }
 
@@ -70,4 +70,12 @@ code {
 
 summary {
   cursor: pointer;
+}
+
+strong,
+b {
+  // font-weight が bold となっている要素内で strong や b タグを使ってしまうと
+  // Mac では極太フォントになってしまう。極太フォントにする必要はないので、
+  // 普通の bold を指定している。
+  font-weight: bold;
 }

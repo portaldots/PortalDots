@@ -35,8 +35,8 @@ export default {
   left: $drawer-width;
   padding: 0 $spacing;
   position: fixed;
+  right: 0;
   top: 0;
-  width: $content-width;
   z-index: $z-index-navbar;
   &.is-no-drawer {
     left: 0;
@@ -47,6 +47,9 @@ export default {
     color: #fff;
   }
 
+  @media screen and (max-width: $breakpoint-drawer-narrow) {
+    left: $drawer-width-narrow;
+  }
   @media screen and (max-width: $breakpoint-drawer-hide) {
     left: 0;
     width: 100%;

@@ -28,7 +28,7 @@
         </p>
         {% if user.is_staff == 1 %}
         <p>
-          {% if _home_type == "staff" %}<a href="{{ base_url('home') }}" class="btn btn-default btn-block">一般モードへ</a>{% endif %}
+          {% if _home_type == "staff" %}<a href="{{ base_url('/') }}" class="btn btn-default btn-block">一般モードへ</a>{% endif %}
           {% if _home_type == "default" %}<a href="{{ base_url('home_staff') }}" class="btn btn-default btn-block">スタッフモードへ</a>{% endif %}
         </p>
         {% endif %}

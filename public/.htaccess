@@ -15,6 +15,12 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+    # URLの末尾にスラッシュをつけてアクセスすると、publicディレクトリ内へ
+    # リダイレクトしてしまうことがあるので、それを防ぐ
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} public/(.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$

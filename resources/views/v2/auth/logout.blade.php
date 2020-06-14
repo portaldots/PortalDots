@@ -1,7 +1,7 @@
 @extends('v2.layouts.no_drawer')
 
 @section('title', 'ログアウト')
-    
+
 @section('content')
     <div class="jumbotron">
         <app-container narrow>
@@ -10,7 +10,7 @@
             </h1>
             <form method="post" action="{{ route('logout') }}">
                 @csrf
-    
+
                 <div class="form-group">
                     <button class="btn is-primary is-block" type="submit">
                         ログアウト
