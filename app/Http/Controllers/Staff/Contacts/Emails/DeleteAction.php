@@ -6,11 +6,11 @@ use App\Eloquents\ContactEmails;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class EditAction extends Controller
+class DeleteAction extends Controller
 {
     public function __invoke(ContactEmails $contact_email)
     {
-        return view('v2.staff.contacts.emails.form')
+        return view('v2.staff.contacts.emails.delete')
             ->with('contact_email', $contact_email);
     }
 }

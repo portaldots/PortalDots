@@ -211,6 +211,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::post('/contacts/emails/create', 'Staff\Contacts\Emails\StoreAction');
         Route::get('/contacts/emails/{contact_email}/edit', 'Staff\Contacts\Emails\EditAction')->name('contacts.emails.edit');
         Route::patch('/contacts/emails/{contact_email}', 'Staff\Contacts\Emails\UpdateAction')->name('contacts.emails.update');
+        Route::get('/contacts/emails/{contact_email}/delete', 'Staff\Contacts\Emails\DeleteAction')->name('contacts.emails.delete');
+        Route::delete('/contacts/emails/{contact_email}', 'Staff\Contacts\Emails\DestroyAction')->name('contacts.emails.destroy');
 
         // 配布資料
         Route::prefix('/documents')
