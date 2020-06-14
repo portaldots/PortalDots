@@ -1,6 +1,8 @@
 <template>
   <li class="steps-list-item" :class="{ 'is-active': active }">
-    <slot />
+    <span class="steps-list-item__content">
+      <slot />
+    </span>
   </li>
 </template>
 
@@ -17,44 +19,43 @@ export default {
 
 <style lang="scss" scoped>
 .steps-list-item {
-  $circle-size: 1.4rem;
+  $circle-size: 1.5rem;
 
-  align-items: center;
-  background: $color-bg-white;
-  border-radius: $border-radius;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0 #{$steps-list-item-space};
-  padding: #{$circle-size + $spacing-s} 0 $spacing-sm;
+  margin: 0;
   position: relative;
-  text-align: center;
+  &__content {
+    background: $color-bg-white;
+    display: inline-block;
+    margin-left: -#{$spacing-md};
+    padding: $spacing-md $spacing-md $spacing-md #{$circle-size +
+      ($spacing-md * 1.75)};
+  }
   &::before {
     align-items: center;
     background: $color-bg-white;
-    border: 1px solid $color-primary;
+    border: 1px solid $color-muted-2;
     border-radius: 50%;
-    color: $color-primary;
+    color: $color-muted-2;
     content: counter(steps-list);
     counter-increment: steps-list;
     display: flex;
-    font-size: $circle-size * 0.75;
+    font-size: $circle-size * 0.6;
     font-weight: bold;
     height: $circle-size;
     justify-content: center;
-    left: 50%;
+    left: 0;
     line-height: 1;
     position: absolute;
     text-align: center;
-    top: $spacing-sm;
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translateY(-50%);
     width: $circle-size;
   }
   &.is-active {
     font-weight: bold;
     &::before {
       background: $color-primary;
+      border: 1px solid $color-primary;
       color: $color-bg-white;
     }
   }
