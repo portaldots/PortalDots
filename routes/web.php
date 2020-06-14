@@ -212,14 +212,18 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::get('/users/{user}/verify', 'Staff\Users\Verify\IndexAction')->name('users.verify');
         Route::patch('/users/{user}', 'Staff\Users\Verify\UpdateAction')->name('users.verify.update');
 
-        // お問い合わせのメールリスト
-        Route::get('/contacts/emails', 'Staff\Contacts\Emails\IndexAction')->name('contacts.emails.index');
-        Route::get('/contacts/emails/create', 'Staff\Contacts\Emails\CreateAction')->name('contacts.emails.create');
-        Route::post('/contacts/emails/create', 'Staff\Contacts\Emails\StoreAction');
-        Route::get('/contacts/emails/{contact_email}/edit', 'Staff\Contacts\Emails\EditAction')->name('contacts.emails.edit');
-        Route::patch('/contacts/emails/{contact_email}', 'Staff\Contacts\Emails\UpdateAction')->name('contacts.emails.update');
-        Route::get('/contacts/emails/{contact_email}/delete', 'Staff\Contacts\Emails\DeleteAction')->name('contacts.emails.delete');
-        Route::delete('/contacts/emails/{contact_email}', 'Staff\Contacts\Emails\DestroyAction')->name('contacts.emails.destroy');
+        Route::prefix('/contacts')
+            ->name('contacts.')
+            ->group(function () {
+                // お問い合わせのメールリスト
+                Route::get('/emails', 'Staff\Contacts\Emails\IndexAction')->name('emails.index');
+                Route::get('/emails/create', 'Staff\Contacts\Emails\CreateAction')->name('emails.create');
+                Route::post('/emails/create', 'Staff\Contacts\Emails\StoreAction');
+                Route::get('/emails/{contact_email}/edit', 'Staff\Contacts\Emails\EditAction')->name('emails.edit');
+                Route::patch('/emails/{contact_email}', 'Staff\Contacts\Emails\UpdateAction')->name('emails.update');
+                Route::get('/emails/{contact_email}/delete', 'Staff\Contacts\Emails\DeleteAction')->name('emails.delete');
+                Route::delete('/emails/{contact_email}', 'Staff\Contacts\Emails\DestroyAction')->name('emails.destroy');
+            });
 
         // 配布資料
         Route::prefix('/documents')
