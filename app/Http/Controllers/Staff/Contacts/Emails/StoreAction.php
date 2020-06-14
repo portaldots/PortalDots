@@ -8,6 +8,7 @@ use App\Http\Requests\Staff\Contacts\Emails\EmailsRequest;
 use App\Mail\Contacts\EmailsMailable;
 use App\Services\Contacts\ContactsService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StoreAction extends Controller
 {
