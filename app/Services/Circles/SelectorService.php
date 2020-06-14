@@ -81,6 +81,15 @@ class SelectorService
             $this->circle = Circle::find($circle_id) ?? null;
         }
 
+        if (!$this->circle->hasApproved()) {
+            // 企画にログイン後、スタッフによってステータスが「受理」以外に
+            // 変更されることも想定される。そのため、ログイン中の企画の
+            // ステータスが「受理」になっているかを確認し、
+            // 「受理」以外であれば企画へのログイン状態を解除する。
+            $this->reset();
+            $this->circle = null;
+        }
+
         return $this->circle;
     }
 
