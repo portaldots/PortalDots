@@ -24,8 +24,14 @@
             component-is="a"
             :href="item.href"
           >
-            <div class="selector-item__name">{{ item.name }}</div>
-            <div class="selector-item__group-name">{{ item.group_name }}</div>
+            <div class="selector-item__body">
+              <div class="selector-item__name">{{ item.name }}</div>
+              <div class="selector-item__group-name">{{ item.group_name }}</div>
+            </div>
+            <i
+              class="fas fa-check selector-item__icon"
+              v-if="selectedCircleId === item.id"
+            ></i>
           </AppDropdownItem>
         </template>
       </AppDropdown>
@@ -50,8 +56,12 @@ export default {
       default: 'top-circle-selector'
     },
     circles: {
-      // {name: String, group_name: String, href: String}
+      // {id: Number, name: String, group_name: String, href: String}
       type: Array,
+      required: true
+    },
+    selectedCircleId: {
+      type: Number,
       required: true
     },
     selectedCircleName: {
@@ -100,7 +110,13 @@ export default {
     }
   }
   &-item {
+    align-items: center;
+    display: flex;
     width: 100%;
+    &__body {
+      flex: 1;
+      padding-right: $spacing;
+    }
     &__name {
       font-weight: bold;
       margin: 0 0 $spacing-sm;
@@ -108,6 +124,10 @@ export default {
     &__group-name {
       font-size: 0.75rem;
       opacity: 0.75;
+    }
+    &__icon {
+      color: $color-primary;
+      margin-left: auto;
     }
   }
 }

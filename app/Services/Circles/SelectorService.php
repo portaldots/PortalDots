@@ -51,6 +51,7 @@ class SelectorService
         $circles = $this->getSelectableCirclesList($user);
         return $circles->map(function (Circle $circle) use ($redirect_to) {
             return [
+                'id' => $circle->id,
                 'name' => $circle->name,
                 'group_name' => $circle->group_name,
                 'href' => route('circles.selector.set', ['redirect_to' => $redirect_to, 'circle' => $circle]),
