@@ -18,14 +18,14 @@ class EmailsMailable extends Mailable
      *
      * @var string
      */
-    private $name;
+    public $name;
 
     /**
      * お問い合わせ先のメールアドレス
      *
      * @var string
      */
-    private $email;
+    public $email;
 
     /**
      * Create a new message instance.
