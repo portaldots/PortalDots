@@ -33,8 +33,8 @@
                     @foreach ([
                         'name' => '企画の名前',
                         'name_yomi' => '企画の名前(よみ)',
-                        'group_name' => '企画団体の名前',
-                        'group_name_yomi' => '企画団体の名前(よみ)'
+                        'group_name' => '企画を出店する団体の名称',
+                        'group_name_yomi' => '企画を出店する団体の名称(よみ)'
                         ] as $field_name => $display_name)
                         <div class="form-group row">
                             <label for="{{ $field_name }}Input" class="col-sm-2 col-form-label">
