@@ -262,12 +262,12 @@
                     <th>操作</th>
                     <th>回答ID</th>
                     <th class="table-sticky">
-                        企画
+                        企画名
                         {% if form.type == "booth" %}
                             ・ ブース
                         {% endif %}
                     </th>
-                    <th>企画団体</th>
+                    <th>企画を出店する団体の名称</th>
                     <th>回答作成日時</th>
                     <th>回答更新日時</th>
                     {% for question in form.questions if question.type is not same as("heading") %}
