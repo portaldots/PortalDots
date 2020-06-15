@@ -1,6 +1,8 @@
 <template>
   <li class="steps-list-item" :class="{ 'is-active': active }">
-    <slot />
+    <span class="steps-list-item__content">
+      <slot />
+    </span>
   </li>
 </template>
 
@@ -17,68 +19,56 @@ export default {
 
 <style lang="scss" scoped>
 .steps-list-item {
-  $item-space: 0.3rem;
-  $steps-list-color: $color-muted;
-  $circle-size: 1.4rem;
+  $circle-size: 1.5rem;
 
-  align-items: center;
-  background: #fff;
-  border: 1px solid #{$steps-list-color};
-  border-radius: $border-radius;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0 #{$item-space};
-  padding: #{$circle-size + $spacing-sm + $spacing-xs} 0 $spacing-sm;
+  margin: 0;
   position: relative;
-  text-align: center;
+  &__content {
+    background: $color-bg-white;
+    display: inline-block;
+    margin-left: -#{$spacing-md};
+    padding: $spacing-md $spacing-md $spacing-md #{$circle-size +
+      ($spacing-md * 1.75)};
+    text-align: left;
+  }
   &::before {
     align-items: center;
-    background: #fff;
-    border: 1px solid $steps-list-color;
+    background: $color-bg-white;
+    border: 1px solid $color-muted-2;
     border-radius: 50%;
-    color: $steps-list-color;
+    color: $color-muted-2;
     content: counter(steps-list);
     counter-increment: steps-list;
     display: flex;
-    font-size: $circle-size * 0.75;
+    font-size: $circle-size * 0.6;
     font-weight: bold;
     height: $circle-size;
     justify-content: center;
-    left: 50%;
+    left: 0;
     line-height: 1;
     position: absolute;
     text-align: center;
-    top: $spacing-sm;
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translateY(-50%);
     width: $circle-size;
   }
-  &::after {
-    background: #fff;
-    border: 1px solid $steps-list-color;
-    border-bottom: 0;
-    border-left: 0;
+  &.is-active {
+    font-weight: bold;
+    &::before {
+      background: $color-primary;
+      border: 1px solid $color-primary;
+      color: $color-bg-white;
+    }
+  }
+  &:not(:last-child)::after {
+    background: $color-primary;
     content: '';
     display: block;
-    height: 0.75rem;
+    height: 2px;
+    left: 50%;
     position: absolute;
-    right: -0.5rem;
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
-    width: 0.75rem;
-    z-index: 2;
-  }
-  &:last-child::after {
-    display: none;
-  }
-  &.is-active {
-    background: $steps-list-color;
-    color: #fff;
-    font-weight: bold;
-    &::after {
-      background: $steps-list-color;
-    }
+    right: 150%;
+    top: 0;
   }
 }
 </style>
