@@ -1,7 +1,7 @@
 @extends('v2.layouts.no_drawer')
 
 @section('title', 'フォームの複製')
-    
+
 @section('navbar')
     <app-nav-bar-back inverse href="{{ url('home_staff/applications') }}" data-turbolinks="false">
         申請管理
@@ -14,7 +14,7 @@
             <template v-slot:title>
                 「{{ $form->name }}」の複製
             </template>
-    
+
             <list-view-card>
                 <p>「{{ $form->name }}」の設問も全て複製されます</p>
                 <p>「{{ $form->name }}のコピー」という名前で複製されます</p>
