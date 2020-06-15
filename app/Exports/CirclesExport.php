@@ -58,8 +58,8 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             '企画ID',
-            '企画の名前',
-            '企画の名前（よみ）',
+            '企画名',
+            '企画名（よみ）',
             '企画を出店する団体の名称',
             '企画を出店する団体の名称（よみ）',
             'タグ',

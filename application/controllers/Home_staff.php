@@ -356,7 +356,7 @@ class Home_staff extends MY_Controller
     private function _application_read_csv($vars)
     {
         // カラム名
-        $string_to_export = "ID\t企画ID\t企画の名前\t企画の名前(よみ)\t企画を出店する団体の名称\t企画を出店する団体の名称(よみ)";
+        $string_to_export = "ID\t企画ID\t企画名\t企画名(よみ)\t企画を出店する団体の名称\t企画を出店する団体の名称(よみ)";
 
         if ($vars["form"]->type === "booth") {
             $string_to_export .= "\tブース名";
@@ -379,9 +379,9 @@ class Home_staff extends MY_Controller
             $string_to_export .= $answer->id;
             // 企画ID
             $string_to_export .= "\t" . $answer->circle->id;
-            // 企画の名前
+            // 企画名
             $string_to_export .= "\t" . $answer->circle->name;
-            // 企画の名前(よみ)
+            // 企画名(よみ)
             $string_to_export .= "\t" . $answer->circle->name_yomi;
             // 企画を出店する団体の名称
             $string_to_export .= "\t" . $answer->circle->group_name;
@@ -646,8 +646,8 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->where('submitted_at IS NOT NULL', null, false);
         $this->grocery_crud->set_subject('企画');
         $this->grocery_crud->display_as('id', '企画ID');
-        $this->grocery_crud->display_as('name', '企画の名前');
-        $this->grocery_crud->display_as('name_yomi', '企画の名前(よみ)');
+        $this->grocery_crud->display_as('name', '企画名');
+        $this->grocery_crud->display_as('name_yomi', '企画名(よみ)');
         $this->grocery_crud->display_as('group_name', '企画を出店する団体の名称');
         $this->grocery_crud->display_as('group_name_yomi', '企画を出店する団体の名称(よみ)');
         $this->grocery_crud->display_as('tags', 'タグ');
@@ -704,7 +704,7 @@ class Home_staff extends MY_Controller
     }
 
     /**
-     * 企画の名前にふりがなをふるための Grocery CRUD コールバック関数
+     * 企画名にふりがなをふるための Grocery CRUD コールバック関数
      */
     public function _crud_circle_name_yomi($value, $row)
     {

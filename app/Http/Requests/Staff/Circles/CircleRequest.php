@@ -50,8 +50,8 @@ class CircleRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => '企画の名前',
-            'name_yomi' => '企画の名前(よみ)',
+            'name' => '企画名',
+            'name_yomi' => '企画名(よみ)',
             'group_name' => '企画を出店する団体の名称',
             'group_name_yomi' => '企画を出店する団体の名称(よみ)',
             'leader' => '企画責任者',

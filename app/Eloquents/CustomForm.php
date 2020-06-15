@@ -44,13 +44,13 @@ class CustomForm extends Model
             'circle' => [
                 [
                     'id' => 'circle.name',
-                    'name' => '企画の名前',
+                    'name' => '企画名',
                     'type' => 'text',
                     'is_required' => true,
                 ],
                 [
                     'id' => 'circle.name_yomi',
-                    'name' => '企画の名前(よみ)',
+                    'name' => '企画名(よみ)',
                     'type' => 'text',
                     'is_required' => true,
                 ],
