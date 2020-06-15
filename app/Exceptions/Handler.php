@@ -51,7 +51,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof PDOException) {
+        if ($exception instanceof PDOException && !config('app.debug')) {
             // データベース接続エラー
             //
             // そのまま Blade ファイルによるエラーページを表示してしまうと、

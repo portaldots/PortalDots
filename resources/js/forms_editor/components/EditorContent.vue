@@ -1,6 +1,6 @@
 <template>
   <div class="editor-content editor-content-styling">
-    <div class="editor-preview">
+    <div class="editor-body">
       <form-header />
       <div
         class="editor-content__permanent-questions-info"
@@ -160,7 +160,7 @@ export default {
   }
 }
 
-.editor-preview {
+.editor-body {
   background: #fff;
   box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.07);
   margin: 0 auto;

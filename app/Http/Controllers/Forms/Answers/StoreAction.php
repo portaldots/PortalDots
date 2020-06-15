@@ -11,6 +11,9 @@ use App\Services\Forms\AnswersService;
 
 class StoreAction extends Controller
 {
+    /**
+     * @var AnswersService
+     */
     private $answersService;
 
     public function __construct(AnswersService $answersService)
@@ -24,6 +27,10 @@ class StoreAction extends Controller
             abort(404);
         }
 
+        $this->authorize('view', [$form, Circle::findOrFail($request->circle_id)]);
+
+        // ユーザーが企画に所属しているかどうかの検証は
+        // StoreAnswerRequest で行っている
         $circle = Circle::approved()->findOrFail($request->circle_id);
         $answer = $this->answersService->createAnswer($form, $circle, $request);
         if ($answer) {

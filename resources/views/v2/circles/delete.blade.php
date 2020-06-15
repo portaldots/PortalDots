@@ -1,5 +1,7 @@
 @extends('v2.layouts.no_drawer')
 
+@section('no_circle_selector', true)
+
 @section('title', '企画参加登録')
 
 @section('content')

@@ -9,8 +9,16 @@
         @else
             <list-view>
                 @foreach ($pages as $page)
-                    <list-view-item href="{{ route('pages.show', $page) }}">
+                    <list-view-item
+                        href="{{ route('pages.show', $page) }}"
+                        {{ Auth::check() && $page->usersWhoRead->isEmpty() ? 'unread' : '' }}
+                    >
                         <template v-slot:title>
+                            @if (!$page->viewableTags->isEmpty())
+                                <app-badge primary outline>限定公開</app-badge>
+                            @else
+                                <app-badge muted outline>全員に公開</app-badge>
+                            @endif
                             {{ $page->title }}
                             @if ($page->isNew())
                                 <app-badge danger>NEW</app-badge>

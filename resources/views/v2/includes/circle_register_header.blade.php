@@ -1,3 +1,5 @@
+@section('no_circle_selector', true)
+
 @php
 $step = 0;
 if (Route::currentRouteName() === 'circles.create' || Route::currentRouteName() === 'circles.edit') {

@@ -2,6 +2,8 @@
 
 @section('title', 'スケジュール')
 
+@section('no_circle_selector', true)
+
 @section('content')
     <div class="tab_strip">
         <a href="{{ route('schedules.index') }}"
