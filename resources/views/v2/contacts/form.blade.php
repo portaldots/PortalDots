@@ -46,27 +46,27 @@
                         </select>
                         </list-view-form-group>
                     @endunless
-                    @unless($subjects->isEmpty())
-                        <list-view-form-group label-for="subject">
+                    @unless($categories->isEmpty())
+                        <list-view-form-group label-for="category">
                             <template v-slot:label>お問い合わせ項目</template>
                             <template v-slot:description>以下のリストから項目を選択してください</template>
-                            <select id="subject" name="subject" class="form-control @error('subject') is-invalid @enderror ">
+                            <select id="category" name="category" class="form-control @error('category') is-invalid @enderror ">
                                 <option hidden>選択してください</option>
-                                @foreach ($subjects as $subject)
-                                    <option value="{{ $subject->id }}" {{ old('subject', 0) == $subject->id ? 'selected' : '' }}>
-                                        {{ $subject->name }}
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category', 0) == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
                                     </option>
                                 @endforeach
                                 <option value="0">その他</option>
                             </select>
-                            @error('subject')
+                            @error('category')
                             <template v-slot:invalid>
                                 {{ $message }}
                             </template>
                             @enderror
                         </list-view-form-group>
                     @else
-                        <input type="hidden" id="subject" name="subject" value="0">
+                        <input type="hidden" id="category" name="category" value="0">
                     @endunless
                     <list-view-form-group label-for="contact_body">
                         <template v-slot:label>お問い合わせ内容</template>
