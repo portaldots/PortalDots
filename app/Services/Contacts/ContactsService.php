@@ -9,7 +9,7 @@ use App\Eloquents\Circle;
 use App\Eloquents\ContactEmail;
 use App\Eloquents\User;
 use App\Mail\Contacts\ContactMailable;
-use App\Mail\Contacts\EmailsMailable;
+use App\Mail\Contacts\EmailMailable;
 
 class ContactsService
 {
@@ -86,7 +86,7 @@ class ContactsService
     {
         Mail::to($contactEmail->email, $contactEmail->name)
             ->send(
-                (new EmailsMailable($contactEmail))
+                (new EmailMailable($contactEmail))
                     ->subject('お問い合わせ先に設定されました')
             );
     }

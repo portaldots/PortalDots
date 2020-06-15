@@ -1,18 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Contacts\Emails;
+namespace App\Http\Controllers\Staff\Contacts\Email;
 
 use App\Eloquents\ContactEmail;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Staff\Contacts\Emails\EmailsRequest;
-use App\Mail\Contacts\EmailsMailable;
+use App\Http\Requests\Staff\Contacts\Email\EmailRequest;
+use App\Services\Contacts\ContactsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class UpdateAction extends Controller
 {
-    public function __invoke(ContactEmail $contact_email, EmailsRequest $request)
+
+    /**
+     * @var contactsService
+     */
+    private $contactsService;
+
+    public function __construct(ContactsService $contactsService)
+    {
+        $this->contactsService = $contactsService;
+    }
+
+    public function __invoke(ContactEmail $contact_email, EmailRequest $request)
     {
         $old_email = $contact_email->email;
 
@@ -24,15 +35,11 @@ class UpdateAction extends Controller
         });
 
         if ($old_email != $request->email) {
-            Mail::to($contact_email->email, $contact_email->name)
-                ->send(
-                    (new EmailsMailable($contact_email))
-                        ->subject('お問い合せ先に設定されました')
-                );
+            $this->contactsService->sendContactEmail($contact_email);
         }
 
         return redirect()
-            ->route('staff.contacts.emails.index')
+            ->route('staff.contacts.email.index')
             ->with('topAlert.title', "「{$contact_email->name}」を変更しました");
     }
 }

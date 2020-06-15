@@ -1429,8 +1429,8 @@ class Home_staff extends MY_Controller
                 ],
                 "contact-emails" => [
                     "icon" => "at",
-                    "name" => "お問い合わせ メール管理",
-                    "url" => "staff/contacts/emails",
+                    "name" => "お問い合わせ メール設定",
+                    "url" => "staff/contacts/email",
                 ],
                 // "contact" => [
                 //   "icon" => "envelope-o",

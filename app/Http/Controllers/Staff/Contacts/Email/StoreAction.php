@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Contacts\Emails;
+namespace App\Http\Controllers\Staff\Contacts\Email;
 
 use App\Eloquents\ContactEmail;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Staff\Contacts\Emails\EmailsRequest;
-use App\Mail\Contacts\EmailsMailable;
+use App\Http\Requests\Staff\Contacts\Email\EmailRequest;
 use App\Services\Contacts\ContactsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +19,7 @@ class StoreAction extends Controller
         $this->contactsService = $contactsService;
     }
 
-    public function __invoke(EmailsRequest $request)
+    public function __invoke(EmailRequest $request)
     {
 
         $email = DB::transaction(function () use ($request) {
@@ -36,7 +35,7 @@ class StoreAction extends Controller
         $this->contactsService->sendContactEmail($email);
 
         return redirect()
-            ->route('staff.contacts.emails.index')
-            ->with('topAlert.title', '保存しました');
+            ->route('staff.contacts.email.index')
+            ->with('topAlert.title', 'メールアドレスを追加しました');
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Staff\Contacts\Emails;
+namespace App\Http\Requests\Staff\Contacts\Email;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EmailsRequest extends FormRequest
+class EmailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -37,7 +37,7 @@ class EmailsRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => '表示名',
+            'name' => '項目名',
             'email' => 'メールアドレス',
         ];
     }

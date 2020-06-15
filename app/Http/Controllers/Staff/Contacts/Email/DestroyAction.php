@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Contacts\Emails;
+namespace App\Http\Controllers\Staff\Contacts\Email;
 
 use App\Eloquents\ContactEmail;
 use App\Http\Controllers\Controller;
@@ -16,7 +16,7 @@ class DestroyAction extends Controller
         });
 
         return redirect()
-            ->route('staff.contacts.emails.index')
+            ->route('staff.contacts.email.index')
             ->with('topAlert.title', 'メールアドレスを削除しました');
     }
 }

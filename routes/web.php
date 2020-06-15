@@ -216,13 +216,13 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             ->name('contacts.')
             ->group(function () {
                 // お問い合わせのメールリスト
-                Route::get('/emails', 'Staff\Contacts\Emails\IndexAction')->name('emails.index');
-                Route::get('/emails/create', 'Staff\Contacts\Emails\CreateAction')->name('emails.create');
-                Route::post('/emails/create', 'Staff\Contacts\Emails\StoreAction');
-                Route::get('/emails/{contact_email}/edit', 'Staff\Contacts\Emails\EditAction')->name('emails.edit');
-                Route::patch('/emails/{contact_email}', 'Staff\Contacts\Emails\UpdateAction')->name('emails.update');
-                Route::get('/emails/{contact_email}/delete', 'Staff\Contacts\Emails\DeleteAction')->name('emails.delete');
-                Route::delete('/emails/{contact_email}', 'Staff\Contacts\Emails\DestroyAction')->name('emails.destroy');
+                Route::get('/email', 'Staff\Contacts\Email\IndexAction')->name('email.index');
+                Route::get('/email/create', 'Staff\Contacts\Email\CreateAction')->name('email.create');
+                Route::post('/email/create', 'Staff\Contacts\Email\StoreAction');
+                Route::get('/email/{contact_email}/edit', 'Staff\Contacts\Email\EditAction')->name('email.edit');
+                Route::patch('/email/{contact_email}', 'Staff\Contacts\Email\UpdateAction')->name('email.update');
+                Route::get('/email/{contact_email}/delete', 'Staff\Contacts\Email\DeleteAction')->name('email.delete');
+                Route::delete('/email/{contact_email}', 'Staff\Contacts\Email\DestroyAction')->name('email.destroy');
             });
 
         // 配布資料

@@ -1,9 +1,9 @@
 @extends('v2.layouts.no_drawer')
 
-@section('title', 'お問い合わせ - '. empty($contact_email) ? 'メールアドレス追加' : $contact_email->name )
+@section('title', (empty($contact_email) ? 'メールアドレス追加' : $contact_email->name). ' - お問い合わせ')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ route('staff.contacts.emails.index') }}">
+    <app-nav-bar-back inverse href="{{ route('staff.contacts.email.index') }}">
         メールアドレス一覧
     </app-nav-bar-back>
 @endsection
@@ -12,21 +12,22 @@
     <app-container medium>
         <form
             action="{{ isset($contact_email)
-                ? route('staff.contacts.emails.update', ['contact_email' => $contact_email])
-                : route('staff.contacts.emails.create') }}"
+                ? route('staff.contacts.email.update', ['contact_email' => $contact_email])
+                : route('staff.contacts.email.create') }}"
             method="post">
         @csrf
         @method(isset($contact_email) ? 'patch' : 'post')
             <list-view>
                 <template v-slot:title>
-                    お問い合わせ - {{ isset($contact_email) ? $contact_email->name : 'メールアドレス追加'}}
+                    {{ isset($contact_email) ? $contact_email->name : 'メールアドレス追加'}}
                     @isset($contact_email)
-                        <small><a href="{{ route('staff.contacts.emails.delete', $contact_email) }}">削除</a></small>
+                        <small><a href="{{ route('staff.contacts.email.delete', $contact_email) }}">削除</a></small>
                     @endisset
+                    - お問い合わせ
                 </template>
                 <list-view-form-group label-for="name">
                     <template v-slot:label>
-                        表示名
+                        項目名
                     </template>
                     <template v-slot:description>
                         この名前がお問い合わせの宛先に表示されます
