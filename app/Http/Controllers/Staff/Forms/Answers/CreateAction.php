@@ -26,7 +26,7 @@ class CreateAction extends Controller
     {
         $circle = null;
         if (empty($request->circle)) {
-            $circles = Circle::all();
+            $circles = Circle::submitted()->get();
             return view('v2.staff.circles.selector')
                 ->with('url', route('staff.forms.answers.create', ['form' => $form]))
                 ->with('circles', $circles);
