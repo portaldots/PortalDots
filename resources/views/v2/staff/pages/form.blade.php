@@ -42,7 +42,7 @@
                         本文&nbsp;
                         <app-badge outline muted>Markdown</app-badge>
                     </template>
-                    <markdown-editor input-name="body" default-value="{{ empty($page) ? '' : $page->body }}"></markdown-editor>
+                    <markdown-editor input-name="body" default-value="{{ old('body', empty($page) ? '' : $page->body) }}"></markdown-editor>
                     @if ($errors->has('body'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('body') as $message)
