@@ -8,7 +8,6 @@ use App\Eloquents\Form;
 use App\Eloquents\Circle;
 use App\Http\Requests\Forms\StoreAnswerRequest;
 use App\Services\Forms\AnswersService;
-use App\Services\Circles\SelectorService;
 
 class StoreAction extends Controller
 {
@@ -17,17 +16,9 @@ class StoreAction extends Controller
      */
     private $answersService;
 
-    /**
-     * @var SelectorService
-     */
-    private $selectorService;
-
-    public function __construct(
-        AnswersService $answersService,
-        SelectorService $selectorService
-    ) {
+    public function __construct(AnswersService $answersService)
+    {
         $this->answersService = $answersService;
-        $this->selectorService = $selectorService;
     }
 
     public function __invoke(Form $form, StoreAnswerRequest $request)
@@ -36,7 +27,7 @@ class StoreAction extends Controller
             abort(404);
         }
 
-        $this->authorize('view', [$form, $this->selectorService->getCircle()]);
+        $this->authorize('view', [$form, Circle::findOrFail($request->circle_id)]);
 
         // ユーザーが企画に所属しているかどうかの検証は
         // StoreAnswerRequest で行っている

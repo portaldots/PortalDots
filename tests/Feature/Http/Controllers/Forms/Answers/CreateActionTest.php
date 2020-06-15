@@ -5,11 +5,14 @@ namespace Tests\Feature\Http\Controllers\Forms\Answers;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\App;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
+use App\Eloquents\Tag;
+use App\Services\Circles\SelectorService;
 
 class CreateActionTest extends TestCase
 {
@@ -18,6 +21,11 @@ class CreateActionTest extends TestCase
     private $user;
     private $circle;
     private $form;
+
+    /**
+     * @var SelectorService
+     */
+    private $selectorService;
 
     public function setUp(): void
     {
@@ -31,6 +39,15 @@ class CreateActionTest extends TestCase
         ]);
 
         $this->user->circles()->attach($this->circle->id, ['is_leader' => true]);
+
+        $this->selectorService = App::make(SelectorService::class);
+    }
+
+    public function tearDown(): void
+    {
+        $this->selectorService->reset();
+
+        parent::tearDown();
     }
 
     /**
@@ -44,12 +61,13 @@ class CreateActionTest extends TestCase
         Carbon::setTestNow($today);
         CarbonImmutable::setTestNow($today);
 
+        $this->selectorService->setCircle($this->circle);
+
         $response = $this
                     ->actingAs($this->user)
                     ->get(
                         route('forms.answers.create', [
                             'form' => $this->form,
-                            'circle' => $this->circle
                         ])
                     );
 
@@ -82,15 +100,74 @@ class CreateActionTest extends TestCase
     {
         $privateForm = factory(Form::class)->states('private')->create();
 
+        $this->selectorService->setCircle($this->circle);
+
         $response = $this
                     ->actingAs($this->user)
                     ->get(
                         route('forms.answers.create', [
                             'form' => $privateForm,
-                            'circle' => $this->circle
                         ])
                     );
 
         $response->assertStatus(404);
+    }
+
+    /**
+     * @test
+     */
+    public function 回答可能なタグを持つ企画に所属している場合フォームにアクセスできる()
+    {
+        $tag = factory(Tag::class)->create();
+
+        $tagged_circle = factory(Circle::class)->create();
+        $tagged_circle->tags()->attach($tag->id);
+
+        $tagged_form = factory(Form::class)->create();
+        $tagged_form->answerableTags()->attach($tag->id);
+
+        $this->user->circles()->attach($tagged_circle->id, ['is_leader' => true]);
+
+        $this->selectorService->setCircle($tagged_circle);
+
+        $response = $this
+                    ->actingAs($this->user)
+                    ->get(
+                        route('forms.answers.create', [
+                            'form' => $tagged_form,
+                        ])
+                    );
+
+        $response->assertStatus(200);
+    }
+
+    /**
+     * @test
+     */
+    public function 回答可能なタグを持つ企画に所属していない場合フォームにアクセスできない()
+    {
+        $tag = factory(Tag::class)->create();
+
+        $tagged_circle = factory(Circle::class)->create();
+
+        // フォームとは別にタグを企画に紐付ける
+        $tagged_circle->tags()->attach(factory(Tag::class)->create());
+
+        $tagged_form = factory(Form::class)->create();
+        $tagged_form->answerableTags()->attach($tag->id);
+
+        $this->user->circles()->attach($tagged_circle->id, ['is_leader' => true]);
+
+        $this->selectorService->setCircle($tagged_circle);
+
+        $response = $this
+                    ->actingAs($this->user)
+                    ->get(
+                        route('forms.answers.create', [
+                            'form' => $tagged_form,
+                        ])
+                    );
+
+        $response->assertStatus(403);
     }
 }

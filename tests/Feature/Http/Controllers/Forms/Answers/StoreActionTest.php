@@ -5,12 +5,15 @@ namespace Tests\Feature\Http\Controllers\Forms\Answers;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\App;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
 use App\Eloquents\CustomForm;
+use App\Eloquents\Tag;
+use App\Services\Circles\SelectorService;
 
 class StoreActionTest extends TestCase
 {
@@ -19,6 +22,11 @@ class StoreActionTest extends TestCase
     private $user;
     private $circle;
     private $form;
+
+    /**
+     * @var SelectorService
+     */
+    private $selectorService;
 
     public function setUp(): void
     {
@@ -32,6 +40,15 @@ class StoreActionTest extends TestCase
         ]);
 
         $this->user->circles()->attach($this->circle->id, ['is_leader' => true]);
+
+        $this->selectorService = App::make(SelectorService::class);
+    }
+
+    public function tearDown(): void
+    {
+        $this->selectorService->reset();
+
+        parent::tearDown();
     }
 
     /**
@@ -203,5 +220,91 @@ class StoreActionTest extends TestCase
         ]);
 
         $response->assertStatus(404);
+    }
+
+    /**
+     * @test
+     */
+    public function 回答可能なタグを持つ企画に所属している場合回答できる()
+    {
+        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+
+        $tag = factory(Tag::class)->create();
+
+        $tagged_circle = factory(Circle::class)->create();
+        $tagged_circle->tags()->attach($tag->id);
+
+        $tagged_form = factory(Form::class)->create();
+        $tagged_form->answerableTags()->attach($tag->id);
+
+        $this->user->circles()->attach($tagged_circle->id, ['is_leader' => true]);
+
+        // StoreActionではselectorServiceでsetしたcircleではなく、
+        // フォーム内で POST された circle_id で回答を保存することを確かめるため、
+        // $tagged_circle ではなく $this->circle を set する
+        $this->selectorService->setCircle($this->circle);
+
+        $response = $this
+                    ->actingAs($this->user)
+                    ->post(
+                        route('forms.answers.store', [
+                            'form' => $tagged_form,
+                        ]),
+                        [
+                            'circle_id' => $tagged_circle->id,
+                        ]
+                    );
+
+        $this->assertDatabaseHas('answers', [
+            'form_id' => $tagged_form->id,
+            'circle_id' => $tagged_circle->id,
+        ]);
+
+        $response->assertStatus(302);
+    }
+
+    /**
+     * @test
+     */
+    public function 回答可能なタグを持つ企画に所属していない場合回答できない()
+    {
+        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+
+        $tag = factory(Tag::class)->create();
+
+        $tagged_circle = factory(Circle::class)->create();
+
+        // フォームとは別にタグを企画に紐付ける
+        $tagged_circle->tags()->attach(factory(Tag::class)->create());
+
+        $tagged_form = factory(Form::class)->create();
+        $tagged_form->answerableTags()->attach($tag->id);
+
+        $this->user->circles()->attach($tagged_circle->id, ['is_leader' => true]);
+
+        // StoreActionではselectorServiceでsetしたcircleではなく、
+        // フォーム内で POST された circle_id で回答を保存することを確かめるため、
+        // $tagged_circle ではなく $this->circle を set する
+        $this->selectorService->setCircle($this->circle);
+
+        $response = $this
+                    ->actingAs($this->user)
+                    ->post(
+                        route('forms.answers.store', [
+                            'form' => $tagged_form,
+                        ]),
+                        [
+                            'circle_id' => $tagged_circle->id,
+                        ]
+                    );
+
+        $this->assertDatabaseMissing('answers', [
+            'form_id' => $tagged_form->id,
+            'circle_id' => $tagged_circle->id,
+        ]);
+
+        $response->assertStatus(403);
     }
 }
