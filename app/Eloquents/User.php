@@ -273,7 +273,7 @@ class User extends Authenticatable
         return !empty($this->signed_up_at);
     }
 
-    public function isLeader(Circle $circle)
+    public function isLeaderInCircle(Circle $circle)
     {
         return $circle->leader->first()->id === $this->id;
     }

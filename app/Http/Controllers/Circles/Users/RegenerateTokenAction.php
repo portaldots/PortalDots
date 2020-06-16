@@ -24,7 +24,7 @@ class RegenerateTokenAction extends Controller
     {
         $this->authorize('circle.update', $circle);
 
-        if (!Auth::user()->isLeader($circle)) {
+        if (!Auth::user()->isLeaderInCircle($circle)) {
             abort(403);
         }
 

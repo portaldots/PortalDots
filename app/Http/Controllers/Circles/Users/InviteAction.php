@@ -29,7 +29,7 @@ class InviteAction extends Controller
 
         if ($circle->users->contains(Auth::user())) {
             $redirect_to = 'circles.read';
-            if (Auth::user()->isLeader($circle)) {
+            if (Auth::user()->isLeaderInCircle($circle)) {
                 $redirect_to = 'circles.users.index';
             }
             return redirect()

@@ -13,7 +13,7 @@ class ReadAction extends Controller
     {
         $this->authorize('circle.belongsTo', $circle);
 
-        if (Auth::user()->isLeader($circle)) {
+        if (Auth::user()->isLeaderInCircle($circle)) {
             return redirect()
                 ->route('circles.confirm', ['circle' => $circle]);
         }
