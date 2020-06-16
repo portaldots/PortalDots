@@ -16,7 +16,7 @@
     <app-container medium>
         <list-view>
             <list-view-card>
-                情報を編集できるのは責任者だけです。以下の情報に誤りがある場合は責任者にご連絡ください。
+                <strong>企画情報の修正や、企画参加登録を提出することができるのは、企画責任者のみです。</strong>
                 <hr>
                 @include('v2.includes.circles_info')
             </list-view-card>
