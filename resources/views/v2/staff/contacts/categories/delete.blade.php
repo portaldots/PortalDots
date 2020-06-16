@@ -9,8 +9,16 @@
 @endsection
 
 @section('content')
+    <app-header container-medium>
+        <template v-slot:title>
+            お問い合わせ受付設定
+        </template>
+    </app-header>
     <app-container medium>
         <list-view>
+            <template v-slot:title>
+                項目の削除
+            </template>
             <list-view-card class="text-center">
                 <p>{{ $category->name }}({{ $category->email }})を削除しますか？</p>
 

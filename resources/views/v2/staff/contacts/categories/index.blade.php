@@ -9,12 +9,11 @@
 @endsection
 
 @section('content')
+    <app-header container-medium>
+        <template v-slot:title>お問い合わせ受付設定</template>
+    </app-header>
     <app-container medium>
         <list-view>
-            <template v-slot:title>
-                メールアドレス一覧 - お問い合わせ
-            </template>
-
             <list-view-card>
                 <p>ここでメールアドレスを設定するとポータルからのお問い合わせを振り分けることができます。</p>
             </list-view-card>

@@ -9,6 +9,11 @@
 @endsection
 
 @section('content')
+    <app-header container-medium>
+        <template v-slot:title>
+            お問い合わせ受付設定
+        </template>
+    </app-header>
     <app-container medium>
         <form
             action="{{ isset($category)
@@ -19,11 +24,10 @@
         @method(isset($category) ? 'patch' : 'post')
             <list-view>
                 <template v-slot:title>
-                    {{ isset($category) ? $category->name : 'メールアドレス追加'}}
+                    {{ isset($category) ? "「{$category->name}」の編集" : '項目の新規作成'}}
                     @isset($category)
                         <small><a href="{{ route('staff.contacts.categories.delete', $category) }}">削除</a></small>
                     @endisset
-                    - お問い合わせ
                 </template>
                 <list-view-form-group label-for="name">
                     <template v-slot:label>
@@ -69,11 +73,11 @@
             <div class="text-center pt-spacing-md pb-spacing">
                 <button type="submit" class="btn is-primary is-wide">保存</button>
                 <p class="pt-spacing-md">
-                    @isset($category)
+                    @empty($category)
                         保存した際に設定したメールアドレスにメールが送信されます。
                     @else
                         メールアドレスを変更した場合、変更後のメールアドレスにメールが送信されます。
-                    @endisset
+                    @endempty
                 </p>
             </div>
         </form>
