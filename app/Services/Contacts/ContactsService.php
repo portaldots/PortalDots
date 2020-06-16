@@ -81,18 +81,4 @@ class ContactsService
                     ->subject("お問い合わせ({$senderText} 様)")
             );
     }
-
-    /**
-     * ContactCategory の新規作成・アップデート時にメール送信を確認する
-     *
-     * @param ContactCategory $category
-     */
-    public function sendContactCategory(ContactCategory $category)
-    {
-        Mail::to($category->email, $category->name)
-            ->send(
-                (new EmailCategoryMailable($category))
-                    ->subject('お問い合わせ先に設定されました')
-            );
-    }
 }

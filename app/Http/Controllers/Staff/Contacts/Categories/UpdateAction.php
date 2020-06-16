@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Staff\Contacts\Categories;
 use App\Eloquents\ContactCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\Contacts\Categories\CategoryRequest;
-use App\Services\Contacts\ContactsService;
+use App\Services\Contacts\ContactCategoriesService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -14,13 +14,13 @@ class UpdateAction extends Controller
 {
 
     /**
-     * @var ContactsService
+     * @var ContactCategoriesService
      */
-    private $contactsService;
+    private $categoriesService;
 
-    public function __construct(ContactsService $contactsService)
+    public function __construct(ContactCategoriesService $categoriesService)
     {
-        $this->contactsService = $contactsService;
+        $this->categoriesService = $categoriesService;
     }
 
     public function __invoke(ContactCategory $category, CategoryRequest $request)
@@ -33,7 +33,7 @@ class UpdateAction extends Controller
         ]);
 
         if ($old_email !== $request->email) {
-            $this->contactsService->sendContactCategory($category);
+            $this->categoriesService->send($category);
         }
 
         return redirect()

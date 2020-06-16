@@ -68,14 +68,14 @@
             </list-view>
             <div class="text-center pt-spacing-md pb-spacing">
                 <button type="submit" class="btn is-primary is-wide">保存</button>
+                <p class="pt-spacing-md">
+                    @isset($category)
+                        保存した際に設定したメールアドレスにメールが送信されます。
+                    @else
+                        メールアドレスを変更した場合、変更後のメールアドレスにメールが送信されます。
+                    @endisset
+                </p>
             </div>
         </form>
-        <p class="pt-spacing-md">
-            @isset($category)
-                保存した際に設定したメールアドレスにメールが送信されます。
-            @else
-                メールアドレスを変更した場合、変更後のメールアドレスにメールが送信されます。
-            @endisset
-        </p>
     </app-container>
 @endsection
