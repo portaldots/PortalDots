@@ -26,8 +26,7 @@
                     {{ $category->email }}
                 </list-view-item>
             @endforeach
-            <list-view-action-btn href="{{ route('staff.contacts.categories.create') }}">
-                <i class="fas fa-plus"></i>
+            <list-view-action-btn href="{{ route('staff.contacts.categories.create') }}" icon-class="fas fa-plus">
                 メールアドレスを追加
             </list-view-action-btn>
         </list-view>
