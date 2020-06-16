@@ -237,6 +237,19 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::get('/users/{user}/verify', 'Staff\Users\Verify\IndexAction')->name('users.verify');
         Route::patch('/users/{user}', 'Staff\Users\Verify\UpdateAction')->name('users.verify.update');
 
+        Route::prefix('/contacts')
+            ->name('contacts.')
+            ->group(function () {
+                // お問い合わせのメールリスト
+                Route::get('/categories', 'Staff\Contacts\Categories\IndexAction')->name('categories.index');
+                Route::get('/categories/create', 'Staff\Contacts\Categories\CreateAction')->name('categories.create');
+                Route::post('/categories/create', 'Staff\Contacts\Categories\StoreAction');
+                Route::get('/categories/{category}/edit', 'Staff\Contacts\Categories\EditAction')->name('categories.edit');
+                Route::patch('/categories/{category}', 'Staff\Contacts\Categories\UpdateAction')->name('categories.update');
+                Route::get('/categories/{category}/delete', 'Staff\Contacts\Categories\DeleteAction')->name('categories.delete');
+                Route::delete('/categories/{category}', 'Staff\Contacts\Categories\DestroyAction')->name('categories.destroy');
+            });
+
         // 配布資料
         Route::prefix('/documents')
             ->name('documents.')

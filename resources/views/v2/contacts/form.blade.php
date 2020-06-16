@@ -34,6 +34,28 @@
                             class="form-control is-plaintext">
                     </list-view-form-group>
                 @endif
+                @unless($categories->isEmpty())
+                    <list-view-form-group label-for="category">
+                        <template v-slot:label>お問い合わせ項目</template>
+                        <template v-slot:description>以下のリストから項目を選択してください</template>
+                        <select id="category" name="category" class="form-control @error('category') is-invalid @enderror ">
+                            <option hidden>選択してください</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category', 0) == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                            <option value="0">その他</option>
+                        </select>
+                        @error('category')
+                        <template v-slot:invalid>
+                            {{ $message }}
+                        </template>
+                        @enderror
+                    </list-view-form-group>
+                @else
+                    <input type="hidden" id="category" name="category" value="0">
+                @endunless
                 <list-view-form-group label-for="contact_body">
                     <template v-slot:label>お問い合わせ内容</template>
                     <template v-slot:description>確認のため、お問い合わせ内容をメールで送信いたします。</template>

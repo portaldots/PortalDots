@@ -7,6 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Eloquents\Circle;
+use App\Eloquents\ContactCategory;
 use App\Eloquents\User;
 
 class ContactMailable extends Mailable
@@ -36,15 +37,23 @@ class ContactMailable extends Mailable
     public $contactBody;
 
     /**
+     * お問い合わせ項目
+     *
+     * @var ContactCategory
+     */
+    public $category;
+
+    /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(?Circle $circle, User $sender, string $contactBody)
+    public function __construct(?Circle $circle, User $sender, string $contactBody, ContactCategory $category)
     {
         $this->circle = $circle;
         $this->sender = $sender;
         $this->contactBody = $contactBody;
+        $this->category = $category;
     }
 
     /**

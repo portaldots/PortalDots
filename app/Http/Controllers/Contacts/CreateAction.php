@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Eloquents\Circle;
+use App\Eloquents\ContactCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,7 @@ class CreateAction extends Controller
     public function __invoke()
     {
         return view('v2.contacts.form')
-            ->with('circle', $this->selectorService->getCircle());
+            ->with('circle', $this->selectorService->getCircle())
+            ->with('categories', ContactCategory::all());
     }
 }

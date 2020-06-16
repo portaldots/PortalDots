@@ -16,6 +16,7 @@
 - 名前 : {{ $sender->name }}
 - 学籍番号 : {{ $sender->student_id }}
 
-## お問い合わせの内容
+## お問い合わせの内容 {{ isset($category->id) ? " ( {$category->name} ) " : '' }}
+
 <pre>{{ $contactBody }}</pre>
 @endcomponent
