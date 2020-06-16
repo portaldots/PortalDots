@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Eloquents\Circle;
 use App\Eloquents\CustomForm;
+use Illuminate\Support\Facades\Gate;
 
 class InviteAction extends Controller
 {
@@ -28,8 +29,12 @@ class InviteAction extends Controller
         }
 
         if ($circle->users->contains(Auth::user())) {
+            $redirect_to = 'circles.read';
+            if (Gate::allows('circle.update', $circle)) {
+                $redirect_to = 'circles.users.index';
+            }
             return redirect()
-                ->route('circles.users.index', ['circle' => $circle])
+                ->route($redirect_to, ['circle' => $circle])
                 ->with('topAlert.title', 'あなたは既にメンバーです');
         }
 

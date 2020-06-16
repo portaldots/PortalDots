@@ -37,14 +37,14 @@ class StoreAction extends Controller
 
         if ($circle->users->contains(Auth::user())) {
             return redirect()
-                ->route('circles.users.index', ['circle' => $circle])
+                ->route('circles.read', ['circle' => $circle])
                 ->with('topAlert.title', 'あなたは既にメンバーです');
         }
 
         $result = $this->circlesService->addMember($circle, Auth::user());
 
         return redirect()
-                ->route('circles.users.index', ['circle' => $circle])
+                ->route('circle.read', ['circle' => $circle])
                 ->with('topAlert.title', "「{$circle->name}」の学園祭係(副責任者)になりました");
     }
 }

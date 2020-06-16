@@ -116,6 +116,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/{circle}', 'Circles\DestroyAction')->name('destroy');
             // 参加登録状況
             Route::get('/{circle}/status', 'Circles\StatusAction')->name('status');
+            // 参加登録のメンバー用ページ
+            Route::get('/{circle}/read', 'Circles\ReadAction')->name('read');
         });
 
     // 申請

@@ -11,33 +11,7 @@
             <list-view-card>
                 以下の情報で参加登録を提出します。<strong>参加登録の提出後は、登録内容の変更ができなくなります。</strong>
                 <hr>
-                <dl>
-                    @foreach ([
-                        'name' => '企画名',
-                        'name_yomi' => '企画名(よみ)',
-                        'group_name' => '企画を出店する団体の名称',
-                        'group_name_yomi' => '企画を出店する団体の名称(よみ)',
-                        ] as $field_name => $display_name)
-                        <dt>{{ $display_name }} — <a href="{{ route('circles.edit', ['circle' => $circle]) }}">変更</a></dt>
-                        <dd>{{ $circle->$field_name }}</dd>
-                    @endforeach
-                    <dt>メンバー — <a href="{{ route('circles.users.index', ['circle' => $circle]) }}">変更</a></dt>
-                    <dd>
-                        <ul>
-                            @foreach ($circle->users as $user)
-                                <li>
-                                    {{ $user->name }}
-                                    ({{ $user->student_id }})
-                                    @if ($user->pivot->is_leader)
-                                        <app-badge primary>責任者</app-badge>
-                                    @else
-                                        <app-badge muted>学園祭係(副責任者)</app-badge>
-                                    @endif
-                                </li>
-                            @endforeach
-                        </ul>
-                    </dd>
-                </dl>
+                @include('v2.includes.circles_info')
             </list-view-card>
         </list-view>
 

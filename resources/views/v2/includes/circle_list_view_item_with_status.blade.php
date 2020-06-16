@@ -1,4 +1,4 @@
-@if (!$circle->hasSubmitted() && $circle->canSubmit())
+@if (!$circle->hasSubmitted() && $circle->canSubmit() && Auth::user()->can('circle.update', $circle))
     <list-view-item href="{{ route('circles.confirm', ['circle' => $circle]) }}">
         <template v-slot:title>
             <span class="text-primary">
@@ -20,7 +20,7 @@
             ただいま参加登録の内容を確認しています。{{ config('portal.admin_name') }}より指示がある場合は従ってください。また、内容確認のためご連絡を差し上げる場合がございます。
         </template>
     </list-view-item>
-@elseif (!$circle->hasSubmitted() && !$circle->canSubmit())
+@elseif (!$circle->hasSubmitted() && !$circle->canSubmit() && Auth::user()->can('circle.update', $circle))
     <list-view-item href="{{ route('circles.users.index', ['circle' => $circle]) }}">
         <template v-slot:title>
             <span class="text-primary">
@@ -55,5 +55,14 @@
                 詳細はこちら
             </template>
         @endisset
+    </list-view-item>
+@elseif (Auth::user()->cannot('circle.update', $circle))
+    <list-view-item href="{{ route('circles.read', ['circle' => $circle]) }}">
+        <template v-slot:title>
+            <span class="text-primary">
+                📄
+                ここをクリックすると「{{ $circle->name }}」の参加登録の内容を確認できます
+            </span>
+        </template>
     </list-view-item>
 @endif
