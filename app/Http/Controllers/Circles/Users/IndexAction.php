@@ -11,12 +11,7 @@ class IndexAction extends Controller
 {
     public function __invoke(Circle $circle, Request $request)
     {
-        if (Gate::denies('circle.update', $circle)) {
-            $this->authorize('circle.belongsTo', $circle);
-
-            return redirect()
-                ->route('circles.read', ['circle' => $circle]);
-        }
+        $this->authorize('circle.update', $circle);
 
         $circle->load('users');
 
