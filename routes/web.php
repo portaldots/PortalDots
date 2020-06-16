@@ -217,7 +217,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{circle}/edit', 'Staff\Circles\EditAction')->name('edit');
                 Route::patch('/{circle}', 'Staff\Circles\UpdateAction')->name('update');
                 Route::get('/create', 'Staff\Circles\CreateAction')->name('create');
-                Route::post('/', 'Staff\Circles\StoreAction')->name('new');
+                Route::post('/', 'Staff\Circles\StoreAction')->name('store');
 
                 // 企画所属者宛のメール送信
                 Route::get('/{circle}/email', 'Staff\Circles\SendEmails\IndexAction')->name('email');
