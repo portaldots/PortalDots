@@ -2,25 +2,19 @@
 
 namespace App\Http\Controllers\Circles;
 
-use Auth;
 use App\Eloquents\Circle;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ReadAction extends Controller
+class ShowAction extends Controller
 {
     public function __invoke(Circle $circle)
     {
         $this->authorize('circle.belongsTo', $circle);
 
-        if (Auth::user()->isLeaderInCircle($circle)) {
-            return redirect()
-                ->route('circles.confirm', ['circle' => $circle]);
-        }
-
         $circle->load('users');
 
-        return view('v2.circles.read')
+        return view('v2.circles.show')
             ->with('circle', $circle);
     }
 }

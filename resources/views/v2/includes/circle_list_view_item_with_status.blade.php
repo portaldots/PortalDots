@@ -11,7 +11,7 @@
         </template>
     </list-view-item>
 @elseif ($circle->isPending())
-    <list-view-item>
+    <list-view-item href="{{ route('circles.show', ['circle' => $circle]) }}">
         <template v-slot:title>
             💭
             「{{ $circle->name }}」の参加登録の内容を確認中です
@@ -33,17 +33,14 @@
         </template>
     </list-view-item>
 @elseif ($circle->hasApproved())
-    <list-view-item>
+    <list-view-item href="{{ route('circles.show', ['circle' => $circle]) }}">
         <template v-slot:title>
             🎉
             「{{ $circle->name }}」の参加登録は受理されました
         </template>
     </list-view-item>
 @elseif ($circle->hasRejected())
-    <list-view-item @isset ($circle->status_reason)
-            href="{{ route('circles.status', ['circle' => $circle]) }}"
-        @endisset
-        >
+    <list-view-item href="{{ route('circles.show', ['circle' => $circle]) }}">
         <template v-slot:title>
             <span class="text-danger">
                 ⚠️
@@ -57,7 +54,7 @@
         @endisset
     </list-view-item>
 @elseif (!Auth::user()->isLeaderInCircle($circle))
-    <list-view-item href="{{ route('circles.read', ['circle' => $circle]) }}">
+    <list-view-item href="{{ route('circles.show', ['circle' => $circle]) }}">
         <template v-slot:title>
             <span class="text-primary">
                 📄
