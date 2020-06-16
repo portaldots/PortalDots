@@ -9,7 +9,8 @@
 @endsection
 
 @section('content')
-    <form method="post" action="{{ empty($circle) ? route('staff.circles.new') : route('staff.circles.update', $circle) }}">
+    <form method="post"
+        action="{{ empty($circle) ? route('staff.circles.store') : route('staff.circles.update', $circle) }}">
         @method(empty($circle) ? 'post' : 'patch' )
         @csrf
 
@@ -72,9 +73,10 @@
                     <template v-slot:description>
                         企画をタグで分類できます(例 : <app-badge primary>ステージ企画</app-badge>、<app-badge primary>模擬店</app-badge>、<app-badge
                             primary>講義棟教室</app-badge>、<app-badge primary>食品販売</app-badge>)。<br>
-                        タグに応じて、閲覧可能なお知らせ、ダウンロード可能な配布資料、回答可能な申請フォームを制限することもできます。</template>
-                    <tags-input input-name="tags" :default-tags="{{ $default_tags }}"
-                        :autocomplete-items="{{ $tags_autocomplete_items }}"></tags-input>
+                        タグに応じて、閲覧可能なお知らせ、回答可能な申請フォームを制限することもできます。
+                    </template>
+                    <tags-input input-name="tags" v-bind:default-tags="{{ $default_tags }}"
+                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}"></tags-input>
                 </list-view-form-group>
             </list-view>
 
@@ -139,13 +141,15 @@
                         </template>
                     @endif
                 </list-view-form-group>
-                <list-view-form-group label-for="status_reason">
-                    <template v-slot:label>不受理に関する詳細(ユーザーに通知)</template>
-                    <template
-                        v-slot:description>この内容はユーザーに通知されます。参加登録を不受理とする際、ユーザーに伝達したい事項があれば入力してください(Markdown利用可能)</template>
-                    <textarea id="status_reason" class="form-control @error('status_reason') is-invalid @enderror"
-                        name="status_reason"
-                        rows="5">{{ old('status_reason', empty($circle) ? '' : $circle->status_reason) }}</textarea>
+                <list-view-form-group>
+                    <template v-slot:label>
+                        不受理に関する詳細(ユーザーに通知)&nbsp;
+                        <app-badge outline muted>Markdown</app-badge>
+                    </template>
+                    <template v-slot:description>
+                        この内容はユーザーに通知されます。参加登録を不受理とする際、ユーザーに伝達したい事項があれば入力してください。
+                    </template>
+                    <markdown-editor input-name="status_reason" default-value="{{ old('status_reason', empty($circle) ? '' : $circle->status_reason) }}"></markdown-editor>
                     @if ($errors->has('status_reason'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('status_reason') as $message)

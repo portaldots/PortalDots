@@ -143,6 +143,15 @@ class Home_staff extends MY_Controller
         $vars["page_title"] = "お知らせ管理";
         $vars["main_page_type"] = "pages";
 
+        if ($this->uri->segment(3) === "add") {
+            codeigniter_redirect("/staff/pages/create");
+        }
+
+        if ($this->uri->segment(3) === "edit") {
+            $page_id = (int)$this->uri->segment(4);
+            codeigniter_redirect("/staff/pages/$page_id/edit");
+        }
+
         $this->grocery_crud->set_table('pages');
         $this->grocery_crud->set_subject('ページ');
         $this->grocery_crud->display_as('id', 'ページID');
@@ -214,18 +223,17 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->display_as('description', 'フォームの説明');
         $this->grocery_crud->display_as('open_at', '受付開始日時');
         $this->grocery_crud->display_as('close_at', '受付終了日時');
-        $this->grocery_crud->display_as('type', 'フォームタイプ');
-        $this->grocery_crud->display_as('max_answers', '(フォームタイプ)毎に回答可能とする回答数');
+        $this->grocery_crud->display_as('max_answers', '企画毎に回答可能とする回答数');
 
         $this->grocery_crud->columns(
             'id',
             'name',
             'description',
+            'tags',
             'open_at',
             'close_at',
             'created_at',
             'updated_at',
-            'type',
             'max_answers',
             'is_public',
             'created_by'
@@ -233,11 +241,11 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->fields(
             'name',
             'description',
+            'tags',
             'open_at',
             'close_at',
             'created_at',
             'updated_at',
-            'type',
             'max_answers',
             'is_public',
             'created_by'
@@ -250,7 +258,13 @@ class Home_staff extends MY_Controller
 
         if ($this->grocery_crud->getstate() !== 'edit' && $this->grocery_crud->getstate() !== 'add') {
             $this->grocery_crud->set_relation('created_by', 'users', '{student_id} {name_family} {name_given}');
+            $this->grocery_crud->display_as('tags', '回答可能な企画のタグ');
+        } else {
+            $this->grocery_crud->display_as('tags', '回答可能な企画のタグ(空欄の場合、全企画が回答可能)');
         }
+
+        // フォームに回答可能なタグ一覧
+        $this->grocery_crud->set_relation_n_n('tags', 'form_answerable_tags', 'tags', 'form_id', 'tag_id', 'name');
 
         // フォームタイプ表示
         $this->grocery_crud->callback_column('type', array($this, '_crud_form_type'));

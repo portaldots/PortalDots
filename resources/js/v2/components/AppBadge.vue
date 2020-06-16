@@ -9,7 +9,8 @@
       'is-warning': warning,
       'is-muted': muted,
       'is-strong': strong,
-      'is-small': small
+      'is-small': small,
+      'is-pill': pill
     }"
   >
     <slot />
@@ -50,6 +51,10 @@ export default {
     small: {
       type: Boolean,
       default: false
+    },
+    pill: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -81,6 +86,10 @@ export default {
   }
   &.is-small {
     font-size: 80%;
+  }
+  &.is-pill {
+    border-radius: 9999px;
+    padding: 0 0.6em;
   }
 }
 </style>

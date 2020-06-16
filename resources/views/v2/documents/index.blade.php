@@ -1,5 +1,7 @@
 @extends('v2.layouts.app')
 
+@section('no_circle_selector', true)
+
 @section('title', '配布資料')
 
 @section('content')

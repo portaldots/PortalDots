@@ -3,70 +3,60 @@
 @section('title', '申請')
 
 @section('content')
-    @if(empty($circle))
-        <header class="header">
-            <app-container>
-                <h1 class="header__title">
-                    企画参加登録が未完了です
-                </h1>
-            </app-container>
-        </header>
-        <app-container>
-            <p>企画参加登録が済んでいないため、申請を行うことができません</p>
-            <p>詳細については「{{ config('portal.admin_name') }}」までお問い合わせください</p>
-            <p>※ すでに企画参加登録を行った場合でも反映に時間がかかることがあります</p>
-            <p><a href="{{ route('home') }}" class="btn is-primary is-block">ホームに戻る</a></p>
-        </app-container>
-    @else
-        <div class="tab_strip">
-            <a href="{{ route('forms.index', ['circle' => $circle]) }}"
-                class="tab_strip-tab{{ Route::currentRouteName() === 'forms.index' ? ' is-active' : '' }}">
-                受付中
-            </a>
-            <a href="{{ route('forms.closed', ['circle' => $circle]) }}"
-                class="tab_strip-tab{{ Route::currentRouteName() === 'forms.closed' ? ' is-active' : '' }}">
-                受付終了
-            </a>
-            <a href="{{ route('forms.all', ['circle' => $circle]) }}"
-                class="tab_strip-tab{{ Route::currentRouteName() === 'forms.all' ? ' is-active' : '' }}">
-                全て
-            </a>
-        </div>
-        <app-container>
-            @if ($forms->isEmpty())
-                <list-view-empty icon-class="far fa-edit" text="このリストは空です" />
-            @else
-                <list-view>
-                    @foreach ($forms as $form)
-                        <list-view-item href="{{ route('forms.answers.create', ['form' => $form, 'circle' => $circle]) }}">
-                            <template v-slot:title>
-                                {{ $form->name }}
+    <div class="tab_strip">
+        <a href="{{ route('forms.index') }}"
+            class="tab_strip-tab{{ Route::currentRouteName() === 'forms.index' ? ' is-active' : '' }}">
+            受付中
+        </a>
+        <a href="{{ route('forms.closed') }}"
+            class="tab_strip-tab{{ Route::currentRouteName() === 'forms.closed' ? ' is-active' : '' }}">
+            受付終了
+        </a>
+        <a href="{{ route('forms.all') }}"
+            class="tab_strip-tab{{ Route::currentRouteName() === 'forms.all' ? ' is-active' : '' }}">
+            全て
+        </a>
+    </div>
+    <app-container>
+        @if ($forms->isEmpty())
+            <list-view-empty icon-class="far fa-edit" text="このリストは空です" />
+        @else
+            <list-view>
+                @foreach ($forms as $form)
+                    <list-view-item href="{{ route('forms.answers.create', ['form' => $form]) }}">
+                        <template v-slot:title>
+                            @if (!$form->answerableTags->isEmpty())
+                                <app-badge primary outline>限定公開</app-badge>
+                            @else
+                                <app-badge muted outline>全員に公開</app-badge>
+                            @endif
+                            {{ $form->name }}
+                            @if (isset($circle))
                                 @if ($form->answered($circle))
                                     <app-badge success>提出済</app-badge>
                                 @endif
                                 @if ($form->yetOpen())
                                     <app-badge muted>受付開始前</app-badge>
                                 @endif
-                            </template>
-                            <template v-slot:meta>
-                                @if ($form->yetOpen())
-                                    @datetime($form->open_at) から受付開始
-                                @else
-                                    @datetime($form->close_at) まで受付
-                                @endif
-                                @if ($form->max_answers > 1)
-                                    • 1企画あたり{{ $form->max_answers }}つ回答可能
-                                @endif
-                            </template>
-                            @summary($form->description)
-                        </list-view-item>
-                    @endforeach
-                    @if ($forms->hasPages())
-                        <list-view-pagination prev="{{ $forms->appends(['circle' => $circle->id])->previousPageUrl() }}"
-                            next="{{ $forms->appends(['circle' => $circle->id])->nextPageUrl() }}" />
-                    @endif
-                </list-view>
-            @endif
-        </app-container>
-    @endif
+                            @endif
+                        </template>
+                        <template v-slot:meta>
+                            @if ($form->yetOpen())
+                                @datetime($form->open_at) から受付開始
+                            @else
+                                @datetime($form->close_at) まで受付
+                            @endif
+                            @if ($form->max_answers > 1)
+                                • 1企画あたり{{ $form->max_answers }}つ回答可能
+                            @endif
+                        </template>
+                        @summary($form->description)
+                    </list-view-item>
+                @endforeach
+                @if ($forms->hasPages())
+                    <list-view-pagination prev="{{ $forms->previousPageUrl() }}" next="{{ $forms->nextPageUrl() }}" />
+                @endif
+            </list-view>
+        @endif
+    </app-container>
 @endsection
