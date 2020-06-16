@@ -1,11 +1,13 @@
 @extends('v2.layouts.no_drawer')
 
+@section('no_circle_selector', true)
+
 @section('title', 'パスワードの再設定')
-    
+
 @section('content')
     <form method="POST" action="{{ url()->full() }}">
         @csrf
-    
+
         <app-container medium>
             <list-view>
                 <template v-slot:title>パスワードの再設定</template>
