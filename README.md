@@ -13,6 +13,8 @@
     </a>
 </p>
 
+![PortalDots](https://user-images.githubusercontent.com/6687653/83792485-142e1d00-a6d6-11ea-94a6-7fb3f712252a.png)
+
 ## PortalDotsとは
 PortalDots(ポータルドット)は、 **学園祭実行委員会と参加企画担当者との間のコミュニケーションを支援するウェブシステム** です。お知らせメールの一斉送信や各種申請の受付をオンラインで簡単に行うことができます。
 
