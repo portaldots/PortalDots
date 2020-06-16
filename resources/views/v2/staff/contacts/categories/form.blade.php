@@ -30,7 +30,7 @@
                         項目名
                     </template>
                     <template v-slot:description>
-                        この名前がお問い合わせの宛先に表示されます
+                        項目名は「お問い合わせ」内容を選ぶ選択肢としてユーザーに表示されます
                     </template>
                     <input
                         type="text"
@@ -50,11 +50,7 @@
                         メールアドレス
                     </template>
                     <template v-slot:description>
-                        @isset($category)
-                            メールアドレスを変更すると変更後のメールアドレスにメールが送信されます
-                        @else
-                            保存した際に設定したメールアドレスにメールが送信されます
-                        @endisset
+                        この項目がお問い合わせ画面で選択された場合、このメールアドレス宛にメールが届きます
                     </template>
                     <input
                         type="email"
@@ -74,5 +70,12 @@
                 <button type="submit" class="btn is-primary is-wide">保存</button>
             </div>
         </form>
+        <p class="pt-spacing-md">
+            @isset($category)
+                保存した際に設定したメールアドレスにメールが送信されます。
+            @else
+                メールアドレスを変更した場合、変更後のメールアドレスにメールが送信されます。
+            @endisset
+        </p>
     </app-container>
 @endsection
