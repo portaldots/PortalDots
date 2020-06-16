@@ -26,7 +26,7 @@
             <list-view-card>
                 <strong>企画情報の修正や、企画参加登録を提出することができるのは、企画責任者のみです。</strong>
                 <hr>
-                @include('v2.includes.circles_info')
+                @include('v2.includes.circle_info')
             </list-view-card>
         </list-view>
     </app-container>

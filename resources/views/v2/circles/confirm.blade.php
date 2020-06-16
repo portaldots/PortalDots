@@ -11,7 +11,7 @@
             <list-view-card>
                 以下の情報で参加登録を提出します。<strong>参加登録の提出後は、登録内容の変更ができなくなります。</strong>
                 <hr>
-                @include('v2.includes.circles_info')
+                @include('v2.includes.circle_info')
             </list-view-card>
         </list-view>
 
