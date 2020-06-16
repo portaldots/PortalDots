@@ -70,7 +70,7 @@ class StoreActionTest extends BaseTestCase
         ]);
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('circles.users.index', ['circle' => $this->circle]));
+        $response->assertRedirect(route('circles.read', ['circle' => $this->circle]));
     }
 
     /**
