@@ -28,7 +28,6 @@ class UpdatePolicy
             && $custom_form->is_public
             && $custom_form->isOpen()
             && Gate::forUser($user)->allows('circle.belongsTo', $circle)
-            && !$circle->hasSubmitted()
-            && $circle->leader->first()->id === $user->id;
+            && !$circle->hasSubmitted();
     }
 }

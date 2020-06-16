@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Circles;
 
+use Auth;
 use App\Eloquents\Circle;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class ReadAction extends Controller
 {
@@ -13,7 +13,7 @@ class ReadAction extends Controller
     {
         $this->authorize('circle.belongsTo', $circle);
 
-        if (Gate::allows('circle.update', $circle)) {
+        if (Auth::user()->isLeader($circle)) {
             return redirect()
                 ->route('circles.confirm', ['circle' => $circle]);
         }

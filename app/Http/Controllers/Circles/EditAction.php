@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Circles;
 
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Eloquents\Circle;
@@ -21,6 +22,10 @@ class EditAction extends Controller
     public function __invoke(Circle $circle)
     {
         $this->authorize('circle.update', $circle);
+
+        if (!Auth::user()->isLeader($circle)) {
+            abort(403);
+        }
 
         $form = CustomForm::getFormByType('circle');
         $answer = $circle->getCustomFormAnswer();

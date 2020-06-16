@@ -9,9 +9,17 @@
         <template v-slot:title>
             企画参加登録
         </template>
-        <p class="text-muted">
+        <span class="text-muted">
             {{ $circle->name }}
-        </p>
+        </span>
+        <form-with-confirm action="{{ route('circles.users.destroy', ['circle' => $circle, 'user' => Auth::user()]) }}"
+            method="post" confirm-message="本当にこの企画を抜けますか？">
+            @method('delete')
+            @csrf
+            <button type="submit" class="btn is-danger is-sm" style="display:inline-block;">
+                この企画から抜ける
+            </button>
+        </form-with-confirm>
     </app-header>
     <app-container medium>
         <list-view>

@@ -6,16 +6,16 @@
         'group_name_yomi' => '企画を出店する団体の名称(よみ)',
         ] as $field_name => $display_name)
         <dt>{{ $display_name }}
-            @can('circle.update', $circle)
+            @if (Auth::user()->isLeader($circle))
             — <a href="{{ route('circles.edit', ['circle' => $circle]) }}">変更</a>
-            @endcan
+            @endif
         </dt>
         <dd>{{ $circle->$field_name }}</dd>
     @endforeach
     <dt>メンバー
-        @can('circle.update', $circle)
+        @if (Auth::user()->isLeader($circle))
          — <a href="{{ route('circles.users.index', ['circle' => $circle]) }}">変更</a>
-        @endcan
+        @endif
     </dt>
     <dd>
         <ul>

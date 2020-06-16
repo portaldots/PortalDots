@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Eloquents\Circle;
 use App\Eloquents\CustomForm;
-use Illuminate\Support\Facades\Gate;
 
 class InviteAction extends Controller
 {
@@ -30,7 +29,7 @@ class InviteAction extends Controller
 
         if ($circle->users->contains(Auth::user())) {
             $redirect_to = 'circles.read';
-            if (Gate::allows('circle.update', $circle)) {
+            if (Auth::user()->isLeader($circle)) {
                 $redirect_to = 'circles.users.index';
             }
             return redirect()

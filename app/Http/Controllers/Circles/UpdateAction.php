@@ -33,6 +33,10 @@ class UpdateAction extends Controller
     {
         $this->authorize('circle.update', $circle);
 
+        if (!Auth::user()->isLeader($circle)) {
+            abort(403);
+        }
+
         DB::transaction(function () use ($request, $circle) {
             $this->circlesService->update(
                 $circle,
