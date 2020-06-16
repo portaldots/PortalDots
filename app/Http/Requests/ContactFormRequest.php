@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Eloquents\Circle;
+use App\Eloquents\ContactCategory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
@@ -40,5 +41,14 @@ class ContactFormRequest extends FormRequest
         return [
             'contact_body.required' => 'お問い合わせ内容は必ず入力してください',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if (!($this->category === '0' || ContactCategory::find($this->category))) {
+                $validator->errors()->add('category', 'お問い合わせ項目を選択肢から選んでください');
+            }
+        });
     }
 }

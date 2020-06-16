@@ -84,6 +84,7 @@
             </div>
         </div>
         <div class="content">
+            @include('v2.includes.top_circle_selector')
             @if (Session::has('topAlert.title'))
                 <top-alert type="{{ session('topAlert.type', 'primary') }}"
                     {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}>

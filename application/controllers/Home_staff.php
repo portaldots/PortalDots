@@ -143,6 +143,15 @@ class Home_staff extends MY_Controller
         $vars["page_title"] = "お知らせ管理";
         $vars["main_page_type"] = "pages";
 
+        if ($this->uri->segment(3) === "add") {
+            codeigniter_redirect("/staff/pages/create");
+        }
+
+        if ($this->uri->segment(3) === "edit") {
+            $page_id = (int)$this->uri->segment(4);
+            codeigniter_redirect("/staff/pages/$page_id/edit");
+        }
+
         $this->grocery_crud->set_table('pages');
         $this->grocery_crud->set_subject('ページ');
         $this->grocery_crud->display_as('id', 'ページID');
@@ -214,18 +223,17 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->display_as('description', 'フォームの説明');
         $this->grocery_crud->display_as('open_at', '受付開始日時');
         $this->grocery_crud->display_as('close_at', '受付終了日時');
-        $this->grocery_crud->display_as('type', 'フォームタイプ');
-        $this->grocery_crud->display_as('max_answers', '(フォームタイプ)毎に回答可能とする回答数');
+        $this->grocery_crud->display_as('max_answers', '企画毎に回答可能とする回答数');
 
         $this->grocery_crud->columns(
             'id',
             'name',
             'description',
+            'tags',
             'open_at',
             'close_at',
             'created_at',
             'updated_at',
-            'type',
             'max_answers',
             'is_public',
             'created_by'
@@ -233,11 +241,11 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->fields(
             'name',
             'description',
+            'tags',
             'open_at',
             'close_at',
             'created_at',
             'updated_at',
-            'type',
             'max_answers',
             'is_public',
             'created_by'
@@ -250,7 +258,13 @@ class Home_staff extends MY_Controller
 
         if ($this->grocery_crud->getstate() !== 'edit' && $this->grocery_crud->getstate() !== 'add') {
             $this->grocery_crud->set_relation('created_by', 'users', '{student_id} {name_family} {name_given}');
+            $this->grocery_crud->display_as('tags', '回答可能な企画のタグ');
+        } else {
+            $this->grocery_crud->display_as('tags', '回答可能な企画のタグ(空欄の場合、全企画が回答可能)');
         }
+
+        // フォームに回答可能なタグ一覧
+        $this->grocery_crud->set_relation_n_n('tags', 'form_answerable_tags', 'tags', 'form_id', 'tag_id', 'name');
 
         // フォームタイプ表示
         $this->grocery_crud->callback_column('type', array($this, '_crud_form_type'));
@@ -267,6 +281,7 @@ class Home_staff extends MY_Controller
 
         $this->grocery_crud->unset_delete();
         $this->grocery_crud->set_editor();
+        $this->grocery_crud->set_copy_url();
 
         $vars += (array)$this->grocery_crud->render();
 
@@ -313,7 +328,7 @@ class Home_staff extends MY_Controller
         $vars = [];
         $vars["page_title"] = "回答一覧";
         $vars["main_page_type"] = "applications";
-
+        $vars["copied"] = $_GET['copied'] ?? '0';
         $this->forms->include_private = true;
 
         // フォーム情報を取得する
@@ -355,7 +370,7 @@ class Home_staff extends MY_Controller
     private function _application_read_csv($vars)
     {
         // カラム名
-        $string_to_export = "ID\t企画ID\t企画の名前\t企画の名前(よみ)\t企画団体の名前\t企画団体の名前(よみ)";
+        $string_to_export = "ID\t企画ID\t企画名\t企画名(よみ)\t企画を出店する団体の名称\t企画を出店する団体の名称(よみ)";
 
         if ($vars["form"]->type === "booth") {
             $string_to_export .= "\tブース名";
@@ -378,13 +393,13 @@ class Home_staff extends MY_Controller
             $string_to_export .= $answer->id;
             // 企画ID
             $string_to_export .= "\t" . $answer->circle->id;
-            // 企画の名前
+            // 企画名
             $string_to_export .= "\t" . $answer->circle->name;
-            // 企画の名前(よみ)
+            // 企画名(よみ)
             $string_to_export .= "\t" . $answer->circle->name_yomi;
-            // 企画団体の名前
+            // 企画を出店する団体の名称
             $string_to_export .= "\t" . $answer->circle->group_name;
-            // 企画団体の名前(よみ)
+            // 企画を出店する団体の名称(よみ)
             $string_to_export .= "\t" . $answer->circle->group_name_yomi;
             // ブース名
             if ($vars["form"]->type === "booth") {
@@ -413,7 +428,7 @@ class Home_staff extends MY_Controller
                 } elseif ($question->type === "upload") {
                     // ファイルアップロード
                     $string_to_export .= "\t" .
-                        str_replace('answer_details/', 'answer_details__', $answer->answers[$question->id] ?? '');
+                        str_replace('answer_details/', '', $answer->answers[$question->id] ?? '');
                 } else {
                     // Not多肢選択式、Notファイルアップロード
                     $string_to_export .= "\t" .
@@ -638,14 +653,17 @@ class Home_staff extends MY_Controller
             codeigniter_redirect(base_url($edit_url));
         }
 
+        // Laravel側で実装したエクスポート機能を利用する
+        $this->set_export_url("/staff/circles/export");
+
         $this->grocery_crud->set_table('circles');
         $this->grocery_crud->where('submitted_at IS NOT NULL', null, false);
         $this->grocery_crud->set_subject('企画');
         $this->grocery_crud->display_as('id', '企画ID');
-        $this->grocery_crud->display_as('name', '企画の名前');
-        $this->grocery_crud->display_as('name_yomi', '企画の名前(よみ)');
-        $this->grocery_crud->display_as('group_name', '企画団体の名前');
-        $this->grocery_crud->display_as('group_name_yomi', '企画団体の名前(よみ)');
+        $this->grocery_crud->display_as('name', '企画名');
+        $this->grocery_crud->display_as('name_yomi', '企画名(よみ)');
+        $this->grocery_crud->display_as('group_name', '企画を出店する団体の名称');
+        $this->grocery_crud->display_as('group_name_yomi', '企画を出店する団体の名称(よみ)');
         $this->grocery_crud->display_as('tags', 'タグ');
         $this->grocery_crud->display_as('submitted_at', '参加登録提出日時');
         $this->grocery_crud->display_as('status', '登録受理状況');
@@ -700,7 +718,7 @@ class Home_staff extends MY_Controller
     }
 
     /**
-     * 企画の名前にふりがなをふるための Grocery CRUD コールバック関数
+     * 企画名にふりがなをふるための Grocery CRUD コールバック関数
      */
     public function _crud_circle_name_yomi($value, $row)
     {
@@ -708,7 +726,7 @@ class Home_staff extends MY_Controller
     }
 
     /**
-     * 企画団体の名前にふりがなをふるための Grocery CRUD コールバック関数
+     * 企画を出店する団体の名称にふりがなをふるための Grocery CRUD コールバック関数
      */
     public function _crud_circle_group_name_yomi($value, $row)
     {
@@ -977,11 +995,20 @@ class Home_staff extends MY_Controller
         $vars["page_title"] = "配布資料管理";
         $vars["main_page_type"] = "documents";
 
+        if ($this->uri->segment(3) === "edit") {
+            $circle_id = $this->uri->segment(4);
+            $edit_url = ['staff', 'documents', $circle_id, 'edit'];
+            codeigniter_redirect(base_url($edit_url));
+        } elseif ($this->uri->segment(3) === "add") {
+            $edit_url = ['staff', 'documents', 'create'];
+            codeigniter_redirect(base_url($edit_url));
+        }
+
         $this->grocery_crud->set_table('documents');
         $this->grocery_crud->set_subject('配布資料');
         $this->grocery_crud->display_as('id', '配布資料ID');
         $this->grocery_crud->display_as('name', '配布資料名');
-        $this->grocery_crud->display_as('filename', 'ファイル');
+        $this->grocery_crud->display_as('path', 'ファイル');
         $this->grocery_crud->display_as('schedule_id', 'イベント');
         $this->grocery_crud->display_as('description', '説明');
 
@@ -989,7 +1016,7 @@ class Home_staff extends MY_Controller
             'id',
             'name',
             'description',
-            'filename',
+            'path',
             'schedule_id',
             'is_public',
             'is_important',
@@ -1002,7 +1029,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->fields(
             'name',
             'description',
-            'filename',
+            'path',
             'schedule_id',
             'is_public',
             'is_important',
@@ -1023,16 +1050,40 @@ class Home_staff extends MY_Controller
             $this->grocery_crud->set_relation('updated_by', 'users', '{student_id} {name_family} {name_given}');
         }
 
-        $this->grocery_crud->required_fields('name', 'filename');
+        $this->grocery_crud->required_fields('name', 'path');
 
-        $this->grocery_crud->set_field_upload('filename', PORTAL_UPLOAD_DIR_CRUD . '/documents');
+        $this->grocery_crud->callback_before_delete(array($this, '_crud_documents_before_delete'));
 
         // ファイル表示リンクにする
-        $this->grocery_crud->callback_column('filename', array($this, '_crud_download_document'));
+        $this->grocery_crud->callback_column('path', array($this, '_crud_download_document'));
 
         $vars += (array)$this->grocery_crud->render();
 
         $this->_render('home_staff/crud', $vars);
+    }
+
+    /**
+     * 配布資料が削除される前に実行する Grocery CRUD コールバック関数
+     */
+    public function _crud_documents_before_delete($id)
+    {
+        $this->db->select('path');
+        $this->db->where('id', $id);
+        $document = $this->db->get('documents')->row();
+        unlink(APPPATH . '../storage/app/documents/'. basename($document->path));
+
+        return true;
+    }
+
+    /**
+     * ドキュメントファイルのダウンロードリンクを表示させるための Grocery CRUD コールバック関数
+     */
+    public function _crud_download_document($value, $row)
+    {
+        if (!empty($row->path)) {
+            return $value = '<a href="'. base_url("staff/documents/". $row->id). '"  target="_blank">表示</a>';
+        }
+        return $value = "-";
     }
 
     /**
@@ -1062,18 +1113,6 @@ class Home_staff extends MY_Controller
         $vars += (array)$this->grocery_crud->render();
 
         $this->_render('home_staff/crud', $vars);
-    }
-
-    /**
-     * ドキュメントファイルのダウンロードリンクを表示させるための Grocery CRUD コールバック関数
-     */
-    public function _crud_download_document($value, $row)
-    {
-        if (!empty($row->filename)) {
-            return $value = '<a href="'. base_url("documents/". $row->id). '"  target="_blank">'.
-                $row->filename. '</a>';
-        }
-        return $value = "-";
     }
 
     /**
@@ -1305,7 +1344,7 @@ class Home_staff extends MY_Controller
             );
         } else {
             // POST のとき
-            $code_on_session = $_SESSION["staff_verify_code"];
+            $code_on_session = isset($_SESSION["staff_verify_code"]) ? $_SESSION["staff_verify_code"] : null;
             unset($_SESSION["staff_verify_code"]);
 
             if (isset($code_on_session) &&
@@ -1402,6 +1441,11 @@ class Home_staff extends MY_Controller
                     "name" => "スケジュール管理",
                     "url" => "home_staff/schedules",
                 ],
+                "contact-categories" => [
+                    "icon" => "at",
+                    "name" => "お問い合わせ受付設定",
+                    "url" => "staff/contacts/categories",
+                ],
                 // "contact" => [
                 //   "icon" => "envelope-o",
                 //   "name" => "お問い合わせ管理",
@@ -1454,5 +1498,15 @@ class Home_staff extends MY_Controller
     public function _unique_field_name($field_name)
     {
         return $this->grocery_crud->_unique_field_name($field_name);
+    }
+
+    /**
+     * 出力用のURLを変更する関数
+     * @param string $url
+     */
+    private function set_export_url(string $url)
+    {
+        $this->grocery_crud->unset_export();
+        $this->grocery_crud->export_url = $url;
     }
 }

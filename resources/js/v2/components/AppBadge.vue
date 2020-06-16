@@ -2,12 +2,15 @@
   <span
     class="badge"
     :class="{
+      'is-outline': outline,
       'is-primary': primary,
       'is-danger': danger,
       'is-success': success,
+      'is-warning': warning,
       'is-muted': muted,
       'is-strong': strong,
-      'is-small': small
+      'is-small': small,
+      'is-pill': pill
     }"
   >
     <slot />
@@ -17,6 +20,10 @@
 <script>
 export default {
   props: {
+    outline: {
+      type: Boolean,
+      default: false
+    },
     primary: {
       type: Boolean,
       default: false
@@ -29,6 +36,10 @@ export default {
       type: Boolean,
       default: false
     },
+    warning: {
+      type: Boolean,
+      default: false
+    },
     muted: {
       type: Boolean,
       default: false
@@ -38,6 +49,10 @@ export default {
       default: false
     },
     small: {
+      type: Boolean,
+      default: false
+    },
+    pill: {
       type: Boolean,
       default: false
     }
@@ -53,27 +68,28 @@ export default {
   line-height: 1.75;
   padding: 0 0.4em;
   text-align: center;
-  &.is-primary {
-    background: $color-primary;
-    color: #fff;
-  }
-  &.is-danger {
-    background: $color-danger;
-    color: #fff;
-  }
-  &.is-success {
-    background: $color-success;
-    color: #fff;
-  }
-  &.is-muted {
-    background: $color-muted;
-    color: #fff;
+  @each $state, $color in $semantic-colors {
+    &.is-outline.is-#{$state} {
+      border: 1px solid $color;
+      color: $color;
+    }
+    &:not(.is-outline).is-#{$state} {
+      background: $color;
+      // outlineバッジに比べ一回り小さく見えてしまわないように、
+      // outlineバッジと同様のborderをつける
+      border: 1px solid $color;
+      color: #fff;
+    }
   }
   &.is-strong {
     font-weight: bolder;
   }
   &.is-small {
     font-size: 80%;
+  }
+  &.is-pill {
+    border-radius: 9999px;
+    padding: 0 0.6em;
   }
 }
 </style>

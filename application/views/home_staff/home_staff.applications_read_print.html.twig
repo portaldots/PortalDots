@@ -68,12 +68,12 @@
             <tr>
                 <th>回答ID</th>
                 <th class="table-sticky">
-                    企画
+                    企画の名前
                     {% if form.type == "booth" %}
                         ・ ブース
                     {% endif %}
                 </th>
-                <th>企画団体</th>
+                <th>企画を出店する団体の名称</th>
                 {% for question in form.questions if question.type is not same as ("heading") %}
                     <th>
                         {{ question.name }}
@@ -117,9 +117,7 @@
                                 {% elseif question.type == "upload" %}
                                     {% if answer.answers[question.id] is not empty %}
                                         <a href="{{
-                                            strpos(answer.answers[question.id], 'answer_details') is same as(0)
-                                                  ? base_url( "staff/forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
-                                                  : base_url( "uploads/applications_form/#{answer.answers[question.id]}" )
+                                            base_url( "staff/forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
                                           }}"
                                           target="_blank">{{ answer.answers[question.id] }}</a>
                                     {% else %}

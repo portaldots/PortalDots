@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'staffAuthed' => \App\Http\Middleware\RedirectIfStaffNotAuthenticated::class,
         'checkEnv' => \App\Http\Middleware\CheckEnv::class,
         'install' => \App\Http\Middleware\DenyIfInstalled::class,
+        'circleSelected' => \App\Http\Middleware\CheckSelectedCircle::class,
     ];
 
     /**
@@ -86,5 +87,6 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
+        \App\Http\Middleware\CheckSelectedCircle::class,
     ];
 }

@@ -50,6 +50,11 @@
 							<i class="fa fa-eye" aria-hidden="true"></i>
 						</a>
 					<?php }?>
+					<?php if($set_copy_url){?>
+						<a href='<?php echo $row->copy_form_url ?>' title='複製' class="btn btn-warning">
+							<i class="fa fa-copy" aria-hidden="true"></i>
+						</a>
+					<?php }?>
 					<?php
 					if(!empty($row->action_urls)){
 						foreach($row->action_urls as $action_unique_id => $action_url){

@@ -14,7 +14,7 @@
         <app-container medium>
             <list-view>
                 <template v-slot:title>企画情報を入力</template>
-                <template v-slot:description>参加を登録される企画の情報を入力してください。</template>
+                <template v-slot:description>参加登録する企画の情報を入力してください。</template>
                 <list-view-card>
                     <i class="fas fa-exclamation-circle"></i>
                     企画情報の入力は、企画責任者の方が行ってください。企画責任者以外の方は、企画情報の入力は不要です。企画責任者の方の指示に従ってください。
@@ -27,7 +27,7 @@
                 </list-view-form-group>
                 <list-view-form-group label-for="name">
                     <template v-slot:label>
-                        企画の名前
+                        企画名
                         <app-badge danger>必須</app-badge>
                     </template>
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
@@ -38,7 +38,7 @@
                 </list-view-form-group>
                 <list-view-form-group label-for="name_yomi">
                     <template v-slot:label>
-                        企画の名前(よみ)
+                        企画名(よみ)
                         <app-badge danger>必須</app-badge>
                     </template>
                     <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror"
@@ -49,7 +49,7 @@
                 </list-view-form-group>
                 <list-view-form-group label-for="group_name">
                     <template v-slot:label>
-                        企画団体の名前
+                        企画を出店する団体の名称
                         <app-badge danger>必須</app-badge>
                     </template>
                     <input id="group_name" type="text" class="form-control @error('group_name') is-invalid @enderror"
@@ -61,7 +61,7 @@
                 </list-view-form-group>
                 <list-view-form-group label-for="group_name_yomi">
                     <template v-slot:label>
-                        企画団体の名前(よみ)
+                        企画を出店する団体の名称(よみ)
                         <app-badge danger>必須</app-badge>
                     </template>
                     <input id="group_name_yomi" type="text"

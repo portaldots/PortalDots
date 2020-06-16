@@ -44,6 +44,37 @@ class Form extends Model
         'is_public' => 'bool',
     ];
 
+    public function answerableTags()
+    {
+        return $this->belongsToMany(Tag::class, 'form_answerable_tags')
+            ->using(FormAnswerableTag::class);
+    }
+
+    /**
+     * 指定した企画が回答できるフォームの一覧を取得できるクエリスコープ
+     *
+     * $circle を省略した場合、回答できる企画が限られているフォームを
+     * 除くフォームの一覧が取得される
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param Circle|null $circle
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByCircle($query, ?Circle $circle = null)
+    {
+        $query = self::select('forms.*', 'form_answerable_tags.tag_id')
+            ->leftJoin('form_answerable_tags', 'forms.id', '=', 'form_answerable_tags.form_id')
+            ->whereNull('form_answerable_tags.tag_id')
+            ->with('answerableTags');
+
+        if (empty($circle)) {
+            return $query;
+        }
+
+        return $query
+            ->orWhereIn('form_answerable_tags.tag_id', $circle->tags->pluck('id')->all());
+    }
+
     /**
      * カスタムフォームは含めない
      */

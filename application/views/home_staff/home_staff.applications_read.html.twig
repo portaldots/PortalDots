@@ -91,7 +91,11 @@
         カスタムフォーム回答
       {% endif %}
     </h1>
-
+    {% if copied == '1' %}
+        <div class="alert alert-success" role="alert">
+            <i class="fa fa-check" aria-hidden="true"></i> コピーしました
+        </div>
+    {% endif %}
     <header class="panel panel-default">
         <div class="panel-body">
             <div class="row">
@@ -258,12 +262,12 @@
                     <th>操作</th>
                     <th>回答ID</th>
                     <th class="table-sticky">
-                        企画
+                        企画名
                         {% if form.type == "booth" %}
                             ・ ブース
                         {% endif %}
                     </th>
-                    <th>企画団体</th>
+                    <th>企画を出店する団体の名称</th>
                     <th>回答作成日時</th>
                     <th>回答更新日時</th>
                     {% for question in form.questions if question.type is not same as("heading") %}
@@ -348,11 +352,9 @@
                                     {% elseif question.type == "upload" %}
                                         {% if answer.answers[question.id] is not empty %}
                                             <a href="{{
-                                                strpos(answer.answers[question.id], 'answer_details') is same as(0)
-                                                      ? base_url( "staff/forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
-                                                      : base_url( "uploads/applications_form/#{answer.answers[question.id]}" )
+                                                base_url( "staff/forms/#{form.id}/answers/#{answer.id}/uploads/#{question.id}" )
                                               }}"
-                                              target="_blank">{{ str_replace('answer_details/', 'answer_details__', answer.answers[question.id]) }}</a>
+                                              target="_blank">{{ str_replace('answer_details/', '', answer.answers[question.id]) }}</a>
                                         {% else %}
                                             <span class="text-muted">(未アップロード)</span>
                                         {% endif %}

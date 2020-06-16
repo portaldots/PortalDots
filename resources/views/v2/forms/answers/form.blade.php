@@ -2,13 +2,15 @@
 
 @section('title', $form->name . ' — 申請')
 
+@section('no_circle_selector', true)
+
 @section('navbar')
     @if (!empty($answer) && count($answers) > 0 && $form->max_answers > 1)
-        <app-nav-bar-back href="{{ route('forms.answers.create', ['form' => $form, 'circle' => $circle]) }}">
+        <app-nav-bar-back href="{{ route('forms.answers.create', ['form' => $form]) }}">
             回答の新規作成
         </app-nav-bar-back>
     @else
-        <app-nav-bar-back href="{{ route('forms.index', ['circle' => $circle]) }}">
+        <app-nav-bar-back href="{{ route('forms.index') }}">
             申請
         </app-nav-bar-back>
     @endif
@@ -37,21 +39,27 @@
                         </strong>
                     @endif
                 </p>
+                @if (!$form->answerableTags->isEmpty())
+                    <p class="text-muted">
+                        <app-badge primary outline>限定公開</app-badge>
+                        このフォームは、限られた企画のみ回答可能です。
+                    </p>
+                @endif
                 @markdown($form->description)
             </div>
         </app-header>
 
         <app-container>
             <list-view>
-                <list-view-item>
-                    <template v-slot:title>申請企画名</template>
-                    {{ $circle->name }}
-                    @if (Auth::user()->circles()->approved()->count() > 1)
-                        {{-- TODO: あとでもうちょっといい感じのコードに書き直す --}}
-                        —
-                        <a href="{{ route('forms.answers.create', ['form' => $form]) }}">変更</a>
+                <list-view-form-group>
+                    <template v-slot:label>申請企画名</template>
+                    <input type="text" readonly value="{{ $circle->name }}({{ $circle->group_name }})" class="form-control">
+                    @if (empty($answer) && Auth::user()->circles()->approved()->count() > 1)
+                        <template v-slot:append>
+                            <a href="{{ route('circles.selector.show', ['redirect_to' => Request::path()]) }}">変更</a>
+                        </template>
                     @endif
-                </list-view-item>
+                </list-view-form-group>
             </list-view>
 
             {{-- $answers ← 企画 $circle が回答した全回答（回答新規作成画面で使用。変更画面でも使用可能） --}}

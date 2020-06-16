@@ -1,7 +1,9 @@
 @extends('v2.layouts.no_drawer')
 
+@section('no_circle_selector', true)
+
 @section('title', 'メール認証完了')
-    
+
 @section('content')
     <app-container medium>
         <list-view>

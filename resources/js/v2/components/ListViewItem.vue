@@ -1,5 +1,10 @@
 <template>
-  <ListViewBaseItem :href="href" :newtab="newtab" class="listview-item">
+  <ListViewBaseItem
+    :href="href"
+    :newtab="newtab"
+    class="listview-item"
+    :class="{ 'is-unread': unread }"
+  >
     <p class="listview-item__title" v-if="$slots.title">
       <slot name="title" />
     </p>
@@ -27,6 +32,10 @@ export default {
     newtab: {
       type: Boolean,
       default: false
+    },
+    unread: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -34,6 +43,19 @@ export default {
 
 <style lang="scss" scoped>
 .listview-item {
+  &.is-unread {
+    overflow: hidden;
+    &::before {
+      background: $color-primary;
+      bottom: 0;
+      content: '';
+      display: block;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 4px;
+    }
+  }
   &__title {
     font-size: 1rem;
     font-weight: bold;

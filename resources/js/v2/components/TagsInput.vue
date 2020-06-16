@@ -7,13 +7,17 @@
       :add-on-key="[13, ',']"
       :separators="separators"
       :autocomplete-items="filteredItems"
+      :add-only-from-autocomplete="addOnlyFromAutocomplete"
       :is-duplicate="isDuplicate"
-      placeholder="タグを追加"
+      :placeholder="
+        tags.length === 0 && placeholderEmpty ? placeholderEmpty : placeholder
+      "
+      :autocomplete-min-length="0"
     />
     <template v-if="inputName">
       <input
         type="hidden"
-        name="tags[]"
+        :name="`${inputName}[]`"
         v-for="tag in tags"
         :value="tag.text"
         :key="tag.text"
@@ -41,6 +45,18 @@ export default {
     autocompleteItems: {
       type: Array,
       default: () => []
+    },
+    addOnlyFromAutocomplete: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: String,
+      default: 'タグを追加'
+    },
+    placeholderEmpty: {
+      type: String,
+      required: false
     }
   },
   data() {

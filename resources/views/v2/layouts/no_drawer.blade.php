@@ -62,6 +62,7 @@
             @show
         </app-nav-bar>
         <div class="content is-no-drawer">
+            @include('v2.includes.top_circle_selector')
             @if (Session::has('topAlert.title'))
                 <top-alert type="{{ session('topAlert.type', 'primary') }}" container-medium
                     {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}>
