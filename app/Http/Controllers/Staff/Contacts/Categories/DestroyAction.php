@@ -11,9 +11,7 @@ class DestroyAction extends Controller
 {
     public function __invoke(ContactCategory $category)
     {
-        DB::transaction(function () use ($category) {
-            $category->delete();
-        });
+        $category->delete();
 
         return redirect()
             ->route('staff.contacts.categories.index')

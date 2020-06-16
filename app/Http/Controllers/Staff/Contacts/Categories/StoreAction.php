@@ -22,15 +22,12 @@ class StoreAction extends Controller
     public function __invoke(CategoryRequest $request)
     {
 
-        $category = DB::transaction(function () use ($request) {
-            $category = ContactCategory::create([
-                'name' => $request->name,
-                'email' => $request->email,
-            ]);
-            $category->save();
+        $category = ContactCategory::create([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
 
-            return $category;
-        });
+        $category->save();
 
         $this->contactsService->sendContactCategory($category);
 

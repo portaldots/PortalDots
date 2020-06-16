@@ -27,12 +27,10 @@ class UpdateAction extends Controller
     {
         $old_email = $category->email;
 
-        DB::transaction(function () use ($request, $category) {
-            $category->update([
-                'name' => $request->name,
-                'email' => $request->email,
-            ]);
-        });
+        $category->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
 
         if ($old_email !== $request->email) {
             $this->contactsService->sendContactCategory($category);
