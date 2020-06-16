@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\Contacts\Categories\CategoryRequest;
 use App\Services\Contacts\ContactCategoriesService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class StoreAction extends Controller
 {

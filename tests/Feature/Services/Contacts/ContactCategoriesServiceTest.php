@@ -36,7 +36,7 @@ class ContactCategoriesServiceTest extends TestCase
     /**
      * @test
      */
-    public function send()
+    public function send_ContactCategoryへメール送信ができる()
     {
         Mail::fake();
 
