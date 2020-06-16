@@ -100,6 +100,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->group(function () {
             Route::get('/create', 'Circles\CreateAction')->name('create');
             Route::post('/', 'Circles\StoreAction')->name('store');
+            Route::get('/{circle}', 'Circles\ShowAction')->name('show');
             Route::get('/{circle}/edit', 'Circles\EditAction')->name('edit');
             Route::patch('/{circle}', 'Circles\UpdateAction')->name('update');
             // 企画メンバー登録関連
@@ -114,8 +115,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // 参加登録の削除
             Route::get('/{circle}/delete', 'Circles\DeleteAction')->name('delete');
             Route::delete('/{circle}', 'Circles\DestroyAction')->name('destroy');
-            // 参加登録状況
-            Route::get('/{circle}/status', 'Circles\StatusAction')->name('status');
         });
 
     // 申請

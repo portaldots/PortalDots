@@ -158,4 +158,30 @@ class SubmitActionTest extends BaseTestCase
 
         $response->assertStatus(403);
     }
+
+    /**
+     * @test
+     */
+    public function 副責任者は企画を提出できない()
+    {
+        $member = factory(User::class)->create();
+        $member->circles()->attach($this->circle->id, ['is_leader' => false]);
+
+        // 受付期間内
+        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+
+        $responce = $this
+                    ->actingAs($member)
+                    ->post(
+                        route('circles.submit', [
+                            'circle' => $this->circle,
+                        ])
+                    );
+
+        $this->circle->refresh();
+        $this->assertNull($this->circle->submitted_at);
+
+        $responce->assertStatus(403);
+    }
 }

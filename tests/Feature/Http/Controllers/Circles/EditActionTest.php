@@ -42,7 +42,7 @@ class EditActionTest extends BaseTestCase
     /**
      * @test
      */
-    public function メンバーは企画の情報を表示できる()
+    public function 責任者は企画の情報を表示できる()
     {
         $this->withoutExceptionHandling();
 
@@ -55,6 +55,25 @@ class EditActionTest extends BaseTestCase
                     );
 
         $response->assertStatus(200);
+    }
+
+    /**
+     * @test
+     */
+    public function 副責任者は企画の情報を表示できない()
+    {
+        $member = factory(User::class)->create();
+        $member->circles()->attach($this->circle->id, ['is_leader' => false]);
+
+        $responce = $this
+                    ->actingAs($member)
+                    ->get(
+                        route('circles.edit', [
+                            'circle' => $this->circle,
+                        ])
+                    );
+
+        $responce->assertStatus(403);
     }
 
     /**

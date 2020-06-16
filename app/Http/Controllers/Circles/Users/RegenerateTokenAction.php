@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Circles\Users;
 
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\Circles\CirclesService;
@@ -22,6 +23,10 @@ class RegenerateTokenAction extends Controller
     public function __invoke(Circle $circle)
     {
         $this->authorize('circle.update', $circle);
+
+        if (!Auth::user()->isLeaderInCircle($circle)) {
+            abort(403);
+        }
 
         $this->circlesService->regenerateInvitationToken($circle);
 
