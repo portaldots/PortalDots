@@ -216,13 +216,13 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             ->name('contacts.')
             ->group(function () {
                 // お問い合わせのメールリスト
-                Route::get('/email', 'Staff\Contacts\Email\IndexAction')->name('email.index');
-                Route::get('/email/create', 'Staff\Contacts\Email\CreateAction')->name('email.create');
-                Route::post('/email/create', 'Staff\Contacts\Email\StoreAction');
-                Route::get('/email/{contact_email}/edit', 'Staff\Contacts\Email\EditAction')->name('email.edit');
-                Route::patch('/email/{contact_email}', 'Staff\Contacts\Email\UpdateAction')->name('email.update');
-                Route::get('/email/{contact_email}/delete', 'Staff\Contacts\Email\DeleteAction')->name('email.delete');
-                Route::delete('/email/{contact_email}', 'Staff\Contacts\Email\DestroyAction')->name('email.destroy');
+                Route::get('/categories', 'Staff\Contacts\Categories\IndexAction')->name('categories.index');
+                Route::get('/categories/create', 'Staff\Contacts\Categories\CreateAction')->name('categories.create');
+                Route::post('/categories/create', 'Staff\Contacts\Categories\StoreAction');
+                Route::get('/categories/{category}/edit', 'Staff\Contacts\Categories\EditAction')->name('categories.edit');
+                Route::patch('/categories/{category}', 'Staff\Contacts\Categories\UpdateAction')->name('categories.update');
+                Route::get('/categories/{category}/delete', 'Staff\Contacts\Categories\DeleteAction')->name('categories.delete');
+                Route::delete('/categories/{category}', 'Staff\Contacts\Categories\DestroyAction')->name('categories.destroy');
             });
 
         // 配布資料

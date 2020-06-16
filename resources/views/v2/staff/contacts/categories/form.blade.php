@@ -1,9 +1,9 @@
 @extends('v2.layouts.no_drawer')
 
-@section('title', (empty($contact_email) ? 'メールアドレス追加' : $contact_email->name). ' - お問い合わせ')
+@section('title', (empty($category) ? 'メールアドレス追加' : $category->name). ' - お問い合わせ')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ route('staff.contacts.email.index') }}">
+    <app-nav-bar-back inverse href="{{ route('staff.contacts.categories.index') }}">
         メールアドレス一覧
     </app-nav-bar-back>
 @endsection
@@ -11,17 +11,17 @@
 @section('content')
     <app-container medium>
         <form
-            action="{{ isset($contact_email)
-                ? route('staff.contacts.email.update', ['contact_email' => $contact_email])
-                : route('staff.contacts.email.create') }}"
+            action="{{ isset($category)
+                ? route('staff.contacts.categories.update', ['category' => $category])
+                : route('staff.contacts.categories.create') }}"
             method="post">
         @csrf
-        @method(isset($contact_email) ? 'patch' : 'post')
+        @method(isset($category) ? 'patch' : 'post')
             <list-view>
                 <template v-slot:title>
-                    {{ isset($contact_email) ? $contact_email->name : 'メールアドレス追加'}}
-                    @isset($contact_email)
-                        <small><a href="{{ route('staff.contacts.email.delete', $contact_email) }}">削除</a></small>
+                    {{ isset($category) ? $category->name : 'メールアドレス追加'}}
+                    @isset($category)
+                        <small><a href="{{ route('staff.contacts.categories.delete', $category) }}">削除</a></small>
                     @endisset
                     - お問い合わせ
                 </template>
@@ -37,7 +37,7 @@
                         name="name"
                         id="name"
                         class="form-control @error('name') is-invalid @enderror"
-                        value="{{ old('name', $contact_email->name ?? '') }}"
+                        value="{{ old('name', $category->name ?? '') }}"
                         required>
                         @error('name')
                         <template v-slot:invalid>
@@ -50,7 +50,7 @@
                         メールアドレス
                     </template>
                     <template v-slot:description>
-                        @isset($contact_email)
+                        @isset($category)
                             メールアドレスを変更すると変更後のメールアドレスにメールが送信されます
                         @else
                             保存した際に設定したメールアドレスにメールが送信されます
@@ -61,7 +61,7 @@
                         name="email"
                         id="email"
                         class="form-control @error('email') is-invalid @enderror"
-                        value="{{ old('email', $contact_email->email ?? '') }}"
+                        value="{{ old('email', $category->email ?? '') }}"
                         required>
                         @error('email')
                         <template v-slot:invalid>

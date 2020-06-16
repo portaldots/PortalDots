@@ -3,7 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Contacts;
 
 use App\Eloquents\Circle;
-use App\Eloquents\ContactEmail;
+use App\Eloquents\ContactCategory;
 use App\Eloquents\User;
 use App\Services\Contacts\ContactsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -26,9 +26,9 @@ class PostActionTest extends TestCase
     private $user;
 
     /**
-     * @var ContactEmail
+     * @var ContactCategory
      */
-    private $contactEmail;
+    private $ContactCategory;
 
     public function setUp(): void
     {
@@ -39,7 +39,7 @@ class PostActionTest extends TestCase
 
         $this->circle->users()->attach($this->user->id, ['is_leader' => true]);
 
-        $this->contactEmail = factory(ContactEmail::class)->create();
+        $this->ContactCategory = factory(ContactCategory::class)->create();
     }
 
     /**
@@ -56,7 +56,7 @@ class PostActionTest extends TestCase
             ->post(route('contacts.post'), [
                 'circle_id' => $this->circle->id,
                 'contact_body' => 'テストです！',
-                'category' => $this->contactEmail->id,
+                'category' => $this->ContactCategory->id,
             ]);
 
         $responce->assertSessionHas('topAlert.title', 'お問い合わせを受け付けました。');

@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Eloquents\Circle;
-use App\Eloquents\ContactEmail;
+use App\Eloquents\ContactCategory;
 use App\Eloquents\User;
 
 class ContactMailable extends Mailable
@@ -39,7 +39,7 @@ class ContactMailable extends Mailable
     /**
      * お問い合わせ項目
      *
-     * @var ContactEmail
+     * @var ContactCategory
      */
     public $category;
 
@@ -48,7 +48,7 @@ class ContactMailable extends Mailable
      *
      * @return void
      */
-    public function __construct(?Circle $circle, User $sender, string $contactBody, ContactEmail $category)
+    public function __construct(?Circle $circle, User $sender, string $contactBody, ContactCategory $category)
     {
         $this->circle = $circle;
         $this->sender = $sender;

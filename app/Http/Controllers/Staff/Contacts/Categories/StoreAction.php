@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Contacts\Email;
+namespace App\Http\Controllers\Staff\Contacts\Categories;
 
-use App\Eloquents\ContactEmail;
+use App\Eloquents\ContactCategory;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Staff\Contacts\Email\EmailRequest;
+use App\Http\Requests\Staff\Contacts\Categories\CategoryRequest;
 use App\Services\Contacts\ContactsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,23 +19,23 @@ class StoreAction extends Controller
         $this->contactsService = $contactsService;
     }
 
-    public function __invoke(EmailRequest $request)
+    public function __invoke(CategoryRequest $request)
     {
 
-        $email = DB::transaction(function () use ($request) {
-            $email = ContactEmail::create([
+        $category = DB::transaction(function () use ($request) {
+            $category = ContactCategory::create([
                 'name' => $request->name,
                 'email' => $request->email,
             ]);
-            $email->save();
+            $category->save();
 
-            return $email;
+            return $category;
         });
 
-        $this->contactsService->sendContactEmail($email);
+        $this->contactsService->sendContactCategory($category);
 
         return redirect()
-            ->route('staff.contacts.email.index')
+            ->route('staff.contacts.categories.index')
             ->with('topAlert.title', 'メールアドレスを追加しました');
     }
 }

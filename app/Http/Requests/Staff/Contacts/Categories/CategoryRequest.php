@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Staff\Contacts\Email;
+namespace App\Http\Requests\Staff\Contacts\Categories;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EmailRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

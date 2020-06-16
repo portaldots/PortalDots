@@ -10,16 +10,16 @@ use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 use App;
 use App\Eloquents\Circle;
-use App\Eloquents\ContactEmail;
+use App\Eloquents\ContactCategory;
 use App\Eloquents\User;
-use App\Mail\Contacts\EmailMailable;
+use App\Mail\Contacts\EmailCategoryMailable;
 
 class ContactsServeceTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @var contactsService
+     * @var ContactsService
      */
     private $contactsService;
 
@@ -39,9 +39,9 @@ class ContactsServeceTest extends TestCase
     private $member;
 
     /**
-     * @var ContactEmail
+     * @var ContactCategory
      */
-    private $contactEmail;
+    private $ContactCategory;
 
     public function setUp(): void
     {
@@ -56,7 +56,7 @@ class ContactsServeceTest extends TestCase
             $this->member->id,
         ]);
 
-        $this->contactEmail = factory(ContactEmail::class)->create();
+        $this->ContactCategory = factory(ContactCategory::class)->create();
     }
 
     /**
@@ -66,7 +66,7 @@ class ContactsServeceTest extends TestCase
     {
         Mail::fake();
 
-        $this->contactsService->create($this->circle, $this->leader, "こんにちは。\nこれはてすとです。", $this->contactEmail);
+        $this->contactsService->create($this->circle, $this->leader, "こんにちは。\nこれはてすとです。", $this->ContactCategory);
 
         $this->send_お問い合わせが企画のメンバーに送信できる();
         $this->sendToStaff_スタッフ用控えが送信できる();
@@ -86,21 +86,21 @@ class ContactsServeceTest extends TestCase
     private function sendToStaff_スタッフ用控えが送信できる()
     {
         Mail::assertSent(ContactMailable::class, function ($mail) {
-            return $mail->hasTo($this->contactEmail->email);
+            return $mail->hasTo($this->ContactCategory->email);
         });
     }
 
     /**
      * @test
      */
-    public function sendContactEmail_ContactEmail作成時にメールが送信される()
+    public function sendContactCategory_ContactCategory作成時にメールが送信される()
     {
         Mail::fake();
 
-        $this->contactsService->sendContactEmail($this->contactEmail);
+        $this->contactsService->sendContactCategory($this->ContactCategory);
 
-        Mail::assertSent(EmailMailable::class, function ($mail) {
-            return $mail->hasTo($this->contactEmail->email);
+        Mail::assertSent(EmailCategoryMailable::class, function ($mail) {
+            return $mail->hasTo($this->ContactCategory->email);
         });
     }
 }

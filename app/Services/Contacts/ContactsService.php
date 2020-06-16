@@ -6,10 +6,10 @@ namespace App\Services\Contacts;
 
 use Illuminate\Support\Facades\Mail;
 use App\Eloquents\Circle;
-use App\Eloquents\ContactEmail;
+use App\Eloquents\ContactCategory;
 use App\Eloquents\User;
 use App\Mail\Contacts\ContactMailable;
-use App\Mail\Contacts\EmailMailable;
+use App\Mail\Contacts\EmailCategoryMailable;
 
 class ContactsService
 {
@@ -19,10 +19,10 @@ class ContactsService
      * @param Circle|null $circle お問い合わせ対象の企画
      * @param User $sender お問い合わせを作成したユーザー
      * @param string $contactBody お問い合わせ本文
-     * @param ContactEmail $category お問い合わせ項目
+     * @param ContactCategory $category お問い合わせ項目
      * @return bool
      */
-    public function create(?Circle $circle, User $sender, string $contactBody, ContactEmail $category)
+    public function create(?Circle $circle, User $sender, string $contactBody, ContactCategory $category)
     {
         if (isset($circle) && is_iterable($circle->users) && count($circle->users) > 0) {
             // 企画に所属するユーザー全員に確認メールを送信する
@@ -46,12 +46,17 @@ class ContactsService
      * @param string $contactBody お問い合わせ本文
      * @return void
      */
-    private function send(User $recipient, ?Circle $circle, User $sender, string $contactBody, ContactEmail $category)
-    {
+    private function send(
+        User $recipient,
+        ?Circle $circle,
+        User $sender,
+        string $contactBody,
+        ContactCategory $category
+    ) {
         Mail::to($recipient)
             ->send(
                 (new ContactMailable($circle, $sender, $contactBody, $category))
-                    ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
+                    ->replyTo($category->email, config('portal.admin_name'))
                     ->subject('お問い合わせを承りました')
             );
     }
@@ -62,10 +67,10 @@ class ContactsService
      * @param Circle|null $circle お問い合わせ対象の企画
      * @param User $sender お問い合わせを作成したユーザー
      * @param string $contactBody お問い合わせ本文
-     * @param ContactEmail $category お問い合わせ項目
+     * @param ContactCategory $category お問い合わせ項目
      * @return void
      */
-    private function sendToStaff(?Circle $circle, User $sender, string $contactBody, ContactEmail $category)
+    private function sendToStaff(?Circle $circle, User $sender, string $contactBody, ContactCategory $category)
     {
         $senderText = isset($circle) ? $circle->name : $sender->name;
 
@@ -78,15 +83,15 @@ class ContactsService
     }
 
     /**
-     * ContactEmail の新規作成・アップデート時にメール送信を確認する
+     * ContactCategory の新規作成・アップデート時にメール送信を確認する
      *
-     * @param ContactEmail $contactEmail
+     * @param ContactCategory $category
      */
-    public function sendContactEmail(ContactEmail $contactEmail)
+    public function sendContactCategory(ContactCategory $category)
     {
-        Mail::to($contactEmail->email, $contactEmail->name)
+        Mail::to($category->email, $category->name)
             ->send(
-                (new EmailMailable($contactEmail))
+                (new EmailCategoryMailable($category))
                     ->subject('お問い合わせ先に設定されました')
             );
     }

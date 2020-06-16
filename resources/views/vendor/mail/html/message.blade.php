@@ -22,7 +22,7 @@
     @slot('footer')
         @component('mail::footer')
             **{{ config('portal.admin_name') }}** <br />
-            {{ config('portal.contact_email') }}<br /><br />
+            {{ config('portal.category') }}<br /><br />
             [{{ config('app.name') }}]({{ config('app.url') }})
         @endcomponent
     @endslot

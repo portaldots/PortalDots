@@ -18,15 +18,15 @@
             <list-view-card>
                 <p>ここでメールアドレスを設定するとポータルからのお問い合わせを振り分けることができます。</p>
             </list-view-card>
-            @foreach ($contact_emails as $contact_email)
-                <list-view-item href="{{ route('staff.contacts.email.edit', ['contact_email' => $contact_email]) }}">
+            @foreach ($categories as $category)
+                <list-view-item href="{{ route('staff.contacts.categories.edit', ['category' => $category]) }}">
                     <template v-slot:title>
-                        {{ $contact_email->name }}
+                        {{ $category->name }}
                     </template>
-                    {{ $contact_email->email }}
+                    {{ $category->email }}
                 </list-view-item>
             @endforeach
-            <list-view-action-btn href="{{ route('staff.contacts.email.create') }}">
+            <list-view-action-btn href="{{ route('staff.contacts.categories.create') }}">
                 <i class="fas fa-plus"></i>
                 メールアドレスを追加
             </list-view-action-btn>

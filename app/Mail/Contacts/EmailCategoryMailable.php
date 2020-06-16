@@ -2,13 +2,13 @@
 
 namespace App\Mail\Contacts;
 
-use App\Eloquents\ContactEmail;
+use App\Eloquents\ContactCategory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class EmailMailable extends Mailable
+class EmailCategoryMailable extends Mailable
 {
     use Queueable;
     use SerializesModels;
@@ -32,10 +32,10 @@ class EmailMailable extends Mailable
      *
      * @return void
      */
-    public function __construct(ContactEmail $contact_email)
+    public function __construct(ContactCategory $category)
     {
-        $this->name = $contact_email->name;
-        $this->email = $contact_email->email;
+        $this->name = $category->name;
+        $this->email = $category->email;
     }
 
     /**
@@ -45,6 +45,6 @@ class EmailMailable extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.contacts.email');
+        return $this->markdown('emails.contacts.category');
     }
 }
