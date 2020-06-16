@@ -21,13 +21,13 @@
                 <input id="invitation_url" type="text" class="form-control" name="invitation_url"
                     value="{{ $invitation_url }}" readonly>
             </list-view-form-group>
-            <list-view-card>
-                <div class="text-center">
-                    {!! QrCode::margin(0)
-                    ->size(180)
-                    ->generate($invitation_url) !!}
-                </div>
-            </list-view-card>
+            @if (!empty($qrcode_html))
+                <list-view-card>
+                    <div class="text-center">
+                        {!! $qrcode_html !!}
+                    </div>
+                </list-view-card>
+            @endif
             <list-view-action-btn button v-on:click="share({{ $share_json }})" icon-class="far fa-share-square">
                 URLを共有
             </list-view-action-btn>
