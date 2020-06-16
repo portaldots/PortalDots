@@ -21,7 +21,7 @@
                 <app-badge danger>不受理</app-badge>
             @endif
         </span>
-        @can ('circle.update', $circle)
+        @if (!Auth::user()->isLeaderInCircle($circle) && Gate::allows('circle.update', $circle))
         <form-with-confirm action="{{ route('circles.users.destroy', ['circle' => $circle, 'user' => Auth::user()]) }}"
             method="post" confirm-message="本当にこの企画を抜けますか？">
             @method('delete')
@@ -30,7 +30,7 @@
                 この企画から抜ける
             </button>
         </form-with-confirm>
-        @endcan
+        @endif
     </app-header>
     <app-container medium>
         <list-view>
