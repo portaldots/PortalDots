@@ -44,7 +44,7 @@ class StoreAction extends Controller
         $result = $this->circlesService->addMember($circle, Auth::user());
 
         return redirect()
-                ->route('circle.read', ['circle' => $circle])
+                ->route('circles.read', ['circle' => $circle])
                 ->with('topAlert.title', "「{$circle->name}」の学園祭係(副責任者)になりました");
     }
 }
