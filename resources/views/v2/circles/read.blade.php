@@ -29,10 +29,5 @@
                 @include('v2.includes.circles_info')
             </list-view-card>
         </list-view>
-        <div class="text-center pt-spacing-sm pb-spacing">
-            <a class="btn is-secondary" href="{{ route('home') }}">
-                ホームに戻る
-            </a>
-        </div>
     </app-container>
 @endsection
