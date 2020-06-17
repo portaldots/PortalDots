@@ -15,7 +15,8 @@ class TermsAction extends Controller
         $form = CustomForm::getFormByType('circle');
 
         if (empty($form->description)) {
-            abort(404);
+            return redirect()
+                ->route('circles.create');
         }
 
         return view('v2.circles.terms')

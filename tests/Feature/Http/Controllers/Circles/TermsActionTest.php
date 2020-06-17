@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class IndexActionTest extends BaseTestCase
+class TermsActionTest extends BaseTestCase
 {
     use RefreshDatabase;
 
@@ -27,7 +27,7 @@ class IndexActionTest extends BaseTestCase
     /**
      * @test
      */
-    public function 説明があるときTermsActionにリダイレクトする()
+    public function 説明があるときViewを表示する()
     {
         $form = CustomForm::getFormByType('circle');
         $form->description = '参加登録前に読んでほしい内容';
@@ -36,11 +36,11 @@ class IndexActionTest extends BaseTestCase
         $responce = $this
                     ->actingAs($this->user)
                     ->get(
-                        route('circles.index')
+                        route('circles.terms')
                     );
 
-        $responce->assertStatus(302);
-        $responce->assertRedirect(route('circles.terms'));
+        $responce->assertOk();
+        $responce->assertSee('参加登録前に読んでほしい内容');
     }
 
     /**
@@ -55,7 +55,7 @@ class IndexActionTest extends BaseTestCase
         $responce = $this
                     ->actingAs($this->user)
                     ->get(
-                        route('circles.index')
+                        route('circles.terms')
                     );
 
         $responce->assertStatus(302);

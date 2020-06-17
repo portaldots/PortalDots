@@ -140,14 +140,14 @@
                                 まだ参加登録がお済みでないようですね。<br>
                                 まずは参加登録からはじめましょう！
                             </p>
-                            <a href="{{ route('circles.index') }}" class="btn is-primary is-wide">
+                            <a href="{{ route('circles.terms') }}" class="btn is-primary is-wide">
                                 <strong>参加登録をはじめる</strong>
                             </a>
                         </list-view-empty>
                     </list-view-card>
                 @else
                     @each('v2.includes.circle_list_view_item_with_status', $my_circles, 'circle')
-                    <list-view-action-btn href="{{ route('circles.index') }}" icon-class="fas fa-plus">
+                    <list-view-action-btn href="{{ route('circles.terms') }}" icon-class="fas fa-plus">
                         別の企画を参加登録する
                     </list-view-action-btn>
                 @endif
