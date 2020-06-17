@@ -8,7 +8,7 @@
   >
     <template v-slot:content>
       <h1 class="form-header__name">{{ computed_name }}</h1>
-      <div v-html="description_html" />
+      <div v-if="!custom_form" v-html="description_html" />
     </template>
     <template v-slot:edit-panel>
       <div class="form-group row">
