@@ -54,6 +54,7 @@ class UpdateActionTest extends TestCase
                 'close_at' => '2040-12-31T11:15',
                 'users_number_to_submit_circle' => '6',
                 'is_public' => '1',
+                'description' => '参加登録前に読んでほしいもの',
             ]);
 
         $response->assertRedirect(route('staff.circles.custom_form.index'));
@@ -63,6 +64,7 @@ class UpdateActionTest extends TestCase
             'open_at' => '2000-12-31T12:12',
             'close_at' => '2040-12-31T11:15',
             'is_public' => 1,
+            'description' => '参加登録前に読んでほしいもの',
         ]);
     }
 
