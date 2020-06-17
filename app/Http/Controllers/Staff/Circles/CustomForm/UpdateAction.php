@@ -40,6 +40,7 @@ class UpdateAction extends Controller
             'open_at' => $request->open_at,
             'close_at' => $request->close_at,
             'is_public' => $request->is_public ?? false,
+            'description' => $request->description,
         ]);
 
         return redirect()

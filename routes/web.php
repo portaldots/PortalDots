@@ -215,10 +215,6 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::post('/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('custom_form.store');
                 Route::patch('/custom_form', 'Staff\Circles\CustomForm\UpdateAction')->name('custom_form.update');
 
-                // 参加登録前の表示設定
-                Route::get('/terms/edit', 'Staff\Circles\Terms\EditAction')->name('terms.edit');
-                Route::patch('/terms', 'Staff\Circles\Terms\UpdateAction')->name('terms.update');
-
                 // 企画情報編集
                 Route::get('/{circle}/edit', 'Staff\Circles\EditAction')->name('edit');
                 Route::patch('/{circle}', 'Staff\Circles\UpdateAction')->name('update');

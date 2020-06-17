@@ -18,13 +18,6 @@
                 フォームエディターを開く
             </list-view-action-btn>
         </list-view>
-        <list-view>
-            <template v-slot:title>企画参加登録を始めるときのお知らせ</template>
-            <template v-slot:description>ユーザーが企画参加登録を始めるときに規約などを表示することができます</template>
-            <list-view-action-btn href="{{ route('staff.circles.terms.edit') }}">
-                表示内容の設定を開く
-            </list-view-action-btn>
-        </list-view>
         <form action="{{ route('staff.circles.custom_form.update') }}" method="post">
             @csrf
             @method('patch')
@@ -86,6 +79,23 @@
                     @error('is_public')
                     <template v-slot:invalid>{{ $message }}</template>
                     @enderror
+                </list-view-form-group>
+                <list-view-form-group>
+                    <template v-slot:label>
+                        参加登録前に表示する内容&nbsp;
+                        <app-badge outline muted>Markdown</app-badge>
+                    </template>
+                    <template v-slot:description>
+                        参加登録を始める前に設定した内容を表示できます。規約の表示などにご利用ください。
+                    </template>
+                    <markdown-editor input-name="description" default-value="{{ old('description', $form->description) }}"></markdown-editor>
+                    @if ($errors->has('description'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('description') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
                 </list-view-form-group>
             </list-view>
             <div class="text-center py-spacing-md">
