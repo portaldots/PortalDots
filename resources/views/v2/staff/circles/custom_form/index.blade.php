@@ -18,6 +18,13 @@
                 フォームエディターを開く
             </list-view-action-btn>
         </list-view>
+        <list-view>
+            <template v-slot:title>企画参加登録を始めるときのお知らせ</template>
+            <template v-slot:description>ユーザーが企画参加登録を始めるときに規約などを表示することができます</template>
+            <list-view-action-btn href="{{ route('staff.circles.terms.edit') }}">
+                表示内容の設定を開く
+            </list-view-action-btn>
+        </list-view>
         <form action="{{ route('staff.circles.custom_form.update') }}" method="post">
             @csrf
             @method('patch')
