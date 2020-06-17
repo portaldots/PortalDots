@@ -89,13 +89,9 @@
                         参加登録を始める前に設定した内容を表示できます。規約の表示などにご利用ください。
                     </template>
                     <markdown-editor input-name="description" default-value="{{ old('description', isset($form) ? $form->description : '') }}"></markdown-editor>
-                    @if ($errors->has('description'))
-                        <template v-slot:invalid>
-                            @foreach ($errors->get('description') as $message)
-                                <div>{{ $message }}</div>
-                            @endforeach
-                        </template>
-                    @endif
+                    @error('description')
+                    <template v-slot:invalid>{{ $message }}</template>
+                    @enderror
                 </list-view-form-group>
             </list-view>
             <div class="text-center py-spacing-md">
