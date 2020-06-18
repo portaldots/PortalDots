@@ -14,11 +14,13 @@ class CreateAction extends Controller
 
         $form = CustomForm::getFormByType('circle');
 
+        $previous = preg_replace('/^:\d+/', '', str_replace(url('/'), '', url()->previous()));
+
         if (
             isset($form->description)
-            && url()->previous() !== config('app.url') . route('circles.terms', [], false)
-            && url()->previous() !== config('app.url') . route('circles.create', [], false)
-            && url()->previous() !== config('app.url') . route('circles.store', [], false)
+            && $previous !== route('circles.terms', [], false)
+            && $previous !== route('circles.create', [], false)
+            && $previous !== route('circles.store', [], false)
         ) {
             return redirect()
                 ->route('circles.terms');
