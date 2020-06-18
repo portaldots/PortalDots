@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use \Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Closure;
 
 class ForceHttps
