@@ -28,6 +28,7 @@ class CustomFormRequest extends FormRequest
             'open_at' => ['required', 'date'],
             'close_at' => ['required', 'date', 'after:open_at'],
             'is_public' => ['boolean'],
+            'description' => ['nullable', 'string'],
         ];
     }
 
@@ -43,6 +44,7 @@ class CustomFormRequest extends FormRequest
             'open_at' => '受付開始日時',
             'close_at' => '受付終了日時',
             'is_public' => '参加登録画面の公開設定',
+            'description' => '参加登録前に表示する内容',
         ];
     }
 }

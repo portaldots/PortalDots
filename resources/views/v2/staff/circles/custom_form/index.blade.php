@@ -80,6 +80,19 @@
                     <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
+                <list-view-form-group>
+                    <template v-slot:label>
+                        参加登録前に表示する内容&nbsp;
+                        <app-badge outline muted>Markdown</app-badge>
+                    </template>
+                    <template v-slot:description>
+                        参加登録を始める前に設定した内容を表示できます。規約の表示などにご利用ください。
+                    </template>
+                    <markdown-editor input-name="description" default-value="{{ old('description', isset($form) ? $form->description : '') }}"></markdown-editor>
+                    @error('description')
+                    <template v-slot:invalid>{{ $message }}</template>
+                    @enderror
+                </list-view-form-group>
             </list-view>
             <div class="text-center py-spacing-md">
                 <button type="submit" class="btn is-primary is-wide">保存</button>
