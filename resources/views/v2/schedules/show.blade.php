@@ -11,17 +11,15 @@
 @endsection
 
 @section('content')
-    <header class="header">
-        <app-container>
-            <h1 class="header__title">
-                {{ $schedule->name }}
-            </h1>
-            <p class="header__date">
-                @datetime($schedule->start_at)〜 • {{ $schedule->place }}
-            </p>
-        </app-container>
-    </header>
-    <app-container component-is="main" class="pb-spacing-lg">
+    <app-header>
+        <template v-slot:title>
+            {{ $schedule->name }}
+        </template>
+        <div class="text-muted">
+            @datetime($schedule->start_at)〜 • {{ $schedule->place }}
+        </div>
+    </app-header>
+    <app-container class="py-spacing-lg">
         <div class="markdown">
             @markdown($schedule->description)
         </div>
