@@ -53,8 +53,8 @@ class CreateActionTest extends BaseTestCase
 
         $responce = $this
                     ->actingAs($this->user)
-                    ->withHeaders([
-                        'HTTP_REFERER' =>  route('circles.terms'),
+                    ->withSession([
+                        'read_terms' => true,
                     ])
                     ->get(
                         route('circles.create')

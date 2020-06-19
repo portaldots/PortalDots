@@ -14,14 +14,7 @@ class CreateAction extends Controller
 
         $form = CustomForm::getFormByType('circle');
 
-        $previous = preg_replace('/^:\d+/', '', str_replace(url('/'), '', url()->previous()));
-
-        if (
-            isset($form->description)
-            && $previous !== route('circles.terms', [], false)
-            && $previous !== route('circles.create', [], false)
-            && $previous !== route('circles.store', [], false)
-        ) {
+        if (isset($form->description) && !session()->has('read_terms')) {
             return redirect()
                 ->route('circles.terms');
         }
