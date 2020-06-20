@@ -13,17 +13,6 @@ use Jackiedo\DotenvEditor\Exceptions\KeyNotFoundException;
 class DotenvServiceTest extends TestCase
 {
     /**
-     * @var DotenvService
-     */
-    private $dotenvService;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->dotenvService = App::make(DotenvService::class);
-    }
-
-    /**
      * @test
      */
     public function getValue_値が存在すれば取得できる()
@@ -32,7 +21,9 @@ class DotenvServiceTest extends TestCase
             $mock->shouldReceive('getValue')->once()->with('EXAMPLE_KEY')->andReturn('exampleValue');
         });
 
-        $this->assertSame('exampleValue', $this->dotenvService->getValue('EXAMPLE_KEY'));
+        $dotenvService = App::make(DotenvService::class);
+
+        $this->assertSame('exampleValue', $dotenvService->getValue('EXAMPLE_KEY'));
     }
 
     /**
@@ -43,11 +34,13 @@ class DotenvServiceTest extends TestCase
         $this->mock(DotenvEditor::class, function ($mock) {
             $mock->shouldReceive('getValue')
                 ->once()
-                ->with('EXAMPLE_KEY', 'defaultValue')
+                ->with('EXAMPLE_KEY')
                 ->andThrow(new KeyNotFoundException());
         });
 
-        $this->assertSame('defaultValue', $this->dotenvService->getValue('EXAMPLE_KEY', 'defaultValue'));
+        $dotenvService = App::make(DotenvService::class);
+
+        $this->assertSame('defaultValue', $dotenvService->getValue('EXAMPLE_KEY', 'defaultValue'));
     }
 
     /**
@@ -59,7 +52,9 @@ class DotenvServiceTest extends TestCase
             $mock->shouldReceive('getValue')->once()->with('EXAMPLE_KEY')->andThrow(new KeyNotFoundException());
         });
 
-        $this->assertSame(null, $this->dotenvService->getValue('EXAMPLE_KEY'));
+        $dotenvService = App::make(DotenvService::class);
+
+        $this->assertSame(null, $dotenvService->getValue('EXAMPLE_KEY'));
     }
 
     /**
@@ -68,13 +63,15 @@ class DotenvServiceTest extends TestCase
     public function saveKeys()
     {
         $this->mock(DotenvEditor::class, function ($mock) {
-            $mock->shouldReceive('setValue')->once()->with('EXAMPLE_KEY_1', 'value1');
-            $mock->shouldReceive('setValue')->once()->with('EXAMPLE_KEY_2', 'value2');
-            $mock->shouldReceive('setValue')->once()->with('EXAMPLE_KEY_3', 'value3');
+            $mock->shouldReceive('setKey')->once()->with('EXAMPLE_KEY_1', 'value1');
+            $mock->shouldReceive('setKey')->once()->with('EXAMPLE_KEY_2', 'value2');
+            $mock->shouldReceive('setKey')->once()->with('EXAMPLE_KEY_3', 'value3');
             $mock->shouldReceive('save')->once();
         });
 
-        $this->dotenvService->saveKeys([
+        $dotenvService = App::make(DotenvService::class);
+
+        $dotenvService->saveKeys([
             'EXAMPLE_KEY_1' => 'value1',
             'EXAMPLE_KEY_2' => 'value2',
             'EXAMPLE_KEY_3' => 'value3',
