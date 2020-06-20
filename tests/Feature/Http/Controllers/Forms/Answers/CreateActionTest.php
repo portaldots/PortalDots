@@ -43,13 +43,6 @@ class CreateActionTest extends TestCase
         $this->selectorService = App::make(SelectorService::class);
     }
 
-    public function tearDown(): void
-    {
-        $this->selectorService->reset();
-
-        parent::tearDown();
-    }
-
     /**
      * @test
      * @dataProvider 受付期間中かどうかに応じて表示が切り替わる_provider
