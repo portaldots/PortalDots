@@ -9,6 +9,11 @@
         <template v-slot:meta>
             学園祭係(副責任者)の招待が完了しました。ここをクリックして登録内容に不備がないかどうかを確認し、参加登録を提出しましょう。
         </template>
+        <steps-list>
+            <steps-list-item>企画情報</steps-list-item>
+            <steps-list-item>メンバー</steps-list-item>
+            <steps-list-item active>提出</steps-list-item>
+        </steps-list>
     </list-view-item>
 @elseif ($circle->isPending())
     <list-view-item href="{{ route('circles.show', ['circle' => $circle]) }}">

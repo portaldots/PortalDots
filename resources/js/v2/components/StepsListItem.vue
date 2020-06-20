@@ -21,10 +21,12 @@ export default {
 .steps-list-item {
   $circle-size: 1.5rem;
 
+  align-items: center;
+  display: flex;
+  flex: 1;
   margin: 0;
   position: relative;
   &__content {
-    background: $color-bg-white;
     display: inline-block;
     margin-left: -#{$spacing-md};
     padding: $spacing-md $spacing-md $spacing-md #{$circle-size +
@@ -60,15 +62,14 @@ export default {
       color: $color-bg-white;
     }
   }
-  &:not(:last-child)::after {
-    background: $color-primary;
+  &::after {
+    border-top: 1px solid $color-border;
     content: '';
     display: block;
-    height: 2px;
-    left: 50%;
-    position: absolute;
-    right: 150%;
-    top: 0;
+    flex: 1;
+  }
+  &:last-child::after {
+    display: none;
   }
 }
 </style>
