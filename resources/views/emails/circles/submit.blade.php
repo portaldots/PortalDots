@@ -7,7 +7,14 @@
 - 企画名(よみ) : {{ $circle->name_yomi }}
 - 出店を企画する団体の名称 : {{ $circle->group_name }}
 - 出店を企画する団体の名称(よみ) : {{ $circle->group_name_yomi}}
-- 企画責任者 : {{ $circle->leader->first()->name }}
+- メンバー
+@foreach ($circle->users as $user)
+@if($user->pivot->is_leader === true)
+  - {{ $user->name }} (責任者)
+@else
+  - {{ $user->name }}
+@endif
+@endforeach
 @endcomponent
 
 

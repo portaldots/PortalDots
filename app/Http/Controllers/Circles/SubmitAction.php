@@ -32,9 +32,9 @@ class SubmitAction extends Controller
                 ->with('topAlert.title', '参加登録に必要な人数が揃っていないため、参加登録の提出はまだできません');
         }
 
-        $this->circlesService->submit($circle);
+        // $this->circlesService->submit($circle);
 
-        $circle->load(['leader', 'users']);
+        $circle->load('users');
 
         foreach ($circle->users as $user) {
             $this->circlesService->sendSubmitedEmail($user, $circle);
