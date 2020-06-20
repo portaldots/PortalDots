@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Install;
 
-use Jackiedo\DotenvEditor\DotenvEditor;
+use App\Services\Utils\DotenvService;
 
 abstract class AbstractService
 {
@@ -15,13 +15,13 @@ abstract class AbstractService
     abstract public function getFormLabels(): array;
 
     /**
-     * @var DotenvEditor
+     * @var DotenvService
      */
-    private $editor;
+    private $dotenvService;
 
-    public function __construct(DotenvEditor $editor)
+    public function __construct(DotenvService $dotenvService)
     {
-        $this->editor = $editor;
+        $this->dotenvService = $dotenvService;
     }
 
     public function getInfo()
@@ -35,7 +35,7 @@ abstract class AbstractService
                 $result[$key] = '';
                 continue;
             }
-            $result[$key] = $this->editor->getValue($key);
+            $result[$key] = $this->dotenvService->getValue($key);
         }
 
         return $result;
@@ -43,13 +43,14 @@ abstract class AbstractService
 
     public function updateInfo(array $info)
     {
+        $save_keys = [];
         foreach ($this->getEnvKeys() as $key) {
             if (empty($info[$key])) {
                 continue;
             }
-            $this->editor->setKey($key, $info[$key]);
+            $save_keys[$key] = $info[$key];
         }
 
-        $this->editor->save();
+        $this->dotenvService->saveKeys($save_keys);
     }
 }

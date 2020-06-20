@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Install;
 
-use Jackiedo\DotenvEditor\DotenvEditor;
 use Mail;
 use App\Mail\Install\TestMailMailable;
 use Swift_SmtpTransport;

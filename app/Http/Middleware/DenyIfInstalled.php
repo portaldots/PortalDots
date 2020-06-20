@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Artisan;
-use Jackiedo\DotenvEditor\DotenvEditor;
+use App\Services\Utils\DotenvService;
 
 /**
  * PortalDots がインストール済の場合、トップページへリダイレクトする
@@ -12,13 +12,13 @@ use Jackiedo\DotenvEditor\DotenvEditor;
 class DenyIfInstalled
 {
     /**
-     * @var DotenvEditor
+     * @var DotenvService
      */
-    private $editor;
+    private $dotenvService;
 
-    public function __construct(DotenvEditor $editor)
+    public function __construct(DotenvService $dotenvService)
     {
-        $this->editor = $editor;
+        $this->dotenvService = $dotenvService;
     }
 
     /**
@@ -30,7 +30,7 @@ class DenyIfInstalled
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->editor->keyExists('APP_NOT_INSTALLED') || $this->editor->getValue('APP_NOT_INSTALLED') !== 'true') {
+        if ($this->dotenvService->getValue('APP_NOT_INSTALLED', 'false') !== 'true') {
             abort(404);
         }
         return $next($request);
