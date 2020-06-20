@@ -10,7 +10,7 @@ class CreateAction extends Controller
 {
     public function __invoke()
     {
-        return view('v2.staff.documents.form')
+        return view('staff.documents.form')
             ->with('schedules', Schedule::startOrder()->get());
     }
 }

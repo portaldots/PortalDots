@@ -34,7 +34,7 @@ class IndexAction extends Controller
             return redirect($pages->url($pages->lastPage()));
         }
 
-        return view('v2.pages.index')
+        return view('pages.index')
             ->with('pages', $pages);
     }
 }

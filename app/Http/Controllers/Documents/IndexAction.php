@@ -16,7 +16,7 @@ class IndexAction extends Controller
             return redirect($documents->url($documents->lastPage()));
         }
 
-        return view('v2.documents.index')
+        return view('documents.index')
             ->with('documents', $documents);
     }
 }

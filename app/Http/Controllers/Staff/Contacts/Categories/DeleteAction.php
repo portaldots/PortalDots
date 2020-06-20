@@ -10,7 +10,7 @@ class DeleteAction extends Controller
 {
     public function __invoke(ContactCategory $category)
     {
-        return view('v2.staff.contacts.categories.delete')
+        return view('staff.contacts.categories.delete')
             ->with('category', $category);
     }
 }

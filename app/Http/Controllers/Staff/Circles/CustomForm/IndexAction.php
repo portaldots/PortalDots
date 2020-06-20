@@ -24,10 +24,10 @@ class IndexAction extends Controller
         $form = CustomForm::getFormByType('circle');
 
         if (empty($form)) {
-            return view('v2.staff.circles.custom_form.index_not_configured');
+            return view('staff.circles.custom_form.index_not_configured');
         }
 
-        return view('v2.staff.circles.custom_form.index')
+        return view('staff.circles.custom_form.index')
             ->with(
                 'users_number_to_submit_circle',
                 $this->dovenvService->getValue('PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE', 1)

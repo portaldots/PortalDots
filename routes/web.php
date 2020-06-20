@@ -152,7 +152,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         // このページのURLを変更する場合は
         // resources/js/v2/components/MarkdownEditor.vue
         // 内に含まれるこのページへのURLも修正すること
-        Route::view('/markdown-guide', 'v2.staff.markdown_guide')
+        Route::view('/markdown-guide', 'staff.markdown_guide')
             ->name('markdown-guide');
 
         // お知らせ

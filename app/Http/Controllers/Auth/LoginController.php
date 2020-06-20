@@ -61,7 +61,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('v2.auth.login');
+        return view('auth.login');
     }
 
     /**
@@ -71,7 +71,7 @@ class LoginController extends Controller
      */
     public function showLogout()
     {
-        return view('v2.auth.logout');
+        return view('auth.logout');
     }
 
     /**

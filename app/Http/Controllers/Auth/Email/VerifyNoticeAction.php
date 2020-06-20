@@ -17,6 +17,6 @@ class VerifyNoticeAction extends Controller
             return redirect()->route('home');
         }
 
-        return view('v2.auth.verify');
+        return view('auth.verify');
     }
 }

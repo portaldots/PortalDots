@@ -37,7 +37,7 @@ class ShowAction extends Controller
             $this->readsService->markAsRead($page, Auth::user());
         }
 
-        return view('v2.pages.show')
+        return view('pages.show')
             ->with('page', $page);
     }
 }

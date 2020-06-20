@@ -21,7 +21,7 @@ class TermsAction extends Controller
 
         session()->put('read_terms', true);
 
-        return view('v2.circles.terms')
+        return view('circles.terms')
             ->with('description', $form->description);
     }
 }

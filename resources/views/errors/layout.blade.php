@@ -1,4 +1,4 @@
-@extends('v2.layouts.app')
+@extends('layouts.app')
 
 @hasSection ('twitter')
     @push('js')
