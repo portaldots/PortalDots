@@ -34,6 +34,12 @@ class SubmitAction extends Controller
 
         $this->circlesService->submit($circle);
 
+        $circle->load(['leader', 'users']);
+
+        foreach ($circle->users as $user) {
+            $this->circlesService->sendSubmitedEmail($user, $circle);
+        }
+
         return redirect()
             ->route('home')
             ->with('topAlert.title', '企画参加登録を提出しました！');

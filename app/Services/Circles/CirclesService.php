@@ -8,6 +8,8 @@ use DB;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Tag;
+use App\Mail\Circles\SubmitedMailable;
+use Illuminate\Support\Facades\Mail;
 
 class CirclesService
 {
@@ -107,4 +109,20 @@ class CirclesService
 
         $circle->tags()->sync($tags_on_db->pluck('id')->all());
     }
+
+    public function sendSubmitedEmail(User $user, Circle $circle)
+    {
+        Mail::to($user)
+        ->send(
+            (new SubmitedMailable(
+                $circle,
+            ))
+                ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
+                ->subject('参加登録を提出しました')
+        );
+    }
+
+    // public function sendApprovedEmail()
+    // {
+    // }
 }
