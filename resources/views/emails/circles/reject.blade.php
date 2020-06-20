@@ -22,7 +22,7 @@
 @isset($circle->status_reason)
 # 不受理となった理由
 @component('mail::panel')
-@markdown($circle->status_reason)
+{{ $circle->status_reason }}
 @endcomponent
 @endisset
 

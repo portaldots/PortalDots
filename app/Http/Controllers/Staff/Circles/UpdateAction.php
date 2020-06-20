@@ -96,9 +96,9 @@ class UpdateAction extends Controller
                     $this->circlesService->sendApprovedEmail($user, $circle);
                 }
             } elseif ($circle->status === Circle::STATUS_REJECTED) {
-                // foreach($circle->users as $user) {
-                //     $this->circlesService->sendRejectedEmail($user, $circle);
-                // }
+                foreach ($circle->users as $user) {
+                    $this->circlesService->sendRejectedEmail($user, $circle);
+                }
             }
         }
 
