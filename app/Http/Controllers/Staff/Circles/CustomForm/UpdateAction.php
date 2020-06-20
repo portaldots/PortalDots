@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Staff\Circles\CustomForm;
 
-use Jackiedo\DotenvEditor\DotenvEditor;
+use App\Services\Utils\DotenvService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\Circles\CustomFormRequest;
 use App\Eloquents\CustomForm;
@@ -16,14 +16,14 @@ class UpdateAction extends Controller
     private $formsService;
 
     /**
-     * @var DotenvEditor
+     * @var DotenvService
      */
-    private $editor;
+    private $dotenvService;
 
-    public function __construct(FormsService $formsService, DotenvEditor $editor)
+    public function __construct(FormsService $formsService, DotenvService $dotenvService)
     {
         $this->formsService = $formsService;
-        $this->editor = $editor;
+        $this->dotenvService = $dotenvService;
     }
 
     public function __invoke(CustomFormRequest $request)
@@ -33,8 +33,9 @@ class UpdateAction extends Controller
             abort(404);
         }
 
-        $this->editor->setKey('PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE', (int)$request->users_number_to_submit_circle);
-        $this->editor->save();
+        $this->dotenvService->saveKeys([
+            'PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE' => (int)$request->users_number_to_submit_circle
+        ]);
 
         $this->formsService->updateForm($form->id, [
             'open_at' => $request->open_at,

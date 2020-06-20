@@ -8,7 +8,7 @@ use DB;
 use Auth;
 use Cookie;
 use App;
-use Jackiedo\DotenvEditor\DotenvEditor;
+use App\Services\Utils\DotenvService;
 
 /**
  * CodeIgniter 側で保存されたセッションを Laravel 側で扱えるようにする
@@ -55,13 +55,10 @@ class InjectSessionFromCodeIgniter
         // このミドルウェアを適用しない
         // また、PortalDots が未インストールの状態の場合も、このミドルウェアを
         // 適用しない
-        $dotenvEditor = app(DotenvEditor::class);
+        $dotenvService = app(DotenvService::class);
         if (
             App::runningUnitTests() ||
-            (
-                $dotenvEditor->keyExists('APP_NOT_INSTALLED') &&
-                $dotenvEditor->getValue('APP_NOT_INSTALLED') === 'true'
-            )
+            $dotenvService->getValue('APP_NOT_INSTALLED', 'false') === 'true'
         ) {
             return $next($request);
         }

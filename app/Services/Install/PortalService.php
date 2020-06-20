@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Install;
 
-use Jackiedo\DotenvEditor\DotenvEditor;
-
 class PortalService extends AbstractService
 {
     protected function getEnvKeys(): array
