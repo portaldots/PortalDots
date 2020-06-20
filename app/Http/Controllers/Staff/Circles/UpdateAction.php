@@ -45,6 +45,7 @@ class UpdateAction extends Controller
         }
         $members = $this->user->getByStudentIdIn($member_ids);
 
+        $status_changed = false;
         $status = $circle->status;
         $status_set_at = $circle->status_set_at;
         $status_set_by = $circle->status_set_by;
@@ -57,6 +58,7 @@ class UpdateAction extends Controller
             in_array($request->status, [Circle::STATUS_APPROVED, Circle::STATUS_REJECTED], true) &&
             $request->status !== $circle->status
         ) {
+            $status_changed = true;
             $status = $request->status;
             $status_set_at = now();
             $status_set_by = Auth::id();
@@ -86,6 +88,19 @@ class UpdateAction extends Controller
 
         // タグの保存
         $this->circlesService->saveTags($circle, $request->tags ?? []);
+
+        if ($status_changed === true) {
+            $circle->load('users');
+            if ($circle->status === Circle::STATUS_APPROVED) {
+                foreach ($circle->users as $user) {
+                    $this->circlesService->sendApprovedEmail($user, $circle);
+                }
+            } elseif ($circle->status === Circle::STATUS_REJECTED) {
+                // foreach($circle->users as $user) {
+                //     $this->circlesService->sendRejectedEmail($user, $circle);
+                // }
+            }
+        }
 
         return redirect()
             ->route('staff.circles.edit', $circle)
