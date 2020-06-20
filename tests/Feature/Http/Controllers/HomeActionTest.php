@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Carbon\CarbonImmutable;
-use Jackiedo\DotenvEditor\DotenvEditor;
+use App\Services\Utils\DotenvService;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
@@ -21,10 +21,9 @@ class HomeActionTest extends TestCase
      */
     public function 未インストール状態の場合はインストーラが表示される()
     {
-        $this->mock(DotenvEditor::class, function ($mock) {
-            $mock->shouldReceive('keyExists')->once()->with('APP_NOT_INSTALLED')->andReturn(true);
+        $this->mock(DotenvService::class, function ($mock) {
             // boolean の true ではなく、文字列の 'true' である点に注意
-            $mock->shouldReceive('getValue')->once()->with('APP_NOT_INSTALLED')->andReturn('true');
+            $mock->shouldReceive('getValue')->once()->with('APP_NOT_INSTALLED', 'false')->andReturn('true');
         });
 
         $response = $this->get(route('home'));

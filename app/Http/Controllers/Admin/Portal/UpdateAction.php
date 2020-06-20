@@ -20,7 +20,10 @@ class UpdateAction extends Controller
 
     public function __invoke(PortalRequest $request)
     {
-        $this->portalService->updateInfo($request->all());
+        $info = $request->all();
+        $info['APP_FORCE_HTTPS'] = isset($info['APP_FORCE_HTTPS']) && $info['APP_FORCE_HTTPS'] === '1'
+            ? 'true' : 'false';
+        $this->portalService->updateInfo($info);
         return redirect()
             ->back()
             ->with('topAlert.title', '変更を保存しました');
