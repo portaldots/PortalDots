@@ -37,7 +37,7 @@ class InviteAction extends Controller
                 ->with('topAlert.title', 'あなたは既にメンバーです');
         }
 
-        return view('v2.circles.users.invite')
+        return view('circles.users.invite')
             ->with('circle', $circle);
     }
 }

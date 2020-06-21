@@ -13,7 +13,7 @@ class EndedAction extends Controller
         $schedules = Schedule::startOrder('desc')->ended()->get();
         $schedules = Schedule::groupByMonth($schedules);
 
-        return view('v2.schedules.list')
+        return view('schedules.list')
             ->with('mode', 'ended')
             ->with('schedules', $schedules);
     }

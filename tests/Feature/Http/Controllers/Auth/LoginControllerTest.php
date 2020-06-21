@@ -18,6 +18,6 @@ class LoginControllerTest extends TestCase
         $response = $this->get(route('login'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('v2.auth.login');
+        $response->assertViewIs('auth.login');
     }
 }

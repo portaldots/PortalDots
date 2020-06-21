@@ -13,7 +13,7 @@ class IndexAction extends Controller
         if ($circle->users()->get()->isEmpty()) {
             return redirect("home_staff/circles/read/{$circle->id}");
         }
-        return view('v2.staff.circles.send_emails.form')
+        return view('staff.circles.send_emails.form')
             ->with('circle', $circle);
     }
 }

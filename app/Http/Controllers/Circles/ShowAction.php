@@ -14,7 +14,7 @@ class ShowAction extends Controller
 
         $circle->load('users');
 
-        return view('v2.circles.show')
+        return view('circles.show')
             ->with('circle', $circle);
     }
 }

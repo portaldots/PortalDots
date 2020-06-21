@@ -20,7 +20,7 @@ class EditAction extends Controller
 
     public function __invoke(Request $request)
     {
-        return view('v2.install.database.form')
+        return view('install.database.form')
             ->with('labels', $this->databaseService->getFormLabels())
             ->with('database', $this->databaseService->getInfo());
     }

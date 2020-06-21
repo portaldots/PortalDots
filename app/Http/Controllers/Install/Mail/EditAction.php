@@ -20,7 +20,7 @@ class EditAction extends Controller
 
     public function __invoke(Request $request)
     {
-        return view('v2.install.mail.form')
+        return view('install.mail.form')
             ->with('labels', $this->mailService->getFormLabels())
             ->with('mail', $this->mailService->getInfo());
     }

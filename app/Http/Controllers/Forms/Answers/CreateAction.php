@@ -60,7 +60,7 @@ class CreateAction extends Controller
                 ->route('forms.answers.edit', ['form' => $form, 'answer' => $answers[0]]);
         }
 
-        return view('v2.forms.answers.form')
+        return view('forms.answers.form')
             ->with('circle', $circle)
             ->with('answers', $answers)
             ->with('form', $form)

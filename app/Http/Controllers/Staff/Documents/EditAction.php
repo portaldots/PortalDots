@@ -11,7 +11,7 @@ class EditAction extends Controller
 {
     public function __invoke(Document $document)
     {
-        return view('v2.staff.documents.form')
+        return view('staff.documents.form')
             ->with('document', $document)
             ->with('schedules', Schedule::startOrder()->get());
     }

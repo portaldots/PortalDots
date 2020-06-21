@@ -10,7 +10,7 @@ class IndexAction extends Controller
 {
     public function __invoke(User $user)
     {
-        return view('v2.staff.users.verify.index')
+        return view('staff.users.verify.index')
             ->with('user', $user);
     }
 }

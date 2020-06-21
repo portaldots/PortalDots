@@ -35,7 +35,7 @@ class ShowAction extends Controller
             $circles = $this->selectorService->getSelectableCirclesList($user);
             $not_submitted_circles = $user->circles()->notSubmitted()->get();
 
-            return view('v2.circles.selector')
+            return view('circles.selector')
                 ->with('redirect_to', $redirect_to)
                 ->with('circles', $circles)
                 ->with('not_submitted_circles', $not_submitted_circles)
