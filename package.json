@@ -32,26 +32,21 @@
     },
     "lint-staged": {
         "*.js": [
-            "eslint --fix",
-            "git add"
+            "eslint --fix"
         ],
         "*.vue": [
             "eslint --fix",
-            "stylelint --fix",
-            "git add"
+            "stylelint --fix"
         ],
         "*.scss": [
-            "stylelint --fix",
-            "git add"
+            "stylelint --fix"
         ],
         "!({**/*mail*/**/*,**/*mail*}).blade.php": [
-            "shx sed -i 's/[ \t]*$//'",
-            "git add"
+            "shx sed -i 's/[ \t]*$//'"
         ],
         "*.php": [
             "composer phpcbf",
-            "composer phpcs",
-            "git add"
+            "composer phpcs"
         ]
     },
     "husky": {

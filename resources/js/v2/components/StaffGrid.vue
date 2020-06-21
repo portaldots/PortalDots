@@ -84,7 +84,7 @@
           <i class="fas fa-angle-double-right"></i>
         </button>
         <div class="staff_grid-footer__label">
-          1ページあたり表示する件数 :
+          表示件数 :
           <AppDropdown
             :items="[10, 25, 50, 100, 250, 500]"
             name="grid-per-page"
@@ -113,6 +113,12 @@
               </AppDropdownItem>
             </template>
           </AppDropdown>
+        </div>
+        <div class="staff_grid-footer__label">
+          {{ paginator.from }}〜{{ paginator.to }}件目 (ページ{{
+            paginator.current_page
+          }}
+          / {{ paginator.last_page }})
         </div>
         <div class="staff_grid-footer__label text-primary" v-if="loading">
           <i class="fas fa-spinner fa-pulse"></i>
@@ -249,6 +255,17 @@ export default {
     &__label {
       display: inline-block;
       padding: 0 $spacing-md;
+      position: relative;
+      &::before {
+        border-left: 1px solid $color-border;
+        content: '';
+        display: block;
+        height: 1.5rem;
+        left: 0;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
     }
     &__selector-item {
       align-items: center;
