@@ -7,13 +7,6 @@ namespace App\GridMakers;
 abstract class BaseGridMaker
 {
     /**
-     * グリッドビューの表示に使用するビュー
-     *
-     * @return string
-     */
-    abstract public function view(): string;
-
-    /**
      * 表示用に利用するクエリビルダオブジェクト
      *
      * @return mixed

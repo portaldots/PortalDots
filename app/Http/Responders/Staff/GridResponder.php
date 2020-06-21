@@ -15,10 +15,6 @@ use App\GridMakers\BaseGridMaker;
 /**
  * スタッフモード内の全レコード一覧ページを表示するためのレスポンダ
  */
-
-
-// TODO: 1つのレスポンダでビューとAPI両方返す意味はないので、このレスポンダをAPI専用にしたい。BaseGridMaker の view メソッドも不要
-
 class GridResponder implements Respondable
 {
     /**
@@ -65,26 +61,22 @@ class GridResponder implements Respondable
             throw new GridMakerNotSetException('setGridMakerメソッドでGridMakerオブジェクトをセットしてからresponseメソッドを呼び出してください');
         }
 
-        if ($this->request->is_ajax) {
-            $page = !empty($this->request->page) ? (int)$this->request->page : 1;
-            $per_page = !empty($this->request->per_page) ? (int)$this->request->per_page : 20;
-            $collection = $this->gridMaker->query()->offset(($page - 1) * $per_page)
-                    ->limit($per_page)->get();
-            $paginator = new LengthAwarePaginator(
-                $collection,
-                $this->gridMaker->query()->count(),
-                $per_page,
-                $page,
-                [
-                    'path' => '/' . $this->request->path() . "?is_ajax=true&per_page={$per_page}"
-                ]
-            );
-            return response([
-                'keys' => $this->gridMaker->keys(),
-                'paginator' => $paginator,
-            ]);
-        }
-
-        return response(view($this->gridMaker->view()));
+        $page = !empty($this->request->page) ? (int)$this->request->page : 1;
+        $per_page = !empty($this->request->per_page) ? (int)$this->request->per_page : 25;
+        $collection = $this->gridMaker->query()->offset(($page - 1) * $per_page)
+                ->limit($per_page)->get();
+        $paginator = new LengthAwarePaginator(
+            $collection,
+            $this->gridMaker->query()->count(),
+            $per_page,
+            $page,
+            [
+                'path' => '/' . $this->request->path() . "?per_page={$per_page}"
+            ]
+        );
+        return response([
+            'keys' => $this->gridMaker->keys(),
+            'paginator' => $paginator,
+        ]);
     }
 }

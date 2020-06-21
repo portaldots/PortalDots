@@ -4,14 +4,16 @@
 
 @section('content')
     <staff-grid
-        api-url="{{ route('staff.users.index') }}"
+        api-url="{{ route('staff.users.api') }}"
     >
         <template v-slot:toolbar>
             <a
                 class="btn is-success is-no-shadow"
                 href="/home_staff/users/export"
-                data-turbolinks="false"
+                target="_blank"
+                rel="noopener noreferrer"
             >
+                {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
                 <i class="fas fa-file-csv"></i>
                 CSVで出力
             </a>
@@ -58,7 +60,7 @@
                 <span v-else class="text-danger">
                     未確認
                     <br>
-                    <a v-bind:href="'{{ route('staff.users.verify', ['user' => '@@USER@@']) }}'.replace('@@USER@@', row['id'])">本人確認を完了する</a>
+                    <a v-bind:href="'{{ route('staff.users.verify', ['user' => '%%USER%%']) }}'.replace('%%USER%%', row['id'])">本人確認を完了する</a>
                 </span>
             </template>
             <template v-else-if="keyName === 'is_verified_by_staff'">

@@ -158,13 +158,33 @@ export default {
     }
   },
   async mounted() {
+    this.setFromHashParams()
+    window.addEventListener('hashchange', this.setFromHashParams, false)
     await this.fetch()
   },
+  destroyed() {
+    window.removeEventListener('hashchange', this.setFromHashParams, false)
+  },
   methods: {
+    setHash() {
+      window.location.hash = `#page=${this.page}&per_page=${this.perPage}`
+    },
+    setFromHashParams() {
+      const matchesOfPage = window.location.hash.match(/page=([0-9]+)/)
+      const matchesOfPerPage = window.location.hash.match(/per_page=([0-9]+)/)
+
+      if (matchesOfPage) {
+        this.page = parseInt(matchesOfPage[1], 10)
+      }
+      if (matchesOfPerPage) {
+        this.perPage = parseInt(matchesOfPerPage[1], 10)
+      }
+    },
     async fetch() {
+      // FIXME: ハッシュパラメータの page と perPage が同時に変化すると fetch が 2 回連続で呼ばれてしまう問題
       this.loading = true
       const res = await axios.get(
-        `${this.apiUrl}?is_ajax=true&page=${this.page}&per_page=${this.perPage}`
+        `${this.apiUrl}?page=${this.page}&per_page=${this.perPage}`
       )
       this.keys = res.data.keys
       this.paginator = res.data.paginator
@@ -172,14 +192,18 @@ export default {
     }
   },
   watch: {
-    // TODO: GETパラメータで page と per_page を指定できるようにする
     async page() {
+      this.setHash()
       await this.fetch()
     },
     async perPage(newPerPage) {
-      if (Math.ceil(this.paginator.total / newPerPage) < this.page) {
+      if (
+        this.paginator &&
+        Math.ceil(this.paginator.total / newPerPage) < this.page
+      ) {
         this.page = Math.ceil(this.paginator.total / newPerPage)
       } else {
+        this.setHash()
         await this.fetch()
       }
     }

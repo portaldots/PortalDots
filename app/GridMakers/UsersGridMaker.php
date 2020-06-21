@@ -11,14 +11,6 @@ class UsersGridMaker extends BaseGridMaker
     /**
      * @inheritDoc
      */
-    public function view(): string
-    {
-        return 'staff.users.index';
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function query()
     {
         return User::select($this->keys());

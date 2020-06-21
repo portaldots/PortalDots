@@ -210,6 +210,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             ->name('users.')
             ->group(function () {
                 Route::get('/', 'Staff\Users\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Users\ApiAction')->name('api');
 
                 // 手動本人確認
                 Route::get('/{user}/verify', 'Staff\Users\Verify\IndexAction')->name('verify');
