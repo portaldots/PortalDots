@@ -3,7 +3,7 @@
 @section('title', 'スタッフによるメール認証')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('home_staff/users') }}" data-turbolinks="false">
+    <app-nav-bar-back inverse href="{{ route('staff.users.index') }}">
         ユーザー情報管理
     </app-nav-bar-back>
 @endsection
