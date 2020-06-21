@@ -3,7 +3,8 @@
 @auth
     @if (count($selectorService->getSelectableCirclesList(Auth::user(), Request::path())) >= 2 &&
         empty(trim($__env->yieldContent('no_circle_selector')) /* ← no_circle_selector という section がセットされていない場合 true */) &&
-        !Request::is('staff*'))
+        !Request::is('staff*') &&
+        !Request::is('admin*'))
         <circle-selector-dropdown
             v-bind:circles="{{ $selectorService->getJsonForCircleSelectorDropdown(Auth::user(), Request::path()) }}"
             v-bind:selected-circle-id="{{ $selectorService->getCircle()->id }}"
