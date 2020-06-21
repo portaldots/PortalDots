@@ -251,6 +251,7 @@ export default {
   &-footer {
     align-items: center;
     display: flex;
+    flex-wrap: wrap;
     padding: $spacing-sm $spacing-md;
     &__label {
       display: inline-block;
