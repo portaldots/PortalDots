@@ -43,7 +43,7 @@
           class="btn is-secondary is-no-border"
           title="最初のページ"
           :disabled="loading || page === 1"
-          @click="page = 1"
+          @click="onClickFirst"
         >
           <i class="fas fa-angle-double-left"></i>
         </button>
@@ -51,7 +51,7 @@
           class="btn is-secondary is-no-border"
           title="前のページ"
           :disabled="loading || page === 1"
-          @click="page = page - 1"
+          @click="onClickPrev"
         >
           <i class="fas fa-chevron-left"></i>
         </button>
@@ -59,7 +59,7 @@
           class="btn is-secondary is-no-border"
           title="次のページ"
           :disabled="loading || page === paginator.last_page"
-          @click="page = page + 1"
+          @click="onClickNext"
         >
           <i class="fas fa-chevron-right"></i>
         </button>
@@ -67,7 +67,7 @@
           class="btn is-secondary is-no-border"
           title="最後のページ"
           :disabled="loading || page === paginator.last_page"
-          @click="page = paginator.last_page"
+          @click="onClickLast"
         >
           <i class="fas fa-angle-double-right"></i>
         </button>
@@ -99,7 +99,7 @@
               <AppDropdownItem
                 class="staff_grid-footer__selector-item"
                 component-is="button"
-                @click="perPage = item"
+                @click="() => onChangePerPage(item)"
               >
                 {{ item }}
                 <i
@@ -158,20 +158,50 @@ export default {
     }
   },
   async mounted() {
-    this.setFromHashParams()
-    window.addEventListener('hashchange', this.setFromHashParams, false)
+    this.setFromUrlParams()
+    window.addEventListener('popstate', this.setFromUrlParams, false)
     await this.fetch()
   },
   destroyed() {
-    window.removeEventListener('hashchange', this.setFromHashParams, false)
+    window.removeEventListener('popstate', this.setFromUrlParams, false)
   },
   methods: {
-    setHash() {
-      window.location.hash = `#page=${this.page}&per_page=${this.perPage}`
+    onClickFirst() {
+      this.page = 1
+      this.setUrlParams()
     },
-    setFromHashParams() {
-      const matchesOfPage = window.location.hash.match(/page=([0-9]+)/)
-      const matchesOfPerPage = window.location.hash.match(/per_page=([0-9]+)/)
+    onClickPrev() {
+      this.page -= 1
+      this.setUrlParams()
+    },
+    onClickNext() {
+      this.page += 1
+      this.setUrlParams()
+    },
+    onClickLast() {
+      this.page = this.paginator.last_page
+      this.setUrlParams()
+    },
+    onChangePerPage(perPage) {
+      this.perPage = perPage
+      if (
+        this.paginator &&
+        Math.ceil(this.paginator.total / perPage) < this.page
+      ) {
+        this.page = Math.ceil(this.paginator.total / perPage)
+      }
+      this.setUrlParams()
+    },
+    setUrlParams() {
+      window.history.pushState(
+        '',
+        '',
+        `?page=${this.page}&per_page=${this.perPage}`
+      )
+    },
+    setFromUrlParams() {
+      const matchesOfPage = window.location.search.match(/page=([0-9]+)/)
+      const matchesOfPerPage = window.location.search.match(/per_page=([0-9]+)/)
 
       if (matchesOfPage) {
         this.page = parseInt(matchesOfPage[1], 10)
@@ -193,19 +223,10 @@ export default {
   },
   watch: {
     async page() {
-      this.setHash()
       await this.fetch()
     },
-    async perPage(newPerPage) {
-      if (
-        this.paginator &&
-        Math.ceil(this.paginator.total / newPerPage) < this.page
-      ) {
-        this.page = Math.ceil(this.paginator.total / newPerPage)
-      } else {
-        this.setHash()
-        await this.fetch()
-      }
+    async perPage() {
+      await this.fetch()
     }
   }
 }
