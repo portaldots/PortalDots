@@ -23,7 +23,7 @@ class CreateAction extends Controller
 
     public function __invoke()
     {
-        return view('v2.contacts.form')
+        return view('contacts.form')
             ->with('circle', $this->selectorService->getCircle())
             ->with('categories', ContactCategory::all());
     }

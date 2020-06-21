@@ -11,7 +11,7 @@ class EditAction extends Controller
 {
     public function __invoke(Page $page)
     {
-        return view('v2.staff.pages.form')
+        return view('staff.pages.form')
             ->with('page', $page)
             ->with('default_tags', $page->viewableTags->pluck('name')->map(function ($item) {
                 return ['text' => $item];

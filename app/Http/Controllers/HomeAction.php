@@ -34,7 +34,7 @@ class HomeAction extends Controller
     {
         $circle = $this->selectorService->getCircle();
 
-        return view('v2.home')
+        return view('home')
             ->with('circle_custom_form', CustomForm::getFormByType('circle'))
             ->with('my_circles', Auth::check()
                                     ? Auth::user()->circles()->get()

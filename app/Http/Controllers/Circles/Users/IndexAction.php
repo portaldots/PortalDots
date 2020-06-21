@@ -42,7 +42,7 @@ class IndexAction extends Controller
             $qrcode_html = '';
         }
 
-        return view('v2.circles.users.index')
+        return view('circles.users.index')
             ->with('circle', $circle)
             ->with('invitation_url', $invitation_url_for_blade)
             ->with('qrcode_html', $qrcode_html)

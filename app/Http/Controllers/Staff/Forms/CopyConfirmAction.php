@@ -10,7 +10,7 @@ class CopyConfirmAction extends Controller
 {
     public function __invoke(Form $form)
     {
-        return view('v2.staff.forms.copy.index')
+        return view('staff.forms.copy.index')
             ->with('form', $form);
     }
 }

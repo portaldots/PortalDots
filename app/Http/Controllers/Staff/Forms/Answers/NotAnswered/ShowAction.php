@@ -16,7 +16,7 @@ class ShowAction extends Controller
 
         $circles = $form->notAnswered();
 
-        return view('v2.staff.forms.answers.notanswered.index')
+        return view('staff.forms.answers.notanswered.index')
             ->with('form', $form)
             ->with('circles', $circles);
     }

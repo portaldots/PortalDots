@@ -29,7 +29,7 @@ class EditAction extends Controller
 
         $form = CustomForm::getFormByType('circle');
         $answer = $circle->getCustomFormAnswer();
-        return view('v2.circles.form')
+        return view('circles.form')
             ->with('circle', $circle)
             ->with('form', $form)
             ->with('questions', $form->questions()->get())

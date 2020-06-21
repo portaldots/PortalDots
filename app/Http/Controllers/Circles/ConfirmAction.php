@@ -34,7 +34,7 @@ class ConfirmAction extends Controller
 
         $circle->load('users');
 
-        return view('v2.circles.confirm')
+        return view('circles.confirm')
             ->with('circle', $circle);
     }
 }

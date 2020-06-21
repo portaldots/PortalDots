@@ -4,11 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>@yield('title')</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="turbolinks-cache-control" content="no-cache">
+    <title>
+        @hasSection ('title')
+            @yield('title') —
+        @endif
+        {{ empty(config('app.name')) ? 'PortalDots' : config('app.name') }}
+    </title>
 
     @prepend('css')
-    <link href="{{ mix('css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ mix('css/fontawesome.css') }}" rel="stylesheet">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @endprepend
@@ -23,71 +28,88 @@
     <script src="{{ mix('js/vendor.js') }}" defer></script>
     <script src="{{ mix('js/app.js') }}" defer></script>
     @endprepend
+    @if (config('app.debug'))
+        {{-- Laravel Debugbar か Turbolinks かは不明だが、jQuery.noConflict() --}}
+        {{-- を呼び出すコードがどこかにあるらしい。jQuery は導入していないため、 --}}
+        {{-- jQuery.noConflict() が呼び出されるとエラーになってしまうので、 --}}
+        {{-- ダミーの関数を用意する。 --}}
+        @prepend('js')
+        <script defer>
+            if (typeof jQuery === 'undefined') {
+                window.jQuery = {
+                    noConflict: function() {
+                        console.log('do nothing');
+                    }
+                };
+            }
+
+        </script>
+        @endprepend
+    @endif
     @stack('js')
 
     <meta name="format-detection" content="telephone=no">
 </head>
 
-<body ontouchstart="" class="@hasSection("editor") body-editor-v1 @else body-v1 @endif">
+<body>
 
-    <nav class="navbar fixed-top navbar-expand navbar-light app-navbar">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url('/') }}">
-                {{ config('app.name', 'Laravel') }}
-                @if(config('app.env') !== 'production')
-                    <span class="badge badge-dark badge-pill">dev</span>
-                @endif
-            </a>
+    <div class="loading" id="loading">
+        <div class="loading-noscript" id="js-noscript">JavaScript を有効にしてください</div>
+        <div class="loading-circle"></div>
+        <script>
+            'use strict'; {
+                const noscript = document.getElementById('js-noscript');
+                noscript.parentNode.removeChild(noscript);
+            }
 
-            <ul class="navbar-nav ml-auto">
-                @auth
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                            <span class="d-none d-sm-inline">
-                                {{ Auth::user()->name }}
-                            </span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            @if (!empty($student_id = Auth::user()->student_id))
-                                <h6 class="dropdown-header">
-                                    {{ mb_strtoupper($student_id) }}
-                                </h6>
-                            @endif
-                            <a class="dropdown-item" href="{{ route('user.password') }}">パスワードの変更</a>
-                            <a class="dropdown-item" href="{{ route('user.edit') }}">登録情報の変更</a>
-                            <a class="dropdown-item" href="{{ route('user.delete') }}">アカウントの削除</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                ログアウト
-                            </a>
-                        </div>
-                    </li>
-                @else
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                            <span class="d-none d-sm-inline">
-                                メニュー
-                            </span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('login') }}">ログイン</a>
-                            <a class="dropdown-item" href="{{ route('register') }}">ユーザー登録</a>
-                        </div>
-                    </li>
-                @endauth
-            </ul>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                @csrf
-            </form>
-        </div><!-- /.container-fluid -->
-    </nav>
+        </script>
+    </div>
 
-    @yield('content')
+    <div class="app" id="v2-app">
+        <global-events v-on:keyup.esc="closeDrawer"></global-events>
+        <div class="drawer-backdrop" v-bind:class="{'is-open': isDrawerOpen}" v-on:click="closeDrawer"></div>
+        <app-nav-bar @staffpage staff @endstaffpage>
+            @section('navbar')
+                <app-nav-bar-toggle v-on:click="toggleDrawer" ref="toggle"></app-nav-bar-toggle>
+                <div class="navbar__title">
+                    @yield('title', config('app.name'))
+                </div>
+            @show
+        </app-nav-bar>
+        <div class="drawer" v-bind:class="{'is-open': isDrawerOpen}" v-on:click="closeDrawer" tabindex="0" ref="drawer">
+            <div class="drawer__content">
+                @section('drawer')
+                    @include('includes.drawer')
+                @show
+            </div>
+        </div>
+        <div class="content">
+            @include('includes.top_circle_selector')
+            @if (Session::has('topAlert.title'))
+                <top-alert type="{{ session('topAlert.type', 'primary') }}"
+                    {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}>
+                    <template v-slot:title>
+                        {{ session('topAlert.title') }}
+                    </template>
+
+                    @if (Session::has('topAlert.body'))
+                        {{ session('topAlert.body') }}
+                    @endif
+                </top-alert>
+            @endif
+            @if ($errors->any())
+                <top-alert type="danger">
+                    <template v-slot:title>
+                        エラーがあります。以下をご確認ください
+                    </template>
+                </top-alert>
+            @endif
+            @yield('content')
+        </div>
+        @section('bottom_tabs')
+            @include('includes.bottom_tabs')
+        @show
+    </div>
 
 </body>
 

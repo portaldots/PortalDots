@@ -12,7 +12,7 @@ class ShowAction extends Controller
     {
         $schedule->load('documents');
 
-        return view('v2.schedules.show')
+        return view('schedules.show')
             ->with('schedule', $schedule);
     }
 }
