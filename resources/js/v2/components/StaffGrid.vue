@@ -103,10 +103,9 @@
           </AppDropdown>
         </div>
         <div class="staff_grid-footer__label">
-          {{ paginator.from }}〜{{ paginator.to }}件目 (ページ{{
-            paginator.current_page
-          }}
-          / {{ paginator.last_page }})
+          {{ paginator.from }}〜{{ paginator.to }}件目 • 全{{
+            paginator.total
+          }}件 (ページ{{ paginator.current_page }} / {{ paginator.last_page }})
         </div>
         <div class="staff_grid-footer__label text-primary" v-if="loading">
           <i class="fas fa-spinner fa-pulse"></i>
@@ -114,7 +113,7 @@
       </div>
     </template>
     <div class="staff_grid-loading" v-else>
-      読み込み中…
+      <i class="fas fa-spinner fa-pulse fa-2x text-primary"></i>
     </div>
   </div>
 </template>
@@ -165,11 +164,16 @@ export default {
     }
   },
   watch: {
+    // TODO: GETパラメータで page と per_page を指定できるようにする
     async page() {
       await this.fetch()
     },
-    async perPage() {
-      await this.fetch()
+    async perPage(newPerPage) {
+      if (Math.ceil(this.paginator.total / newPerPage) < this.page) {
+        this.page = Math.ceil(this.paginator.total / newPerPage)
+      } else {
+        await this.fetch()
+      }
     }
   }
 }

@@ -28,6 +28,20 @@ abstract class BaseGridMaker
     abstract public function keys(): array;
 
     /**
+     * フィルタ可能なキー
+     *
+     * @return array
+     */
+    abstract public function filterableKeys(): array;
+
+    /**
+     * ソート可能なキー
+     *
+     * @return array
+     */
+    abstract public function sortableKeys(): array;
+
+    /**
      * 1レコードの配列を生成して返す
      *
      * @return array

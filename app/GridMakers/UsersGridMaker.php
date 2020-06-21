@@ -49,4 +49,20 @@ class UsersGridMaker extends BaseGridMaker
             'updated_at',
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function filterableKeys(): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function sortableKeys(): array
+    {
+        return [];
+    }
 }

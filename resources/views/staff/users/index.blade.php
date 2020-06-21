@@ -3,12 +3,6 @@
 @section('title', 'ユーザー情報管理')
 
 @section('content')
-    <div class="tab_strip">
-        <a href="{{ route('staff.users.index') }}"
-            class="tab_strip-tab{{ Route::currentRouteName() === 'staff.users.index' ? ' is-active' : '' }}">
-            登録ユーザー
-        </a>
-    </div>
     <staff-grid
         api-url="{{ route('staff.users.index') }}"
     >
@@ -37,7 +31,7 @@
                     is_admin: '管理者',
                     email_verified_at: 'メール認証',
                     univemail_verified_at: '本人確認',
-                    is_verified_by_staff: '手動認証',
+                    is_verified_by_staff: '手動本人確認',
                     signed_up_at: 'ユーザー登録完了日時',
                     notes: 'スタッフ用メモ',
                     created_at: '作成日時',
@@ -51,7 +45,30 @@
             </a>
         </template>
         <template v-slot:td="{ row, keyName }">
-            @{{ row[keyName] }}
+            <template v-if="keyName === 'email_verified_at'">
+                {{-- メール認証 --}}
+                <span v-if="row[keyName]" class="text-success">認証済み</span>
+                <span v-else class="text-danger">
+                    未認証
+                </span>
+            </template>
+            <template v-else-if="keyName === 'univemail_verified_at'">
+                {{-- 本人確認 --}}
+                <span v-if="row[keyName]" class="text-success">確認済み</span>
+                <span v-else class="text-danger">
+                    未確認
+                    <br>
+                    <a v-bind:href="'{{ route('staff.users.verify', ['user' => '@@USER@@']) }}'.replace('@@USER@@', row['id'])">本人確認を完了する</a>
+                </span>
+            </template>
+            <template v-else-if="keyName === 'is_verified_by_staff'">
+                {{-- 手動本人確認 --}}
+                <template v-if="row[keyName]">はい</template>
+                <template v-else>いいえ</template>
+            </template>
+            <template v-else>
+                @{{ row[keyName] }}
+            </template>
         </template>
     </staff-grid>
 @endsection

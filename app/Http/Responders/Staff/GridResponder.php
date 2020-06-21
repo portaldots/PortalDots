@@ -15,6 +15,10 @@ use App\GridMakers\BaseGridMaker;
 /**
  * スタッフモード内の全レコード一覧ページを表示するためのレスポンダ
  */
+
+
+// TODO: 1つのレスポンダでビューとAPI両方返す意味はないので、このレスポンダをAPI専用にしたい。BaseGridMaker の view メソッドも不要
+
 class GridResponder implements Respondable
 {
     /**
