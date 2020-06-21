@@ -9,6 +9,6 @@ class HomeAction extends Controller
 {
     public function __invoke()
     {
-        return view('v2.install.index');
+        return view('install.index');
     }
 }

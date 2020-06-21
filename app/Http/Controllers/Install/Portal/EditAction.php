@@ -24,7 +24,7 @@ class EditAction extends Controller
         // 正常に表示されるので問題がない
         $url = url('/');
 
-        return view('v2.install.portal.form')
+        return view('install.portal.form')
             ->with('labels', $this->portalService->getFormLabels())
             ->with('portal', $this->portalService->getInfo())
             ->with('suggested_app_url', $url);

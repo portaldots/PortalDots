@@ -98,8 +98,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('/circles')
         ->name('circles.')
         ->group(function () {
+            Route::get('/terms', 'Circles\TermsAction')->name('terms');
             Route::get('/create', 'Circles\CreateAction')->name('create');
             Route::post('/', 'Circles\StoreAction')->name('store');
+            Route::get('/{circle}', 'Circles\ShowAction')->name('show');
             Route::get('/{circle}/edit', 'Circles\EditAction')->name('edit');
             Route::patch('/{circle}', 'Circles\UpdateAction')->name('update');
             // 企画メンバー登録関連
@@ -114,8 +116,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // 参加登録の削除
             Route::get('/{circle}/delete', 'Circles\DeleteAction')->name('delete');
             Route::delete('/{circle}', 'Circles\DestroyAction')->name('destroy');
-            // 参加登録状況
-            Route::get('/{circle}/status', 'Circles\StatusAction')->name('status');
         });
 
     // 申請
@@ -152,7 +152,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         // このページのURLを変更する場合は
         // resources/js/v2/components/MarkdownEditor.vue
         // 内に含まれるこのページへのURLも修正すること
-        Route::view('/markdown-guide', 'v2.staff.markdown_guide')
+        Route::view('/markdown-guide', 'staff.markdown_guide')
             ->name('markdown-guide');
 
         // お知らせ
@@ -218,7 +218,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{circle}/edit', 'Staff\Circles\EditAction')->name('edit');
                 Route::patch('/{circle}', 'Staff\Circles\UpdateAction')->name('update');
                 Route::get('/create', 'Staff\Circles\CreateAction')->name('create');
-                Route::post('/', 'Staff\Circles\StoreAction')->name('new');
+                Route::post('/', 'Staff\Circles\StoreAction')->name('store');
 
                 // 企画所属者宛のメール送信
                 Route::get('/{circle}/email', 'Staff\Circles\SendEmails\IndexAction')->name('email');

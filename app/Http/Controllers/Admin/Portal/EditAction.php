@@ -20,7 +20,7 @@ class EditAction extends Controller
 
     public function __invoke(Request $request)
     {
-        return view('v2.admin.portal.form')
+        return view('admin.portal.form')
             ->with('portal', $this->portalService->getInfo());
     }
 }

@@ -28,12 +28,16 @@ class InviteAction extends Controller
         }
 
         if ($circle->users->contains(Auth::user())) {
+            $redirect_to = 'circles.show';
+            if (Auth::user()->isLeaderInCircle($circle)) {
+                $redirect_to = 'circles.users.index';
+            }
             return redirect()
-                ->route('circles.users.index', ['circle' => $circle])
+                ->route($redirect_to, ['circle' => $circle])
                 ->with('topAlert.title', 'あなたは既にメンバーです');
         }
 
-        return view('v2.circles.users.invite')
+        return view('circles.users.invite')
             ->with('circle', $circle);
     }
 }

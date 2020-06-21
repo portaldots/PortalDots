@@ -29,6 +29,14 @@ class DestroyAction extends Controller
                 ->with('topAlert.title', '責任者を削除することはできません');
         }
 
+        if (!Auth::user()->isLeaderInCircle($circle) && $user->id !== Auth::id()) {
+            return redirect()
+                ->route('circle.read', ['circle' => $circle])
+                ->with('topAlert.type', 'danger')
+                ->with('topAlert.title', '他のメンバーを削除することはできません');
+        }
+
+
         $this->circlesService->removeMember($circle, $user);
 
         $message = 'メンバーを削除しました';

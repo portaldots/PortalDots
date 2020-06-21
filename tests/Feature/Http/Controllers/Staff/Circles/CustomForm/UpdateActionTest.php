@@ -4,8 +4,8 @@ namespace Tests\Feature\Http\Controllers\Staff\Circles\CustomForm;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Jackiedo\DotenvEditor\DotenvEditor;
 use Tests\TestCase;
+use App\Services\Utils\DotenvService;
 use App\Eloquents\User;
 use App\Eloquents\Form;
 use App\Eloquents\CustomForm;
@@ -37,13 +37,10 @@ class UpdateActionTest extends TestCase
      */
     public function カスタムフォームの設定を更新できる()
     {
-        $this->mock(DotenvEditor::class, function ($mock) {
-            $mock->shouldReceive('keyExists')->once()->with('APP_NOT_INSTALLED')->andReturn(true);
-            $mock->shouldReceive('getValue')->once()->with('APP_NOT_INSTALLED')->andReturn('false');
-            $mock->shouldReceive('setKey')->once()->withArgs(function ($key, $value) {
-                return $key === 'PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE' && $value === 6;
-            })->andReturn(true);
-            $mock->shouldReceive('save')->once();
+        $this->mock(DotenvService::class, function ($mock) {
+            // boolean の true ではなく、文字列の 'true' である点に注意
+            $mock->shouldReceive('getValue')->once()->with('APP_NOT_INSTALLED', 'false')->andReturn('false');
+            $mock->shouldReceive('saveKeys')->once()->with(['PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE' => 6]);
         });
 
         $response = $this->actingAs($this->staff)
@@ -54,6 +51,7 @@ class UpdateActionTest extends TestCase
                 'close_at' => '2040-12-31T11:15',
                 'users_number_to_submit_circle' => '6',
                 'is_public' => '1',
+                'description' => '参加登録前に読んでほしいもの',
             ]);
 
         $response->assertRedirect(route('staff.circles.custom_form.index'));
@@ -63,6 +61,7 @@ class UpdateActionTest extends TestCase
             'open_at' => '2000-12-31T12:12',
             'close_at' => '2040-12-31T11:15',
             'is_public' => 1,
+            'description' => '参加登録前に読んでほしいもの',
         ]);
     }
 

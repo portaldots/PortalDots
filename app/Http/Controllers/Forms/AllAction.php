@@ -40,7 +40,7 @@ class AllAction extends Controller
             return redirect($forms->url($forms->lastPage()));
         }
 
-        return view('v2.forms.list')
+        return view('forms.list')
             ->with('forms', $forms)
             ->with('circle', $this->selectorService->getCircle());
     }

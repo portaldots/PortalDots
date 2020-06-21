@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Circles;
 
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Eloquents\Circle;
@@ -18,7 +19,11 @@ class ConfirmAction extends Controller
 
     public function __invoke(Circle $circle)
     {
-        $this->authorize('circle.belongsTo', $circle);
+        $this->authorize('circle.update', $circle);
+
+        if (!Auth::user()->isLeaderInCircle($circle)) {
+            abort(403);
+        }
 
         if (!$circle->canSubmit()) {
             return redirect()
@@ -29,7 +34,7 @@ class ConfirmAction extends Controller
 
         $circle->load('users');
 
-        return view('v2.circles.confirm')
+        return view('circles.confirm')
             ->with('circle', $circle);
     }
 }

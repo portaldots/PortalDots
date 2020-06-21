@@ -43,7 +43,7 @@ class UpdateActionTest extends BaseTestCase
     /**
      * @test
      */
-    public function メンバーは企画の情報を更新できる()
+    public function 責任者は企画の情報を更新できる()
     {
         $this->assertDatabaseHas('circles', [
             'name' => $this->circle->name,
@@ -70,6 +70,35 @@ class UpdateActionTest extends BaseTestCase
 
         $response->assertStatus(302);
         $response->assertRedirect(route('circles.users.index', ['circle' => $this->circle]));
+    }
+
+    /**
+     * @test
+     */
+    public function 副責任者は企画の情報を更新できない()
+    {
+        $member = factory(User::class)->create();
+        $member->circles()->attach($this->circle->id, ['is_leader' => false]);
+
+        $data = [
+            'name' => '変更されない名前の企画',
+            'name_yomi' => 'へんこうされないなまえのきかく',
+            'group_name' => '変更されない団体の名前',
+            'group_name_yomi' => 'へんこうされないだんたいのなまえ',
+        ];
+
+        $response = $this
+                    ->actingAs($member)
+                    ->patch(
+                        route('circles.update', [
+                            'circle' => $this->circle,
+                        ]),
+                        $data
+                    );
+
+        $this->assertDatabaseMissing('circles', $data);
+
+        $response->assertStatus(403);
     }
 
     /**

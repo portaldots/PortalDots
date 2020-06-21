@@ -21,7 +21,7 @@ class DeleteAction extends Controller
             abort(403);
         }
 
-        return view('v2.circles.delete')
+        return view('circles.delete')
             ->with('circle', $circle);
     }
 }

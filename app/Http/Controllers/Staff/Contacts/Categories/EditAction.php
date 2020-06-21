@@ -10,7 +10,7 @@ class EditAction extends Controller
 {
     public function __invoke(ContactCategory $category)
     {
-        return view('v2.staff.contacts.categories.form')
+        return view('staff.contacts.categories.form')
             ->with('category', $category);
     }
 }

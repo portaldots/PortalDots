@@ -10,7 +10,7 @@ class IndexAction extends Controller
 {
     public function __invoke(Form $form)
     {
-        return view('v2.staff.forms.answers.uploads.index')
+        return view('staff.forms.answers.uploads.index')
             ->with('form', $form);
     }
 }

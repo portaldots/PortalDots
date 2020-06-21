@@ -10,7 +10,7 @@ class IndexAction extends Controller
 {
     public function __invoke()
     {
-        return view('v2.staff.contacts.categories.index')
+        return view('staff.contacts.categories.index')
             ->with('categories', ContactCategory::all());
     }
 }

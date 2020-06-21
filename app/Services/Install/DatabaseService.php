@@ -6,7 +6,6 @@ namespace App\Services\Install;
 
 use mysqli;
 use Exception;
-use Jackiedo\DotenvEditor\DotenvEditor;
 
 class DatabaseService extends AbstractService
 {

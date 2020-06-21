@@ -13,7 +13,7 @@ class IndexAction extends Controller
         $schedules = Schedule::startOrder('asc')->notStarted()->get();
         $schedules = Schedule::groupByMonth($schedules);
 
-        return view('v2.schedules.list')
+        return view('schedules.list')
             ->with('mode', 'notStarted')
             ->with('schedules', $schedules);
     }

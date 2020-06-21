@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Services\Install;
 
-use Jackiedo\DotenvEditor\DotenvEditor;
+use App\Services\Utils\DotenvService;
 use Artisan;
 
 class RunInstallService
 {
     /**
-     * @var DotenvEditor
+     * @var DotenvService
      */
-    private $editor;
+    private $dotenvService;
 
-    public function __construct(DotenvEditor $editor)
+    public function __construct(DotenvService $dotenvService)
     {
-        $this->editor = $editor;
+        $this->dotenvService = $dotenvService;
     }
 
     /**
@@ -28,8 +28,7 @@ class RunInstallService
     {
         Artisan::call('migrate', ['--force' => true]);
 
-        $this->editor->setKey('APP_NOT_INSTALLED', 'false');
-        $this->editor->save();
+        $this->dotenvService->saveKeys(['APP_NOT_INSTALLED' => 'false']);
     }
 
     /**
@@ -39,7 +38,6 @@ class RunInstallService
      */
     public function rollback()
     {
-        $this->editor->setKey('APP_NOT_INSTALLED', 'true');
-        $this->editor->save();
+        $this->dotenvService->saveKeys(['APP_NOT_INSTALLED' => 'true']);
     }
 }

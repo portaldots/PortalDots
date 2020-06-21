@@ -27,7 +27,7 @@ class CreateAction extends Controller
         $circle = null;
         if (empty($request->circle)) {
             $circles = Circle::submitted()->get();
-            return view('v2.staff.circles.selector')
+            return view('staff.circles.selector')
                 ->with('url', route('staff.forms.answers.create', ['form' => $form]))
                 ->with('circles', $circles);
         } else {
@@ -53,7 +53,7 @@ class CreateAction extends Controller
                 ->route('staff.forms.answers.edit', ['form' => $form, 'answer' => $answers[0]]);
         }
 
-        return view('v2.staff.forms.answers.form')
+        return view('staff.forms.answers.form')
             ->with('circle', $circle)
             ->with('answers', $answers)
             ->with('form', $form)
