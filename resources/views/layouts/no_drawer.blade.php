@@ -83,7 +83,9 @@
                 </top-alert>
             @endif
             @yield('content')
-            <app-credit />
+            <app-credit>
+                {{ config('app.name') }}
+            </app-credit>
         </div>
     </div>
 

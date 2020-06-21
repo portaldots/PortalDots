@@ -2,6 +2,7 @@
   <div class="footer">
     <hr />
     <div class="footer__credit">
+      <template v-if="$slots.default"> <slot /> • </template>
       Powered by
       <a
         href="https://github.com/portal-dots/PortalDots"
