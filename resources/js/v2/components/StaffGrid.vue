@@ -194,7 +194,7 @@ export default {
   box-shadow: 0 1px 2px $color-border;
   margin: $spacing;
   &-toolbar {
-    padding: $spacing-sm $spacing-md;
+    padding: $spacing-md;
   }
   &-loading {
     align-items: center;
