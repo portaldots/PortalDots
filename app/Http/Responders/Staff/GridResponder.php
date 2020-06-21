@@ -62,17 +62,17 @@ class GridResponder implements Respondable
         }
 
         if ($this->request->is_ajax) {
-            $current_page = !empty($this->request->current_page) ? (int)$this->request->current_page : 1;
+            $page = !empty($this->request->page) ? (int)$this->request->page : 1;
             $per_page = !empty($this->request->per_page) ? (int)$this->request->per_page : 20;
-            $collection = $this->gridMaker->query()->offset(($current_page - 1) * $per_page)
+            $collection = $this->gridMaker->query()->offset(($page - 1) * $per_page)
                     ->limit($per_page)->get();
             $paginator = new LengthAwarePaginator(
                 $collection,
                 $this->gridMaker->query()->count(),
                 $per_page,
-                $current_page,
+                $page,
                 [
-                    'path' => $this->request->path()
+                    'path' => '/' . $this->request->path() . "?is_ajax=true&per_page={$per_page}"
                 ]
             );
             return response([

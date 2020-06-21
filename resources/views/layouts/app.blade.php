@@ -42,7 +42,6 @@
                     }
                 };
             }
-
         </script>
         @endprepend
     @endif
@@ -106,9 +105,11 @@
             @endif
             @yield('content')
         </div>
-        @section('bottom_tabs')
-            @include('includes.bottom_tabs')
-        @show
+        @if (!Request::is('staff*'))
+            @section('bottom_tabs')
+                @include('includes.bottom_tabs')
+            @show
+        @endif
     </div>
 
 </body>

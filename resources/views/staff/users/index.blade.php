@@ -37,12 +37,12 @@
             }}
         </template>
         <template v-slot:activities="{ row }">
-            <a v-bind:href="`/home_staff/users/edit/${row.id}`" title="編集" class="btn is-secondary" data-turbolinks="false">
+            <a v-bind:href="`/home_staff/users/edit/${row.id}`" title="編集" class="btn is-primary is-no-shadow" data-turbolinks="false">
                 <i class="fas fa-pencil-alt fa-fw"></i>
             </a>
         </template>
         <template v-slot:td="{ row, keyName }">
             @{{ row[keyName] }}
-        </tempate>
+        </template>
     </staff-grid>
 @endsection
