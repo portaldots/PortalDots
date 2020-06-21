@@ -2,19 +2,7 @@
   <div class="staff_grid">
     <template v-if="paginator">
       <div class="staff_grid-toolbar">
-        <a class="btn is-primary" v-if="createUrl" :href="createUrl">
-          <i class="fas fa-plus fa-fw"></i>
-          新規作成
-        </a>
-        <a
-          class="btn is-success is-no-shadow"
-          v-if="csvExportUrl"
-          :href="csvExportUrl"
-          data-turbolinks="false"
-        >
-          <i class="fas fa-file-csv"></i>
-          CSVで出力
-        </a>
+        <slot name="toolbar" />
       </div>
       <div class="staff_grid__table_wrap">
         <table class="staff_grid-table">
@@ -151,14 +139,6 @@ export default {
     apiUrl: {
       type: String,
       required: true
-    },
-    createUrl: {
-      type: String,
-      default: ''
-    },
-    csvExportUrl: {
-      type: String,
-      default: ''
     }
   },
   data() {

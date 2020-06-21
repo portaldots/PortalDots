@@ -11,8 +11,17 @@
     </div>
     <staff-grid
         api-url="{{ route('staff.users.index') }}"
-        csv-export-url="/home_staff/users/export"
     >
+        <template v-slot:toolbar>
+            <a
+                class="btn is-success is-no-shadow"
+                href="/home_staff/users/export"
+                data-turbolinks="false"
+            >
+                <i class="fas fa-file-csv"></i>
+                CSVで出力
+            </a>
+        </template>
         <template v-slot:th="{ keyName }">
             @{{
                 {
