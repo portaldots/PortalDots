@@ -71,6 +71,14 @@
         >
           <i class="fas fa-angle-double-right"></i>
         </button>
+        <button
+          class="btn is-secondary is-no-border"
+          title="再読み込み"
+          :disabled="loading"
+          @click="fetch"
+        >
+          <i class="fas fa-sync"></i>
+        </button>
         <div class="staff_grid-footer__label">
           表示件数 :
           <AppDropdown
