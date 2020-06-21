@@ -58,9 +58,22 @@
                 {{-- 本人確認 --}}
                 <span v-if="row[keyName]" class="text-success">確認済み</span>
                 <span v-else class="text-danger">
-                    未確認
-                    <br>
-                    <a v-bind:href="'{{ route('staff.users.verify', ['user' => '%%USER%%']) }}'.replace('%%USER%%', row['id'])">本人確認を完了する</a>
+                    <form-with-confirm
+                        v-bind:action="`{{ route('staff.users.verified', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])" method="post"
+                        confirm-message="本人確認は本来、「{{ config('app.name') }}」からユーザー自身が持つ学校発行メールアドレスに届く本人確認メールによって行われます。
+しかし、ユーザーが学校発行メールアドレスを利用できない場合、代替手段として「本人確認済としてマーク」できます。
+ユーザー本人に学生証を提示してもらう等して、あなたが手動で本人確認を行ってください。
+
+本人確認はできましたか？
+
+※ ユーザーが「{{ config('app.name') }}」に登録している学籍番号を変更した場合、本人確認未完了状態に戻ります"
+                    >
+                        @method('patch')
+                        @csrf
+                        未確認
+                        -
+                        <button type="submit" class="btn is-primary is-sm is-no-shadow">本人確認済としてマーク</button>
+                    </form-with-confirm>
                 </span>
             </template>
             <template v-else-if="keyName === 'is_verified_by_staff'">

@@ -601,7 +601,7 @@ class Home_staff extends MY_Controller
         if ($row->univemail_verified_at) {
             return '<span class="text-success">確認済み</span>';
         }
-        return '<span class="text-danger">未確認</span> - <a href="/staff/users/'. $row->id. '/verify">本人確認を完了する</a>';
+        return '<span class="text-danger">未確認</span>';
     }
 
     /**
