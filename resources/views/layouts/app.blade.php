@@ -105,6 +105,7 @@
                 </top-alert>
             @endif
             @yield('content')
+            <app-credit />
         </div>
         @section('bottom_tabs')
             @include('includes.bottom_tabs')

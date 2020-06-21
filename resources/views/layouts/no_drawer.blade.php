@@ -83,7 +83,7 @@
                 </top-alert>
             @endif
             @yield('content')
-            @include('v2.includes.footer')
+            <app-credit />
         </div>
     </div>
 
