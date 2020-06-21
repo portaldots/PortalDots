@@ -206,6 +206,16 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::post('/copy', 'Staff\Forms\CopyAction');
             });
 
+        Route::prefix('/users')
+            ->name('users.')
+            ->group(function () {
+                Route::get('/', 'Staff\Users\IndexAction')->name('index');
+
+                // 手動本人確認
+                Route::get('/{user}/verify', 'Staff\Users\Verify\IndexAction')->name('verify');
+                Route::patch('/{user}', 'Staff\Users\Verify\UpdateAction')->name('verify.update');
+            });
+
         Route::prefix('/circles')
             ->name('circles.')
             ->group(function () {
@@ -232,10 +242,6 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::get('/send_emails', 'Staff\SendEmails\ListAction')->name('send_emails');
         Route::post('/send_emails', 'Staff\SendEmails\StoreAction');
         Route::delete('/send_emails', 'Staff\SendEmails\DestroyAction');
-
-        // スタッフが手動でメール認証を完了する
-        Route::get('/users/{user}/verify', 'Staff\Users\Verify\IndexAction')->name('users.verify');
-        Route::patch('/users/{user}', 'Staff\Users\Verify\UpdateAction')->name('users.verify.update');
 
         Route::prefix('/contacts')
             ->name('contacts.')
