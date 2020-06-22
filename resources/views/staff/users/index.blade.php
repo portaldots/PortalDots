@@ -33,7 +33,6 @@
                     is_admin: '管理者',
                     email_verified_at: 'メール認証',
                     univemail_verified_at: '本人確認',
-                    is_verified_by_staff: '手動本人確認',
                     signed_up_at: 'ユーザー登録完了日時',
                     notes: 'スタッフ用メモ',
                     created_at: '作成日時',
@@ -76,10 +75,11 @@
                     </form-with-confirm>
                 </span>
             </template>
-            <template v-else-if="keyName === 'is_verified_by_staff'">
-                {{-- 手動本人確認 --}}
-                <template v-if="row[keyName]">はい</template>
-                <template v-else>いいえ</template>
+            <template v-else-if="row[keyName] === true">
+                <strong>はい</strong>
+            </template>
+            <template v-else-if="row[keyName] === false">
+                -
             </template>
             <template v-else>
                 @{{ row[keyName] }}

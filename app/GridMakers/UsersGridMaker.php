@@ -34,7 +34,6 @@ class UsersGridMaker extends BaseGridMaker
             'is_admin',
             'email_verified_at',
             'univemail_verified_at',
-            'is_verified_by_staff',
             'signed_up_at',
             'notes',
             'created_at',
