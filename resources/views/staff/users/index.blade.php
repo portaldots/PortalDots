@@ -2,6 +2,8 @@
 
 @section('title', 'ユーザー情報管理')
 
+@section('top_alert_props', 'container-fluid')
+
 @section('content')
     <staff-grid
         api-url="{{ route('staff.users.api') }}"
@@ -27,7 +29,7 @@
                     name_family_yomi: '姓(よみ)',
                     name_given: '名',
                     name_given_yomi: '名(よみ)',
-                    email: 'メールアドレス',
+                    email: '連絡先メールアドレス',
                     tel: '電話番号',
                     is_staff: 'スタッフ',
                     is_admin: '管理者',
