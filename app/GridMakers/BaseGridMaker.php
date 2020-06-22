@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\GridMakers;
 
+use Illuminate\Database\Eloquent\Builder;
+
 abstract class BaseGridMaker
 {
     /**
      * 表示用に利用するクエリビルダオブジェクト
      *
-     * @return mixed
+     * @return Builder
      */
-    abstract public function query();
+    abstract public function query(): Builder;
 
     /**
      * 表示するキー

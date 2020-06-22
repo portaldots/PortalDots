@@ -14,7 +14,24 @@
                 v-for="keyName in keys"
                 :key="keyName"
               >
-                <slot name="th" :keyName="keyName" />
+                <button
+                  class="staff_grid-table__th__button"
+                  :disabled="!sortableKeys.includes(keyName)"
+                  @click="() => onClickTh(keyName)"
+                >
+                  <slot name="th" :keyName="keyName" />
+                  <template v-if="orderBy === keyName">
+                    <i
+                      v-if="direction === 'asc'"
+                      class="fas fa-fw fa-sort-up text-primary"
+                    ></i>
+                    <i v-else class="fas fa-fw fa-sort-down text-primary"></i>
+                  </template>
+                  <i
+                    v-else-if="sortableKeys.includes(keyName)"
+                    class="fas fa-fw fa-sort text-muted"
+                  ></i>
+                </button>
               </th>
             </tr>
           </thead>
@@ -152,6 +169,9 @@ export default {
     return {
       loading: true,
       keys: [],
+      sortableKeys: [],
+      orderBy: '',
+      direction: '',
       paginator: null,
       page: 1,
       perPage: 25
@@ -159,30 +179,66 @@ export default {
   },
   async mounted() {
     this.setFromUrlParams()
-    window.addEventListener('popstate', this.setFromUrlParams, false)
+    window.addEventListener('popstate', this.onPopState, false)
+    this.setUrlParams()
     await this.fetch()
   },
   destroyed() {
-    window.removeEventListener('popstate', this.setFromUrlParams, false)
+    window.removeEventListener('popstate', this.onPopState, false)
   },
   methods: {
-    onClickFirst() {
+    async onPopState() {
+      this.setFromUrlParams()
+      await this.fetch()
+    },
+    async fetch() {
+      // FIXME: ハッシュパラメータの page と perPage が同時に変化すると fetch が 2 回連続で呼ばれてしまう問題
+      this.loading = true
+      const res = await axios.get(
+        `${this.apiUrl}?page=${this.page}&per_page=${this.perPage}&order_by=${this.orderBy}&direction=${this.direction}`
+      )
+      this.keys = res.data.keys
+      this.sortableKeys = res.data.sortable_keys
+      this.orderBy = res.data.order_by
+      this.direction = res.data.direction
+      this.paginator = res.data.paginator
+      this.loading = false
+    },
+    async onClickFirst() {
       this.page = 1
       this.setUrlParams()
+      await this.fetch()
     },
-    onClickPrev() {
+    async onClickPrev() {
       this.page -= 1
       this.setUrlParams()
+      await this.fetch()
     },
-    onClickNext() {
+    async onClickNext() {
       this.page += 1
       this.setUrlParams()
+      await this.fetch()
     },
-    onClickLast() {
+    async onClickLast() {
       this.page = this.paginator.last_page
       this.setUrlParams()
+      await this.fetch()
     },
-    onChangePerPage(perPage) {
+    async onClickTh(keyName) {
+      if (this.orderBy === keyName) {
+        // 現在がascだったらdescに、descだったらascに変える
+        this.direction = {
+          asc: 'desc',
+          desc: 'asc'
+        }[this.direction]
+      } else {
+        this.orderBy = keyName
+        this.direction = 'asc'
+      }
+      this.setUrlParams()
+      await this.fetch()
+    },
+    async onChangePerPage(perPage) {
       this.perPage = perPage
       if (
         this.paginator &&
@@ -191,42 +247,34 @@ export default {
         this.page = Math.ceil(this.paginator.total / perPage)
       }
       this.setUrlParams()
+      await this.fetch()
     },
     setUrlParams() {
       window.history.pushState(
         '',
         '',
-        `?page=${this.page}&per_page=${this.perPage}`
+        `?page=${this.page}&per_page=${this.perPage}&order_by=${this.orderBy}&direction=${this.direction}`
       )
     },
     setFromUrlParams() {
-      const matchesOfPage = window.location.search.match(/page=([0-9]+)/)
-      const matchesOfPerPage = window.location.search.match(/per_page=([0-9]+)/)
+      const queries = window.location.search
+        .replace('?', '')
+        .split('&')
+        .map(e => e.split('='))
+        .reduce((obj, e) => ({ ...obj, [e[0]]: e[1] }), {})
 
-      if (matchesOfPage) {
-        this.page = parseInt(matchesOfPage[1], 10)
+      if (queries.page) {
+        this.page = parseInt(queries.page, 10)
       }
-      if (matchesOfPerPage) {
-        this.perPage = parseInt(matchesOfPerPage[1], 10)
+      if (queries.per_page) {
+        this.perPage = parseInt(queries.per_page, 10)
       }
-    },
-    async fetch() {
-      // FIXME: ハッシュパラメータの page と perPage が同時に変化すると fetch が 2 回連続で呼ばれてしまう問題
-      this.loading = true
-      const res = await axios.get(
-        `${this.apiUrl}?page=${this.page}&per_page=${this.perPage}`
-      )
-      this.keys = res.data.keys
-      this.paginator = res.data.paginator
-      this.loading = false
-    }
-  },
-  watch: {
-    async page() {
-      await this.fetch()
-    },
-    async perPage() {
-      await this.fetch()
+      if (queries.order_by) {
+        this.orderBy = queries.order_by
+      }
+      if (queries.direction) {
+        this.direction = queries.direction
+      }
     }
   }
 }
@@ -265,10 +313,24 @@ export default {
       border-bottom: 1px solid $color-border;
     }
     &__th {
-      font-size: 0.9rem;
-      padding: $spacing-sm $spacing-md;
-      text-align: left;
-      white-space: nowrap;
+      padding: 0;
+      &__button {
+        appearance: none;
+        background: transparent;
+        border: none;
+        color: $color-text;
+        cursor: pointer;
+        display: block;
+        font-size: 0.9rem;
+        font-weight: bold;
+        padding: $spacing-sm $spacing-md;
+        text-align: left;
+        white-space: nowrap;
+        width: 100%;
+        &:disabled {
+          cursor: auto;
+        }
+      }
     }
     &__tr {
       border-bottom: 1px solid $color-border;
