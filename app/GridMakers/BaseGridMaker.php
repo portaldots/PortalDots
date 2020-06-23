@@ -49,7 +49,7 @@ abstract class BaseGridMaker
     {
         $item = [];
         foreach ($this->keys as $key) {
-            $item[] = $record[$key];
+            $item[] = $record->$key;
         }
         return $item;
     }
