@@ -198,7 +198,6 @@ export default {
       await this.fetch()
     },
     async fetch() {
-      // FIXME: ハッシュパラメータの page と perPage が同時に変化すると fetch が 2 回連続で呼ばれてしまう問題
       this.loading = true
       const res = await axios.get(
         `${this.apiUrl}?page=${this.page}&per_page=${this.perPage}&order_by=${this.orderBy}&direction=${this.direction}`
