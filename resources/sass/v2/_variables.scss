@@ -51,6 +51,7 @@ $bottom-tabs-container-width: 600px;
 $listview-border: 1px solid $color-border;
 $container-padding-x: $spacing;
 $container-padding-y: 0;
+$side-window-width: 400px;
 $focus-outline: 3px solid rgba($color-primary, 0.25);
 
 // Container Width
@@ -72,4 +73,5 @@ $z-index-dropdown-backdrop: 9995;
 $z-index-drawer: 9990;
 $z-index-drawer-backdrop: 9989;
 $z-index-navbar: 9980;
+$z-index-side-window: 9970;
 $z-index-bottom_tabs: 9980;

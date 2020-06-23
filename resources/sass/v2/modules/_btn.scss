@@ -55,6 +55,9 @@ body:not(.body-editor-v1):not(.body-v1) {
     &.is-secondary {
       @include btn($color-text, #fff, $color-bg-grey, $color-border);
     }
+    &.is-transparent {
+      @include btn($color-text, transparent, #fff, $color-border);
+    }
     &.is-danger {
       @include btn(#fff, $color-danger, lighten($color-danger, 5%), $color-danger, $color-danger);
     }

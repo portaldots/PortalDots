@@ -1,41 +1,59 @@
 <template>
-  <div class="staff_grid">
-    <GridTable
-      :keys="keys"
-      :sortableKeys="sortableKeys"
-      :orderBy="orderBy"
-      :direction="direction"
-      :paginator="paginator"
-      :page="page"
-      :perPage="perPage"
-      :loading="loading"
-      @clickFirst="onClickFirst"
-      @clickPrev="onClickPrev"
-      @clickNext="onClickNext"
-      @clickLast="onClickLast"
-      @clickReload="onClickReload"
-      @clickTh="onClickTh"
-      @changePerPage="onChangePerPage"
-    >
-      <template v-slot:toolbar>
-        <slot name="toolbar" />
-      </template>
-      <template v-slot:th="{ keyName }">
-        <slot name="th" :keyName="keyName" />
-      </template>
-      <template v-slot:activities="{ row }">
-        <slot name="activities" :row="row" />
-      </template>
-      <template v-slot:td="{ row, keyName }">
-        <slot name="td" :row="row" :keyName="keyName" />
-      </template>
-    </GridTable>
-  </div>
+  <SideWindowContainer v-slot="{ isSideWindowOpen, toggleSideWindow }">
+    <div class="staff_grid">
+      <GridTable
+        :keys="keys"
+        :sortableKeys="sortableKeys"
+        :orderBy="orderBy"
+        :direction="direction"
+        :paginator="paginator"
+        :page="page"
+        :perPage="perPage"
+        :loading="loading"
+        @clickFirst="onClickFirst"
+        @clickPrev="onClickPrev"
+        @clickNext="onClickNext"
+        @clickLast="onClickLast"
+        @clickReload="onClickReload"
+        @clickFilter="() => onClickFilter(toggleSideWindow)"
+        @clickTh="onClickTh"
+        @changePerPage="onChangePerPage"
+      >
+        <template v-slot:toolbar>
+          <slot name="toolbar" />
+        </template>
+        <template v-slot:th="{ keyName }">
+          {{ keyTranslations[keyName] }}
+        </template>
+        <template v-slot:activities="{ row }">
+          <slot name="activities" :row="row" />
+        </template>
+        <template v-slot:td="{ row, keyName }">
+          <slot name="td" :row="row" :keyName="keyName" />
+        </template>
+      </GridTable>
+    </div>
+    <SideWindow :isOpen="isSideWindowOpen" @clickClose="toggleSideWindow">
+      <template #title>絞り込み</template>
+      <StaffGridFilter
+        :filterableKeys="filterableKeys"
+        :keyTranslations="keyTranslations"
+        :defaultQueries="[
+          { id: 1, keyName: 'student_id', operator: 'like', value: '7' }
+        ]"
+        defaultMode="and"
+        @clickApply="(queries, mode) => console.log(queries, mode)"
+      />
+    </SideWindow>
+  </SideWindowContainer>
 </template>
 
 <script>
 import Axios from 'axios'
 import GridTable from './GridTable.vue'
+import SideWindowContainer from './SideWindowContainer.vue'
+import SideWindow from './SideWindow.vue'
+import StaffGridFilter from './StaffGridFilter.vue'
 
 const axios = Axios.create({
   headers: {
@@ -45,11 +63,18 @@ const axios = Axios.create({
 
 export default {
   components: {
-    GridTable
+    GridTable,
+    SideWindowContainer,
+    SideWindow,
+    StaffGridFilter
   },
   props: {
     apiUrl: {
       type: String,
+      required: true
+    },
+    keyTranslations: {
+      type: Object,
       required: true
     }
   },
@@ -57,6 +82,7 @@ export default {
     return {
       keys: [],
       sortableKeys: [],
+      filterableKeys: [],
       orderBy: '',
       direction: '',
       paginator: null,
@@ -92,6 +118,7 @@ export default {
       )
       this.keys = res.data.keys
       this.sortableKeys = res.data.sortable_keys
+      this.filterableKeys = res.data.filterable_keys
       this.orderBy = res.data.order_by
       this.direction = res.data.direction
       this.paginator = res.data.paginator
@@ -119,6 +146,9 @@ export default {
     },
     async onClickReload() {
       await this.fetch()
+    },
+    onClickFilter(toggleSideWindow) {
+      toggleSideWindow()
     },
     async onClickTh(keyName) {
       if (this.orderBy === keyName) {
@@ -178,6 +208,6 @@ export default {
 
 <style lang="scss" scoped>
 .staff_grid {
-  padding: $spacing;
+  background: $color-bg-white;
 }
 </style>
