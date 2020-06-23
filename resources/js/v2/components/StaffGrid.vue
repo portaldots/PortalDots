@@ -196,7 +196,6 @@ export default {
       }
       this.setFromUrlParams()
       await this.fetch()
-      console.log('Pop!')
     },
     async fetch() {
       // FIXME: ハッシュパラメータの page と perPage が同時に変化すると fetch が 2 回連続で呼ばれてしまう問題
