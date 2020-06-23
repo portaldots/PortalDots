@@ -174,22 +174,29 @@ export default {
       direction: '',
       paginator: null,
       page: 1,
-      perPage: 25
+      perPage: 25,
+      needReload: false
     }
   },
   async mounted() {
     this.setFromUrlParams()
     window.addEventListener('popstate', this.onPopState, false)
-    this.setUrlParams()
     await this.fetch()
   },
   destroyed() {
-    window.removeEventListener('popstate', this.onPopState, false)
+    this.needReload = true
   },
   methods: {
     async onPopState() {
+      if (this.needReload) {
+        // 別のページへ移動してからブラウザバックしてこのページに戻った場合、
+        // 正常に画面が表示されないので、ここで再読込する
+        window.location.reload()
+        return
+      }
       this.setFromUrlParams()
       await this.fetch()
+      console.log('Pop!')
     },
     async fetch() {
       // FIXME: ハッシュパラメータの page と perPage が同時に変化すると fetch が 2 回連続で呼ばれてしまう問題
