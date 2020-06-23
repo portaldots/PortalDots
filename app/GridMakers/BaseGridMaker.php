@@ -25,7 +25,11 @@ abstract class BaseGridMaker
     /**
      * フィルタ可能なキー
      *
-     * @return array
+     * ['keyName' => 'type', ...] という形式の連想配列を返してください。
+     *
+     * type : string, int, datetime, bool のいずれか
+     *
+     * @return array ['keyName' => 'type', ...] という形式の連想配列
      */
     abstract public function filterableKeys(): array;
 

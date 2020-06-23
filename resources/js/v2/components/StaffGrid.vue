@@ -323,7 +323,7 @@ export default {
         display: block;
         font-size: 0.9rem;
         font-weight: bold;
-        padding: $spacing-sm $spacing-md;
+        padding: $spacing $spacing-md;
         text-align: left;
         white-space: nowrap;
         width: 100%;
@@ -333,12 +333,14 @@ export default {
       }
     }
     &__tr {
-      border-bottom: 1px solid $color-border;
-      &:last-child {
-        border: 0;
-      }
-      &.is-in-tbody:hover {
-        background: $color-bg-light;
+      border: 0;
+      &.is-in-tbody {
+        &:nth-child(2n) {
+          background: rgba($color-bg-light, 0.4);
+        }
+        &:hover {
+          background: $color-bg-light;
+        }
       }
     }
     &__td {

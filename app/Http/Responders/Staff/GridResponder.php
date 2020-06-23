@@ -111,6 +111,7 @@ class GridResponder implements Respondable
             'keys' => $this->gridMaker->keys(),
             'paginator' => $paginator,
             'sortable_keys' => $this->gridMaker->sortableKeys(),
+            'filterable_keys' => $this->gridMaker->filterableKeys(),
             'order_by' => $order_by,
             'direction' => $direction,
         ]);

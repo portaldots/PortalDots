@@ -47,7 +47,17 @@ class UsersGridMaker extends BaseGridMaker
      */
     public function filterableKeys(): array
     {
-        return [];
+        return [
+            'student_id' => 'string',
+            'name_family' => 'string',
+            'name_family_yomi' => 'string',
+            'name_given' => 'string',
+            'name_given_yomi' => 'string',
+            'email' => 'string',
+            'tel' => 'string',
+            'is_staff' => 'bool',
+            'is_admin' => 'bool',
+        ];
     }
 
     /**
