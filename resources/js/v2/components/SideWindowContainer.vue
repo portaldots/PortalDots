@@ -27,6 +27,9 @@ export default {
 .side_window_container {
   &.is-open {
     padding: 0 $side-window-width 0 0;
+    @media screen and (max-width: $breakpoint-side-window-fluid) {
+      padding: 0;
+    }
   }
 }
 </style>
