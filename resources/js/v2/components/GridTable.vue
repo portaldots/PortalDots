@@ -52,6 +52,10 @@
           >
             <i class="fas fa-filter fa-fw"></i>
             絞り込み
+            <i
+              class="fas fa-circle grid-controls__notifier"
+              v-if="isFilterActive"
+            ></i>
           </button>
         </div>
         <div class="grid-controls__section is-no-padding">
@@ -87,9 +91,15 @@
           </AppDropdown>
         </div>
         <div class="grid-controls__section">
-          {{ paginator.from }}〜{{ paginator.to }}件目 • 全{{
-            paginator.total
-          }}件 (ページ{{ paginator.current_page }} / {{ paginator.last_page }})
+          <template v-if="paginator.total > 0">
+            {{ paginator.from }}〜{{ paginator.to }}件目 • 全{{
+              paginator.total
+            }}件 (ページ{{ paginator.current_page }} /
+            {{ paginator.last_page }})
+          </template>
+          <template v-else>
+            0件
+          </template>
         </div>
         <div class="grid-controls__section text-primary" v-if="loading">
           <i class="fas fa-spinner fa-pulse"></i>
@@ -190,6 +200,10 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    isFilterActive: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -261,6 +275,10 @@ export default {
         color: $color-primary;
         margin-left: auto;
       }
+    }
+    &__notifier {
+      color: $color-primary;
+      transform: scale(0.5);
     }
   }
   &-loading {

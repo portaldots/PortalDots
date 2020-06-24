@@ -10,6 +10,7 @@
         :page="page"
         :perPage="perPage"
         :loading="loading"
+        :isFilterActive="filterQueries.length > 0"
         @clickFirst="onClickFirst"
         @clickPrev="onClickPrev"
         @clickNext="onClickNext"
@@ -38,11 +39,10 @@
       <StaffGridFilter
         :filterableKeys="filterableKeys"
         :keyTranslations="keyTranslations"
-        :defaultQueries="[
-          { id: 1, keyName: 'student_id', operator: 'like', value: '7' }
-        ]"
-        defaultMode="and"
-        @clickApply="(queries, mode) => console.log(queries, mode)"
+        :defaultQueries="filterQueries"
+        :defaultMode="filterMode"
+        :loading="loading"
+        @clickApply="onClickApplyFilter"
       />
     </SideWindow>
   </SideWindowContainer>
@@ -88,6 +88,8 @@ export default {
       paginator: null,
       page: 1,
       perPage: 25,
+      filterQueries: [],
+      filterMode: 'and',
       needReload: false,
       loading: true
     }
@@ -113,9 +115,7 @@ export default {
     },
     async fetch() {
       this.loading = true
-      const res = await axios.get(
-        `${this.apiUrl}?page=${this.page}&per_page=${this.perPage}&order_by=${this.orderBy}&direction=${this.direction}`
-      )
+      const res = await axios.get(`${this.apiUrl}?${this.urlParams}`)
       this.keys = res.data.keys
       this.sortableKeys = res.data.sortable_keys
       this.filterableKeys = res.data.filterable_keys
@@ -150,6 +150,13 @@ export default {
     onClickFilter(toggleSideWindow) {
       toggleSideWindow()
     },
+    async onClickApplyFilter(queries, mode) {
+      this.filterQueries = [...queries]
+      this.filterMode = mode
+
+      this.setUrlParams()
+      await this.fetch()
+    },
     async onClickTh(keyName) {
       if (this.orderBy === keyName) {
         // 現在がascだったらdescに、descだったらascに変える
@@ -176,11 +183,7 @@ export default {
       await this.fetch()
     },
     setUrlParams() {
-      window.history.pushState(
-        '',
-        '',
-        `?page=${this.page}&per_page=${this.perPage}&order_by=${this.orderBy}&direction=${this.direction}`
-      )
+      window.history.pushState('', '', `?${this.urlParams}`)
     },
     setFromUrlParams() {
       const queries = window.location.search
@@ -201,6 +204,42 @@ export default {
       if (queries.direction) {
         this.direction = queries.direction
       }
+      if (queries.queries) {
+        this.filterQueries = JSON.parse(
+          decodeURIComponent(queries.queries)
+        ).map((query, index) => ({
+          id: index,
+          keyName: query.key_name,
+          operator: query.operator === 'not+like' ? 'not like' : query.operator,
+          value: query.value
+        }))
+      }
+      if (queries.mode) {
+        this.filterMode = queries.mode
+      }
+    }
+  },
+  computed: {
+    urlParams() {
+      const params = new URLSearchParams()
+      params.append('page', this.page)
+      params.append('per_page', this.perPage)
+      params.append('order_by', this.orderBy)
+      params.append('direction', this.direction)
+
+      if (this.filterQueries && this.filterQueries.length > 0) {
+        const stringQueries = JSON.stringify(
+          this.filterQueries.map(query => ({
+            key_name: query.keyName,
+            operator: query.operator,
+            value: query.value
+          }))
+        )
+        params.append('queries', stringQueries)
+        params.append('mode', this.filterMode)
+      }
+
+      return params.toString()
     }
   }
 }

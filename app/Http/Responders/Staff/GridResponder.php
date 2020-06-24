@@ -57,11 +57,16 @@ class GridResponder implements Respondable
      *
      * @param string $order_by ソート対象の列
      * @param string $order ascかdesc
-     * @param array $filters (TODO: 未実装)
+     * @param array $filter_queries フィルタークエリ
+     * @param string $filter_mode フィルターのモード。and か or
      * @return Builder
      */
-    private function composedQuery(string $order_by, string $direction, array $filters): Builder
-    {
+    private function composedQuery(
+        string $order_by,
+        string $direction,
+        array $filter_queries,
+        string $filter_mode
+    ): Builder {
         if (!in_array($order_by, $this->gridMaker->sortableKeys(), true)) {
             $direction = 'id';
         }
@@ -72,7 +77,68 @@ class GridResponder implements Respondable
 
         $query = $this->gridMaker->query()->orderBy($order_by, $direction);
 
-        // TODO: フィルタ機能の実装
+        // フィルタ機能
+        $query->where(function ($db_query) use ($filter_queries, $filter_mode) {
+            foreach ($filter_queries as $filter_query) {
+                if (
+                    !in_array(
+                        $this->gridMaker->filterableKeys()[$filter_query['key_name']],
+                        ['string', 'number', 'datetime', 'bool'],
+                        true
+                    )
+                ) {
+                    // FIXME: isNull にはまだ対応していない
+                    continue;
+                }
+
+                if (empty($this->gridMaker->filterableKeys()[$filter_query['key_name']])) {
+                    continue;
+                }
+
+                if (in_array($filter_query['operator'], ['like', 'not like'], true)) {
+                    $filter_query['value'] = '%' . $filter_query['value'] . '%';
+                }
+
+                switch ($this->gridMaker->filterableKeys()[$filter_query['key_name']]) {
+                    case 'string':
+                        if (!in_array($filter_query['operator'], ['=', '!=', 'like', 'not like'], true)) {
+                            $filter_query['operator'] = '=';
+                        }
+                        break;
+                    case 'number':
+                        if (!in_array($filter_query['operator'], ['=', '!=', '<', '>', '<=', '>='], true)) {
+                            $filter_query['operator'] = '=';
+                        }
+                        $filter_query['value'] = (double)$filter_query['value'];
+                        break;
+                    case 'datetime':
+                        if (!in_array($filter_query['operator'], ['=', '!=', '<', '>', '<=', '>='], true)) {
+                            $filter_query['operator'] = '=';
+                        }
+                        break;
+                    case 'bool':
+                        if (!in_array($filter_query['operator'], ['='], true)) {
+                            $filter_query['operator'] = '=';
+                        }
+                        $filter_query['value'] = (int)$filter_query['value'] === 0 ? 0 : 1;
+                        break;
+                    case 'isNull':
+                        break;
+                }
+
+                if ($filter_query['operator'] === '!=') {
+                    if ($filter_mode === 'and') {
+                        $db_query->whereRaw("NOT ({$filter_query['key_name']} <=> ?)", [$filter_query['value']]);
+                    } else {
+                        $db_query->orWhereRaw("NOT ({$filter_query['key_name']} <=> ?)", [$filter_query['value']]);
+                    }
+                } elseif ($filter_mode === 'and') {
+                    $db_query->where($filter_query['key_name'], $filter_query['operator'], $filter_query['value']);
+                } else {
+                    $db_query->orWhere($filter_query['key_name'], $filter_query['operator'], $filter_query['value']);
+                }
+            }
+        });
 
         return $query;
     }
@@ -91,13 +157,19 @@ class GridResponder implements Respondable
         $per_page = !empty($this->request->per_page) ? (int)$this->request->per_page : 25;
         $order_by = !empty($this->request->order_by) ? $this->request->order_by : 'id';
         $direction = !empty($this->request->direction) ? $this->request->direction : 'asc';
-        $filters = [];
+        $filter_queries = !empty($this->request->queries) ? json_decode($this->request->queries, true) : [];
+        $filter_mode = !empty($this->request->mode) ? $this->request->mode : 'and';
 
-        $collection = $this->composedQuery($order_by, $direction, $filters)->offset(($page - 1) * $per_page)
+        $collection = $this->composedQuery(
+            $order_by,
+            $direction,
+            $filter_queries,
+            $filter_mode
+        )->offset(($page - 1) * $per_page)
                 ->limit($per_page)->get();
         $paginator = new LengthAwarePaginator(
             $collection,
-            $this->composedQuery($order_by, $direction, $filters)->count(),
+            $this->composedQuery($order_by, $direction, $filter_queries, $filter_mode)->count(),
             $per_page,
             $page,
             [

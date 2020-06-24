@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Builder;
 
 abstract class BaseGridMaker
 {
+
+    // TODO: いま GridResponder クラスにある composedQuery メソッドは、GridMaker で定義できるようにする
+    // ↑ Laravel のクエリビルダを使わないデータソース(申請フォームの回答等)に対してソートやフィルターを使えるようにするため
+
     /**
      * 表示用に利用するクエリビルダオブジェクト
      *
@@ -27,7 +31,12 @@ abstract class BaseGridMaker
      *
      * ['keyName' => 'type', ...] という形式の連想配列を返してください。
      *
-     * type : string, int, datetime, bool のいずれか
+     * type : string, number, datetime, bool, isNull のいずれか
+     * - string : 文字列検索
+     * - number : 数値。大小比較ができる
+     * - datetime : 日時。過去・未来比較ができる
+     * - bool : ブーリアン。はい・いいえが選べる
+     * - isNull : 空か空でないかで検索できる
      *
      * @return array ['keyName' => 'type', ...] という形式の連想配列
      */

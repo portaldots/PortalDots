@@ -48,6 +48,7 @@ class UsersGridMaker extends BaseGridMaker
     public function filterableKeys(): array
     {
         return [
+            'id' => 'number',
             'student_id' => 'string',
             'name_family' => 'string',
             'name_family_yomi' => 'string',
@@ -57,6 +58,12 @@ class UsersGridMaker extends BaseGridMaker
             'tel' => 'string',
             'is_staff' => 'bool',
             'is_admin' => 'bool',
+            'email_verified_at' => 'isNull',
+            'univemail_verified_at' => 'isNull',
+            'signed_up_at' => 'isNull',
+            'notes' => 'string',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
         ];
     }
 
