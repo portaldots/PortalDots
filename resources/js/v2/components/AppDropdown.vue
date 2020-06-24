@@ -6,10 +6,11 @@
     </div>
     <div
       class="dropdown-menu"
-      :class="{ 'is-fluid': menuFluid }"
+      :class="[menuFluid ? 'is-fluid' : '', isBottom ? 'is-bottom' : 'is-top']"
       v-if="isOpen"
       :aria-labelledby="`dropdown-button-${name}`"
       @click="close"
+      ref="menu"
     >
       <div v-for="item in items" :key="item.key">
         <slot name="item" :item="item" />
@@ -22,7 +23,8 @@
 export default {
   data() {
     return {
-      isOpen: false
+      isOpen: false,
+      isBottom: true
     }
   },
   props: {
@@ -44,6 +46,20 @@ export default {
   methods: {
     toggle() {
       this.isOpen = !this.isOpen
+
+      this.isBottom = true
+
+      this.$nextTick(() => {
+        if (!this.isOpen) {
+          return
+        }
+
+        const refMenu = this.$refs.menu
+
+        if (refMenu.getBoundingClientRect().bottom > window.innerHeight) {
+          this.isBottom = false
+        }
+      })
     },
     close() {
       this.isOpen = false
@@ -72,10 +88,15 @@ export default {
     left: 0;
     padding: $spacing-sm 0;
     position: absolute;
-    top: calc(100% + 3px);
     z-index: $z-index-dropdown-menu;
     &.is-fluid {
       right: 0;
+    }
+    &.is-bottom {
+      top: calc(100% + 3px);
+    }
+    &.is-top {
+      bottom: calc(100% + 3px);
     }
   }
   &-backdrop {
