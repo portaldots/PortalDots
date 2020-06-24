@@ -213,6 +213,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/api', 'Staff\Users\ApiAction')->name('api');
 
                 // 手動本人確認
+                Route::get('/{user}/verify', 'Staff\Users\VerifyConfirmAction')->name('verify');
                 Route::patch('/{user}/verify', 'Staff\Users\VerifiedAction')->name('verified');
             });
 
