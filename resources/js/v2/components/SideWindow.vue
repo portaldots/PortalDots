@@ -8,7 +8,9 @@
         <i class="fas fa-times"></i>
       </button>
     </div>
-    <slot />
+    <div class="side_window-body">
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -33,6 +35,8 @@ export default {
   background: $color-bg-white;
   bottom: 0;
   box-shadow: -1px 0 2px $color-border;
+  display: flex;
+  flex-direction: column;
   position: fixed;
   right: 0;
   top: $navbar-height;
@@ -70,6 +74,12 @@ export default {
       position: absolute;
       right: $spacing;
     }
+  }
+  &-body {
+    flex: 1;
+    overflow: auto;
+    overflow-x: hidden;
+    padding: 0 0 $spacing;
   }
 }
 </style>
