@@ -93,6 +93,7 @@
         "laravel-mix": "^4.0.7",
         "laravel-mix-polyfill": "^2.0.0",
         "marked": "^0.6.2",
+        "portal-vue": "^2.1.7",
         "replace": "^1.1.1",
         "simplemde": "^1.11.2",
         "turbolinks": "^5.2.0",

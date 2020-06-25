@@ -2,6 +2,7 @@ import Turbolinks from 'turbolinks'
 
 import Vue from 'vue'
 import GlobalEvents from 'vue-global-events'
+import PortalVue from 'portal-vue'
 import TurbolinksAdapter from './vue-turbolinks'
 
 import AppHeader from './components/AppHeader.vue'
@@ -36,6 +37,7 @@ export function mountV2App() {
   // iOS で CSS の hover を有効にするハック
   document.body.addEventListener('touchstart', () => {}, { passive: true })
 
+  Vue.use(PortalVue)
   Vue.use(TurbolinksAdapter)
 
   Turbolinks.start()

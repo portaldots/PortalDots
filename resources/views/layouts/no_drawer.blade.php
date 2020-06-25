@@ -54,6 +54,7 @@
     </div>
 
     <div class="app" id="v2-app">
+        <portal-target name="portal-target"></portal-target>
         <app-nav-bar no-drawer @staffpage staff @endstaffpage>
             @section('navbar')
                 <a href="{{ route('home') }}" class="navbar-brand">
