@@ -83,11 +83,10 @@ class GridResponder implements Respondable
                 if (
                     !in_array(
                         $this->gridMaker->filterableKeys()[$filter_query['key_name']],
-                        ['string', 'number', 'datetime', 'bool'],
+                        ['string', 'number', 'datetime', 'bool', 'isNull'],
                         true
                     )
                 ) {
-                    // FIXME: isNull にはまだ対応していない
                     continue;
                 }
 
@@ -123,10 +122,18 @@ class GridResponder implements Respondable
                         $filter_query['value'] = (int)$filter_query['value'] === 0 ? 0 : 1;
                         break;
                     case 'isNull':
+                        $filter_query['value'] = (int)$filter_query['value'] === 0 ? false : true;
                         break;
                 }
 
-                if ($filter_query['operator'] === '!=') {
+                if ($this->gridMaker->filterableKeys()[$filter_query['key_name']] === 'isNull') {
+                    $is = $filter_query['value'] ? 'NULL' : 'NOT NULL';
+                    if ($filter_mode === 'and') {
+                        $db_query->whereRaw("{$filter_query['key_name']} IS {$is}");
+                    } else {
+                        $db_query->orWhereRaw("{$filter_query['key_name']} IS {$is}");
+                    }
+                } elseif ($filter_query['operator'] === '!=') {
                     if ($filter_mode === 'and') {
                         $db_query->whereRaw("NOT ({$filter_query['key_name']} <=> ?)", [$filter_query['value']]);
                     } else {

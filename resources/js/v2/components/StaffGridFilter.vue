@@ -49,12 +49,19 @@
               type="text"
               class="form-control"
               v-model="queries[arrayIndex].value"
-              v-else-if="
-                ['bool', 'isNull'].includes(filterableKeys[query.keyName])
-              "
+              v-if="filterableKeys[query.keyName] === 'bool'"
             >
               <option value="1">はい</option>
               <option value="0">いいえ</option>
+            </select>
+            <select
+              type="text"
+              class="form-control"
+              v-model="queries[arrayIndex].value"
+              v-if="filterableKeys[query.keyName] === 'isNull'"
+            >
+              <option value="1">空</option>
+              <option value="0">空でない</option>
             </select>
             <template
               v-if="!['bool', 'isNull'].includes(filterableKeys[query.keyName])"
@@ -93,13 +100,7 @@
     </div>
     <div class="staff_grid_sort-dropdown">
       <StaffGridFilterAddDropdown
-        :keys="
-          Object.keys(filterableKeys).filter(keyName =>
-            ['string', 'number', 'datetime', 'bool'].includes(
-              filterableKeys[keyName]
-            )
-          )
-        "
+        :keys="Object.keys(filterableKeys)"
         :keyTranslations="keyTranslations"
         @clickItem="addQuery"
       />
