@@ -14,7 +14,7 @@ class DocumentsGridMaker extends BaseGridMaker
      */
     public function query(): Builder
     {
-        return Document::select($this->keys());
+        return Document::select($this->keys())->with(['schedule', 'userCreatedBy', 'userUpdatedBy']);
     }
 
     /**
@@ -76,5 +76,29 @@ class DocumentsGridMaker extends BaseGridMaker
             'updated_by',
             'notes',
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function map($record): array
+    {
+        $item = [];
+        foreach ($this->keys() as $key) {
+            switch ($key) {
+                case 'schedule_id':
+                    $item[$key] = $record->schedule;
+                    break;
+                case 'created_by':
+                    $item[$key] = $record->userCreatedBy;
+                    break;
+                case 'updated_by':
+                    $item[$key] = $record->userUpdatedBy;
+                    break;
+                default:
+                    $item[$key] = $record->$key;
+            }
+        }
+        return $item;
     }
 }

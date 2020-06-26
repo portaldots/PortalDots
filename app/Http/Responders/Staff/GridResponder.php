@@ -173,7 +173,9 @@ class GridResponder implements Respondable
             $filter_queries,
             $filter_mode
         )->offset(($page - 1) * $per_page)
-                ->limit($per_page)->get();
+                ->limit($per_page)->get()->map(function ($record) {
+                    return $this->gridMaker->map($record);
+                });
         $paginator = new LengthAwarePaginator(
             $collection,
             $this->composedQuery($order_by, $direction, $filter_queries, $filter_mode)->count(),

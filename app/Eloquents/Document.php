@@ -58,4 +58,14 @@ class Document extends Model
     {
         return $this->belongsTo(Schedule::class);
     }
+
+    public function userCreatedBy()
+    {
+        return $this->belongsTo(Schedule::class, 'created_by');
+    }
+
+    public function userUpdatedBy()
+    {
+        return $this->belongsTo(Schedule::class, 'updated_by');
+    }
 }

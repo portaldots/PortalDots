@@ -57,8 +57,8 @@ abstract class BaseGridMaker
     public function map($record): array
     {
         $item = [];
-        foreach ($this->keys as $key) {
-            $item[] = $record->$key;
+        foreach ($this->keys() as $key) {
+            $item[$key] = $record->$key;
         }
         return $item;
     }
