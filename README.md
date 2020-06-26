@@ -88,26 +88,28 @@ PortalDots では、新規機能・既存機能改良の提案、バグの報告
 ### 開発環境セットアップ方法
 Git、PHP(7.3以上)、Composer、Node.js、Yarn、Docker がセットアップ済みである必要があります。
 
+以上のセットアップが完了した後、以下のコマンドを順番に実行してください。
+
 ```bash
 $ git clone git@github.com:portal-dots/PortalDots.git
 $ cd PortalDots/
+
+# 必要な PHP パッケージをインストール
+# ※ エラーが表示される場合は、後述の *1 を参照してください
+$ composer install
+
+# 必要な Node.js パッケージをインストール
+# ※ エラーが表示される場合は、後述の *2 を参照してください
+$ yarn install
 
 # 設定ファイルを作成
 $ cp .env.example .env
 $ php artisan key:generate
 
-# 必要パッケージをインストール
-$ composer install
-$ yarn install
-
 # 開発環境を起動する
 $ yarn docker
 
-# マイグレーション
-#
-# ⚠️ α版注）データベース構造に関して、現在破壊的な変更を継続して行なっています。
-# 　もしデータベースエラーが発生する場合、開発環境を再ビルドしてから
-# 　代わりに `yarn migrate:refresh` コマンドを実行してください。
+# マイグレーション(データベースのセットアップ)
 $ yarn migrate
 
 # フロントエンド開発サーバーの起動
@@ -118,7 +120,27 @@ $ yarn watch
 $ yarn docker-stop
 ```
 
-- `yarn docker` コマンドにより、開発環境が起動します。
+#### *1 : `composer install` 実行時にエラーが表示される場合
+以下の PHP 拡張モジュールがインストールされていない場合、 `composer install` の実行に失敗することがあります。
+
+(追加で拡張モジュールのインストールが必要な場合、当該モジュールの名称が `composer install` コマンド実行時に表示されることがあります)
+
+- BCMath PHP拡張
+- Ctype PHP拡張
+- Fileinfo PHP拡張
+- JSON PHP拡張
+- Mbstring PHP拡張
+- OpenSSL PHP拡張
+- PDO PHP拡張
+- Tokenizer PHP拡張
+- XML PHP拡張
+- GD PHP拡張
+- ZIP PHP拡張
+
+#### *2 : `yarn install` 実行時にエラーが表示される場合
+インストールされている Node.js のバージョンが古い場合、エラーが表示されることがあります。
+
+Node.js を最新バージョンにアップグレードした上で、再度 `yarn install` を実行してください。
 
 ### 開発環境の各種 URL
 - 開発環境 : http://localhost:3000
