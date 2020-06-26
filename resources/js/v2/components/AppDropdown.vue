@@ -86,23 +86,28 @@ export default {
 
       // 2) メニューが画面からはみ出してしまうようであれば、メニュー内でスクロールできるようにする
 
+      // 画面の端とメニューがくっつかないよう、space ぶんの余裕をもたせる
+      const space = 20
+
       if (
         refMenu.getBoundingClientRect().top + refMenu.clientHeight >
         window.innerHeight
       ) {
         const menuHeight =
-          window.innerHeight - refMenu.getBoundingClientRect().top
+          window.innerHeight - refMenu.getBoundingClientRect().top - space
         if (menuHeight > window.innerHeight * 0.3) {
           this.menuHeight = `${menuHeight}px`
         } else {
           // メニューの高さがギリギリになってしまう場合、メニューはボタンより上に表示する
           const top = Math.max(
-            0,
+            space,
             refButton.getBoundingClientRect().top - refMenu.clientHeight - 3
           )
           this.menuTop = `${top}px`
-          if (top === 0) {
-            this.menuHeight = `${refButton.getBoundingClientRect().top - 3}px`
+          if (top === space) {
+            this.menuHeight = `${refButton.getBoundingClientRect().top -
+              3 -
+              space}px`
           }
         }
       }
