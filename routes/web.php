@@ -261,6 +261,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::prefix('/documents')
             ->name('documents.')
             ->group(function () {
+                Route::get('/', 'Staff\Documents\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Documents\ApiAction')->name('api');
                 Route::get('/create', 'Staff\Documents\CreateAction')->name('create');
                 Route::post('/', 'Staff\Documents\StoreAction')->name('store');
                 Route::get('/{document}/edit', 'Staff\Documents\EditAction')->name('edit');
