@@ -42,7 +42,6 @@
                     }
                 };
             }
-
         </script>
         @endprepend
     @endif
@@ -66,6 +65,7 @@
     </div>
 
     <div class="app" id="v2-app">
+        <portal-target name="portal-target"></portal-target>
         <global-events v-on:keyup.esc="closeDrawer"></global-events>
         <div class="drawer-backdrop" v-bind:class="{'is-open': isDrawerOpen}" v-on:click="closeDrawer"></div>
         <app-nav-bar @staffpage staff @endstaffpage>
@@ -87,7 +87,8 @@
             @include('includes.top_circle_selector')
             @if (Session::has('topAlert.title'))
                 <top-alert type="{{ session('topAlert.type', 'primary') }}"
-                    {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}>
+                    {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}
+                    @yield('top_alert_props', '')>
                     <template v-slot:title>
                         {{ session('topAlert.title') }}
                     </template>
@@ -106,9 +107,11 @@
             @endif
             @yield('content')
         </div>
-        @section('bottom_tabs')
-            @include('includes.bottom_tabs')
-        @show
+        @if (!Request::is('staff*'))
+            @section('bottom_tabs')
+                @include('includes.bottom_tabs')
+            @show
+        @endif
     </div>
 
 </body>

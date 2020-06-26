@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Users\Verify;
+namespace App\Http\Controllers\Staff\Users;
 
 use App\Eloquents\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UpdateAction extends Controller
+class VerifiedAction extends Controller
 {
     public function __invoke(User $user)
     {
         if ($user->hasVerifiedUnivemail()) {
-            return redirect()->route('staff.users.verify', ['user' => $user])
+            return redirect()->back()
                 ->with('topAlert.title', 'すでに認証済みのユーザーです')
                 ->with('topAlert.type', 'danger');
         }
@@ -21,11 +21,11 @@ class UpdateAction extends Controller
             $user->email_verified_at = null;
         }
         if ($user->markUnivemailAsVerified()) {
-            return redirect()->route('staff.users.verify', ['user' => $user])
+            return redirect()->back()
                 ->with('topAlert.title', '本人確認を完了しました');
         }
 
-        return redirect()->route('staff.users.verify', ['user' => $user])
+        return redirect()->back()
                 ->with('topAlert.title', '保存に失敗しました')
                 ->with('topAlert.type', 'danger');
     }

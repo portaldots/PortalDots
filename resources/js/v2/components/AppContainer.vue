@@ -2,7 +2,7 @@
   <component
     :is="componentIs"
     class="container"
-    :class="{ 'is-narrow': narrow, 'is-medium': medium }"
+    :class="{ 'is-narrow': narrow, 'is-medium': medium, 'is-fluid': fluid }"
   >
     <slot />
   </component>
@@ -22,6 +22,10 @@ export default {
     medium: {
       type: Boolean,
       default: false
+    },
+    fluid: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -38,6 +42,9 @@ export default {
   }
   &.is-medium {
     max-width: $container-width-medium;
+  }
+  &.is-fluid {
+    max-width: 100%;
   }
 }
 </style>

@@ -44,13 +44,6 @@ class StoreActionTest extends TestCase
         $this->selectorService = App::make(SelectorService::class);
     }
 
-    public function tearDown(): void
-    {
-        $this->selectorService->reset();
-
-        parent::tearDown();
-    }
-
     /**
      * @test
      * @dataProvider 受付期間中かどうかに応じてリクエストを許可する_provider

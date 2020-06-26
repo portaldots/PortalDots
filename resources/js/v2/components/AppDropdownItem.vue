@@ -3,6 +3,7 @@
     :is="componentIs"
     class="dropdown-item"
     :tabindex="['a', 'button'].includes(componentIs) ? 0 : undefined"
+    @click="onClick"
   >
     <slot />
   </component>
@@ -15,6 +16,11 @@ export default {
       type: String,
       default: 'div'
     }
+  },
+  methods: {
+    onClick(e) {
+      this.$emit('click', e)
+    }
   }
 }
 </script>
@@ -22,6 +28,8 @@ export default {
 <style lang="scss" scoped>
 .dropdown-item {
   appearance: none;
+  background: transparent;
+  border: 0;
   color: $color-text;
   cursor: pointer;
   display: block;
@@ -29,6 +37,7 @@ export default {
   max-width: 100%;
   min-width: 15rem;
   padding: 0.75rem $spacing-md;
+  text-align: left;
   transition: #{$transition-base} background-color, #{$transition-base} color;
   &:not(a):not(button) {
     cursor: auto;

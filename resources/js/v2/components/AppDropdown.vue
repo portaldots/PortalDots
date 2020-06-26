@@ -1,20 +1,30 @@
 <template>
   <div class="dropdown">
     <div class="dropdown-backdrop" v-if="isOpen" @click="close"></div>
-    <div class="dropdown-button">
+    <div class="dropdown-button" ref="button">
       <slot name="button" :toggle="toggle" :props="ariaButtonProps" />
     </div>
-    <div
-      class="dropdown-menu"
-      :class="{ 'is-fluid': menuFluid }"
-      v-if="isOpen"
-      :aria-labelledby="`dropdown-button-${name}`"
-      @click="close"
-    >
-      <div v-for="item in items" :key="item.key">
-        <slot name="item" :item="item" />
+    <portal to="portal-target">
+      <!-- portal タグの中の HTML は、app.blade.php と no_drawer.blade.php にある portal-target タグ内にレンダリングされる-->
+      <!-- ここでいう portal と PortalDots の portal は無関係 -->
+      <div
+        class="dropdown-menu"
+        v-if="isOpen"
+        :aria-labelledby="`dropdown-button-${name}`"
+        @click="close"
+        ref="menu"
+        :style="{
+          top: menuTop,
+          left: menuLeft,
+          width: menuWidth || 'auto',
+          height: menuHeight || 'auto'
+        }"
+      >
+        <div v-for="item in items" :key="item.key">
+          <slot name="item" :item="item" />
+        </div>
       </div>
-    </div>
+    </portal>
   </div>
 </template>
 
@@ -22,7 +32,11 @@
 export default {
   data() {
     return {
-      isOpen: false
+      isOpen: false,
+      menuTop: '0',
+      menuLeft: '0',
+      menuWidth: null,
+      menuHeight: null
     }
   },
   props: {
@@ -42,10 +56,64 @@ export default {
     }
   },
   methods: {
-    toggle() {
+    async toggle() {
       this.isOpen = !this.isOpen
+      this.menuHeight = null
+
+      if (!this.isOpen) {
+        window.document.body.style.overflowY = 'visible'
+        return
+      }
+
+      window.document.body.style.overflowY = 'hidden'
+
+      await this.$nextTick()
+
+      const refButton = this.$refs.button
+      const refMenu = this.$refs.menu
+
+      // fluid の場合、ボタンの幅にメニュー幅を揃える
+      if (this.menuFluid) {
+        this.menuWidth = `${refButton.clientWidth}px`
+      }
+
+      // 1) とりあえずボタン下にメニューを表示して様子見
+
+      this.menuLeft = `${refButton.getBoundingClientRect().left}px`
+      this.menuTop = `${refButton.getBoundingClientRect().bottom + 3}px`
+
+      await this.$nextTick()
+
+      // 2) メニューが画面からはみ出してしまうようであれば、メニュー内でスクロールできるようにする
+
+      // 画面の端とメニューがくっつかないよう、space ぶんの余裕をもたせる
+      const space = 20
+
+      if (
+        refMenu.getBoundingClientRect().top + refMenu.clientHeight >
+        window.innerHeight
+      ) {
+        const menuHeight =
+          window.innerHeight - refMenu.getBoundingClientRect().top - space
+        if (menuHeight > window.innerHeight * 0.3) {
+          this.menuHeight = `${menuHeight}px`
+        } else {
+          // メニューの高さがギリギリになってしまう場合、メニューはボタンより上に表示する
+          const top = Math.max(
+            space,
+            refButton.getBoundingClientRect().top - refMenu.clientHeight - 3
+          )
+          this.menuTop = `${top}px`
+          if (top === space) {
+            this.menuHeight = `${refButton.getBoundingClientRect().top -
+              3 -
+              space}px`
+          }
+        }
+      }
     },
     close() {
+      window.document.body.style.overflowY = 'visible'
       this.isOpen = false
     }
   },
@@ -70,13 +138,11 @@ export default {
     border-radius: $border-radius;
     box-shadow: 0 0.4rem 0.8rem 0.1rem rgba($color-text, 0.25);
     left: 0;
+    overflow: auto;
+    overflow-x: hidden;
     padding: $spacing-sm 0;
-    position: absolute;
-    top: calc(100% + 3px);
+    position: fixed;
     z-index: $z-index-dropdown-menu;
-    &.is-fluid {
-      right: 0;
-    }
   }
   &-backdrop {
     bottom: 0;

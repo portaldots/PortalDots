@@ -2,6 +2,7 @@ import Turbolinks from 'turbolinks'
 
 import Vue from 'vue'
 import GlobalEvents from 'vue-global-events'
+import PortalVue from 'portal-vue'
 import TurbolinksAdapter from './vue-turbolinks'
 
 import AppHeader from './components/AppHeader.vue'
@@ -22,6 +23,7 @@ import ListViewFormGroup from './components/ListViewFormGroup.vue'
 import ListViewPagination from './components/ListViewPagination.vue'
 import TopAlert from './components/TopAlert.vue'
 import FormWithConfirm from './components/FormWithConfirm.vue'
+import StaffGrid from './components/StaffGrid.vue'
 import StepsList from './components/StepsList.vue'
 import StepsListItem from './components/StepsListItem.vue'
 import TagsInput from './components/TagsInput.vue'
@@ -35,6 +37,7 @@ export function mountV2App() {
   // iOS で CSS の hover を有効にするハック
   document.body.addEventListener('touchstart', () => {}, { passive: true })
 
+  Vue.use(PortalVue)
   Vue.use(TurbolinksAdapter)
 
   Turbolinks.start()
@@ -73,6 +76,7 @@ export function mountV2App() {
         FormWithConfirm,
         QuestionItem,
         QuestionHeading,
+        StaffGrid,
         StepsList,
         StepsListItem,
         TagsInput,

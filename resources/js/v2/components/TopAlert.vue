@@ -15,6 +15,7 @@
       class="top_alert__container"
       :narrow="containerNarrow"
       :medium="containerMedium"
+      :fluid="containerFluid"
     >
       <div class="top_alert__body">
         <h2 class="top_alert__title" v-if="$slots.title">
@@ -62,6 +63,10 @@ export default {
       default: false
     },
     containerMedium: {
+      type: Boolean,
+      default: false
+    },
+    containerFluid: {
       type: Boolean,
       default: false
     },
