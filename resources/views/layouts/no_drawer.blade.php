@@ -48,11 +48,7 @@
 </head>
 
 <body>
-
-    <div class="loading" id="loading">
-        <div class="loading-circle"></div>
-    </div>
-
+    @include('includes.loading')
     <div class="app" id="v2-app">
         <portal-target name="portal-target"></portal-target>
         <app-nav-bar no-drawer @staffpage staff @endstaffpage>
