@@ -71,6 +71,9 @@ textarea {
       margin: 0 0 $spacing-sm;
       padding: 0 0 0 #{$input-spacing};
       position: relative;
+      &:last-child {
+        margin: 0;
+      }
     }
     &__input {
       margin: 0.4rem 0 0 #{-$input-spacing};
