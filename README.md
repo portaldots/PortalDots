@@ -88,7 +88,7 @@ PortalDots では、新規機能・既存機能改良の提案、バグの報告
 ### 開発環境セットアップ方法
 Git、PHP(7.3以上)、Composer、Node.js、Yarn、Docker がセットアップ済みである必要があります。
 
-以上のセットアップが完了した後、以下のコマンドを順番に実行してください。
+セットアップが完了した後、以下のコマンドを順番に実行してください。
 
 ```bash
 $ git clone git@github.com:portal-dots/PortalDots.git
