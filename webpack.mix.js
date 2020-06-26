@@ -15,19 +15,6 @@ const path = require('path')
 
 mix
   .webpackConfig({
-    module: {
-      rules: [
-        {
-          test: /\.m?js$/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env']
-            }
-          }
-        }
-      ]
-    },
     resolve: {
       modules: [path.resolve('./node_modules')]
     }
