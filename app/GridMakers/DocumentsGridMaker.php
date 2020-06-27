@@ -92,8 +92,14 @@ class DocumentsGridMaker implements GridMakable
                 case 'schedule_id':
                     $item[$key] = $record->schedule;
                     break;
+                case 'created_at':
+                    $item[$key] = $record->created_at->format('Y/m/d H:i:s');
+                    break;
                 case 'created_by':
                     $item[$key] = $record->userCreatedBy;
+                    break;
+                case 'updated_at':
+                    $item[$key] = $record->updated_at->format('Y/m/d H:i:s');
                     break;
                 case 'updated_by':
                     $item[$key] = $record->userUpdatedBy;

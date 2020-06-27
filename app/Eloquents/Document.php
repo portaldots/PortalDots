@@ -61,11 +61,11 @@ class Document extends Model
 
     public function userCreatedBy()
     {
-        return $this->belongsTo(Schedule::class, 'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function userUpdatedBy()
     {
-        return $this->belongsTo(Schedule::class, 'updated_by');
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

@@ -21,14 +21,7 @@ trait UseEloquent
      * @param $record
      * @return array
      */
-    protected function map($record): array
-    {
-        $item = [];
-        foreach ($this->keys() as $key) {
-            $item[$key] = $record->$key;
-        }
-        return $item;
-    }
+    abstract protected function map($record): array;
 
     protected function makeFilterAppliedQuery(Builder $query, array $filter_queries, string $filter_mode)
     {
