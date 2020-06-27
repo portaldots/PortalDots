@@ -6,13 +6,16 @@ namespace App\GridMakers;
 
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\User;
+use App\GridMakers\Concerns\UseEloquent;
 
-class UsersGridMaker extends BaseGridMaker
+class UsersGridMaker implements GridMakable
 {
+    use UseEloquent;
+
     /**
      * @inheritDoc
      */
-    public function query(): Builder
+    public function baseEloquentQuery(): Builder
     {
         return User::select($this->keys());
     }

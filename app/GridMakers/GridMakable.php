@@ -6,25 +6,34 @@ namespace App\GridMakers;
 
 use Illuminate\Database\Eloquent\Builder;
 
-abstract class BaseGridMaker
+interface GridMakable
 {
 
     // TODO: いま GridResponder クラスにある composedQuery メソッドは、GridMaker で定義できるようにする
     // ↑ Laravel のクエリビルダを使わないデータソース(申請フォームの回答等)に対してソートやフィルターを使えるようにするため
 
     /**
-     * 表示用に利用するクエリビルダオブジェクト
+     * フィルタやソート機能を利用した結果のクエリビルダオブジェクトを返す
      *
+     * @param string $order_by ソート対象の列
+     * @param string $order ascかdesc
+     * @param array $filter_queries フィルタークエリ
+     * @param string $filter_mode フィルターのモード。and か or
      * @return Builder
      */
-    abstract public function query(): Builder;
+    public function query(
+        string $order_by,
+        string $direction,
+        array $filter_queries,
+        string $filter_mode
+    ): Builder;
 
     /**
      * 表示するキー
      *
      * @return array
      */
-    abstract public function keys(): array;
+    public function keys(): array;
 
     /**
      * フィルタ可能なキー
@@ -40,26 +49,19 @@ abstract class BaseGridMaker
      *
      * @return array ['keyName' => 'type', ...] という形式の連想配列
      */
-    abstract public function filterableKeys(): array;
+    public function filterableKeys(): array;
 
     /**
      * ソート可能なキー
      *
      * @return array
      */
-    abstract public function sortableKeys(): array;
+    public function sortableKeys(): array;
 
     /**
      * 1レコードの配列を生成して返す
      *
      * @return array
      */
-    public function map($record): array
-    {
-        $item = [];
-        foreach ($this->keys() as $key) {
-            $item[$key] = $record->$key;
-        }
-        return $item;
-    }
+    public function map($record): array;
 }

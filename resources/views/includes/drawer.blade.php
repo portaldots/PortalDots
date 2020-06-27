@@ -21,6 +21,10 @@
                 <i class="fas fa-users drawer-nav__icon fa-fw"></i>
                 ユーザー情報管理
             </a>
+            <a href="{{ route('staff.documents.index') }}" class="drawer-nav__link{{ Request::is('staff/documents*') ? ' is-active' : '' }}">
+                <i class="far fa-file-alt drawer-nav__icon fa-fw"></i>
+                配布資料管理
+            </a>
         </nav>
     @endif
 @else

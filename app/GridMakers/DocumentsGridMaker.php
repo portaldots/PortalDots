@@ -6,13 +6,16 @@ namespace App\GridMakers;
 
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Document;
+use App\GridMakers\Concerns\UseEloquent;
 
-class DocumentsGridMaker extends BaseGridMaker
+class DocumentsGridMaker implements GridMakable
 {
+    use UseEloquent;
+
     /**
      * @inheritDoc
      */
-    public function query(): Builder
+    public function baseEloquentQuery(): Builder
     {
         return Document::select($this->keys())->with(['schedule', 'userCreatedBy', 'userUpdatedBy']);
     }
