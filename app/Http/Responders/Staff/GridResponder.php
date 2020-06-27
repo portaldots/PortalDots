@@ -69,18 +69,16 @@ class GridResponder implements Respondable
         $filter_queries = !empty($this->request->queries) ? json_decode($this->request->queries, true) : [];
         $filter_mode = !empty($this->request->mode) ? $this->request->mode : 'and';
 
-        $collection = $this->gridMaker->query(
-            $order_by,
-            $direction,
-            $filter_queries,
-            $filter_mode
-        )->offset(($page - 1) * $per_page)
-                ->limit($per_page)->get()->map(function ($record) {
-                    return $this->gridMaker->map($record);
-                });
         $paginator = new LengthAwarePaginator(
-            $collection,
-            $this->gridMaker->query($order_by, $direction, $filter_queries, $filter_mode)->count(),
+            $this->gridMaker->getArray(
+                $order_by,
+                $direction,
+                $filter_queries,
+                $filter_mode,
+                ($page - 1) * $per_page,
+                $per_page
+            ),
+            $this->gridMaker->getCount($filter_queries, $filter_mode),
             $per_page,
             $page,
             [

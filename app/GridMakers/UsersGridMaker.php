@@ -15,7 +15,7 @@ class UsersGridMaker implements GridMakable
     /**
      * @inheritDoc
      */
-    public function baseEloquentQuery(): Builder
+    protected function baseEloquentQuery(): Builder
     {
         return User::select($this->keys());
     }

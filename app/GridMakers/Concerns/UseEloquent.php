@@ -13,29 +13,27 @@ trait UseEloquent
      *
      * @return Builder
      */
-    abstract public function baseEloquentQuery(): Builder;
+    abstract protected function baseEloquentQuery(): Builder;
 
     /**
-     * @inheritDoc
+     * 1レコードの配列を生成して返す
+     *
+     * @param $record
+     * @return array
      */
-    public function query(
-        string $order_by,
-        string $direction,
-        array $filter_queries,
-        string $filter_mode
-    ): Builder {
-        if (!in_array($order_by, $this->sortableKeys(), true)) {
-            $direction = 'id';
+    protected function map($record): array
+    {
+        $item = [];
+        foreach ($this->keys() as $key) {
+            $item[$key] = $record->$key;
         }
+        return $item;
+    }
 
-        if (!in_array($direction, ['asc', 'desc'], true)) {
-            $direction = 'asc';
-        }
-
-        $query = $this->baseEloquentQuery()->orderBy($order_by, $direction);
-
+    protected function makeFilterAppliedQuery(Builder $query, array $filter_queries, string $filter_mode)
+    {
         // フィルタ機能
-        $query->where(function ($db_query) use ($filter_queries, $filter_mode) {
+        return $query->where(function ($db_query) use ($filter_queries, $filter_mode) {
             foreach ($filter_queries as $filter_query) {
                 if (
                     !in_array(
@@ -103,19 +101,43 @@ trait UseEloquent
                 }
             }
         });
-
-        return $query;
     }
 
     /**
      * @inheritDoc
      */
-    public function map($record): array
-    {
-        $item = [];
-        foreach ($this->keys() as $key) {
-            $item[$key] = $record->$key;
+    public function getArray(
+        string $order_by,
+        string $direction,
+        array $filter_queries,
+        string $filter_mode,
+        int $offset,
+        int $limit
+    ): array {
+        if (!in_array($order_by, $this->sortableKeys(), true)) {
+            $direction = 'id';
         }
-        return $item;
+
+        if (!in_array($direction, ['asc', 'desc'], true)) {
+            $direction = 'asc';
+        }
+
+        $query = $this->baseEloquentQuery()->orderBy($order_by, $direction);
+
+        $query = $this->makeFilterAppliedQuery($query, $filter_queries, $filter_mode);
+
+        return $query->offset($offset)->limit($limit)->get()->map(function ($record) {
+            return $this->map($record);
+        })->toArray();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCount(
+        array $filter_queries,
+        string $filter_mode
+    ): int {
+        return $this->makeFilterAppliedQuery($this->baseEloquentQuery(), $filter_queries, $filter_mode)->count();
     }
 }

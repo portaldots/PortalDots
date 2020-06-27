@@ -8,25 +8,37 @@ use Illuminate\Database\Eloquent\Builder;
 
 interface GridMakable
 {
-
-    // TODO: いま GridResponder クラスにある composedQuery メソッドは、GridMaker で定義できるようにする
-    // ↑ Laravel のクエリビルダを使わないデータソース(申請フォームの回答等)に対してソートやフィルターを使えるようにするため
-
     /**
-     * フィルタやソート機能を利用した結果のクエリビルダオブジェクトを返す
+     * フィルタやソート機能を利用した結果の配列を返す
      *
      * @param string $order_by ソート対象の列
-     * @param string $order ascかdesc
+     * @param string $direction ascかdesc
      * @param array $filter_queries フィルタークエリ
-     * @param string $filter_mode フィルターのモード。and か or
-     * @return Builder
+     * @param string $filter_mode フィルターのモード。 and か or
+     * @param int $offset SQL で言う所の offset
+     * @param int $limit SQL で言う所の limit
+     * @return array
      */
-    public function query(
+    public function getArray(
         string $order_by,
         string $direction,
         array $filter_queries,
+        string $filter_mode,
+        int $offset,
+        int $limit
+    ): array;
+
+    /**
+     * フィルタ適用後の全件数を取得
+     *
+     * @param array $filter_queries フィルタークエリ
+     * @param string $filter_mode フィルターのモード。 and か or
+     * @return int
+     */
+    public function getCount(
+        array $filter_queries,
         string $filter_mode
-    ): Builder;
+    ): int;
 
     /**
      * 表示するキー
@@ -57,11 +69,4 @@ interface GridMakable
      * @return array
      */
     public function sortableKeys(): array;
-
-    /**
-     * 1レコードの配列を生成して返す
-     *
-     * @return array
-     */
-    public function map($record): array;
 }

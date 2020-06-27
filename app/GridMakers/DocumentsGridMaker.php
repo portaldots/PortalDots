@@ -15,7 +15,7 @@ class DocumentsGridMaker implements GridMakable
     /**
      * @inheritDoc
      */
-    public function baseEloquentQuery(): Builder
+    protected function baseEloquentQuery(): Builder
     {
         return Document::select($this->keys())->with(['schedule', 'userCreatedBy', 'userUpdatedBy']);
     }
