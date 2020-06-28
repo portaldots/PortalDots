@@ -7,6 +7,7 @@ namespace App\GridMakers;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Document;
 use App\GridMakers\Concerns\UseEloquent;
+use Illuminate\Database\Eloquent\Model;
 
 class DocumentsGridMaker implements GridMakable
 {
@@ -46,18 +47,44 @@ class DocumentsGridMaker implements GridMakable
      */
     public function filterableKeys(): array
     {
+        $users_type = ['type' => 'belongsTo', 'to' => 'users', 'keys' => [
+            'id' => ['translation' => 'ユーザーID', 'type' => 'number'],
+            'student_id' => ['translation' => '学籍番号', 'type' => 'string'],
+            'name_family' => ['translation' => '姓', 'type' => 'string'],
+            'name_family_yomi' => ['translation' => '姓(よみ)', 'type' => 'string'],
+            'name_given' => ['translation' => '名', 'type' => 'string'],
+            'name_given_yomi' => ['translation' => '名(よみ)', 'type' => 'string'],
+            'email' => ['translation' => '連絡先メールアドレス', 'type' => 'string'],
+            'tel' => ['translation' => '電話番号', 'type' => 'string'],
+            'is_staff' => ['translation' => 'スタッフ', 'type' => 'bool'],
+            'is_admin' => ['translation' => '管理者', 'type' => 'bool'],
+            'email_verified_at' => ['translation' => 'メール認証', 'type' => 'isNull'],
+            'univemail_verified_at' => ['translation' => '本人確認', 'type' => 'isNull'],
+            'notes' => ['translation' => 'スタッフ用メモ', 'type' => 'string'],
+            'created_at' => ['translation' => '作成日時', 'type' => 'datetime'],
+            'updated_at' => ['translation' => '更新日時', 'type' => 'datetime'],
+        ]];
+
         return [
-            'id' => 'number',
-            'name' => 'string',
-            'schedule_id' => 'number',  // TODO: リファレンス型みたいなものを導入したい
-            'description' => 'string',
-            'is_public' => 'bool',
-            'is_important' => 'bool',
-            'created_at' => 'datetime',
-            'created_by' => 'number',     // TODO: リファレンス型みたいなものを導入したい
-            'updated_at' => 'datetime',
-            'updated_by' => 'number',   // TODO: リファレンス型みたいなものを導入したい
-            'notes' => 'string',
+            'id' => ['type' => 'number'],
+            'name' => ['type' => 'string'],
+            'schedule_id' => ['type' => 'belongsTo', 'to' => 'schedules', 'keys' => [
+                'id' => ['translation' => '予定ID', 'type' => 'number'],
+                'name' => ['translation' => '予定名', 'type' => 'string'],
+                'start_at' => ['translation' => '開始日時', 'type' => 'datetime'],
+                'place' => ['translation' => '場所', 'type' => 'string'],
+                'notes' => ['translation' => 'スタッフ用メモ', 'type' => 'string'],
+                'created_at' => ['translation' => '作成日時', 'type' => 'datetime'],
+                'updated_at' => ['translation' => '更新日時', 'type' => 'datetime'],
+            ]],
+            'description' => ['type' => 'string'],
+            'is_public' => ['type' => 'bool'],
+            'is_important' => ['type' => 'bool'],
+            'created_at' => ['type' => 'datetime'],
+            'created_by' => $users_type,
+            'updated_at' => ['type' => 'datetime'],
+            'updated_by' => $users_type,
+            'notes' => ['type' => 'string'],
         ];
     }
 
@@ -109,5 +136,10 @@ class DocumentsGridMaker implements GridMakable
             }
         }
         return $item;
+    }
+
+    protected function model(): Model
+    {
+        return new Document();
     }
 }

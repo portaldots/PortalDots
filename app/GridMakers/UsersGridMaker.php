@@ -7,6 +7,7 @@ namespace App\GridMakers;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\User;
 use App\GridMakers\Concerns\UseEloquent;
+use Illuminate\Database\Eloquent\Model;
 
 class UsersGridMaker implements GridMakable
 {
@@ -50,21 +51,21 @@ class UsersGridMaker implements GridMakable
     public function filterableKeys(): array
     {
         return [
-            'id' => 'number',
-            'student_id' => 'string',
-            'name_family' => 'string',
-            'name_family_yomi' => 'string',
-            'name_given' => 'string',
-            'name_given_yomi' => 'string',
-            'email' => 'string',
-            'tel' => 'string',
-            'is_staff' => 'bool',
-            'is_admin' => 'bool',
-            'email_verified_at' => 'isNull',
-            'univemail_verified_at' => 'isNull',
-            'notes' => 'string',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'id' => ['type' => 'number'],
+            'student_id' => ['type' => 'string'],
+            'name_family' => ['type' => 'string'],
+            'name_family_yomi' => ['type' => 'string'],
+            'name_given' => ['type' => 'string'],
+            'name_given_yomi' => ['type' => 'string'],
+            'email' => ['type' => 'string'],
+            'tel' => ['type' => 'string'],
+            'is_staff' => ['type' => 'bool'],
+            'is_admin' => ['type' => 'bool'],
+            'email_verified_at' => ['type' => 'isNull'],
+            'univemail_verified_at' => ['type' => 'isNull'],
+            'notes' => ['type' => 'string'],
+            'created_at' => ['type' => 'datetime'],
+            'updated_at' => ['type' => 'datetime'],
         ];
     }
 
@@ -111,5 +112,10 @@ class UsersGridMaker implements GridMakable
             }
         }
         return $item;
+    }
+
+    protected function model(): Model
+    {
+        return new User();
     }
 }

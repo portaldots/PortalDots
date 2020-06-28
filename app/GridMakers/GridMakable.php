@@ -48,14 +48,30 @@ interface GridMakable
     /**
      * フィルタ可能なキー
      *
-     * ['keyName' => 'type', ...] という形式の連想配列を返してください。
+     * [
+     *      'keyName' => [
+     *          'type' => 'タイプ',
+     *          'to' => 'belongsTo先テーブル名',
+     *          'keys' => [
+     *              'belongsTo先テーブルのkey名' => [
+     *                  'translation' => '表示名',
+     *                  'type' => 'タイプ'
+     *              ],
+     *              ...
+     *          ]
+     *      ],
+     *      ...
+     * ]
+     * という形式の連想配列を返してください。
      *
-     * type : string, number, datetime, bool, isNull のいずれか
+     * タイプ : string, number, datetime, bool, isNull のいずれか
      * - string : 文字列検索
      * - number : 数値。大小比較ができる
      * - datetime : 日時。過去・未来比較ができる
      * - bool : ブーリアン。はい・いいえが選べる
      * - isNull : 空か空でないかで検索できる
+     * - belongsTo : 他のテーブルに紐づく
+     * - belongsToMany : belongsTo の複数バージョン
      *
      * @return array ['keyName' => 'type', ...] という形式の連想配列
      */

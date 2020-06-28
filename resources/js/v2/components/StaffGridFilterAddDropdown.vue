@@ -19,7 +19,7 @@
     </template>
     <template #item="{ item }">
       <AppDropdownItem component-is="button" @click="e => onClickItem(item, e)">
-        {{ item[1] }}
+        {{ item.translation }}
       </AppDropdownItem>
     </template>
   </AppDropdown>
@@ -35,23 +35,14 @@ export default {
     AppDropdownItem
   },
   props: {
-    keys: {
+    dropdownItems: {
       type: Array,
       required: true
-    },
-    keyTranslations: {
-      type: Object,
-      required: true
-    }
-  },
-  computed: {
-    dropdownItems() {
-      return this.keys.map(key => [key, this.keyTranslations[key]])
     }
   },
   methods: {
     onClickItem(item, e) {
-      this.$emit('clickItem', item[0], e)
+      this.$emit('clickItem', item, e)
     }
   }
 }
