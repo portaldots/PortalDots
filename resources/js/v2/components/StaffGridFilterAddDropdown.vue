@@ -6,6 +6,7 @@
   >
     <template #button="{ toggle, props }">
       <button
+        type="button"
         class="btn is-secondary is-no-border is-block add_dropdown-btn"
         @click="toggle"
         v-bind="props"

@@ -1,5 +1,5 @@
 <template>
-  <div class="staff_grid_sort">
+  <form class="staff_grid_sort" @submit.prevent="onClickApply">
     <template v-if="queries.length > 0">
       <div class="staff_grid_sort-list">
         <div
@@ -124,12 +124,12 @@
     </div>
     <div class="staff_grid_sort-actions">
       <button
-        type="button"
-        @click="onClickApply"
+        type="submit"
         class="btn is-primary is-block"
         :disabled="loading || !isDirty"
       >
-        <strong>適用</strong>
+        <i class="fas fa-spinner fa-pulse" v-if="loading"></i>
+        <strong v-else>適用</strong>
       </button>
       <button
         type="button"
@@ -140,7 +140,7 @@
         絞り込みを解除
       </button>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
