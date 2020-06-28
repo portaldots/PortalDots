@@ -71,7 +71,7 @@ class DocumentsGridMaker implements GridMakable
             'id' => ['type' => 'number'],
             'name' => ['type' => 'string'],
             'size' => ['type' => 'number'],
-            'extension' => ['type' => 'number'],
+            'extension' => ['type' => 'string'],
             'schedule_id' => ['type' => 'belongsTo', 'to' => 'schedules', 'keys' => [
                 'id' => ['translation' => '予定ID', 'type' => 'number'],
                 'name' => ['translation' => '予定名', 'type' => 'string'],
