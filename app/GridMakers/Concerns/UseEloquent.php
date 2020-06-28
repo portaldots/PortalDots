@@ -79,7 +79,7 @@ trait UseEloquent
 
                         $this->addToDbQuery(
                             $sub_query,
-                            $this->filterableKeys()[$key_name]['type'],
+                            $this->filterableKeys()[$key_name]['keys'][$filter_query['key_name']]['type'],
                             $filter_query,
                             $filter_mode
                         );
