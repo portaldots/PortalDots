@@ -3,6 +3,7 @@
     :items="dropdownItems"
     name="grid-add-filter"
     class="add_dropdown"
+    menu-fluid
   >
     <template #button="{ toggle, props }">
       <button
