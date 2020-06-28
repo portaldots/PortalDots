@@ -30,6 +30,8 @@ class DocumentsGridMaker implements GridMakable
             'id',
             'name',
             'path',
+            'size',
+            'extension',
             'schedule_id',
             'description',
             'is_public',
@@ -68,6 +70,8 @@ class DocumentsGridMaker implements GridMakable
         return [
             'id' => ['type' => 'number'],
             'name' => ['type' => 'string'],
+            'size' => ['type' => 'number'],
+            'extension' => ['type' => 'number'],
             'schedule_id' => ['type' => 'belongsTo', 'to' => 'schedules', 'keys' => [
                 'id' => ['translation' => '予定ID', 'type' => 'number'],
                 'name' => ['translation' => '予定名', 'type' => 'string'],
@@ -96,6 +100,8 @@ class DocumentsGridMaker implements GridMakable
         return [
             'id',
             'name',
+            'size',
+            'extension',
             'schedule_id',
             'description',
             'is_public',
@@ -116,6 +122,9 @@ class DocumentsGridMaker implements GridMakable
         $item = [];
         foreach ($this->keys() as $key) {
             switch ($key) {
+                case 'extension':
+                    $item[$key] = mb_strtoupper($record->extension);
+                    break;
                 case 'schedule_id':
                     $item[$key] = $record->schedule;
                     break;

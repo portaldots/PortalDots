@@ -11,6 +11,8 @@
             id: '配布資料ID',
             name: '配布資料名',
             path: 'ファイル',
+            size: 'サイズ(バイト)',
+            extension: 'ファイル形式',
             schedule_id: 'イベント',
             description: '説明',
             is_public: '公開',
