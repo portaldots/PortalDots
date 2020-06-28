@@ -6,6 +6,7 @@
 	"require": {
         "php": "^7.3.6",
         "ext-mbstring": "*",
+        "ext-json": "*",
         "cebe/markdown": "*",
         "doctrine/dbal": "^2.10",
         "ezyang/htmlpurifier": "^4.9",
@@ -17,7 +18,7 @@
         "phpgangsta/googleauthenticator": "dev-master",
         "simplesoftwareio/simple-qrcode": "~3",
         "twig/twig": "^2.0",
-        "vlucas/phpdotenv": "^3.3"
+        "vlucas/phpdotenv": "^3.3",
     },
 	"require-dev": {
         "facade/ignition": "^1.4",
