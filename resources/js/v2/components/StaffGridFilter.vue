@@ -253,7 +253,7 @@ export default {
         return Object.keys(this.filterableKeys[key].keys).map(insideKey => ({
           keyName: `${key}.${insideKey}`,
           type: this.filterableKeys[key].keys[insideKey].type,
-          translation: `${this.keyTranslations[key]} (${this.filterableKeys[key].keys[insideKey].translation})`
+          translation: `${this.keyTranslations[key]} › ${this.filterableKeys[key].keys[insideKey].translation}`
         }))
       })
     }
