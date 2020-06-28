@@ -7,7 +7,6 @@ namespace App\Http\Responders\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Responders\Respondable;
 use App\Http\Responders\Staff\Exceptions\GridMakerNotSetException;
 use App\Http\Responders\Staff\Exceptions\RequestNotSetException;

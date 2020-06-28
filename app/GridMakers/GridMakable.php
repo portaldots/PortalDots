@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\GridMakers;
 
-use Illuminate\Database\Eloquent\Builder;
-
 interface GridMakable
 {
     /**
