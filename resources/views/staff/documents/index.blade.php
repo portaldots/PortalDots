@@ -57,11 +57,11 @@
             </template>
             <template v-else-if="keyName === 'schedule_id' && row[keyName]">
                 {{-- イベント --}}
-                @{{ row[keyName].name  }} (ID : @{{ row['id'] }})
+                @{{ row[keyName].name  }} (ID : @{{ row[keyName].id }})
             </template>
             <template v-else-if="keyName === 'created_by' || keyName === 'updated_by'">
                 {{-- 作成者・更新者 --}}
-                @{{ row[keyName].name_family  }} @{{ row[keyName].name_given  }} (@{{ row[keyName].student_id  }} • ID : @{{ row['id'] }})
+                @{{ row[keyName].name_family  }} @{{ row[keyName].name_given  }} (@{{ row[keyName].student_id  }} • ID : @{{ row[keyName].id }})
             </template>
             <template v-else-if="row[keyName] === true">
                 <strong>はい</strong>
