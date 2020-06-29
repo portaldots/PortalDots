@@ -4,6 +4,8 @@
     class="dropdown-item"
     :tabindex="['a', 'button'].includes(componentIs) ? 0 : undefined"
     @click="onClick"
+    @mouseover="onMouseover"
+    @mouseout="onMouseout"
   >
     <slot />
   </component>
@@ -20,6 +22,12 @@ export default {
   methods: {
     onClick(e) {
       this.$emit('click', e)
+    },
+    onMouseover(e) {
+      this.$emit('mouseover', e)
+    },
+    onMouseout(e) {
+      this.$emit('mouseout', e)
     }
   }
 }

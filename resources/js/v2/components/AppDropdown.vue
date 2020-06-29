@@ -20,7 +20,40 @@
           height: menuHeight || 'auto'
         }"
       >
-        <div v-for="item in items" :key="item.key">
+        <div v-for="(item, index) in items" :key="item.key" ref="menuItems">
+          <template v-if="item.sublist && Array.isArray(item.sublist)">
+            <AppDropdownItem
+              component-is="button"
+              @click.stop="() => openSubmenu(index)"
+              @mouseover="() => onMouseoverItem(index)"
+              @mouseout="onMouseoutItem"
+            >
+              <div class="dropdown-menu__has-submenu">
+                <div>{{ item.label }}</div>
+                <i class="fas fa-caret-right"></i>
+              </div>
+            </AppDropdownItem>
+          </template>
+          <template v-else @mouseover="onMouseoutItem">
+            <slot name="item" :item="item" />
+          </template>
+        </div>
+      </div>
+      <div
+        class="dropdown-menu"
+        v-if="openingSubmenuIndex !== null && isOpen"
+        @click="close"
+        @mouseover="isMouseoverSubmenu = true"
+        @mouseout="isMouseoverSubmenu = false"
+        ref="submenu"
+        :style="{
+          top: submenuTop,
+          left: submenuLeft,
+          width: submenuWidth || 'auto',
+          height: submenuHeight || 'auto'
+        }"
+      >
+        <div v-for="item in items[openingSubmenuIndex].sublist">
           <slot name="item" :item="item" />
         </div>
       </div>
@@ -29,19 +62,32 @@
 </template>
 
 <script>
+import AppDropdownItem from './AppDropdownItem.vue'
+
 export default {
+  components: {
+    AppDropdownItem
+  },
   data() {
     return {
       isOpen: false,
       menuTop: '0',
       menuLeft: '0',
       menuWidth: null,
-      menuHeight: null
+      menuHeight: null,
+      openingSubmenuIndex: null,
+      submenuTop: '0',
+      submenuLeft: '0',
+      submenuWidth: null,
+      submenuHeight: null,
+      timeoutIdForSubmenu: null,
+      isMouseoverSubmenu: false
     }
   },
   props: {
     items: {
       // 各要素は {key: String} が必須
+      // 各要素中に {sublist: Array, label: String} を含めると、サブメニュー付きになる
       type: Array,
       required: true
     },
@@ -59,6 +105,7 @@ export default {
     async toggle() {
       this.isOpen = !this.isOpen
       this.menuHeight = null
+      this.openingSubmenuIndex = null
 
       if (!this.isOpen) {
         window.document.body.style.overflowY = 'visible'
@@ -115,6 +162,68 @@ export default {
     close() {
       window.document.body.style.overflowY = 'visible'
       this.isOpen = false
+    },
+    async openSubmenu(index) {
+      if (this.timeoutIdForSubmenu) {
+        window.clearTimeout(this.timeoutIdForSubmenu)
+        this.timeoutIdForSubmenu = null
+      }
+
+      this.openingSubmenuIndex = index
+
+      const refParentItem = this.$refs.menuItems[index]
+
+      this.submenuTop = `${refParentItem.getBoundingClientRect().top - 3}px`
+      this.submenuLeft = `${refParentItem.getBoundingClientRect().right}px`
+
+      await this.$nextTick()
+
+      const refSubmenu = this.$refs.submenu
+
+      // メニューが画面のX方向からはみ出してしまうようであれば、表示する向きを逆にする
+      if (
+        refParentItem.getBoundingClientRect().right + refSubmenu.clientWidth >
+        window.innerWidth
+      ) {
+        this.submenuLeft = `${refParentItem.getBoundingClientRect().left -
+          refSubmenu.clientWidth}px`
+      }
+
+      // メニューが画面のY方向からはみ出してしまうようであれば、top の値を調整する
+
+      // 画面の端とメニューがくっつかないよう、space ぶんの余裕をもたせる
+      const space = 20
+
+      if (
+        refSubmenu.getBoundingClientRect().bottom + refSubmenu.clientHeight >
+        window.innerHeight
+      ) {
+        this.submenuTop = `${window.innerHeight -
+          refSubmenu.clientHeight -
+          space}px`
+      }
+    },
+    closeSubmenu() {
+      if (this.timeoutIdForSubmenu) {
+        window.clearTimeout(this.timeoutIdForSubmenu)
+        this.timeoutIdForSubmenu = null
+      }
+
+      this.openingSubmenuIndex = null
+    },
+    onMouseoverItem(index) {
+      this.timeoutIdForSubmenu = window.setTimeout(
+        () => this.openSubmenu(index),
+        500
+      )
+    },
+    onMouseoutItem() {
+      if (this.isMouseoverSubmenu || this.openingSubmenuIndex === null) return
+
+      this.timeoutIdForSubmenu = window.setTimeout(
+        () => this.closeSubmenu(),
+        500
+      )
     }
   },
   computed: {
@@ -143,6 +252,10 @@ export default {
     padding: $spacing-sm 0;
     position: fixed;
     z-index: $z-index-dropdown-menu;
+    &__has-submenu {
+      display: flex;
+      justify-content: space-between;
+    }
   }
   &-backdrop {
     bottom: 0;

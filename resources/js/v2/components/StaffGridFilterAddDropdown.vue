@@ -21,7 +21,7 @@
     </template>
     <template #item="{ item }">
       <AppDropdownItem component-is="button" @click="e => onClickItem(item, e)">
-        {{ item.translation }}
+        {{ item.menuLabel }}
       </AppDropdownItem>
     </template>
   </AppDropdown>
