@@ -26,11 +26,11 @@
               component-is="button"
               @click.stop="() => toggleSubmenu(index)"
               @mouseover="() => onMouseoverItemToOpenSubmenu(index)"
+              class="dropdown-menu__submenu-opener"
+              :class="{ 'is-open-submenu': index === openingSubmenuIndex }"
             >
-              <div class="dropdown-menu__has-submenu">
-                <div>{{ item.label }}</div>
-                <i class="fas fa-caret-right"></i>
-              </div>
+              <div>{{ item.label }}</div>
+              <i class="fas fa-caret-right"></i>
             </AppDropdownItem>
           </template>
           <div v-else @mouseover="onMouseoutItemToCloseSubmenu">
@@ -296,9 +296,13 @@ export default {
     padding: $spacing-sm 0;
     position: fixed;
     z-index: $z-index-dropdown-menu;
-    &__has-submenu {
+    &__submenu-opener {
       display: flex;
       justify-content: space-between;
+      &.is-open-submenu {
+        background: $color-primary;
+        color: $color-bg-white;
+      }
     }
   }
   &-backdrop {
