@@ -70,4 +70,14 @@ class Page extends Model
         return $query
             ->orWhereIn('page_viewable_tags.tag_id', $circle->tags->pluck('id')->all());
     }
+
+    public function userCreatedBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function userUpdatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }

@@ -159,6 +159,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::prefix('/pages')
             ->name('pages.')
             ->group(function () {
+                Route::get('/', 'Staff\Pages\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Pages\ApiAction')->name('api');
                 Route::get('/create', 'Staff\Pages\CreateAction')->name('create');
                 Route::post('/', 'Staff\Pages\StoreAction')->name('store');
                 Route::get('/{page}/edit', 'Staff\Pages\EditAction')->name('edit');
