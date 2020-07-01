@@ -25,6 +25,7 @@
             <AppDropdownItem
               component-is="button"
               @click.stop="() => toggleSubmenu(index)"
+              @mouseover="() => onMouseoverItemToOpenSubmenu(index)"
             >
               <div class="dropdown-menu__has-submenu">
                 <div>{{ item.label }}</div>
@@ -32,15 +33,17 @@
               </div>
             </AppDropdownItem>
           </template>
-          <template v-else @mouseover="onMouseoutItem">
+          <div v-else @mouseover="onMouseoutItemToCloseSubmenu">
             <slot name="item" :item="item" />
-          </template>
+          </div>
         </div>
       </div>
       <div
         class="dropdown-menu"
         v-if="openingSubmenuIndex !== null && isOpen"
         @click="close"
+        @mouseover="onMouseoverSubmenu"
+        @mouseout="onMouseoutSubmenu"
         ref="submenu"
         :style="{
           top: submenuTop !== null ? `${submenuTop}px` : 'auto',
@@ -232,18 +235,39 @@ export default {
 
       this.openingSubmenuIndex = null
     },
-    onMouseoverItem(index) {
+    onMouseoverItemToOpenSubmenu(index) {
+      if (this.openingSubmenuIndex === index) {
+        return
+      }
+
+      if (this.timeoutIdForSubmenu) {
+        window.clearTimeout(this.timeoutIdForSubmenu)
+      }
+
       this.timeoutIdForSubmenu = window.setTimeout(
         () => this.toggleSubmenu(index),
-        500
+        300
       )
     },
-    onMouseoutItem() {
+    onMouseoverSubmenu() {
+      if (this.timeoutIdForSubmenu) {
+        window.clearTimeout(this.timeoutIdForSubmenu)
+      }
+      this.timeoutIdForSubmenu = null
+    },
+    onMouseoutSubmenu() {
+      this.onMouseoutItemToCloseSubmenu()
+    },
+    onMouseoutItemToCloseSubmenu() {
       if (this.openingSubmenuIndex === null) return
+
+      if (this.timeoutIdForSubmenu) {
+        window.clearTimeout(this.timeoutIdForSubmenu)
+      }
 
       this.timeoutIdForSubmenu = window.setTimeout(
         () => this.closeSubmenu(),
-        500
+        300
       )
     }
   },
