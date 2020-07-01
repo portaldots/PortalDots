@@ -26,7 +26,6 @@
               component-is="button"
               @click.stop="() => openSubmenu(index)"
               @mouseover="() => onMouseoverItem(index)"
-              @mouseout="onMouseoutItem"
             >
               <div class="dropdown-menu__has-submenu">
                 <div>{{ item.label }}</div>
@@ -43,8 +42,6 @@
         class="dropdown-menu"
         v-if="openingSubmenuIndex !== null && isOpen"
         @click="close"
-        @mouseover="isMouseoverSubmenu = true"
-        @mouseout="isMouseoverSubmenu = false"
         ref="submenu"
         :style="{
           top: submenuTop,
@@ -53,7 +50,7 @@
           height: submenuHeight || 'auto'
         }"
       >
-        <div v-for="item in items[openingSubmenuIndex].sublist">
+        <div v-for="item in items[openingSubmenuIndex].sublist" :key="item.key">
           <slot name="item" :item="item" />
         </div>
       </div>
@@ -218,7 +215,7 @@ export default {
       )
     },
     onMouseoutItem() {
-      if (this.isMouseoverSubmenu || this.openingSubmenuIndex === null) return
+      if (this.openingSubmenuIndex === null) return
 
       this.timeoutIdForSubmenu = window.setTimeout(
         () => this.closeSubmenu(),
