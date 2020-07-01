@@ -259,11 +259,11 @@ export default {
       this.onMouseoutItemToCloseSubmenu()
     },
     onMouseoutItemToCloseSubmenu() {
-      if (this.openingSubmenuIndex === null) return
-
       if (this.timeoutIdForSubmenu) {
         window.clearTimeout(this.timeoutIdForSubmenu)
       }
+
+      if (this.openingSubmenuIndex === null) return
 
       this.timeoutIdForSubmenu = window.setTimeout(
         () => this.closeSubmenu(),
