@@ -14,18 +14,17 @@
         @click="close"
         ref="menu"
         :style="{
-          top: `${menuTop}px` || 'auto',
-          left: `${menuLeft}px` || 'auto',
-          bottom: `${menuBottom}px` || 'auto',
-          right: `${menuRight}px` || 'auto'
+          top: menuTop !== null ? `${menuTop}px` : 'auto',
+          left: menuLeft !== null ? `${menuLeft}px` : 'auto',
+          right: menuRight !== null ? `${menuRight}px` : 'auto',
+          bottom: menuBottom !== null ? `${menuBottom}px` : 'auto'
         }"
       >
         <div v-for="(item, index) in items" :key="item.key" ref="menuItems">
           <template v-if="item.sublist && Array.isArray(item.sublist)">
             <AppDropdownItem
               component-is="button"
-              @click.stop="() => openSubmenu(index)"
-              @mouseover="() => onMouseoverItem(index)"
+              @click.stop="() => toggleSubmenu(index)"
             >
               <div class="dropdown-menu__has-submenu">
                 <div>{{ item.label }}</div>
@@ -44,10 +43,10 @@
         @click="close"
         ref="submenu"
         :style="{
-          top: submenuTop,
-          left: submenuLeft,
-          width: submenuWidth || 'auto',
-          height: submenuHeight || 'auto'
+          top: submenuTop !== null ? `${submenuTop}px` : 'auto',
+          left: submenuLeft !== null ? `${submenuLeft}px` : 'auto',
+          right: submenuRight !== null ? `${submenuRight}px` : 'auto',
+          bottom: submenuBottom !== null ? `${submenuBottom}px` : 'auto'
         }"
       >
         <div v-for="item in items[openingSubmenuIndex].sublist" :key="item.key">
@@ -70,13 +69,13 @@ export default {
       isOpen: false,
       menuTop: null,
       menuLeft: null,
-      menuBottom: null,
       menuRight: null,
+      menuBottom: null,
       openingSubmenuIndex: null,
-      submenuTop: '0',
-      submenuLeft: '0',
-      submenuWidth: null,
-      submenuHeight: null,
+      submenuTop: null,
+      submenuLeft: null,
+      submenuRight: null,
+      submenuBottom: null,
       timeoutIdForSubmenu: null,
       isMouseoverSubmenu: false
     }
@@ -165,44 +164,64 @@ export default {
       window.document.body.style.overflowY = 'visible'
       this.isOpen = false
     },
-    async openSubmenu(index) {
+    async toggleSubmenu(index) {
       if (this.timeoutIdForSubmenu) {
         window.clearTimeout(this.timeoutIdForSubmenu)
         this.timeoutIdForSubmenu = null
+      }
+
+      if (this.openingSubmenuIndex === index) {
+        this.openingSubmenuIndex = null
+        return
       }
 
       this.openingSubmenuIndex = index
 
       const refParentItem = this.$refs.menuItems[index]
 
-      this.submenuTop = `${refParentItem.getBoundingClientRect().top - 3}px`
-      this.submenuLeft = `${refParentItem.getBoundingClientRect().right}px`
+      this.submenuTop = refParentItem.getBoundingClientRect().top - 10
+      this.submenuLeft = refParentItem.getBoundingClientRect().right
+      this.submenuRight = null
+      this.submenuBottom = null
 
       await this.$nextTick()
 
       const refSubmenu = this.$refs.submenu
 
       // メニューが画面のX方向からはみ出してしまうようであれば、表示する向きを逆にする
-      if (
-        refParentItem.getBoundingClientRect().right + refSubmenu.clientWidth >
-        window.innerWidth
-      ) {
-        this.submenuLeft = `${refParentItem.getBoundingClientRect().left -
-          refSubmenu.clientWidth}px`
+      if (refSubmenu.getBoundingClientRect().right > window.innerWidth) {
+        this.submenuLeft = null
+        this.submenuRight =
+          window.innerWidth - refParentItem.getBoundingClientRect().left
       }
 
-      // メニューが画面のY方向からはみ出してしまうようであれば、top の値を調整する
+      await this.$nextTick()
 
-      // 画面の端とメニューがくっつかないよう、space ぶんの余裕をもたせる
-      const space = 20
+      // メニューが画面のY方向からはみ出してしまうようであれば、メニューの高さを調整する
+
+      const space = 20 // 画面の端とメニューがくっつかないよう、space ぶんの余裕をもたせる
+
+      const normalMenuHeight = refSubmenu.getBoundingClientRect().height
+
+      this.submenuBottom = Math.max(
+        space,
+        window.innerHeight - refSubmenu.getBoundingClientRect().bottom
+      )
+
+      const compressedMenuHeight =
+        window.innerHeight - this.submenuBottom - this.submenuTop
 
       if (
-        refSubmenu.getBoundingClientRect().bottom + refSubmenu.clientHeight >
-        window.innerHeight
+        this.submenuBottom === space &&
+        compressedMenuHeight < 0.2 * window.innerHeight
       ) {
-        this.submenuTop = `${window.innerHeight -
-          refSubmenu.clientHeight -
-          space}px`
+        // メニューの高さがギリギリになってしまう場合、メニューは上方向に表示する
+        this.submenuBottom =
+          window.innerHeight - refParentItem.getBoundingClientRect().bottom - 10
+        this.submenuTop = Math.max(
+          space,
+          window.innerHeight - this.submenuBottom - normalMenuHeight
+        )
       }
     },
     closeSubmenu() {
@@ -215,7 +234,7 @@ export default {
     },
     onMouseoverItem(index) {
       this.timeoutIdForSubmenu = window.setTimeout(
-        () => this.openSubmenu(index),
+        () => this.toggleSubmenu(index),
         500
       )
     },
