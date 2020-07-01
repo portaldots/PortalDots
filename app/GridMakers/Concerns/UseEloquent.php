@@ -110,6 +110,10 @@ trait UseEloquent
 
     private function addToDbQuery(&$db_query, $type, $filter_query, $filter_mode)
     {
+        if (empty($filter_query['operator'])) {
+            $filter_query['operator'] = '=';
+        }
+
         if (in_array($filter_query['operator'], ['like', 'not like'], true)) {
             $filter_query['value'] = '%' . $filter_query['value'] . '%';
         }
