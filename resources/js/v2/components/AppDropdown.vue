@@ -14,10 +14,10 @@
         @click="close"
         ref="menu"
         :style="{
-          top: menuTop,
-          left: menuLeft,
-          width: menuWidth || 'auto',
-          height: menuHeight || 'auto'
+          top: `${menuTop}px` || 'auto',
+          left: `${menuLeft}px` || 'auto',
+          bottom: `${menuBottom}px` || 'auto',
+          right: `${menuRight}px` || 'auto'
         }"
       >
         <div v-for="(item, index) in items" :key="item.key" ref="menuItems">
@@ -68,10 +68,10 @@ export default {
   data() {
     return {
       isOpen: false,
-      menuTop: '0',
-      menuLeft: '0',
-      menuWidth: null,
-      menuHeight: null,
+      menuTop: null,
+      menuLeft: null,
+      menuBottom: null,
+      menuRight: null,
       openingSubmenuIndex: null,
       submenuTop: '0',
       submenuLeft: '0',
@@ -101,7 +101,6 @@ export default {
   methods: {
     async toggle() {
       this.isOpen = !this.isOpen
-      this.menuHeight = null
       this.openingSubmenuIndex = null
 
       if (!this.isOpen) {
@@ -111,6 +110,12 @@ export default {
 
       window.document.body.style.overflowY = 'hidden'
 
+      this.menuTop = null
+      this.menuLeft = null
+      this.menuBottom = null
+      this.menuRight = null
+
+      // メニュー本体部分の DOM を取得するため、まずメニュー本体を DOM 上に描画する
       await this.$nextTick()
 
       const refButton = this.$refs.button
@@ -118,42 +123,42 @@ export default {
 
       // fluid の場合、ボタンの幅にメニュー幅を揃える
       if (this.menuFluid) {
-        this.menuWidth = `${refButton.clientWidth}px`
+        this.menuRight =
+          window.innerWidth - refButton.getBoundingClientRect().right
       }
 
-      // 1) とりあえずボタン下にメニューを表示して様子見
+      // とりあえずボタン下にメニューを表示
 
-      this.menuLeft = `${refButton.getBoundingClientRect().left}px`
-      this.menuTop = `${refButton.getBoundingClientRect().bottom + 3}px`
+      this.menuLeft = refButton.getBoundingClientRect().left
+      this.menuTop = refButton.getBoundingClientRect().bottom + 3
 
       await this.$nextTick()
 
-      // 2) メニューが画面からはみ出してしまうようであれば、メニュー内でスクロールできるようにする
+      // メニューが画面からはみ出してしまうようであれば、メニュー内でスクロールできるようにする
 
-      // 画面の端とメニューがくっつかないよう、space ぶんの余裕をもたせる
-      const space = 20
+      const space = 20 // 画面の端とメニューがくっつかないよう、space ぶんの余裕をもたせる
+
+      const normalMenuHeight = refMenu.getBoundingClientRect().height
+
+      this.menuBottom = Math.max(
+        space,
+        window.innerHeight - refMenu.getBoundingClientRect().bottom
+      )
+
+      const compressedMenuHeight =
+        window.innerHeight - this.menuBottom - this.menuTop
 
       if (
-        refMenu.getBoundingClientRect().top + refMenu.clientHeight >
-        window.innerHeight
+        this.menuBottom === space &&
+        compressedMenuHeight < 0.2 * window.innerHeight
       ) {
-        const menuHeight =
-          window.innerHeight - refMenu.getBoundingClientRect().top - space
-        if (menuHeight > window.innerHeight * 0.3) {
-          this.menuHeight = `${menuHeight}px`
-        } else {
-          // メニューの高さがギリギリになってしまう場合、メニューはボタンより上に表示する
-          const top = Math.max(
-            space,
-            refButton.getBoundingClientRect().top - refMenu.clientHeight - 3
-          )
-          this.menuTop = `${top}px`
-          if (top === space) {
-            this.menuHeight = `${refButton.getBoundingClientRect().top -
-              3 -
-              space}px`
-          }
-        }
+        // メニューの高さがギリギリになってしまう場合、メニューはボタンより上に表示する
+        this.menuBottom =
+          window.innerHeight - refButton.getBoundingClientRect().top - 3
+        this.menuTop = Math.max(
+          space,
+          window.innerHeight - this.menuBottom - normalMenuHeight
+        )
       }
     },
     close() {
@@ -243,7 +248,6 @@ export default {
     background: $color-bg-white;
     border-radius: $border-radius;
     box-shadow: 0 0.4rem 0.8rem 0.1rem rgba($color-text, 0.25);
-    left: 0;
     overflow: auto;
     overflow-x: hidden;
     padding: $spacing-sm 0;
