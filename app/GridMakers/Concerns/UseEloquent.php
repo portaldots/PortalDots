@@ -6,6 +6,7 @@ namespace App\GridMakers\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 trait UseEloquent
 {
@@ -129,6 +130,8 @@ trait UseEloquent
                 if (!in_array($filter_query['operator'], ['=', '!=', '<', '>', '<=', '>='], true)) {
                     $filter_query['operator'] = '=';
                 }
+                $filter_query['key_name'] = "date_format(`{$filter_query['key_name']}`, '%Y-%m-%d %H:%i')";
+                $filter_query['value'] = (new Carbon($filter_query['value']))->format('Y-m-d H:i');
                 break;
             case 'bool':
                 if (!in_array($filter_query['operator'], ['='], true)) {
@@ -143,21 +146,22 @@ trait UseEloquent
 
         if ($type === 'isNull') {
             $is = $filter_query['value'] ? 'NULL' : 'NOT NULL';
-            if ($filter_mode === 'and') {
-                $db_query->whereRaw("{$filter_query['key_name']} IS {$is}");
-            } else {
-                $db_query->orWhereRaw("{$filter_query['key_name']} IS {$is}");
-            }
+            $db_query->whereRaw("{$filter_query['key_name']} IS {$is}", null, $filter_mode);
         } elseif ($filter_query['operator'] === '!=') {
-            if ($filter_mode === 'and') {
-                $db_query->whereRaw("NOT ({$filter_query['key_name']} <=> ?)", [$filter_query['value']]);
-            } else {
-                $db_query->orWhereRaw("NOT ({$filter_query['key_name']} <=> ?)", [$filter_query['value']]);
-            }
-        } elseif ($filter_mode === 'and') {
-            $db_query->where($filter_query['key_name'], $filter_query['operator'], $filter_query['value']);
+            $db_query->whereRaw("NOT ({$filter_query['key_name']} <=> ?)", [$filter_query['value']], $filter_mode);
+        } elseif ($type === 'datetime') {
+            $db_query->whereRaw(
+                "{$filter_query['key_name']} {$filter_query['operator']} ?",
+                [$filter_query['value']],
+                $filter_mode
+            );
         } else {
-            $db_query->orWhere($filter_query['key_name'], $filter_query['operator'], $filter_query['value']);
+            $db_query->where(
+                $filter_query['key_name'],
+                $filter_query['operator'],
+                $filter_query['value'],
+                $filter_mode
+            );
         }
     }
 

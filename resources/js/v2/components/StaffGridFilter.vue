@@ -18,29 +18,63 @@
             </button>
           </div>
           <div class="staff_grid_sort-list__inputs">
+            <template v-if="!['bool', 'isNull'].includes(query.item.type)">
+              <input
+                type="text"
+                class="form-control"
+                v-model="query.value"
+                v-if="query.item.type === 'string'"
+              />
+              <input
+                type="number"
+                class="form-control"
+                v-model="query.value"
+                v-else-if="query.item.type === 'number'"
+              />
+              <input
+                type="datetime-local"
+                class="form-control"
+                v-model="query.value"
+                v-else-if="query.item.type === 'datetime'"
+                required
+              />
+            </template>
             <select
               type="text"
               class="form-control"
               v-model="query.operator"
               v-if="query.item.type === 'string'"
             >
-              <option value="=">＝ (一致)</option>
-              <option value="!=">≠ (不一致)</option>
-              <option value="like">含む</option>
-              <option value="not like">含まない</option>
+              <option value="=">と一致</option>
+              <option value="!=">と不一致</option>
+              <option value="like">を含む</option>
+              <option value="not like">を含まない</option>
             </select>
             <select
               type="text"
               class="form-control"
               v-model="query.operator"
-              v-else-if="['number', 'datetime'].includes(query.item.type)"
+              v-else-if="query.item.type === 'number'"
             >
-              <option value="=">＝ (一致)</option>
-              <option value="!=">≠ (不一致)</option>
-              <option value="<">＜ (より小さい)</option>
-              <option value="<=">≦ (以下)</option>
-              <option value=">">＞ (より大きい)</option>
-              <option value=">=">≧ (以上)</option>
+              <option value="=">と一致</option>
+              <option value="!=">と不一致</option>
+              <option value="<">より小さい</option>
+              <option value="<=">以下</option>
+              <option value=">">より大きい</option>
+              <option value=">=">以上</option>
+            </select>
+            <select
+              type="text"
+              class="form-control"
+              v-model="query.operator"
+              v-else-if="query.item.type === 'datetime'"
+            >
+              <option value="=">と一致</option>
+              <option value="!=">と不一致</option>
+              <option value="<">以前</option>
+              <option value="<=">以前(一致含む)</option>
+              <option value=">">以降</option>
+              <option value=">=">以降(一致含む)</option>
             </select>
             <!-- ↓operatorではなくvalueを選択させている点に注意！ -->
             <select
@@ -61,26 +95,6 @@
               <option value="1">空</option>
               <option value="0">空でない</option>
             </select>
-            <template v-if="!['bool', 'isNull'].includes(query.item.type)">
-              <input
-                type="text"
-                class="form-control"
-                v-model="query.value"
-                v-if="query.item.type === 'string'"
-              />
-              <input
-                type="number"
-                class="form-control"
-                v-model="query.value"
-                v-else-if="query.item.type === 'number'"
-              />
-              <input
-                type="datetime-local"
-                class="form-control"
-                v-model="query.value"
-                v-else-if="query.item.type === 'datetime'"
-              />
-            </template>
           </div>
         </div>
       </div>
@@ -201,7 +215,25 @@ export default {
         Number.isInteger(this.queries[this.queries.length - 1].id)
           ? this.queries[this.queries.length - 1].id + 1
           : 0
-      this.queries = [...this.queries, { id, item, operator: '=', value: '' }]
+
+      const defaultValues = {
+        value: ''
+      }
+
+      switch (item.type) {
+        case 'string':
+          defaultValues.operator = 'like'
+          break
+        case 'bool':
+        case 'isNull':
+          defaultValues.value = '1'
+          break
+        default:
+          defaultValues.operator = '='
+          break
+      }
+
+      this.queries = [...this.queries, { id, item, ...defaultValues }]
     },
     removeQuery(queryId) {
       this.isDirty = true
@@ -295,7 +327,7 @@ export default {
     &__inputs {
       column-gap: $spacing-sm;
       display: grid;
-      grid-template-columns: 2fr 3fr;
+      grid-template-columns: 3fr 2fr;
     }
   }
   &-mode {
