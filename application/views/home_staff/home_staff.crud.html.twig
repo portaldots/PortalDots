@@ -16,7 +16,11 @@
   <h1 class="main__title">{{ page_title }}</h1>
 
   {% if main_page_type == 'pages' and _crud_state == 'list' %}
-    <div class="alert alert-info">
+    <p class="js-v2-alert-small" style="display: none">
+      <a href="{{ base_url('/staff/pages') }}" class="js-v2-alert-show">新しい「お知らせ管理」を体験してみませんか？</a>
+    </p>
+    <div class="alert alert-info alert-dismissible js-v2-alert" style="display: none">
+      <button type="button" class="close js-v2-alert-close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       <p><strong>新しい「お知らせ管理」を体験してみませんか？</strong></p>
       <p>デザインが一新され、より見やすく。高度な絞り込み機能で、目的のデータを素早く探索。</p>
       <p>
@@ -34,7 +38,11 @@
       </a>
     </p>
   {% elseif main_page_type == 'users' and _crud_state == 'list' %}
-    <div class="alert alert-info">
+    <p class="js-v2-alert-small" style="display: none">
+      <a href="{{ base_url('/staff/users') }}" class="js-v2-alert-show">新しい「ユーザー情報管理」を体験してみませんか？</a>
+    </p>
+    <div class="alert alert-info alert-dismissible js-v2-alert" style="display: none">
+      <button type="button" class="close js-v2-alert-close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       <p><strong>新しい「ユーザー情報管理」を体験してみませんか？</strong></p>
       <p>デザインが一新され、より見やすく。高度な絞り込み機能で、目的のデータを素早く探索。</p>
       <p>
@@ -47,7 +55,11 @@
       </p>
     </div>
   {% elseif main_page_type == 'documents' and _crud_state == 'list' %}
-    <div class="alert alert-info">
+    <p class="js-v2-alert-small" style="display: none">
+      <a href="{{ base_url('/staff/documents') }}" class="js-v2-alert-show">新しい「配布資料管理」を体験してみませんか？</a>
+    </p>
+    <div class="alert alert-info alert-dismissible js-v2-alert" style="display: none">
+      <button type="button" class="close js-v2-alert-close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       <p><strong>新しい「配布資料管理」を体験してみませんか？</strong></p>
       <p>デザインが一新され、より見やすく。高度な絞り込み機能で、目的のデータを素早く探索。</p>
       <p>
