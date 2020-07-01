@@ -34,6 +34,19 @@
         <small>『新しい「ユーザー情報管理」を使ってみる』をクリックした後も、現行バージョンの「ユーザー情報管理」は引き続き利用できます。</small>
       </p>
     </div>
+  {% elseif main_page_type == 'documents' and _crud_state == 'list' %}
+    <div class="alert alert-info">
+      <p><strong>新しい「配布資料管理」を体験してみませんか？</strong></p>
+      <p>デザインが一新され、より見やすく。高度な絞り込み機能で、目的のデータを素早く探索。</p>
+      <p>
+        <a href="{{ base_url('/staff/documents') }}" class="btn btn-primary">
+          新しい「配布資料管理」を使ってみる
+        </a>
+      </p>
+      <p class="text-muted">
+        <small>『新しい「配布資料管理」を使ってみる』をクリックした後も、現行バージョンの「配布資料管理」は引き続き利用できます。</small>
+      </p>
+    </div>
   {% elseif main_page_type == 'circles' and _crud_state == 'list' %}
     <p>参加登録の提出が完了している企画のみ表示されます</p>
     {% if custom_form is empty %}
