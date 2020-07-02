@@ -3,6 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Eloquents\Document;
+use App\Eloquents\Schedule;
 use Faker\Generator as Faker;
 
 $factory->define(Document::class, function (Faker $faker) {
@@ -16,7 +17,9 @@ $factory->define(Document::class, function (Faker $faker) {
         'updated_by' => 1,
         'is_public' => true,
         'is_important' => false,
-        'schedule_id' => null,
+        'schedule_id' => function() {
+            return factory(Schedule::class)->create()->id;
+        },
         'notes' => $faker->text,
     ];
 });
