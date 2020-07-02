@@ -320,13 +320,5 @@ export default {
       }
     }
   }
-  &-backdrop {
-    bottom: 0;
-    left: 0;
-    position: fixed;
-    right: 0;
-    top: 0;
-    z-index: $z-index-dropdown-backdrop;
-  }
 }
 </style>
