@@ -1,6 +1,6 @@
 <template>
-  <div class="dropdown">
-    <div class="dropdown-backdrop" v-if="isOpen" @click="close"></div>
+  <div class="dropdown" ref="container">
+    <GlobalEvents @keyup.esc="close" v-if="isOpen" />
     <div class="dropdown-button" ref="button">
       <slot name="button" :toggle="toggle" :props="ariaButtonProps" />
     </div>
@@ -19,12 +19,13 @@
           right: menuRight !== null ? `${menuRight}px` : 'auto',
           bottom: menuBottom !== null ? `${menuBottom}px` : 'auto'
         }"
+        :key="name"
       >
         <div v-for="(item, index) in items" :key="item.key" ref="menuItems">
           <template v-if="item.sublist && Array.isArray(item.sublist)">
             <AppDropdownItem
               component-is="button"
-              @click.stop="() => toggleSubmenu(index)"
+              @click.stop="() => openSubmenu(index)"
               @mouseover="() => onMouseoverItemToOpenSubmenu(index)"
               class="dropdown-menu__submenu-opener"
               :class="{ 'is-open-submenu': index === openingSubmenuIndex }"
@@ -61,10 +62,12 @@
 </template>
 
 <script>
+import GlobalEvents from 'vue-global-events'
 import AppDropdownItem from './AppDropdownItem.vue'
 
 export default {
   components: {
+    GlobalEvents,
     AppDropdownItem
   },
   data() {
@@ -100,15 +103,23 @@ export default {
       default: false
     }
   },
+  mounted() {
+    window.addEventListener('click', this.onClickOutside)
+  },
+  destroyed() {
+    window.removeEventListener('click', this.onClickOutside)
+  },
   methods: {
     async toggle() {
-      this.isOpen = !this.isOpen
-      this.openingSubmenuIndex = null
-
-      if (!this.isOpen) {
-        window.document.body.style.overflowY = 'visible'
-        return
+      if (this.isOpen) {
+        this.close()
+      } else {
+        await this.open()
       }
+    },
+    async open() {
+      this.isOpen = true
+      this.openingSubmenuIndex = null
 
       window.document.body.style.overflowY = 'hidden'
 
@@ -167,14 +178,18 @@ export default {
       window.document.body.style.overflowY = 'visible'
       this.isOpen = false
     },
-    async toggleSubmenu(index) {
+    onClickOutside(e) {
+      if (this.isOpen && !this.$refs.container.contains(e.target)) {
+        this.close()
+      }
+    },
+    async openSubmenu(index) {
       if (this.timeoutIdForSubmenu) {
         window.clearTimeout(this.timeoutIdForSubmenu)
         this.timeoutIdForSubmenu = null
       }
 
       if (this.openingSubmenuIndex === index) {
-        this.openingSubmenuIndex = null
         return
       }
 
@@ -245,7 +260,7 @@ export default {
       }
 
       this.timeoutIdForSubmenu = window.setTimeout(
-        () => this.toggleSubmenu(index),
+        () => this.openSubmenu(index),
         300
       )
     },
