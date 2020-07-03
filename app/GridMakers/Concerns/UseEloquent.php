@@ -52,7 +52,7 @@ trait UseEloquent
                     !empty($this->filterableKeys()[$key_name]) &&
                     !in_array(
                         $this->filterableKeys()[$key_name]['type'],
-                        ['string', 'number', 'datetime', 'bool', 'isNull', 'belongsTo', 'belongsToMany'],
+                        ['string', 'number', 'datetime', 'bool', 'isNull', 'belongsTo', 'belongsToMany', 'enum'],
                         true
                     )
                 ) {
@@ -164,6 +164,24 @@ trait UseEloquent
                 break;
             case 'isNull':
                 $filter_query['value'] = (int)$filter_query['value'] === 0 ? false : true;
+                break;
+            case 'enum':
+                if (
+                    !in_array(
+                        $filter_query['value'],
+                        array_keys($this->filterableKeys()[$filter_query['key_name']]['choices']),
+                        true
+                    )
+                ) {
+                    $filter_query['value'] = array_key_first(
+                        $this->filterableKeys()[$filter_query['key_name']]['choices']
+                    );
+                }
+
+                if ($filter_query['value'] === 'NULL') {
+                    $type = 'isNull';
+                    $filter_query['value'] = true;
+                }
                 break;
         }
 

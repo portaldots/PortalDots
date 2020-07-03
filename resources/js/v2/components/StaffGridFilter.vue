@@ -109,6 +109,22 @@
                 {{ choice[filterableKeys[query.item.keyName].choices_name] }}
               </option>
             </select>
+            <select
+              type="text"
+              class="form-control is-size-full"
+              v-model="query.value"
+              v-if="query.item.type === 'enum'"
+            >
+              <option
+                v-for="(displayValue, value) in filterableKeys[
+                  query.item.keyName
+                ].choices"
+                :key="value"
+                :value="value"
+              >
+                {{ displayValue }}
+              </option>
+            </select>
           </div>
         </div>
       </div>

@@ -222,6 +222,9 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::prefix('/circles')
             ->name('circles.')
             ->group(function () {
+                Route::get('/', 'Staff\Circles\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Circles\ApiAction')->name('api');
+
                 // 参加登録設定
                 Route::get('/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('custom_form.index');
                 Route::post('/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('custom_form.store');

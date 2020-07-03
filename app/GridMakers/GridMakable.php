@@ -51,7 +51,7 @@ interface GridMakable
      * [
      *      'keyName' => [
      *          'type' => 'タイプ(後述)',
-     *          // belongsTo の場合
+     *          // タイプが belongsTo の場合
      *          'to' => 'belongsTo先テーブル名',
      *          'keys' => [
      *              'belongsTo先テーブルのkey名' => [
@@ -60,14 +60,18 @@ interface GridMakable
      *              ],
      *              ...
      *          ]
-     *          // belongsToMany の場合
+     *          // タイプが belongsToMany の場合
      *          'pivot' => 'belongsToManyに利用している中間テーブル名',
      *          'foreign_key' => 'pivotテーブルにおける、自分側を表すidのカラム名',
      *          'related_key' => 'pivotテーブルにおける、リレーション先を表すidのカラム名',
      *          'choices' => [
-     *              // 選択肢として表示する内容。choices配列の各要素はidを含む連想配列である必要がある
+     *              // 画面上に選択肢として表示する文字列。　choices　配列の各要素はidを含む連想配列である必要がある
      *          ],
      *          'choices_name' => 'ドロップダウン内に表示される選択肢とするカラム名。 name や title など'
+     *          // タイプが enum の場合
+     *          'choices' => [
+     *              'DB内に格納されている値' => '画面上に選択肢として表示する文字列'
+     *          ]
      *      ],
      *      ...
      * ]
@@ -81,6 +85,8 @@ interface GridMakable
      * - isNull : 空か空でないかで検索できる
      * - belongsTo : 他のテーブルに紐づく
      * - belongsToMany : belongsTo の複数バージョン
+     * - enum : circles.status の rejected / approved / NULL のような類の値。
+     *          大文字の "NULL" という文字列をキーとした場合、is null クエリが発行される
      *
      * @return array ['keyName' => 'type', ...] という形式の連想配列
      */
