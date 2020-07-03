@@ -50,21 +50,30 @@ interface GridMakable
      *
      * [
      *      'keyName' => [
-     *          'type' => 'タイプ',
+     *          'type' => 'タイプ(後述)',
+     *          // belongsTo の場合
      *          'to' => 'belongsTo先テーブル名',
      *          'keys' => [
      *              'belongsTo先テーブルのkey名' => [
      *                  'translation' => '表示名',
-     *                  'type' => 'タイプ'
+     *                  'type' => 'タイプ(後述)'
      *              ],
      *              ...
      *          ]
+     *          // belongsToMany の場合
+     *          'pivot' => 'belongsToManyに利用している中間テーブル名',
+     *          'foreign_key' => 'pivotテーブルにおける、自分側を表すidのカラム名',
+     *          'related_key' => 'pivotテーブルにおける、リレーション先を表すidのカラム名',
+     *          'choices' => [
+     *              // 選択肢として表示する内容。choices配列の各要素はidを含む連想配列である必要がある
+     *          ],
+     *          'choices_name' => 'ドロップダウン内に表示される選択肢とするカラム名。 name や title など'
      *      ],
      *      ...
      * ]
      * という形式の連想配列を返してください。
      *
-     * タイプ : string, number, datetime, bool, isNull のいずれか
+     * ※ タイプ : string, number, datetime, bool, isNull のいずれか
      * - string : 文字列検索
      * - number : 数値。大小比較ができる
      * - datetime : 日時。過去・未来比較ができる

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\GridMakers;
 
+use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Page;
 use App\GridMakers\Concerns\UseEloquent;
@@ -29,7 +30,16 @@ class PagesGridMaker implements GridMakable
      */
     protected function baseEloquentQuery(): Builder
     {
-        return Page::select($this->keys());
+        return Page::select([
+            'id',
+            'title',
+            'body',
+            'notes',
+            'created_at',
+            'created_by',
+            'updated_at',
+            'updated_by',
+        ])->with(['viewableTags']);
     }
 
     /**
@@ -40,6 +50,7 @@ class PagesGridMaker implements GridMakable
         return [
             'id',
             'title',
+            'viewableTags',
             'body',
             'notes',
             'created_at',
@@ -54,6 +65,12 @@ class PagesGridMaker implements GridMakable
      */
     public function filterableKeys(): array
     {
+        static $tags_choices = null;
+
+        if (empty($tags_choices)) {
+            $tags_choices = Tag::all()->toArray();
+        }
+
         $users_type = ['type' => 'belongsTo', 'to' => 'users', 'keys' => [
             'id' => ['translation' => 'ユーザーID', 'type' => 'number'],
             'student_id' => ['translation' => '学籍番号', 'type' => 'string'],
@@ -75,6 +92,14 @@ class PagesGridMaker implements GridMakable
         return [
             'id' => ['type' => 'number'],
             'title' => ['type' => 'string'],
+            'viewableTags' => [
+                'type' => 'belongsToMany',
+                'pivot' => 'page_viewable_tags',
+                'foreign_key' => 'page_id',
+                'related_key' => 'tag_id',
+                'choices' => $tags_choices,
+                'choices_name' => 'name',
+            ],
             'body' => ['type' => 'string'],
             'notes' => ['type' => 'string'],
             'created_at' => ['type' => 'datetime'],

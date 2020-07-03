@@ -52,11 +52,10 @@ trait UseEloquent
                     !empty($this->filterableKeys()[$key_name]) &&
                     !in_array(
                         $this->filterableKeys()[$key_name]['type'],
-                        ['string', 'number', 'datetime', 'bool', 'isNull', 'belongsTo'],
+                        ['string', 'number', 'datetime', 'bool', 'isNull', 'belongsTo', 'belongsToMany'],
                         true
                     )
                 ) {
-                    // TODO: belongsToMany にも対応する
                     continue;
                 }
 
@@ -64,7 +63,27 @@ trait UseEloquent
                     continue;
                 }
 
-                if ($this->filterableKeys()[$key_name]['type'] === 'belongsTo') {
+                if ($this->filterableKeys()[$key_name]['type'] === 'belongsToMany') {
+                    $sub_query_function = function ($sub_query) use ($key_name, $filter_query, $filter_mode) {
+                        $pivot = $this->filterableKeys()[$key_name]['pivot'];
+                        $foreign_key = $this->filterableKeys()[$key_name]['foreign_key'];
+
+                        $sub_query->from($pivot)
+                            ->select("{$pivot}.{$foreign_key}")
+                            ->where($this->filterableKeys()[$key_name]['related_key'], (int)$filter_query['value']);
+                    };
+                    if ($filter_mode === 'and') {
+                        $db_query->whereIn(
+                            $this->model()->getTable() . '.' . $this->model()->getKeyName(),
+                            $sub_query_function
+                        );
+                    } else {
+                        $db_query->orWhereIn(
+                            $this->model()->getTable() . '.' . $this->model()->getKeyName(),
+                            $sub_query_function
+                        );
+                    }
+                } elseif ($this->filterableKeys()[$key_name]['type'] === 'belongsTo') {
                     $sub_query_function = function ($sub_query) use ($key_name, $filter_query, $filter_mode) {
                         $belongs_to = $this->filterableKeys()[$key_name]['to'];
 

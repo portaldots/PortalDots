@@ -95,6 +95,20 @@
               <option value="1">空</option>
               <option value="0">空でない</option>
             </select>
+            <select
+              type="text"
+              class="form-control is-size-full"
+              v-model="query.value"
+              v-if="query.item.type === 'belongsToMany'"
+            >
+              <option
+                v-for="choice in filterableKeys[query.item.keyName].choices"
+                :key="choice.id"
+                :value="choice.id"
+              >
+                {{ choice[filterableKeys[query.item.keyName].choices_name] }}
+              </option>
+            </select>
           </div>
         </div>
       </div>
@@ -273,16 +287,17 @@ export default {
   computed: {
     itemsForFilterQuery() {
       return Object.keys(this.filterableKeys).map(key => {
-        if (
-          this.filterableKeys[key].type !== 'belongsTo' &&
-          this.filterableKeys[key].type !== 'belongsToMany'
-        ) {
+        if (this.filterableKeys[key].type !== 'belongsTo') {
           return {
             keyName: key,
             type: this.filterableKeys[key].type,
             translation: this.keyTranslations[key],
             menuLabel: this.keyTranslations[key]
           }
+        }
+
+        if (typeof this.filterableKeys[key].keys !== 'object') {
+          return {}
         }
 
         return {
@@ -328,6 +343,9 @@ export default {
       column-gap: $spacing-sm;
       display: grid;
       grid-template-columns: 3fr 2fr;
+      .form-control.is-size-full {
+        grid-column-end: span 2;
+      }
     }
   }
   &-mode {

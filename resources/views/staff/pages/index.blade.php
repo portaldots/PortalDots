@@ -10,6 +10,7 @@
         v-bind:key-translations="{
             id: 'お知らせID',
             title: 'タイトル',
+            viewableTags: '閲覧可能なタグ',
             body: '本文',
             is_important: '重要',
             created_at: '作成日時',
@@ -47,6 +48,17 @@
             <template v-if="keyName === 'created_by' || keyName === 'updated_by'">
                 {{-- 作成者・更新者 --}}
                 @{{ row[keyName].name_family  }} @{{ row[keyName].name_given  }} (@{{ row[keyName].student_id  }} • ID : @{{ row[keyName].id }})
+            </template>
+            <template v-else-if="keyName === 'viewableTags'">
+                {{-- 閲覧可能なタグ --}}
+                <template v-for="tag in row[keyName]">
+                    <app-badge primary strong v-bind:key="tag.id">
+                        @{{ tag.name }}
+                    </app-badge>&nbsp;
+                </template>
+                <span class="text-muted" v-if="row[keyName].length === 0">
+                    全体に公開
+                </span>
             </template>
             <template v-else-if="row[keyName] === true">
                 <strong>はい</strong>
