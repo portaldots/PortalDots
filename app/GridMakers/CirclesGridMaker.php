@@ -55,7 +55,9 @@ class CirclesGridMaker implements GridMakable
             'created_at',
             'updated_at',
         ])->with(['tags', 'answers' => function ($query) {
-            $query->with('details')->where('form_id', $this->custom_form->id);
+            if (isset($this->custom_form)) {
+                $query->with('details.question')->where('form_id', $this->custom_form->id);
+            }
         }]);
     }
 
@@ -76,9 +78,10 @@ class CirclesGridMaker implements GridMakable
             'tags',
         ];
 
-        $custom_form_keys = $this->custom_form->questions->map(function (Question $question) {
-            return self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $question->id;
-        })->all();
+        $custom_form_keys = isset($this->custom_form) ?
+            $this->custom_form->questions->map(function (Question $question) {
+                return self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $question->id;
+            })->all() : [];
 
         $after_custom_form_keys = [
             'submitted_at',
@@ -181,14 +184,27 @@ class CirclesGridMaker implements GridMakable
     {
         $item = [];
 
-        $answer = $record->answers->firstWhere('circle_id', $record->id);
-
-        if (isset($answer) && isset($answer->details) && is_iterable($answer->details)) {
-            foreach ($record->answers->where('circle_id', $record->id)->first()->details as $detail) {
-                $item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = $detail;
+        // カスタムフォームへの回答
+        if (isset($this->custom_form)) {
+            $answer = $record->answers->firstWhere('circle_id', $record->id);
+            if (isset($answer) && isset($answer->details) && is_iterable($answer->details)) {
+                foreach ($record->answers->where('circle_id', $record->id)->first()->details as $detail) {
+                    if ($detail->question->type === 'upload') {
+                        $item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = [
+                            'file_url' => route('staff.forms.answers.uploads.show', [
+                                'form' => $this->custom_form->id,
+                                'answer' => $answer->id,
+                                'question' => $detail->question_id
+                            ])
+                        ];
+                    } else {
+                        $item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = $detail;
+                    }
+                }
             }
         }
 
+        // カスタムフォームへの回答以外の項目
         $keys_except_custom_forms = array_filter($this->keys(), function ($key) {
             return strpos($key, self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX) !== 0;
         });

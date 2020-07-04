@@ -75,8 +75,12 @@
             </template>
             <template v-else-if="keyName.includes('{{ App\GridMakers\CirclesGridMaker::CUSTOM_FORM_QUESTIONS_KEY_PREFIX }}')">
                 {{-- カスタムフォームへの回答 --}}
-                {{-- TODO: ファイルアップロード機能への対応 --}}
-                @{{ row[keyName] && row[keyName].answer ? row[keyName].answer : '' }}
+                <template v-if="row[keyName] && row[keyName].file_url">
+                    <a v-bind:href="row[keyName].file_url" target="_blank" rel="noopener noreferrer">表示</a>
+                </template>
+                <template v-if="row[keyName] && row[keyName].answer">
+                    @{{ row[keyName].answer }}
+                </template>
             </template>
             <template v-else-if="keyName === 'status'">
                 {{-- 登録受理状況 --}}
