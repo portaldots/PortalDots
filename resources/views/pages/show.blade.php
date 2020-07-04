@@ -23,7 +23,7 @@
             </div>
         @endif
     </app-header>
-    <app-container class="markdown py-spacing-lg">
+    <app-container data-turbolinks="false" class="markdown py-spacing-lg">
         @markdown($page->body)
     </app-container>
 @endsection
