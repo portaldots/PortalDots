@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\GridMakers;
 
 use App\Eloquents\Circle;
+use App\Eloquents\CustomForm;
+use App\Eloquents\Form;
+use App\Eloquents\Question;
 use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use App\GridMakers\Concerns\UseEloquent;
@@ -20,9 +23,17 @@ class CirclesGridMaker implements GridMakable
      */
     private $formatTextService;
 
+    /**
+     * @var Form
+     */
+    private $custom_form;
+
+    public const CUSTOM_FORM_QUESTIONS_KEY_PREFIX = 'custom_form_question_';
+
     public function __construct(FormatTextService $formatTextService)
     {
         $this->formatTextService = $formatTextService;
+        $this->custom_form = CustomForm::getFormByType('circle');
     }
 
     /**
@@ -43,7 +54,9 @@ class CirclesGridMaker implements GridMakable
             'notes',
             'created_at',
             'updated_at',
-        ])->with(['tags']);
+        ])->with(['tags', 'answers' => function ($query) {
+            $query->with('details')->where('form_id', $this->custom_form->id);
+        }]);
     }
 
     /**
@@ -51,13 +64,23 @@ class CirclesGridMaker implements GridMakable
      */
     public function keys(): array
     {
-        return [
+        // 現状 PortalDots は PHP7.3 以降をサポートすることにしているため、
+        // PHP 7.4 からサポートされるスプレッド演算子を使わず、array_merge を使っている
+
+        $before_custom_form_keys = [
             'id',
             'name',
             'name_yomi',
             'group_name',
             'group_name_yomi',
             'tags',
+        ];
+
+        $custom_form_keys = $this->custom_form->questions->map(function (Question $question) {
+            return self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $question->id;
+        })->all();
+
+        $after_custom_form_keys = [
             'submitted_at',
             'status',
             'status_set_at',
@@ -66,6 +89,8 @@ class CirclesGridMaker implements GridMakable
             'created_at',
             'updated_at',
         ];
+
+        return array_merge($before_custom_form_keys, $custom_form_keys, $after_custom_form_keys);
     }
 
     /**
@@ -155,7 +180,20 @@ class CirclesGridMaker implements GridMakable
     public function map($record): array
     {
         $item = [];
-        foreach ($this->keys() as $key) {
+
+        $answer = $record->answers->firstWhere('circle_id', $record->id);
+
+        if (isset($answer) && isset($answer->details) && is_iterable($answer->details)) {
+            foreach ($record->answers->where('circle_id', $record->id)->first()->details as $detail) {
+                $item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = $detail;
+            }
+        }
+
+        $keys_except_custom_forms = array_filter($this->keys(), function ($key) {
+            return strpos($key, self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX) !== 0;
+        });
+
+        foreach ($keys_except_custom_forms as $key) {
             switch ($key) {
                 case 'status_set_by':
                     $item[$key] = $record->statusSetBy;
@@ -173,6 +211,7 @@ class CirclesGridMaker implements GridMakable
                     $item[$key] = $record->$key;
             }
         }
+
         return $item;
     }
 

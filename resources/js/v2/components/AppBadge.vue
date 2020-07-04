@@ -4,6 +4,7 @@
     :class="{
       'is-outline': outline,
       'is-primary': primary,
+      'is-primary-inverse': primaryInverse,
       'is-danger': danger,
       'is-success': success,
       'is-warning': warning,
@@ -25,6 +26,10 @@ export default {
       default: false
     },
     primary: {
+      type: Boolean,
+      default: false
+    },
+    primaryInverse: {
       type: Boolean,
       default: false
     },
@@ -80,6 +85,13 @@ export default {
       border: 1px solid $color;
       color: #fff;
     }
+  }
+  &.is-primary-inverse {
+    background: $color-bg-white;
+    // outlineバッジに比べ一回り小さく見えてしまわないように、
+    // outlineバッジと同様のborderをつける
+    border: 1px solid $color-bg-white;
+    color: $color-primary;
   }
   &.is-strong {
     font-weight: bolder;

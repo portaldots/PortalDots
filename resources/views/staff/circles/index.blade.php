@@ -14,6 +14,11 @@
             group_name: '企画を出店する団体の名称',
             group_name_yomi: '企画を出店する団体の名称(よみ)',
             tags: 'タグ',
+            @if (isset($custom_form))
+                @foreach($custom_form->questions as $question)
+                    {{ App\GridMakers\CirclesGridMaker::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $question->id }}: '{{ $question->name }}',
+                @endforeach
+            @endif
             submitted_at: '参加登録提出日時',
             status: '登録受理状況',
             status_set_at: '登録受理状況設定日時',
@@ -30,6 +35,18 @@
             >
                 <i class="fas fa-plus fa-fw"></i>
                 新規企画
+            </a>
+            <a
+                class="btn is-primary-inverse is-no-shadow is-no-border"
+                href="{{ route('staff.circles.custom_form.index') }}"
+            >
+                <i class="fas fa-users-cog fa-fw"></i>
+                企画参加登録機能の設定
+                @if(empty($custom_form))
+                    <app-badge primary>未設定</app-badge>
+                @else
+                    <app-badge primary>有効</app-badge>
+                @endif
             </a>
             <a
                 class="btn is-primary-inverse is-no-shadow is-no-border"
@@ -56,6 +73,11 @@
                     </app-badge>&nbsp;
                 </template>
             </template>
+            <template v-else-if="keyName.includes('{{ App\GridMakers\CirclesGridMaker::CUSTOM_FORM_QUESTIONS_KEY_PREFIX }}')">
+                {{-- カスタムフォームへの回答 --}}
+                {{-- TODO: ファイルアップロード機能への対応 --}}
+                @{{ row[keyName] && row[keyName].answer ? row[keyName].answer : '' }}
+            </template>
             <template v-else-if="keyName === 'status'">
                 {{-- 登録受理状況 --}}
                 <span class="text-danger" v-if="row[keyName] === 'rejected'">不受理</span>
@@ -78,3 +100,9 @@
         </template>
     </staff-grid>
 @endsection
+<script>
+    import AppBadge from "../../../js/v2/components/AppBadge"
+    export default {
+        components: {AppBadge}
+    }
+</script>
