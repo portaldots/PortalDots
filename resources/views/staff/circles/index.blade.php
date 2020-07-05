@@ -43,9 +43,13 @@
                 <i class="fas fa-users-cog fa-fw"></i>
                 企画参加登録機能の設定
                 @if(empty($custom_form))
-                    <app-badge primary>未設定</app-badge>
+                    <app-badge muted outline strong>未設定</app-badge>
+                @elseif(!$custom_form->is_public)
+                    <app-badge danger>非公開</app-badge>
+                @elseif(!$custom_form->isOpen())
+                    <app-badge muted>受付期間外</app-badge>
                 @else
-                    <app-badge primary>有効</app-badge>
+                    <app-badge primary strong>受付期間内</app-badge>
                 @endif
             </a>
             <a
