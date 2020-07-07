@@ -1,17 +1,11 @@
 <template>
   <div class="navbar" :class="{ 'is-no-drawer': noDrawer, 'is-staff': staff }">
     <slot />
-    <AppBadge muted v-if="staff">staff</AppBadge>
   </div>
 </template>
 
 <script>
-import AppBadge from './AppBadge.vue'
-
 export default {
-  components: {
-    AppBadge
-  },
   props: {
     noDrawer: {
       type: Boolean,

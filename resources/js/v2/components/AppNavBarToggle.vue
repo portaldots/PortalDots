@@ -1,10 +1,36 @@
 <template>
-  <button class="navbar-toggle" @click="onClick">
-    <img
-      src="../../../img/drawerToggle.svg"
-      alt="ドロワーを開閉"
-      class="navbar-toggle__icon"
-    />
+  <button class="navbar-toggle" @click="onClick" title="ドロワーを開閉">
+    <svg width="20" height="16" viewBox="0 0 20 16" class="navbar-toggle__icon">
+      <g transform="translate(-15 -24)">
+        <path
+          d="M4.5,18h18"
+          transform="translate(11.5 14)"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+        <path
+          d="M4.5,9h18"
+          transform="translate(11.5 16)"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+        <path
+          d="M4.5,27h18"
+          transform="translate(11.5 12)"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </g>
+    </svg>
   </button>
 </template>
 
@@ -23,6 +49,7 @@ export default {
   appearance: none;
   background: 0;
   border: 0;
+  color: currentColor;
   cursor: pointer;
   display: none;
   height: 100%;

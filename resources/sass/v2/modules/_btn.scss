@@ -5,6 +5,7 @@
   &:not([disabled]):hover,
   &:not(.disabled):hover {
     background: $hover-background;
+    border-color: $hover-background;
   }
   @if ($shadow-color-base) {
     box-shadow: 0 0.25rem 0.75rem rgba($shadow-color-base, 0.25);
@@ -36,7 +37,7 @@ body:not(.body-editor-v1):not(.body-v1) {
     &:disabled,
     &.disabled {
       cursor: not-allowed;
-      opacity: 0.75;
+      opacity: 0.5;
       pointer-events: none;
     }
     &:hover {
@@ -54,8 +55,14 @@ body:not(.body-editor-v1):not(.body-v1) {
     &.is-secondary {
       @include btn($color-text, #fff, $color-bg-grey, $color-border);
     }
+    &.is-transparent {
+      @include btn($color-text, transparent, #fff, $color-border);
+    }
     &.is-danger {
       @include btn(#fff, $color-danger, lighten($color-danger, 5%), $color-danger, $color-danger);
+    }
+    &.is-success {
+      @include btn(#fff, $color-success, lighten($color-success, 5%), $color-success, $color-success);
     }
     &.is-block {
       display: block;
@@ -63,6 +70,9 @@ body:not(.body-editor-v1):not(.body-v1) {
     }
     &.is-no-border {
       border: none;
+    }
+    &.is-no-shadow {
+      box-shadow: none;
     }
     &.is-wide {
       padding-left: $spacing-lg;

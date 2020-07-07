@@ -8,6 +8,10 @@ use DB;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Tag;
+use App\Mail\Circles\ApprovedMailable;
+use App\Mail\Circles\RejectedMailable;
+use App\Mail\Circles\SubmitedMailable;
+use Illuminate\Support\Facades\Mail;
 
 class CirclesService
 {
@@ -106,5 +110,41 @@ class CirclesService
         $tags_on_db = Tag::whereIn('name', $tags)->get();
 
         $circle->tags()->sync($tags_on_db->pluck('id')->all());
+    }
+
+    public function sendSubmitedEmail(User $user, Circle $circle)
+    {
+        Mail::to($user)
+        ->send(
+            (new SubmitedMailable(
+                $circle,
+            ))
+                ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
+                ->subject("【参加登録】「{$circle->name}」の参加登録を提出しました")
+        );
+    }
+
+    public function sendApprovedEmail(User $user, Circle $circle)
+    {
+        Mail::to($user)
+        ->send(
+            (new ApprovedMailable(
+                $circle,
+            ))
+                ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
+                ->subject("【受理】「{$circle->name}」の参加登録が受理されました")
+        );
+    }
+
+    public function sendRejectedEmail(User $user, Circle $circle)
+    {
+        Mail::to($user)
+        ->send(
+            (new RejectedMailable(
+                $circle,
+            ))
+                ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
+                ->subject("【不受理】「{$circle->name}」の参加登録は受理されませんでした")
+        );
     }
 }

@@ -33,7 +33,7 @@
                         <li>ユーザーが「{{ config('app.name') }}」に登録している学籍番号を変更した場合、本人確認未完了状態に戻ります</li>
                     </ul>
                 </list-view-card>
-                <form action="{{ route('staff.users.verify.update', ['user' => $user]) }}" method="post">
+                <form action="{{ route('staff.users.verified', ['user' => $user]) }}" method="post">
                     @method('patch')
                     @csrf
                     <list-view-action-btn button submit>

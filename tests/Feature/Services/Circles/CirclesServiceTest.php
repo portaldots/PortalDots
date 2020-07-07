@@ -6,9 +6,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Eloquents\User;
+use App\Eloquents\Circle;
 use App\Eloquents\Tag;
 use App\Services\Circles\CirclesService;
 use App;
+use App\Mail\Circles\ApprovedMailable;
+use App\Mail\Circles\RejectedMailable;
+use App\Mail\Circles\SubmitedMailable;
+use Illuminate\Support\Facades\Mail;
 
 class CirclesServiceTest extends TestCase
 {
@@ -189,5 +194,59 @@ class CirclesServiceTest extends TestCase
             ],
             $circle->tags->pluck('name')->all()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function sendSubmitedEmail()
+    {
+        $leader = factory(User::class)->create();
+        $circle = factory(Circle::class)->create();
+
+        $circle->users()->attach($leader, ['is_leader' => true]);
+
+        Mail::fake();
+        $this->circlesService->sendSubmitedEmail($leader, $circle);
+
+        Mail::assertSent(SubmitedMailable::class, function ($mail) use ($leader) {
+            return $mail->hasTo($leader->email);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function sendApprovedEmail()
+    {
+        $leader = factory(User::class)->create();
+        $circle = factory(Circle::class)->create();
+
+        $circle->users()->attach($leader, ['is_leader' => true]);
+
+        Mail::fake();
+        $this->circlesService->sendApprovedEmail($leader, $circle);
+
+        Mail::assertSent(ApprovedMailable::class, function ($mail) use ($leader) {
+            return $mail->hasTo($leader->email);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function sendRejectedEmail()
+    {
+        $leader = factory(User::class)->create();
+        $circle = factory(Circle::class)->create();
+
+        $circle->users()->attach($leader, ['is_leader' => true]);
+
+        Mail::fake();
+        $this->circlesService->sendRejectedEmail($leader, $circle);
+
+        Mail::assertSent(RejectedMailable::class, function ($mail) use ($leader) {
+            return $mail->hasTo($leader->email);
+        });
     }
 }
