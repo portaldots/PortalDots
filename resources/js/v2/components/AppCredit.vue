@@ -1,6 +1,5 @@
 <template>
-  <div class="footer">
-    <hr />
+  <AppContainer class="footer">
     <div class="footer__credit">
       <template v-if="$slots.default"> <slot /> • </template>
       Powered by
@@ -13,11 +12,27 @@
         PortalDots
       </a>
     </div>
-  </div>
+  </AppContainer>
 </template>
 
+<script>
+import AppContainer from './AppContainer.vue'
+
+export default {
+  components: {
+    AppContainer
+  }
+}
+</script>
+
 <style lang="scss" scoped>
+.container {
+  flex: none;
+}
+
 .footer {
+  border-top: 1px solid $color-border;
+  margin-top: $spacing-md;
   text-align: center;
   &__credit {
     color: $color-muted-2;
