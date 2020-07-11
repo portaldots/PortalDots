@@ -1,11 +1,11 @@
 <template>
-  <AppContainer class="footer">
-    <div class="footer__credit">
+  <AppContainer class="credit">
+    <div class="credit__body">
       <template v-if="$slots.default"> <slot /> • </template>
       Powered by
       <a
         href="https://github.com/portal-dots/PortalDots"
-        class="footer__link"
+        class="credit__link"
         target="_blank"
         rel="noopener"
       >
@@ -26,15 +26,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  flex: none;
-}
-
-.footer {
+.credit {
   border-top: 1px solid $color-border;
   margin-top: $spacing-md;
   text-align: center;
-  &__credit {
+  &__body {
     color: $color-muted-2;
     margin-top: $spacing-lg;
 
