@@ -20,7 +20,7 @@
 
         <app-header>
             <template v-slot:title>{{ $form->name }}</template>
-            <div class="markdown">
+            <div data-turbolinks="false" class="markdown">
                 @markdown($form->description)
             </div>
         </app-header>

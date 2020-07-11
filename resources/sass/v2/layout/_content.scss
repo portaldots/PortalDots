@@ -1,7 +1,13 @@
 .content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   padding: $navbar-height 0 $spacing-lg $drawer-width;
   &.is-no-drawer {
     padding-left: 0;
+  }
+  &__body {
+    flex: 1;
   }
 
   @media screen and (max-width: $breakpoint-drawer-narrow) {

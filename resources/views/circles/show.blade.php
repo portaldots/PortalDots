@@ -45,7 +45,7 @@
         @if ($circle->hasRejected() && isset($circle->status_reason))
         <list-view>
             <template v-slot:title>不受理となった理由</template>
-            <list-view-card class="markdown">
+            <list-view-card data-turbolinks="false" class="markdown">
                 @markdown($circle->status_reason)
             </list-view-card>
         </list-view>

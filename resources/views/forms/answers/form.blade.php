@@ -28,7 +28,7 @@
 
         <app-header>
             <template v-slot:title>{{ $form->name }}</template>
-            <div class="markdown">
+            <div data-turbolinks="false" class="markdown">
                 <p class="text-muted">
                     受付期間 : @datetime($form->open_at)〜@datetime($form->close_at)
                     @if (!$form->isOpen())

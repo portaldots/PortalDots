@@ -5,6 +5,7 @@ import GlobalEvents from 'vue-global-events'
 import PortalVue from 'portal-vue'
 import TurbolinksAdapter from './vue-turbolinks'
 
+import AppCredit from './components/AppCredit.vue'
 import AppHeader from './components/AppHeader.vue'
 import AppNavBar from './components/AppNavBar.vue'
 import AppNavBarBack from './components/AppNavBarBack.vue'
@@ -56,6 +57,7 @@ export function mountV2App() {
     new Vue({
       components: {
         GlobalEvents,
+        AppCredit,
         AppHeader,
         AppNavBar,
         AppNavBarBack,
