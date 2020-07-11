@@ -11,7 +11,7 @@
 <app-container medium>
     <list-view>
         <template v-slot:title>企画参加登録を始める前に</template>
-        <list-view-card class="markdown">
+        <list-view-card data-turbolinks="false" class="markdown">
             @markdown($description)
         </list-view-card>
     </list-view>

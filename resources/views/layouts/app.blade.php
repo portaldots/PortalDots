@@ -72,28 +72,31 @@
             </div>
         </div>
         <div class="content">
-            @include('includes.top_circle_selector')
-            @if (Session::has('topAlert.title'))
-                <top-alert type="{{ session('topAlert.type', 'primary') }}"
-                    {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}
-                    @yield('top_alert_props', '')>
-                    <template v-slot:title>
-                        {{ session('topAlert.title') }}
-                    </template>
+            <div class="content__body">
+                @include('includes.top_circle_selector')
+                @if (Session::has('topAlert.title'))
+                    <top-alert type="{{ session('topAlert.type', 'primary') }}"
+                        {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}
+                        @yield('top_alert_props', '')>
+                        <template v-slot:title>
+                            {{ session('topAlert.title') }}
+                        </template>
 
-                    @if (Session::has('topAlert.body'))
-                        {{ session('topAlert.body') }}
-                    @endif
-                </top-alert>
-            @endif
-            @if ($errors->any())
-                <top-alert type="danger">
-                    <template v-slot:title>
-                        エラーがあります。以下をご確認ください
-                    </template>
-                </top-alert>
-            @endif
-            @yield('content')
+                        @if (Session::has('topAlert.body'))
+                            {{ session('topAlert.body') }}
+                        @endif
+                    </top-alert>
+                @endif
+                @if ($errors->any())
+                    <top-alert type="danger">
+                        <template v-slot:title>
+                            エラーがあります。以下をご確認ください
+                        </template>
+                    </top-alert>
+                @endif
+                @yield('content')
+            </div>
+            <app-credit>{{ config('app.name') }}</app-credit>
         </div>
         @if (!Request::is('staff*'))
             @section('bottom_tabs')

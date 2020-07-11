@@ -59,28 +59,33 @@
             @show
         </app-nav-bar>
         <div class="content is-no-drawer">
-            @include('includes.top_circle_selector')
-            @if (Session::has('topAlert.title'))
-                <top-alert type="{{ session('topAlert.type', 'primary') }}"
-                    @yield('top_alert_props', 'container-medium')
-                    {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}>
-                    <template v-slot:title>
-                        {{ session('topAlert.title') }}
-                    </template>
+            <div class="content__body">
+                @include('includes.top_circle_selector')
+                @if (Session::has('topAlert.title'))
+                    <top-alert type="{{ session('topAlert.type', 'primary') }}"
+                        @yield('top_alert_props', 'container-medium')
+                        {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}>
+                        <template v-slot:title>
+                            {{ session('topAlert.title') }}
+                        </template>
 
-                    @if (Session::has('topAlert.body'))
-                        {{ session('topAlert.body') }}
-                    @endif
-                </top-alert>
-            @endif
-            @if (isset($errors) && $errors->any())
-                <top-alert type="danger" container-medium>
-                    <template v-slot:title>
-                        エラーがあります。以下をご確認ください
-                    </template>
-                </top-alert>
-            @endif
-            @yield('content')
+                        @if (Session::has('topAlert.body'))
+                            {{ session('topAlert.body') }}
+                        @endif
+                    </top-alert>
+                @endif
+                @if (isset($errors) && $errors->any())
+                    <top-alert type="danger" container-medium>
+                        <template v-slot:title>
+                            エラーがあります。以下をご確認ください
+                        </template>
+                    </top-alert>
+                @endif
+                @yield('content')
+            </div>
+            <app-credit>
+                {{ config('app.name') }}
+            </app-credit>
         </div>
     </div>
 

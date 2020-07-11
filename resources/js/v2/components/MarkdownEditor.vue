@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-turbolinks="false">
     <vue-simplemde
       v-model="content"
       ref="markdownEditor"
