@@ -33,7 +33,6 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  flex: 1;
   margin: 0 auto;
   max-width: $container-width;
   padding: $container-padding-y $container-padding-x;

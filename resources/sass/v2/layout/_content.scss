@@ -6,6 +6,9 @@
   &.is-no-drawer {
     padding-left: 0;
   }
+  &__body {
+    flex: 1;
+  }
 
   @media screen and (max-width: $breakpoint-drawer-narrow) {
     padding-left: $drawer-width-narrow;
