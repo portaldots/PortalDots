@@ -25,6 +25,7 @@ class ExportActionTest extends TestCase
     {
         parent::setUp();
         Carbon::setTestNow(new CarbonImmutable('2019-08-21 14:52:38'));
+        CarbonImmutable::setTestNow(new CarbonImmutable('2019-08-21 14:52:38'));
 
         $this->staff = factory(User::class)->states('staff')->create();
 
