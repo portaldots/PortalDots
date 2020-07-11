@@ -9,7 +9,6 @@ use App\Eloquents\Form;
 use App\Eloquents\Question;
 use App\Eloquents\User;
 use App\Services\Forms\FormsService;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 
 class FormsServiceTest extends TestCase
@@ -45,11 +44,19 @@ class FormsServiceTest extends TestCase
             'created_by' => $this->user->id,
         ]);
 
-        foreach ($this->questions as $question) {
-            $question = $question->toArray();
-            Arr::forget($question, 'id');
-            Arr::set($question, 'form_id', $form->id);
-            $this->assertDatabaseHas('questions', $question);
+        foreach ($this->questions as $q) {
+            $this->assertDatabaseHas('questions', [
+                'form_id' => $form->id,
+                'name' => $q->name,
+                'description' => $q->description,
+                'type' => $q->type,
+                'is_required' => $q->is_required,
+                'number_min' => $q->number_min,
+                'number_max' => $q->number_max,
+                'allowed_types' => $q->allowed_types,
+                'options' => $q->options,
+                'priority' => $q->priority,
+            ]);
         }
     }
 }
