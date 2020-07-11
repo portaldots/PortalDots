@@ -168,7 +168,7 @@
                         @datetime($next_schedule->start_at)〜 • {{ $next_schedule->place }}
                     </template>
                     @isset ($next_schedule->description)
-                        <div class="markdown">
+                        <div data-turbolinks="false" class="markdown">
                             <hr>
                             @markdown($next_schedule->description)
                         </div>

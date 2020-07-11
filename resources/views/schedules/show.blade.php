@@ -20,7 +20,7 @@
         </div>
     </app-header>
     <app-container class="py-spacing-lg">
-        <div class="markdown">
+        <div data-turbolinks="false" class="markdown">
             @markdown($schedule->description)
         </div>
     </app-container>
