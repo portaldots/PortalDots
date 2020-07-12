@@ -26,6 +26,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
+        $this->mapStaffRoutes();
 
         $this->mapInstallRoutes();
 
@@ -71,5 +72,13 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    protected function mapStaffRoutes()
+    {
+        Route::prefix('/staff')
+              ->middleware('web')
+              ->namespace($this->namespace)
+              ->group(base_path('routes/staff.php'));
     }
 }
