@@ -23,7 +23,7 @@
                 @endif
 
                 <div class="form-group">
-                    <label for="login_id" class="sr-only">学籍番号・連絡先メールアドレス</label>
+                    <label for="login_id" class="sr-only">学籍番号または連絡先メールアドレス</label>
                     <input id="login_id" type="text" class="form-control" name="login_id" value="{{ old('login_id') }}"
                         required autocomplete="username" autofocus placeholder="学籍番号または連絡先メールアドレス">
                 </div>
