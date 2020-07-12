@@ -90,7 +90,7 @@
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
         "font-awesome": "^4.7.0",
-        "laravel-mix": "^4.0.7",
+        "laravel-mix": "^5.0.4",
         "marked": "^1.1.0",
         "portal-vue": "^2.1.7",
         "replace": "^1.1.1",
