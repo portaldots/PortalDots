@@ -1,7 +1,5 @@
 const mix = require('laravel-mix')
 
-require('laravel-mix-polyfill')
-
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -36,11 +34,6 @@ mix
     // ↓フォームエディターのレイアウトが崩れてしまうため、
     // purifyCss: true の指定は、一時的にコメントアウトしています
     // purifyCss: true
-  })
-  .polyfill({
-    enabled: true,
-    useBuiltIns: 'usage',
-    targets: { ie: 11 }
   })
   .sass('resources/sass/bootstrap.scss', 'public/css') // Bootstrap
   .sass('resources/sass/fontawesome.scss', 'public/css') // Font Awesome
