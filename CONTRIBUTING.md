@@ -11,19 +11,19 @@ PortalDots では、Issue や Pull Request を歓迎します。
 **Issue は作成せずに、 sofpyon at hrgrweb dot com (at と dot はそれぞれ `@` と `.` に置き換える) に連絡をお願いします。** (PortalDots 開発チームの代表メールアドレスです)
 
 ## Pull Request の作成について
-- 原則として Pull Request には、対応する Issue を 1 つ以上リンクさせてください。
-- 原則として、対応する Issue がない Pull Request は作成せず、まずは Issue を作成してください。
-- 開発に着手する前に、開発を担当したい Issue のコメント欄にて一言お願いします。「この Issue の開発を担当したいです」など
+- 明らかに PortalDots のバグであり、かつ修正がご自身で可能な場合、 Issue を作成せず、 Pull Request を作成してください。
+- 新機能提案・比較的大規模なコード修正の提案の場合、 Pull Request を作成する前に Issue を作成してください。 実装を行うかどうかについての検討を Issue 上で行います。
+- 対応する Issue がある Pull Request には、本文中に `close #issue番号` という文言を入れてください。
+- 他のコントリビューターとのバッティングを防ぐために、開発に着手する際は、開発を担当したい Issue のコメント欄にて一言お願いします。「この Issue の開発を担当したいです」など
 - 既に Assignee が設定されている Issue は、他の方が開発に着手しています。Assignee が設定されていない Issue の担当をお願いします。
 
 ## Pull Request のコードレビューについて
 - コードレビューは、PortalDots 開発チームの @SofPyon と @hosakou が行います。
 - 以下に該当する Pull Request はレビューしません。
-    - Issue がリンクされていない（PortalDots では、Issue にリンクしない Pull Request は原則として受け付けません）
-    - `wip` ラベルが付与されている。
-    - CircleCI で実行されるテストケースが Fail となっている。
-    - [コントリビューター行動規範](https://github.com/portal-dots/PortalDots/blob/master/CODE_OF_CONDUCT.md) に反している。
-- レビューにおいて `Request Changes` されると、Pull Request に `wip` ラベルが付与されます。レビュー内容に従い修正を行いましたら、 `wip` ラベルを外してください。
+    - Draft 状態の Pull Request
+    - CircleCI でテストが実行中、またはテストケースが Fail となっている Pull Request
+    - [コントリビューター行動規範](https://github.com/portal-dots/PortalDots/blob/master/CODE_OF_CONDUCT.md) に反している Pull Request
+- レビュワーがレビューにおいてコードの修正をお願いすることがあります。レビュー内容に従い修正を行いましたら、コメントにてレビュワーに一言お願いします。 GitHub の `Request a Review` でも構いません。
 
 ## 開発の流れ
 1. このリポジトリを Fork した上で Clone する。
