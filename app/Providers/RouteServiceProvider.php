@@ -59,13 +59,6 @@ class RouteServiceProvider extends ServiceProvider
              ->group(base_path('routes/web.php'));
     }
 
-    protected function mapStaffRoutes()
-    {
-        Route::middleware(['web', 'checkEnv'])
-              ->namespace($this->namespace)
-              ->group(base_path('routes/staff.php'));
-    }
-
     /**
      * Define the "api" routes for the application.
      *
@@ -81,4 +74,11 @@ class RouteServiceProvider extends ServiceProvider
              ->group(base_path('routes/api.php'));
     }
 
+    protected function mapStaffRoutes()
+    {
+        Route::prefix('/')
+              ->middleware(['web', 'checkEnv'])
+              ->namespace($this->namespace)
+              ->group(base_path('routes/staff.php'));
+    }
 }
