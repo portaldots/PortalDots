@@ -1,15 +1,18 @@
 <template>
-  <AppContainer class="credit">
-    <div class="credit__body">
+  <AppContainer class="footer">
+    <div class="footer__body">
       <template v-if="$slots.default"> <slot /> • </template>
       Powered by
       <a
         href="https://github.com/portal-dots/PortalDots"
-        class="credit__link"
+        class="footer__link"
         target="_blank"
         rel="noopener"
       >
-        PortalDots
+        PortalDots </a
+      ><br />
+      <a href="/support" class="footer__link" rel="noopener">
+        推奨動作環境
       </a>
     </div>
   </AppContainer>
@@ -26,14 +29,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.credit {
+.footer {
   border-top: 1px solid $color-border;
   margin-top: $spacing-md;
   text-align: center;
   &__body {
     color: $color-muted-2;
     margin-top: $spacing-lg;
-
     @media screen and (max-width: $breakpoint-bottom-tabs) {
       padding-bottom: $spacing-lg;
     }
