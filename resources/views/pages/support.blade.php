@@ -13,7 +13,7 @@
         <ul>
           <li>Microsoft Edge 最新版</li>
           <li>Mozilla Firefox 最新版</li>
-          <li>Google Chrome 最新版（Windows 10以上, Android 8.0以上）</li>
+          <li>Google Chrome 最新版</li>
           <li>Safari 最新版</li>
         </ul>
         <p>推奨環境以外で利用された場合や、推奨環境下でもご利用のブラウザの設定等によっては、正しく表示されない場合がありますのでご了承ください。</p>
