@@ -52,9 +52,9 @@
                     @endif
 
                     <div class="form-group">
-                        <label for="login_id" class="sr-only">学籍番号・連絡先メールアドレス</label>
+                        <label for="login_id" class="sr-only">学籍番号または連絡先メールアドレス</label>
                         <input id="login_id" type="text" class="form-control" name="login_id" value="{{ old('login_id') }}"
-                            required autocomplete="username" autofocus placeholder="学籍番号・連絡先メールアドレス">
+                            required autocomplete="username" autofocus placeholder="学籍番号または連絡先メールアドレス">
                     </div>
 
                     <div class="form-group">
@@ -168,7 +168,7 @@
                         @datetime($next_schedule->start_at)〜 • {{ $next_schedule->place }}
                     </template>
                     @isset ($next_schedule->description)
-                        <div class="markdown">
+                        <div data-turbolinks="false" class="markdown">
                             <hr>
                             @markdown($next_schedule->description)
                         </div>

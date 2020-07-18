@@ -1,6 +1,6 @@
 @if ($question->type === 'heading')
     <question-heading name="{{ $question->name }}">
-        <div class="markdown">
+        <div data-turbolinks="false" class="markdown">
             @markdown($question->description)
         </div>
     </question-heading>
