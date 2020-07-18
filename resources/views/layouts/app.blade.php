@@ -96,7 +96,7 @@
                 @endif
                 @yield('content')
             </div>
-            <app-credit>{{ config('app.name') }}</app-credit>
+            <app-footer>{{ config('app.name') }}</app-footer>
         </div>
         @if (!Request::is('staff*'))
             @section('bottom_tabs')

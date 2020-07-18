@@ -14,6 +14,9 @@
 // トップページ
 Route::get('/', 'HomeAction')->middleware(['circleSelected'])->name('home');
 
+// 推奨動作環境
+Route::view('/support', 'support')->name('support');
+
 // お知らせ
 Route::prefix('/pages')
     ->name('pages.')
