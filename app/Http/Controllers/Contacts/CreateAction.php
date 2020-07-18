@@ -23,8 +23,15 @@ class CreateAction extends Controller
 
     public function __invoke()
     {
+        $circle = $this->selectorService->getCircle();
+
+        if (Auth::user()->circles()->count() > 0 && empty($circle)) {
+            return redirect()
+                ->route('circles.selector.show', ['redirect_to' => route('contacts', null, false)]);
+        }
+
         return view('contacts.form')
-            ->with('circle', $this->selectorService->getCircle())
+            ->with('circle', $circle)
             ->with('categories', ContactCategory::all());
     }
 }
