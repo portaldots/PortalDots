@@ -31,6 +31,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::prefix('/pages')
             ->name('pages.')
             ->group(function () {
+                Route::get('/', 'Staff\Pages\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Pages\ApiAction')->name('api');
                 Route::get('/create', 'Staff\Pages\CreateAction')->name('create');
                 Route::post('/', 'Staff\Pages\StoreAction')->name('store');
                 Route::get('/{page}/edit', 'Staff\Pages\EditAction')->name('edit');
@@ -92,6 +94,9 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::prefix('/circles')
             ->name('circles.')
             ->group(function () {
+                Route::get('/', 'Staff\Circles\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Circles\ApiAction')->name('api');
+
                 // 参加登録設定
                 Route::get('/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('custom_form.index');
                 Route::post('/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('custom_form.store');
@@ -133,6 +138,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::prefix('/documents')
             ->name('documents.')
             ->group(function () {
+                Route::get('/', 'Staff\Documents\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Documents\ApiAction')->name('api');
                 Route::get('/create', 'Staff\Documents\CreateAction')->name('create');
                 Route::post('/', 'Staff\Documents\StoreAction')->name('store');
                 Route::get('/{document}/edit', 'Staff\Documents\EditAction')->name('edit');
