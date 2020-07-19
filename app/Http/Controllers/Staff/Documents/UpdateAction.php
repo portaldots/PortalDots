@@ -29,6 +29,7 @@ class UpdateAction extends Controller
             $document,
             $validated['name'],
             $validated['description'],
+            $request->file('file'),
             Auth::user(),
             (bool)$validated['is_public'],
             (bool)$validated['is_important'],

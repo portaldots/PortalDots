@@ -34,7 +34,7 @@
                     </template>
                     @isset($document)
                         <template v-slot:description>
-                            <a href="{{ route('staff.documents.show', ['document' => $document]) }}" target="_blank" rel="noopener">アップロード済みのファイルを表示</a> {{ strtoupper($document->extension) }}ファイル • @filesize($document->size)
+                            <a href="{{ route('staff.documents.show', ['document' => $document]) }}" target="_blank" rel="noopener">アップロード済ファイルを表示</a> {{ strtoupper($document->extension) }}ファイル • @filesize($document->size)
                         </template>
                     @endisset
                     <input id="file" class="form-control @error('file') is-invalid @enderror" type="file"
