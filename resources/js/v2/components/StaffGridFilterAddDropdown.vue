@@ -3,9 +3,11 @@
     :items="dropdownItems"
     name="grid-add-filter"
     class="add_dropdown"
+    menu-fluid
   >
     <template #button="{ toggle, props }">
       <button
+        type="button"
         class="btn is-secondary is-no-border is-block add_dropdown-btn"
         @click="toggle"
         v-bind="props"
@@ -19,7 +21,7 @@
     </template>
     <template #item="{ item }">
       <AppDropdownItem component-is="button" @click="e => onClickItem(item, e)">
-        {{ item[1] }}
+        {{ item.menuLabel }}
       </AppDropdownItem>
     </template>
   </AppDropdown>
@@ -35,23 +37,14 @@ export default {
     AppDropdownItem
   },
   props: {
-    keys: {
+    dropdownItems: {
       type: Array,
       required: true
-    },
-    keyTranslations: {
-      type: Object,
-      required: true
-    }
-  },
-  computed: {
-    dropdownItems() {
-      return this.keys.map(key => [key, this.keyTranslations[key]])
     }
   },
   methods: {
     onClickItem(item, e) {
-      this.$emit('clickItem', item[0], e)
+      this.$emit('clickItem', item, e)
     }
   }
 }

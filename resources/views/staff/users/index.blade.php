@@ -20,7 +20,6 @@
             is_admin: '管理者',
             email_verified_at: 'メール認証',
             univemail_verified_at: '本人確認',
-            signed_up_at: 'ユーザー登録完了日時',
             notes: 'スタッフ用メモ',
             created_at: '作成日時',
             updated_at: '更新日時',

@@ -40,6 +40,10 @@ class Circle extends Model
         'notes',
     ];
 
+    protected $dates = [
+        'status_set_at',
+    ];
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
@@ -58,6 +62,11 @@ class Circle extends Model
     public function answers()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function statusSetBy()
+    {
+        return $this->belongsTo(User::class, 'status_set_by');
     }
 
     /**

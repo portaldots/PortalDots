@@ -1,14 +1,14 @@
 <template>
-  <div class="staff_grid_sort">
+  <form class="staff_grid_sort" @submit.prevent="onClickApply">
     <template v-if="queries.length > 0">
       <div class="staff_grid_sort-list">
         <div
           class="staff_grid_sort-list__item"
-          v-for="(query, arrayIndex) in queries"
+          v-for="query in queries"
           :key="query.id"
         >
           <div class="staff_grid_sort-list__name">
-            <span>{{ keyTranslations[query.keyName] }}</span>
+            <span>{{ query.item.translation }}</span>
             <button
               class="staff_grid_sort-list__remove"
               type="button"
@@ -18,38 +18,70 @@
             </button>
           </div>
           <div class="staff_grid_sort-list__inputs">
+            <template v-if="!['bool', 'isNull'].includes(query.item.type)">
+              <input
+                type="text"
+                class="form-control"
+                v-model="query.value"
+                v-if="query.item.type === 'string'"
+              />
+              <input
+                type="number"
+                class="form-control"
+                v-model="query.value"
+                v-else-if="query.item.type === 'number'"
+              />
+              <input
+                type="datetime-local"
+                class="form-control"
+                v-model="query.value"
+                v-else-if="query.item.type === 'datetime'"
+                required
+              />
+            </template>
             <select
               type="text"
               class="form-control"
-              v-model="queries[arrayIndex].operator"
-              v-if="filterableKeys[query.keyName] === 'string'"
+              v-model="query.operator"
+              v-if="query.item.type === 'string'"
             >
-              <option value="=">＝ (一致)</option>
-              <option value="!=">≠ (不一致)</option>
-              <option value="like">含む</option>
-              <option value="not like">含まない</option>
+              <option value="=">と一致</option>
+              <option value="!=">と不一致</option>
+              <option value="like">を含む</option>
+              <option value="not like">を含まない</option>
             </select>
             <select
               type="text"
               class="form-control"
-              v-model="queries[arrayIndex].operator"
-              v-else-if="
-                ['number', 'datetime'].includes(filterableKeys[query.keyName])
-              "
+              v-model="query.operator"
+              v-else-if="query.item.type === 'number'"
             >
-              <option value="=">＝ (一致)</option>
-              <option value="!=">≠ (不一致)</option>
-              <option value="<">＜ (より小さい)</option>
-              <option value="<=">≦ (以下)</option>
-              <option value=">">＞ (より大きい)</option>
-              <option value=">=">≧ (以上)</option>
+              <option value="=">と一致</option>
+              <option value="!=">と不一致</option>
+              <option value="<">より小さい</option>
+              <option value="<=">以下</option>
+              <option value=">">より大きい</option>
+              <option value=">=">以上</option>
+            </select>
+            <select
+              type="text"
+              class="form-control"
+              v-model="query.operator"
+              v-else-if="query.item.type === 'datetime'"
+            >
+              <option value="=">と一致</option>
+              <option value="!=">と不一致</option>
+              <option value="<">以前</option>
+              <option value="<=">以前(一致含む)</option>
+              <option value=">">以降</option>
+              <option value=">=">以降(一致含む)</option>
             </select>
             <!-- ↓operatorではなくvalueを選択させている点に注意！ -->
             <select
               type="text"
               class="form-control"
-              v-model="queries[arrayIndex].value"
-              v-if="filterableKeys[query.keyName] === 'bool'"
+              v-model="query.value"
+              v-if="query.item.type === 'bool'"
             >
               <option value="1">はい</option>
               <option value="0">いいえ</option>
@@ -57,34 +89,42 @@
             <select
               type="text"
               class="form-control"
-              v-model="queries[arrayIndex].value"
-              v-if="filterableKeys[query.keyName] === 'isNull'"
+              v-model="query.value"
+              v-if="query.item.type === 'isNull'"
             >
               <option value="1">空</option>
               <option value="0">空でない</option>
             </select>
-            <template
-              v-if="!['bool', 'isNull'].includes(filterableKeys[query.keyName])"
+            <select
+              type="text"
+              class="form-control is-size-full"
+              v-model="query.value"
+              v-if="query.item.type === 'belongsToMany'"
             >
-              <input
-                type="text"
-                class="form-control"
-                v-model="queries[arrayIndex].value"
-                v-if="filterableKeys[query.keyName] === 'string'"
-              />
-              <input
-                type="number"
-                class="form-control"
-                v-model="queries[arrayIndex].value"
-                v-else-if="filterableKeys[query.keyName] === 'number'"
-              />
-              <input
-                type="datetime-local"
-                class="form-control"
-                v-model="queries[arrayIndex].value"
-                v-else-if="filterableKeys[query.keyName] === 'datetime'"
-              />
-            </template>
+              <option
+                v-for="choice in filterableKeys[query.item.keyName].choices"
+                :key="choice.id"
+                :value="choice.id"
+              >
+                {{ choice[filterableKeys[query.item.keyName].choices_name] }}
+              </option>
+            </select>
+            <select
+              type="text"
+              class="form-control is-size-full"
+              v-model="query.value"
+              v-if="query.item.type === 'enum'"
+            >
+              <option
+                v-for="(displayValue, value) in filterableKeys[
+                  query.item.keyName
+                ].choices"
+                :key="value"
+                :value="value"
+              >
+                {{ displayValue }}
+              </option>
+            </select>
           </div>
         </div>
       </div>
@@ -100,8 +140,7 @@
     </div>
     <div class="staff_grid_sort-dropdown">
       <StaffGridFilterAddDropdown
-        :keys="Object.keys(filterableKeys)"
-        :keyTranslations="keyTranslations"
+        :dropdownItems="itemsForFilterQuery"
         @clickItem="addQuery"
       />
     </div>
@@ -129,12 +168,12 @@
     </div>
     <div class="staff_grid_sort-actions">
       <button
-        type="button"
-        @click="onClickApply"
+        type="submit"
         class="btn is-primary is-block"
         :disabled="loading || !isDirty"
       >
-        <strong>適用</strong>
+        <i class="fas fa-spinner fa-pulse" v-if="loading"></i>
+        <strong v-else>適用</strong>
       </button>
       <button
         type="button"
@@ -145,7 +184,7 @@
         絞り込みを解除
       </button>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
@@ -186,7 +225,14 @@ export default {
     }
   },
   mounted() {
-    this.queries = this.defaultQueries
+    this.queries = this.defaultQueries.map(query => ({
+      id: query.id,
+      item: this.itemsForFilterQuery
+        .flatMap(item => (item.sublist ? item.sublist : item))
+        .find(q => q.keyName === query.keyName),
+      operator: query.operator,
+      value: query.value
+    }))
     this.mode = this.defaultMode
     this.$nextTick(() => {
       this.isDirty = false
@@ -199,10 +245,25 @@ export default {
         Number.isInteger(this.queries[this.queries.length - 1].id)
           ? this.queries[this.queries.length - 1].id + 1
           : 0
-      this.queries = [
-        ...this.queries,
-        { id, keyName: item, operator: '=', value: '' }
-      ]
+
+      const defaultValues = {
+        value: ''
+      }
+
+      switch (item.type) {
+        case 'string':
+          defaultValues.operator = 'like'
+          break
+        case 'bool':
+        case 'isNull':
+          defaultValues.value = '1'
+          break
+        default:
+          defaultValues.operator = '='
+          break
+      }
+
+      this.queries = [...this.queries, { id, item, ...defaultValues }]
     },
     removeQuery(queryId) {
       this.isDirty = true
@@ -210,7 +271,15 @@ export default {
     },
     onClickApply() {
       this.isDirty = false
-      this.$emit('clickApply', this.queries, this.mode)
+      this.$emit(
+        'clickApply',
+        this.queries.map(query => ({
+          keyName: query.item.keyName,
+          operator: query.operator,
+          value: query.value
+        })),
+        this.mode
+      )
     },
     onClickClearAll() {
       this.queries = []
@@ -229,6 +298,37 @@ export default {
     },
     mode() {
       this.isDirty = true
+    }
+  },
+  computed: {
+    itemsForFilterQuery() {
+      return Object.keys(this.filterableKeys).map(key => {
+        if (this.filterableKeys[key].type !== 'belongsTo') {
+          return {
+            keyName: key,
+            type: this.filterableKeys[key].type,
+            translation: this.keyTranslations[key],
+            menuLabel: this.keyTranslations[key]
+          }
+        }
+
+        if (typeof this.filterableKeys[key].keys !== 'object') {
+          return {}
+        }
+
+        return {
+          keyName: key,
+          label: this.keyTranslations[key],
+          sublist: Object.keys(this.filterableKeys[key].keys).map(
+            insideKey => ({
+              keyName: `${key}.${insideKey}`,
+              type: this.filterableKeys[key].keys[insideKey].type,
+              translation: `${this.keyTranslations[key]} › ${this.filterableKeys[key].keys[insideKey].translation}`,
+              menuLabel: this.filterableKeys[key].keys[insideKey].translation
+            })
+          )
+        }
+      })
     }
   }
 }
@@ -258,7 +358,10 @@ export default {
     &__inputs {
       column-gap: $spacing-sm;
       display: grid;
-      grid-template-columns: 2fr 3fr;
+      grid-template-columns: 3fr 2fr;
+      .form-control.is-size-full {
+        grid-column-end: span 2;
+      }
     }
   }
   &-mode {

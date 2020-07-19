@@ -15,12 +15,16 @@
             </div>
             <a href="/home_staff" class="drawer-nav__link{{ Request::is('/') ? ' is-active' : '' }}" data-turbolinks="false">
                 <i class="fas fa-home drawer-nav__icon fa-fw"></i>
-                ダッシュボード
+                旧バージョンへ戻す
             </a>
-            <a href="{{ route('staff.users.index') }}" class="drawer-nav__link{{ Request::is('staff/users*') ? ' is-active' : '' }}">
-                <i class="fas fa-users drawer-nav__icon fa-fw"></i>
-                ユーザー情報管理
-            </a>
+{{--            <a href="{{ route('staff.users.index') }}" class="drawer-nav__link{{ Request::is('staff/users*') ? ' is-active' : '' }}">--}}
+{{--                <i class="fas fa-users drawer-nav__icon fa-fw"></i>--}}
+{{--                ユーザー情報管理--}}
+{{--            </a>--}}
+{{--            <a href="{{ route('staff.documents.index') }}" class="drawer-nav__link{{ Request::is('staff/documents*') ? ' is-active' : '' }}">--}}
+{{--                <i class="far fa-file-alt drawer-nav__icon fa-fw"></i>--}}
+{{--                配布資料管理--}}
+{{--            </a>--}}
         </nav>
     @endif
 @else

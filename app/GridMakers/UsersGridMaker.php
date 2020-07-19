@@ -6,13 +6,17 @@ namespace App\GridMakers;
 
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\User;
+use App\GridMakers\Concerns\UseEloquent;
+use Illuminate\Database\Eloquent\Model;
 
-class UsersGridMaker extends BaseGridMaker
+class UsersGridMaker implements GridMakable
 {
+    use UseEloquent;
+
     /**
      * @inheritDoc
      */
-    public function query(): Builder
+    protected function baseEloquentQuery(): Builder
     {
         return User::select($this->keys());
     }
@@ -35,7 +39,6 @@ class UsersGridMaker extends BaseGridMaker
             'is_admin',
             'email_verified_at',
             'univemail_verified_at',
-            'signed_up_at',
             'notes',
             'created_at',
             'updated_at',
@@ -48,22 +51,21 @@ class UsersGridMaker extends BaseGridMaker
     public function filterableKeys(): array
     {
         return [
-            'id' => 'number',
-            'student_id' => 'string',
-            'name_family' => 'string',
-            'name_family_yomi' => 'string',
-            'name_given' => 'string',
-            'name_given_yomi' => 'string',
-            'email' => 'string',
-            'tel' => 'string',
-            'is_staff' => 'bool',
-            'is_admin' => 'bool',
-            'email_verified_at' => 'isNull',
-            'univemail_verified_at' => 'isNull',
-            'signed_up_at' => 'isNull',
-            'notes' => 'string',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'id' => ['type' => 'number'],
+            'student_id' => ['type' => 'string'],
+            'name_family' => ['type' => 'string'],
+            'name_family_yomi' => ['type' => 'string'],
+            'name_given' => ['type' => 'string'],
+            'name_given_yomi' => ['type' => 'string'],
+            'email' => ['type' => 'string'],
+            'tel' => ['type' => 'string'],
+            'is_staff' => ['type' => 'bool'],
+            'is_admin' => ['type' => 'bool'],
+            'email_verified_at' => ['type' => 'isNull'],
+            'univemail_verified_at' => ['type' => 'isNull'],
+            'notes' => ['type' => 'string'],
+            'created_at' => ['type' => 'datetime'],
+            'updated_at' => ['type' => 'datetime'],
         ];
     }
 
@@ -85,10 +87,35 @@ class UsersGridMaker extends BaseGridMaker
             'is_admin',
             'email_verified_at',
             'univemail_verified_at',
-            'signed_up_at',
             'notes',
             'created_at',
             'updated_at',
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function map($record): array
+    {
+        $item = [];
+        foreach ($this->keys() as $key) {
+            switch ($key) {
+                case 'created_at':
+                    $item[$key] = $record->created_at->format('Y/m/d H:i:s');
+                    break;
+                case 'updated_at':
+                    $item[$key] = $record->updated_at->format('Y/m/d H:i:s');
+                    break;
+                default:
+                    $item[$key] = $record->$key;
+            }
+        }
+        return $item;
+    }
+
+    protected function model(): Model
+    {
+        return new User();
     }
 }
