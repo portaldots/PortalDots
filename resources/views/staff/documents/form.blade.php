@@ -25,30 +25,28 @@
 
         <app-container>
             <list-view>
-                @empty($document)
-                    <list-view-form-group label-for="file">
-                        <template v-slot:label>
-                            ファイル
+                <list-view-form-group label-for="file">
+                    <template v-slot:label>
+                        ファイル
+                        @empty($document)
                             <app-badge danger>必須</app-badge>
+                        @endempty
+                    </template>
+                    @isset($document)
+                        <template v-slot:description>
+                            <a href="{{ route('staff.documents.show', ['document' => $document]) }}" target="_blank" rel="noopener">アップロード済みのファイルを表示</a> {{ strtoupper($document->extension) }}ファイル • @filesize($document->size)
                         </template>
-                        <input id="file" class="form-control @error('file') is-invalid @enderror" type="file"
-                            name="file" required>
-                        @if ($errors->has('file'))
-                            <template v-slot:invalid>
-                                @foreach ($errors->get('file') as $message)
-                                    {{ $message }}
-                                @endforeach
-                            </template>
-                        @endif
-                    </list-view-form-group>
-                @else
-                    <list-view-form-group>
-                        <template v-slot:label>ファイル</template>
-                        <template v-slot:description>{{ strtoupper($document->extension) }}ファイル • @filesize($document->size)</template>
-                        {{-- TOOD: スタッフ用のファイル表示 Action を別途用意する --}}
-                        <a href="{{ route('staff.documents.show', ['document' => $document]) }}" class="btn is-primary" target="_blank" rel="noopener">表示</a>
-                    </list-view-form-group>
-                @endempty
+                    @endisset
+                    <input id="file" class="form-control @error('file') is-invalid @enderror" type="file"
+                        name="file" @empty($document) required @endempty>
+                    @if ($errors->has('file'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('file') as $message)
+                                {{ $message }}
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
                 <list-view-form-group label-for="name">
                     <template v-slot:label>
                         配布資料名
