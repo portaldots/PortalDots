@@ -87,8 +87,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/delete', 'Users\DeleteAction')->name('user.delete');
     Route::delete('/user', 'Users\DestroyAction')->name('user.destroy');
     // お問い合わせページ
-    Route::get('/contacts', 'Contacts\CreateAction')->name('contacts');
-    Route::post('/contacts', 'Contacts\PostAction')->name('contacts.post');
+    Route::middleware(['circleSelected'])->group(function() {
+        Route::get('/contacts', 'Contacts\CreateAction')->name('contacts');
+        Route::post('/contacts', 'Contacts\PostAction')->name('contacts.post');
+    });
 
     // 企画セレクター (GETパラメーターの redirect に Route名 を入れる)
     Route::get('/selector', 'Circles\Selector\ShowAction')->name('circles.selector.show');
