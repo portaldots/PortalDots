@@ -28,6 +28,7 @@ class UpdateDocumentRequest extends FormRequest
         return [
             'name' => ['required', 'string'],
             'description' => ['nullable', 'string'],
+            'file' => ['nullable', 'file'],
             'is_public' => ['required', 'boolean'],
             'is_important' => ['required', 'boolean'],
             'schedule_id' => ['nullable', 'exists:schedules,id'],
@@ -45,6 +46,7 @@ class UpdateDocumentRequest extends FormRequest
         return [
             'name' => '配布資料名',
             'description' => '説明',
+            'file' => 'ファイル',
             'is_public' => '公開設定',
             'is_important' => 'この配布資料は重要かどうか',
             'schedule_id' => '配布したイベント',

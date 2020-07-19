@@ -76,7 +76,7 @@ class DocumentsServiceTest extends TestCase
     /**
      * @test
      */
-    public function updateDocument()
+    public function updateDocument_ファイルはアップデートせずに更新できる()
     {
         $schedule = factory(Schedule::class)->create();
 
@@ -95,6 +95,7 @@ class DocumentsServiceTest extends TestCase
             $document,
             'updated filename',
             'updated description',
+            null,
             $this->staff,
             false,
             true,
@@ -105,6 +106,49 @@ class DocumentsServiceTest extends TestCase
         $this->assertDatabaseHas('documents', [
             'name' => 'updated filename',
             'description' => 'updated description',
+            'created_by' => $this->staff->id,
+            'updated_by' => $this->staff->id,
+            'is_public' => false,
+            'is_important' => true,
+            'schedule_id' => null,
+            'notes' => 'updated notes'
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function updateDocument_ファイルのアップデートができる()
+    {
+        $schedule = factory(Schedule::class)->create();
+
+        $document = $this->documentsService->createDocument(
+            '第２回会議資料',
+            '第２回会議にて配布した資料のPDFバージョンです',
+            UploadedFile::fake()->create('第２回.pdf', 1, 'application/pdf'),
+            $this->staff,
+            true,
+            false,
+            $schedule,
+            'メモです'
+        );
+
+        $this->documentsService->updateDocument(
+            $document,
+            'updated filename',
+            'updated description',
+            UploadedFile::fake()->create('update.jpeg', 1, 'image/jpeg'),
+            $this->staff,
+            false,
+            true,
+            null,
+            'updated notes'
+        );
+
+        $this->assertDatabaseHas('documents', [
+            'name' => 'updated filename',
+            'description' => 'updated description',
+            'extension' => 'jpeg',
             'created_by' => $this->staff->id,
             'updated_by' => $this->staff->id,
             'is_public' => false,

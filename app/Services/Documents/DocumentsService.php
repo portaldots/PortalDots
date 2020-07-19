@@ -54,11 +54,11 @@ class DocumentsService
     /**
      * 配布資料を更新する
      *
-     * ファイル本体の更新は不可
      *
      * @param Document $document 更新対象の配布資料
      * @param string $name
      * @param string|null $description
+     * @param UploadedFile|null $file
      * @param User $updated_by
      * @param boolean $is_public 公開するかどうか
      * @param boolean $is_important 重要かどうか
@@ -70,6 +70,7 @@ class DocumentsService
         Document $document,
         string $name,
         ?string $description,
+        ?UploadedFile $file,
         User $updated_by,
         bool $is_public,
         bool $is_important,
@@ -79,6 +80,9 @@ class DocumentsService
         return $document->update([
             'name' => $name,
             'description' => $description,
+            'path' => empty($file) ? $document->path : $file->store('documents'),
+            'size' => empty($file) ? $document->size : $file->getSize(),
+            'extension' => empty($file) ? $document->extension : $file->getClientOriginalExtension(),
             'updated_by' => $updated_by->id,
             'is_public' => $is_public,
             'is_important' => $is_important,
