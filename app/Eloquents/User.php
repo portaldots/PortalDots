@@ -64,6 +64,7 @@ class User extends Authenticatable
         'email_verified_at',
         'univemail_verified_at',
         'signed_up_at',
+        'last_accessed_at',
     ];
 
     protected $casts = [
