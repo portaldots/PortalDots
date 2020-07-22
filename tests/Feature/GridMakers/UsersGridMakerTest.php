@@ -42,4 +42,26 @@ class UsersGridMakerTest extends TestCase
         $this->assertSame('2020/02/02 02:02:02', $result['created_at']);
         $this->assertSame('2020/02/02 02:02:02', $result['updated_at']);
     }
+
+    public function formatLastAccessedAt_provider()
+    {
+        return [
+            [new CarbonImmutable('2020-02-07 23:23:23'), '1時間以内'],
+            [new CarbonImmutable('2020-02-01 01:23:45'), '6日前'],
+            [new CarbonImmutable('2019-10-31 19:10:31'), '3ヶ月前'],
+            [new CarbonImmutable('2012-05-22 09:30:00'), '1年以上前']
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider formatLastAccessedAt_provider
+     */
+    public function formatLastAccessedAt(CarbonImmutable $last_accessed_at, string $expected)
+    {
+        $user = factory(User::class)->make([
+            'last_accessed_at' => $last_accessed_at,
+        ]);
+        $this->assertSame($expected, $user->formatLastAccessedAt());
+    }
 }
