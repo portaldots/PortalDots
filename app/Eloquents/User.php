@@ -64,6 +64,7 @@ class User extends Authenticatable
         'email_verified_at',
         'univemail_verified_at',
         'signed_up_at',
+        'last_accessed_at',
     ];
 
     protected $casts = [
@@ -276,5 +277,30 @@ class User extends Authenticatable
     public function isLeaderInCircle(Circle $circle)
     {
         return $circle->leader->first()->id === $this->id;
+    }
+
+    /**
+     * 最終アクセスをいい感じに返す
+     * @return String
+     */
+    public function formatLastAccessedAt()
+    {
+        $last_accessed_at = $this->last_accessed_at;
+        if (empty($last_accessed_at)) {
+            return "-";
+        }
+        if (now()->subHour()->lte($last_accessed_at)) {
+            return '1時間以内';
+        }
+        if (now()->subDay()->lte($last_accessed_at)) {
+            return "{$last_accessed_at->diffInHours(now())}時間前";
+        }
+        if (now()->subMonth()->lte($last_accessed_at)) {
+            return "{$last_accessed_at->diffInDays(now())}日前";
+        }
+        if (now()->subYear()->lte($last_accessed_at)) {
+            return "{$last_accessed_at->diffInMonths(now())}ヶ月前";
+        }
+        return "1年以上前";
     }
 }

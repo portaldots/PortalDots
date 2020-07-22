@@ -59,6 +59,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->display_as('is_staff', 'スタッフ');
         $this->grocery_crud->display_as('is_admin', '管理者');
         $this->grocery_crud->display_as('notes', 'ｽﾀｯﾌ用ﾒﾓ');
+        $this->grocery_crud->display_as('last_accessed_at', '最終アクセス');
 
         // id順に表示する
         $this->grocery_crud->order_by('id', 'asc');
@@ -516,6 +517,7 @@ class Home_staff extends MY_Controller
             'tel',
             'is_staff',
             'is_admin',
+            'last_accessed_at',
             'created_at',
             'updated_at',
             'notes'
@@ -563,6 +565,7 @@ class Home_staff extends MY_Controller
 
         $this->grocery_crud->callback_column('identify', array($this, '_crud_user_identify'));
         $this->grocery_crud->callback_column('verify', array($this, '_crud_email_verified'));
+        $this->grocery_crud->callback_column('last_accessed_at', array($this, '_crud_last_accessed_at'));
 
         $vars += (array)$this->grocery_crud->render();
 
@@ -602,6 +605,31 @@ class Home_staff extends MY_Controller
             return '<span class="text-success">確認済み</span>';
         }
         return '<span class="text-danger">未確認</span> - <a href="/staff/users/'. $row->id. '/verify">本人確認を完了する</a>';
+    }
+
+    /**
+     * 最終アクセスのフォーマットを返すコールバック関数
+     */
+    public function _crud_last_accessed_at($value, $row)
+    {
+        if (empty($value)) {
+            return "-";
+        }
+
+        $last_accessed_at = new Carbon\Carbon($value);
+        if (now()->subHour()->lte($last_accessed_at)) {
+            return '1時間以内';
+        }
+        if (now()->subDay()->lte($last_accessed_at)) {
+            return "{$last_accessed_at->diffInHours(now())}時間前";
+        }
+        if (now()->subMonth()->lte($last_accessed_at)) {
+            return "{$last_accessed_at->diffInDays(now())}日前";
+        }
+        if (now()->subYear()->lte($last_accessed_at)) {
+            return "{$last_accessed_at->diffInMonths(now())}ヶ月前";
+        }
+        return "1年以上前";
     }
 
     /**

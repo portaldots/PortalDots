@@ -7,6 +7,7 @@ namespace App\GridMakers;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\User;
 use App\GridMakers\Concerns\UseEloquent;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class UsersGridMaker implements GridMakable
@@ -39,6 +40,7 @@ class UsersGridMaker implements GridMakable
             'is_admin',
             'email_verified_at',
             'univemail_verified_at',
+            'last_accessed_at',
             'notes',
             'created_at',
             'updated_at',
@@ -87,6 +89,7 @@ class UsersGridMaker implements GridMakable
             'is_admin',
             'email_verified_at',
             'univemail_verified_at',
+            'last_accessed_at',
             'notes',
             'created_at',
             'updated_at',
@@ -101,6 +104,9 @@ class UsersGridMaker implements GridMakable
         $item = [];
         foreach ($this->keys() as $key) {
             switch ($key) {
+                case 'last_accessed_at':
+                    $item[$key] = $record->formatLastAccessedAt();
+                    break;
                 case 'created_at':
                     $item[$key] = $record->created_at->format('Y/m/d H:i:s');
                     break;
