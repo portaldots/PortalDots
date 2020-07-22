@@ -105,7 +105,7 @@ class UsersGridMaker implements GridMakable
         foreach ($this->keys() as $key) {
             switch ($key) {
                 case 'last_accessed_at':
-                    $item[$key] = $this->formatLastAccessedAt($record->last_accessed_at);
+                    $item[$key] = $record->formatLastAccessedAt();
                     break;
                 case 'created_at':
                     $item[$key] = $record->created_at->format('Y/m/d H:i:s');
@@ -123,30 +123,5 @@ class UsersGridMaker implements GridMakable
     protected function model(): Model
     {
         return new User();
-    }
-
-    /**
-     * 最終アクセスを変換して返す関数
-     * @param Carbon|null $last_accessed_at
-     * @return String
-     */
-    private function formatLastAccessedAt(?Carbon $last_accessed_at)
-    {
-        if (empty($last_accessed_at)) {
-            return "-";
-        }
-        if (now()->subHour()->lte($last_accessed_at)) {
-            return '1時間以内';
-        }
-        if (now()->subDay()->lte($last_accessed_at)) {
-            return "{$last_accessed_at->diffInHours(now())}時間前";
-        }
-        if (now()->subMonth()->lte($last_accessed_at)) {
-            return "{$last_accessed_at->diffInDays(now())}日前";
-        }
-        if (now()->subYear()->lte($last_accessed_at)) {
-            return "{$last_accessed_at->diffInMonths(now())}ヶ月前";
-        }
-        return "1年以上前";
     }
 }
