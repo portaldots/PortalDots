@@ -65,7 +65,6 @@ class UsersGridMaker implements GridMakable
             'is_admin' => ['type' => 'bool'],
             'email_verified_at' => ['type' => 'isNull'],
             'univemail_verified_at' => ['type' => 'isNull'],
-            'last_accessed_at' => ['type' => 'datetime'],
             'notes' => ['type' => 'string'],
             'created_at' => ['type' => 'datetime'],
             'updated_at' => ['type' => 'datetime'],
