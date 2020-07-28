@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Staff\Documents;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Responders\Staff\GridResponder;
-use App\GridMakers\documentsGridMaker;
+use App\GridMakers\DocumentsGridMaker;
 
 class ApiAction extends Controller
 {
