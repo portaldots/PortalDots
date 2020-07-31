@@ -24,7 +24,6 @@
 
     <!-- Scripts -->
     @prepend('js')
-    <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/v4-shims.js"></script>
     <script src="{{ mix('js/manifest.js') }}" defer></script>
     <script src="{{ mix('js/vendor.js') }}" defer></script>
     <script src="{{ mix('js/app.js') }}" defer></script>
