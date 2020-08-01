@@ -1425,7 +1425,7 @@ class Home_staff extends MY_Controller
                     "url" => "home_staff",
                 ],
                 "pages" => [
-                    "icon" => "newspaper-o",
+                    "icon" => "bullhorn",
                     "name" => "お知らせ管理",
                     "url" => "home_staff/pages",
                 ],
