@@ -99,7 +99,7 @@
         "vue": "^2.5.17",
         "vue-global-events": "^1.1.2",
         "vue-simplemde": "^1.0.6",
-        "vuedraggable": "^2.20.0",
+        "vuedraggable": "^2.24.0",
         "vuex": "^3.1.1",
         "wysiwyg.css": "^0.0.3"
     }
