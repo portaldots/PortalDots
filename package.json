@@ -55,7 +55,7 @@
         }
     },
     "devDependencies": {
-        "blade-formatter": "^1.1.4",
+        "blade-formatter": "^1.7.0",
         "browser-sync": "^2.26.12",
         "browser-sync-webpack-plugin": "2.2.2",
         "cross-env": "^7.0",
