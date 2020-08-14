@@ -79,7 +79,7 @@
               <AppDropdownItem
                 class="grid-controls__selector-item"
                 component-is="button"
-                @click="e => onChangePerPage(item, e)"
+                @click="(e) => onChangePerPage(item, e)"
               >
                 {{ item }}
                 <i
@@ -114,7 +114,7 @@
                 <button
                   class="grid-table__th__button"
                   :disabled="!sortableKeys.includes(keyName)"
-                  @click="e => onClickTh(keyName, e)"
+                  @click="(e) => onClickTh(keyName, e)"
                 >
                   <slot name="th" :keyName="keyName" />
                   <template v-if="orderBy === keyName">
@@ -166,45 +166,45 @@ import AppDropdownItem from './AppDropdownItem.vue'
 export default {
   components: {
     AppDropdown,
-    AppDropdownItem
+    AppDropdownItem,
   },
   props: {
     keys: {
       type: Array,
-      required: true
+      required: true,
     },
     sortableKeys: {
       type: Array,
-      required: true
+      required: true,
     },
     orderBy: {
       type: String,
-      required: true
+      required: true,
     },
     direction: {
       type: String,
-      required: true
+      required: true,
     },
     paginator: {
       type: Object,
-      required: false
+      required: false,
     },
     page: {
       type: Number,
-      required: true
+      required: true,
     },
     perPage: {
       type: Number,
-      required: true
+      required: true,
     },
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isFilterActive: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     onClickFirst(e) {
@@ -230,8 +230,8 @@ export default {
     },
     onChangePerPage(perPage, e) {
       this.$emit('changePerPage', perPage, e)
-    }
-  }
+    },
+  },
 }
 </script>
 

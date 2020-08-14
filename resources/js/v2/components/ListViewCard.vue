@@ -9,7 +9,7 @@ import ListViewBaseItem from './ListViewBaseItem.vue'
 
 export default {
   components: {
-    ListViewBaseItem
-  }
+    ListViewBaseItem,
+  },
 }
 </script>

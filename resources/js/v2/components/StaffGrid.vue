@@ -57,8 +57,8 @@ import StaffGridFilter from './StaffGridFilter.vue'
 
 const axios = Axios.create({
   headers: {
-    'X-Requested-With': 'XMLHttpRequest'
-  }
+    'X-Requested-With': 'XMLHttpRequest',
+  },
 })
 
 export default {
@@ -66,17 +66,17 @@ export default {
     GridTable,
     SideWindowContainer,
     SideWindow,
-    StaffGridFilter
+    StaffGridFilter,
   },
   props: {
     apiUrl: {
       type: String,
-      required: true
+      required: true,
     },
     keyTranslations: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -91,7 +91,7 @@ export default {
       filterQueries: [],
       filterMode: 'and',
       needReload: false,
-      loading: true
+      loading: true,
     }
   },
   async mounted() {
@@ -162,7 +162,7 @@ export default {
         // 現在がascだったらdescに、descだったらascに変える
         this.direction = {
           asc: 'desc',
-          desc: 'asc'
+          desc: 'asc',
         }[this.direction]
       } else {
         this.orderBy = keyName
@@ -189,7 +189,7 @@ export default {
       const queries = window.location.search
         .replace('?', '')
         .split('&')
-        .map(e => e.split('='))
+        .map((e) => e.split('='))
         .reduce((obj, e) => ({ ...obj, [e[0]]: e[1] }), {})
 
       if (queries.page) {
@@ -211,13 +211,13 @@ export default {
           id: index,
           keyName: query.key_name,
           operator: query.operator === 'not+like' ? 'not like' : query.operator,
-          value: query.value
+          value: query.value,
         }))
       }
       if (queries.mode) {
         this.filterMode = queries.mode
       }
-    }
+    },
   },
   computed: {
     urlParams() {
@@ -229,10 +229,10 @@ export default {
 
       if (this.filterQueries && this.filterQueries.length > 0) {
         const stringQueries = JSON.stringify(
-          this.filterQueries.map(query => ({
+          this.filterQueries.map((query) => ({
             key_name: query.keyName,
             operator: query.operator,
-            value: query.value
+            value: query.value,
           }))
         )
         params.append('queries', stringQueries)
@@ -240,8 +240,8 @@ export default {
       }
 
       return params.toString()
-    }
-  }
+    },
+  },
 }
 </script>
 

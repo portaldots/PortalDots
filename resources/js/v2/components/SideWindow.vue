@@ -19,14 +19,14 @@ export default {
   props: {
     isOpen: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     onClickClose(e) {
       this.$emit('clickClose', e)
-    }
-  }
+    },
+  },
 }
 </script>
 

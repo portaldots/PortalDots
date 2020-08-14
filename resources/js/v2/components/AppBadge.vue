@@ -11,7 +11,7 @@
       'is-muted': muted,
       'is-strong': strong,
       'is-small': small,
-      'is-pill': pill
+      'is-pill': pill,
     }"
   >
     <slot />
@@ -23,45 +23,45 @@ export default {
   props: {
     outline: {
       type: Boolean,
-      default: false
+      default: false,
     },
     primary: {
       type: Boolean,
-      default: false
+      default: false,
     },
     primaryInverse: {
       type: Boolean,
-      default: false
+      default: false,
     },
     danger: {
       type: Boolean,
-      default: false
+      default: false,
     },
     success: {
       type: Boolean,
-      default: false
+      default: false,
     },
     warning: {
       type: Boolean,
-      default: false
+      default: false,
     },
     muted: {
       type: Boolean,
-      default: false
+      default: false,
     },
     strong: {
       type: Boolean,
-      default: false
+      default: false,
     },
     small: {
       type: Boolean,
-      default: false
+      default: false,
     },
     pill: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 }
 </script>
 

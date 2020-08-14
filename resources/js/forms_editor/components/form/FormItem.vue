@@ -4,7 +4,7 @@
     :class="{
       'form-item--active': is_edit_panel_open,
       'form-item--drag': drag,
-      'form-item--disable-edit': disable_edit
+      'form-item--disable-edit': disable_edit,
     }"
     :ref="`form_item_${item_id}`"
   >
@@ -42,22 +42,22 @@ import { SAVE_STATUS_SAVING } from '../../store/status'
 export default {
   props: {
     item_id: {
-      required: true
+      required: true,
     },
     type_label: {
       type: String,
-      required: true
+      required: true,
     },
     hide_handle: {
       required: false,
       type: Boolean,
-      default: false
+      default: false,
     },
     disable_edit: {
       required: false,
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     custom_form() {
@@ -71,14 +71,14 @@ export default {
     },
     is_edit_panel_open() {
       return this.$store.state.editor.open_item_id === this.item_id
-    }
+    },
   },
   watch: {
     is_edit_panel_open(value) {
       if (value) {
         this.scroll_to_me()
       }
-    }
+    },
   },
   created() {
     if (this.is_edit_panel_open) {
@@ -92,7 +92,7 @@ export default {
       }
 
       this.$store.commit(`editor/${TOGGLE_OPEN_STATE}`, {
-        item_id: this.item_id
+        item_id: this.item_id,
       })
     },
     scroll_to_me() {
@@ -105,11 +105,11 @@ export default {
           16
         window.scroll({
           top,
-          behavior: 'smooth'
+          behavior: 'smooth',
         })
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

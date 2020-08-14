@@ -6,7 +6,7 @@
       'is-primary': type === 'primary',
       'is-secondary': type === 'secondary',
       'is-danger': type === 'danger',
-      'is-hidden': hidden
+      'is-hidden': hidden,
     }"
     :style="{ height: height === Infinity ? undefined : `${height}px` }"
     ref="topAlert"
@@ -37,12 +37,12 @@ import AppContainer from './AppContainer.vue'
 
 export default {
   components: {
-    AppContainer
+    AppContainer,
   },
   data() {
     return {
       hidden: false,
-      height: Infinity
+      height: Infinity,
     }
   },
   mounted() {
@@ -56,26 +56,26 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'primary'
+      default: 'primary',
     },
     containerNarrow: {
       type: Boolean,
-      default: false
+      default: false,
     },
     containerMedium: {
       type: Boolean,
-      default: false
+      default: false,
     },
     containerFluid: {
       type: Boolean,
-      default: false
+      default: false,
     },
     keepVisible: {
       // 5 秒後に自動で消えないようにする
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 }
 </script>
 

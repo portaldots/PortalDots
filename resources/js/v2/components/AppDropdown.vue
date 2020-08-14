@@ -17,7 +17,7 @@
           top: menuTop !== null ? `${menuTop}px` : 'auto',
           left: menuLeft !== null ? `${menuLeft}px` : 'auto',
           right: menuRight !== null ? `${menuRight}px` : 'auto',
-          bottom: menuBottom !== null ? `${menuBottom}px` : 'auto'
+          bottom: menuBottom !== null ? `${menuBottom}px` : 'auto',
         }"
         :key="name"
       >
@@ -50,7 +50,7 @@
           top: submenuTop !== null ? `${submenuTop}px` : 'auto',
           left: submenuLeft !== null ? `${submenuLeft}px` : 'auto',
           right: submenuRight !== null ? `${submenuRight}px` : 'auto',
-          bottom: submenuBottom !== null ? `${submenuBottom}px` : 'auto'
+          bottom: submenuBottom !== null ? `${submenuBottom}px` : 'auto',
         }"
       >
         <div v-for="item in items[openingSubmenuIndex].sublist" :key="item.key">
@@ -68,7 +68,7 @@ import AppDropdownItem from './AppDropdownItem.vue'
 export default {
   components: {
     GlobalEvents,
-    AppDropdownItem
+    AppDropdownItem,
   },
   data() {
     return {
@@ -83,7 +83,7 @@ export default {
       submenuRight: null,
       submenuBottom: null,
       timeoutIdForSubmenu: null,
-      isMouseoverSubmenu: false
+      isMouseoverSubmenu: false,
     }
   },
   props: {
@@ -91,17 +91,17 @@ export default {
       // 各要素は {key: String} が必須
       // 各要素中に {sublist: Array, label: String} を含めると、サブメニュー付きになる
       type: Array,
-      required: true
+      required: true,
     },
     name: {
       // ドロップダウンを識別するユニークな名前
       type: String,
-      required: true
+      required: true,
     },
     menuFluid: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   mounted() {
     window.addEventListener('click', this.onClickOutside)
@@ -284,17 +284,17 @@ export default {
         () => this.closeSubmenu(),
         300
       )
-    }
+    },
   },
   computed: {
     ariaButtonProps() {
       return {
         id: `dropdown-button-${this.name}`,
         'aria-haspopup': true,
-        'aria-expanded': this.isOpen
+        'aria-expanded': this.isOpen,
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

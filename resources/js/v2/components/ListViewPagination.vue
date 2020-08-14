@@ -14,18 +14,18 @@ import ListViewBaseItem from './ListViewBaseItem.vue'
 
 export default {
   components: {
-    ListViewBaseItem
+    ListViewBaseItem,
   },
   props: {
     prev: {
       type: String,
-      default: null
+      default: null,
     },
     next: {
       type: String,
-      default: null
-    }
-  }
+      default: null,
+    },
+  },
 }
 </script>
 

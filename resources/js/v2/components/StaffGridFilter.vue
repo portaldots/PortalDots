@@ -192,46 +192,46 @@ import StaffGridFilterAddDropdown from './StaffGridFilterAddDropdown.vue'
 
 export default {
   components: {
-    StaffGridFilterAddDropdown
+    StaffGridFilterAddDropdown,
   },
   props: {
     filterableKeys: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     keyTranslations: {
       type: Object,
-      required: true
+      required: true,
     },
     defaultQueries: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     defaultMode: {
       type: String,
-      default: 'and'
+      default: 'and',
     },
     loading: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       queries: [],
       mode: 'and',
       // isDirty: 適用ボタンによってフィルタ設定が反映されていない場合trueになる
-      isDirty: false
+      isDirty: false,
     }
   },
   mounted() {
-    this.queries = this.defaultQueries.map(query => ({
+    this.queries = this.defaultQueries.map((query) => ({
       id: query.id,
       item: this.itemsForFilterQuery
-        .flatMap(item => (item.sublist ? item.sublist : item))
-        .find(q => q.keyName === query.keyName),
+        .flatMap((item) => (item.sublist ? item.sublist : item))
+        .find((q) => q.keyName === query.keyName),
       operator: query.operator,
-      value: query.value
+      value: query.value,
     }))
     this.mode = this.defaultMode
     this.$nextTick(() => {
@@ -247,7 +247,7 @@ export default {
           : 0
 
       const defaultValues = {
-        value: ''
+        value: '',
       }
 
       switch (item.type) {
@@ -267,16 +267,16 @@ export default {
     },
     removeQuery(queryId) {
       this.isDirty = true
-      this.queries = this.queries.filter(query => query.id !== queryId)
+      this.queries = this.queries.filter((query) => query.id !== queryId)
     },
     onClickApply() {
       this.isDirty = false
       this.$emit(
         'clickApply',
-        this.queries.map(query => ({
+        this.queries.map((query) => ({
           keyName: query.item.keyName,
           operator: query.operator,
-          value: query.value
+          value: query.value,
         })),
         this.mode
       )
@@ -287,28 +287,28 @@ export default {
       this.$nextTick(() => {
         this.isDirty = false
       })
-    }
+    },
   },
   watch: {
     queries: {
       handler() {
         this.isDirty = true
       },
-      deep: true
+      deep: true,
     },
     mode() {
       this.isDirty = true
-    }
+    },
   },
   computed: {
     itemsForFilterQuery() {
-      return Object.keys(this.filterableKeys).map(key => {
+      return Object.keys(this.filterableKeys).map((key) => {
         if (this.filterableKeys[key].type !== 'belongsTo') {
           return {
             keyName: key,
             type: this.filterableKeys[key].type,
             translation: this.keyTranslations[key],
-            menuLabel: this.keyTranslations[key]
+            menuLabel: this.keyTranslations[key],
           }
         }
 
@@ -320,17 +320,17 @@ export default {
           keyName: key,
           label: this.keyTranslations[key],
           sublist: Object.keys(this.filterableKeys[key].keys).map(
-            insideKey => ({
+            (insideKey) => ({
               keyName: `${key}.${insideKey}`,
               type: this.filterableKeys[key].keys[insideKey].type,
               translation: `${this.keyTranslations[key]} › ${this.filterableKeys[key].keys[insideKey].translation}`,
-              menuLabel: this.filterableKeys[key].keys[insideKey].translation
+              menuLabel: this.filterableKeys[key].keys[insideKey].translation,
             })
-          )
+          ),
         }
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

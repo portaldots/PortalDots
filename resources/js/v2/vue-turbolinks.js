@@ -47,7 +47,7 @@ function plugin(Vue) {
         }
         /* eslint-enable */
       }
-    }
+    },
   })
 }
 

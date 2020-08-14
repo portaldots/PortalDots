@@ -21,22 +21,22 @@ import VueSimplemde from 'vue-simplemde'
 
 export default {
   components: {
-    VueSimplemde
+    VueSimplemde,
   },
   data() {
     return {
-      content: ''
+      content: '',
     }
   },
   props: {
     inputName: {
       type: String,
-      default: null
+      default: null,
     },
     defaultValue: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   mounted() {
     this.content = this.defaultValue
@@ -55,51 +55,51 @@ export default {
             name: 'bold',
             action: Simplemde.toggleBold,
             className: 'fas fa-bold',
-            title: '太字'
+            title: '太字',
           },
           {
             name: 'italic',
             action: Simplemde.toggleItalic,
             className: 'fas fa-italic',
-            title: '斜体'
+            title: '斜体',
           },
           {
             name: 'strikethrough',
             action: Simplemde.toggleStrikethrough,
             className: 'fas fa-strikethrough',
-            title: '取り消し線'
+            title: '取り消し線',
           },
           {
             name: 'heading',
             action: Simplemde.toggleHeadingSmaller,
             className: 'fas fa-heading',
-            title: '見出し'
+            title: '見出し',
           },
           '|',
           {
             name: 'quote',
             action: Simplemde.toggleBlockquote,
             className: 'fas fa-quote-left',
-            title: '引用'
+            title: '引用',
           },
           {
             name: 'unordered-list',
             action: Simplemde.toggleUnorderedList,
             className: 'fas fa-list-ul',
-            title: '箇条書き'
+            title: '箇条書き',
           },
           {
             name: 'ordered-list',
             action: Simplemde.toggleOrderedList,
             className: 'fas fa-list-ol',
-            title: '番号付きリスト'
+            title: '番号付きリスト',
           },
           '|',
           {
             name: 'link',
             action: Simplemde.drawLink,
             className: 'fas fa-link',
-            title: 'リンク'
+            title: 'リンク',
           },
           // TODO: 画像アップロード機能の実装
           // {
@@ -112,32 +112,32 @@ export default {
             name: 'table',
             action: Simplemde.drawTable,
             className: 'fas fa-table',
-            title: '表'
+            title: '表',
           },
           {
             name: 'horizontal-rule',
             action: Simplemde.drawHorizontalRule,
             className: 'fas fa-minus',
-            title: '水平線'
+            title: '水平線',
           },
           '|',
           {
             name: 'preview',
             action: Simplemde.togglePreview,
             className: 'far fa-eye no-disable show-title-label',
-            title: 'プレビュー'
+            title: 'プレビュー',
           },
           '|',
           {
             name: 'guide',
             action: '/staff/markdown-guide',
             className: 'far fa-question-circle show-title-label',
-            title: 'Markdownガイド'
-          }
-        ]
+            title: 'Markdownガイド',
+          },
+        ],
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

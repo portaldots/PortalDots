@@ -20,7 +20,10 @@
       </button>
     </template>
     <template #item="{ item }">
-      <AppDropdownItem component-is="button" @click="e => onClickItem(item, e)">
+      <AppDropdownItem
+        component-is="button"
+        @click="(e) => onClickItem(item, e)"
+      >
         {{ item.menuLabel }}
       </AppDropdownItem>
     </template>
@@ -34,19 +37,19 @@ import AppDropdownItem from './AppDropdownItem.vue'
 export default {
   components: {
     AppDropdown,
-    AppDropdownItem
+    AppDropdownItem,
   },
   props: {
     dropdownItems: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     onClickItem(item, e) {
       this.$emit('clickItem', item, e)
-    }
-  }
+    },
+  },
 }
 </script>
 

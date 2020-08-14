@@ -35,7 +35,7 @@ module.exports = {
         ]
       }
     ],
-    "comma-dangle": ["error", "never"],
+    "comma-dangle": ["warn", "always-multiline"],
     "semi": ["error", "never", {"beforeStatementContinuationChars": "never"}],
     "semi-spacing": ["error", {"after": true, "before": false}],
     "semi-style": ["error", "first"],

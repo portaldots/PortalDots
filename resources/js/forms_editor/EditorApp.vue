@@ -22,7 +22,7 @@ import EditorError from './components/EditorError.vue'
 import { FETCH, TOGGLE_OPEN_STATE, ITEM_HEADER } from './store/editor'
 import { SAVE_STATUS_SAVING } from './store/status'
 
-const on_before_unload = event => {
+const on_before_unload = (event) => {
   event.preventDefault()
   // eslint-disable-next-line no-param-reassign
   event.returnValue = ''
@@ -34,13 +34,13 @@ export default {
     EditorHeader,
     EditorContent,
     EditorSidebar,
-    EditorError
+    EditorError,
   },
   async mounted() {
     await this.$store.dispatch(`editor/${FETCH}`)
     if (this.$store.state.editor.questions.length === 0 && !this.custom_form) {
       this.$store.commit(`editor/${TOGGLE_OPEN_STATE}`, {
-        item_id: ITEM_HEADER
+        item_id: ITEM_HEADER,
       })
     }
   },
@@ -57,7 +57,7 @@ export default {
     },
     custom_form() {
       return this.$store.state.editor.form.custom_form
-    }
+    },
   },
   watch: {
     is_saving(value) {
@@ -71,7 +71,7 @@ export default {
       if (value) {
         window.removeEventListener('beforeunload', on_before_unload)
       }
-    }
-  }
+    },
+  },
 }
 </script>

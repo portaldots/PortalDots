@@ -119,50 +119,50 @@
 import {
   UPDATE_QUESTION,
   SAVE_QUESTION,
-  DELETE_QUESTION
+  DELETE_QUESTION,
 } from '../../store/editor'
 
 export default {
   props: {
     question: {
-      required: true
+      required: true,
     },
     show_required_switch: {
       required: false,
-      default: true
+      default: true,
     },
     label_name: {
       required: false,
-      default: '設問名'
+      default: '設問名',
     },
     label_description: {
       required: false,
-      default: '説明'
+      default: '説明',
     },
     label_number_min: {
       required: false,
-      default: '最小文字数'
+      default: '最小文字数',
     },
     label_number_max: {
       required: false,
-      default: '最大文字数'
+      default: '最大文字数',
     },
     help_number_max: {
       required: false,
-      default: ''
+      default: '',
     },
     show_allowed_types: {
       required: false,
-      default: false
+      default: false,
     },
     show_options: {
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
-      is_deleting: false
+      is_deleting: false,
     }
   },
   methods: {
@@ -185,7 +185,7 @@ export default {
           this.options
             .trim()
             .split(/\r\n|\n/)
-            .map(option => option.trim())
+            .map((option) => option.trim())
         )
         this.options = Array.from(options).join('\n')
       }
@@ -193,7 +193,7 @@ export default {
     onBlur() {
       this.deleteDuplication()
       this.save()
-    }
+    },
   },
   // TODO: 変更点がない場合、saveメソッドが実行されないようにする
   computed: {
@@ -205,9 +205,9 @@ export default {
         this.$store.commit(`editor/${UPDATE_QUESTION}`, {
           id: this.question.id,
           key: 'name',
-          value: new_value
+          value: new_value,
         })
-      }
+      },
     },
     description: {
       get() {
@@ -217,9 +217,9 @@ export default {
         this.$store.commit(`editor/${UPDATE_QUESTION}`, {
           id: this.question.id,
           key: 'description',
-          value: new_value
+          value: new_value,
         })
-      }
+      },
     },
     options: {
       get() {
@@ -229,9 +229,9 @@ export default {
         this.$store.commit(`editor/${UPDATE_QUESTION}`, {
           id: this.question.id,
           key: 'options',
-          value: new_value
+          value: new_value,
         })
-      }
+      },
     },
     is_required: {
       get() {
@@ -241,10 +241,10 @@ export default {
         this.$store.commit(`editor/${UPDATE_QUESTION}`, {
           id: this.question.id,
           key: 'is_required',
-          value: new_value
+          value: new_value,
         })
         this.save()
-      }
+      },
     },
     number_min: {
       get() {
@@ -254,9 +254,9 @@ export default {
         this.$store.commit(`editor/${UPDATE_QUESTION}`, {
           id: this.question.id,
           key: 'number_min',
-          value: new_value
+          value: new_value,
         })
-      }
+      },
     },
     number_max: {
       get() {
@@ -266,9 +266,9 @@ export default {
         this.$store.commit(`editor/${UPDATE_QUESTION}`, {
           id: this.question.id,
           key: 'number_max',
-          value: new_value
+          value: new_value,
         })
-      }
+      },
     },
     allowed_types: {
       get() {
@@ -278,10 +278,10 @@ export default {
         this.$store.commit(`editor/${UPDATE_QUESTION}`, {
           id: this.question.id,
           key: 'allowed_types',
-          value: new_value
+          value: new_value,
         })
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>
