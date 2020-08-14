@@ -21,7 +21,8 @@
                     </div>
                 @else
                     <p class="card-text">アカウントを削除した場合、申請の手続きなどができなくなります。</p>
-                    <form-with-confirm action="{{ route('user.destroy') }}" method="post" confirm-message="本当にアカウントを削除しますか？">
+                    <form-with-confirm action="{{ route('user.destroy') }}" method="post"
+                        confirm-message="本当にアカウントを削除しますか？">
                         @method('delete')
                         @csrf
                         <button type="submit" class="btn is-danger">

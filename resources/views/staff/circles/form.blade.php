@@ -35,9 +35,9 @@
                     ] as $field_name => $display_name)
                     <list-view-form-group label-for="{{ $field_name }}">
                         <template v-slot:label>{{ $display_name }}</template>
-                        <input id="{{ $field_name }}" class="form-control @error($field_name) is-invalid @enderror" type="text"
-                            name="{{ $field_name }}" value="{{ old($field_name, empty($circle) ? '' : $circle->$field_name) }}"
-                            required>
+                        <input id="{{ $field_name }}" class="form-control @error($field_name) is-invalid @enderror"
+                            type="text" name="{{ $field_name }}"
+                            value="{{ old($field_name, empty($circle) ? '' : $circle->$field_name) }}" required>
                         @if ($errors->has($field_name))
                             <template v-slot:invalid>
                                 @foreach ($errors->get($field_name) as $message)
@@ -149,7 +149,9 @@
                     <template v-slot:description>
                         この内容はユーザーに通知されます。参加登録を不受理とする際、ユーザーに伝達したい事項があれば入力してください。
                     </template>
-                    <markdown-editor input-name="status_reason" default-value="{{ old('status_reason', empty($circle) ? '' : $circle->status_reason) }}"></markdown-editor>
+                    <markdown-editor input-name="status_reason"
+                        default-value="{{ old('status_reason', empty($circle) ? '' : $circle->status_reason) }}">
+                    </markdown-editor>
                     @if ($errors->has('status_reason'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('status_reason') as $message)

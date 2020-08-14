@@ -184,10 +184,8 @@
             <list-view>
                 <template v-slot:title>お知らせ</template>
                 @foreach ($pages as $page)
-                    <list-view-item
-                        href="{{ route('pages.show', $page) }}"
-                        {{ Auth::check() && $page->usersWhoRead->isEmpty() ? 'unread' : '' }}
-                    >
+                    <list-view-item href="{{ route('pages.show', $page) }}"
+                        {{ Auth::check() && $page->usersWhoRead->isEmpty() ? 'unread' : '' }}>
                         <template v-slot:title>
                             @if (!$page->viewableTags->isEmpty())
                                 <app-badge primary outline>限定公開</app-badge>
@@ -251,7 +249,12 @@
             </list-view>
         @endif
 
-        @if (!$forms->isEmpty() && Auth::check() && Auth::user()->circles()->approved()->count() > 0)
+        @if (!$forms->isEmpty() &&
+        Auth::check() &&
+        Auth::user()
+            ->circles()
+            ->approved()
+            ->count() > 0)
             <list-view>
                 <template v-slot:title>受付中の申請</template>
                 @foreach ($forms as $form)

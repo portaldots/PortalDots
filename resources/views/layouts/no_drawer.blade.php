@@ -63,7 +63,7 @@
                 @include('includes.top_circle_selector')
                 @if (Session::has('topAlert.title'))
                     <top-alert type="{{ session('topAlert.type', 'primary') }}"
-                        @yield('top_alert_props', 'container-medium')
+                        @yield('top_alert_props', 'container-medium' )
                         {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}>
                         <template v-slot:title>
                             {{ session('topAlert.title') }}

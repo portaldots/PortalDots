@@ -1,6 +1,6 @@
 @extends('layouts.no_drawer')
 
-@section('title', (empty($category) ? 'メールアドレス追加' : $category->name). ' - お問い合わせ')
+@section('title', (empty($category) ? 'メールアドレス追加' : $category->name) . ' - お問い合わせ')
 
 @section('navbar')
     <app-nav-bar-back inverse href="{{ route('staff.contacts.categories.index') }}">
@@ -16,15 +16,13 @@
     </app-header>
     <app-container medium>
         <form
-            action="{{ isset($category)
-                ? route('staff.contacts.categories.update', ['category' => $category])
-                : route('staff.contacts.categories.create') }}"
+            action="{{ isset($category) ? route('staff.contacts.categories.update', ['category' => $category]) : route('staff.contacts.categories.create') }}"
             method="post">
-        @csrf
-        @method(isset($category) ? 'patch' : 'post')
+            @csrf
+            @method(isset($category) ? 'patch' : 'post')
             <list-view>
                 <template v-slot:title>
-                    {{ isset($category) ? "「{$category->name}」の編集" : '項目の新規作成'}}
+                    {{ isset($category) ? "「{$category->name}」の編集" : '項目の新規作成' }}
                     @isset($category)
                         <small><a href="{{ route('staff.contacts.categories.delete', $category) }}">削除</a></small>
                     @endisset
@@ -36,18 +34,13 @@
                     <template v-slot:description>
                         項目名は「お問い合わせ」内容を選ぶ選択肢としてユーザーに表示されます
                     </template>
-                    <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        class="form-control @error('name') is-invalid @enderror"
-                        value="{{ old('name', $category->name ?? '') }}"
-                        required>
-                        @error('name')
-                        <template v-slot:invalid>
-                            {{ $message }}
-                        </template>
-                        @enderror
+                    <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
+                        value="{{ old('name', $category->name ?? '') }}" required>
+                    @error('name')
+                    <template v-slot:invalid>
+                        {{ $message }}
+                    </template>
+                    @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="email">
                     <template v-slot:label>
@@ -56,18 +49,13 @@
                     <template v-slot:description>
                         この項目がお問い合わせ画面で選択された場合、このメールアドレス宛にメールが届きます
                     </template>
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        class="form-control @error('email') is-invalid @enderror"
-                        value="{{ old('email', $category->email ?? '') }}"
-                        required>
-                        @error('email')
-                        <template v-slot:invalid>
-                            {{ $message }}
-                        </template>
-                        @enderror
+                    <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
+                        value="{{ old('email', $category->email ?? '') }}" required>
+                    @error('email')
+                    <template v-slot:invalid>
+                        {{ $message }}
+                    </template>
+                    @enderror
                 </list-view-form-group>
             </list-view>
             <div class="text-center pt-spacing-md pb-spacing">

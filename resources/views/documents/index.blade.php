@@ -38,7 +38,8 @@
                     </list-view-item>
                 @endforeach
                 @if ($documents->hasPages())
-                    <list-view-pagination prev="{{ $documents->previousPageUrl() }}" next="{{ $documents->nextPageUrl() }}" />
+                    <list-view-pagination prev="{{ $documents->previousPageUrl() }}"
+                                          next="{{ $documents->nextPageUrl() }}"></list-view-pagination>
                 @endif
             </list-view>
         @endif

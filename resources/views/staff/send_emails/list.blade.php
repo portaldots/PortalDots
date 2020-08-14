@@ -47,12 +47,8 @@
                             <summary>
                                 {{ $page->title }}
                             </summary>
-                            <form
-                                method="post"
-                                action="{{ route('staff.send_emails') }}"
-                                class="px-spacing-lg py-spacing"
-                                onsubmit="return confirm('全ユーザーにメールが配信されます。よろしいですか？')"
-                            >
+                            <form method="post" action="{{ route('staff.send_emails') }}" class="px-spacing-lg py-spacing"
+                                onsubmit="return confirm('全ユーザーにメールが配信されます。よろしいですか？')">
                                 @csrf
                                 <input type="hidden" name="page_id" value="{{ $page->id }}">
                                 <button type="submit" class="btn is-primary">

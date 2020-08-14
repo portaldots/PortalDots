@@ -55,9 +55,10 @@
                             <app-badge muted>学園祭係(副責任者)</app-badge>
                         @endif
                     </template>
-                    @unless ($user->pivot->is_leader)
+                    @unless($user->pivot->is_leader)
                         <template v-slot:meta>
-                            <form-with-confirm action="{{ route('circles.users.destroy', ['circle' => $circle, 'user' => $user]) }}"
+                            <form-with-confirm
+                                action="{{ route('circles.users.destroy', ['circle' => $circle, 'user' => $user]) }}"
                                 method="post" confirm-message="本当にこのユーザーをメンバーから削除しますか？">
                                 @method('delete')
                                 @csrf

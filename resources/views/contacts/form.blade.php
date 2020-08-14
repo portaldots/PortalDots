@@ -30,7 +30,8 @@
                 @else
                     <list-view-form-group label-for="name">
                         <template v-slot:label>名前</template>
-                        <input type="text" id="name" readonly value="{{ Auth::user()->name }}({{ Auth::user()->student_id }})"
+                        <input type="text" id="name" readonly
+                            value="{{ Auth::user()->name }}({{ Auth::user()->student_id }})"
                             class="form-control is-plaintext">
                     </list-view-form-group>
                 @endif
