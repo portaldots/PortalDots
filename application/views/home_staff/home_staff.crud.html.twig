@@ -37,6 +37,17 @@
         お知らせをメールで一斉送信
       </a>
     </p>
+  {% elseif main_page_type == 'applications' and _crud_state == 'add' %}
+    <div class="alert alert-info">
+      <p><strong>企画参加登録フォームを作成しようとしていますか？</strong></p>
+      <p>ここでは企画参加登録フォームの作成はできません。ここで作成するフォームは、企画参加登録が完了し、登録受理状況が「受理」となっている企画しか回答できません。</p>
+      <p>企画参加登録フォームの作成は「企画参加登録の設定」から行ってください。</p>
+      <p>
+        <a href="{{ base_url('/staff/circles/custom_form') }}" class="btn btn-primary">
+          企画参加登録の設定
+        </a>
+      </p>
+    </div>
   {% elseif main_page_type == 'users' and _crud_state == 'list' %}
     <p class="js-v2-alert-small" style="display: none">
       <a href="{{ base_url('/staff/users') }}" class="js-v2-alert-show">新しい「ユーザー情報管理」を体験してみませんか？</a>
