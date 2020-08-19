@@ -78,7 +78,12 @@ class SelectorService
         }
 
         if (empty($this->circle)) {
-            $this->circle = Circle::find($circle_id) ?? null;
+            $this->circle = Circle::find($circle_id);
+
+            if (empty($this->circle)) {
+                $this->reset();
+                return null;
+            }
         }
 
         if (!$this->circle->hasApproved()) {
