@@ -12,6 +12,15 @@
         @method(empty($circle) ? 'post' : 'patch' )
 
         <app-container medium>
+            @isset($form->description)
+                <list-view>
+                    <template v-slot:title>必ずお読みください</template>
+                    <list-view-card data-turbolinks="false" class="markdown">
+                        @markdown($form->description)
+                    </list-view-card>
+                </list-view>
+                <hr/>
+            @endisset
             <list-view>
                 <template v-slot:title>企画情報を入力</template>
                 <template v-slot:description>参加登録する企画の情報を入力してください。</template>

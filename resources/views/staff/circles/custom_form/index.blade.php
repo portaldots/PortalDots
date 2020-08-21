@@ -86,7 +86,7 @@
                         <app-badge outline muted>Markdown</app-badge>
                     </template>
                     <template v-slot:description>
-                        参加登録を始める前に設定した内容を表示できます。規約の表示などにご利用ください。
+                        参加登録のページにここで設定した内容を表示できます。規約の表示などにご利用ください。
                     </template>
                     <markdown-editor input-name="description" default-value="{{ old('description', isset($form) ? $form->description : '') }}"></markdown-editor>
                     @error('description')

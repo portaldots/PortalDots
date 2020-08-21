@@ -103,7 +103,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('/circles')
         ->name('circles.')
         ->group(function () {
-            Route::get('/terms', 'Circles\TermsAction')->name('terms');
             Route::get('/create', 'Circles\CreateAction')->name('create');
             Route::post('/', 'Circles\StoreAction')->name('store');
             Route::get('/{circle}', 'Circles\ShowAction')->name('show');
