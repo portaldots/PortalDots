@@ -14,11 +14,6 @@ class CreateAction extends Controller
 
         $form = CustomForm::getFormByType('circle');
 
-        if (isset($form->description) && !session()->has('read_terms')) {
-            return redirect()
-                ->route('circles.terms');
-        }
-
         return view('circles.form')
             ->with('form', $form)
             ->with('questions', $form->questions()->get());
