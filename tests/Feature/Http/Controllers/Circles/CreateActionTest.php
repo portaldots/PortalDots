@@ -28,45 +28,26 @@ class CreateActionTest extends BaseTestCase
     /**
      * @test
      */
-    public function 説明が設定されていて直接アクセスされたときTermsActionにリダイレクトする()
+    public function 説明が設定されているときは説明を表示する()
     {
-        $this->form->description = '参加登録前に読んでほしい内容';
+        $this->form->description = '注意事項';
         $this->form->save();
 
         $responce = $this
                     ->actingAs($this->user)
-                    ->get(
-                        route('circles.create')
-                    );
-
-        $responce->assertStatus(302);
-        $responce->assertRedirect(route('circles.terms'));
-    }
-
-    /**
-     * @test
-     */
-    public function 説明が設定されていてTermsActionから来たときはフォームを表示する()
-    {
-        $this->form->description = '参加登録前に読んでほしい内容';
-        $this->form->save();
-
-        $responce = $this
-                    ->actingAs($this->user)
-                    ->withSession([
-                        'read_terms' => true,
-                    ])
                     ->get(
                         route('circles.create')
                     );
 
         $responce->assertOk();
+        $responce->assertSee('必ずお読みください');
+        $responce->assertSee('注意事項');
     }
 
     /**
      * @test
      */
-    public function 説明が設定されていないときはリダイレクトせずにフォームを表示する()
+    public function 説明が設定されていないときは説明を表示しない()
     {
         $this->form->description = null;
         $this->form->save();
@@ -78,5 +59,6 @@ class CreateActionTest extends BaseTestCase
                     );
 
         $responce->assertOk();
+        $responce->assertDontSee('必ずお読みください');
     }
 }
