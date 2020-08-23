@@ -40,44 +40,53 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             });
 
         // 申請
-        Route::prefix('/forms/{form}')
+        Route::prefix('/forms')
             ->name('forms.')
             ->group(function () {
-                // 回答確認
-                Route::prefix('/answers')
-                    ->name('answers.')
+                Route::get('/create', 'Staff\Forms\CreateAction')->name('create');
+                Route::post('/', 'Staff\Forms\StoreAction')->name('store');
+                Route::prefix('/{form}')
                     ->group(function () {
-                        Route::get('/{answer}/edit', 'Staff\Forms\Answers\EditAction')->name('edit');
-                        Route::patch('/{answer}', 'Staff\Forms\Answers\UpdateAction')->name('update');
-                        Route::get('/create', 'Staff\Forms\Answers\CreateAction')->name('create');
-                        Route::post('/', 'Staff\Forms\Answers\StoreAction')->name('store');
-                        Route::get('/{answer}/uploads/{question}', 'Staff\Forms\Answers\Uploads\ShowAction')->name('uploads.show');
-                        Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index');
-                        Route::post('/uploads/download_zip', 'Staff\Forms\Answers\Uploads\DownloadZipAction')->name('uploads.download_zip');
+                        // 回答確認
+                        Route::prefix('/answers')
+                            ->name('answers.')
+                            ->group(function () {
+                                Route::get('/{answer}/edit', 'Staff\Forms\Answers\EditAction')->name('edit');
+                                Route::patch('/{answer}', 'Staff\Forms\Answers\UpdateAction')->name('update');
+                                Route::get('/create', 'Staff\Forms\Answers\CreateAction')->name('create');
+                                Route::post('/', 'Staff\Forms\Answers\StoreAction')->name('store');
+                                Route::get('/{answer}/uploads/{question}', 'Staff\Forms\Answers\Uploads\ShowAction')->name('uploads.show');
+                                Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index');
+                                Route::post('/uploads/download_zip', 'Staff\Forms\Answers\Uploads\DownloadZipAction')->name('uploads.download_zip');
+                            });
+
+                        // 申請フォームエディタ
+                        Route::prefix('/editor')
+                            ->group(function () {
+                                Route::get('/', 'Staff\Forms\Editor\IndexAction')->name('editor');
+                                // ↓「editor.api」のroute定義は resources/views/staff/forms/editor.blade.php で利用しているので、消さないこと
+                                Route::get('/api', 'Staff\Forms\Editor\APIAction')->name('editor.api');
+                                Route::get('/api/get_form', 'Staff\Forms\Editor\GetFormAction');
+                                Route::post('/api/update_form', 'Staff\Forms\Editor\UpdateFormAction');
+                                Route::get('/api/get_questions', 'Staff\Forms\Editor\GetQuestionsAction');
+                                Route::post('/api/add_question', 'Staff\Forms\Editor\AddQuestionAction');
+                                Route::post('/api/update_questions_order', 'Staff\Forms\Editor\UpdateQuestionsOrderAction');
+                                Route::post('/api/update_question', 'Staff\Forms\Editor\UpdateQuestionAction');
+                                Route::post('/api/delete_question', 'Staff\Forms\Editor\DeleteQuestionAction');
+                            });
+
+                        Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction');
+
+                        // フォームの複製
+                        // TODO: CopyConfirmAction は、CodeIgniter から CopyAction へ直接 POST できない都合で挟んだクッションページなので、
+                        // スタッフモードが Laravel 化したら CopyConfirmAction は消す。
+                        Route::get('/copy', 'Staff\Forms\CopyConfirmAction')->name('copy');
+                        Route::post('/copy', 'Staff\Forms\CopyAction');
+
+                        // フォーム編集
+                        Route::get('/edit', 'Staff\Forms\EditAction')->name('edit');
+                        Route::patch('/', 'Staff\Forms\UpdateAction')->name('update');
                     });
-
-                // 申請フォームエディタ
-                Route::prefix('/editor')
-                    ->group(function () {
-                        Route::get('/', 'Staff\Forms\Editor\IndexAction')->name('editor');
-                        // ↓「editor.api」のroute定義は resources/views/staff/forms/editor.blade.php で利用しているので、消さないこと
-                        Route::get('/api', 'Staff\Forms\Editor\APIAction')->name('editor.api');
-                        Route::get('/api/get_form', 'Staff\Forms\Editor\GetFormAction');
-                        Route::post('/api/update_form', 'Staff\Forms\Editor\UpdateFormAction');
-                        Route::get('/api/get_questions', 'Staff\Forms\Editor\GetQuestionsAction');
-                        Route::post('/api/add_question', 'Staff\Forms\Editor\AddQuestionAction');
-                        Route::post('/api/update_questions_order', 'Staff\Forms\Editor\UpdateQuestionsOrderAction');
-                        Route::post('/api/update_question', 'Staff\Forms\Editor\UpdateQuestionAction');
-                        Route::post('/api/delete_question', 'Staff\Forms\Editor\DeleteQuestionAction');
-                    });
-
-                Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction');
-
-                // フォームの複製
-                // TODO: CopyConfirmAction は、CodeIgniter から CopyAction へ直接 POST できない都合で挟んだクッションページなので、
-                // スタッフモードが Laravel 化したら CopyConfirmAction は消す。
-                Route::get('/copy', 'Staff\Forms\CopyConfirmAction')->name('copy');
-                Route::post('/copy', 'Staff\Forms\CopyAction');
             });
 
         Route::prefix('/users')
