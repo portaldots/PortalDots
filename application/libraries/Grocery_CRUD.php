@@ -1445,6 +1445,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
         $data->unset_print			= $this->unset_print;
         $data->set_editor			= $this->set_editor;
         $data->set_copy_url			= $this->set_copy_url;
+        $data->set_delete_tag		= $this->set_delete_tag;
 
         $default_per_page = $this->config->default_per_page;
         $data->paging_options = $this->config->paging_options;
@@ -3302,6 +3303,7 @@ class Grocery_CRUD extends grocery_CRUD_States
     protected $unset_read_fields	= null;
     protected $set_editor			= false;
     protected $set_copy_url			= false;
+    protected $set_delete_tag		= false;
 
     /* Callbacks */
     protected $callback_before_insert 	= null;
@@ -3695,6 +3697,16 @@ class Grocery_CRUD extends grocery_CRUD_States
     public function set_copy_url()
     {
         $this->set_copy_url = true;
+
+        return $this;
+    }
+
+    /**
+     * タグ削除用のボタンを配置するための関数
+     */
+    public function set_delete_tag()
+    {
+        $this->set_delete_tag = true;
 
         return $this;
     }

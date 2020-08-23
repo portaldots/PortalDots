@@ -116,6 +116,13 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/export', 'Staff\Circles\ExportAction')->name('export');
             });
 
+        Route::prefix('/tags')
+            ->name('tags.')
+            ->group(function () {
+                Route::get('/{tag}/delete', 'Staff\Tags\DeleteAction')->name('delete');
+                Route::delete('/{tag}', 'Staff\Tags\DestroyAction')->name('destroy');
+            });
+
         // メール一斉送信
         Route::get('/send_emails', 'Staff\SendEmails\ListAction')->name('send_emails');
         Route::post('/send_emails', 'Staff\SendEmails\StoreAction');

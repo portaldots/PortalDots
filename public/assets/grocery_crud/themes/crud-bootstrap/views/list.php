@@ -30,9 +30,19 @@
 			<?php if(!$unset_delete || !$unset_edit || !$unset_read || !empty($actions)){?>
 			<td align="left" width='20%'>
 				<div class='tools'>
-					<?php if(!$unset_delete){?>
+					<?php if(!$unset_delete && !$set_delete_tag){?>
 						<a href='<?php echo $row->delete_url?>' title='<?php echo $this->l('list_delete')?> <?php echo $subject?>' class="btn btn-danger delete-row">
 							<i class="fa fa-trash" aria-hidden="true"></i>
+						</a>
+					<?php }?>
+					<?php if($set_delete_tag){?>
+						<a href='<?php echo base_url("/staff/tags/{$row->id}/delete") ?>' title='削除' class="btn btn-danger delete-tag-row">
+							<i class="fa fa-trash" aria-hidden="true"></i>
+						</a>
+					<?php }?>
+                    <?php if($set_editor){?>
+						<a href='<?php echo base_url($row->editor_url) ?>' title='エディターで編集' class="btn btn-primary edit-row">
+							<i class="fa fa-edit" aria-hidden="true"></i>
 						</a>
 					<?php }?>
 					<?php if(!$unset_edit){?>
