@@ -817,7 +817,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->display_as('id', 'タグID');
         $this->grocery_crud->display_as('name', 'タグ');
         $this->grocery_crud->display_as('circles', '企画');
-        $this->grocery_crud->set_delete_tag();
+        $this->grocery_crud->set_delete_confirm_url(base_url('/staff/tags/{{url}}/delete'));
 
         $this->grocery_crud->columns(
             'id',
