@@ -29,7 +29,7 @@
                 <list-view-action-btn danger button submit>
                     削除する
                 </list-view-action-btn>
-            </form>
+            </form-with-confirm>
         </list-view>
     </app-container>
 @endsection
