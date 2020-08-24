@@ -36,7 +36,7 @@
 						</a>
 					<?php }?>
 					<?php if(!empty($delete_confirm_url)){?>
-						<a href='<?php echo str_replace('{{url}}', $row->id, $delete_confirm_url) ?>' title='削除' class="btn btn-danger delete-tag-row">
+						<a href='<?php echo str_replace('{{id}}', $row->id, $delete_confirm_url) ?>' title='削除' class="btn btn-danger delete-tag-row">
 							<i class="fa fa-trash" aria-hidden="true"></i>
 						</a>
 					<?php }?>
