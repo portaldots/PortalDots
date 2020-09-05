@@ -39,6 +39,7 @@ class HomeAction extends Controller
             ->with('my_circles', Auth::check()
                                     ? Auth::user()->circles()->get()
                                     : collect([]))
+            ->with('circle', $circle)
             ->with('pages', Page::byCircle($circle)->take(self::TAKE_COUNT)->with(['usersWhoRead' => function ($query) {
                 $query->where('user_id', Auth::id());
             }])->get())

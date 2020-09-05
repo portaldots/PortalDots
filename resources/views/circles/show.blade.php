@@ -2,12 +2,12 @@
 
 @section('no_circle_selector', true)
 
-@section('title', '企画参加登録')
+@section('title', $circle->hasApproved() ? '企画情報詳細' : '企画参加登録')
 
 @section('content')
     <app-header container-medium>
         <template v-slot:title>
-            企画参加登録
+            {{ $circle->hasApproved() ? '企画情報詳細' : '企画参加登録' }}
         </template>
         <span class="text-muted">
             {{ $circle->name }}
