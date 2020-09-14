@@ -119,6 +119,10 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::prefix('/tags')
             ->name('tags.')
             ->group(function () {
+                Route::get('/create', 'Staff\Tags\CreateAction')->name('create');
+                Route::post('/', 'Staff\Tags\StoreAction')->name('store');
+                Route::get('/{tag}/edit', 'Staff\Tags\EditAction')->name('edit');
+                Route::patch('/{tag}', 'Staff\Tags\UpdateAction')->name('update');
                 Route::get('/{tag}/delete', 'Staff\Tags\DeleteAction')->name('delete');
                 Route::delete('/{tag}', 'Staff\Tags\DestroyAction')->name('destroy');
             });

@@ -812,6 +812,15 @@ class Home_staff extends MY_Controller
         $vars["page_title"] = "企画タグ管理";
         $vars["main_page_type"] = "tags";
 
+        if ($this->uri->segment(3) === "add") {
+            codeigniter_redirect("/staff/tags/create");
+        }
+
+        if ($this->uri->segment(3) === "edit") {
+            $tag_id = (int)$this->uri->segment(4);
+            codeigniter_redirect("/staff/tags/$tag_id/edit");
+        }
+
         $this->grocery_crud->set_table('tags');
         $this->grocery_crud->set_subject('企画タグ');
         $this->grocery_crud->display_as('id', 'タグID');
