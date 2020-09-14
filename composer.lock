@@ -870,23 +870,22 @@
         },
         {
             "name": "jackiedo/dotenv-editor",
-            "version": "1.1.2",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JackieDo/Laravel-Dotenv-Editor.git",
-                "reference": "44062c804e6fa777c01d9fba3bd8fe9a57ec25f0"
+                "reference": "f93690a80915d51552931d9406d79b312da226b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JackieDo/Laravel-Dotenv-Editor/zipball/44062c804e6fa777c01d9fba3bd8fe9a57ec25f0",
-                "reference": "44062c804e6fa777c01d9fba3bd8fe9a57ec25f0",
+                "url": "https://api.github.com/repos/JackieDo/Laravel-Dotenv-Editor/zipball/f93690a80915d51552931d9406d79b312da226b9",
+                "reference": "f93690a80915d51552931d9406d79b312da226b9",
                 "shasum": ""
             },
             "require": {
-                "illuminate/config": ">=5.0",
-                "illuminate/container": ">=5.0",
-                "illuminate/support": ">=5.0",
-                "php": ">=5.4.0"
+                "illuminate/console": "^5.8|^6.0|^7.0|^8.0",
+                "illuminate/contracts": "^5.8|^6.0|^7.0|^8.0",
+                "illuminate/support": "^5.8|^6.0|^7.0|^8.0"
             },
             "type": "library",
             "extra": {
@@ -914,13 +913,13 @@
                     "email": "anhvudo@gmail.com"
                 }
             ],
-            "description": "The .env file editor tool for Laravel 5+",
+            "description": "The .env file editor tool for Laravel 5.8+",
             "keywords": [
                 "dotenv",
                 "dotenv-editor",
                 "laravel"
             ],
-            "time": "2020-06-07T00:55:45+00:00"
+            "time": "2020-09-13T07:00:36+00:00"
         },
         {
             "name": "laravel/framework",
