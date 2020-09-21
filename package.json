@@ -73,7 +73,7 @@
         "purify-css": "^1.2.5",
         "purifycss-webpack": "^0.7.0",
         "resolve-url-loader": "^2.3.1",
-        "sass": "^1.26.8",
+        "sass": "^1.26.11",
         "sass-loader": "^7.1.0",
         "sass-resources-loader": "^2.0.1",
         "shx": "^0.3.2",
