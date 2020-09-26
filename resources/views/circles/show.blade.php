@@ -40,6 +40,15 @@
                     <hr>
                 @endif
                 @include('includes.circle_info')
+                {{ dd($booth) }}
+                @isset($booth)
+                    <hr>
+                    <dl>
+                        <dt>
+                            <dd>{{ $booth }}</dd>
+                        </dt>
+                    </dl>
+                @endisset
             </list-view-card>
         </list-view>
         @if ($circle->hasRejected() && isset($circle->status_reason))
