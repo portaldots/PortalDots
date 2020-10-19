@@ -99,10 +99,12 @@ class User extends Authenticatable
             return $query;
         }
 
-        return self::leftJoin('circle_user', 'users.id', '=', 'circle_user.user_id')
+        return self::select('users.*')
+            ->leftJoin('circle_user', 'users.id', '=', 'circle_user.user_id')
             ->leftJoin('circles', 'circle_user.circle_id', '=', 'circles.id')
             ->leftJoin('circle_tag', 'circles.id', '=', 'circle_tag.circle_id')
-            ->whereIn('circle_tag.tag_id', $tags->pluck('id')->all());
+            ->whereIn('circle_tag.tag_id', $tags->pluck('id')->all())
+            ->groupBy('users.id');
     }
 
     /**
