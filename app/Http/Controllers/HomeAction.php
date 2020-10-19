@@ -42,14 +42,12 @@ class HomeAction extends Controller
             ->with('pages', Page::byCircle($circle)->take(self::TAKE_COUNT)->with(['usersWhoRead' => function ($query) {
                 $query->where('user_id', Auth::id());
             }])->get())
-            ->with('remaining_pages_count', max(Page::byCircle($circle)->count() - self::TAKE_COUNT, 0))
             ->with('next_schedule', Schedule::startOrder()->notStarted()->first())
             ->with('documents', Document::take(self::TAKE_COUNT)->public()->with('schedule')->get())
             ->with('remaining_documents_count', Auth::check()
                                     ? max(Document::public()->count() - self::TAKE_COUNT, 0)
                                     : 0)
             ->with('forms', Form::byCircle($circle)->take(self::TAKE_COUNT)
-                ->public()->open()->withoutCustomForms()->closeOrder()->get())
-            ->with('remaining_forms_count', max(Form::public()->open()->count() - self::TAKE_COUNT, 0));
+                ->public()->open()->withoutCustomForms()->closeOrder()->get());
     }
 }
