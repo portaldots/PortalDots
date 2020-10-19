@@ -44,9 +44,6 @@ class HomeAction extends Controller
             }])->get())
             ->with('next_schedule', Schedule::startOrder()->notStarted()->first())
             ->with('documents', Document::take(self::TAKE_COUNT)->public()->with('schedule')->get())
-            ->with('remaining_documents_count', Auth::check()
-                                    ? max(Document::public()->count() - self::TAKE_COUNT, 0)
-                                    : 0)
             ->with('forms', Form::byCircle($circle)->take(self::TAKE_COUNT)
                 ->public()->open()->withoutCustomForms()->closeOrder()->get());
     }
