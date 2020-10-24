@@ -1,5 +1,5 @@
 @component('mail::message')
 # {{ $subject }}
 
-{!! $body !!}
+{!! preg_replace("/\r\n|\r|\n/", "  \n", $body) !!}
 @endcomponent

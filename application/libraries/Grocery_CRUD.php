@@ -1445,6 +1445,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
         $data->unset_print			= $this->unset_print;
         $data->set_editor			= $this->set_editor;
         $data->set_copy_url			= $this->set_copy_url;
+        $data->delete_confirm_url	= $this->delete_confirm_url;
 
         $default_per_page = $this->config->default_per_page;
         $data->paging_options = $this->config->paging_options;
@@ -3302,6 +3303,7 @@ class Grocery_CRUD extends grocery_CRUD_States
     protected $unset_read_fields	= null;
     protected $set_editor			= false;
     protected $set_copy_url			= false;
+    protected $delete_confirm_url	= null;
 
     /* Callbacks */
     protected $callback_before_insert 	= null;
@@ -3695,6 +3697,18 @@ class Grocery_CRUD extends grocery_CRUD_States
     public function set_copy_url()
     {
         $this->set_copy_url = true;
+
+        return $this;
+    }
+
+    /**
+     * 削除する前に確認画面を表示したい場合、この関数を実行する
+     *
+     * $url 中の {{id}} 部分がレコード id に置換される
+     */
+    public function set_delete_confirm_url(string $url)
+    {
+        $this->delete_confirm_url = $url;
 
         return $this;
     }

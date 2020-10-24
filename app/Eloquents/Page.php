@@ -58,10 +58,11 @@ class Page extends Model
      */
     public function scopeByCircle($query, ?Circle $circle = null)
     {
-        $query = self::select('pages.*', 'page_viewable_tags.tag_id')
+        $query = self::selectRaw('`pages`.*, min(`page_viewable_tags`.`tag_id`)')
             ->leftJoin('page_viewable_tags', 'pages.id', '=', 'page_viewable_tags.page_id')
             ->whereNull('page_viewable_tags.tag_id')
-            ->with('viewableTags');
+            ->with('viewableTags')
+            ->groupBy('pages.id');
 
         if (empty($circle)) {
             return $query;

@@ -62,10 +62,11 @@ class Form extends Model
      */
     public function scopeByCircle($query, ?Circle $circle = null)
     {
-        $query = self::select('forms.*', 'form_answerable_tags.tag_id')
+        $query = self::selectRaw('forms.*, min(`form_answerable_tags`.`tag_id`)')
             ->leftJoin('form_answerable_tags', 'forms.id', '=', 'form_answerable_tags.form_id')
             ->whereNull('form_answerable_tags.tag_id')
-            ->with('answerableTags');
+            ->with('answerableTags')
+            ->groupBy('forms.id');
 
         if (empty($circle)) {
             return $query;
