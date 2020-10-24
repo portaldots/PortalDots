@@ -10,7 +10,7 @@
         </form>
 
         @isset ($searchQuery)
-            <div class="pt-spacing">
+            <div class="pt-spacing-sm">
                 <a href="{{ URL::current() }}" class="text-muted">
                     <strong>
                         <i class="fas fa-times-circle"></i>
