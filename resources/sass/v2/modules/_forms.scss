@@ -3,7 +3,11 @@ textarea {
 }
 
 .form {
-  margin: $spacing 0;
+  &.is-search {
+    column-gap: $spacing-sm;
+    display: grid;
+    grid-template-columns: 1fr 4rem;
+  }
   &-group {
     margin: 0 0 $spacing-md;
   }

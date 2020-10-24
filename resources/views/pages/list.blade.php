@@ -4,8 +4,19 @@
 
 @section('content')
     <app-container>
+        <form class="pt-spacing form is-search" method="get" action="{{ url()->full() }}">
+            <input class="form-control" type="search" name="query" placeholder="お知らせを検索" value="{{ old('query', $searchQuery) }}">
+            <button class="btn is-secondary is-no-shadow">検索</button>
+        </form>
+
         @if ($pages->isEmpty())
-            <list-view-empty icon-class="fas fa-bullhorn" text="お知らせはまだありません" />
+            @empty ($searchQuery)
+                <list-view-empty icon-class="fas fa-bullhorn" text="お知らせはまだありません"></list-view-empty>
+            @else
+                <list-view-empty icon-class="fas fa-search" text="検索結果が見つかりませんでした">
+                    入力するキーワードを変えて、再度検索をお試しください。
+                </list-view-empty>
+            @endempty
         @else
             <list-view>
                 @foreach ($pages as $page)
