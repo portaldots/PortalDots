@@ -205,7 +205,7 @@
                         @summary($page->body)
                     </list-view-item>
                 @endforeach
-                <list-view-action-btn href="{{ route('pages.index') }} ">
+                <list-view-action-btn href="{{ route('pages.index') }}">
                     他のお知らせを見る
                 </list-view-action-btn>
             </list-view>
@@ -241,7 +241,7 @@
                         {{ $document->description }}
                     </list-view-item>
                 @endforeach
-                <list-view-action-btn href="{{ route('documents.index') }} ">
+                <list-view-action-btn href="{{ route('documents.index') }}">
                     他の配布資料を見る
                 </list-view-action-btn>
             </list-view>
@@ -269,7 +269,7 @@
                         @summary($form->description)
                     </list-view-item>
                 @endforeach
-                <list-view-action-btn href="{{ route('forms.index') }} "></list-view-action-btn>
+                <list-view-action-btn href="{{ route('forms.index') }}">
                     他の受付中の申請を見る
                 </list-view-action-btn>
             </list-view>
