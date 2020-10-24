@@ -9,12 +9,29 @@
             <button class="btn is-secondary is-no-shadow">検索</button>
         </form>
 
+        @isset ($searchQuery)
+            <div class="pt-spacing">
+                <a href="{{ URL::current() }}" class="text-muted">
+                    <strong>
+                        <i class="fas fa-times-circle"></i>
+                        検索をリセット
+                    </strong>
+                </a>
+            </div>
+        @endisset
+
         @if ($pages->isEmpty())
             @empty ($searchQuery)
                 <list-view-empty icon-class="fas fa-bullhorn" text="お知らせはまだありません"></list-view-empty>
             @else
                 <list-view-empty icon-class="fas fa-search" text="検索結果が見つかりませんでした">
-                    入力するキーワードを変えて、再度検索をお試しください。
+                    <p>入力するキーワードを変えて、再度検索をお試しください。</p>
+                    <p>
+                        <a href="{{ URL::current() }}" class="btn is-primary">
+                            <i class="fas fa-times-circle"></i>
+                            検索をリセット
+                        </a>
+                    </p>
                 </list-view-empty>
             @endempty
         @else
