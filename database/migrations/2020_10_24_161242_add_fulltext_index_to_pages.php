@@ -23,6 +23,6 @@ class AddFulltextIndexToPages extends Migration
      */
     public function down()
     {
-        DB::statement('ALTER TABLE pages ADD FULLTEXT index content (`content`) with parser ngram');
+        DB::statement('ALTER TABLE pages DROP INDEX fulltext_index');
     }
 }
