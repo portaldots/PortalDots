@@ -44,6 +44,7 @@ export default {
     font-size: $icon-size;
     left: $spacing-md;
     opacity: 0.4;
+    pointer-events: none;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
