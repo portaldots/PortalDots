@@ -4,16 +4,15 @@
 
 @section('content')
     <app-container>
-        <form class="pt-spacing form is-search" method="get" action="{{ url()->full() }}">
-            <input class="form-control" type="search" name="query" placeholder="お知らせを検索" value="{{ old('query', $searchQuery) }}">
-            <button class="btn is-secondary is-no-shadow">検索</button>
+        <form class="pt-spacing" method="get" action="{{ route('pages.index') }}">
+            <search-input name="query" default-value="{{ old('query', $searchQuery) }}" placeholder="お知らせを検索…"></search-input>
         </form>
 
         @isset ($searchQuery)
             <div class="pt-spacing-sm">
                 <a href="{{ URL::current() }}" class="text-muted">
                     <strong>
-                        <i class="fas fa-times-circle"></i>
+                        <i class="fas fa-fw fa-times-circle"></i>
                         検索をリセット
                     </strong>
                 </a>
