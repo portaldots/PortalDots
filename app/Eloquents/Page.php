@@ -72,6 +72,21 @@ class Page extends Model
             ->orWhereIn('page_viewable_tags.tag_id', $circle->tags->pluck('id')->all());
     }
 
+    /**
+     * フルテキストインデックスを使った検索
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string|null $keywords
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByKeywords($query, ?string $keywords = null)
+    {
+        if (empty($keywords)) {
+            return $query;
+        }
+        return $query->whereRaw("match(title,body) against (? IN BOOLEAN MODE)", [$keywords]);
+    }
+
     public function userCreatedBy()
     {
         return $this->belongsTo(User::class, 'created_by');

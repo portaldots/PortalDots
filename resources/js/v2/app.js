@@ -29,6 +29,7 @@ import StepsList from './components/StepsList.vue'
 import StepsListItem from './components/StepsListItem.vue'
 import TagsInput from './components/TagsInput.vue'
 import MarkdownEditor from './components/MarkdownEditor.vue'
+import SearchInput from './components/SearchInput.vue'
 
 // Form Questions
 import QuestionItem from './components/Forms/QuestionItem.vue'
@@ -82,7 +83,8 @@ export function mountV2App() {
         StepsList,
         StepsListItem,
         TagsInput,
-        MarkdownEditor
+        MarkdownEditor,
+        SearchInput
       },
       data() {
         return {
