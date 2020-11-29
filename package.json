@@ -82,7 +82,7 @@
         "stylelint-config-standard": "^20.0.0",
         "stylelint-order": "^4.1.0",
         "stylelint-scss": "^3.18.0",
-        "vue-template-compiler": "^2.6.10"
+        "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.13.0",
@@ -96,7 +96,7 @@
         "replace": "^1.1.1",
         "simplemde": "^1.11.2",
         "turbolinks": "^5.2.0",
-        "vue": "^2.5.17",
+        "vue": "^2.6.12",
         "vue-global-events": "^1.1.2",
         "vue-simplemde": "^1.1.2",
         "vuedraggable": "^2.24.0",
