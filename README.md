@@ -21,6 +21,7 @@ PortalDots(ポータルドット)は、 **学園祭実行委員会と参加企�
 開発は **東京理科大の学園祭実行委員経験者が主導するボランティア** の開発チームによって行っています。また、オープンソース([MIT License](https://github.com/portal-dots/PortalDots/blob/master/LICENSE))としており、無料・再配布自由としています。PortalDots は **どなたでも開発に参加いただけます** 。
 
 - **[最新バージョンをダウンロード](https://github.com/portal-dots/PortalDots/releases/latest/download/PortalDots.zip)**
+- [PortalDots 公式ウェブサイト](https://dots.soji.dev)
 
 ## スクリーンショット
 ![PortalDotsスクリーンショット](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/readme/main_screenshot.png)

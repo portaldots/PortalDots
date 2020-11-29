@@ -24,7 +24,7 @@
             **{{ config('portal.admin_name') }}** <br />
             {{ config('portal.contact_email') }}<br /><br />
             [{{ config('app.name') }}]({{ config('app.url') }})<br />
-            Powered by [PortalDots](https://github.com/portal-dots/PortalDots)
+            Powered by [PortalDots](https://dots.soji.dev)
         @endcomponent
     @endslot
 @endcomponent
