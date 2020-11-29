@@ -43,7 +43,7 @@ jobs:
     steps:
       - checkout
 
-      - run: echo 'xdebug.mode = coverage' >> /usr/local/etc/php/conf.d/docker-php-xdebug-mode.ini
+      - run: echo 'xdebug.mode = coverage' | sudo tee -a /usr/local/etc/php/conf.d/docker-php-xdebug-mode.ini
 
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo apt-get install default-mysql-client libpng-dev
