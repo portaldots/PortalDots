@@ -11,7 +11,7 @@ jobs:
       # Specify the version you desire here
       # - image: circleci/php:7.3-node-browsers
 
-      - image: circleci/php:7.3-apache-node-browsers
+      - image: circleci/php:7.3.24-apache-node-browsers
       - image: circleci/mysql:5.7
 
       # Specify service dependencies here if necessary
