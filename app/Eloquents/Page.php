@@ -58,10 +58,11 @@ class Page extends Model
      */
     public function scopeByCircle($query, ?Circle $circle = null)
     {
-        $query = self::select('pages.*', 'page_viewable_tags.tag_id')
+        $query = self::selectRaw('`pages`.*, min(`page_viewable_tags`.`tag_id`)')
             ->leftJoin('page_viewable_tags', 'pages.id', '=', 'page_viewable_tags.page_id')
             ->whereNull('page_viewable_tags.tag_id')
-            ->with('viewableTags');
+            ->with('viewableTags')
+            ->groupBy('pages.id');
 
         if (empty($circle)) {
             return $query;
@@ -69,6 +70,21 @@ class Page extends Model
 
         return $query
             ->orWhereIn('page_viewable_tags.tag_id', $circle->tags->pluck('id')->all());
+    }
+
+    /**
+     * フルテキストインデックスを使った検索
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string|null $keywords
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByKeywords($query, ?string $keywords = null)
+    {
+        if (empty($keywords)) {
+            return $query;
+        }
+        return $query->whereRaw("match(title,body) against (? IN BOOLEAN MODE)", [$keywords]);
     }
 
     public function userCreatedBy()
