@@ -8,12 +8,9 @@
         class="footer__link"
         target="_blank"
         rel="noopener"
-      >
-        PortalDots </a
+        >PortalDots</a
       ><br />
-      <a href="/support" class="footer__link" rel="noopener">
-        推奨動作環境
-      </a>
+      <a href="/support" class="footer__link" rel="noopener">推奨動作環境</a>
     </div>
   </AppContainer>
 </template>

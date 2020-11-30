@@ -225,11 +225,11 @@ export default {
     }
   },
   mounted() {
-    this.queries = this.defaultQueries.map(query => ({
+    this.queries = this.defaultQueries.map((query) => ({
       id: query.id,
       item: this.itemsForFilterQuery
-        .flatMap(item => (item.sublist ? item.sublist : item))
-        .find(q => q.keyName === query.keyName),
+        .flatMap((item) => (item.sublist ? item.sublist : item))
+        .find((q) => q.keyName === query.keyName),
       operator: query.operator,
       value: query.value
     }))
@@ -267,13 +267,13 @@ export default {
     },
     removeQuery(queryId) {
       this.isDirty = true
-      this.queries = this.queries.filter(query => query.id !== queryId)
+      this.queries = this.queries.filter((query) => query.id !== queryId)
     },
     onClickApply() {
       this.isDirty = false
       this.$emit(
         'clickApply',
-        this.queries.map(query => ({
+        this.queries.map((query) => ({
           keyName: query.item.keyName,
           operator: query.operator,
           value: query.value
@@ -302,7 +302,7 @@ export default {
   },
   computed: {
     itemsForFilterQuery() {
-      return Object.keys(this.filterableKeys).map(key => {
+      return Object.keys(this.filterableKeys).map((key) => {
         if (this.filterableKeys[key].type !== 'belongsTo') {
           return {
             keyName: key,
@@ -320,7 +320,7 @@ export default {
           keyName: key,
           label: this.keyTranslations[key],
           sublist: Object.keys(this.filterableKeys[key].keys).map(
-            insideKey => ({
+            (insideKey) => ({
               keyName: `${key}.${insideKey}`,
               type: this.filterableKeys[key].keys[insideKey].type,
               translation: `${this.keyTranslations[key]} › ${this.filterableKeys[key].keys[insideKey].translation}`,

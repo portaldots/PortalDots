@@ -185,7 +185,7 @@ export default {
           this.options
             .trim()
             .split(/\r\n|\n/)
-            .map(option => option.trim())
+            .map((option) => option.trim())
         )
         this.options = Array.from(options).join('\n')
       }
