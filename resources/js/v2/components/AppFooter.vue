@@ -4,7 +4,7 @@
       <template v-if="$slots.default"> <slot /> • </template>
       Powered by
       <a
-        href="https://github.com/portal-dots/PortalDots"
+        href="https://dots.soji.dev"
         class="footer__link"
         target="_blank"
         rel="noopener"
