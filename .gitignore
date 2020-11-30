@@ -44,6 +44,7 @@ coverage.xml
 /public/storage
 /public/js
 /public/css
+/public/images
 /public/build
 /public/mix-manifest.json
 /storage/*.key
