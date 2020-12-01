@@ -58,6 +58,7 @@ export default {
         status: ['lines', 'cursor'],
         previewClass: 'markdown',
         sideBySideFullscreen: false,
+        maxHeight: '600px',
         toolbar: [
           {
             name: 'bold',
