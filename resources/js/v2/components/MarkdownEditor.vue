@@ -1,6 +1,6 @@
 <template>
   <div data-turbolinks="false">
-    <vue-simplemde
+    <vue-easymde
       v-model="content"
       ref="markdownEditor"
       :configs="configs"
@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import Simplemde from 'simplemde'
-import VueSimplemde from 'vue-simplemde'
+import Easymde from 'easymde'
+import VueEasymde from 'vue-easymde'
 
 export default {
   components: {
-    VueSimplemde
+    VueEasymde
   },
   data() {
     return {
@@ -53,77 +53,77 @@ export default {
         toolbar: [
           {
             name: 'bold',
-            action: Simplemde.toggleBold,
+            action: Easymde.toggleBold,
             className: 'fas fa-bold',
             title: '太字'
           },
           {
             name: 'italic',
-            action: Simplemde.toggleItalic,
+            action: Easymde.toggleItalic,
             className: 'fas fa-italic',
             title: '斜体'
           },
           {
             name: 'strikethrough',
-            action: Simplemde.toggleStrikethrough,
+            action: Easymde.toggleStrikethrough,
             className: 'fas fa-strikethrough',
             title: '取り消し線'
           },
           {
             name: 'heading',
-            action: Simplemde.toggleHeadingSmaller,
+            action: Easymde.toggleHeadingSmaller,
             className: 'fas fa-heading',
             title: '見出し'
           },
           '|',
           {
             name: 'quote',
-            action: Simplemde.toggleBlockquote,
+            action: Easymde.toggleBlockquote,
             className: 'fas fa-quote-left',
             title: '引用'
           },
           {
             name: 'unordered-list',
-            action: Simplemde.toggleUnorderedList,
+            action: Easymde.toggleUnorderedList,
             className: 'fas fa-list-ul',
             title: '箇条書き'
           },
           {
             name: 'ordered-list',
-            action: Simplemde.toggleOrderedList,
+            action: Easymde.toggleOrderedList,
             className: 'fas fa-list-ol',
             title: '番号付きリスト'
           },
           '|',
           {
             name: 'link',
-            action: Simplemde.drawLink,
+            action: Easymde.drawLink,
             className: 'fas fa-link',
             title: 'リンク'
           },
           // TODO: 画像アップロード機能の実装
           // {
           //   name: "image",
-          //   action: Simplemde.drawImage,
+          //   action: Easymde.drawImage,
           //   className: "far fa-image",
           //   title: "画像",
           // },
           {
             name: 'table',
-            action: Simplemde.drawTable,
+            action: Easymde.drawTable,
             className: 'fas fa-table',
             title: '表'
           },
           {
             name: 'horizontal-rule',
-            action: Simplemde.drawHorizontalRule,
+            action: Easymde.drawHorizontalRule,
             className: 'fas fa-minus',
             title: '水平線'
           },
           '|',
           {
             name: 'preview',
-            action: Simplemde.togglePreview,
+            action: Easymde.togglePreview,
             className: 'far fa-eye no-disable show-title-label',
             title: 'プレビュー'
           },
@@ -142,11 +142,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~simplemde/dist/simplemde.min.css';
+@import '~easymde/dist/easymde.min.css';
 </style>
 
 <style lang="scss">
-.vue-simplemde {
+.vue-easymde {
   .editor-toolbar.fullscreen {
     top: $navbar-height;
   }
@@ -169,6 +169,8 @@ export default {
     }
   }
   .show-title-label {
+    align-items: center;
+    display: inline-flex;
     padding: 0 $spacing-sm;
     width: auto;
     &::after {
