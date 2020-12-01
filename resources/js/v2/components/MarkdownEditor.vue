@@ -57,6 +57,7 @@ export default {
         tabSize: 4,
         status: ['lines', 'cursor'],
         previewClass: 'markdown',
+        sideBySideFullscreen: false,
         toolbar: [
           {
             name: 'bold',
@@ -130,7 +131,7 @@ export default {
           '|',
           {
             name: 'preview',
-            action: Easymde.togglePreview,
+            action: Easymde.toggleSideBySide,
             className: 'far fa-eye no-disable show-title-label',
             title: 'プレビュー'
           },
@@ -170,8 +171,7 @@ export default {
     // エディタ下部に表示される謎の帯を非表示
     display: none;
   }
-  .editor-preview-full {
-    background: $color-bg-grey;
+  .editor-preview-side {
     padding: $spacing-md;
   }
   .editor-statusbar {
