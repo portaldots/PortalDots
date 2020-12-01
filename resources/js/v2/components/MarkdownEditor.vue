@@ -1,11 +1,6 @@
 <template>
   <div data-turbolinks="false">
-    <vue-easymde
-      v-model="content"
-      ref="markdownEditor"
-      :configs="configs"
-      preview-class="markdown"
-    />
+    <vue-easymde v-model="content" ref="markdownEditor" :configs="configs" />
     <input
       type="hidden"
       :name="inputName"
@@ -40,6 +35,17 @@ export default {
   },
   mounted() {
     this.content = this.defaultValue
+
+    const toolbarButtons = this.$refs.markdownEditor.$el.querySelectorAll(
+      '.editor-toolbar button'
+    )
+
+    /* eslint-disable no-restricted-syntax */
+    for (const button of toolbarButtons) {
+      const title = button.getAttribute('title')
+      button.dataset.label = title ? title.replace(/\s\(.*\)$/, '') : ''
+    }
+    /* eslint-enable */
   },
   computed: {
     configs() {
@@ -49,7 +55,8 @@ export default {
         indentWithTabs: false,
         promptURLs: true,
         tabSize: 4,
-        status: false,
+        status: ['lines', 'cursor'],
+        previewClass: 'markdown',
         toolbar: [
           {
             name: 'bold',
@@ -72,7 +79,7 @@ export default {
           {
             name: 'heading',
             action: Easymde.toggleHeadingSmaller,
-            className: 'fas fa-heading',
+            className: 'fas fa-heading show-title-label',
             title: '見出し'
           },
           '|',
@@ -147,12 +154,25 @@ export default {
 
 <style lang="scss">
 .vue-easymde {
-  .editor-toolbar.fullscreen {
-    top: $navbar-height;
+  .editor-toolbar {
+    &.fullscreen {
+      top: $navbar-height;
+    }
+    button {
+      color: $color-muted;
+    }
   }
   .CodeMirror-fullscreen,
   .editor-preview-side {
     top: calc(#{$navbar-height} + 50px);
+  }
+  .editor-preview:not(.editor-preview-full) {
+    // エディタ下部に表示される謎の帯を非表示
+    display: none;
+  }
+  .editor-preview-full {
+    background: $color-bg-grey;
+    padding: $spacing-md;
   }
   .editor-statusbar {
     .lines::before {
@@ -164,7 +184,7 @@ export default {
     .words::before {
       content: '';
     }
-    .words::after {
+    .words {
       content: '語';
     }
   }
@@ -174,7 +194,7 @@ export default {
     padding: 0 $spacing-sm;
     width: auto;
     &::after {
-      content: attr(title);
+      content: attr(data-label);
       font-size: 0.9rem;
       margin-left: $spacing-xs;
     }
