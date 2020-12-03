@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Responders\Staff;
 
+use App\GridMakers\Filter\FilterQueries;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -65,7 +66,9 @@ class GridResponder implements Respondable
         $per_page = !empty($this->request->per_page) ? (int)$this->request->per_page : 25;
         $order_by = !empty($this->request->order_by) ? $this->request->order_by : 'id';
         $direction = !empty($this->request->direction) ? $this->request->direction : 'asc';
-        $filter_queries = !empty($this->request->queries) ? json_decode($this->request->queries, true) : [];
+        $filter_queries = !empty($this->request->queries)
+            ? FilterQueries::fromJson($this->request->queries)
+            : FilterQueries::fromArray(([]));
         $filter_mode = !empty($this->request->mode) ? $this->request->mode : 'and';
 
         $paginator = new LengthAwarePaginator(
