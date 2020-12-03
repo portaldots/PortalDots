@@ -7,7 +7,8 @@ namespace App\GridMakers;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\User;
 use App\GridMakers\Concerns\UseEloquent;
-use Carbon\Carbon;
+use App\GridMakers\Filter\FilterableKey;
+use App\GridMakers\Filter\FilterableKeysDict;
 use Illuminate\Database\Eloquent\Model;
 
 class UsersGridMaker implements GridMakable
@@ -50,25 +51,25 @@ class UsersGridMaker implements GridMakable
     /**
      * @inheritDoc
      */
-    public function filterableKeys(): array
+    public function filterableKeys(): FilterableKeysDict
     {
-        return [
-            'id' => ['type' => 'number'],
-            'student_id' => ['type' => 'string'],
-            'name_family' => ['type' => 'string'],
-            'name_family_yomi' => ['type' => 'string'],
-            'name_given' => ['type' => 'string'],
-            'name_given_yomi' => ['type' => 'string'],
-            'email' => ['type' => 'string'],
-            'tel' => ['type' => 'string'],
-            'is_staff' => ['type' => 'bool'],
-            'is_admin' => ['type' => 'bool'],
-            'email_verified_at' => ['type' => 'isNull'],
-            'univemail_verified_at' => ['type' => 'isNull'],
-            'notes' => ['type' => 'string'],
-            'created_at' => ['type' => 'datetime'],
-            'updated_at' => ['type' => 'datetime'],
-        ];
+        return new FilterableKeysDict([
+            'id' => FilterableKey::number(),
+            'student_id' => FilterableKey::string(),
+            'name_family' => FilterableKey::string(),
+            'name_family_yomi' => FilterableKey::string(),
+            'name_given' => FilterableKey::string(),
+            'name_given_yomi' => FilterableKey::string(),
+            'email' => FilterableKey::string(),
+            'tel' => FilterableKey::string(),
+            'is_staff' => FilterableKey::bool(),
+            'is_admin' => FilterableKey::bool(),
+            'email_verified_at' => FilterableKey::isNull(),
+            'univemail_verified_at' => FilterableKey::isNull(),
+            'notes' => FilterableKey::string(),
+            'created_at' => FilterableKey::datetime(),
+            'updated_at' => FilterableKey::datetime(),
+        ]);
     }
 
     /**
