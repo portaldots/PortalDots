@@ -123,9 +123,3 @@
         </template>
     </staff-grid>
 @endsection
-<script>
-    import AppBadge from "../../../js/v2/components/AppBadge"
-    export default {
-        components: {AppBadge}
-    }
-</script>
