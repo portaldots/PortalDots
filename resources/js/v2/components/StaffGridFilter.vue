@@ -323,8 +323,10 @@ export default {
             insideKey => ({
               keyName: `${key}.${insideKey}`,
               type: this.filterableKeys[key].keys[insideKey].type,
-              translation: `${this.keyTranslations[key]} › ${this.filterableKeys[key].keys[insideKey].translation}`,
-              menuLabel: this.filterableKeys[key].keys[insideKey].translation
+              translation: `${this.keyTranslations[key]} › ${
+                this.keyTranslations[`${key}.${insideKey}`]
+              }`,
+              menuLabel: this.keyTranslations[`${key}.${insideKey}`]
             })
           )
         }
