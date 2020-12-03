@@ -21,6 +21,9 @@
             @endif
             submitted_at: '参加登録提出日時',
             status: '登録受理状況',
+            'status.rejected': '不受理',
+            'status.approved': '受理',
+            'status.NULL': '確認中',
             status_set_at: '登録受理状況設定日時',
             status_set_by: '登録受理状況設定ユーザー',
             'status_set_by.id': 'ユーザーID',

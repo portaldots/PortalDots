@@ -116,13 +116,11 @@
               v-if="query.item.type === 'enum'"
             >
               <option
-                v-for="(displayValue, value) in filterableKeys[
-                  query.item.keyName
-                ].choices"
+                v-for="value in filterableKeys[query.item.keyName].choices"
                 :key="value"
                 :value="value"
               >
-                {{ displayValue }}
+                {{ keyTranslations[`${query.item.keyName}.${value}`] }}
               </option>
             </select>
           </div>
