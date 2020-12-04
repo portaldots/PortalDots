@@ -41,7 +41,7 @@ class PagesGridMaker implements GridMakable
             'created_by',
             'updated_at',
             'updated_by'
-        ])->with(['viewableTags']);
+        ])->with(['viewableTags', 'userCreatedBy', 'userUpdatedBy']);
     }
 
     /**
