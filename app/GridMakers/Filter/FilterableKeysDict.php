@@ -14,7 +14,13 @@ class FilterableKeysDict implements JsonSerializable
 
     public function __construct(array $dict)
     {
+        $i = 0;
+
         foreach ($dict as $key => $value) {
+            if ($key === $i++) {
+                throw new InvalidArgumentException('引数は連想配列である必要があります。');
+            }
+
             if (!$value instanceof FilterableKey) {
                 throw new InvalidArgumentException(FilterableKey::class . 'オブジェクト配列を引数として渡してください。');
             }
