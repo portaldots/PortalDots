@@ -56,7 +56,7 @@ class CirclesGridMaker implements GridMakable
             'notes',
             'created_at',
             'updated_at',
-        ])->with(['tags', 'answers' => function ($query) {
+        ])->with(['tags', 'statusSetBy', 'answers' => function ($query) {
             if (isset($this->custom_form)) {
                 $query->with('details.question')->where('form_id', $this->custom_form->id);
             }
