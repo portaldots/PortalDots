@@ -69,7 +69,9 @@ class GridResponder implements Respondable
         $filter_queries = !empty($this->request->queries)
             ? FilterQueries::fromJson($this->request->queries)
             : FilterQueries::fromArray(([]));
-        $filter_mode = !empty($this->request->mode) ? $this->request->mode : 'and';
+        $filter_mode = !empty($this->request->mode) && in_array($this->request->mode, ['and', 'or'], true)
+            ? $this->request->mode
+            : 'and';
 
         $paginator = new LengthAwarePaginator(
             $this->gridMaker->getArray(

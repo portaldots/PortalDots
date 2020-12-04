@@ -11,6 +11,7 @@ use App\GridMakers\Filter\FilterQueryItem;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use InvalidArgumentException;
 
 trait UseEloquent
 {
@@ -53,7 +54,11 @@ trait UseEloquent
      */
     protected function makeFilterAppliedQuery(Builder $query, FilterQueries $filter_queries, string $filter_mode)
     {
-        return $query->where(function ($db_query) use ($filter_queries, $filter_mode) {
+        if (!in_array($filter_mode, ['and', 'or'], true)) {
+            throw new InvalidArgumentException('$filter_mode は and か or のどちらかで指定してください。');
+        }
+
+        return $query->where(function (Builder $db_query) use ($filter_queries, $filter_mode) {
             $filterable_keys = $this->filterableKeys();
 
             foreach ($filter_queries as $filter_query) {
@@ -73,17 +78,12 @@ trait UseEloquent
                             ->select("{$pivot}.{$foreign_key}")
                             ->where($options->getRelatedKey(), (int)$filter_query->getValue());
                     };
-                    if ($filter_mode === 'and') {
-                        $db_query->whereIn(
-                            $this->model()->getTable() . '.' . $this->model()->getKeyName(),
-                            $sub_query_function
-                        );
-                    } else {
-                        $db_query->orWhereIn(
-                            $this->model()->getTable() . '.' . $this->model()->getKeyName(),
-                            $sub_query_function
-                        );
-                    }
+
+                    $db_query->whereIn(
+                        $this->model()->getTable() . '.' . $this->model()->getKeyName(),
+                        $sub_query_function,
+                        $filter_mode
+                    );
                 } elseif ($filterable_key->getType() === FilterableKey::TYPE_BELONGS_TO) {
                     $sub_query_function = function ($sub_query) use (
                         $filterable_key,
@@ -108,17 +108,12 @@ trait UseEloquent
                             $filter_mode
                         );
                     };
-                    if ($filter_mode === 'and') {
-                        $db_query->whereIn(
-                            $this->model()->getTable() . '.' . $key_name,
-                            $sub_query_function
-                        );
-                    } else {
-                        $db_query->orWhereIn(
-                            $this->model()->getTable() . '.' . $key_name,
-                            $sub_query_function
-                        );
-                    }
+
+                    $db_query->whereIn(
+                        $this->model()->getTable() . '.' . $key_name,
+                        $sub_query_function,
+                        $filter_mode
+                    );
                 } else {
                     $this->addToDbQuery(
                         $db_query,
