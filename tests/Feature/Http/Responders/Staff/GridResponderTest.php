@@ -2,7 +2,6 @@
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
 
-
 namespace Tests\Feature\Http\Responders\Staff;
 
 use App\GridMakers\Filter\FilterableKey;
