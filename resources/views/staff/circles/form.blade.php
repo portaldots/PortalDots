@@ -47,6 +47,19 @@
                         @endif
                     </list-view-form-group>
                 @endforeach
+                <list-view-form-group>
+                    <template v-slot:label>
+                        使用場所
+                        <small class="text-muted">
+                            スペース区切りで複数入力可
+                        </small>
+                    </template>
+                    <template v-slot:description>
+                        「場所情報管理」にて登録した場所から選択できます — <a href="{{ url('/home_staff/places/add') }}" target="_blank">場所の新規作成</a>
+                    </template>
+                    <tags-input input-name="places" v-bind:default-tags="{{ $default_places }}"
+                        v-bind:autocomplete-items="{{ $places_autocomplete_items }}" add-only-from-autocomplete placeholder="場所を追加"></tags-input>
+                </list-view-form-group>
                 @if (isset($custom_form))
                     <list-view-form-group>
                         <template v-slot:label>カスタムフォームへの回答</template>

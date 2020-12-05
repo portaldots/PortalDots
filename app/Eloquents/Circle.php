@@ -49,6 +49,11 @@ class Circle extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function places()
+    {
+        return $this->belongsToMany(Place::class, 'booths')->using(Booth::class);
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class)->using(CircleUser::class)->withPivot('is_leader');
