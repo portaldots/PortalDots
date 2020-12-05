@@ -119,6 +119,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::prefix('/tags')
             ->name('tags.')
             ->group(function () {
+                Route::get('/', 'Staff\Tags\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Tags\ApiAction')->name('api');
                 Route::get('/create', 'Staff\Tags\CreateAction')->name('create');
                 Route::post('/', 'Staff\Tags\StoreAction')->name('store');
                 Route::get('/{tag}/edit', 'Staff\Tags\EditAction')->name('edit');
