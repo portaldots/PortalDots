@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
-
 namespace Tests\Feature\Http\Responders\Staff;
 
 use App\GridMakers\Filter\FilterableKey;
@@ -39,7 +37,7 @@ class GridResponderTest extends TestCase
         $this->expectException(RequestNotSetException::class);
 
         $obj = new GridResponder();
-        $obj->setGridMaker(new MockedGridMaker());
+        $obj->setGridMaker(Mockery::mock(GridMakable::class));
 
         $obj->response();
     }
@@ -64,7 +62,7 @@ class GridResponderTest extends TestCase
         $obj = new GridResponder();
 
         // モック
-        $grid_maker = Mockery::mock(MockedGridMaker::class);
+        $grid_maker = Mockery::mock(GridMakable::class);
         $filter_queries_argument = Mockery::on(function (FilterQueries $arg) {
             $array = iterator_to_array($arg->getIterator());
             return $array[0]->getFullKeyName() === 'created_at'
@@ -160,39 +158,5 @@ class GridResponderTest extends TestCase
         ]);
 
         $this->assertJsonStringEqualsJsonString($expected, $response->content());
-    }
-}
-
-class MockedGridMaker implements GridMakable
-{
-    public function getArray(
-        string $order_by,
-        string $direction,
-        FilterQueries $filter_queries,
-        string $filter_mode,
-        int $offset,
-        int $limit
-    ): array {
-        return [];
-    }
-
-    public function getCount(FilterQueries $filter_queries, string $filter_mode): int
-    {
-        return 0;
-    }
-
-    public function keys(): array
-    {
-        return [];
-    }
-
-    public function filterableKeys(): FilterableKeysDict
-    {
-        return new FilterableKeysDict([]);
-    }
-
-    public function sortableKeys(): array
-    {
-        return [];
     }
 }
