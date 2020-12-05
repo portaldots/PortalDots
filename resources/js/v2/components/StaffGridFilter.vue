@@ -254,6 +254,7 @@ export default {
           break
         case 'bool':
         case 'isNull':
+          defaultValues.operator = '='
           defaultValues.value = '1'
           break
         default:
