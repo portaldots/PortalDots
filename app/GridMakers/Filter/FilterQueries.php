@@ -31,7 +31,9 @@ class FilterQueries implements IteratorAggregate
         return new self(
             array_reduce($queries, function (array $carry, $query) {
                 try {
-                    $carry[] = new FilterQueryItem($query['key_name'], $query['operator'], $query['value']);
+                    if (!empty($query['key_name']) && !empty($query['operator'])) {
+                        $carry[] = new FilterQueryItem($query['key_name'], $query['operator'], $query['value'] ?? '');
+                    }
                 } catch (InvalidArgumentException $e) {
                     // バリデーションに引っかかるクエリは無視する
                 }

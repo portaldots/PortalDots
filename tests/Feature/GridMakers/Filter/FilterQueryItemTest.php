@@ -40,6 +40,16 @@ class FilterQueryItemTest extends TestCase
     /**
      * @test
      */
+    public function constructor_必要な引数が空の場合は例外が発生する()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new FilterQueryItem('', '', 'hogehoge');
+    }
+
+    /**
+     * @test
+     */
     public function constructor_存在しない演算子が指定されたら例外が発生する()
     {
         $this->expectException(InvalidArgumentException::class);
