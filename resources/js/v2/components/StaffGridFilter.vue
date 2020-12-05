@@ -92,8 +92,12 @@
               v-model="query.value"
               v-if="query.item.type === 'isNull'"
             >
-              <option value="1">空</option>
-              <option value="0">空でない</option>
+              <option value="1">{{
+                keyTranslations[`${query.item.keyName}.true`] || '空'
+              }}</option>
+              <option value="0">{{
+                keyTranslations[`${query.item.keyName}.false`] || '空でない'
+              }}</option>
             </select>
             <select
               type="text"
