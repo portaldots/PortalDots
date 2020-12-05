@@ -21,6 +21,19 @@ class GridResponderTest extends TestCase
     /**
      * @test
      */
+    public function response_setGridMakerされていない場合は例外発生()
+    {
+        $this->expectException(GridMakerNotSetException::class);
+
+        $obj = new GridResponder();
+        $obj->setRequest(new request());
+
+        $obj->response();
+    }
+
+    /**
+     * @test
+     */
     public function response_setRequestされていない場合は例外発生()
     {
         $this->expectException(RequestNotSetException::class);
