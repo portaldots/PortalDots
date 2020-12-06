@@ -64,8 +64,12 @@ class GridResponder implements Respondable
 
         $page = !empty($this->request->page) ? (int)$this->request->page : 1;
         $per_page = !empty($this->request->per_page) ? (int)$this->request->per_page : 25;
-        $order_by = !empty($this->request->order_by) ? $this->request->order_by : 'id';
-        $direction = !empty($this->request->direction) ? $this->request->direction : 'asc';
+        $order_by = !empty($this->request->order_by)
+            ? $this->request->order_by
+            : $this->gridMaker->defaultOrderBy();
+        $direction = !empty($this->request->direction)
+            ? $this->request->direction
+            : $this->gridMaker->defaultDirection();
         $filter_queries = !empty($this->request->queries)
             ? FilterQueries::fromJson($this->request->queries)
             : FilterQueries::fromArray(([]));
