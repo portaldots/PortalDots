@@ -227,10 +227,10 @@ class CirclesGridMaker implements GridMakable
                     $item[$key] = !empty($record->status_set_at) ? $record->status_set_at->format('Y/m/d H:i:s') : null;
                     break;
                 case 'created_at':
-                    $item[$key] = $record->created_at->format('Y/m/d H:i:s');
+                    $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
                     break;
                 case 'updated_at':
-                    $item[$key] = $record->updated_at->format('Y/m/d H:i:s');
+                    $item[$key] = !empty($record->updated_at) ? $record->updated_at->format('Y/m/d H:i:s') : null;
                     break;
                 default:
                     $item[$key] = $record->$key;
