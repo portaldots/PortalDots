@@ -16,4 +16,13 @@
     <p>設定ファイル(.env)内のデータベース設定が正しいかご確認ください。</p>
     <hr>
     <p><?= htmlspecialchars(APP_NAME, ENT_QUOTES, 'UTF-8') ?> • Powered by PortalDots</p>
+    <?php if (defined('ENVIRONMENT') && ENVIRONMENT === 'development'): ?>
+        <hr>
+        <details style="text-align: left">
+            <summary>
+                <strong>詳細(開発モードでのみ表示) :</strong>
+            </summary>
+            <?php echo($message) ?>
+        </details>
+    <?php endif; ?>
 </div>
