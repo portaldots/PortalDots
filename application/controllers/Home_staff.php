@@ -938,6 +938,15 @@ class Home_staff extends MY_Controller
         $vars["page_title"] = "場所情報管理";
         $vars["main_page_type"] = "places";
 
+        if ($this->uri->segment(3) === "edit") {
+            $place_id = $this->uri->segment(4);
+            $edit_url = ['staff', 'places', $place_id, 'edit'];
+            codeigniter_redirect(base_url($edit_url));
+        } elseif ($this->uri->segment(3) === "add") {
+            $edit_url = ['staff', 'places', 'create'];
+            codeigniter_redirect(base_url($edit_url));
+        }
+
         $this->grocery_crud->set_table('places');
         $this->grocery_crud->set_subject('場所');
         $this->grocery_crud->display_as('id', '場所ID');
