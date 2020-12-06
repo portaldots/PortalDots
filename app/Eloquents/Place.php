@@ -14,6 +14,10 @@ class Place extends Model
         'notes',
     ];
 
+    protected $casts = [
+        'type' => 'int',
+    ];
+
     public function circles()
     {
         return $this->belongsToMany(Circle::class, 'booths')->using(Booth::class);
