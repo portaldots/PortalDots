@@ -20,7 +20,10 @@
       </button>
     </template>
     <template #item="{ item }">
-      <AppDropdownItem component-is="button" @click="e => onClickItem(item, e)">
+      <AppDropdownItem
+        component-is="button"
+        @click="(e) => onClickItem(item, e)"
+      >
         {{ item.menuLabel }}
       </AppDropdownItem>
     </template>
