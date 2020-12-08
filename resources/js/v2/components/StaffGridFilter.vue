@@ -92,12 +92,14 @@
               v-model="query.value"
               v-if="query.item.type === 'isNull'"
             >
-              <option value="1">{{
-                keyTranslations[`${query.item.keyName}.true`] || '空'
-              }}</option>
-              <option value="0">{{
-                keyTranslations[`${query.item.keyName}.false`] || '空でない'
-              }}</option>
+              <option value="1">
+                {{ keyTranslations[`${query.item.keyName}.true`] || '空' }}
+              </option>
+              <option value="0">
+                {{
+                  keyTranslations[`${query.item.keyName}.false`] || '空でない'
+                }}
+              </option>
             </select>
             <select
               type="text"
@@ -227,11 +229,11 @@ export default {
     }
   },
   mounted() {
-    this.queries = this.defaultQueries.map(query => ({
+    this.queries = this.defaultQueries.map((query) => ({
       id: query.id,
       item: this.itemsForFilterQuery
-        .flatMap(item => (item.sublist ? item.sublist : item))
-        .find(q => q.keyName === query.keyName),
+        .flatMap((item) => (item.sublist ? item.sublist : item))
+        .find((q) => q.keyName === query.keyName),
       operator: query.operator,
       value: query.value
     }))
@@ -270,13 +272,13 @@ export default {
     },
     removeQuery(queryId) {
       this.isDirty = true
-      this.queries = this.queries.filter(query => query.id !== queryId)
+      this.queries = this.queries.filter((query) => query.id !== queryId)
     },
     onClickApply() {
       this.isDirty = false
       this.$emit(
         'clickApply',
-        this.queries.map(query => ({
+        this.queries.map((query) => ({
           keyName: query.item.keyName,
           operator: query.operator,
           value: query.value
@@ -305,7 +307,7 @@ export default {
   },
   computed: {
     itemsForFilterQuery() {
-      return Object.keys(this.filterableKeys).map(key => {
+      return Object.keys(this.filterableKeys).map((key) => {
         if (this.filterableKeys[key].type !== 'belongsTo') {
           return {
             keyName: key,
@@ -323,7 +325,7 @@ export default {
           keyName: key,
           label: this.keyTranslations[key],
           sublist: Object.keys(this.filterableKeys[key].keys).map(
-            insideKey => ({
+            (insideKey) => ({
               keyName: `${key}.${insideKey}`,
               type: this.filterableKeys[key].keys[insideKey].type,
               translation: `${this.keyTranslations[key]} › ${
