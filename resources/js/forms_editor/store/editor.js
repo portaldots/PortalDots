@@ -49,9 +49,9 @@ export default {
     drag: false
   },
   getters: {
-    [GET_QUESTION_BY_ID]: state => id =>
-      state.questions.find(question => question.id === id) ||
-      state.permanent_questions.find(question => question.id === id)
+    [GET_QUESTION_BY_ID]: (state) => (id) =>
+      state.questions.find((question) => question.id === id) ||
+      state.permanent_questions.find((question) => question.id === id)
   },
   mutations: {
     [TOGGLE_OPEN_STATE](state, payload) {
@@ -81,7 +81,7 @@ export default {
     },
     [UPDATE_QUESTION](state, payload) {
       const question_index = state.questions.findIndex(
-        question => question.id === payload.id
+        (question) => question.id === payload.id
       )
       const question = state.questions[question_index]
       question[payload.key] = payload.value
@@ -89,7 +89,7 @@ export default {
     },
     [DELETE_QUESTION](state, question_id) {
       const question_index = state.questions.findIndex(
-        question => question.id === question_id
+        (question) => question.id === question_id
       )
       state.questions.splice(question_index, 1)
     },
@@ -107,7 +107,7 @@ export default {
     },
     [SET_OPTIONS](state, payload) {
       const question_index = state.questions.findIndex(
-        question => question.id === payload.question_id
+        (question) => question.id === payload.question_id
       )
       const question = state.questions[question_index]
       question.options = payload.options
@@ -130,11 +130,11 @@ export default {
       const questions = (await API.get_questions()).data
       commit(
         SET_QUESTIONS,
-        questions ? questions.filter(question => !question.is_permanent) : []
+        questions ? questions.filter((question) => !question.is_permanent) : []
       )
       commit(
         SET_PERMANENT_QUESTIONS,
-        questions ? questions.filter(question => question.is_permanent) : []
+        questions ? questions.filter((question) => question.is_permanent) : []
       )
       commit(SET_LOADED)
     },
@@ -143,7 +143,7 @@ export default {
       // 現状のquestions配列の状態をバックアップ
       const questions_backup = state.questions
       let count = 0
-      const questions_with_priority = questions.map(question => {
+      const questions_with_priority = questions.map((question) => {
         const _ = question
         count += 1
         _.priority = count
@@ -152,7 +152,7 @@ export default {
       commit(SET_QUESTIONS, questions_with_priority)
       try {
         await API.update_questions_order(
-          questions_with_priority.map(question => ({
+          questions_with_priority.map((question) => ({
             id: question.id,
             priority: question.priority
           }))
@@ -202,7 +202,7 @@ export default {
     },
     async [DELETE_QUESTION]({ commit, dispatch }, question_id) {
       dispatch(START_SAVING)
-      await API.delete_question(question_id).catch(e => {
+      await API.delete_question(question_id).catch((e) => {
         if (e.status === UNPROCESSABLE_ENTITY) {
           commit(
             `status/${SET_VALIDATION_ERROR}`,
@@ -219,7 +219,7 @@ export default {
     async [SAVE_QUESTION]({ getters, commit, dispatch }, question_id) {
       dispatch(START_SAVING)
       await API.update_question(getters[GET_QUESTION_BY_ID](question_id)).catch(
-        e => {
+        (e) => {
           if (e.status === UNPROCESSABLE_ENTITY) {
             commit(
               `status/${SET_VALIDATION_ERROR}`,
@@ -235,7 +235,7 @@ export default {
     },
     async [SAVE_FORM]({ state, commit, dispatch }) {
       dispatch(START_SAVING)
-      await API.update_form(state.form).catch(e => {
+      await API.update_form(state.form).catch((e) => {
         if (e.status === UNPROCESSABLE_ENTITY) {
           commit(
             `status/${SET_VALIDATION_ERROR}`,
