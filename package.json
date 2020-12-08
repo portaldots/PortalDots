@@ -96,7 +96,7 @@
         "simplemde": "^1.11.2",
         "turbolinks": "^5.2.0",
         "vue": "^2.6.12",
-        "vue-global-events": "^1.1.2",
+        "vue-global-events": "^1.2.1",
         "vue-simplemde": "^1.1.2",
         "vuedraggable": "^2.24.3",
         "vuex": "^3.5.1",
