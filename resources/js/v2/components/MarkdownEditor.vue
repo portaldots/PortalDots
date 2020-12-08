@@ -59,6 +59,10 @@ export default {
         previewClass: 'markdown',
         sideBySideFullscreen: false,
         maxHeight: '600px',
+        promptTexts: {
+          image: '画像のURLを入力してください。',
+          link: 'リンク先のURLを入力してください。'
+        },
         shortcuts: {
           togglePreview: null,
           toggleSideBySide: 'Ctrl-P',
