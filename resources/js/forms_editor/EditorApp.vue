@@ -22,7 +22,7 @@ import EditorError from './components/EditorError.vue'
 import { FETCH, TOGGLE_OPEN_STATE, ITEM_HEADER } from './store/editor'
 import { SAVE_STATUS_SAVING } from './store/status'
 
-const on_before_unload = event => {
+const on_before_unload = (event) => {
   event.preventDefault()
   // eslint-disable-next-line no-param-reassign
   event.returnValue = ''

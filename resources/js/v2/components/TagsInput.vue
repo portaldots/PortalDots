@@ -75,8 +75,9 @@ export default {
     },
     isDuplicate(tags, tag) {
       return (
-        tags.map(t => t.text.toLowerCase()).indexOf(tag.text.toLowerCase()) !==
-        -1
+        tags
+          .map((t) => t.text.toLowerCase())
+          .indexOf(tag.text.toLowerCase()) !== -1
       )
     }
   },
@@ -86,7 +87,7 @@ export default {
       return [';', '、', ' ', '　']
     },
     filteredItems() {
-      return this.autocompleteItems.filter(i => {
+      return this.autocompleteItems.filter((i) => {
         return i.text.toLowerCase().indexOf(this.inputTag.toLowerCase()) !== -1
       })
     }

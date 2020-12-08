@@ -1,8 +1,6 @@
 <template>
   <header class="editor-header editor-header-styling">
-    <div class="editor-header__title">
-      フォームエディター
-    </div>
+    <div class="editor-header__title">フォームエディター</div>
     <div
       class="editor-header__status"
       v-if="!is_unexpected_error && !validation_error"

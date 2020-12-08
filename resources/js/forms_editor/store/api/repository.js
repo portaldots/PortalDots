@@ -21,10 +21,10 @@ const axios = Axios.create({
 
 let isProcessing = false
 
-axios.interceptors.request.use(config => {
+axios.interceptors.request.use((config) => {
   if (config.method === 'get') return config
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const interval = setInterval(() => {
       if (!isProcessing) {
         isProcessing = true
@@ -37,12 +37,12 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(
   // リクエスト成功時
-  response => {
+  (response) => {
     isProcessing = false
     return response
   },
   // リクエスト失敗時
-  error => {
+  (error) => {
     if (error.response.status === UNPROCESSABLE_ENTITY) {
       isProcessing = false
     }
