@@ -59,6 +59,33 @@ export default {
         previewClass: 'markdown',
         sideBySideFullscreen: false,
         maxHeight: '600px',
+        uploadImage: true,
+        imageUploadFunction(file, onSuccess, onError) {
+          if (!file) {
+            onError('画像ファイルが指定されていません。')
+            return
+          }
+
+          const reader = new FileReader()
+
+          reader.addEventListener(
+            'load',
+            () => {
+              onSuccess(reader.result)
+            },
+            false
+          )
+
+          reader.addEventListener(
+            'error',
+            () => {
+              onError('ファイルの読み込み時にエラーが発生しました。')
+            },
+            false
+          )
+
+          reader.readAsDataURL(file)
+        },
         promptTexts: {
           image: '画像のURLを入力してください。',
           link: 'リンク先のURLを入力してください。'
