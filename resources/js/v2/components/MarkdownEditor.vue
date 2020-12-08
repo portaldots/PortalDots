@@ -59,6 +59,11 @@ export default {
         previewClass: 'markdown',
         sideBySideFullscreen: false,
         maxHeight: '600px',
+        shortcuts: {
+          togglePreview: null,
+          toggleSideBySide: 'Ctrl-P',
+          toggleFullScreen: null
+        },
         toolbar: [
           {
             name: 'bold',
