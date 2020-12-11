@@ -44,7 +44,6 @@
         v-if="openingSubmenuIndex !== null && isOpen"
         @click="close"
         @mouseover="onMouseoverSubmenu"
-        @mouseout="onMouseoutSubmenu"
         ref="submenu"
         :style="{
           top: submenuTop !== null ? `${submenuTop}px` : 'auto',
@@ -269,9 +268,6 @@ export default {
         window.clearTimeout(this.timeoutIdForSubmenu)
       }
       this.timeoutIdForSubmenu = null
-    },
-    onMouseoutSubmenu() {
-      this.onMouseoutItemToCloseSubmenu()
     },
     onMouseoutItemToCloseSubmenu() {
       if (this.timeoutIdForSubmenu) {

@@ -183,7 +183,7 @@ export default {
       await this.fetch()
     },
     setUrlParams() {
-      window.history.pushState('', '', `?${this.urlParams}`)
+      window.history.replaceState('', '', `?${this.urlParams}`)
     },
     setFromUrlParams() {
       const queries = window.location.search

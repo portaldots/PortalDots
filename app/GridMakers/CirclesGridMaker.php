@@ -11,6 +11,8 @@ use App\Eloquents\Question;
 use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use App\GridMakers\Concerns\UseEloquent;
+use App\GridMakers\Filter\FilterableKey;
+use App\GridMakers\Filter\FilterableKeysDict;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\Utils\FormatTextService;
 
@@ -54,7 +56,7 @@ class CirclesGridMaker implements GridMakable
             'notes',
             'created_at',
             'updated_at',
-        ])->with(['tags', 'answers' => function ($query) {
+        ])->with(['tags', 'statusSetBy', 'answers' => function ($query) {
             if (isset($this->custom_form)) {
                 $query->with('details.question')->where('form_id', $this->custom_form->id);
             }
@@ -99,7 +101,7 @@ class CirclesGridMaker implements GridMakable
     /**
      * @inheritDoc
      */
-    public function filterableKeys(): array
+    public function filterableKeys(): FilterableKeysDict
     {
         static $tags_choices = null;
 
@@ -107,53 +109,46 @@ class CirclesGridMaker implements GridMakable
             $tags_choices = Tag::all()->toArray();
         }
 
-        $users_type = ['type' => 'belongsTo', 'to' => 'users', 'keys' => [
-            'id' => ['translation' => 'ユーザーID', 'type' => 'number'],
-            'student_id' => ['translation' => '学籍番号', 'type' => 'string'],
-            'name_family' => ['translation' => '姓', 'type' => 'string'],
-            'name_family_yomi' => ['translation' => '姓(よみ)', 'type' => 'string'],
-            'name_given' => ['translation' => '名', 'type' => 'string'],
-            'name_given_yomi' => ['translation' => '名(よみ)', 'type' => 'string'],
-            'email' => ['translation' => '連絡先メールアドレス', 'type' => 'string'],
-            'tel' => ['translation' => '電話番号', 'type' => 'string'],
-            'is_staff' => ['translation' => 'スタッフ', 'type' => 'bool'],
-            'is_admin' => ['translation' => '管理者', 'type' => 'bool'],
-            'email_verified_at' => ['translation' => 'メール認証', 'type' => 'isNull'],
-            'univemail_verified_at' => ['translation' => '本人確認', 'type' => 'isNull'],
-            'notes' => ['translation' => 'スタッフ用メモ', 'type' => 'string'],
-            'created_at' => ['translation' => '作成日時', 'type' => 'datetime'],
-            'updated_at' => ['translation' => '更新日時', 'type' => 'datetime'],
-        ]];
+        $users_type = FilterableKey::belongsTo('users', new FilterableKeysDict([
+            'id' => FilterableKey::number(),
+            'student_id' => FilterableKey::string(),
+            'name_family' => FilterableKey::string(),
+            'name_family_yomi' => FilterableKey::string(),
+            'name_given' => FilterableKey::string(),
+            'name_given_yomi' => FilterableKey::string(),
+            'email' => FilterableKey::string(),
+            'tel' => FilterableKey::string(),
+            'is_staff' => FilterableKey::bool(),
+            'is_admin' => FilterableKey::bool(),
+            'email_verified_at' => FilterableKey::isNull(),
+            'univemail_verified_at' => FilterableKey::isNull(),
+            'notes' => FilterableKey::string(),
+            'created_at' => FilterableKey::datetime(),
+            'updated_at' => FilterableKey::datetime(),
+        ]));
 
-        return [
-            'id' => ['type' => 'number'],
-            'name' => ['type' => 'string'],
-            'name_yomi' => ['type' => 'string'],
-            'group_name' => ['type' => 'string'],
-            'group_name_yomi' => ['type' => 'string'],
-            'tags' => [
-                'type' => 'belongsToMany',
-                'pivot' => 'circle_tag',
-                'foreign_key' => 'circle_id',
-                'related_key' => 'tag_id',
-                'choices' => $tags_choices,
-                'choices_name' => 'name',
-            ],
-            'submitted_at' => ['type' => 'datetime'],
-            'status' => [
-                'type' => 'enum',
-                'choices' => [
-                    'rejected' => '不受理',
-                    'approved' => '受理',
-                    'NULL' => '確認中',
-                ]
-            ],
-            'status_set_at' => ['type' => 'datetime'],
+        return new FilterableKeysDict([
+            'id' => FilterableKey::number(),
+            'name' => FilterableKey::string(),
+            'name_yomi' => FilterableKey::string(),
+            'group_name' => FilterableKey::string(),
+            'group_name_yomi' => FilterableKey::string(),
+            'tags' => FilterableKey::belongsToMany(
+                'circle_tag',
+                'circle_id',
+                'tag_id',
+                $tags_choices,
+                'name'
+            ),
+            'submitted_at' => FilterableKey::datetime(),
+            // 不受理、受理、確認中
+            'status' => FilterableKey::enum(['rejected', 'approved', 'NULL']),
+            'status_set_at' => FilterableKey::datetime(),
             'status_set_by' => $users_type,
-            'notes' => ['type' => 'string'],
-            'created_at' => ['type' => 'datetime'],
-            'updated_at' => ['type' => 'datetime'],
-        ];
+            'notes' => FilterableKey::string(),
+            'created_at' => FilterableKey::datetime(),
+            'updated_at' => FilterableKey::datetime(),
+        ]);
     }
 
     /**
