@@ -2,9 +2,9 @@
 
 namespace App\Eloquents;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Booth extends Model
+class Booth extends Pivot
 {
     //
 }
