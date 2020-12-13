@@ -3,7 +3,6 @@ textarea {
 }
 
 .form {
-  margin: $spacing 0;
   &-group {
     margin: 0 0 $spacing-md;
   }
@@ -28,7 +27,7 @@ textarea {
     width: 100%;
     @at-root {
       select#{&} {
-        background: right $spacing-md center / 1rem url(../img/dropdownTriangle.svg) no-repeat, $color-bg-white;
+        background: right $spacing-md center / 1rem url(../../../img/dropdownTriangle.svg) no-repeat, $color-bg-white;
         &::-ms-expand {
           // IEで、ドロップダウンの標準の三角アイコンが表示されないようにする
           display: none;

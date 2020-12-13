@@ -22,11 +22,13 @@ class IndexAction extends Controller
         $this->selectorService = $selectorService;
     }
 
-    public function __invoke()
+    public function __invoke(Request $request)
     {
         $circle = $this->selectorService->getCircle();
 
-        $pages = Page::byCircle($circle)->with(['usersWhoRead' => function ($query) {
+        $searchQuery = $request->input('query');
+
+        $pages = Page::byCircle($circle)->byKeywords($searchQuery)->with(['usersWhoRead' => function ($query) {
             $query->where('user_id', Auth::id());
         }])->paginate(10);
 
@@ -34,7 +36,8 @@ class IndexAction extends Controller
             return redirect($pages->url($pages->lastPage()));
         }
 
-        return view('pages.index')
+        return view('pages.list')
+            ->with('searchQuery', $searchQuery)
             ->with('pages', $pages);
     }
 }

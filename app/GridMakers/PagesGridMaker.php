@@ -8,6 +8,8 @@ use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Page;
 use App\GridMakers\Concerns\UseEloquent;
+use App\GridMakers\Filter\FilterableKey;
+use App\GridMakers\Filter\FilterableKeysDict;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\Utils\FormatTextService;
 
@@ -38,8 +40,8 @@ class PagesGridMaker implements GridMakable
             'created_at',
             'created_by',
             'updated_at',
-            'updated_by',
-        ])->with(['viewableTags']);
+            'updated_by'
+        ])->with(['viewableTags', 'userCreatedBy', 'userUpdatedBy']);
     }
 
     /**
@@ -56,14 +58,14 @@ class PagesGridMaker implements GridMakable
             'created_at',
             'created_by',
             'updated_at',
-            'updated_by',
+            'updated_by'
         ];
     }
 
     /**
      * @inheritDoc
      */
-    public function filterableKeys(): array
+    public function filterableKeys(): FilterableKeysDict
     {
         static $tags_choices = null;
 
@@ -71,42 +73,44 @@ class PagesGridMaker implements GridMakable
             $tags_choices = Tag::all()->toArray();
         }
 
-        $users_type = ['type' => 'belongsTo', 'to' => 'users', 'keys' => [
-            'id' => ['translation' => 'ユーザーID', 'type' => 'number'],
-            'student_id' => ['translation' => '学籍番号', 'type' => 'string'],
-            'name_family' => ['translation' => '姓', 'type' => 'string'],
-            'name_family_yomi' => ['translation' => '姓(よみ)', 'type' => 'string'],
-            'name_given' => ['translation' => '名', 'type' => 'string'],
-            'name_given_yomi' => ['translation' => '名(よみ)', 'type' => 'string'],
-            'email' => ['translation' => '連絡先メールアドレス', 'type' => 'string'],
-            'tel' => ['translation' => '電話番号', 'type' => 'string'],
-            'is_staff' => ['translation' => 'スタッフ', 'type' => 'bool'],
-            'is_admin' => ['translation' => '管理者', 'type' => 'bool'],
-            'email_verified_at' => ['translation' => 'メール認証', 'type' => 'isNull'],
-            'univemail_verified_at' => ['translation' => '本人確認', 'type' => 'isNull'],
-            'notes' => ['translation' => 'スタッフ用メモ', 'type' => 'string'],
-            'created_at' => ['translation' => '作成日時', 'type' => 'datetime'],
-            'updated_at' => ['translation' => '更新日時', 'type' => 'datetime'],
-        ]];
+        $users_type = FilterableKey::belongsTo(
+            'users',
+            new FilterableKeysDict([
+                'id' => FilterableKey::number(),
+                'student_id' => FilterableKey::string(),
+                'name_family' => FilterableKey::string(),
+                'name_family_yomi' => FilterableKey::string(),
+                'name_given' => FilterableKey::string(),
+                'name_given_yomi' => FilterableKey::string(),
+                'email' => FilterableKey::string(),
+                'tel' => FilterableKey::string(),
+                'is_staff' => FilterableKey::bool(),
+                'is_admin' => FilterableKey::bool(),
+                'email_verified_at' => FilterableKey::isNull(),
+                'univemail_verified_at' => FilterableKey::isNull(),
+                'notes' => FilterableKey::string(),
+                'created_at' => FilterableKey::datetime(),
+                'updated_at' => FilterableKey::datetime()
+            ])
+        );
 
-        return [
-            'id' => ['type' => 'number'],
-            'title' => ['type' => 'string'],
-            'viewableTags' => [
-                'type' => 'belongsToMany',
-                'pivot' => 'page_viewable_tags',
-                'foreign_key' => 'page_id',
-                'related_key' => 'tag_id',
-                'choices' => $tags_choices,
-                'choices_name' => 'name',
-            ],
-            'body' => ['type' => 'string'],
-            'notes' => ['type' => 'string'],
-            'created_at' => ['type' => 'datetime'],
+        return new FilterableKeysDict([
+            'id' => FilterableKey::number(),
+            'title' => FilterableKey::string(),
+            'viewableTags' => FilterableKey::belongsToMany(
+                'page_viewable_tags',
+                'page_id',
+                'tag_id',
+                $tags_choices,
+                'name'
+            ),
+            'body' => FilterableKey::string(),
+            'notes' => FilterableKey::string(),
+            'created_at' => FilterableKey::datetime(),
             'created_by' => $users_type,
-            'updated_at' => ['type' => 'datetime'],
-            'updated_by' => $users_type,
-        ];
+            'updated_at' => FilterableKey::datetime(),
+            'updated_by' => $users_type
+        ]);
     }
 
     /**
@@ -122,7 +126,7 @@ class PagesGridMaker implements GridMakable
             'created_at',
             'created_by',
             'updated_at',
-            'updated_by',
+            'updated_by'
         ];
     }
 
@@ -135,7 +139,9 @@ class PagesGridMaker implements GridMakable
         foreach ($this->keys() as $key) {
             switch ($key) {
                 case 'body':
-                    $item[$key] = $this->formatTextService->summary($record->body);
+                    $item[$key] = $this->formatTextService->summary(
+                        $record->body
+                    );
                     break;
                 case 'created_at':
                     $item[$key] = $record->created_at->format('Y/m/d H:i:s');

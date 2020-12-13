@@ -11,7 +11,7 @@ jobs:
       # Specify the version you desire here
       # - image: circleci/php:7.3-node-browsers
 
-      - image: circleci/php:7.3-apache-node-browsers
+      - image: circleci/php:7.3.24-apache-node-browsers
       - image: circleci/mysql:5.7
 
       # Specify service dependencies here if necessary
@@ -42,6 +42,8 @@ jobs:
 
     steps:
       - checkout
+
+      - run: echo 'xdebug.mode = coverage' | sudo tee -a /usr/local/etc/php/conf.d/docker-php-xdebug-mode.ini
 
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo apt-get install default-mysql-client libpng-dev

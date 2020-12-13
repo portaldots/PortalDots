@@ -222,11 +222,9 @@
                         @summary($page->body)
                     </list-view-item>
                 @endforeach
-                @if ($remaining_pages_count > 0)
-                    <list-view-action-btn href="{{ route('pages.index') }} ">
-                        残り {{ $remaining_pages_count }} 件のお知らせを見る
-                    </list-view-action-btn>
-                @endif
+                <list-view-action-btn href="{{ route('pages.index') }}">
+                    他のお知らせを見る
+                </list-view-action-btn>
             </list-view>
         @endif
 
@@ -260,11 +258,9 @@
                         {{ $document->description }}
                     </list-view-item>
                 @endforeach
-                @if ($remaining_documents_count > 0)
-                    <list-view-action-btn href="{{ route('documents.index') }} ">
-                        残り {{ $remaining_documents_count }} 件の配布資料を見る
-                    </list-view-action-btn>
-                @endif
+                <list-view-action-btn href="{{ route('documents.index') }}">
+                    他の配布資料を見る
+                </list-view-action-btn>
             </list-view>
         @endif
 
@@ -290,11 +286,9 @@
                         @summary($form->description)
                     </list-view-item>
                 @endforeach
-                @if ($remaining_forms_count > 0)
-                    <list-view-action-btn href="{{ route('forms.index') }} ">
-                        残り {{ $remaining_forms_count }} 件の受付中の申請を見る
-                    </list-view-action-btn>
-                @endif
+                <list-view-action-btn href="{{ route('forms.index') }}">
+                    他の受付中の申請を見る
+                </list-view-action-btn>
             </list-view>
         @endif
     </app-container>

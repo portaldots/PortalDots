@@ -79,7 +79,7 @@
               <AppDropdownItem
                 class="grid-controls__selector-item"
                 component-is="button"
-                @click="e => onChangePerPage(item, e)"
+                @click="(e) => onChangePerPage(item, e)"
               >
                 {{ item }}
                 <i
@@ -97,9 +97,7 @@
             }}件 (ページ{{ paginator.current_page }} /
             {{ paginator.last_page }})
           </template>
-          <template v-else>
-            0件
-          </template>
+          <template v-else>0件</template>
         </div>
         <div class="grid-controls__section text-primary" v-if="loading">
           <i class="fas fa-spinner fa-pulse"></i>
@@ -114,7 +112,7 @@
                 <button
                   class="grid-table__th__button"
                   :disabled="!sortableKeys.includes(keyName)"
-                  @click="e => onClickTh(keyName, e)"
+                  @click="(e) => onClickTh(keyName, e)"
                 >
                   <slot name="th" :keyName="keyName" />
                   <template v-if="orderBy === keyName">

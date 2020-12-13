@@ -183,13 +183,13 @@ export default {
       await this.fetch()
     },
     setUrlParams() {
-      window.history.pushState('', '', `?${this.urlParams}`)
+      window.history.replaceState('', '', `?${this.urlParams}`)
     },
     setFromUrlParams() {
       const queries = window.location.search
         .replace('?', '')
         .split('&')
-        .map(e => e.split('='))
+        .map((e) => e.split('='))
         .reduce((obj, e) => ({ ...obj, [e[0]]: e[1] }), {})
 
       if (queries.page) {
@@ -229,7 +229,7 @@ export default {
 
       if (this.filterQueries && this.filterQueries.length > 0) {
         const stringQueries = JSON.stringify(
-          this.filterQueries.map(query => ({
+          this.filterQueries.map((query) => ({
             key_name: query.keyName,
             operator: query.operator,
             value: query.value

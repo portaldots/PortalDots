@@ -21,8 +21,26 @@
             @endif
             submitted_at: '参加登録提出日時',
             status: '登録受理状況',
+            'status.rejected': '不受理',
+            'status.approved': '受理',
+            'status.NULL': '確認中',
             status_set_at: '登録受理状況設定日時',
             status_set_by: '登録受理状況設定ユーザー',
+            'status_set_by.id': 'ユーザーID',
+            'status_set_by.student_id': '学籍番号',
+            'status_set_by.name_family': '姓',
+            'status_set_by.name_family_yomi': '姓(よみ)',
+            'status_set_by.name_given': '名',
+            'status_set_by.name_given_yomi': '名(よみ)',
+            'status_set_by.email': '連絡先メールアドレス',
+            'status_set_by.tel': '電話番号',
+            'status_set_by.is_staff': 'スタッフ',
+            'status_set_by.is_admin': '管理者',
+            'status_set_by.email_verified_at': 'メール認証',
+            'status_set_by.univemail_verified_at': '本人確認',
+            'status_set_by.notes': 'スタッフ用メモ',
+            'status_set_by.created_at': '作成日時',
+            'status_set_by.updated_at': '更新日時',
             created_at: '作成日時',
             updated_at: '更新日時',
             notes: 'スタッフ用メモ',
@@ -108,9 +126,3 @@
         </template>
     </staff-grid>
 @endsection
-<script>
-    import AppBadge from "../../../js/v2/components/AppBadge"
-    export default {
-        components: {AppBadge}
-    }
-</script>
