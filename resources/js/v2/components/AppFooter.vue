@@ -43,8 +43,7 @@ export default {
     transition: linear 0.1s;
     &:hover,
     &:focus {
-      color: darken($color-muted-2, 10%);
-      text-decoration: none;
+      text-decoration: underline;
     }
   }
 }

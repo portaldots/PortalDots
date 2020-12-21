@@ -9,24 +9,24 @@ $font-size: #{(14 / $base-font-size-px) + 'rem'};
 $font-size-input: #{(16 / $base-font-size-px) + 'rem'};
 
 // Color
-$color-text: #22292F;
-$color-primary: #1879F4;
-$color-danger: #DB3C3E;
-$color-success: #1BA24E;
-$color-warning: #FE750A;
-$color-muted: #6c757d;
-$color-muted-2: #a7b6c2;
-$color-muted-3: #c3cfd8;
-$color-border: #dae0e6;
-$color-bg-grey: #f3f4fa;
-$color-bg-light: #efefef;
-$color-bg-white: #FFF;
+$color-text: var(--color-text);
+$color-primary: var(--color-primary);
+$color-danger: var(--color-danger);
+$color-success: var(--color-success);
+$color-warning: var(--color-warning);
+$color-muted: var(--color-muted);
+$color-muted-2: var(--color-muted-2);
+$color-muted-3: var(--color-muted-3);
+$color-border: var(--color-border);
+$color-bg-grey: var(--color-bg-grey);
+$color-bg-light: var(--color-bg-light);
+$color-bg-white: var(--color-bg-white);
 $semantic-colors: (
   primary: $color-primary,
   danger: $color-danger,
   success: $color-success,
   warning: $color-warning,
-  muted: $color-muted
+  muted: $color-muted,
 );
 
 // Spacing (WIP)
