@@ -99,7 +99,7 @@
         "vue-easymde": "^1.3.1",
         "vue-global-events": "^1.2.1",
         "vuedraggable": "^2.24.3",
-        "vuex": "^3.5.1",
+        "vuex": "^3.6.0",
         "wysiwyg.css": "^0.0.3"
     }
 }
