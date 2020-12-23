@@ -12,7 +12,7 @@ textarea {
     margin: 0 0 $spacing-xs;
   }
   &-control {
-    $default-box-shadow: inset 0 0.5px 1.5px rgba($color-text, 0.1);
+    $default-box-shadow: inset 0 0.5px 1.5px rgba(var(--rgb-color-text), 0.1);
 
     appearance: none;
     background-color: $color-bg-white;
@@ -23,11 +23,14 @@ textarea {
     font-size: $font-size-input;
     line-height: 1.6;
     padding: $spacing-sm $spacing-md;
-    transition: #{$transition-base-fast} background-color, #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color;
+    transition: #{$transition-base-fast} background-color,
+      #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color;
     width: 100%;
     @at-root {
       select#{&} {
-        background: right $spacing-md center / 1rem url(../../../img/dropdownTriangle.svg) no-repeat, $color-bg-white;
+        background: right $spacing-md center / 1rem
+            url(../../../img/dropdownTriangle.svg) no-repeat,
+          $color-bg-white;
         &::-ms-expand {
           // IEで、ドロップダウンの標準の三角アイコンが表示されないようにする
           display: none;
@@ -54,12 +57,12 @@ textarea {
     }
     &:focus {
       border-color: $color-primary;
-      box-shadow: $default-box-shadow, 0 0 0 3px rgba($color-primary, 0.25);
+      box-shadow: $default-box-shadow, 0 0 0 3px rgba(var(--rgb-color-primary), 0.25);
       outline: 0;
     }
     &.is-invalid:focus {
       border-color: $color-danger;
-      box-shadow: 0 0 0 3px rgba($color-danger, 0.25);
+      box-shadow: $default-box-shadow, 0 0 0 3px rgba(var(--rgb-color-danger), 0.25);
     }
   }
   &-checkbox,

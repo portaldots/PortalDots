@@ -67,10 +67,10 @@ export default {
     color: $color-danger;
   }
   &:disabled {
-    color: rgba($color-primary, 0.4);
+    color: rgba(var(--rgb-color-primary), 0.4);
     cursor: auto;
     &.is-danger {
-      color: rgba($color-danger, 0.4);
+      color: rgba(var(--rgb-color-danger), 0.4);
     }
     &:hover,
     &:active,

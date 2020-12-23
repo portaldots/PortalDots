@@ -102,7 +102,7 @@ export default {
     background: #fff;
     color: $color-text;
     & + & {
-      border-top: 1px solid rgba($color-primary, 0.16);
+      border-top: 1px solid rgba(var(--rgb-color-primary), 0.16);
     }
   }
   &.is-danger {

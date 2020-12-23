@@ -326,7 +326,7 @@ export default {
       border: 0;
       &.is-in-tbody {
         &:nth-child(2n) {
-          background: rgba($color-bg-light, 0.4);
+          background: rgba(var(--rgb-color-bg-light), 0.4);
         }
         &:hover {
           background: $color-bg-light;

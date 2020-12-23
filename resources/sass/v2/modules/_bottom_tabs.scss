@@ -8,7 +8,7 @@ body {
 .bottom_tabs {
   background: #fff;
   bottom: 0;
-  box-shadow: 0 0 0.5rem rgba($color-text, 0.15);
+  box-shadow: 0 0 0.5rem $color-box-shadow-light;
   height: $bottom-tabs-height;
   height: calc(env(safe-area-inset-bottom) + #{$bottom-tabs-height});
   left: 0;

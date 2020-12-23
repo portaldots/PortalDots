@@ -1,4 +1,10 @@
-@mixin btn($color, $background, $hover-background, $border-color, $shadow-color-base: null) {
+@mixin btn(
+  $color,
+  $background,
+  $hover-background,
+  $border-color,
+  $has-shadow: false
+) {
   background: $background;
   border: 1px solid $border-color;
   color: $color;
@@ -7,16 +13,20 @@
     background: $hover-background;
     border-color: $hover-background;
   }
-  @if ($shadow-color-base) {
-    box-shadow: 0 0.25rem 0.75rem rgba($shadow-color-base, 0.25);
-    &:not([disabled]):hover,
-    &:not(.disabled):hover {
-      box-shadow: 0 0.5rem 0.75rem rgba($shadow-color-base, 0.4);
-    }
-    &:not([disabled]):active,
-    &:not(.disabled):active {
-      box-shadow: 0 0.1rem 0.3rem rgba($shadow-color-base, 0.6);
-    }
+  &:not([disabled]):active,
+  &:not(.disabled):active {
+    background: $background;
+  }
+  @if ($has-shadow) {
+    box-shadow: 0 0.25rem 0.75rem $color-box-shadow;
+    // &:not([disabled]):hover,
+    // &:not(.disabled):hover {
+    // box-shadow: 0 0.5rem 0.75rem $color-box-shadow;
+    // }
+    // &:not([disabled]):active,
+    // &:not(.disabled):active {
+    // box-shadow: 0 0.1rem 0.3rem $color-box-shadow;
+    // }
   }
 }
 
@@ -32,7 +42,8 @@ body:not(.body-editor-v1):not(.body-v1) {
     padding: 0.75rem $spacing-md;
     text-align: center;
     text-decoration: none;
-    transition: #{$transition-base-fast} background-color, #{$transition-base-fast} box-shadow;
+    transition: #{$transition-base-fast} background-color,
+      #{$transition-base-fast} box-shadow, #{$transition-base-fast} transform;
     white-space: nowrap;
     &:disabled,
     &.disabled {
@@ -47,10 +58,22 @@ body:not(.body-editor-v1):not(.body-v1) {
       text-decoration: none;
     }
     &.is-primary {
-      @include btn(#fff, $color-primary, lighten($color-primary, 5%), $color-primary, $color-primary);
+      @include btn(
+        #fff,
+        $color-primary,
+        #{rgba(var(--rgb-color-primary), 80%)},
+        $color-primary,
+        true
+      );
     }
     &.is-primary-inverse {
-      @include btn($color-primary, #fff, lighten($color-primary, 50%), #fff, $color-muted);
+      @include btn(
+        $color-primary,
+        #fff,
+        #{rgba(var(--rgb-color-primary), 10%)},
+        #fff,
+        true
+      );
     }
     &.is-secondary {
       @include btn($color-text, #fff, $color-bg-grey, $color-border);
@@ -59,10 +82,22 @@ body:not(.body-editor-v1):not(.body-v1) {
       @include btn($color-text, transparent, #fff, $color-border);
     }
     &.is-danger {
-      @include btn(#fff, $color-danger, lighten($color-danger, 5%), $color-danger, $color-danger);
+      @include btn(
+        #fff,
+        $color-danger,
+        #{rgba(var(--rgb-color-danger), 80%)},
+        $color-danger,
+        true
+      );
     }
     &.is-success {
-      @include btn(#fff, $color-success, lighten($color-success, 5%), $color-success, $color-success);
+      @include btn(
+        #fff,
+        $color-success,
+        #{rgba(var(--rgb-color-success), 80%)},
+        $color-success,
+        true
+      );
     }
     &.is-block {
       display: block;

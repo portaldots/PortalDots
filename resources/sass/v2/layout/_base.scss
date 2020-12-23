@@ -60,7 +60,7 @@ li {
 }
 
 code {
-  background: rgba($color-success, 0.1);
+  background: rgba(var(--rgb-color-success), 0.1);
   border-radius: $border-radius;
   color: $color-success;
   display: inline-block;

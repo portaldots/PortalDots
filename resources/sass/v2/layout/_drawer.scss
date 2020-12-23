@@ -15,7 +15,7 @@
     position: relative;
     &::after {
       border-bottom: 1px solid $color-border;
-      content: "";
+      content: '';
       display: block;
       height: 1px;
       left: $spacing;
@@ -89,7 +89,7 @@
           background: $color-primary;
           border-radius: 0 $bar-width $bar-width 0;
           bottom: $spacing-sm;
-          content: "";
+          content: '';
           display: block;
           left: 0;
           position: absolute;
@@ -127,7 +127,7 @@
 }
 
 .drawer-backdrop {
-  background: rgba($color-text, 0.5);
+  background: rgba(var(--rgb-color-text), 0.5);
   height: 100vh;
   left: 0;
   opacity: 0;

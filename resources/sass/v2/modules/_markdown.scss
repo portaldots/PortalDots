@@ -20,10 +20,18 @@ $heading-borders: true;
   li {
     margin: $spacing-sm 0 $spacing-sm $spacing-md;
   }
-  p, dl, ol, ul, blockquote, pre, table {
+  p,
+  dl,
+  ol,
+  ul,
+  blockquote,
+  pre,
+  table {
     margin-bottom: $spacing-md;
   }
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     border-color: $color-border;
     line-height: $line-height;
     margin-top: $spacing-lg;
@@ -49,7 +57,7 @@ $heading-borders: true;
     font-size: 0.9rem;
   }
   pre {
-    background: rgba($color-bg-white, 0.25);
+    background: rgba(var(--rgb-color-bg-white), 0.25);
     border: 1px solid $color-border;
     border-radius: $border-radius;
   }
@@ -66,10 +74,10 @@ $heading-borders: true;
   }
   th {
     text-align: left;
-    &[align="center"] {
+    &[align='center'] {
       text-align: center;
     }
-    &[align="right"] {
+    &[align='right'] {
       text-align: right;
     }
   }

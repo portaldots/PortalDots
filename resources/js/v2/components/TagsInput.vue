@@ -103,7 +103,7 @@ export default {
 
 <style lang="scss">
 .vue-tags-input {
-  $default-box-shadow: inset 0 0.5px 1.5px rgba($color-text, 0.1);
+  $default-box-shadow: inset 0 0.5px 1.5px rgba(var(--rgb-color-text), 0.1);
   .ti-input {
     border-radius: $border-radius;
     line-height: 1.6;
@@ -113,13 +113,14 @@ export default {
   }
   &.ti-focus .ti-input {
     border-color: $color-primary;
-    box-shadow: $default-box-shadow, 0 0 0 3px rgba($color-primary, 0.25);
+    box-shadow: $default-box-shadow,
+      0 0 0 3px rgba(var(--rgb-color-primary), 0.25);
   }
   .ti-tag {
     background: $color-primary;
   }
   .ti-autocomplete {
-    box-shadow: 0 0.25rem 0.75rem rgba($color-muted, 0.25);
+    box-shadow: 0 0.25rem 0.75rem rgba(var(--rgb-color-muted), 0.25);
   }
   .ti-item {
     margin: 0;
