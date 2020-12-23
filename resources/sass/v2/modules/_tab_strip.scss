@@ -22,6 +22,7 @@
     &:focus,
     &:active {
       color: $color-text;
+      outline-offset: -3px;
       text-decoration: none;
     }
     &.is-active {
@@ -33,7 +34,7 @@
         background: $color-primary;
         border-radius: $bar-width $bar-width 0 0;
         bottom: 0;
-        content: "";
+        content: '';
         display: block;
         height: $bar-width;
         left: 0;
