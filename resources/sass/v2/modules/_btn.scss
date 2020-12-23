@@ -5,28 +5,40 @@
   $border-color,
   $has-shadow: false
 ) {
-  background: $background;
+  @if ($background == transparent) {
+    background: transparent;
+  } @else {
+    // rgba で $background が指定されている場合、ボタンの背面にある要素の
+    // 背景色に干渉され、ボタンが意図しない色になってしまうことがある。
+    // 白色のベースの上に $background を重ねて表示することで、
+    // 背面要素の背景色に関わらずボタンが同じ色で表示されるようにしている。
+    background: linear-gradient(to top, $background, $background),
+      $color-bg-white;
+  }
+
   border: 1px solid $border-color;
   color: $color;
   &:not([disabled]):hover,
   &:not(.disabled):hover {
-    background: $hover-background;
+    background: linear-gradient(to top, $hover-background, $hover-background),
+      $color-bg-white;
     border-color: $hover-background;
   }
   &:not([disabled]):active,
   &:not(.disabled):active {
-    background: $background;
+    background: linear-gradient(to top, $background, $background),
+      $color-bg-white;
   }
   @if ($has-shadow) {
     box-shadow: 0 0.25rem 0.75rem $color-box-shadow;
-    // &:not([disabled]):hover,
-    // &:not(.disabled):hover {
-    // box-shadow: 0 0.5rem 0.75rem $color-box-shadow;
-    // }
-    // &:not([disabled]):active,
-    // &:not(.disabled):active {
-    // box-shadow: 0 0.1rem 0.3rem $color-box-shadow;
-    // }
+    &:not([disabled]):hover,
+    &:not(.disabled):hover {
+      box-shadow: 0 0.5rem 0.75rem $color-box-shadow;
+    }
+    &:not([disabled]):active,
+    &:not(.disabled):active {
+      box-shadow: 0 0.1rem 0.3rem $color-box-shadow;
+    }
   }
 }
 
@@ -74,7 +86,7 @@ body:not(.body-editor-v1):not(.body-v1) {
       @include btn(
         $color-primary,
         $color-bg-white,
-        #{rgba(var(--rgb-color-primary), 10%)},
+        #{rgba(var(--rgb-color-primary), 15%)},
         $color-bg-white,
         true
       );
