@@ -29,6 +29,11 @@ $heading-borders: true;
   table {
     margin-bottom: $spacing-md;
   }
+  code,
+  kbd,
+  samp {
+    color: $color-text;
+  }
   h1,
   h2,
   h3 {
