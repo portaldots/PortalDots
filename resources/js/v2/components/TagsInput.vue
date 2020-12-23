@@ -103,7 +103,7 @@ export default {
 
 <style lang="scss">
 .vue-tags-input {
-  $default-box-shadow: inset 0 0.5px 1.5px rgba(var(--rgb-color-text), 0.1);
+  $default-box-shadow: inset 0 0.5px 1.5px $color-box-shadow-light;
   .ti-input {
     border-radius: $border-radius;
     line-height: 1.6;

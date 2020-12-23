@@ -11,6 +11,8 @@
   --rgb-color-bg-grey: 243, 244, 250;
   --rgb-color-bg-light: 239, 239, 239;
   --rgb-color-bg-white: 255, 255, 255;
+  --rgba-box-shadow: 34, 41, 47, 0.25;
+  --rgba-box-shadow-light: 34, 41, 47, 0.15;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,5 +29,7 @@
     --rgb-color-bg-grey: 12, 11, 5;
     --rgb-color-bg-light: 0, 0, 0;
     --rgb-color-bg-white: 20, 20, 20;
+    --rgba-box-shadow: 196, 199, 202, 0.25;
+    --rgba-box-shadow-light: 196, 199, 202, 0.15;
   }
 }

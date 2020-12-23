@@ -21,8 +21,8 @@ $color-border: rgb(var(--rgb-color-border));
 $color-bg-grey: rgb(var(--rgb-color-bg-grey));
 $color-bg-light: rgb(var(--rgb-color-bg-light));
 $color-bg-white: rgb(var(--rgb-color-bg-white));
-$color-box-shadow: rgba(var(--rgb-color-text), 0.25);
-$color-box-shadow-light: rgba(var(--rgb-color-text), 0.15);
+$color-box-shadow: rgba(var(--rgba-box-shadow));
+$color-box-shadow-light: rgba(var(--rgba-box-shadow-light));
 $semantic-colors: (
   primary: $color-primary,
   danger: $color-danger,
@@ -79,3 +79,4 @@ $z-index-side-window: 9970;
 $z-index-bottom_tabs: 9980;
 $z-index-form-group-addon: 1;
 $z-index-form-group-control: 2; // フォームコントロールのフォーカス枠が、フォームアドオンより前面に表示されるようにする
+$z-index-form-search-icon: 3;
