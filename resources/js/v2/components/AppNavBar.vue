@@ -38,7 +38,7 @@ export default {
   }
   &.is-staff {
     background: $color-text;
-    color: #fff;
+    color: $color-bg-white;
   }
 
   @media screen and (max-width: $breakpoint-drawer-narrow) {
@@ -61,11 +61,11 @@ export default {
     }
   }
   &.is-staff &-brand {
-    color: #fff;
+    color: $color-bg-white;
     &:hover,
     &:active,
     &:focus {
-      color: #fff;
+      color: $color-bg-white;
     }
   }
 }

@@ -59,7 +59,7 @@ body:not(.body-editor-v1):not(.body-v1) {
     }
     &.is-primary {
       @include btn(
-        #fff,
+        $color-bg-white,
         $color-primary,
         #{rgba(var(--rgb-color-primary), 80%)},
         $color-primary,
@@ -69,21 +69,21 @@ body:not(.body-editor-v1):not(.body-v1) {
     &.is-primary-inverse {
       @include btn(
         $color-primary,
-        #fff,
+        $color-bg-white,
         #{rgba(var(--rgb-color-primary), 10%)},
-        #fff,
+        $color-bg-white,
         true
       );
     }
     &.is-secondary {
-      @include btn($color-text, #fff, $color-bg-grey, $color-border);
+      @include btn($color-text, $color-bg-white, $color-bg-grey, $color-border);
     }
     &.is-transparent {
-      @include btn($color-text, transparent, #fff, $color-border);
+      @include btn($color-text, transparent, $color-bg-white, $color-border);
     }
     &.is-danger {
       @include btn(
-        #fff,
+        $color-bg-white,
         $color-danger,
         #{rgba(var(--rgb-color-danger), 80%)},
         $color-danger,
@@ -92,7 +92,7 @@ body:not(.body-editor-v1):not(.body-v1) {
     }
     &.is-success {
       @include btn(
-        #fff,
+        $color-bg-white,
         $color-success,
         #{rgba(var(--rgb-color-success), 80%)},
         $color-success,

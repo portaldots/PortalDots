@@ -56,6 +56,11 @@ $heading-borders: true;
   h6 {
     font-size: 0.9rem;
   }
+  hr {
+    background: none;
+    border: 0;
+    border-top: 1px solid $color-border;
+  }
   pre {
     background: rgba(var(--rgb-color-bg-white), 0.25);
     border: 1px solid $color-border;
@@ -72,6 +77,13 @@ $heading-borders: true;
   table {
     border-collapse: collapse;
   }
+  thead tr,
+  tfoot tr {
+    background: $color-bg-light;
+  }
+  tbody tr {
+    background: $color-bg-white;
+  }
   th {
     text-align: left;
     &[align='center'] {
@@ -80,5 +92,9 @@ $heading-borders: true;
     &[align='right'] {
       text-align: right;
     }
+  }
+  th,
+  td {
+    border-color: $color-border;
   }
 }

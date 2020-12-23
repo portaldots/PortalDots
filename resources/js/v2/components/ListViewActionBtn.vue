@@ -75,7 +75,7 @@ export default {
     &:hover,
     &:active,
     &:focus {
-      background: #fff;
+      background: $color-bg-white;
     }
   }
   &:not(:disabled):hover,

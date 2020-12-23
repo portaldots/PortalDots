@@ -12,3 +12,20 @@
   --rgb-color-bg-light: 239, 239, 239;
   --rgb-color-bg-white: 255, 255, 255;
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --rgb-color-text: 196, 199, 202;
+    --rgb-color-primary: 117, 170, 240;
+    --rgb-color-danger: 226, 118, 120;
+    --rgb-color-success: 75, 189, 119;
+    // --rgb-color-warning: rgb(254, 117, 10);
+    --rgb-color-muted: 123, 130, 136;
+    // --rgb-color-muted-2: rgb(167, 182, 194);
+    // --rgb-color-muted-3: rgb(195, 207, 216);
+    --rgb-color-border: 52, 53, 55;
+    --rgb-color-bg-grey: 12, 11, 5;
+    --rgb-color-bg-light: 0, 0, 0;
+    --rgb-color-bg-white: 20, 20, 20;
+  }
+}

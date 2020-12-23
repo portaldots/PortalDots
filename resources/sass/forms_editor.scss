@@ -1,13 +1,13 @@
 .body-editor-v1 {
   // Variables
   @import 'variables';
-  @import "~bootstrap/scss/functions";
-  @import "~bootstrap/scss/variables";
-  @import "~bootstrap/scss/mixins";
+  @import '~bootstrap/scss/functions';
+  @import '~bootstrap/scss/variables';
+  @import '~bootstrap/scss/mixins';
 
   padding-top: $app-navbar-height + $editor-header-height;
   .navbar {
-    background: #fff;
+    background: $color-bg-white;
     height: $app-navbar-height;
   }
 

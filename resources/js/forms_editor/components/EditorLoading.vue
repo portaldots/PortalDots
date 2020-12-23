@@ -11,7 +11,7 @@
 <style lang="scss" scoped>
 .editor-loading {
   align-items: center;
-  background: #fff;
+  background: $color-bg-white;
   display: flex;
   flex-direction: column;
   height: 100vh;

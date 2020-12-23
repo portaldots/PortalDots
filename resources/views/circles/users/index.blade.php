@@ -23,7 +23,7 @@
             </list-view-form-group>
             @if (!empty($qrcode_html))
                 <list-view-card>
-                    <div class="text-center">
+                    <div class="text-center qrcode-wrap">
                         {!! $qrcode_html !!}
                     </div>
                 </list-view-card>

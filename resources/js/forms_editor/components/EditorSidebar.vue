@@ -85,7 +85,7 @@ export default {
 $editor-sidebar-padding: 1rem;
 
 .editor-sidebar {
-  background: #fff;
+  background: $color-bg-white;
   bottom: 0;
   box-shadow: -0.1rem 0 0.1rem rgba(0, 0, 0, 0.07);
   display: flex;
