@@ -13,7 +13,6 @@ $color-text: rgb(var(--rgb-color-text));
 $color-primary: rgb(var(--rgb-color-primary));
 $color-danger: rgb(var(--rgb-color-danger));
 $color-success: rgb(var(--rgb-color-success));
-$color-warning: rgb(var(--rgb-color-warning));
 $color-muted: rgb(var(--rgb-color-muted));
 $color-muted-2: rgb(var(--rgb-color-muted-2));
 $color-muted-3: rgb(var(--rgb-color-muted-3));
@@ -27,7 +26,6 @@ $semantic-colors: (
   primary: $color-primary,
   danger: $color-danger,
   success: $color-success,
-  warning: $color-warning,
   muted: $color-muted,
 );
 
