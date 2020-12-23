@@ -24,9 +24,11 @@ textarea {
     font-size: $font-size-input;
     line-height: 1.6;
     padding: $spacing-sm $spacing-md;
+    position: relative;
     transition: #{$transition-base-fast} background-color,
       #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color;
     width: 100%;
+    z-index: $z-index-form-group-control;
     @at-root {
       select#{&} {
         background: right $spacing-md center / 1rem
