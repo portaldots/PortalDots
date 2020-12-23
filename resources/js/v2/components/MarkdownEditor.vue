@@ -193,12 +193,27 @@ export default {
 <style lang="scss">
 .vue-easymde {
   .editor-toolbar {
+    background: $color-bg-light;
+    border-color: $color-border;
     &.fullscreen {
       top: $navbar-height;
     }
     button {
       color: $color-muted;
+      &.active,
+      &:hover {
+        background: $color-bg-white;
+        border-color: $color-border;
+      }
     }
+    .separator {
+      border-color: $color-border;
+    }
+  }
+  .CodeMirror {
+    background: #fff;
+    border-color: $color-border;
+    color: #333;
   }
   .CodeMirror-fullscreen,
   .editor-preview-side {
@@ -209,6 +224,7 @@ export default {
     display: none;
   }
   .editor-preview-side {
+    border-color: $color-border;
     padding: $spacing-md;
   }
   .editor-statusbar {
