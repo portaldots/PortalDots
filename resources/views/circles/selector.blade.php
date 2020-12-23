@@ -25,9 +25,8 @@
             @endif
         </list-view>
 
-        <hr>
-
         @if (Gate::allows('circle.create') && !$not_submitted_circles->isEmpty())
+            <hr>
             <list-view class="pt-spacing-sm">
                 <template v-slot:description>
                     <div class="text-muted">
