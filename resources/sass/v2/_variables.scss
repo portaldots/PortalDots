@@ -9,17 +9,17 @@ $font-size: #{(14 / $base-font-size-px) + 'rem'};
 $font-size-input: #{(16 / $base-font-size-px) + 'rem'};
 
 // Color
-$color-text: rgb(var(--rgb-color-text));
-$color-primary: rgb(var(--rgb-color-primary));
-$color-danger: rgb(var(--rgb-color-danger));
-$color-success: rgb(var(--rgb-color-success));
-$color-muted: rgb(var(--rgb-color-muted));
-$color-muted-2: rgb(var(--rgb-color-muted-2));
-$color-muted-3: rgb(var(--rgb-color-muted-3));
-$color-border: rgb(var(--rgb-color-border));
-$color-bg-grey: rgb(var(--rgb-color-bg-grey));
-$color-bg-light: rgb(var(--rgb-color-bg-light));
-$color-bg-white: rgb(var(--rgb-color-bg-white));
+$color-text: var(--color-text);
+$color-primary: var(--color-primary);
+$color-danger: var(--color-danger);
+$color-success: var(--color-success);
+$color-muted: var(--color-muted);
+$color-muted-2: var(--color-muted-2);
+$color-muted-3: var(--color-muted-3);
+$color-border: var(--color-border);
+$color-bg-grey: var(--color-bg-grey);
+$color-bg-light: var(--color-bg-light);
+$color-bg-white: var(--color-bg-white);
 $semantic-colors: (
   primary: $color-primary,
   danger: $color-danger,
@@ -27,19 +27,19 @@ $semantic-colors: (
   muted: $color-muted,
 );
 
-$color-box-shadow: rgba(var(--rgba-color-box-shadow));
-$color-box-shadow-light: rgba(var(--rgba-color-box-shadow-light));
-$color-focus-primary: rgba(var(--rgba-color-focus-primary));
-$color-focus-danger: rgba(var(--rgba-color-focus-danger));
-$color-pre-background: rgba(var(--rgba-color-pre-background));
-$color-code-background: rgba(var(--rgba-color-code-background));
-$color-drawer-backdrop: rgba(var(--rgba-color-drawer-backdrop));
-$color-grid-table-stripe: rgba(var(--rgba-color-grid-table-stripe));
-$color-top-alert-border: rgba(var(--rgba-color-top-alert-border));
-$color-primary-hover: rgba(var(--rgba-color-primary-hover));
-$color-primary-inverse-hover: rgba(var(--rgba-color-primary-inverse-hover));
-$color-danger-hover: rgba(var(--rgba-color-danger-hover));
-$color-success-hover: rgba(var(--rgba-color-success-hover));
+$color-box-shadow: var(--color-box-shadow);
+$color-box-shadow-light: var(--color-box-shadow-light);
+$color-focus-primary: var(--color-focus-primary);
+$color-focus-danger: var(--color-focus-danger);
+$color-pre-background: var(--color-pre-background);
+$color-code-background: var(--color-code-background);
+$color-drawer-backdrop: var(--color-drawer-backdrop);
+$color-grid-table-stripe: var(--color-grid-table-stripe);
+$color-top-alert-border: var(--color-top-alert-border);
+$color-primary-hover: var(--color-primary-hover);
+$color-primary-inverse-hover: var(--color-primary-inverse-hover);
+$color-danger-hover: var(--color-danger-hover);
+$color-success-hover: var(--color-success-hover);
 
 // Spacing (WIP)
 $spacing-xl: 4rem;
