@@ -8,8 +8,10 @@
     :class="{ 'is-danger': danger }"
     @click="onClick"
   >
-    <i :class="iconClass" v-if="iconClass" class="action-btn__icon"></i>
-    <slot />
+    <div class="action-btn__inner">
+      <i :class="iconClass" v-if="iconClass" class="action-btn__icon"></i>
+      <slot />
+    </div>
   </ListViewBaseItem>
 </template>
 
@@ -67,16 +69,16 @@ export default {
     color: $color-danger;
   }
   &:disabled {
-    color: rgba(var(--rgb-color-primary), 0.4);
     cursor: auto;
-    &.is-danger {
-      color: rgba(var(--rgb-color-danger), 0.4);
-    }
     &:hover,
     &:active,
     &:focus {
       background: $color-bg-white;
     }
+  }
+  &:disabled &__inner {
+    color: $color-text;
+    opacity: 0.4;
   }
   &:not(:disabled):hover,
   &:not(:disabled):active,

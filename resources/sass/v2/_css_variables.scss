@@ -10,12 +10,19 @@
   --rgb-color-bg-grey: 243, 244, 250;
   --rgb-color-bg-light: 239, 239, 239;
   --rgb-color-bg-white: 255, 255, 255;
-  --rgba-box-shadow: 34, 41, 47, 0.25;
-  --rgba-box-shadow-light: 34, 41, 47, 0.15;
+  --rgba-color-box-shadow: 34, 41, 47, 0.25;
+  --rgba-color-box-shadow-light: 34, 41, 47, 0.15;
   --rgba-color-focus-primary: 26, 121, 244, 0.25;
   --rgba-color-focus-danger: 219, 60, 62, 0.25;
   --rgba-color-pre-background: 255, 255, 255, 0.25;
+  --rgba-color-code-background: 27, 162, 78, 0.1;
   --rgba-color-drawer-backdrop: 34, 41, 47, 0.75;
+  --rgba-color-grid-table-stripe: 239, 239, 239, 0.4;
+  --rgba-color-top-alert-border: 255, 255, 255, 0.16;
+  --rgba-color-primary-hover: 26, 121, 244, 0.8;
+  --rgba-color-primary-inverse-hover: 26, 121, 244, 0.15;
+  --rgba-color-danger-hover: 219, 60, 62, 0.8;
+  --rgba-color-success-hover: 27, 162, 78, 0.8;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -29,12 +36,19 @@
     // --rgb-color-muted-3: rgb(195, 207, 216);
     --rgb-color-border: 60, 61, 65;
     --rgb-color-bg-grey: 15, 15, 15;
-    --rgb-color-bg-light: 12, 12, 12;
+    --rgb-color-bg-light: 20, 20, 20;
     --rgb-color-bg-white: 28, 28, 28;
-    --rgba-box-shadow: 0, 0, 0, 0.75;
-    --rgba-box-shadow-light: 0, 0, 0, 0.9;
+    --rgba-color-box-shadow: 0, 0, 0, 0.75;
+    --rgba-color-box-shadow-light: 0, 0, 0, 0.9;
     --rgba-color-focus-danger: 226, 118, 120, 0.4;
     --rgba-color-pre-background: 255, 255, 255, 0.02;
+    --rgba-color-code-background: 75, 189, 119, 0.15;
     --rgba-color-drawer-backdrop: 0, 0, 0, 0.75;
+    --rgba-color-grid-table-stripe: 12, 12, 12, 0.4;
+    --rgba-color-top-alert-border: 28, 28, 28, 0.16;
+    --rgba-color-primary-hover: 117, 170, 240, 0.8;
+    --rgba-color-primary-inverse-hover: 117, 170, 240, 0.15;
+    --rgba-color-danger-hover: 226, 118, 120, 0.8;
+    --rgba-color-success-hover: 75, 189, 119, 0.8;
   }
 }

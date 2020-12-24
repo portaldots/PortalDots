@@ -72,7 +72,7 @@ body:not(.body-editor-v1):not(.body-v1) {
       @include btn(
         $color-bg-white,
         $color-primary,
-        #{rgba(var(--rgb-color-primary), 80%)},
+        $color-primary-hover,
         $color-primary,
         true
       );
@@ -81,7 +81,7 @@ body:not(.body-editor-v1):not(.body-v1) {
       @include btn(
         $color-primary,
         $color-bg-white,
-        #{rgba(var(--rgb-color-primary), 15%)},
+        $color-primary-inverse-hover,
         $color-bg-white,
         true
       );
@@ -96,7 +96,7 @@ body:not(.body-editor-v1):not(.body-v1) {
       @include btn(
         $color-bg-white,
         $color-danger,
-        #{rgba(var(--rgb-color-danger), 80%)},
+        $color-danger-hover,
         $color-danger,
         true
       );
@@ -105,7 +105,7 @@ body:not(.body-editor-v1):not(.body-v1) {
       @include btn(
         $color-bg-white,
         $color-success,
-        #{rgba(var(--rgb-color-success), 80%)},
+        $color-success-hover,
         $color-success,
         true
       );

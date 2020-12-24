@@ -20,18 +20,26 @@ $color-border: rgb(var(--rgb-color-border));
 $color-bg-grey: rgb(var(--rgb-color-bg-grey));
 $color-bg-light: rgb(var(--rgb-color-bg-light));
 $color-bg-white: rgb(var(--rgb-color-bg-white));
-$color-box-shadow: rgba(var(--rgba-box-shadow));
-$color-box-shadow-light: rgba(var(--rgba-box-shadow-light));
-$color-focus-primary: rgba(var(--rgba-color-focus-primary));
-$color-focus-danger: rgba(var(--rgba-color-focus-danger));
-$color-pre-background: rgba(var(--rgba-color-pre-background));
-$color-drawer-backdrop: rgba(var(--rgba-color-drawer-backdrop));
 $semantic-colors: (
   primary: $color-primary,
   danger: $color-danger,
   success: $color-success,
   muted: $color-muted,
 );
+
+$color-box-shadow: rgba(var(--rgba-color-box-shadow));
+$color-box-shadow-light: rgba(var(--rgba-color-box-shadow-light));
+$color-focus-primary: rgba(var(--rgba-color-focus-primary));
+$color-focus-danger: rgba(var(--rgba-color-focus-danger));
+$color-pre-background: rgba(var(--rgba-color-pre-background));
+$color-code-background: rgba(var(--rgba-color-code-background));
+$color-drawer-backdrop: rgba(var(--rgba-color-drawer-backdrop));
+$color-grid-table-stripe: rgba(var(--rgba-color-grid-table-stripe));
+$color-top-alert-border: rgba(var(--rgba-color-top-alert-border));
+$color-primary-hover: rgba(var(--rgba-color-primary-hover));
+$color-primary-inverse-hover: rgba(var(--rgba-color-primary-inverse-hover));
+$color-danger-hover: rgba(var(--rgba-color-danger-hover));
+$color-success-hover: rgba(var(--rgba-color-success-hover));
 
 // Spacing (WIP)
 $spacing-xl: 4rem;

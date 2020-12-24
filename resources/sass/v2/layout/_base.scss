@@ -61,7 +61,7 @@ li {
 }
 
 code {
-  background: rgba(var(--rgb-color-success), 0.1);
+  background: $color-code-background;
   border-radius: $border-radius;
   color: $color-success;
   display: inline-block;
