@@ -15,7 +15,7 @@ textarea {
     $default-box-shadow: inset 0 0.5px 1.5px $color-box-shadow-light;
 
     appearance: none;
-    background-color: $color-bg-white;
+    background-color: $color-behind-text;
     border: 1px solid $color-border;
     border-radius: $border-radius;
     box-shadow: $default-box-shadow;
@@ -33,12 +33,12 @@ textarea {
       select#{&} {
         background: right $spacing-md center / 1rem
             url(../../../img/dropdownTriangle.svg) no-repeat,
-          $color-bg-white;
+          $color-behind-text;
 
         @media (prefers-color-scheme: dark) {
           background: right $spacing-md center / 1rem
               url(../../../img/dropdownTriangleDark.svg) no-repeat,
-            $color-bg-white;
+            $color-behind-text;
         }
         &::-ms-expand {
           // IEで、ドロップダウンの標準の三角アイコンが表示されないようにする

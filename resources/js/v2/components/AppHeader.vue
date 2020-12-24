@@ -37,7 +37,7 @@ export default {
 
 <style lang="scss" scoped>
 .app-header {
-  background: $color-bg-white;
+  background: $color-behind-text;
   border-bottom: 1px solid $color-border;
   margin: 0;
   padding: $spacing 0;

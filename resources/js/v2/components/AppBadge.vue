@@ -83,14 +83,14 @@ export default {
       // outlineバッジに比べ一回り小さく見えてしまわないように、
       // outlineバッジと同様のborderをつける
       border: 1px solid $color;
-      color: $color-bg-white;
+      color: $color-behind-text;
     }
   }
   &.is-primary-inverse {
-    background: $color-bg-white;
+    background: $color-behind-text;
     // outlineバッジに比べ一回り小さく見えてしまわないように、
     // outlineバッジと同様のborderをつける
-    border: 1px solid $color-bg-white;
+    border: 1px solid $color-behind-text;
     color: $color-primary;
   }
   &.is-strong {

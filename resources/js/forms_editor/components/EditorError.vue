@@ -58,7 +58,7 @@ export default {
   width: 100vw;
   z-index: 9999;
   &__modal {
-    background: $color-bg-white;
+    background: $color-behind-text;
     max-width: 360px;
     padding: 1.5rem;
     width: 100%;

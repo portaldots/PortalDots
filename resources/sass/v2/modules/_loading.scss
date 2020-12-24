@@ -4,7 +4,7 @@
 
 .loading {
   align-items: center;
-  background: $color-bg-white;
+  background: $color-behind-text;
   display: flex;
   flex-direction: column-reverse;
   height: 100%;
@@ -25,7 +25,7 @@
     background: linear-gradient(
       to bottom right,
       $color-primary,
-      $color-bg-white 40%
+      $color-behind-text 40%
     );
     border-radius: 50%;
     display: flex;
@@ -42,7 +42,7 @@
       }
     }
     &::after {
-      background: $color-bg-white;
+      background: $color-behind-text;
       border-radius: 50%;
       content: '';
       display: block;

@@ -202,7 +202,7 @@ export default {
       color: $color-muted;
       &.active,
       &:hover {
-        background: $color-bg-white;
+        background: $color-behind-text;
         border-color: $color-border;
       }
     }

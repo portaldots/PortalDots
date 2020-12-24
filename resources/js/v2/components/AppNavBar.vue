@@ -22,7 +22,7 @@ export default {
 <style lang="scss" scoped>
 .navbar {
   align-items: center;
-  background: $color-bg-white;
+  background: $color-behind-text;
   box-shadow: 0 0 0.5rem $color-box-shadow-light;
   display: flex;
   height: $navbar-height;
@@ -38,7 +38,7 @@ export default {
   }
   &.is-staff {
     background: $color-text;
-    color: $color-bg-white;
+    color: $color-behind-text;
   }
 
   @media screen and (max-width: $breakpoint-drawer-narrow) {
@@ -61,11 +61,11 @@ export default {
     }
   }
   &.is-staff &-brand {
-    color: $color-bg-white;
+    color: $color-behind-text;
     &:hover,
     &:active,
     &:focus {
-      color: $color-bg-white;
+      color: $color-behind-text;
     }
   }
 }

@@ -55,7 +55,7 @@ export default {
 .listview-base-item {
   $listview-border: 1px solid $color-border;
 
-  background: $color-bg-white;
+  background: $color-behind-text;
   border: 0;
   box-shadow: 0 1px 2px $color-box-shadow-light;
   color: $color-text;
@@ -104,7 +104,7 @@ export default {
   &:not(a):not(button):hover,
   &:not(a):not(button):active,
   &:not(a):not(button):focus {
-    background: $color-bg-white;
+    background: $color-behind-text;
   }
   &.is-action-btn {
     align-items: center;
