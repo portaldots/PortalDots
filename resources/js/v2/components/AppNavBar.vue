@@ -37,8 +37,20 @@ export default {
     width: 100%;
   }
   &.is-staff {
-    background: $color-text;
-    color: $color-behind-text;
+    &::after {
+      border: 1px solid $color-muted;
+      border-radius: $border-radius;
+      color: $color-muted;
+      content: 'スタッフ';
+      display: inline-block;
+      font-size: 0.75em;
+      line-height: 1.75;
+      padding: 0 0.4em;
+      position: absolute;
+      right: $spacing;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 
   @media screen and (max-width: $breakpoint-drawer-narrow) {
