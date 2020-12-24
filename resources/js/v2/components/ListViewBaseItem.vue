@@ -62,6 +62,7 @@ export default {
   cursor: pointer;
   display: block;
   margin: 0;
+  outline-offset: -3px;
   padding: $spacing-s $spacing;
   position: relative;
   transition: #{$transition-base-fast} background-color;
