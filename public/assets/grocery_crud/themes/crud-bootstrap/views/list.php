@@ -31,32 +31,32 @@
 			<td align="left" width='20%'>
 				<div class='tools'>
 					<?php if (!$unset_delete && empty($delete_confirm_url)) {?>
-						<a href='<?php echo $row->delete_url?>' title='<?php echo $this->l('list_delete')?> <?php echo $subject?>' class="btn text-muted delete-row">
+						<a href='<?php echo $row->delete_url?>' title='<?php echo $this->l('list_delete')?> <?php echo $subject?>' class="btn text-primary delete-row">
 							<i class="fa fa-trash" aria-hidden="true"></i>
 						</a>
 					<?php }?>
 					<?php if (!empty($delete_confirm_url)) {?>
-						<a href='<?php echo str_replace('{{id}}', $row->id, $delete_confirm_url) ?>' title='削除' class="btn text-muted delete-tag-row">
+						<a href='<?php echo str_replace('{{id}}', $row->id, $delete_confirm_url) ?>' title='削除' class="btn text-primary delete-tag-row">
 							<i class="fa fa-trash" aria-hidden="true"></i>
 						</a>
 					<?php }?>
 					<?php if (!$unset_edit) {?>
-						<a href='<?php echo $row->edit_url?>' title='<?php echo $this->l('list_edit')?> <?php echo $subject?>' class="btn text-muted edit-row">
+						<a href='<?php echo $row->edit_url?>' title='<?php echo $this->l('list_edit')?> <?php echo $subject?>' class="btn text-primary edit-row">
 							<i class="fa fa-pencil" aria-hidden="true"></i>
 						</a>
 					<?php }?>
 					<?php if ($set_editor) {?>
-						<a href='<?php echo base_url($row->editor_url) ?>' title='エディターで編集' class="btn text-muted edit-row">
+						<a href='<?php echo base_url($row->editor_url) ?>' title='エディターで編集' class="btn text-primary edit-row">
 							<i class="fa fa-edit" aria-hidden="true"></i>
 						</a>
 					<?php }?>
 					<?php if (!$unset_read) {?>
-						<a href='<?php echo $row->read_url?>' title='<?php echo $this->l('list_view')?> <?php echo $subject?>' class="btn text-muted view-row">
+						<a href='<?php echo $row->read_url?>' title='<?php echo $this->l('list_view')?> <?php echo $subject?>' class="btn text-primary view-row">
 							<i class="fa fa-eye" aria-hidden="true"></i>
 						</a>
 					<?php }?>
 					<?php if ($set_copy_url) {?>
-						<a href='<?php echo $row->copy_form_url ?>' title='複製' class="btn text-muted">
+						<a href='<?php echo $row->copy_form_url ?>' title='複製' class="btn text-primary">
 							<i class="fa fa-copy" aria-hidden="true"></i>
 						</a>
 					<?php }?>
