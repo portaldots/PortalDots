@@ -7,8 +7,8 @@ services:
     ports:
       - 80:80
     volumes:
-      - ../:/var/www/html
-      - ./data/web/logs:/docker_web_logs
+      - ../:/var/www/html:cached
+      - ./data/web/logs:/docker_web_logs:cached
 
   db:
     image: mysql:5.7
@@ -21,8 +21,8 @@ services:
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb-use-native-aio=0
     volumes:
-      - ./data/db:/var/lib/mysql
-      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./data/db:/var/lib/mysql:cached
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf:cached
     ports:
       - 4306:3306
 
@@ -39,7 +39,7 @@ services:
     tmpfs:
       - /var/lib/mysql
     volumes:
-      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf:cached
     ports:
       - 5306:3306
 
