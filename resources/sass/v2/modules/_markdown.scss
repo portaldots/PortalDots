@@ -67,7 +67,7 @@ $heading-borders: true;
     border-top: 1px solid $color-border;
   }
   pre {
-    background: rgba(var(--rgb-color-bg-white), 0.25);
+    background: $color-pre-background;
     border: 1px solid $color-border;
     border-radius: $border-radius;
   }

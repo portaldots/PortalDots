@@ -15,6 +15,7 @@
   --rgba-box-shadow-light: 34, 41, 47, 0.15;
   --rgba-color-focus-primary: 26, 121, 244, 0.25;
   --rgba-color-focus-danger: 219, 60, 62, 0.25;
+  --rgba-color-pre-background: 255, 255, 255, 0.25;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,5 +35,6 @@
     --rgba-box-shadow: 0, 0, 0, 0.75;
     --rgba-box-shadow-light: 0, 0, 0, 0.9;
     --rgba-color-focus-danger: 226, 118, 120, 0.4;
+    --rgba-color-pre-background: 255, 255, 255, 0.02;
   }
 }
