@@ -24,11 +24,6 @@
       $color-bg-white;
     border-color: $hover-background;
   }
-  &:not([disabled]):active,
-  &:not(.disabled):active {
-    background: linear-gradient(to top, $background, $background),
-      $color-bg-white;
-  }
   @if ($has-shadow) {
     box-shadow: 0 0.25rem 0.75rem $color-box-shadow;
     &:not([disabled]):hover,
