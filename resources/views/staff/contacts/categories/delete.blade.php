@@ -3,7 +3,7 @@
 @section('title', "{$category->name} - お問い合わせ")
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ route('staff.contacts.categories.edit', $category) }}">
+    <app-nav-bar-back href="{{ route('staff.contacts.categories.edit', $category) }}">
         {{ $category->name }}
     </app-nav-bar-back>
 @endsection

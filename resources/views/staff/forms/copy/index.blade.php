@@ -3,7 +3,7 @@
 @section('title', 'フォームの複製')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('home_staff/applications') }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ url('home_staff/applications') }}" data-turbolinks="false">
         申請管理
     </app-nav-bar-back>
 @endsection

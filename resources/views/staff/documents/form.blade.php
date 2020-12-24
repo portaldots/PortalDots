@@ -3,7 +3,7 @@
 @section('title', empty($document) ? '新規作成 — 配布資料' : "{$document->name} — 配布資料")
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('/home_staff/documents') }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ url('/home_staff/documents') }}" data-turbolinks="false">
         配布資料情報管理
     </app-nav-bar-back>
 @endsection

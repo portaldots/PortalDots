@@ -3,7 +3,7 @@
 @section('title', '企画参加登録の設定')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('home_staff/circles') }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ url('home_staff/circles') }}" data-turbolinks="false">
         企画情報管理
     </app-nav-bar-back>
 @endsection

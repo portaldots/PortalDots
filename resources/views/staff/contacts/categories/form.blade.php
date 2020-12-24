@@ -3,7 +3,7 @@
 @section('title', (empty($category) ? 'メールアドレス追加' : $category->name). ' - お問い合わせ')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ route('staff.contacts.categories.index') }}">
+    <app-nav-bar-back href="{{ route('staff.contacts.categories.index') }}">
         メールアドレス一覧
     </app-nav-bar-back>
 @endsection

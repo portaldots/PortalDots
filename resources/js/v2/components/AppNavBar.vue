@@ -72,13 +72,5 @@ export default {
       text-decoration: none;
     }
   }
-  &.is-staff &-brand {
-    color: $color-behind-text;
-    &:hover,
-    &:active,
-    &:focus {
-      color: $color-behind-text;
-    }
-  }
 }
 </style>
