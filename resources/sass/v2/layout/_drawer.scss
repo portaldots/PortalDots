@@ -127,7 +127,7 @@
 }
 
 .drawer-backdrop {
-  background: rgba(var(--rgb-color-dark), 0.75);
+  background: $color-drawer-backdrop;
   height: 100vh;
   left: 0;
   opacity: 0;

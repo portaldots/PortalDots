@@ -10,7 +10,6 @@ $font-size-input: #{(16 / $base-font-size-px) + 'rem'};
 
 // Color
 $color-text: rgb(var(--rgb-color-text));
-$color-dark: rgb(var(--rgb-color-dark));
 $color-primary: rgb(var(--rgb-color-primary));
 $color-danger: rgb(var(--rgb-color-danger));
 $color-success: rgb(var(--rgb-color-success));
@@ -26,6 +25,7 @@ $color-box-shadow-light: rgba(var(--rgba-box-shadow-light));
 $color-focus-primary: rgba(var(--rgba-color-focus-primary));
 $color-focus-danger: rgba(var(--rgba-color-focus-danger));
 $color-pre-background: rgba(var(--rgba-color-pre-background));
+$color-drawer-backdrop: rgba(var(--rgba-color-drawer-backdrop));
 $semantic-colors: (
   primary: $color-primary,
   danger: $color-danger,
