@@ -57,6 +57,7 @@ textarea {
     }
     &.is-invalid {
       border-color: $color-danger;
+      caret-color: $color-danger;
     }
     &.is-plaintext {
       background: transparent;
@@ -66,14 +67,12 @@ textarea {
     }
     &:focus {
       border-color: $color-primary;
-      box-shadow: $default-box-shadow,
-        0 0 0 3px rgba(var(--rgb-color-primary), 0.25);
+      box-shadow: $default-box-shadow, 0 0 0 3px $color-focus-primary;
       outline: 0;
     }
     &.is-invalid:focus {
       border-color: $color-danger;
-      box-shadow: $default-box-shadow,
-        0 0 0 3px rgba(var(--rgb-color-danger), 0.25);
+      box-shadow: $default-box-shadow, 0 0 0 3px $color-focus-danger;
     }
   }
   &-checkbox,

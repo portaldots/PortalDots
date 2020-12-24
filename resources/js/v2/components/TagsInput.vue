@@ -115,8 +115,7 @@ export default {
   }
   &.ti-focus .ti-input {
     border-color: $color-primary;
-    box-shadow: $default-box-shadow,
-      0 0 0 3px rgba(var(--rgb-color-primary), 0.25);
+    box-shadow: $default-box-shadow, 0 0 0 3px $color-focus-primary;
   }
   .ti-tag {
     background: $color-primary;

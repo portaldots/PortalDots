@@ -23,6 +23,8 @@ $color-bg-light: rgb(var(--rgb-color-bg-light));
 $color-bg-white: rgb(var(--rgb-color-bg-white));
 $color-box-shadow: rgba(var(--rgba-box-shadow));
 $color-box-shadow-light: rgba(var(--rgba-box-shadow-light));
+$color-focus-primary: rgba(var(--rgba-color-focus-primary));
+$color-focus-danger: rgba(var(--rgba-color-focus-danger));
 $semantic-colors: (
   primary: $color-primary,
   danger: $color-danger,
@@ -53,7 +55,7 @@ $listview-border: 1px solid $color-border;
 $container-padding-x: $spacing;
 $container-padding-y: 0;
 $side-window-width: 400px;
-$focus-outline: 3px solid rgba(var(--rgb-color-primary), 0.25);
+$focus-outline: 3px solid $color-focus-primary;
 
 // Container Width
 $container-width: 1024px;
