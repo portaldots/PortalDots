@@ -9,7 +9,7 @@
     <form action="{{ route('circles.auth', ['circle' => $circle]) }}" method="POST">
         @csrf
         <list-view>
-            <template v-slot:title>認証が必要です</template>
+            <template v-slot:title>認証が必要</template>
             <list-view-card>
                 <i class="fas fa-exclamation-circle"></i> このページへアクセスするにはパスワードを入力してください
                 <hr>

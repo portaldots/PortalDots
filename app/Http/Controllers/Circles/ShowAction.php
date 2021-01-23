@@ -16,7 +16,7 @@ class ShowAction extends Controller
         $reauthorized_at = new CarbonImmutable(session()->get('circle_reauthorized_at'));
 
         if (session()->has('circle_reauthorized_at') && $reauthorized_at->addHours(2)->gte(now())) {
-            $circle->load('users');
+            $circle->load('users', 'booth');
 
             return view('circles.show')
                 ->with('circle', $circle);
