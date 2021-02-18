@@ -13,7 +13,7 @@ class PostAction extends Controller
     {
         $this->authorize('circle.belongsTo', $circle);
 
-        session(['circle_reauthorized_at' => now()]);
+        session(['user_reauthorized_at' => now()]);
         return redirect()
             ->route('circles.show', ['circle' => $circle]);
     }
