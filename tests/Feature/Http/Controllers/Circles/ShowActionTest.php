@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Circles;
 
 use App\Eloquents\Circle;
+use App\Eloquents\Place;
 use App\Eloquents\User;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -37,6 +38,24 @@ class ShowActionTest extends BaseTestCase
         CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
     }
 
+    public function 未認証ユーザーには認証ページを表示()
+    {
+        $responce = $this
+                    ->actingAs($this->user)
+                    ->get(
+                        route('circles.show', [
+                            'circle' => $this->circle,
+                        ])
+                    );
+
+        $responce->assertStatus(302);
+        $responce->assertRedirect(
+            route('circles.auth', [
+                'circle' => $this->circle
+            ])
+        );
+    }
+
     /**
      * @test
      */
@@ -44,6 +63,7 @@ class ShowActionTest extends BaseTestCase
     {
         $responce = $this
                     ->actingAs($this->user)
+                    ->withSession(['user_reauthorized_at' => now()])
                     ->get(
                         route('circles.show', [
                             'circle' => $this->circle,
@@ -60,6 +80,7 @@ class ShowActionTest extends BaseTestCase
     {
         $responce = $this
                     ->actingAs($this->member)
+                    ->withSession(['user_reauthorized_at' => now()])
                     ->get(
                         route('circles.show', [
                             'circle' => $this->circle,
@@ -80,6 +101,7 @@ class ShowActionTest extends BaseTestCase
 
         $responce = $this
                     ->actingAs($this->member)
+                    ->withSession(['user_reauthorized_at' => now()])
                     ->get(
                         route('circles.show', [
                             'circle' => $this->circle,
@@ -97,6 +119,7 @@ class ShowActionTest extends BaseTestCase
     {
         $responce = $this
                     ->actingAs($this->user)
+                    ->withSession(['user_reauthorized_at' => now()])
                     ->get(
                         route('circles.show', [
                             'circle' => $this->circle,
@@ -116,6 +139,7 @@ class ShowActionTest extends BaseTestCase
 
         $responce = $this
                     ->actingAs($anotherUser)
+                    ->withSession(['user_reauthorized_at' => now()])
                     ->get(
                         route('circles.show', [
                             'circle' => $this->circle,
@@ -123,5 +147,48 @@ class ShowActionTest extends BaseTestCase
                     );
 
         $responce->assertStatus(403);
+    }
+
+    /**
+     * @test
+     */
+    public function 使用場所が表示される()
+    {
+        $place = factory(Place::class)->create();
+        $this->circle->places()->attach($place->id, [
+            'created_at' => now(),
+            'updated_at' => now(),
+            'created_by' => 1,
+            'updated_by' => 1,
+            ]);
+
+        $responce = $this
+                    ->actingAs($this->user)
+                    ->withSession(['user_reauthorized_at' => now()])
+                    ->get(
+                        route('circles.show', [
+                            'circle' => $this->circle,
+                        ])
+                    );
+        $responce->assertOk();
+        $responce->assertSee('使用場所');
+        $responce->assertSee($place->name);
+    }
+
+    /**
+     * @test
+     */
+    public function 場所が登録されていないときは使用場所を表示しない()
+    {
+        $responce = $this
+                    ->actingAs($this->user)
+                    ->withSession(['user_reauthorized_at' => now()])
+                    ->get(
+                        route('circles.show', [
+                            'circle' => $this->circle,
+                        ])
+                    );
+        $responce->assertOk();
+        $responce->assertDontSee('使用場所');
     }
 }
