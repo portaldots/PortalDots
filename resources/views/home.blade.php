@@ -162,6 +162,18 @@
                         <dd>{{ $circle->name }}（{{ $circle->name_yomi }}）</dd>
                         <dt>企画を出店する団体の名称</dt>
                         <dd>{{ $circle->group_name }}（{{ $circle->group_name_yomi }}）</dd>
+                        @unless($circle->places->isEmpty())
+                            <dt>使用場所</dt>
+                            <dd>
+                                <ul>
+                                    @foreach ($circle->places as $place)
+                                        <li>
+                                            {{ $place->name }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </dd>
+                        @endunless
                     </dl>
                 </list-view-card>
                 <list-view-action-btn href="{{ route('circles.show', ['circle' => $circle]) }}">
