@@ -63,9 +63,8 @@ class UpdateInfoAction extends Controller
         } catch (Swift_RfcComplianceException $e) {
             return redirect()
                 ->route('user.edit')
-                ->with('topAlert.type', 'danger')
-                ->with('topAlert.title', 'エラーが発生しました')
-                ->withInput();
+                ->withInput()
+                ->withErrors(['student_id' => '学籍番号を正しく入力してください']);
         }
 
         if (!$user->save()) {
