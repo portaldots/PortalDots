@@ -1,17 +1,15 @@
 <template>
   <div class="editor-sidebar">
-    <div class="editor-sidebar__header text-white">設問を追加</div>
+    <div class="editor-sidebar__header">設問を追加</div>
     <div class="editor-sidebar__body">
       <div class="editor-sidebar__types">
         <button
           v-for="type in types"
           :key="type.value"
-          class="btn editor-sidebar__type border-light"
+          class="btn editor-sidebar__type"
           @click="add_question(type.value)"
         >
-          <i
-            :class="`${type.icon} fa-fw text-muted editor-sidebar__type__icon`"
-          ></i>
+          <i :class="`${type.icon} fa-fw editor-sidebar__type__icon`"></i>
           <span class="editor-sidebar__type__label">{{ type.label }}</span>
         </button>
       </div>
@@ -82,21 +80,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$editor-sidebar-padding: 1rem;
+$editor-sidebar-padding: $spacing-md;
 
 .editor-sidebar {
   background: $color-behind-text;
   bottom: 0;
-  box-shadow: -0.1rem 0 0.1rem rgba(0, 0, 0, 0.07);
+  box-shadow: -0.1rem 0 0.1rem $color-box-shadow-light;
   display: flex;
   flex-direction: column;
   position: fixed;
   right: 0;
-  top: $app-navbar-height + $editor-header-height;
+  top: $editor-header-height;
   width: $editor-sidebar-width;
   z-index: 10;
   &__header {
-    background: $color-muted;
+    background: $color-bg-grey;
+    color: $color-text;
     padding: $editor-sidebar-padding;
   }
   &__body {
@@ -104,23 +103,34 @@ $editor-sidebar-padding: 1rem;
     -webkit-overflow-scrolling: touch;
     overflow-x: hidden;
     overflow-y: scroll;
-    padding: $editor-sidebar-padding;
   }
   &__type {
     align-items: center;
-    box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.07);
+    border: 0;
+    border-radius: 0;
+    color: $color-text;
     display: flex;
-    margin-bottom: $editor-sidebar-padding;
-    padding: $editor-sidebar-padding;
+    padding: $spacing-s $editor-sidebar-padding;
+    position: relative;
     text-align: left;
     width: 100%;
+    &::before {
+      border-bottom: 1px solid $color-border;
+      bottom: 0;
+      content: '';
+      display: block;
+      left: $editor-sidebar-padding;
+      position: absolute;
+      right: $editor-sidebar-padding;
+    }
     &:last-child {
       margin-bottom: 0;
     }
     &:hover:not(:disabled) {
-      background: #f2f2f2;
+      background: $color-bg-light;
     }
     &__icon {
+      color: $color-muted;
       font-size: 1.25rem;
       margin-right: $editor-sidebar-padding / 2;
     }

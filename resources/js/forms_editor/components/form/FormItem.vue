@@ -113,6 +113,15 @@ export default {
 }
 </script>
 
+<style lang="scss">
+/* Bootstrap を廃止したら以下のコードは不要 */
+
+.form-item .form-control,
+.form-item .form-control:focus {
+  color: $color-text;
+}
+</style>
+
 <style lang="scss" scoped>
 .form-item {
   background: $color-behind-text;
@@ -123,7 +132,7 @@ export default {
   transition: 0.25s ease box-shadow, 0.25s ease z-index;
   z-index: 10;
   &__handle {
-    color: #a7a7a7;
+    color: $color-muted-2;
     cursor: move;
     display: none;
     left: 0;
@@ -138,7 +147,7 @@ export default {
   }
   &:hover:not(&--drag):not(&--disable-edit),
   &--active {
-    border: 1px solid #007bff;
+    border: 1px solid $color-primary;
     border-left-width: 5px;
     border-radius: 5px;
   }
@@ -160,9 +169,8 @@ export default {
     cursor: auto;
   }
   &__edit-panel {
-    background: lighten(#f8fafc, 1%);
-    border-bottom: 1px solid #f8fafc;
-    box-shadow: inset 0 0.3rem 0.25rem -0.2rem rgba(0, 0, 0, 0.07);
+    /* border-top: 1px solid $color-border; */
+    box-shadow: inset 0 0.3rem 0.25rem -0.2rem $color-box-shadow-light;
     display: none;
     overflow: hidden;
     padding: $spacing;
@@ -170,7 +178,7 @@ export default {
       display: block;
     }
     &__type {
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid $color-border;
       font-weight: bold;
       margin-bottom: 1rem;
       padding-bottom: 0.5rem;

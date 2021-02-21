@@ -1,8 +1,12 @@
 <template>
-  <form-item :item_id="question_id" type_label="セクション見出し">
+  <form-item
+    :item_id="question_id"
+    type_label="セクション見出し"
+    class="form-item"
+  >
     <template v-slot:content>
       <div class="form-group mb-0">
-        <h2>{{ name }}</h2>
+        <h2 class="heading">{{ name }}</h2>
         <div v-html="description_html" />
       </div>
     </template>
@@ -51,3 +55,26 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.form-item {
+  position: relative;
+  &::before {
+    border-top: 1px solid var(--color-border);
+    content: '';
+    display: block;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0 0 0.5rem;
+}
+</style>
