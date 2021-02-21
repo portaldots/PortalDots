@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="color-scheme" content="light dark">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="turbolinks-cache-control" content="no-cache">
     <title>
@@ -13,6 +12,8 @@
         @endif
         {{ empty(config('app.name')) ? 'PortalDots' : config('app.name') }}
     </title>
+
+    @include('includes.head_ui_theme')
 
     @prepend('css')
     <link href="{{ mix('css/fontawesome.css') }}" rel="stylesheet">
