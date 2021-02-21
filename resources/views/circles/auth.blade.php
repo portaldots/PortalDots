@@ -12,17 +12,16 @@
             <template v-slot:title>認証が必要</template>
             <list-view-card>
                 <i class="fas fa-exclamation-circle"></i> このページへアクセスするにはパスワードを入力してください
-                <hr>
-                <div class="form-group">
-                    <label for="password" class="form-label @error('password') is-invalid @enderror">パスワード</label>
-                    <input type="password" id="password" name="password" class="form-control @error('password') is-invalid @enderror">
-                    @error('password')
-                        <div class="text-danger">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
             </list-view-card>
+            <list-view-form-group label-for="password">
+                <template v-slot:label>
+                    パスワード
+                </template>
+                <input type="password" id="password" name="password" class="form-control @error('password') is-invalid @enderror">
+                @error('password')
+                    <template v-slot:invalid>{{ $message }}</template>
+                @enderror
+            </list-view-form-group>
         </list-view>
         <div class="text-center pt-spacing-sm">
             <button class="btn is-primary is-wide" type="submit">送信</button>
