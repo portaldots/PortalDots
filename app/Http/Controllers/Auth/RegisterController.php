@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
+use Swift_RfcComplianceException;
 
 class RegisterController extends Controller
 {
@@ -84,6 +86,8 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request): RedirectResponse
     {
+        DB::beginTransaction();
+
         $user = $this->registerService->create(
             $request->student_id,
             $request->name,
@@ -95,11 +99,21 @@ class RegisterController extends Controller
 
         event(new Registered($user));
 
-        // メール認証に関する処理
-        if ($user->univemail === $user->email) {
-            $this->verifyService->markEmailAsVerified($user, $user->email);
+        try {
+            // メール認証に関する処理
+            if ($user->univemail === $user->email) {
+                $this->verifyService->markEmailAsVerified($user, $user->email);
+            }
+            $this->emailService->sendAll($user);
+        } catch (Swift_RfcComplianceException $e) {
+            DB::rollBack();
+            return redirect()
+                ->route('register')
+                ->withInput()
+                ->withErrors(['student_id' => '学籍番号を正しく入力してください']);
         }
-        $this->emailService->sendAll($user);
+
+        DB::commit();
 
         $this->guard()->login($user);
 
