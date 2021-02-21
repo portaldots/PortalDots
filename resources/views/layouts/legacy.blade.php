@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>@yield('title')</title>
 
+    @include('includes.head_ui_theme')
+
     @prepend('css')
     <link href="{{ mix('css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ mix('css/fontawesome.css') }}" rel="stylesheet">
