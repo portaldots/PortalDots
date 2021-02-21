@@ -38,6 +38,9 @@ class ShowActionTest extends BaseTestCase
         CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
     }
 
+    /**
+     * @test
+     */
     public function 未認証ユーザーには認証ページを表示()
     {
         $responce = $this
