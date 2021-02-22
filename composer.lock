@@ -2744,22 +2744,22 @@
         },
         {
             "name": "simplesoftwareio/simple-qrcode",
-            "version": "4.1.0",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SimpleSoftwareIO/simple-qrcode.git",
-                "reference": "3b721089cc541f6c37f0a41b90377529af977948"
+                "reference": "916db7948ca6772d54bb617259c768c9cdc8d537"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SimpleSoftwareIO/simple-qrcode/zipball/3b721089cc541f6c37f0a41b90377529af977948",
-                "reference": "3b721089cc541f6c37f0a41b90377529af977948",
+                "url": "https://api.github.com/repos/SimpleSoftwareIO/simple-qrcode/zipball/916db7948ca6772d54bb617259c768c9cdc8d537",
+                "reference": "916db7948ca6772d54bb617259c768c9cdc8d537",
                 "shasum": ""
             },
             "require": {
                 "bacon/bacon-qr-code": "^2.0",
                 "ext-gd": "*",
-                "php": ">=7.2"
+                "php": ">=7.2|^8.0"
             },
             "require-dev": {
                 "mockery/mockery": "~1",
@@ -2796,7 +2796,7 @@
                 }
             ],
             "description": "Simple QrCode is a QR code generator made for Laravel.",
-            "homepage": "http://www.simplesoftware.io",
+            "homepage": "https://www.simplesoftware.io/#/docs/simple-qrcode",
             "keywords": [
                 "Simple",
                 "generator",
@@ -2804,7 +2804,7 @@
                 "qrcode",
                 "wrapper"
             ],
-            "time": "2020-10-06T22:51:06+00:00"
+            "time": "2021-02-08T20:43:55+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
