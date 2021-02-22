@@ -87,9 +87,9 @@ export default {
       return [';', '、', ' ', '　']
     },
     filteredItems() {
-      return this.autocompleteItems.filter((i) => {
-        return i.text.toLowerCase().indexOf(this.inputTag.toLowerCase()) !== -1
-      })
+      return this.autocompleteItems.filter(
+        (i) => i.text.toLowerCase().indexOf(this.inputTag.toLowerCase()) !== -1
+      )
     }
   }
 }

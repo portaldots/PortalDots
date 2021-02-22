@@ -32,4 +32,18 @@
             @endforeach
         </ul>
     </dd>
+    @unless($circle->places->isEmpty())
+        <dt>
+            使用場所
+        </dt>
+        <dd>
+            <ul>
+                @foreach ($circle->places as $place)
+                    <li>
+                        {{ $place->name }}
+                    </li>
+                @endforeach
+            </ul>
+        </dd>
+    @endunless
 </dl>
