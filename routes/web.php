@@ -108,6 +108,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{circle}', 'Circles\ShowAction')->name('show');
             Route::get('/{circle}/edit', 'Circles\EditAction')->name('edit');
             Route::patch('/{circle}', 'Circles\UpdateAction')->name('update');
+            Route::get('/{circle}/auth', 'Circles\Auth\ShowAction')->name('auth');
+            Route::post('/{circle}/auth', 'Circles\Auth\PostAction');
             // 企画メンバー登録関連
             Route::get('/{circle}/users', 'Circles\Users\IndexAction')->name('users.index');
             Route::get('/{circle}/users/invite/{token}', 'Circles\Users\InviteAction')->name('users.invite');

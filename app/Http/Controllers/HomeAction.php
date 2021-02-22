@@ -34,11 +34,16 @@ class HomeAction extends Controller
     {
         $circle = $this->selectorService->getCircle();
 
+        if (isset($circle)) {
+            $circle->load('places');
+        }
+
         return view('home')
             ->with('circle_custom_form', CustomForm::getFormByType('circle'))
             ->with('my_circles', Auth::check()
                                     ? Auth::user()->circles()->get()
                                     : collect([]))
+            ->with('circle', $circle)
             ->with('pages', Page::byCircle($circle)->take(self::TAKE_COUNT)->with(['usersWhoRead' => function ($query) {
                 $query->where('user_id', Auth::id());
             }])->get())

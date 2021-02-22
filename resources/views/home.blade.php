@@ -153,6 +153,35 @@
             </list-view>
         @endif
 
+        @if(Auth::check() && isset($circle))
+            <list-view>
+                <template v-slot:title>企画情報</template>
+                <list-view-card>
+                    <dl>
+                        <dt>企画名</dt>
+                        <dd>{{ $circle->name }}（{{ $circle->name_yomi }}）</dd>
+                        <dt>企画を出店する団体の名称</dt>
+                        <dd>{{ $circle->group_name }}（{{ $circle->group_name_yomi }}）</dd>
+                        @unless($circle->places->isEmpty())
+                            <dt>使用場所</dt>
+                            <dd>
+                                <ul>
+                                    @foreach ($circle->places as $place)
+                                        <li>
+                                            {{ $place->name }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </dd>
+                        @endunless
+                    </dl>
+                </list-view-card>
+                <list-view-action-btn href="{{ route('circles.show', ['circle' => $circle]) }}">
+                    より詳しい情報を見る
+                </list-view-action-btn>
+            </list-view>
+        @endif
+
         @if(empty($next_schedule) && $pages->isEmpty() && $documents->isEmpty() && $forms->isEmpty())
             <list-view-empty icon-class="fas fa-home" text="まだ公開コンテンツはありません" />
         @endif
