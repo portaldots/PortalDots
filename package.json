@@ -94,7 +94,7 @@
         "easymde": "^2.13.0",
         "font-awesome": "^4.7.0",
         "laravel-mix": "^6.0.2",
-        "marked": "^1.1.0",
+        "marked": "^2.0.0",
         "portal-vue": "^2.1.7",
         "turbolinks": "^5.2.0",
         "vue": "^2.6.12",
