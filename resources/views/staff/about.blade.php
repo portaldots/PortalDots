@@ -59,7 +59,7 @@
                     <list-view-card>
                         <p>PortalDots を最新バージョンにアップデートするには、以下の方法に従ってください。</p>
                         <ol>
-                            <li>PortalDots データベースとファイルをバックアップします。</li>
+                            <li>MySQL データベースとファイルをバックアップします。</li>
                             <li>以下のリンクより、PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }} の ZIP ファイルをダウンロードします。</li>
                             <li>ZIP ファイルを解凍します。</li>
                             <li>
@@ -67,7 +67,7 @@
                                 <ul>
                                     <li>artisan ファイル</li>
                                     <li>app フォルダ</li>
-                                    <li>application フォルダ</li>
+                                    <li>application フォルダ (※)</li>
                                     <li>bootstrap フォルダ</li>
                                     <li>config フォルダ</li>
                                     <li>database フォルダ</li>
