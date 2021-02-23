@@ -13,6 +13,10 @@
                     一般モードへ
                 </a>
             </div>
+            <a href="{{ route('staff.index') }}" class="drawer-nav__link{{ Request::is('staff') ? ' is-active' : '' }}">
+                <i class="fas fa-home drawer-nav__icon fa-fw"></i>
+                スタッフモード ホーム
+            </a>
             <a href="{{ route('staff.users.index') }}" class="drawer-nav__link{{ Request::is('staff/users*') ? ' is-active' : '' }}">
                 <i class="far fa-address-book drawer-nav__icon fa-fw"></i>
                 ユーザー情報管理
@@ -49,11 +53,13 @@
                 <i class="fas fa-at drawer-nav__icon fa-fw"></i>
                 お問い合わせ受付設定
             </a>
-            <a href="{{ route('admin.portal.edit') }}" class="drawer-nav__link{{ Request::is('admin/portal*') ? ' is-active' : '' }}">
-                <i class="fas fa-cog drawer-nav__icon fa-fw"></i>
-                ポータル情報設定
-                <app-badge danger>管理者</app-badge>
-            </a>
+            @if (Auth::user()->is_admin)
+                <a href="{{ route('admin.portal.edit') }}" class="drawer-nav__link{{ Request::is('admin/portal*') ? ' is-active' : '' }}">
+                    <i class="fas fa-cog drawer-nav__icon fa-fw"></i>
+                    ポータル情報設定
+                    <app-badge danger>管理者</app-badge>
+                </a>
+            @endif
         </nav>
     @endif
 @else

@@ -16,6 +16,9 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
     ->prefix('/staff')
     ->name('staff.')
     ->group(function () {
+        // トップページ
+        Route::get('/', 'Staff\HomeAction')->name('index');
+
         // Markdown ガイド
         //
         // 外部サイトにしてしまうとリンク切れが発生する恐れがあるため、
