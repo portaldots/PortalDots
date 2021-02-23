@@ -158,12 +158,7 @@ class ShowActionTest extends BaseTestCase
     public function 使用場所が表示される()
     {
         $place = factory(Place::class)->create();
-        $this->circle->places()->attach($place->id, [
-            'created_at' => now(),
-            'updated_at' => now(),
-            'created_by' => 1,
-            'updated_by' => 1,
-            ]);
+        $this->circle->places()->attach($place->id);
 
         $responce = $this
                     ->actingAs($this->user)
