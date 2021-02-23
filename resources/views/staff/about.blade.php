@@ -105,12 +105,12 @@
                     </list-view-card>
                 @endif
             </list-view>
+            <list-view>
+                <template v-slot:title>バージョン {{ $latest_release->getVersion()->getFullVersion() }} の詳細</template>
+                <list-view-card data-turbolinks="false" class="markdown">
+                    @markdown($latest_release->getBody())
+                </list-view-card>
+            </list-view>
         @endif
-        <list-view>
-            <template v-slot:title>バージョン {{ $latest_release->getVersion()->getFullVersion() }} の詳細</template>
-            <list-view-card data-turbolinks="false" class="markdown">
-                @markdown($latest_release->getBody())
-            </list-view-card>
-        </list-view>
     </app-container>
 @endsection
