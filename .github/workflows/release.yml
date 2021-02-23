@@ -57,7 +57,7 @@ jobs:
         env:
           RELEASE_INFO_PATH: app/ReleaseInfo.php
           GITHUB_REF: ${{ github.ref }}
-        run: VERSION=`echo "$GITHUB_REF" | sed -e 's/refs\/tags\/v//g'`; gsed -i -e "s/###VERSION_PLACEHOLDER###/$VERSION/g" "$RELEASE_INFO_PATH";
+        run: VERSION=`echo "$GITHUB_REF" | sed -e 's/refs\/tags\/v//g'`; sed -i -e "s/###VERSION_PLACEHOLDER###/$VERSION/g" "$RELEASE_INFO_PATH";
         working-directory: dist
       - name: Build project
         run: zip -9 -r ../PortalDots .* * -x node_modules/\* composer.json composer.lock package.json yarn.lock webpack.mix.js
