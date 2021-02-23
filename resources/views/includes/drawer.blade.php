@@ -69,7 +69,7 @@
     <nav class="drawer-nav">
         @if (Auth::check() && Auth::user()->is_staff)
             <div class="px-spacing py-spacing">
-                <a href="/home_staff" class="btn is-primary is-block" data-turbolinks="false">
+                <a href="{{ route('staff.index') }}" class="btn is-primary is-block">
                     スタッフモードへ
                 </a>
             </div>

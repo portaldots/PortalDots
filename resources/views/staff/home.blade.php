@@ -5,6 +5,12 @@
 @section('content')
     <app-container medium>
         <list-view>
+            <list-view-action-btn href="{{ route('home') }}">
+                一般モードへ
+            </list-view-action-btn>
+        </list-view>
+        <list-view>
+            <template v-slot:title>メニュー</template>
             <list-view-item href="{{ route('staff.users.index') }}">
                 <template v-slot:title>
                     <i class="far fa-address-book fa-lg text-muted fa-fw"></i>
