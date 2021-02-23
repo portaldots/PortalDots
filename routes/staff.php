@@ -16,6 +16,9 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
     ->prefix('/staff')
     ->name('staff.')
     ->group(function () {
+        // リリース情報
+        Route::get('/about', 'Staff\AboutAction')->name('about');
+
         // Markdown ガイド
         //
         // 外部サイトにしてしまうとリンク切れが発生する恐れがあるため、
