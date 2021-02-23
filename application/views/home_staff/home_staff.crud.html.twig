@@ -71,11 +71,6 @@
         <small>『新しい「配布資料管理」を使ってみる』をクリックした後も、現行バージョンの「配布資料管理」は引き続き利用できます。</small>
       </p>
     </div>
-  {% elseif main_page_type == 'booths' and _crud_state == 'list' %}
-    <div class="alert alert-danger">
-      <p><strong>「ブース情報管理」は「企画情報管理」に統合する予定です</strong></p>
-      <p>PortalDots v3.0.0 以降、このページは廃止し、「企画情報管理」の企画編集画面から企画の使用場所を設定できるようになります。</p>
-    </div>
   {% elseif main_page_type == 'circles' and _crud_state == 'list' %}
     <p>参加登録の提出が完了している企画のみ表示されます</p>
     <p class="js-v2-alert-small" style="display: none">
