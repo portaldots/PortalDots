@@ -78,7 +78,7 @@ p {
     border-radius: 2px;
     font-size: 14px;
     color: #fff;
-    background-color: #2196f3;
+    background-color: #1879F4;
     border-color: #1791f2;
     -webkit-transition-timing-function: ease;
     -o-transition-timing-function: ease;

@@ -1418,54 +1418,49 @@ class Home_staff extends MY_Controller
         if (!isset($vars["_sidebar_menu"])) {
             $vars["_sidebar_menu"] = [
                 "index" => [
-                    "icon" => "tachometer",
-                    "name" => "スタッフモードホーム",
-                    "url" => "home_staff",
+                    "icon" => "home",
+                    "name" => "スタッフモード ホーム",
+                    "url" => "staff",
+                ],
+                "users" => [
+                    "icon" => "address-book-o",
+                    "name" => "ユーザー情報管理",
+                    "url" => "staff/users",
+                ],
+                "circles" => [
+                    "icon" => "users",
+                    "name" => "企画情報管理",
+                    "url" => "staff/circles",
+                ],
+                "tags" => [
+                    "icon" => "tag",
+                    "name" => "企画タグ管理",
+                    "url" => "staff/tags",
+                ],
+                "places" => [
+                    "icon" => "map-marker",
+                    "name" => "場所情報管理",
+                    "url" => "staff/places",
                 ],
                 "pages" => [
                     "icon" => "bullhorn",
                     "name" => "お知らせ管理",
-                    "url" => "home_staff/pages",
+                    "url" => "staff/pages",
+                ],
+                "documents" => [
+                    "icon" => "file-text-o",
+                    "name" => "配布資料管理",
+                    "url" => "staff/documents",
                 ],
                 "applications" => [
                     "icon" => "pencil-square-o",
                     "name" => "申請管理",
                     "url" => "home_staff/applications",
                 ],
-                "users" => [
-                    "icon" => "address-book-o",
-                    "name" => "ユーザー情報管理",
-                    "url" => "home_staff/users",
-                ],
-                "circles" => [
-                    "icon" => "users",
-                    "name" => "企画情報管理",
-                    "url" => "home_staff/circles",
-                ],
-                "tags" => [
-                    "icon" => "tag",
-                    "name" => "企画タグ管理",
-                    "url" => "home_staff/tags",
-                ],
-                "booths" => [
-                    "icon" => "star",
-                    "name" => "ブース情報管理",
-                    "url" => "home_staff/booths",
-                ],
-                "places" => [
-                    "icon" => "map-marker",
-                    "name" => "場所情報管理",
-                    "url" => "home_staff/places",
-                ],
-                "documents" => [
-                    "icon" => "file-text-o",
-                    "name" => "配布資料管理",
-                    "url" => "home_staff/documents",
-                ],
                 "schedules" => [
                     "icon" => "calendar",
                     "name" => "スケジュール管理",
-                    "url" => "home_staff/schedules",
+                    "url" => "staff/schedules",
                 ],
                 "contact-categories" => [
                     "icon" => "at",
@@ -1489,19 +1484,19 @@ class Home_staff extends MY_Controller
                 $vars["_sidebar_menu"]["roles"] =
                     [
                         "icon" => "key",
-                        "name" => "ユーザー権限管理(Admin)",
+                        "name" => "ユーザー権限管理(管理者)",
                         "url" => "home_staff/roles",
                     ];
                 $vars["_sidebar_menu"]["auth_config"] =
                     [
                         "icon" => "key",
-                        "name" => "認可設定(Admin)",
+                        "name" => "認可設定(管理者)",
                         "url" => "home_staff/auth_config",
                     ];
                 $vars["_sidebar_menu"]["system"] =
                     [
                         "icon" => "gear",
-                        "name" => "ポータル情報設定(Admin)",
+                        "name" => "ポータル情報設定(管理者)",
                         "url" => "admin/portal",
                     ];
             } else {

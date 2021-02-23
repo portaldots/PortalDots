@@ -12,9 +12,6 @@
 {% endblock %}
 
 {% block maincontent %}
-
-  <h1 class="main__title">{{ page_title }}</h1>
-
   {% if main_page_type == 'pages' and _crud_state == 'list' %}
     <p class="js-v2-alert-small" style="display: none">
       <a href="{{ base_url('/staff/pages') }}" class="js-v2-alert-show">新しい「お知らせ管理」を体験してみませんか？</a>
