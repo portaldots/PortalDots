@@ -53,6 +53,10 @@ jobs:
       - name: Compile assets
         run: yarn run production
         working-directory: dist
+      - name: Set Version in Release Info
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: echo "$GITHUB_REF" | sed -e 's/refs\/tags\/v//g' | { VERSION=$(cat); cat app/ReleaseInfo.php | (rm app/ReleaseInfo.php; sed "s/###VERSION_PLACEHOLDER###/$VERSION/g" > app/ReleaseInfo.php) }
       - name: Build project
         run: zip -9 -r ../PortalDots .* * -x node_modules/\* composer.json composer.lock package.json yarn.lock webpack.mix.js
         working-directory: dist
