@@ -1428,12 +1428,12 @@ class Home_staff extends MY_Controller
                     "url" => "staff/users",
                 ],
                 "circles" => [
-                    "icon" => "users",
+                    "icon" => "star",
                     "name" => "企画情報管理",
                     "url" => "staff/circles",
                 ],
                 "tags" => [
-                    "icon" => "tag",
+                    "icon" => "tags",
                     "name" => "企画タグ管理",
                     "url" => "staff/tags",
                 ],

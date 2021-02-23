@@ -19,7 +19,7 @@ body {
 
 .ss__wrapper {
     padding-left: 0;
-    transition: background 0.5s ease;
+    transition: background 0.15s ease;
 }
 
 .ss__wrapper.toggled {
@@ -38,7 +38,7 @@ body {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     background: #fff;
-    transition: width 0.5s ease;
+    transition: width 0.15s ease;
 }
 
 .ss__wrapper.toggled .sidebar-wrapper {
@@ -46,15 +46,8 @@ body {
 }
 
 .page-content-wrapper {
-    transition: 0.5s ease filter;
     position: absolute;
     padding: 0;
-}
-
-@media (max-width: 767px) {
-    .ss__wrapper.toggled .page-content-wrapper {
-        filter: blur(5px);
-    }
 }
 
 .ss__overlay {
@@ -64,7 +57,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    transition: 0.5s ease background;
+    transition: 0.15s ease background;
     visibility: hidden;
     background: rgba(0, 0, 0, 0);
 }
@@ -105,7 +98,7 @@ body {
 }
 
 .sidebar-nav li a .fa {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-right: 0.5rem;
     opacity: 0.5;
 }
