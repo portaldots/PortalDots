@@ -1,4 +1,4 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', 'アップロードファイルの一括ダウンロード')
 

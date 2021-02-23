@@ -1,4 +1,4 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', '未提出企画一覧')
 

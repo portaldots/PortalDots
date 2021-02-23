@@ -1,9 +1,9 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', empty($schedule) ? '新規作成 — スケジュール' : "{$schedule->name} — スケジュール")
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('/home_staff/schedules') }}" data-turbolinks="false">
+    <app-nav-bar-back inverse href="{{ route('staff.schedules.index') }}">
         スケジュール管理
     </app-nav-bar-back>
 @endsection

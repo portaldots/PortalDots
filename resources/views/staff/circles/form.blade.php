@@ -1,9 +1,9 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', empty($circle) ? '新規作成 — 企画' : "{$circle->name} — 企画")
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('/home_staff/circles') }}" data-turbolinks="false">
+    <app-nav-bar-back inverse href="{{ route('staff.circles.index') }}">
         企画情報管理
     </app-nav-bar-back>
 @endsection

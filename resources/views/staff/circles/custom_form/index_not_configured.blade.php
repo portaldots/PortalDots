@@ -1,17 +1,19 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', '企画参加登録の設定')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('home_staff/circles') }}" data-turbolinks="false">
+    <app-nav-bar-back inverse href="{{ route('staff.circles.index') }}">
         企画情報管理
     </app-nav-bar-back>
 @endsection
 
 @section('content')
+    <app-header>
+        <template v-slot:title>企画参加登録の設定</template>
+    </app-header>
     <app-container>
         <list-view>
-            <template v-slot:title>企画参加登録の設定</template>
             <template v-slot:description>企画参加登録機能は<strong>無効</strong>になっています</template>
             <list-view-card>
                 <list-view-empty icon-class="far fa-star" text="企画参加登録をウェブ化して時短しよう！">

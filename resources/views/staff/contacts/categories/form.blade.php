@@ -1,20 +1,28 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
-@section('title', (empty($category) ? 'メールアドレス追加' : $category->name). ' - お問い合わせ')
+@section('title', (empty($category) ? 'メールアドレス追加' : $category->name). ' — お問い合わせ受付設定')
 
 @section('navbar')
     <app-nav-bar-back inverse href="{{ route('staff.contacts.categories.index') }}">
-        メールアドレス一覧
+        お問い合わせ受付設定
     </app-nav-bar-back>
 @endsection
 
 @section('content')
-    <app-header container-medium>
-        <template v-slot:title>
-            お問い合わせ受付設定
-        </template>
+    <app-header>
+        @if (empty($category))
+                <template v-slot:title>項目を新規作成</template>
+            @endif
+            @isset ($category)
+                <template v-slot:title>項目を編集</template>
+                <div class="text-muted">
+                    項目ID : {{ $category->id }}
+                    —
+                    <a href="{{ route('staff.contacts.categories.delete', $category) }}">この項目を削除</a>
+                </div>
+            @endisset
     </app-header>
-    <app-container medium>
+    <app-container>
         <form
             action="{{ isset($category)
                 ? route('staff.contacts.categories.update', ['category' => $category])
@@ -23,12 +31,6 @@
         @csrf
         @method(isset($category) ? 'patch' : 'post')
             <list-view>
-                <template v-slot:title>
-                    {{ isset($category) ? "「{$category->name}」の編集" : '項目の新規作成'}}
-                    @isset($category)
-                        <small><a href="{{ route('staff.contacts.categories.delete', $category) }}">削除</a></small>
-                    @endisset
-                </template>
                 <list-view-form-group label-for="name">
                     <template v-slot:label>
                         項目名
