@@ -91,7 +91,7 @@
         "@johmun/vue-tags-input": "^2.1.0",
         "axios": "^0.21",
         "bootstrap": "^4.6.0",
-        "easymde": "^2.13.0",
+        "easymde": "^2.14.0",
         "font-awesome": "^4.7.0",
         "laravel-mix": "^6.0.11",
         "marked": "^2.0.0",
