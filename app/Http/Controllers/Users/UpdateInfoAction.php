@@ -9,6 +9,7 @@ use App\Services\Auth\EmailService;
 use App\Services\Auth\VerifyService;
 use Illuminate\Support\Facades\Auth;
 use App\Eloquents\User;
+use Swift_RfcComplianceException;
 
 class UpdateInfoAction extends Controller
 {
@@ -47,24 +48,31 @@ class UpdateInfoAction extends Controller
 
         $user->tel = $request->tel;
 
+        if ($user->univemail === $user->email && !$user->is_verified_by_staff) {
+            $this->verifyService->markEmailAsVerified($user, $user->email);
+        }
+
+        try {
+            if ($changed_email) {
+                $this->emailService->sendToEmail($user);
+            }
+
+            if ($changed_univemail) {
+                $this->emailService->sendToUnivemail($user);
+            }
+        } catch (Swift_RfcComplianceException $e) {
+            return redirect()
+                ->route('user.edit')
+                ->withInput()
+                ->withErrors(['student_id' => '学籍番号を正しく入力してください']);
+        }
+
         if (!$user->save()) {
             return redirect()
                 ->route('user.edit')
                 ->with('topAlert.type', 'danger')
                 ->with('topAlert.title', 'ユーザー情報の更新に失敗しました')
                 ->withInput();
-        }
-
-        if ($user->univemail === $user->email && !$user->is_verified_by_staff) {
-            $this->verifyService->markEmailAsVerified($user, $user->email);
-        }
-
-        if ($changed_email) {
-            $this->emailService->sendToEmail($user);
-        }
-
-        if ($changed_univemail) {
-            $this->emailService->sendToUnivemail($user);
         }
 
         if ($changed_univemail || $changed_email) {

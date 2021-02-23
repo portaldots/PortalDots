@@ -1,11 +1,6 @@
 <template>
   <div data-turbolinks="false">
-    <vue-simplemde
-      v-model="content"
-      ref="markdownEditor"
-      :configs="configs"
-      preview-class="markdown"
-    />
+    <vue-easymde v-model="content" ref="markdownEditor" :configs="configs" />
     <input
       type="hidden"
       :name="inputName"
@@ -16,12 +11,12 @@
 </template>
 
 <script>
-import Simplemde from 'simplemde'
-import VueSimplemde from 'vue-simplemde'
+import Easymde from 'easymde'
+import VueEasymde from 'vue-easymde'
 
 export default {
   components: {
-    VueSimplemde
+    VueEasymde
   },
   data() {
     return {
@@ -40,6 +35,17 @@ export default {
   },
   mounted() {
     this.content = this.defaultValue
+
+    const toolbarButtons = this.$refs.markdownEditor.$el.querySelectorAll(
+      '.editor-toolbar button'
+    )
+
+    /* eslint-disable no-restricted-syntax */
+    for (const button of toolbarButtons) {
+      const title = button.getAttribute('title')
+      button.dataset.label = title ? title.replace(/\s\(.*\)$/, '') : ''
+    }
+    /* eslint-enable */
   },
   computed: {
     configs() {
@@ -49,81 +55,120 @@ export default {
         indentWithTabs: false,
         promptURLs: true,
         tabSize: 4,
-        status: false,
+        status: ['lines', 'cursor'],
+        previewClass: 'markdown',
+        sideBySideFullscreen: false,
+        maxHeight: '600px',
+        uploadImage: true,
+        imageUploadFunction(file, onSuccess, onError) {
+          if (!file) {
+            onError('画像ファイルが指定されていません。')
+            return
+          }
+
+          const reader = new FileReader()
+
+          reader.addEventListener(
+            'load',
+            () => {
+              onSuccess(reader.result)
+            },
+            false
+          )
+
+          reader.addEventListener(
+            'error',
+            () => {
+              onError('ファイルの読み込み時にエラーが発生しました。')
+            },
+            false
+          )
+
+          reader.readAsDataURL(file)
+        },
+        promptTexts: {
+          image: '画像のURLを入力してください。',
+          link: 'リンク先のURLを入力してください。'
+        },
+        shortcuts: {
+          togglePreview: null,
+          toggleSideBySide: 'Ctrl-P',
+          toggleFullScreen: null
+        },
         toolbar: [
           {
             name: 'bold',
-            action: Simplemde.toggleBold,
+            action: Easymde.toggleBold,
             className: 'fas fa-bold',
             title: '太字'
           },
           {
             name: 'italic',
-            action: Simplemde.toggleItalic,
+            action: Easymde.toggleItalic,
             className: 'fas fa-italic',
             title: '斜体'
           },
           {
             name: 'strikethrough',
-            action: Simplemde.toggleStrikethrough,
+            action: Easymde.toggleStrikethrough,
             className: 'fas fa-strikethrough',
             title: '取り消し線'
           },
           {
             name: 'heading',
-            action: Simplemde.toggleHeadingSmaller,
-            className: 'fas fa-heading',
+            action: Easymde.toggleHeadingSmaller,
+            className: 'fas fa-heading show-title-label',
             title: '見出し'
           },
           '|',
           {
             name: 'quote',
-            action: Simplemde.toggleBlockquote,
+            action: Easymde.toggleBlockquote,
             className: 'fas fa-quote-left',
             title: '引用'
           },
           {
             name: 'unordered-list',
-            action: Simplemde.toggleUnorderedList,
+            action: Easymde.toggleUnorderedList,
             className: 'fas fa-list-ul',
             title: '箇条書き'
           },
           {
             name: 'ordered-list',
-            action: Simplemde.toggleOrderedList,
+            action: Easymde.toggleOrderedList,
             className: 'fas fa-list-ol',
             title: '番号付きリスト'
           },
           '|',
           {
             name: 'link',
-            action: Simplemde.drawLink,
+            action: Easymde.drawLink,
             className: 'fas fa-link',
             title: 'リンク'
           },
           // TODO: 画像アップロード機能の実装
           // {
           //   name: "image",
-          //   action: Simplemde.drawImage,
+          //   action: Easymde.drawImage,
           //   className: "far fa-image",
           //   title: "画像",
           // },
           {
             name: 'table',
-            action: Simplemde.drawTable,
+            action: Easymde.drawTable,
             className: 'fas fa-table',
             title: '表'
           },
           {
             name: 'horizontal-rule',
-            action: Simplemde.drawHorizontalRule,
+            action: Easymde.drawHorizontalRule,
             className: 'fas fa-minus',
             title: '水平線'
           },
           '|',
           {
             name: 'preview',
-            action: Simplemde.togglePreview,
+            action: Easymde.toggleSideBySide,
             className: 'far fa-eye no-disable show-title-label',
             title: 'プレビュー'
           },
@@ -142,17 +187,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~simplemde/dist/simplemde.min.css';
+@import '~easymde/dist/easymde.min.css';
 </style>
 
 <style lang="scss">
-.vue-simplemde {
-  .editor-toolbar.fullscreen {
-    top: $navbar-height;
+.vue-easymde {
+  .editor-toolbar {
+    &.fullscreen {
+      top: $navbar-height;
+    }
+    button {
+      color: $color-muted;
+    }
   }
   .CodeMirror-fullscreen,
   .editor-preview-side {
     top: calc(#{$navbar-height} + 50px);
+  }
+  .editor-preview:not(.editor-preview-full) {
+    // エディタ下部に表示される謎の帯を非表示
+    display: none;
+  }
+  .editor-preview-side {
+    padding: $spacing-md;
   }
   .editor-statusbar {
     .lines::before {
@@ -164,15 +221,17 @@ export default {
     .words::before {
       content: '';
     }
-    .words::after {
+    .words {
       content: '語';
     }
   }
   .show-title-label {
+    align-items: center;
+    display: inline-flex;
     padding: 0 $spacing-sm;
     width: auto;
     &::after {
-      content: attr(title);
+      content: attr(data-label);
       font-size: 0.9rem;
       margin-left: $spacing-xs;
     }

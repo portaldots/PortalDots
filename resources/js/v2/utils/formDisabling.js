@@ -15,7 +15,7 @@ export const registerSubmitHandler = () => {
   for (const form of forms) {
     form.addEventListener('submit', handler)
   }
-  /* eslint- enable */
+  /* eslint-enable */
 }
 
 export const reenableSubmit = () => {

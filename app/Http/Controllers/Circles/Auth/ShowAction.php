@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Circles;
+namespace App\Http\Controllers\Circles\Auth;
 
 use App\Eloquents\Circle;
 use App\Http\Controllers\Controller;
@@ -16,12 +16,11 @@ class ShowAction extends Controller
         $reauthorized_at = new CarbonImmutable(session()->get('user_reauthorized_at'));
 
         if (session()->has('user_reauthorized_at') && $reauthorized_at->addHours(2)->gte(now())) {
-            $circle->load('users', 'places');
-
-            return view('circles.show')
-                ->with('circle', $circle);
+            return redirect()
+                ->route('circles.show', ['circle' => $circle]);
         }
-        return redirect()
-            ->route('circles.auth', ['circle' => $circle]);
+        return view('circles.auth')
+            ->with('circle', $circle)
+            ->with('booth', $circle->booth);
     }
 }

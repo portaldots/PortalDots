@@ -20,6 +20,12 @@ mix
     }
   })
   .js('resources/js/app.js', 'public/js') // メインスクリプト
+  .vue({
+    globalStyles: 'resources/sass/_variables.scss'
+    // ↓スタイル適用順序に依存したCSSを書いているVueファイルが多く存在しており、
+    //   場合によって表示が崩れてしまうことがあるため、一時的にコメントアウト
+    // extractStyles: true,
+  })
   .extract([
     'axios',
     'bootstrap',
@@ -29,22 +35,11 @@ mix
     'vue-global-events',
     'vuex'
   ])
-  .options({
-    globalVueStyles: 'resources/sass/_variables.scss'
-    // ↓フォームエディターのレイアウトが崩れてしまうため、
-    // purifyCss: true の指定は、一時的にコメントアウトしています
-    // purifyCss: true
-  })
   .sass('resources/sass/bootstrap.scss', 'public/css') // Bootstrap
   .sass('resources/sass/fontawesome.scss', 'public/css') // Font Awesome
   // ↓ CodeIgniterを廃止したらこの行は削除する
   .sass('resources/sass/fontawesome.v4.scss', 'public/css') // Font Awesome Ver4
   .sass('resources/sass/app.scss', 'public/css') // メインスタイル
-  .options({
-    // ↓スタイル適用順序に依存したCSSを書いているVueファイルが多く存在しており、
-    // 場合によって表示が崩れてしまうことがあるため、一時的にコメントアウト
-    // extractVueStyles: true
-  })
   .browserSync({
     proxy: 'localhost',
     snippetOptions: {

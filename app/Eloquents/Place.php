@@ -3,8 +3,6 @@
 namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use App\Eloquents\Concerns\IsNewTrait;
 
 class Place extends Model
 {
