@@ -3,7 +3,7 @@
 @section('title', 'メール配信設定')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('home_staff/pages') }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ url('home_staff/pages') }}" data-turbolinks="false">
         お知らせ管理
     </app-nav-bar-back>
 @endsection

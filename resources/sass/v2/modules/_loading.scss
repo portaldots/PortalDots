@@ -4,7 +4,7 @@
 
 .loading {
   align-items: center;
-  background: #fff;
+  background: $color-behind-text;
   display: flex;
   flex-direction: column-reverse;
   height: 100%;
@@ -22,7 +22,11 @@
 
     align-items: center;
     animation: loading 0.75s linear infinite;
-    background: linear-gradient(to bottom right, $color-primary, #fff 40%);
+    background: linear-gradient(
+      to bottom right,
+      $color-primary,
+      $color-behind-text 40%
+    );
     border-radius: 50%;
     display: flex;
     height: $circle-size;
@@ -38,9 +42,9 @@
       }
     }
     &::after {
-      background: #fff;
+      background: $color-behind-text;
       border-radius: 50%;
-      content: "";
+      content: '';
       display: block;
       height: calc(#{$circle-size} - 4px);
       width: calc(#{$circle-size} - 4px);

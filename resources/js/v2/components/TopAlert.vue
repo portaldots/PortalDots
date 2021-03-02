@@ -81,29 +81,22 @@ export default {
 
 <style lang="scss" scoped>
 .top_alert {
-  color: #fff;
+  color: $color-behind-text;
   overflow: hidden;
   transition: 0.75s ease height, 0.75s ease color, 0.75s ease visibility;
   &.is-hidden {
-    color: rgba(#fff, 0);
+    color: transparent;
     height: 0 !important;
     visibility: hidden;
   }
   & + & {
-    border-top: 1px solid rgba(#fff, 0.16);
+    border-top: 1px solid $color-top-alert-border;
   }
   &.is-success {
     background: $color-success;
   }
   &.is-primary {
     background: $color-primary;
-  }
-  &.is-secondary {
-    background: #fff;
-    color: $color-text;
-    & + & {
-      border-top: 1px solid rgba($color-primary, 0.16);
-    }
   }
   &.is-danger {
     background: $color-danger;

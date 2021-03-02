@@ -3,7 +3,7 @@
 @section('title', $form->name . ' — 申請')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('/home_staff/applications/read/' . $form->id) }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ url('/home_staff/applications/read/' . $form->id) }}" data-turbolinks="false">
         {{ $form->name }}
     </app-nav-bar-back>
 @endsection

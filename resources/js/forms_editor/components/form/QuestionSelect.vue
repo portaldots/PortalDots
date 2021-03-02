@@ -90,12 +90,16 @@ export default {
 <style lang="scss" scoped>
 .custom-select {
   appearance: none;
+  background: $color-form-control;
   border-bottom: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+  border-color: $color-border;
 }
 
 .list-group-item {
+  background: $color-form-control;
+  border-color: $color-border;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   margin: 0;

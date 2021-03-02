@@ -3,7 +3,7 @@
 @section('title', empty($page) ? '新規作成 — お知らせ' : "{$page->title} — お知らせ")
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('/home_staff/pages') }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ url('/home_staff/pages') }}" data-turbolinks="false">
         お知らせ管理
     </app-nav-bar-back>
 @endsection
