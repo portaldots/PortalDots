@@ -18,26 +18,16 @@
 <div class="container-fluid">
   <nav class="main__sidebar sidebar-wrapper hidden-print">
     <div class="sidebar-content">
+      <a href="/home_staff" class="main__sidebar__header">
+          {{ constant("APP_NAME") }}
+          {% if _home_type == "staff" %}
+          <span class="label label-primary">スタッフモード</span>
+          {% endif %}
+      </a>
       <div class="main__sidebar__info">
-        <p>
-          <i class="fa fa-user" aria-hidden="true"></i>
-          {{ user.name_family }}
-          {{ user.name_given }}
-          {% if user.is_staff == 1 %}<span class="label label-primary">スタッフ</span>{% endif %}
-          {% if user.is_admin == 1 %}<span class="label label-danger">管理者</span>{% endif %}
-        </p>
         {% if user.is_staff == 1 %}
-        <p>
-          {% if _home_type == "staff" %}<a href="{{ base_url('/') }}" class="btn btn-default btn-block">一般モードへ</a>{% endif %}
-          {% if _home_type == "default" %}<a href="{{ base_url('home_staff') }}" class="btn btn-default btn-block">スタッフモードへ</a>{% endif %}
-        </p>
+        {% if _home_type == "staff" %}<a href="{{ base_url('/') }}" class="btn btn-primary btn-block">一般モードへ</a>{% endif %}
         {% endif %}
-        <p>
-          <a href="{{ base_url('/user/edit') }}" class="btn btn-default btn-block">ユーザー設定</a>
-        </p>
-        <p>
-          <a href="{{ base_url('logout') }}" class="btn btn-primary btn-block">ログアウト</a>
-        </p>
       </div>
       <ul class="sidebar-nav">
         {% for page_type, item in _sidebar_menu %}

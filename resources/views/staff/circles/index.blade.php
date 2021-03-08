@@ -13,6 +13,7 @@
             name_yomi: '企画名(よみ)',
             group_name: '企画を出店する団体の名称',
             group_name_yomi: '企画を出店する団体の名称(よみ)',
+            places: '使用場所',
             tags: 'タグ',
             @if (isset($custom_form))
                 @foreach($custom_form->questions as $question)
@@ -87,7 +88,15 @@
             </a>
         </template>
         <template v-slot:td="{ row, keyName }">
-            <template v-if="keyName === 'tags'">
+            <template v-if="keyName === 'places'">
+                {{-- 使用場所 --}}
+                <template v-for="place in row[keyName]">
+                    <app-badge primary strong v-bind:key="place.id">
+                        @{{ place.name }}
+                    </app-badge>&nbsp;
+                </template>
+            </template>
+            <template v-else-if="keyName === 'tags'">
                 {{-- タグ --}}
                 <template v-for="tag in row[keyName]">
                     <app-badge primary strong v-bind:key="tag.id">

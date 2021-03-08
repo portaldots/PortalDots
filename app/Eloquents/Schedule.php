@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Collection;
 
 class Schedule extends Model
 {
+    protected $fillable = [
+        'name',
+        'start_at',
+        'place',
+        'description',
+        'notes',
+    ];
+
     protected $dates = [
         'start_at',
     ];

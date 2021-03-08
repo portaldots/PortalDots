@@ -1,4 +1,4 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', $form->name . ' — 申請')
 

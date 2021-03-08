@@ -74,6 +74,9 @@ class StoreAction extends Controller
             $member->circles()->attach($circle->id, ['is_leader' => false]);
         }
 
+        // 場所の保存
+        $this->circlesService->savePlaces($circle, $request->places ?? []);
+
         // タグの保存
         $this->circlesService->saveTags($circle, $request->tags ?? []);
 

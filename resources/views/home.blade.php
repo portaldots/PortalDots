@@ -100,7 +100,7 @@
                     スタッフメニュー
                     <small class="text-muted">(スタッフにのみ表示)</small>
                 </template>
-                <list-view-action-btn href="{{ url('/home_staff') }}" data-turbolinks="false">
+                <list-view-action-btn href="{{ route('staff.index') }}">
                     スタッフモードへ
                 </list-view-action-btn>
             </list-view>

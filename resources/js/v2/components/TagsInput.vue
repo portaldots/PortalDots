@@ -19,7 +19,7 @@
         type="hidden"
         :name="`${inputName}[]`"
         v-for="tag in tags"
-        :value="tag.text"
+        :value="tag.value || tag.text"
         :key="tag.text"
       />
     </template>

@@ -21,10 +21,10 @@ class ApiAction extends Controller
 
     public function __construct(
         GridResponder $gridResponder,
-        CirclesGridMaker $pagesGridMaker
+        CirclesGridMaker $circlesGridMaker
     ) {
         $this->gridResponder = $gridResponder;
-        $this->circlesGridMaker = $pagesGridMaker;
+        $this->circlesGridMaker = $circlesGridMaker;
     }
 
     public function __invoke(Request $request)

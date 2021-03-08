@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Place extends Model
 {
-    public $timestamps = false;
+    protected $fillable = [
+        'name',
+        'type',
+        'notes',
+    ];
+
+    protected $casts = [
+        'type' => 'int',
+    ];
 
     public function circles()
     {

@@ -61,4 +61,18 @@ interface GridMakable
      * @return array
      */
     public function sortableKeys(): array;
+
+    /**
+     * 初期表示で用いる order_by のカラム名
+     *
+     * @return string
+     */
+    public function defaultOrderBy(): string;
+
+    /**
+     * 初期表示で用いる order_by の並び順
+     *
+     * @return 'asc'|'desc'
+     */
+    public function defaultDirection(): string;
 }

@@ -14,7 +14,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Circle::submitted()->with('leader', 'tags')->get();
+        return Circle::submitted()->with('leader', 'places', 'tags')->get();
     }
 
     /**
@@ -38,6 +38,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
             $circle->name_yomi,
             $circle->group_name,
             $circle->group_name_yomi,
+            $circle->places->implode('name', ','),
             $circle->tags->implode('name', ','),
             $circle->submitted_at,
             $status,
@@ -62,6 +63,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
             '企画名（よみ）',
             '企画を出店する団体の名称',
             '企画を出店する団体の名称（よみ）',
+            '使用場所',
             'タグ',
             '参加登録提出日時',
             '登録受理状況',

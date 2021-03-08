@@ -86,6 +86,9 @@ class UpdateAction extends Controller
         }
         $circle->save();
 
+        // 場所の保存
+        $this->circlesService->savePlaces($circle, $request->places ?? []);
+
         // タグの保存
         $this->circlesService->saveTags($circle, $request->tags ?? []);
 
