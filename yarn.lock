@@ -2025,10 +2025,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blade-formatter@^1.10.1:
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.10.1.tgz#f18a02b9929ff17c109326713bf0440eccf63cda"
-  integrity sha512-c6Af1rGC7MjF7McFKStj09f897MEZTC5PvJrjv6t6kQRB5kaGAEca5p/WJfi8MaI7E+5TxIFeT4FTnceXk+Reg==
+blade-formatter@^1.10.3:
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.10.3.tgz#610e55b9f9fcff09bbafc482fd304975e6f627e8"
+  integrity sha512-+RzU0npN+7RixbpD8+LDJrj1be9B6t/pr8eY6ONYeKJj3PHZKr+x5TGE6Xqj6w3bltdccPgW/VdHJIGdhDmd6Q==
   dependencies:
     "@prettier/plugin-php" "^0.16.0"
     chalk "^4.1.0"
@@ -6388,10 +6388,10 @@ marked@^1.2.7:
   resolved "https://registry.yarnpkg.com/marked/-/marked-1.2.7.tgz#6e14b595581d2319cdcf033a24caaf41455a01fb"
   integrity sha512-No11hFYcXr/zkBvL6qFmAp1z6BKY3zqLMHny/JN/ey+al7qwCM2+CMBL9BOgqMxZU36fz4cCWfn2poWIf7QRXA==
 
-marked@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-2.0.0.tgz#9662bbcb77ebbded0662a7be66ff929a8611cee5"
-  integrity sha512-NqRSh2+LlN2NInpqTQnS614Y/3NkVMFFU6sJlRFEpxJ/LHuK/qJECH7/fXZjk4VZstPW/Pevjil/VtSONsLc7Q==
+marked@^2.0.0, marked@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-2.0.1.tgz#5e7ed7009bfa5c95182e4eb696f85e948cefcee3"
+  integrity sha512-5+/fKgMv2hARmMW7DOpykr2iLhl0NgjyELk5yn92iE7z8Se1IS9n3UsFm86hFXIkvMBmVxki8+ckcpjBeyo/hw==
 
 math-random@^1.0.1:
   version "1.0.4"
