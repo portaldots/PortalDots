@@ -83,9 +83,21 @@
             </a>
         </template>
         <template v-slot:activities="{ row }">
-            <a v-bind:href="`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="編集" class="btn is-primary is-no-shadow">
-                <i class="fas fa-pencil-alt fa-fw"></i>
-            </a>
+            <form-with-confirm
+                v-bind:action="`{{ route('staff.circles.destroy', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" method="post"
+                v-bind:confirm-message="`企画「${row['name']}」を削除しますか？
+
+• 「${row['name']}」が送信した申請の回答はすべて削除されます。`"
+            >
+                @method('delete')
+                @csrf
+                <a v-bind:href="`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="編集" class="btn is-primary is-no-shadow">
+                    <i class="fas fa-pencil-alt fa-fw"></i>
+                </a>
+                <button type="submit" title="削除" class="btn is-danger is-no-shadow">
+                    <i class="fas fa-trash fa-fw"></i>
+                </button>
+            </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'places'">
