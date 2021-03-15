@@ -2025,10 +2025,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blade-formatter@^1.10.1:
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.10.1.tgz#f18a02b9929ff17c109326713bf0440eccf63cda"
-  integrity sha512-c6Af1rGC7MjF7McFKStj09f897MEZTC5PvJrjv6t6kQRB5kaGAEca5p/WJfi8MaI7E+5TxIFeT4FTnceXk+Reg==
+blade-formatter@^1.10.4:
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.10.4.tgz#1e6c16bc0bf388f3030f178a24a12cd86511a0ed"
+  integrity sha512-wZj180MjwPPEhHuMNM/5LOLWFrRfyz25dcwwjZCcZJyWX2WsB0ufShvHnef6tRRmEiweVI2HzMvDvI6iw8GfKw==
   dependencies:
     "@prettier/plugin-php" "^0.16.0"
     chalk "^4.1.0"
