@@ -9,25 +9,40 @@ $font-size: #{(14 / $base-font-size-px) + 'rem'};
 $font-size-input: #{(16 / $base-font-size-px) + 'rem'};
 
 // Color
-$color-text: #22292F;
-$color-primary: #1879F4;
-$color-danger: #DB3C3E;
-$color-success: #1BA24E;
-$color-warning: #FE750A;
-$color-muted: #6c757d;
-$color-muted-2: #a7b6c2;
-$color-muted-3: #c3cfd8;
-$color-border: #dae0e6;
-$color-bg-grey: #f3f4fa;
-$color-bg-light: #efefef;
-$color-bg-white: #FFF;
+$color-text: var(--color-text);
+$color-primary: var(--color-primary);
+$color-danger: var(--color-danger);
+$color-success: var(--color-success);
+$color-muted: var(--color-muted);
+$color-muted-2: var(--color-muted-2);
+$color-muted-3: var(--color-muted-3);
+$color-border: var(--color-border);
+$color-bg-grey: var(--color-bg-grey);
+$color-bg-light: var(--color-bg-light);
+$color-behind-text: var(--color-behind-text);
+$color-form-control: var(--color-form-control);
+$color-form-control-readonly: var(--color-form-control-readonly);
+$color-form-control-focus: var(--color-form-control-focus);
 $semantic-colors: (
   primary: $color-primary,
   danger: $color-danger,
   success: $color-success,
-  warning: $color-warning,
-  muted: $color-muted
+  muted: $color-muted,
 );
+
+$color-box-shadow: var(--color-box-shadow);
+$color-box-shadow-light: var(--color-box-shadow-light);
+$color-focus-primary: var(--color-focus-primary);
+$color-focus-danger: var(--color-focus-danger);
+$color-pre-background: var(--color-pre-background);
+$color-code-background: var(--color-code-background);
+$color-drawer-backdrop: var(--color-drawer-backdrop);
+$color-grid-table-stripe: var(--color-grid-table-stripe);
+$color-top-alert-border: var(--color-top-alert-border);
+$color-primary-hover: var(--color-primary-hover);
+$color-primary-inverse-hover: var(--color-primary-inverse-hover);
+$color-danger-hover: var(--color-danger-hover);
+$color-success-hover: var(--color-success-hover);
 
 // Spacing (WIP)
 $spacing-xl: 4rem;
@@ -52,7 +67,7 @@ $listview-border: 1px solid $color-border;
 $container-padding-x: $spacing;
 $container-padding-y: 0;
 $side-window-width: 400px;
-$focus-outline: 3px solid rgba($color-primary, 0.25);
+$focus-outline: 3px solid $color-focus-primary;
 
 // Container Width
 $container-width: 1024px;
@@ -75,3 +90,6 @@ $z-index-drawer-backdrop: 9989;
 $z-index-navbar: 9980;
 $z-index-side-window: 9970;
 $z-index-bottom_tabs: 9980;
+$z-index-form-group-addon: 1;
+$z-index-form-group-control: 2; // フォームコントロールのフォーカス枠が、フォームアドオンより前面に表示されるようにする
+$z-index-form-search-icon: 3;

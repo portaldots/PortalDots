@@ -91,10 +91,10 @@
             >
                 @method('delete')
                 @csrf
-                <a v-bind:href="`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="編集" class="btn is-primary is-no-shadow">
-                    <i class="fas fa-pencil-alt fa-fw"></i>
-                </a>
-                <button type="submit" title="削除" class="btn is-danger is-no-shadow">
+                <a v-bind:href="`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="編集" class="btn text-primary">
+                <i class="fas fa-pencil-alt fa-fw"></i>
+            </a>
+                <button type="submit" title="削除" class="btn text-danger">
                     <i class="fas fa-trash fa-fw"></i>
                 </button>
             </form-with-confirm>

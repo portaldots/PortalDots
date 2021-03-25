@@ -13,6 +13,8 @@
         {{ empty(config('app.name')) ? 'PortalDots' : config('app.name') }}
     </title>
 
+    @include('includes.head_ui_theme')
+
     @prepend('css')
     <link href="{{ mix('css/fontawesome.css') }}" rel="stylesheet">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">

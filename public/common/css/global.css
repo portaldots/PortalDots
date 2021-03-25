@@ -9,10 +9,17 @@ html {
     font-size: 15px;
 }
 
+/* ダークモードに対応する場合、以下のコメントアウトを外す */
+/* @media (prefers-color-scheme: dark) {
+  html {
+    filter: invert(1) hue-rotate(180deg);
+  }
+} */
+
 body {
     padding-top: 104px;
     background: #f3f4fa;
-    color: #22292f;
+    color: #304554;
     line-height: 1.7;
 }
 
@@ -115,6 +122,22 @@ body,
     display: flex;
     align-items: center;
     height: 100%;
+}
+
+.navbar-brand:hover {
+    opacity: 0.7;
+}
+
+.navbar-brand .badge {
+    letter-spacing: normal;
+}
+
+.navbar-brand.navbar-brand-static {
+    letter-spacing: 0;
+}
+
+.navbar-brand.navbar-brand-static:hover {
+    opacity: 1;
 }
 
 a {

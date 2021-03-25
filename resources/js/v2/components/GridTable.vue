@@ -288,7 +288,7 @@ export default {
     width: 100%;
   }
   &__table_wrap {
-    background: $color-bg-white;
+    background: $color-behind-text;
     border-bottom: 1px solid $color-border;
     border-top: 1px solid $color-border;
     overflow: auto;
@@ -326,7 +326,7 @@ export default {
       border: 0;
       &.is-in-tbody {
         &:nth-child(2n) {
-          background: rgba($color-bg-light, 0.4);
+          background: $color-grid-table-stripe;
         }
         &:hover {
           background: $color-bg-light;

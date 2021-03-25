@@ -97,14 +97,16 @@ export default {
 
 <style lang="scss" scoped>
 .vue-tags-input {
+  background-color: $color-behind-text;
   max-width: 100%;
 }
 </style>
 
 <style lang="scss">
 .vue-tags-input {
-  $default-box-shadow: inset 0 0.5px 1.5px rgba($color-text, 0.1);
   .ti-input {
+    background: $color-form-control;
+    border: 1px solid $color-border;
     border-radius: $border-radius;
     line-height: 1.6;
     padding: $spacing-sm $spacing-md;
@@ -112,14 +114,22 @@ export default {
       #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color;
   }
   &.ti-focus .ti-input {
+    background: $color-form-control-focus;
     border-color: $color-primary;
-    box-shadow: $default-box-shadow, 0 0 0 3px rgba($color-primary, 0.25);
+    box-shadow: 0 0 0 3px $color-focus-primary;
   }
   .ti-tag {
     background: $color-primary;
+    color: $color-behind-text;
+    &.ti-invalid,
+    &.ti-deletion-mark {
+      background: $color-danger !important;
+    }
   }
   .ti-autocomplete {
-    box-shadow: 0 0.25rem 0.75rem rgba($color-muted, 0.25);
+    background: $color-behind-text;
+    border: none;
+    box-shadow: 0 0.25rem 0.75rem $color-box-shadow;
   }
   .ti-item {
     margin: 0;
@@ -130,6 +140,7 @@ export default {
   }
   .ti-selected-item {
     background: $color-primary;
+    color: $color-behind-text;
   }
   .ti-new-tag-input-wrapper {
     &:first-child {
@@ -138,7 +149,9 @@ export default {
     }
   }
   .ti-new-tag-input {
+    background: transparent;
     caret-color: $color-primary;
+    color: $color-text;
   }
 }
 </style>

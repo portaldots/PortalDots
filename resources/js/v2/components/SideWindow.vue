@@ -32,7 +32,7 @@ export default {
 
 <style lang="scss" scoped>
 .side_window {
-  background: $color-bg-white;
+  background: $color-behind-text;
   bottom: 0;
   box-shadow: -1px 0 2px $color-border;
   display: flex;

@@ -1,5 +1,5 @@
 <template>
-  <a :href="href" class="navbar-back" :class="{ 'is-inverse': inverse }">
+  <a :href="href" class="navbar-back">
     <i class="fas fa-chevron-left navbar-back__icon"></i>
     <slot />
   </a>
@@ -11,10 +11,6 @@ export default {
     href: {
       type: String,
       required: true
-    },
-    inverse: {
-      type: Boolean,
-      default: false
     }
   }
 }
@@ -35,14 +31,6 @@ export default {
   &:active,
   &:focus {
     text-decoration: none;
-  }
-  &.is-inverse {
-    color: $color-bg-light;
-    &:hover,
-    &:active,
-    &:focus {
-      opacity: 0.75;
-    }
   }
 }
 </style>

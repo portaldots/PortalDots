@@ -48,6 +48,7 @@ export default {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    z-index: $z-index-form-search-icon;
   }
 }
 </style>

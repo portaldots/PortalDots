@@ -22,8 +22,8 @@ export default {
 <style lang="scss" scoped>
 .navbar {
   align-items: center;
-  background: $color-bg-white;
-  box-shadow: 0 0 0.5rem rgba($color-text, 0.15);
+  background: $color-behind-text;
+  box-shadow: 0 0 0.5rem $color-box-shadow-light;
   display: flex;
   height: $navbar-height;
   left: $drawer-width;
@@ -37,8 +37,20 @@ export default {
     width: 100%;
   }
   &.is-staff {
-    background: $color-text;
-    color: #fff;
+    &::after {
+      border: 1px solid $color-muted;
+      border-radius: $border-radius;
+      color: $color-muted;
+      content: 'スタッフ';
+      display: inline-block;
+      font-size: 0.75em;
+      line-height: 1.75;
+      padding: 0 0.4em;
+      position: absolute;
+      right: $spacing;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 
   @media screen and (max-width: $breakpoint-drawer-narrow) {
@@ -58,14 +70,6 @@ export default {
     &:focus {
       color: $color-text;
       text-decoration: none;
-    }
-  }
-  &.is-staff &-brand {
-    color: #fff;
-    &:hover,
-    &:active,
-    &:focus {
-      color: #fff;
     }
   }
 }

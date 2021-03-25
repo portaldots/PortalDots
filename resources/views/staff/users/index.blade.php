@@ -43,7 +43,7 @@
             </a>
         </template>
         <template v-slot:activities="{ row }">
-            <a v-bind:href="`/home_staff/users/edit/${row.id}`" title="編集" class="btn is-primary is-no-shadow" data-turbolinks="false">
+            <a v-bind:href="`/home_staff/users/edit/${row.id}`" title="編集" class="btn text-primary" data-turbolinks="false">
                 <i class="fas fa-pencil-alt fa-fw"></i>
             </a>
         </template>
