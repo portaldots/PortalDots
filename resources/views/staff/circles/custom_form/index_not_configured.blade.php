@@ -3,7 +3,7 @@
 @section('title', '企画参加登録の設定')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ route('staff.circles.index') }}">
+    <app-nav-bar-back href="{{ route('staff.circles.index') }}">
         企画情報管理
     </app-nav-bar-back>
 @endsection

@@ -3,7 +3,7 @@
 @section('title', empty($circle) ? '新規作成 — 企画' : "{$circle->name} — 企画")
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ route('staff.circles.index') }}">
+    <app-nav-bar-back href="{{ route('staff.circles.index') }}">
         企画情報管理
     </app-nav-bar-back>
 @endsection

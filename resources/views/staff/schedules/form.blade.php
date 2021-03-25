@@ -3,7 +3,7 @@
 @section('title', empty($schedule) ? '新規作成 — スケジュール' : "{$schedule->name} — スケジュール")
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ route('staff.schedules.index') }}">
+    <app-nav-bar-back href="{{ route('staff.schedules.index') }}">
         スケジュール管理
     </app-nav-bar-back>
 @endsection
@@ -44,7 +44,7 @@
                 <list-view-form-group label-for="start_at">
                     <template v-slot:label>
                         開始日時
-                        <app-badge danger>必須</app-badge>　
+                        <app-badge danger>必須</app-badge>
                     </template>
                     <template v-slot:description>
                         この予定が始まる日時

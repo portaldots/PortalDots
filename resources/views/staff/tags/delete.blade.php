@@ -3,7 +3,7 @@
 @section('title', '企画タグの削除')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ route('staff.tags.index') }}">
+    <app-nav-bar-back href="{{ route('staff.tags.index') }}">
         企画タグ管理
     </app-nav-bar-back>
 @endsection

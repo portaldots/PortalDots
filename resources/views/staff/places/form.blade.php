@@ -3,7 +3,7 @@
 @section('title', empty($place) ? '新規作成 — 場所' : "{$place->name} — 場所")
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ route('staff.places.index') }}">
+    <app-nav-bar-back href="{{ route('staff.places.index') }}">
         場所管理
     </app-nav-bar-back>
 @endsection
