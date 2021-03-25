@@ -117,6 +117,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
 
                 // 企画情報エクスポート
                 Route::get('/export', 'Staff\Circles\ExportAction')->name('export');
+
+                Route::delete('/{circle}', 'Staff\Circles\DestroyAction')->name('destroy');
             });
 
         Route::prefix('/tags')
