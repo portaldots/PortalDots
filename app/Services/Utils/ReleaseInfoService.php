@@ -110,9 +110,9 @@ class ReleaseInfoService
      *
      * @return Version|null
      */
-    private function version(string $version_string): ?Version
+    public function version(string $version_string): ?Version
     {
-        preg_match('/(\d+).(\d+).(\d+)/', $version_string, $matches);
+        preg_match('/(\d+)\.(\d+)\.(\d+)/', $version_string, $matches);
         if (!isset($matches[1]) || !isset($matches[2]) || !isset($matches[3])) {
             return null;
         }
