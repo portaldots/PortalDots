@@ -7,6 +7,7 @@ namespace App\Services\Circles;
 use DB;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
+use App\Eloquents\Place;
 use App\Eloquents\Tag;
 use App\Mail\Circles\ApprovedMailable;
 use App\Mail\Circles\RejectedMailable;
@@ -89,6 +90,15 @@ class CirclesService
     private function generateInvitationToken()
     {
         return bin2hex(random_bytes(16));
+    }
+
+    /**
+     * 指定された企画について場所を保存する
+     */
+    public function savePlaces(Circle $circle, array $place_ids)
+    {
+        $exist_places = Place::whereIn('id', $place_ids)->get();
+        $circle->places()->sync($exist_places->pluck('id')->all());
     }
 
     /**

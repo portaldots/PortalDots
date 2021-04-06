@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    <app-header container-medium>
+    <app-header>
         <template v-slot:title>
             ポータル情報の設定
         </template>
@@ -20,7 +20,7 @@
 
         @method('patch')
 
-        <app-container medium>
+        <app-container>
             <list-view>
                 <template v-slot:title>ポータル情報の設定</template>
                 @foreach ($portal as $key => $value)

@@ -12,22 +12,31 @@ textarea {
     margin: 0 0 $spacing-xs;
   }
   &-control {
-    $default-box-shadow: inset 0 0.5px 1.5px rgba($color-text, 0.1);
-
     appearance: none;
-    background-color: $color-bg-white;
+    background-color: $color-form-control;
     border: 1px solid $color-border;
     border-radius: $border-radius;
-    box-shadow: $default-box-shadow;
     caret-color: $color-primary;
+    color: $color-text;
     font-size: $font-size-input;
     line-height: 1.6;
     padding: $spacing-sm $spacing-md;
-    transition: #{$transition-base-fast} background-color, #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color;
+    position: relative;
+    transition: #{$transition-base-fast} background-color,
+      #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color;
     width: 100%;
+    z-index: $z-index-form-group-control;
     @at-root {
       select#{&} {
-        background: right $spacing-md center / 1rem url(../../../img/dropdownTriangle.svg) no-repeat, $color-bg-white;
+        background: right $spacing-md center / 1rem
+            url(../../../img/dropdownTriangle.svg) no-repeat,
+          $color-form-control !important;
+
+        @media (prefers-color-scheme: dark) {
+          background: right $spacing-md center / 1rem
+              url(../../../img/dropdownTriangleDark.svg) no-repeat,
+            $color-form-control !important;
+        }
         &::-ms-expand {
           // IEで、ドロップダウンの標準の三角アイコンが表示されないようにする
           display: none;
@@ -35,16 +44,16 @@ textarea {
       }
     }
     &[disabled] {
-      background: $color-bg-grey;
       color: $color-muted;
       cursor: not-allowed;
       opacity: 0.75;
     }
     &[readonly] {
-      background: $color-bg-grey;
+      background: $color-form-control-readonly;
     }
     &.is-invalid {
       border-color: $color-danger;
+      caret-color: $color-danger;
     }
     &.is-plaintext {
       background: transparent;
@@ -53,13 +62,16 @@ textarea {
       padding: $spacing-xxs 0;
     }
     &:focus {
-      border-color: $color-primary;
-      box-shadow: $default-box-shadow, 0 0 0 3px rgba($color-primary, 0.25);
       outline: 0;
+    }
+    &:not([readonly]):focus {
+      background: $color-form-control-focus;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px $color-focus-primary;
     }
     &.is-invalid:focus {
       border-color: $color-danger;
-      box-shadow: 0 0 0 3px rgba($color-danger, 0.25);
+      box-shadow: 0 0 0 3px $color-focus-danger;
     }
   }
   &-checkbox,

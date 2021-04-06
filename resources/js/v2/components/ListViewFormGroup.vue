@@ -102,8 +102,10 @@ export default {
     max-width: 100%;
     overflow: auto;
     padding: $spacing-sm $spacing-md;
+    position: relative;
     text-align: center;
     word-break: keep-all;
+    z-index: $z-index-form-group-addon;
     &:first-child {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;

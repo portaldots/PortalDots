@@ -1,9 +1,9 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', empty($tag) ? '新規作成 — 企画タグ' : "{$tag->name} — 企画タグ")
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('/home_staff/tags') }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ route('staff.tags.index') }}">
         企画タグ管理
     </app-nav-bar-back>
 @endsection

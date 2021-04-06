@@ -895,37 +895,16 @@ class Home_staff extends MY_Controller
             'id',
             'place_id',
             'circle_id',
-            'created_at',
-            'created_by',
-            'updated_at',
-            'updated_by',
-            'notes'
         );
         $this->grocery_crud->fields(
             'place_id',
             'circle_id',
-            'created_at',
-            'created_by',
-            'updated_at',
-            'updated_by',
-            'notes'
         );
-        $this->grocery_crud->change_field_type('created_at', 'invisible');
-        $this->grocery_crud->change_field_type('created_by', 'invisible');
-        $this->grocery_crud->change_field_type('updated_at', 'invisible');
-        $this->grocery_crud->change_field_type('updated_by', 'invisible');
 
         $this->grocery_crud->required_fields('place_id', 'circle_id');
 
         $this->grocery_crud->set_relation('place_id', 'places', '{name}(ID:{id})');
         $this->grocery_crud->set_relation('circle_id', 'circles', '{name}(ID:{id})');
-        if ($this->grocery_crud->getstate() !== 'edit' && $this->grocery_crud->getstate() !== 'add') {
-            $this->grocery_crud->set_relation('created_by', 'users', '{student_id} {name_family} {name_given}');
-            $this->grocery_crud->set_relation('updated_by', 'users', '{student_id} {name_family} {name_given}');
-        }
-
-        // ファイル表示リンクにする
-        $this->grocery_crud->callback_column('image_filename', array($this, '_crud_download_image_filename'));
 
         // 存在しない企画IDが設定されている場合、企画不明という表示にする
         $this->grocery_crud->callback_column(
@@ -958,6 +937,15 @@ class Home_staff extends MY_Controller
         $vars = [];
         $vars["page_title"] = "場所情報管理";
         $vars["main_page_type"] = "places";
+
+        if ($this->uri->segment(3) === "edit") {
+            $place_id = $this->uri->segment(4);
+            $edit_url = ['staff', 'places', $place_id, 'edit'];
+            codeigniter_redirect(base_url($edit_url));
+        } elseif ($this->uri->segment(3) === "add") {
+            $edit_url = ['staff', 'places', 'create'];
+            codeigniter_redirect(base_url($edit_url));
+        }
 
         $this->grocery_crud->set_table('places');
         $this->grocery_crud->set_subject('場所');
@@ -1430,54 +1418,49 @@ class Home_staff extends MY_Controller
         if (!isset($vars["_sidebar_menu"])) {
             $vars["_sidebar_menu"] = [
                 "index" => [
-                    "icon" => "tachometer",
-                    "name" => "スタッフモードホーム",
-                    "url" => "home_staff",
+                    "icon" => "home",
+                    "name" => "スタッフモード ホーム",
+                    "url" => "staff",
+                ],
+                "users" => [
+                    "icon" => "address-book-o",
+                    "name" => "ユーザー情報管理",
+                    "url" => "staff/users",
+                ],
+                "circles" => [
+                    "icon" => "star",
+                    "name" => "企画情報管理",
+                    "url" => "staff/circles",
+                ],
+                "tags" => [
+                    "icon" => "tags",
+                    "name" => "企画タグ管理",
+                    "url" => "staff/tags",
+                ],
+                "places" => [
+                    "icon" => "map-marker",
+                    "name" => "場所情報管理",
+                    "url" => "staff/places",
                 ],
                 "pages" => [
                     "icon" => "bullhorn",
                     "name" => "お知らせ管理",
-                    "url" => "home_staff/pages",
+                    "url" => "staff/pages",
+                ],
+                "documents" => [
+                    "icon" => "file-text-o",
+                    "name" => "配布資料管理",
+                    "url" => "staff/documents",
                 ],
                 "applications" => [
                     "icon" => "pencil-square-o",
                     "name" => "申請管理",
                     "url" => "home_staff/applications",
                 ],
-                "users" => [
-                    "icon" => "address-book-o",
-                    "name" => "ユーザー情報管理",
-                    "url" => "home_staff/users",
-                ],
-                "circles" => [
-                    "icon" => "users",
-                    "name" => "企画情報管理",
-                    "url" => "home_staff/circles",
-                ],
-                "tags" => [
-                    "icon" => "tag",
-                    "name" => "企画タグ管理",
-                    "url" => "home_staff/tags",
-                ],
-                "booths" => [
-                    "icon" => "star",
-                    "name" => "ブース情報管理",
-                    "url" => "home_staff/booths",
-                ],
-                "places" => [
-                    "icon" => "map-marker",
-                    "name" => "場所情報管理",
-                    "url" => "home_staff/places",
-                ],
-                "documents" => [
-                    "icon" => "file-text-o",
-                    "name" => "配布資料管理",
-                    "url" => "home_staff/documents",
-                ],
                 "schedules" => [
                     "icon" => "calendar",
                     "name" => "スケジュール管理",
-                    "url" => "home_staff/schedules",
+                    "url" => "staff/schedules",
                 ],
                 "contact-categories" => [
                     "icon" => "at",
@@ -1501,19 +1484,19 @@ class Home_staff extends MY_Controller
                 $vars["_sidebar_menu"]["roles"] =
                     [
                         "icon" => "key",
-                        "name" => "ユーザー権限管理(Admin)",
+                        "name" => "ユーザー権限管理(管理者)",
                         "url" => "home_staff/roles",
                     ];
                 $vars["_sidebar_menu"]["auth_config"] =
                     [
                         "icon" => "key",
-                        "name" => "認可設定(Admin)",
+                        "name" => "認可設定(管理者)",
                         "url" => "home_staff/auth_config",
                     ];
                 $vars["_sidebar_menu"]["system"] =
                     [
                         "icon" => "gear",
-                        "name" => "ポータル情報設定(Admin)",
+                        "name" => "ポータル情報設定(管理者)",
                         "url" => "admin/portal",
                     ];
             } else {

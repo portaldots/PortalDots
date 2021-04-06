@@ -1,23 +1,44 @@
-@mixin btn($color, $background, $hover-background, $border-color, $shadow-color-base: null) {
-  background: $background;
+@mixin btn(
+  $color,
+  $background,
+  $hover-background,
+  $border-color,
+  $has-shadow: false
+) {
+  @if ($background == transparent) {
+    background: transparent;
+  } @else {
+    // rgba で $background が指定されている場合、ボタンの背面にある要素の
+    // 背景色に干渉され、ボタンが意図しない色になってしまうことがある。
+    // 白色のベースの上に $background を重ねて表示することで、
+    // 背面要素の背景色に関わらずボタンが同じ色で表示されるようにしている。
+    background: linear-gradient(to top, $background, $background),
+      $color-behind-text;
+  }
+
   border: 1px solid $border-color;
   color: $color;
   &:not([disabled]):hover,
   &:not(.disabled):hover {
-    background: $hover-background;
+    background: linear-gradient(to top, $hover-background, $hover-background),
+      $color-behind-text;
     border-color: $hover-background;
   }
-  @if ($shadow-color-base) {
-    box-shadow: 0 0.25rem 0.75rem rgba($shadow-color-base, 0.25);
+  @if ($has-shadow) {
+    box-shadow: 0 0.25rem 0.75rem $color-box-shadow;
     &:not([disabled]):hover,
     &:not(.disabled):hover {
-      box-shadow: 0 0.5rem 0.75rem rgba($shadow-color-base, 0.4);
+      box-shadow: 0 0.5rem 0.75rem $color-box-shadow;
     }
     &:not([disabled]):active,
     &:not(.disabled):active {
-      box-shadow: 0 0.1rem 0.3rem rgba($shadow-color-base, 0.6);
+      box-shadow: 0 0.1rem 0.3rem $color-box-shadow;
     }
   }
+}
+
+button {
+  color: $color-text;
 }
 
 body:not(.body-editor-v1):not(.body-v1) {
@@ -32,7 +53,8 @@ body:not(.body-editor-v1):not(.body-v1) {
     padding: 0.75rem $spacing-md;
     text-align: center;
     text-decoration: none;
-    transition: #{$transition-base-fast} background-color, #{$transition-base-fast} box-shadow;
+    transition: #{$transition-base-fast} background-color,
+      #{$transition-base-fast} box-shadow, #{$transition-base-fast} transform;
     white-space: nowrap;
     &:disabled,
     &.disabled {
@@ -47,22 +69,51 @@ body:not(.body-editor-v1):not(.body-v1) {
       text-decoration: none;
     }
     &.is-primary {
-      @include btn(#fff, $color-primary, lighten($color-primary, 5%), $color-primary, $color-primary);
+      @include btn(
+        $color-behind-text,
+        $color-primary,
+        $color-primary-hover,
+        $color-primary,
+        true
+      );
     }
     &.is-primary-inverse {
-      @include btn($color-primary, #fff, lighten($color-primary, 50%), #fff, $color-muted);
+      @include btn(
+        $color-primary,
+        $color-behind-text,
+        $color-primary-inverse-hover,
+        $color-behind-text,
+        true
+      );
     }
     &.is-secondary {
-      @include btn($color-text, #fff, $color-bg-grey, $color-border);
+      @include btn(
+        $color-text,
+        $color-behind-text,
+        $color-bg-grey,
+        $color-border
+      );
     }
     &.is-transparent {
-      @include btn($color-text, transparent, #fff, $color-border);
+      @include btn($color-text, transparent, $color-behind-text, $color-border);
     }
     &.is-danger {
-      @include btn(#fff, $color-danger, lighten($color-danger, 5%), $color-danger, $color-danger);
+      @include btn(
+        $color-behind-text,
+        $color-danger,
+        $color-danger-hover,
+        $color-danger,
+        true
+      );
     }
     &.is-success {
-      @include btn(#fff, $color-success, lighten($color-success, 5%), $color-success, $color-success);
+      @include btn(
+        $color-behind-text,
+        $color-success,
+        $color-success-hover,
+        $color-success,
+        true
+      );
     }
     &.is-block {
       display: block;

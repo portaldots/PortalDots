@@ -35,6 +35,7 @@ class IndexAction extends Controller
         try {
             $qrcode_html = QrCode::margin(0)
                 ->size(180)
+                ->backgroundColor(255, 255, 255, 0)
                 ->generate($invitation_url_for_blade);
         } catch (RuntimeException $e) {
             // libxml 拡張機能がサーバーにインストールされていない場合、

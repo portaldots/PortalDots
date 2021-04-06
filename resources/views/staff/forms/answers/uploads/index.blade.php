@@ -1,9 +1,9 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', 'アップロードファイルの一括ダウンロード')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('home_staff/applications/read/' . $form->id) }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ url('home_staff/applications/read/' . $form->id) }}" data-turbolinks="false">
         {{ $form->name }}
     </app-nav-bar-back>
 @endsection

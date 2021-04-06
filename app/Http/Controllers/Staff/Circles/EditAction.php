@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
 use App\Eloquents\CustomForm;
+use App\Eloquents\Place;
 use App\Eloquents\Tag;
 
 class EditAction extends Controller
@@ -34,6 +35,12 @@ class EditAction extends Controller
                 return $user->pivot->is_leader;
             })->first())
             ->with('members', $member_ids)
+            ->with('default_places', $circle->places->map(function ($item) {
+                return ['text' => $item->name, 'value' => $item->id];
+            })->toJson())
+            ->with('places_autocomplete_items', Place::get()->map(function ($item) {
+                return ['text' => $item->name, 'value' => $item->id];
+            })->toJson())
             ->with('default_tags', $circle->tags->pluck('name')->map(function ($item) {
                 return ['text' => $item];
             })->toJson())

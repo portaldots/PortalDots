@@ -81,7 +81,7 @@
             </a>
         </template>
         <template v-slot:activities="{ row }">
-            <a v-bind:href="`{{ route('staff.documents.edit', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])" title="編集" class="btn is-primary is-no-shadow">
+            <a v-bind:href="`{{ route('staff.documents.edit', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])" title="編集" class="btn text-primary">
                 <i class="fas fa-pencil-alt fa-fw"></i>
             </a>
         </template>

@@ -7,6 +7,7 @@ namespace App\GridMakers;
 use App\Eloquents\Circle;
 use App\Eloquents\CustomForm;
 use App\Eloquents\Form;
+use App\Eloquents\Place;
 use App\Eloquents\Question;
 use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
@@ -56,7 +57,7 @@ class CirclesGridMaker implements GridMakable
             'notes',
             'created_at',
             'updated_at',
-        ])->with(['tags', 'statusSetBy', 'answers' => function ($query) {
+        ])->with(['places', 'tags', 'statusSetBy', 'answers' => function ($query) {
             if (isset($this->custom_form)) {
                 $query->with('details.question')->where('form_id', $this->custom_form->id);
             }
@@ -77,6 +78,7 @@ class CirclesGridMaker implements GridMakable
             'name_yomi',
             'group_name',
             'group_name_yomi',
+            'places',
             'tags',
         ];
 
@@ -104,9 +106,14 @@ class CirclesGridMaker implements GridMakable
     public function filterableKeys(): FilterableKeysDict
     {
         static $tags_choices = null;
+        static $places_choices = null;
 
         if (empty($tags_choices)) {
             $tags_choices = Tag::all()->toArray();
+        }
+
+        if (empty($places_choices)) {
+            $places_choices = Place::all()->toArray();
         }
 
         $users_type = FilterableKey::belongsTo('users', new FilterableKeysDict([
@@ -133,6 +140,13 @@ class CirclesGridMaker implements GridMakable
             'name_yomi' => FilterableKey::string(),
             'group_name' => FilterableKey::string(),
             'group_name_yomi' => FilterableKey::string(),
+            'places' => FilterableKey::belongsToMany(
+                'booths',
+                'circle_id',
+                'place_id',
+                $places_choices,
+                'name'
+            ),
             'tags' => FilterableKey::belongsToMany(
                 'circle_tag',
                 'circle_id',
@@ -213,10 +227,10 @@ class CirclesGridMaker implements GridMakable
                     $item[$key] = !empty($record->status_set_at) ? $record->status_set_at->format('Y/m/d H:i:s') : null;
                     break;
                 case 'created_at':
-                    $item[$key] = $record->created_at->format('Y/m/d H:i:s');
+                    $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
                     break;
                 case 'updated_at':
-                    $item[$key] = $record->updated_at->format('Y/m/d H:i:s');
+                    $item[$key] = !empty($record->updated_at) ? $record->updated_at->format('Y/m/d H:i:s') : null;
                     break;
                 default:
                     $item[$key] = $record->$key;

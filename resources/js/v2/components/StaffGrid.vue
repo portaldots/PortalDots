@@ -247,6 +247,6 @@ export default {
 
 <style lang="scss" scoped>
 .staff_grid {
-  background: $color-bg-white;
+  background: $color-behind-text;
 }
 </style>

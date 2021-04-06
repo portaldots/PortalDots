@@ -32,10 +32,6 @@ class Booths_model extends MY_Model
             "places.name AS place_name",
             "places.type AS place_type",
             "booths.id AS booth_id",
-            "booths.created_at AS created_at",
-            "booths.created_by AS created_by",
-            "booths.updated_at AS updated_at",
-            "booths.updated_by AS updated_by",
         ];
         $this->db->select(implode(",", $select), false);
         $this->db->from("booths");
@@ -58,11 +54,6 @@ class Booths_model extends MY_Model
             "booths.place_id AS place_id",
             "booths.circle_id AS circle_id",
             "places.name AS place_name",
-            "booths.created_at AS created_at",
-            "booths.created_by AS created_by",
-            "booths.updated_at AS updated_at",
-            "booths.updated_by AS updated_by",
-            "booths.notes AS notes",
             "places.type AS place_type",
         ];
         $this->db->select(implode(",", $select), false);
@@ -85,7 +76,6 @@ class Booths_model extends MY_Model
      */
     public function can_edit($booth_id, $user_id)
     {
-
         $booth_info = $this->get_booth_info_by_booth_id($booth_id);
         if ($booth_info === false) {
             return false;

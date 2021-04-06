@@ -1,15 +1,18 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', '企画参加登録の設定')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('home_staff/circles') }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ route('staff.circles.index') }}">
         企画情報管理
     </app-nav-bar-back>
 @endsection
 
 @section('content')
-    <app-container medium>
+    <app-header>
+        <template v-slot:title>企画参加登録の設定</template>
+    </app-header>
+    <app-container>
         <list-view>
             <template v-slot:title>企画参加登録のカスタムフォーム</template>
             <template v-slot:description>企画参加登録フォームに独自の設問やテキストを追加できます</template>

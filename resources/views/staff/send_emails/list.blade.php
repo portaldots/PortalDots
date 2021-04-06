@@ -1,9 +1,9 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', 'メール配信設定')
 
 @section('navbar')
-    <app-nav-bar-back inverse href="{{ url('home_staff/pages') }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ route('staff.pages.index') }}">
         お知らせ管理
     </app-nav-bar-back>
 @endsection

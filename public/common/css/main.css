@@ -1,115 +1,143 @@
 .main__title {
-  margin-top: 0;
-  margin-bottom: 21px;
-  font-feature-settings: "palt";
-  font-size: 21px;
+    margin-top: 0;
+    margin-bottom: 21px;
+    font-feature-settings: 'palt';
+    font-size: 21px;
 }
 
-@media screen and (max-width:768px) {
-  .main__title {
-    display: none;
-  }
+@media screen and (max-width: 768px) {
+    .main__title {
+        display: none;
+    }
 }
 
 .lead.pull-right {
-  /* リストビュー内の数値表示用のスタイル */
-  margin-bottom: 0;
-  margin-top: -5px;
+    /* リストビュー内の数値表示用のスタイル */
+    margin-bottom: 0;
+    margin-top: -5px;
 }
 
-@media screen and (max-width:768px) {
-  .lead.pull-right {
-    margin-top: 0;
-  }
+@media screen and (max-width: 768px) {
+    .lead.pull-right {
+        margin-top: 0;
+    }
 }
 
 /**
  * calendar
  */
 table.calendar {
-  background: #fff;
-  table-layout: fixed;
+    background: #fff;
+    table-layout: fixed;
 }
 
-table.calendar>tbody>tr>td {
-  padding: 0;
+table.calendar > tbody > tr > td {
+    padding: 0;
 }
 
 table.calendar td {
-  width: calc(100%/7);
-  position: relative;
-  z-index: 1;
+    width: calc(100% / 7);
+    position: relative;
+    z-index: 1;
 }
 
 table.calendar td > div {
-  height: 15vh;
-  overflow: auto;
-  padding: 8px;
+    height: 15vh;
+    overflow: auto;
+    padding: 8px;
 }
 
 table.calendar tbody td::before,
 table.calendar tbody td::after {
-  content: "";
-  z-index: 2;
-  display: block;
-  position: absolute;
-  left: 0;
-  width: 100%;
+    content: '';
+    z-index: 2;
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 100%;
 }
 
 table.calendar tbody td::before {
-  background: linear-gradient(to top, rgba(255,255,255,0), rgba(255,255,255,1));
-  top: 0;
-  height: 1rem;
+    background: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 1)
+    );
+    top: 0;
+    height: 1rem;
 }
 
 table.calendar tbody td::after {
-  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
-  bottom: 0;
-  height: 2rem;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 1)
+    );
+    bottom: 0;
+    height: 2rem;
 }
 
 table.calendar tbody td.today {
-  background: #ffeacc; /* warning color */
+    background: #ffeacc; /* warning color */
 }
 
 table.calendar tbody td.today::before {
-  background: linear-gradient(to top, rgba(255,255,255,0), #ffeacc);
+    background: linear-gradient(to top, rgba(255, 255, 255, 0), #ffeacc);
 }
 
 table.calendar tbody td.today::after {
-  background: linear-gradient(to bottom, rgba(255,255,255,0), #ffeacc);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffeacc);
 }
 
 table.calendar p {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 table.calendar ul {
-  padding-left: 2rem;
-  margin-left: 0;
+    padding-left: 2rem;
+    margin-left: 0;
 }
 
 table.calendar p.lead a {
-  display: block;
+    display: block;
 }
 
 /**
- * sidebar info
+ * sidebar header
  */
+.main__sidebar__header {
+    position: relative;
+    color: #22292f;
+    display: block;
+    font-weight: bold;
+    padding: 1.5rem;
+    padding-top: 6.5rem;
+}
+.main__sidebar__header::after {
+    border-bottom: 1px solid #dae0e6;
+    content: '';
+    display: block;
+    height: 1px;
+    left: 1.5rem;
+    position: absolute;
+    right: 1.5rem;
+    bottom: 0;
+}
+.main__sidebar__header:hover,
+.main__sidebar__header:focus,
+.main__sidebar__header:active {
+    color: #22292f;
+    text-decoration: none;
+}
 .main__sidebar__info {
-  margin: 24px;
-  margin-bottom: 12px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid rgba( 50, 50, 50, .1 );
+    padding: 30px 22.5px 22.5px;
 }
-
-.main__sidebar__info > *:first-child {
-  margin-top: 0;
-}
-
-.main__sidebar__info > *:last-child {
-  margin-bottom: 0;
+.main__sidebar__info .btn {
+    height: 41.5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 /**
@@ -117,94 +145,92 @@ table.calendar p.lead a {
  */
 .main-section__next-event__title,
 .main-section__schedule__title {
-  margin-top: 0;
+    margin-top: 0;
 }
 
 .main-section__schedule__heading {
-  font-size: 21px;
-  font-weight: bold;
+    font-size: 21px;
+    font-weight: bold;
 }
 
 .main-section__next-event__title {
-  font-size: 28px;
-  font-weight: bold;
+    font-size: 28px;
+    font-weight: bold;
 }
 
 .main-section__next-event__place {
-  font-size: 21px;
+    font-size: 21px;
 }
 
 .main-section__schedule__title {
-  font-size: 24px;
-  font-weight: bold;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .main-section__schedule__place {
-  font-size: 21px;
+    font-size: 21px;
 }
 
 /**
  * home row
  */
 .main-section__listpanel-row {
-
 }
 
 .main-section__listpanel-row .list-group {
-  height: 30vh;
-  overflow: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
+    height: 30vh;
+    overflow: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .main-section__listpanel-row .list-group > .list-group-item:last-child {
-  margin-bottom: -1px;
+    margin-bottom: -1px;
 }
 
 .main-section__listpanel-row .panel-footer {
-  border-top: 1px solid #ddd;
+    border-top: 1px solid #ddd;
 }
 
-@media screen and (max-width:1199px) {
-  .main-section__listpanel-row .list-group > .list-group-item:last-child {
-    margin-bottom: 0;
-  }
+@media screen and (max-width: 1199px) {
+    .main-section__listpanel-row .list-group > .list-group-item:last-child {
+        margin-bottom: 0;
+    }
 
-  .main-section__listpanel-row .list-group {
-    overflow: hidden;
-    height: auto;
-  }
+    .main-section__listpanel-row .list-group {
+        overflow: hidden;
+        height: auto;
+    }
 }
 
 /**
  * documents search
  */
 .main__search-form {
-  margin-bottom: 24px;
+    margin-bottom: 24px;
 }
 
 /**
  * list
  */
 .main-list {
-  padding-left: 0;
-  list-style: none;
+    padding-left: 0;
+    list-style: none;
 }
 
-  .main-list__item {
+.main-list__item {
     border-bottom: 1px solid #ddd;
     padding: 15px;
-  }
+}
 
-    .main-list__inner {
+.main-list__inner {
+}
 
-    }
+.main-list__inner--greyout {
+    opacity: 0.5;
+}
 
-    .main-list__inner--greyout {
-      opacity: .5;
-    }
-
-      .main-list__title {
-        margin: 0;
-        margin-bottom: 7px;
-      }
+.main-list__title {
+    margin: 0;
+    margin-bottom: 7px;
+}

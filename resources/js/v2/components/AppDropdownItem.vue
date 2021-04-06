@@ -62,7 +62,7 @@ export default {
   }
   &:focus {
     background: $color-primary;
-    color: $color-bg-white;
+    color: $color-behind-text;
     outline: 0;
   }
 }

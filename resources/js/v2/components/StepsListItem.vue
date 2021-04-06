@@ -24,7 +24,7 @@ export default {
   margin: 0;
   position: relative;
   &__content {
-    background: $color-bg-white;
+    background: $color-behind-text;
     display: inline-block;
     margin-left: -#{$spacing-md};
     padding: $spacing-md $spacing-md $spacing-md #{$circle-size +
@@ -33,7 +33,7 @@ export default {
   }
   &::before {
     align-items: center;
-    background: $color-bg-white;
+    background: $color-behind-text;
     border: 1px solid $color-muted-2;
     border-radius: 50%;
     color: $color-muted-2;
@@ -57,7 +57,7 @@ export default {
     &::before {
       background: $color-primary;
       border: 1px solid $color-primary;
-      color: $color-bg-white;
+      color: $color-behind-text;
     }
   }
   &:not(:last-child)::after {

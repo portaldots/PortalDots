@@ -16,6 +16,9 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
     ->prefix('/staff')
     ->name('staff.')
     ->group(function () {
+        // トップページ
+        Route::get('/', 'Staff\HomeAction')->name('index');
+
         // リリース情報
         Route::get('/about', 'Staff\AboutAction')->name('about');
 
@@ -117,17 +120,45 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
 
                 // 企画情報エクスポート
                 Route::get('/export', 'Staff\Circles\ExportAction')->name('export');
+
+                Route::delete('/{circle}', 'Staff\Circles\DestroyAction')->name('destroy');
             });
 
         Route::prefix('/tags')
             ->name('tags.')
             ->group(function () {
+                Route::get('/', 'Staff\Tags\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Tags\ApiAction')->name('api');
                 Route::get('/create', 'Staff\Tags\CreateAction')->name('create');
                 Route::post('/', 'Staff\Tags\StoreAction')->name('store');
                 Route::get('/{tag}/edit', 'Staff\Tags\EditAction')->name('edit');
                 Route::patch('/{tag}', 'Staff\Tags\UpdateAction')->name('update');
                 Route::get('/{tag}/delete', 'Staff\Tags\DeleteAction')->name('delete');
                 Route::delete('/{tag}', 'Staff\Tags\DestroyAction')->name('destroy');
+            });
+
+        Route::prefix('/places')
+            ->name('places.')
+            ->group(function () {
+                Route::get('/', 'Staff\Places\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Places\ApiAction')->name('api');
+                Route::get('/create', 'Staff\Places\CreateAction')->name('create');
+                Route::post('/', 'Staff\Places\StoreAction')->name('store');
+                Route::get('/{place}/edit', 'Staff\Places\EditAction')->name('edit');
+                Route::patch('/{place}', 'Staff\Places\UpdateAction')->name('update');
+                Route::delete('/{place}', 'Staff\Places\DestroyAction')->name('destroy');
+            });
+
+        Route::prefix('/schedules')
+            ->name('schedules.')
+            ->group(function () {
+                Route::get('/', 'Staff\Schedules\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Schedules\ApiAction')->name('api');
+                Route::get('/create', 'Staff\Schedules\CreateAction')->name('create');
+                Route::post('/', 'Staff\Schedules\StoreAction')->name('store');
+                Route::get('/{schedule}/edit', 'Staff\Schedules\EditAction')->name('edit');
+                Route::patch('/{schedule}', 'Staff\Schedules\UpdateAction')->name('update');
+                Route::delete('/{schedule}', 'Staff\Schedules\DestroyAction')->name('destroy');
             });
 
         // メール一斉送信

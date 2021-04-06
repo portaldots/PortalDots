@@ -21,14 +21,10 @@ class DestroyAction extends Controller
             abort(403);
         }
 
-        return DB::transaction(function () use ($circle) {
-            $circle->users()->detach();
-            $circle->answers()->delete();
-            $circle->delete();
+        $circle->delete();
 
-            return redirect()
-                ->route('home')
-                ->with('topAlert.title', '企画参加登録を削除しました');
-        });
+        return redirect()
+            ->route('home')
+            ->with('topAlert.title', '企画参加登録を削除しました');
     }
 }

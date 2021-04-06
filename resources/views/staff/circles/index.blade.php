@@ -13,6 +13,7 @@
             name_yomi: '企画名(よみ)',
             group_name: '企画を出店する団体の名称',
             group_name_yomi: '企画を出店する団体の名称(よみ)',
+            places: '使用場所',
             tags: 'タグ',
             @if (isset($custom_form))
                 @foreach($custom_form->questions as $question)
@@ -82,12 +83,32 @@
             </a>
         </template>
         <template v-slot:activities="{ row }">
-            <a v-bind:href="`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="編集" class="btn is-primary is-no-shadow">
+            <form-with-confirm
+                v-bind:action="`{{ route('staff.circles.destroy', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" method="post"
+                v-bind:confirm-message="`企画「${row['name']}」を削除しますか？
+
+• 「${row['name']}」が送信した申請の回答はすべて削除されます。`"
+            >
+                @method('delete')
+                @csrf
+                <a v-bind:href="`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="編集" class="btn text-primary">
                 <i class="fas fa-pencil-alt fa-fw"></i>
             </a>
+                <button type="submit" title="削除" class="btn text-danger">
+                    <i class="fas fa-trash fa-fw"></i>
+                </button>
+            </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">
-            <template v-if="keyName === 'tags'">
+            <template v-if="keyName === 'places'">
+                {{-- 使用場所 --}}
+                <template v-for="place in row[keyName]">
+                    <app-badge primary strong v-bind:key="place.id">
+                        @{{ place.name }}
+                    </app-badge>&nbsp;
+                </template>
+            </template>
+            <template v-else-if="keyName === 'tags'">
                 {{-- タグ --}}
                 <template v-for="tag in row[keyName]">
                     <app-badge primary strong v-bind:key="tag.id">

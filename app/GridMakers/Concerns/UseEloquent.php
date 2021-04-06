@@ -45,6 +45,22 @@ trait UseEloquent
     abstract public function filterableKeys(): FilterableKeysDict;
 
     /**
+     * @inheritDoc
+     */
+    public function defaultOrderBy(): string
+    {
+        return 'id';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function defaultDirection(): string
+    {
+        return 'asc';
+    }
+
+    /**
      * フィルタクエリ配列等をもとに、フィルタ適用済みのクエリビルダオブジェクトを生成する
      *
      * @param Builder $query
