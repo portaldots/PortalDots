@@ -64,7 +64,7 @@
                             <li>ZIP ファイルを解凍します。</li>
                             <li>
                                 以下のフォルダおよびファイルをサーバーへ上書きアップロードします。<strong>これら以外のファイルをアップロードすると、{{ config('app.name') }}や保存データが破損する可能性があります。</strong>
-                                <ul>
+                                <ul style="column-count: 2; margin: 1rem 0;">
                                     <li>artisan ファイル</li>
                                     <li>app フォルダ</li>
                                     <li>application フォルダ (※)</li>
