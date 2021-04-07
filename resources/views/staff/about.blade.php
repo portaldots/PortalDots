@@ -60,7 +60,7 @@
                         <p>PortalDots を最新バージョンにアップデートするには、以下の方法に従ってください。</p>
                         <ol>
                             <li>MySQL データベースとファイルをバックアップします。</li>
-                            <li>以下のリンクより、PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }} の ZIP ファイルをダウンロードします。</li>
+                            <li>以下の「PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }} をダウンロード(@filesize($latest_release->getSize()))」というリンクより、PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }} の ZIP ファイルをダウンロードします。</li>
                             <li>ZIP ファイルを解凍します。</li>
                             <li>
                                 以下のフォルダおよびファイルをサーバーへ上書きアップロードします。<strong>これら以外のファイルをアップロードすると、{{ config('app.name') }}や保存データが破損する可能性があります。</strong>
