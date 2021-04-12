@@ -33,7 +33,7 @@ class ChangeInfoRequest extends FormRequest
             ),
             'name' => User::NAME_RULES,
             'name_yomi' => User::NAME_YOMI_RULES,
-            'email' => array_merge(User::TEL_RULES, [Rule::unique('users')->ignore(Auth::user())]),
+            'email' => array_merge(User::EMAIL_RULES, [Rule::unique('users')->ignore(Auth::user())]),
             'tel' => User::TEL_RULES,
             'password' => array_merge(User::PASSWORD_RULES, [
                 // 現在のパスワードが正しいものか検証する

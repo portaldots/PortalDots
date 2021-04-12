@@ -10,7 +10,12 @@ class UpdateAction extends Controller
 {
     public function __invoke(UserRequest $request, User $user)
     {
-        $user->name = $request->validated()['name'];
+        $validated = $request->validated();
+        $user->student_id = $validated['student_id'];
+        $user->name = $validated['name'];
+        $user->name_yomi = $validated['name_yomi'];
+        $user->email = $validated['email'];
+        $user->tel = $validated['tel'];
         $user->save();
 
         return redirect()
