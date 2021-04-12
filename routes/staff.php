@@ -88,6 +88,9 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             ->group(function () {
                 Route::get('/', 'Staff\Users\IndexAction')->name('index');
                 Route::get('/api', 'Staff\Users\ApiAction')->name('api');
+                Route::get('/{user}/edit', 'Staff\Users\EditAction')->name('edit');
+                Route::patch('/{user}', 'Staff\Users\UpdateAction')->name('update');
+                Route::delete('/{user}', 'Staff\Users\DestroyAction')->name('destroy');
 
                 // 手動本人確認
                 Route::patch('/{user}/verify', 'Staff\Users\VerifiedAction')->name('verified');
