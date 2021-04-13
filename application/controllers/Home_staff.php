@@ -649,7 +649,7 @@ class Home_staff extends MY_Controller
                 (int)$code_on_session === (int)$this->input->post("verify_code")) {
                 // 認証成功
                 $_SESSION['staff_authorized'] = true;
-                codeigniter_redirect("home_staff/");
+                codeigniter_redirect("staff");
             } else {
                 // 認証失敗
                 $this->_error("認証失敗", "入力されたコードが間違っています。");
