@@ -41,6 +41,7 @@ $color-grid-table-stripe: var(--color-grid-table-stripe);
 $color-top-alert-border: var(--color-top-alert-border);
 $color-primary-hover: var(--color-primary-hover);
 $color-primary-inverse-hover: var(--color-primary-inverse-hover);
+$color-icon-button-hover: var(--color-icon-button-hover);
 $color-danger-hover: var(--color-danger-hover);
 $color-success-hover: var(--color-success-hover);
 
@@ -68,6 +69,7 @@ $container-padding-x: $spacing;
 $container-padding-y: 0;
 $side-window-width: 400px;
 $focus-outline: 3px solid $color-focus-primary;
+$icon-button-size: 2.5rem;
 
 // Container Width
 $container-width: 1024px;
