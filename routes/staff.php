@@ -81,6 +81,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 // スタッフモードが Laravel 化したら CopyConfirmAction は消す。
                 Route::get('/copy', 'Staff\Forms\CopyConfirmAction')->name('copy');
                 Route::post('/copy', 'Staff\Forms\CopyAction');
+
+                Route::get('/export', 'Staff\Forms\Answers\ExportAction')->name('export');
             });
 
         Route::prefix('/users')
