@@ -48,7 +48,15 @@ class AnswersExport implements FromCollection, WithHeadings, WithMapping
     public function map($answer): array
     {
         foreach ($this->form->questions->sortBy('priority') as $q) {
-            $details[] = $answer->details->where('question_id', $q->id)->first()->answer ?? null;
+            if ($q->type === 'upload') {
+                $details[] = preg_replace(
+                    '/^answer_details\//',
+                    '',
+                    $answer->details->where('question_id', $q->id)->first()->answer ?? null
+                );
+            } else {
+                $details[] = $answer->details->where('question_id', $q->id)->first()->answer ?? null;
+            }
         }
 
         return array_merge(
