@@ -25,6 +25,7 @@
 
         <app-container>
             <list-view>
+                <template v-slot:title>一般設定</template>
                 <list-view-form-group label-for="student_id">
                     <template v-slot:label>学籍番号</template>
                     <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror"
@@ -82,6 +83,77 @@
                     <i class="fas fa-exclamation-circle"></i>
                     この画面ではパスワードの変更はできません。ユーザーがパスワードを忘れた場合、ユーザー自身がパスワードを再設定する必要があります。
                 </list-view-card>
+            </list-view>
+
+            <list-view>
+                <template v-slot:title>ユーザー種別</template>
+                @if (Auth::id() !== $user->id)
+                    <list-view-form-group>
+                        <div class="form-radio">
+                            <label class="form-radio__label">
+                                <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios1" value="normal"
+                                    {{ old('user_type', !$user->is_staff && !$user->is_admin ? 'normal' : '') === 'normal' ? 'checked' : '' }}
+                                    {{ !Auth::user()->is_admin && $user->is_admin ? 'disabled' : '' }}>
+                                <strong>一般ユーザー</strong><br />
+                                <span class="text-muted">スタッフモードにアクセスできません。</span>
+                            </label>
+                            <label class="form-radio__label">
+                                <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios2" value="staff"
+                                    {{ old('user_type', $user->is_staff && !$user->is_admin ? 'staff' : '') === 'staff' ? 'checked' : '' }}
+                                    {{ !Auth::user()->is_admin && $user->is_admin ? 'disabled' : '' }}>
+                                <strong>スタッフ</strong><br />
+                                <span class="text-muted">スタッフモードにアクセスできます。</span>
+                            </label>
+                            <label class="form-radio__label">
+                                <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios3" value="admin"
+                                    {{ old('user_type', $user->is_staff && $user->is_admin ? 'admin' : '') === 'admin' ? 'checked' : '' }}
+                                    {{ Auth::user()->is_admin ? '' : 'disabled' }}>
+                                <strong>管理者</strong><br />
+                                <span class="text-muted">スタッフモードを含む{{ config('app.name') }}の全機能を利用できます。{{ config('app.name') }}のシステム設定を変更することができます。</span>
+                            </label>
+                        </div>
+                        @if ($errors->has('user_type'))
+                            <template v-slot:invalid>
+                                @foreach ($errors->get('user_type') as $message)
+                                    <div>{{ $message }}</div>
+                                @endforeach
+                            </template>
+                        @endif
+                    </list-view-form-group>
+                @endif
+                <list-view-card>
+                    @if (Auth::id() === $user->id)
+                        <i class="fas fa-exclamation-circle"></i>
+                        自分自身の「ユーザー種別」を変更することはできません。
+                    @elseif (!Auth::user()->is_admin && $user->is_admin)
+                        <i class="fas fa-exclamation-circle"></i>
+                        「ユーザー種別」が「管理者」のユーザーを「スタッフ」または「一般ユーザー」に変更するには、あなた自身が「管理者」である必要があります。
+                    @elseif (!Auth::user()->is_admin)
+                        <i class="fas fa-exclamation-circle"></i>
+                        「ユーザー種別」を「管理者」に変更するためには、あなた自身が「管理者」である必要があります。
+                    @else
+                        <strong class="text-danger">
+                            <i class="fas fa-exclamation-circle"></i>
+                            セキュリティのため、管理者権限を付与するユーザーの人数は最小限にしてください。
+                        </strong>
+                    @endif
+                </list-view-card>
+            </list-view>
+
+            <list-view>
+                <list-view-form-group label-for="notes">
+                    <template v-slot:label>スタッフ用メモ</template>
+                    <template v-slot:description>ここに入力された内容はスタッフのみ閲覧できます。スタッフ内で共有したい事項を残しておくメモとしてご活用ください。</template>
+                    <textarea id="notes" class="form-control @error('notes') is-invalid @enderror" name="notes"
+                        rows="5">{{ old('notes', empty($user) ? '' : $user->notes) }}</textarea>
+                    @if ($errors->has('notes'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('notes') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
             </list-view>
 
             <div class="text-center pt-spacing-md pb-spacing">
