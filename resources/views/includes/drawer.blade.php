@@ -3,7 +3,7 @@
 
 @staffpage
     @if (Auth::check() && Auth::user()->is_staff)
-        <a class="drawer-header" href="/home_staff" data-turbolinks="false">
+        <a class="drawer-header" href="{{ route('staff.index') }}">
             {{ config('app.name') }}
             <app-badge primary>スタッフモード</app-badge>
         </a>
