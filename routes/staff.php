@@ -144,6 +144,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{place}/edit', 'Staff\Places\EditAction')->name('edit');
                 Route::patch('/{place}', 'Staff\Places\UpdateAction')->name('update');
                 Route::delete('/{place}', 'Staff\Places\DestroyAction')->name('destroy');
+                Route::get('/export', 'Staff\Places\ExportAction')->name('export');
             });
 
         Route::prefix('/schedules')
