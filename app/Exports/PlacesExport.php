@@ -18,7 +18,7 @@ class PlacesExport implements FromCollection, WithHeadings, WithMapping
     }
 
     /**
-     * @var Place $place
+     * @param Place $place
      * @return array
      */
     public function map($place): array

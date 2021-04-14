@@ -28,21 +28,7 @@ class AnswersExport implements FromCollection, WithHeadings, WithMapping
     }
 
     /**
-     * @return array
-     */
-    public function headings(): array
-    {
-        return array_merge(
-            [
-                '回答ID',
-                '企画ID',
-                '企画名',
-            ],
-            $this->form->questions->sortBy('priority')->pluck('name')->toArray()
-        );
-    }
-
-    /**
+     * @param Answer $answer
      * @return array
      */
     public function map($answer): array
@@ -66,6 +52,21 @@ class AnswersExport implements FromCollection, WithHeadings, WithMapping
                 $answer->circle->name,
             ],
             $details
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function headings(): array
+    {
+        return array_merge(
+            [
+                '回答ID',
+                '企画ID',
+                '企画名',
+            ],
+            $this->form->questions->sortBy('priority')->pluck('name')->toArray()
         );
     }
 }

@@ -135,6 +135,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::patch('/{tag}', 'Staff\Tags\UpdateAction')->name('update');
                 Route::get('/{tag}/delete', 'Staff\Tags\DeleteAction')->name('delete');
                 Route::delete('/{tag}', 'Staff\Tags\DestroyAction')->name('destroy');
+                Route::get('/export', 'Staff\Tags\ExportAction')->name('export');
             });
 
         Route::prefix('/places')

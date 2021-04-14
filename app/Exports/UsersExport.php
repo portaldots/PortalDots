@@ -17,26 +17,10 @@ class UsersExport implements FromCollection, WithHeadings, WithMapping
         return User::all();
     }
 
-    public function headings(): array
-    {
-        return [
-            'ユーザーID',
-            '学籍番号',
-            '氏名',
-            '氏名（よみ）',
-            '連絡先メールアドレス',
-            '電話番号',
-            'スタッフ',
-            '管理者',
-            'メール認証',
-            '本人確認',
-            '最終アクセス',
-            'スタッフ用メモ',
-            '作成日時',
-            '更新日時',
-        ];
-    }
-
+    /**
+     * @param User $user
+     * @return array
+     */
     public function map($user): array
     {
         return [
@@ -54,6 +38,29 @@ class UsersExport implements FromCollection, WithHeadings, WithMapping
             $user->notes,
             $user->created_at,
             $user->updated_at,
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function headings(): array
+    {
+        return [
+            'ユーザーID',
+            '学籍番号',
+            '氏名',
+            '氏名（よみ）',
+            '連絡先メールアドレス',
+            '電話番号',
+            'スタッフ',
+            '管理者',
+            'メール認証',
+            '本人確認',
+            '最終アクセス',
+            'スタッフ用メモ',
+            '作成日時',
+            '更新日時',
         ];
     }
 }
