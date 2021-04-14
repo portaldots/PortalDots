@@ -90,6 +90,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             ->group(function () {
                 Route::get('/', 'Staff\Users\IndexAction')->name('index');
                 Route::get('/api', 'Staff\Users\ApiAction')->name('api');
+                Route::get('/export', 'Staff\Users\ExportAction')->name('export');
 
                 // 手動本人確認
                 Route::get('/{user}/verify', 'Staff\Users\VerifyConfirmAction')->name('verify');
