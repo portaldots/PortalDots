@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 申請管理')
+@section('title', '申請管理')
 
 @section('top_alert_props', 'container-fluid')
 
