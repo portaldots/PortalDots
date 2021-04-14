@@ -40,6 +40,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::post('/', 'Staff\Pages\StoreAction')->name('store');
                 Route::get('/{page}/edit', 'Staff\Pages\EditAction')->name('edit');
                 Route::patch('/{page}', 'Staff\Pages\UpdateAction')->name('update');
+                Route::get('/export', 'Staff\Pages\ExportAction')->name('export');
             });
 
         // 申請

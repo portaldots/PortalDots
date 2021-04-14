@@ -60,7 +60,7 @@
             </a>
             <a
                 class="btn is-primary-inverse is-no-shadow is-no-border"
-                href="{{ url('/home_staff/pages/export') }}"
+                href="{{ route('staff.pages.export') }}"
                 target="_blank"
                 rel="noopener noreferrer"
             >
