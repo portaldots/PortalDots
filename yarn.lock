@@ -997,7 +997,6 @@
 
 "@prettier/plugin-php@prettier/plugin-php#ed00e2a07851cfacba0f8648dc7b209be6b9e6b9":
   version "0.16.1"
-  uid ed00e2a07851cfacba0f8648dc7b209be6b9e6b9
   resolved "https://codeload.github.com/prettier/plugin-php/tar.gz/ed00e2a07851cfacba0f8648dc7b209be6b9e6b9"
   dependencies:
     linguist-languages "^7.5.1"
@@ -4347,7 +4346,7 @@ figures@^3.2.0:
   dependencies:
     escape-string-regexp "^1.0.5"
 
-file-entry-cache@^6.0.0, file-entry-cache@^6.0.1:
+file-entry-cache@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/file-entry-cache/-/file-entry-cache-6.0.1.tgz#211b2dd9659cb0394b073e7323ac3c933d522027"
   integrity sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==
@@ -7559,7 +7558,6 @@ php-parser@^3.0.0-prerelease.9:
 
 php-parser@czosel/php-parser#b55446b48a4a588e8b62c7f9085ce0e7cb3b70fa:
   version "3.0.2"
-  uid b55446b48a4a588e8b62c7f9085ce0e7cb3b70fa
   resolved "https://codeload.github.com/czosel/php-parser/tar.gz/b55446b48a4a588e8b62c7f9085ce0e7cb3b70fa"
 
 picomatch@^2.0.4, picomatch@^2.0.5, picomatch@^2.2.1:
