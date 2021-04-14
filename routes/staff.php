@@ -162,6 +162,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{schedule}/edit', 'Staff\Schedules\EditAction')->name('edit');
                 Route::patch('/{schedule}', 'Staff\Schedules\UpdateAction')->name('update');
                 Route::delete('/{schedule}', 'Staff\Schedules\DestroyAction')->name('destroy');
+                Route::get('/export', 'Staff\Schedules\ExportAction')->name('export');
             });
 
         // メール一斉送信
