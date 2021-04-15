@@ -144,110 +144,8 @@ class Home_staff extends MY_Controller
             return;
         }
 
-        $this->grocery_crud->set_table('forms');
-
-        // カスタムフォームは一覧に表示しない
-        $this->grocery_crud->where("NOT EXISTS (SELECT * FROM {$this->db->dbprefix}custom_forms WHERE form_id = {$this->db->dbprefix}forms.id)", null, false);
-
-        $this->grocery_crud->set_subject('フォーム');
-        $this->grocery_crud->display_as('id', 'フォームID');
-        $this->grocery_crud->display_as('name', 'フォーム名');
-        $this->grocery_crud->display_as('description', 'フォームの説明');
-        $this->grocery_crud->display_as('open_at', '受付開始日時');
-        $this->grocery_crud->display_as('close_at', '受付終了日時');
-        $this->grocery_crud->display_as('max_answers', '企画毎に回答可能とする回答数');
-
-        $this->grocery_crud->columns(
-            'id',
-            'name',
-            'description',
-            'tags',
-            'open_at',
-            'close_at',
-            'created_at',
-            'updated_at',
-            'max_answers',
-            'is_public',
-            'created_by'
-        );
-        $this->grocery_crud->fields(
-            'name',
-            'description',
-            'tags',
-            'open_at',
-            'close_at',
-            'created_at',
-            'updated_at',
-            'max_answers',
-            'is_public',
-            'created_by'
-        );
-        $this->grocery_crud->change_field_type('created_at', 'invisible');
-        $this->grocery_crud->change_field_type('updated_at', 'invisible');
-        $this->grocery_crud->change_field_type('created_by', 'invisible');
-
-        $this->grocery_crud->required_fields('name', 'open_at', 'close_at', 'type', 'is_public');
-
-        if ($this->grocery_crud->getstate() !== 'edit' && $this->grocery_crud->getstate() !== 'add') {
-            $this->grocery_crud->set_relation('created_by', 'users', '{student_id} {name_family} {name_given}');
-            $this->grocery_crud->display_as('tags', '回答可能な企画のタグ');
-        } else {
-            $this->grocery_crud->display_as('tags', '回答可能な企画のタグ(空欄の場合、全企画が回答可能)');
-        }
-
-        // フォームに回答可能なタグ一覧
-        $this->grocery_crud->set_relation_n_n('tags', 'form_answerable_tags', 'tags', 'form_id', 'tag_id', 'name');
-
-        // フォームタイプ表示
-        $this->grocery_crud->callback_column('type', array($this, '_crud_form_type'));
-
-        // フォームタイプ入力テキストボックス
-        $this->grocery_crud->field_type(
-            'type',
-            'dropdown',
-            ['booth' => 'booth:ブース申請', 'circle' => 'circle:サークル申請']
-        );
-
-        // 受付開始日時と終了日時のバリデーション
-        $this->grocery_crud->set_rules('close_at', '受付終了日時', 'callback__crud_form_check_dates['. $this->input->post('open_at', true). ']');
-
-        $this->grocery_crud->unset_delete();
-        $this->grocery_crud->set_editor();
-        $this->grocery_crud->set_copy_url();
-
-        $vars += (array)$this->grocery_crud->render();
-
-        $this->_render('home_staff/crud', $vars);
-    }
-
-    /**
-     * フォームタイプをわかりやすく表示させるための Grocery CRUD コールバック関数
-     */
-    public function _crud_form_type($value, $row)
-    {
-        if ($row->type === "booth") {
-            return $value = "ブース申請";
-        } elseif ($row->type === "circle") {
-            return $value = "サークル申請";
-        } else {
-            return $value = "(不正な値:{$row->type})";
-        }
-    }
-
-    /**
-     * フォームの受付終了日時が受付開始日時より後かどうかを判断するための Grocery CRUD コールバック関数
-     */
-    public function _crud_form_check_dates($close_at, $open_at)
-    {
-        $carbon_close_at = new CarbonImmutable($close_at);
-        $carbon_open_at = new CarbonImmutable($open_at);
-
-        if ($carbon_close_at->lte($carbon_open_at)) {
-            $this->form_validation->set_message('_crud_form_check_dates', '受付終了日時には、受付開始日時より後の日付を指定してください。');
-            return false;
-        }
-
-        return true;
+        // 申請フォーム一覧・編集ページは Laravel へ移行したため、CodeIgniter 側の申請フォーム一覧ページの実装は削除しました
+        show_404();
     }
 
     /**
@@ -771,15 +669,5 @@ class Home_staff extends MY_Controller
             }
         }
         parent::_render($template_filename, $vars, $file_type);
-    }
-
-    /**
-     * Grocery CRUD で set_relation した際に使用される内部的なカラム名を取得する
-     * @param string $field_name 内部的なカラム名を取得したい、テーブル上のカラム名
-     * @return string             内部的なカラム名
-     */
-    public function _unique_field_name($field_name)
-    {
-        return $this->grocery_crud->_unique_field_name($field_name);
     }
 }
