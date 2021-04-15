@@ -58,6 +58,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                         Route::get('/{answer}/uploads/{question}', 'Staff\Forms\Answers\Uploads\ShowAction')->name('uploads.show');
                         Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index');
                         Route::post('/uploads/download_zip', 'Staff\Forms\Answers\Uploads\DownloadZipAction')->name('uploads.download_zip');
+                        Route::get('/export', 'Staff\Forms\Answers\ExportAction')->name('export');
                     });
 
                 // 申請フォームエディタ
@@ -82,8 +83,6 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 // スタッフモードが Laravel 化したら CopyConfirmAction は消す。
                 Route::get('/copy', 'Staff\Forms\CopyConfirmAction')->name('copy');
                 Route::post('/copy', 'Staff\Forms\CopyAction');
-
-                Route::get('/export', 'Staff\Forms\Answers\ExportAction')->name('export');
             });
 
         Route::prefix('/users')

@@ -39,7 +39,7 @@ class ExportActionTest extends TestCase
     /**
      * @test
      */
-    public function 企画情報をダウンロードできる()
+    public function 企画情報をCSVでダウンロードできる()
     {
         Excel::fake();
         $this->actingAs($this->staff)

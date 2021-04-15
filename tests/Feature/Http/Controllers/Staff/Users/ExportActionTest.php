@@ -15,7 +15,14 @@ class ExportActionTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @var User
+     */
     private $staff;
+
+    /**
+     * @var User
+     */
     private $user;
 
     public function setUp(): void
@@ -31,7 +38,7 @@ class ExportActionTest extends TestCase
     /**
      * @test
      */
-    public function ユーザー情報をダウンロードできる()
+    public function ユーザー情報をCSVでダウンロードできる()
     {
         Excel::fake();
         $this->actingAs($this->staff)

@@ -13,6 +13,6 @@ class ExportAction extends Controller
     public function __invoke(Form $form)
     {
         $now = now()->format('Y-m-d_H-i-s');
-        return Excel::download(new AnswersExport($form), "Form_{$form->id}_{$now}.csv");
+        return Excel::download(new AnswersExport($form), "form_{$form->id}_{$now}.csv");
     }
 }
