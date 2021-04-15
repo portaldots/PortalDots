@@ -83,7 +83,7 @@ class ExportActionTest extends TestCase
             ->withSession(['staff_authorized' => true])
             ->get(route('staff.forms.answers.export', ['form' => $this->form]));
 
-        $now = now()->format('Y-m-d_H-i-s');
+        $now = Carbon::now()->format('Y-m-d_H-i-s');
 
         Excel::assertDownloaded("form_{$this->form->id}_{$now}.csv", function (AnswersExport $export) {
             return $export->collection()->first()->circle->name === $this->circle->name

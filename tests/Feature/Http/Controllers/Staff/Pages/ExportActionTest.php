@@ -47,7 +47,7 @@ class ExportActionTest extends TestCase
             ->withSession(['staff_authorized' => true])
             ->get(route('staff.pages.export'));
 
-        $now = now()->format('Y-m-d_H-i-s');
+        $now = Carbon::now()->format('Y-m-d_H-i-s');
 
         Excel::assertDownloaded("pages_{$now}.csv", function (PagesExport $export) {
             $titles = $this->pages->pluck('title');

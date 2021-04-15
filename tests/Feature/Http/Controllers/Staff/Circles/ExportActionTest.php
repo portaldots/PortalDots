@@ -46,7 +46,7 @@ class ExportActionTest extends TestCase
             ->withSession(['staff_authorized' => true])
             ->get('/staff/circles/export');
 
-        $now = now()->format('Y-m-d_H-i-s');
+        $now = Carbon::now()->format('Y-m-d_H-i-s');
 
         Excel::assertDownloaded("circles_{$now}.csv", function (CirclesExport $export) {
             return $export->collection()->contains('name', $this->circle->name)

@@ -45,7 +45,7 @@ class ExportActionTest extends TestCase
             ->withSession(['staff_authorized' => true])
             ->get(route('staff.users.export'));
 
-        $now = now()->format('Y-m-d_H-i-s');
+        $now = Carbon::now()->format('Y-m-d_H-i-s');
 
         Excel::assertDownloaded("users_{$now}.csv", function (UsersExport $export) {
             return $export->collection()->contains('name', $this->staff->name)
