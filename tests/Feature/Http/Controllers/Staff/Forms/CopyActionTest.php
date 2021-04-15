@@ -6,7 +6,6 @@ use App\Eloquents\Form;
 use App\Eloquents\User;
 use App\Services\Forms\FormsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Mockery;
 
