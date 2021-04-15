@@ -16,7 +16,8 @@
                 <list-view-empty icon-class="fas fa-users" text="未提出企画はありません"></list-view-empty>
             @else
                 @foreach ($circles as $circle)
-                    <list-view-item href="{{ url('/home_staff/circles/read/' . $circle->id) }}" newtab>
+                    {{-- TODO: 将来的には企画編集ページではなく企画詳細ページへリンクしたい --}}
+                    <list-view-item href="{{ route('staff.circles.edit', ['circle' => $circle->id]) }}" newtab>
                         <template v-slot:title>企画ID：{{ $circle->id }}　{{ $circle->name }}</template>
                     </list-view-item>
                 @endforeach

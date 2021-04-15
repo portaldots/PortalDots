@@ -82,11 +82,11 @@
 
     <h1 class="main__title">
       {% if form.custom_form is empty %}
-        <a href="{{ base_url("home_staff/applications") }}">申請管理</a>
+        <a href="{{ base_url("staff/forms") }}">申請管理</a>
         /
         {{ form.name }}
       {% elseif form.custom_form.type is same as('circle') %}
-        <a href="{{ base_url("home_staff/circles") }}">企画情報管理</a>
+        <a href="{{ base_url("staff/circles") }}">企画情報管理</a>
         /
         カスタムフォーム回答
       {% endif %}

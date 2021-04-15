@@ -41,7 +41,7 @@
                 <i class="far fa-file-alt drawer-nav__icon fa-fw"></i>
                 配布資料管理
             </a>
-            <a href="{{ url('/home_staff/applications') }}" class="drawer-nav__link{{ Request::is('staff/forms*') ? ' is-active' : '' }}" data-turbolinks="false">
+            <a href="{{ route('staff.forms.index') }}" class="drawer-nav__link{{ Request::is('staff/forms*') ? ' is-active' : '' }}">
                 <i class="far fa-edit drawer-nav__icon fa-fw"></i>
                 申請管理
             </a>

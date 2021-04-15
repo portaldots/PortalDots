@@ -727,7 +727,7 @@ class Home_staff extends MY_Controller
                 "applications" => [
                     "icon" => "pencil-square-o",
                     "name" => "申請管理",
-                    "url" => "home_staff/applications",
+                    "url" => "staff/forms",
                 ],
                 "schedules" => [
                     "icon" => "calendar",

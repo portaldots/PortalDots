@@ -47,7 +47,7 @@
                     <span class="px-spacing-sm">配布資料管理</span>
                 </template>
             </list-view-item>
-            <list-view-item href="{{ url('/home_staff/applications') }}" data-turbolinks="false">
+            <list-view-item href="{{ route('staff.forms.index') }}">
                 <template v-slot:title>
                     <i class="far fa-edit fa-lg text-muted fa-fw"></i>
                     <span class="px-spacing-sm">申請管理</span>
