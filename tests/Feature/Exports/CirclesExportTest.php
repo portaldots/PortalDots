@@ -32,6 +32,16 @@ class CirclesExportTest extends TestCase
     private $user;
 
     /**
+     * @var User
+     */
+    private $member;
+
+    /**
+     * @var User
+     */
+    private $anotherMember;
+
+    /**
      * @var Place
      */
     private $place;
@@ -57,6 +67,14 @@ class CirclesExportTest extends TestCase
             'name' => '企画 偉い人',
             'student_id' => '0123abc',
         ]);
+        $this->member = factory(User::class)->create([
+            'name' => '企画 運営',
+            'student_id' => '7890xyz',
+        ]);
+        $this->anotherMember = factory(User::class)->create([
+            'name' => '企画 手伝い',
+            'student_id' => '123123',
+        ]);
         $this->place = factory(Place::class)->create([
             'name' => '近くの川',
         ]);
@@ -65,6 +83,9 @@ class CirclesExportTest extends TestCase
         ]);
 
         $this->user->circles()->attach($this->circle->id, ['is_leader' => true]);
+        $this->member->circles()->attach($this->circle->id);
+        $this->anotherMember->circles()->attach($this->circle->id);
+
         $this->place->circles()->attach($this->circle->id);
         $this->tag->circles()->attach($this->circle->id);
     }
@@ -90,6 +111,7 @@ class CirclesExportTest extends TestCase
                 $this->circle->updated_at,
                 '川の案内をするらしい',
                 "企画 偉い人(ID:{$this->user->id},0123ABC)",
+                "企画 運営(ID:{$this->member->id},7890XYZ),企画 手伝い(ID:{$this->anotherMember->id},123123)",
             ],
             $this->circlesExport->map($this->circle)
         );
