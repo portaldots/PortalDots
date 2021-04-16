@@ -53,7 +53,10 @@ class CirclesExportTest extends TestCase
             'group_name_yomi' => 'ぞうせんどうこうかい',
             'notes' => '川の案内をするらしい'
         ]);
-        $this->user = factory(User::class)->create();
+        $this->user = factory(User::class)->create([
+            'name' => '企画 偉い人',
+            'student_id' => '0123abc',
+        ]);
         $this->place = factory(Place::class)->create([
             'name' => '近くの川',
         ]);
@@ -86,9 +89,7 @@ class CirclesExportTest extends TestCase
                 $this->circle->created_at,
                 $this->circle->updated_at,
                 '川の案内をするらしい',
-                $this->user->id,
-                $this->user->student_id,
-                $this->user->name,
+                "企画 偉い人(ID:{$this->user->id},0123ABC)",
             ],
             $this->circlesExport->map($this->circle)
         );

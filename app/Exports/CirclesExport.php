@@ -3,6 +3,8 @@
 namespace App\Exports;
 
 use App\Eloquents\Circle;
+use App\Eloquents\CustomForm;
+use App\Eloquents\Form;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -46,9 +48,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
             $circle->created_at,
             $circle->updated_at,
             $circle->notes,
-            $leader->id ?? null,
-            $leader->student_id ?? null,
-            $leader->name ?? null,
+            $leader ? "{$leader->name}(ID:{$leader->id},{$leader->student_id})" : '',
         ];
     }
 
@@ -71,9 +71,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
             '作成日時',
             '更新日時',
             'スタッフ用メモ',
-            '責任者 ユーザーID',
-            '責任者 学籍番号',
-            '責任者 氏名',
+            '責任者',
         ];
     }
 }
