@@ -14,7 +14,7 @@ class PagesExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Page::with('viewableTags', 'userCreatedBy', 'userUpdatedBy')->orderBy('id')->get();
+        return Page::with(['viewableTags', 'userCreatedBy', 'userUpdatedBy'])->orderBy('id')->get();
     }
 
     /**

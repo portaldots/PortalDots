@@ -14,7 +14,7 @@ class DocumentsExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Document::with('schedule', 'userCreatedBy', 'userUpdatedBy')->get();
+        return Document::with(['schedule', 'userCreatedBy', 'userUpdatedBy'])->get();
     }
 
     /**

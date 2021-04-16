@@ -24,7 +24,7 @@ class AnswersExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return $this->form->load('questions')->answers()->with('circle', 'details')->get();
+        return $this->form->load('questions')->answers()->with(['circle', 'details'])->get();
     }
 
     /**

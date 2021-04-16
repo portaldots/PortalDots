@@ -283,6 +283,7 @@ class Home_staff extends MY_Controller
         $this->grocery_crud->unset_delete();
         $this->grocery_crud->set_editor();
         $this->grocery_crud->set_copy_url();
+        $this->set_export_url(base_url('/staff/forms/export'));
 
         $vars += (array)$this->grocery_crud->render();
 

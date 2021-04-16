@@ -14,7 +14,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Circle::submitted()->with('leader', 'places', 'tags')->get();
+        return Circle::submitted()->with(['leader', 'places', 'tags'])->get();
     }
 
     /**
