@@ -35,9 +35,11 @@ class DocumentsExport implements FromCollection, WithHeadings, WithMapping
             $document->is_important ? 'はい' : 'いいえ',
             $document->notes,
             $document->created_at,
-            "{$document->userCreatedBy->name}(ID:{$document->userCreatedBy->id})",
+            "{$document->userCreatedBy->name}"
+            . "(ID:{$document->userCreatedBy->id},{$document->userCreatedBy->student_id})",
             $document->updated_at,
-            "{$document->userUpdatedBy->name}(ID:{$document->userUpdatedBy->id})",
+            "{$document->userUpdatedBy->name}"
+            . "(ID:{$document->userUpdatedBy->id},{$document->userUpdatedBy->student_id})",
         ];
     }
 

@@ -80,9 +80,9 @@ class DocumentsExportTest extends TestCase
                 'はい',
                 $this->document->notes,
                 $this->document->created_at,
-                "{$this->user->name}(ID:{$this->user->id})",
+                "{$this->user->name}(ID:{$this->user->id},{$this->user->student_id})",
                 $this->document->updated_at,
-                "{$this->user->name}(ID:{$this->user->id})",
+                "{$this->user->name}(ID:{$this->user->id},{$this->user->student_id})",
             ],
             $this->documentsExport->map($this->document)
         );

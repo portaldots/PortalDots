@@ -32,7 +32,7 @@ class FormsExport implements FromCollection, WithHeadings, WithMapping
             $form->is_public ? 'はい' : 'いいえ',
             $form->questions->sortBy('priority')->makeHidden(['form_id', 'priority'])->toJson(JSON_UNESCAPED_UNICODE),
             $form->created_at,
-            "{$form->userCreatedBy->name}(ID:{$form->userCreatedBy->id})",
+            "{$form->userCreatedBy->name}(ID:{$form->userCreatedBy->id},{$form->userCreatedBy->student_id})",
             $form->updated_at,
         ];
     }

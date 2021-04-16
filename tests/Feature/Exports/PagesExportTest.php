@@ -66,9 +66,9 @@ class PagesExportTest extends TestCase
                 $this->page->body,
                 $this->page->notes,
                 $this->page->created_at,
-                "野田 一郎(ID:{$this->staff->id})",
+                "野田 一郎(ID:{$this->staff->id},{$this->staff->student_id})",
                 $this->page->updated_at,
-                "野田 一郎(ID:{$this->staff->id})",
+                "野田 一郎(ID:{$this->staff->id},{$this->staff->student_id})",
             ],
             $this->pagesExport->map($this->page)
         );

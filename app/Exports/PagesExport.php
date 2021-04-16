@@ -30,9 +30,9 @@ class PagesExport implements FromCollection, WithHeadings, WithMapping
             $page->body,
             $page->notes,
             $page->created_at,
-            "{$page->userCreatedBy->name}(ID:{$page->userCreatedBy->id})",
+            "{$page->userCreatedBy->name}(ID:{$page->userCreatedBy->id},{$page->userCreatedBy->student_id})",
             $page->updated_at,
-            "{$page->userUpdatedBy->name}(ID:{$page->userUpdatedBy->id})",
+            "{$page->userUpdatedBy->name}(ID:{$page->userUpdatedBy->id},{$page->userUpdatedBy->student_id})",
         ];
     }
 

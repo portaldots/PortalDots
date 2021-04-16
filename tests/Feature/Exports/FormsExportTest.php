@@ -95,7 +95,7 @@ class FormsExportTest extends TestCase
                 'はい',
                 '[{"name":"ブースタイプ","type":"radio"},{"name":"ブース名","type":"text"}]',
                 $this->form->created_at,
-                "{$this->user->name}(ID:{$this->user->id})",
+                "{$this->user->name}(ID:{$this->user->id},{$this->user->student_id})",
                 $this->form->updated_at,
             ],
             $this->formsExport->map(
