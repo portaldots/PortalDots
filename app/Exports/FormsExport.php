@@ -15,7 +15,7 @@ class FormsExport implements FromCollection, WithHeadings, WithMapping
     public function collection()
     {
         return Form::withoutCustomForms()
-            ->with(['answerableTags', 'userCreatedBy', 'questions:form_id,name,type'])
+            ->with(['answerableTags', 'userCreatedBy', 'questions:form_id,name,type,priority'])
             ->get();
     }
 
@@ -30,7 +30,7 @@ class FormsExport implements FromCollection, WithHeadings, WithMapping
             $form->close_at,
             $form->max_answers,
             $form->is_public ? 'はい' : 'いいえ',
-            $form->questions->makeHidden('form_id')->toJson(JSON_UNESCAPED_UNICODE),
+            $form->questions->sortBy('priority')->makeHidden(['form_id', 'priority'])->toJson(JSON_UNESCAPED_UNICODE),
             $form->created_at,
             "{$form->userCreatedBy->name}(ID:{$form->userCreatedBy->id})",
             $form->updated_at,
