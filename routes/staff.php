@@ -189,6 +189,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/api', 'Staff\Documents\ApiAction')->name('api');
                 Route::get('/create', 'Staff\Documents\CreateAction')->name('create');
                 Route::post('/', 'Staff\Documents\StoreAction')->name('store');
+                Route::get('/export', 'Staff\Documents\ExportAction')->name('export');
                 Route::get('/{document}/edit', 'Staff\Documents\EditAction')->name('edit');
                 Route::patch('/{document}', 'Staff\Documents\UpdateAction')->name('update');
                 Route::get('/{document}', 'Staff\Documents\ShowAction')->name('show');
