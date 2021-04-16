@@ -16,7 +16,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Circle::submitted()->with(['leader', 'places', 'tags'])->get();
+        return Circle::submitted()->with(['leader', 'users', 'places', 'tags'])->get();
     }
 
     /**
@@ -25,6 +25,11 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
     public function map($circle): array
     {
         $leader = $circle->leader->first();
+        $members = [];
+
+        foreach ($circle->users->where('pivot.is_leader', false) as $member) {
+            $members[] = "{$member->name}(ID:{$member->id},{$member->student_id})";
+        }
 
         if ($circle->status === 'approved') {
             $status = '受理';
@@ -49,6 +54,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
             $circle->updated_at,
             $circle->notes,
             $leader ? "{$leader->name}(ID:{$leader->id},{$leader->student_id})" : '',
+            implode(',', $members),
         ];
     }
 
@@ -72,6 +78,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
             '更新日時',
             'スタッフ用メモ',
             '責任者',
+            '学園祭係',
         ];
     }
 }
