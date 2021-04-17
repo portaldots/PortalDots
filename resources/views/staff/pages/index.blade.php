@@ -60,6 +60,12 @@
             </a>
             <a
                 class="btn is-primary-inverse is-no-shadow is-no-border"
+                href="{{ route('staff.send_emails') }}"
+            >
+                メール配信設定
+            </a>
+            <a
+                class="btn is-primary-inverse is-no-shadow is-no-border"
                 href="{{ url('/home_staff/pages/export') }}"
                 target="_blank"
                 rel="noopener noreferrer"
