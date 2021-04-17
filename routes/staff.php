@@ -43,6 +43,19 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             });
 
         // 申請
+        Route::prefix('/forms')
+            ->name('forms.')
+            ->group(function () {
+                Route::get('/', 'Staff\Forms\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Forms\ApiAction')->name('api');
+                Route::get('/create', 'Staff\Forms\CreateAction')->name('create');
+                Route::post('/', 'Staff\Forms\StoreAction')->name('store');
+                Route::get('/{form}/edit', 'Staff\Forms\EditAction')->name('edit');
+                Route::patch('/{form}', 'Staff\Forms\UpdateAction')->name('update');
+                Route::delete('/{form}', 'Staff\Forms\DestroyAction')->name('destroy');
+            });
+
+        // 申請個別ページ
         Route::prefix('/forms/{form}')
             ->name('forms.')
             ->group(function () {

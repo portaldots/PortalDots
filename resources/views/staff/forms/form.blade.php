@@ -1,116 +1,154 @@
 @extends('layouts.app')
 
-@section('title', empty($page) ? '新規作成 — お知らせ' : "{$page->title} — お知らせ")
+@section('title', empty($form) ? '新規作成 — 申請' : "{$form->title} — 申請")
 
 @section('navbar')
-    <app-nav-bar-back href="{{ route('staff.pages.index') }}">
-        お知らせ管理
+    <app-nav-bar-back href="{{ route('staff.forms.index') }}">
+        申請管理
     </app-nav-bar-back>
 @endsection
 
 @section('content')
-    <form method="post" action="{{ empty($page) ? route('staff.pages.store') : route('staff.pages.update', $page) }}">
-        @method(empty($page) ? 'post' : 'patch' )
+    <form method="post" action="{{ empty($form) ? route('staff.forms.store') : route('staff.forms.update', $form) }}">
+        @method(empty($form) ? 'post' : 'patch' )
         @csrf
 
         <app-header>
-            @if (empty($page))
-                <template v-slot:title>お知らせを新規作成</template>
+            @if (empty($form))
+                <template v-slot:title>フォームを新規作成</template>
             @endif
-            @isset ($page)
-                <template v-slot:title>お知らせを編集</template>
-                <div>お知らせID : {{ $page->id }}</div>
+            @isset ($form)
+                <template v-slot:title>フォームを編集</template>
+                <div>フォームID : {{ $form->id }}</div>
             @endisset
         </app-header>
 
         <app-container>
+            @isset ($form)
+                <list-view>
+                    <list-view-action-btn href="{{ route('staff.forms.editor', ['form' => $form]) }}" icon-class="far fa-edit"
+                        newtab>
+                        フォームエディターを開く
+                    </list-view-action-btn>
+                </list-view>
+            @endisset
+
             <list-view>
-                <list-view-form-group label-for="title">
-                    <template v-slot:label>タイトル</template>
-                    <input id="title" class="form-control @error('title') is-invalid @enderror" type="text" name="title"
-                        value="{{ old('title', empty($page) ? '' : $page->title) }}" required>
-                    @if ($errors->has('title'))
+                <list-view-form-group label-for="name">
+                    <template v-slot:label>
+                        フォーム名
+                        <app-badge danger>必須</app-badge>
+                    </template>
+                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text" name="name"
+                        value="{{ old('name', empty($form) ? '' : $form->name) }}" required>
+                    @if ($errors->has('name'))
                         <template v-slot:invalid>
-                            @foreach ($errors->get('title') as $message)
+                            @foreach ($errors->get('name') as $message)
                                 {{ $message }}
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
+                <list-view-form-group label-for="max_answers">
+                    <template v-slot:label>
+                        企画毎に回答可能とする回答数
+                        <app-badge danger>必須</app-badge>
+                    </template>
+                    <template v-slot:description>
+                        通常は「1」にします。1企画がこのフォームに対し複数の回答を作成できるようにするには、2以上の値を入力してください。
+                    </template>
+                    <input id="name" class="form-control @error('max_answers') is-invalid @enderror" type="number" name="max_answers"
+                        value="{{ old('max_answers', empty($form) ? 1 : $form->max_answers) }}" required>
+                    @if ($errors->has('max_answers'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('max_answers') as $message)
+                                {{ $message }}
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
+                <list-view-form-group label-for="open_at">
+                    <template v-slot:label>
+                        受付開始日時
+                        <app-badge danger>必須</app-badge>
+                    </template>
+                    <template v-slot:description>
+                        フォームへの回答受付を開始する日時。
+                    </template>
+                    <input id="open_at" type="datetime-local" class="form-control @error('open_at') is-invalid @enderror"
+                        name="open_at"
+                        value="{{ old('open_at', isset($form) ? $form->open_at->format('Y-m-d\TH:i') : '') }}" required>
+                    @error('open_at')
+                    <template v-slot:invalid>{{ $message }}</template>
+                    @enderror
+                </list-view-form-group>
+                <list-view-form-group label-for="close_at">
+                    <template v-slot:label>
+                        受付終了日時
+                        <app-badge danger>必須</app-badge>
+                    </template>
+                    <template v-slot:description>
+                        フォームへの回答受付を終了する日時。
+                    </template>
+                    <input id="close_at" type="datetime-local" class="form-control @error('close_at') is-invalid @enderror"
+                        name="close_at"
+                        value="{{ old('close_at', isset($form) ? $form->close_at->format('Y-m-d\TH:i') : '') }}" required>
+                    @error('close_at')
+                    <template v-slot:invalid>{{ $message }}</template>
+                    @enderror
+                </list-view-form-group>
+                <list-view-form-group>
+                    <template v-slot:label>公開設定</template>
+                    <template v-slot:description>
+                        フォームの内容を公開した場合でも、上記の受付期間内ではない場合、ユーザーはフォームに回答したり、回答内容を編集したりできません。
+                    </template>
+
+                    <div class="form-checkbox">
+                        <label class="form-checkbox__label">
+                            <input id="is_public" type="checkbox"
+                                class="form-checkbox__input @error('is_public') is-invalid @enderror" name="is_public"
+                                value="1"
+                                {{ old('is_public', (isset($form) ? $form->is_public : false) === true) ? 'checked' : '' }}>
+                            公開する
+                        </label>
+                    </div>
+
+                    @error('is_public')
+                    <template v-slot:invalid>{{ $message }}</template>
+                    @enderror
+                </list-view-form-group>
+                <list-view-form-group>
+                    <template v-slot:label>フォームへ可能なユーザー</template>
+                    <template v-slot:description>
+                        空欄の場合、企画に所属するユーザー全員がフォームに回答できます。
+                        タグを指定した場合、指定したタグのうち、1つ以上該当する企画がフォームに回答できます。
+                    </template>
+                    <tags-input
+                        input-name="answerable_tags"
+                        placeholder="企画タグを指定"
+                        placeholder-empty="企画タグを指定 (空欄の場合、企画に所属するユーザー全員が回答可能)"
+                        v-bind:default-tags="{{ $default_tags }}"
+                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}"
+                        add-only-from-autocomplete
+                    ></tags-input>
+                    @if ($errors->has('answerable_tags'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('answerable_tags') as $message)
+                                <div>{{ $message }}</div>
                             @endforeach
                         </template>
                     @endif
                 </list-view-form-group>
                 <list-view-form-group>
                     <template v-slot:label>
-                        本文&nbsp;
+                        フォームの説明&nbsp;
                         <app-badge outline muted>Markdown</app-badge>
                     </template>
-                    <markdown-editor input-name="body" default-value="{{ old('body', empty($page) ? '' : $page->body) }}"></markdown-editor>
-                    @if ($errors->has('body'))
+                    <markdown-editor input-name="description" default-value="{{ old('description', empty($form) ? '' : $form->description) }}"></markdown-editor>
+                    @if ($errors->has('description'))
                         <template v-slot:invalid>
-                            @foreach ($errors->get('body') as $message)
+                            @foreach ($errors->get('description') as $message)
                                 {{ $message }}
-                            @endforeach
-                        </template>
-                    @endif
-                </list-view-form-group>
-            </list-view>
-
-            <list-view>
-                <list-view-form-group>
-                    <template v-slot:label>お知らせを閲覧可能なユーザー</template>
-                    <template v-slot:description>
-                        空欄の場合、未ログインユーザーを含む全員に公開されます。
-                        タグを指定した場合、指定したタグのうち、1つ以上該当する企画に公開されます。
-                    </template>
-                    <tags-input
-                        input-name="viewable_tags"
-                        placeholder="企画タグを指定"
-                        placeholder-empty="企画タグを指定 (空欄の場合すべてのユーザーに公開)"
-                        v-bind:default-tags="{{ $default_tags }}"
-                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}"
-                        add-only-from-autocomplete
-                    ></tags-input>
-                    @if ($errors->has('viewable_tags'))
-                        <template v-slot:invalid>
-                            @foreach ($errors->get('viewable_tags') as $message)
-                                <div>{{ $message }}</div>
-                            @endforeach
-                        </template>
-                    @endif
-                </list-view-form-group>
-            </list-view>
-
-            <list-view>
-                <list-view-form-group>
-                    <div class="form-checkbox">
-                        <label class="form-checkbox__label">
-                            <input class="form-checkbox__input" type="checkbox" name="send_emails" value="1">
-                            <strong>保存後にこのお知らせを「閲覧可能なユーザー」で指定したユーザー全員にメール配信</strong><br>
-                            <span class="text-muted">このお知らせを保存したタイミングでの内容が配信されます。お知らせを編集しても、メール配信が完了するまで編集内容は反映されません。</span>
-                        </label>
-                    </div>
-                    @if ($errors->has('send_emails'))
-                        <template v-slot:invalid>
-                            @foreach ($errors->get('send_emails') as $message)
-                                <div>{{ $message }}</div>
-                            @endforeach
-                        </template>
-                    @endif
-                </list-view-form-group>
-                <list-view-card>
-                    <i class="fas fa-exclamation-circle"></i>
-                    メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
-                </list-view-card>
-            </list-view>
-
-            <list-view>
-                <list-view-form-group label-for="notes">
-                    <template v-slot:label>スタッフ用メモ</template>
-                    <template v-slot:description>ここに入力された内容はスタッフのみ閲覧できます。スタッフ内で共有したい事項を残しておくメモとしてご活用ください。</template>
-                    <textarea id="notes" class="form-control @error('notes') is-invalid @enderror" name="notes"
-                        rows="5">{{ old('notes', empty($page) ? '' : $page->notes) }}</textarea>
-                    @if ($errors->has('notes'))
-                        <template v-slot:invalid>
-                            @foreach ($errors->get('notes') as $message)
-                                <div>{{ $message }}</div>
                             @endforeach
                         </template>
                     @endif
@@ -118,7 +156,11 @@
             </list-view>
 
             <div class="text-center pt-spacing-md pb-spacing">
+                @isset ($form)
                 <button type="submit" class="btn is-primary is-wide">保存</button>
+                @else
+                <button type="submit" class="btn is-primary is-wide">次に、フォームエディターで設問を作成する</button>
+                @endisset
             </div>
         </app-container>
     </form>

@@ -9,7 +9,7 @@
         api-url="{{ route('staff.forms.api') }}"
         v-bind:key-translations="{
             id: 'フォームID',
-            title: 'フォーム名',
+            name: 'フォーム名',
             answerableTags: '回答可能なタグ',
             description: 'フォームの説明',
             open_at: '受付開始日時',
@@ -32,7 +32,6 @@
             'created_by.created_at': '作成日時',
             'created_by.updated_at': '更新日時',
             updated_at: '更新日時',
-            notes: 'スタッフ用メモ',
         }"
     >
         <template v-slot:toolbar>
@@ -41,30 +40,29 @@
                 href="{{ route('staff.forms.create') }}"
             >
                 <i class="fas fa-plus fa-fw"></i>
-                新規お知らせ
-            </a>
-            <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
-                href="{{ url('/home_staff/forms/export') }}"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
-                <i class="fas fa-file-csv fa-fw"></i>
-                CSVで出力
+                新規フォーム
             </a>
         </template>
         <template v-slot:activities="{ row }">
-            <icon-button v-bind:href="`{{ route('staff.forms.edit', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])" title="編集">
+            <icon-button v-bind:href="`{{ route('staff.forms.edit', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="編集">
                 <i class="fas fa-pencil-alt fa-fw"></i>
+            </icon-button>
+            <icon-button v-bind:href="`{{ route('staff.forms.editor', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="フォームエディター" data-turbolinks="false">
+                <i class="far fa-edit fa-fw"></i>
+            </icon-button>
+            <icon-button v-bind:href="`{{ url('/home_staff/applications/read/%%FORM%%') }}`.replace('%%FORM%%', row['id'])" title="回答一覧" data-turbolinks="false">
+                <i class="far fa-eye fa-fw"></i>
+            </icon-button>
+            <icon-button v-bind:href="`{{ route('staff.forms.copy', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="複製">
+                <i class="far fa-copy fa-fw"></i>
             </icon-button>
         </template>
         <template v-slot:td="{ row, keyName }">
-            <template v-if="keyName === 'created_by' || keyName === 'updated_by'">
-                {{-- 作成者・更新者 --}}
+            <template v-if="keyName === 'created_by'">
+                {{-- 作成者 --}}
                 @{{ row[keyName].name_family  }} @{{ row[keyName].name_given  }} (@{{ row[keyName].student_id  }} • ID : @{{ row[keyName].id }})
             </template>
-            <template v-else-if="keyName === 'viewableTags'">
+            <template v-else-if="keyName === 'answerableTags'">
                 {{-- 閲覧可能なタグ --}}
                 <template v-for="tag in row[keyName]">
                     <app-badge primary strong v-bind:key="tag.id">
