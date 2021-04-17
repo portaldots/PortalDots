@@ -33,15 +33,17 @@ class AnswersExport implements FromCollection, WithHeadings, WithMapping
      */
     public function map($answer): array
     {
-        foreach ($this->form->questions->sortBy('priority') as $q) {
-            if ($q->type === 'upload') {
+        foreach ($this->form->questions->where('type', '!==', 'heading') as $question) {
+            if ($question->type === 'upload') {
                 $details[] = preg_replace(
                     '/^answer_details\//',
                     '',
-                    $answer->details->where('question_id', $q->id)->first()->answer ?? null
+                    $answer->details->where('question_id', $question->id)->first()->answer ?? null
                 );
+            } elseif ($question->type === 'checkbox') {
+                $details[] = $answer->details->where('question_id', $question->id)->implode('answer', ',');
             } else {
-                $details[] = $answer->details->where('question_id', $q->id)->first()->answer ?? null;
+                $details[] = $answer->details->where('question_id', $question->id)->first()->answer ?? null;
             }
         }
 
@@ -66,7 +68,7 @@ class AnswersExport implements FromCollection, WithHeadings, WithMapping
                 '企画ID',
                 '企画名',
             ],
-            $this->form->questions->sortBy('priority')->pluck('name')->toArray()
+            $this->form->questions->where('type', '!==', 'heading')->pluck('name')->toArray()
         );
     }
 }

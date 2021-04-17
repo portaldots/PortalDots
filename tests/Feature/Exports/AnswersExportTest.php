@@ -43,6 +43,16 @@ class AnswersExportTest extends TestCase
     private $upload_question;
 
     /**
+     * @var Question
+     */
+    private $checkbox_question;
+
+    /**
+     * @var Question
+     */
+    private $heading_question;
+
+    /**
      * @var Answer
      */
     private $answer;
@@ -71,7 +81,7 @@ class AnswersExportTest extends TestCase
 
         $this->question = factory(Question::class)->create([
             'form_id' => $this->form->id,
-            'priority' => 2,
+            'priority' => 3,
             'name' => 'せつもん',
         ]);
 
@@ -80,6 +90,20 @@ class AnswersExportTest extends TestCase
             'priority' => 1,
             'name' => 'あっぷろーど',
             'type' => 'upload',
+        ]);
+
+        $this->checkbox_question = factory(Question::class)->create([
+            'form_id' => $this->form->id,
+            'priority' => 4,
+            'name' => 'チェックボックス',
+            'type' => 'checkbox',
+        ]);
+
+        $this->heading_question = factory(Question::class)->create([
+            'form_id' => $this->form->id,
+            'priority' => 2,
+            'name' => '見出しです。',
+            'type' => 'heading',
         ]);
 
         $this->answer = factory(Answer::class)->create([
@@ -97,6 +121,18 @@ class AnswersExportTest extends TestCase
             'question_id' => $this->upload_question->id,
             'answer' => 'answer_details/TEST.png',
         ]);
+
+        factory(AnswerDetail::class)->create([
+            'answer_id' => $this->answer->id,
+            'question_id' => $this->checkbox_question->id,
+            'answer' => 'ひとつめ',
+        ]);
+
+        factory(AnswerDetail::class)->create([
+            'answer_id' => $this->answer->id,
+            'question_id' => $this->checkbox_question->id,
+            'answer' => 'ふたつめ',
+        ]);
     }
 
     /**
@@ -111,6 +147,7 @@ class AnswersExportTest extends TestCase
                 '片付けチェック見守ります',
                 'TEST.png',
                 $this->detail->answer,
+                'ひとつめ,ふたつめ',
             ],
             $this->answersExport->map($this->answer)
         );
@@ -128,6 +165,7 @@ class AnswersExportTest extends TestCase
                 '企画名',
                 'あっぷろーど',
                 'せつもん',
+                'チェックボックス',
             ],
             $this->answersExport->headings()
         );
