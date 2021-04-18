@@ -16,6 +16,13 @@ class UpdateAction extends Controller
         $user->name_yomi = $validated['name_yomi'];
         $user->email = $validated['email'];
         $user->tel = $validated['tel'];
+        $user->notes = $validated['notes'];
+
+        if (!empty($validated['user_type'])) {
+            $user->is_staff = in_array($validated['user_type'], ['staff', 'admin'], true);
+            $user->is_admin = $validated['user_type'] === 'admin';
+        }
+
         $user->save();
 
         return redirect()

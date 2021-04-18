@@ -87,40 +87,38 @@
 
             <list-view>
                 <template v-slot:title>ユーザー種別</template>
-                @if (Auth::id() !== $user->id)
-                    <list-view-form-group>
-                        <div class="form-radio">
-                            <label class="form-radio__label">
-                                <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios1" value="normal"
-                                    {{ old('user_type', !$user->is_staff && !$user->is_admin ? 'normal' : '') === 'normal' ? 'checked' : '' }}
-                                    {{ !Auth::user()->is_admin && $user->is_admin ? 'disabled' : '' }}>
-                                <strong>一般ユーザー</strong><br />
-                                <span class="text-muted">スタッフモードにアクセスできません。</span>
-                            </label>
-                            <label class="form-radio__label">
-                                <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios2" value="staff"
-                                    {{ old('user_type', $user->is_staff && !$user->is_admin ? 'staff' : '') === 'staff' ? 'checked' : '' }}
-                                    {{ !Auth::user()->is_admin && $user->is_admin ? 'disabled' : '' }}>
-                                <strong>スタッフ</strong><br />
-                                <span class="text-muted">スタッフモードにアクセスできます。</span>
-                            </label>
-                            <label class="form-radio__label">
-                                <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios3" value="admin"
-                                    {{ old('user_type', $user->is_staff && $user->is_admin ? 'admin' : '') === 'admin' ? 'checked' : '' }}
-                                    {{ Auth::user()->is_admin ? '' : 'disabled' }}>
-                                <strong>管理者</strong><br />
-                                <span class="text-muted">スタッフモードを含む{{ config('app.name') }}の全機能を利用できます。{{ config('app.name') }}のシステム設定を変更することができます。</span>
-                            </label>
-                        </div>
-                        @if ($errors->has('user_type'))
-                            <template v-slot:invalid>
-                                @foreach ($errors->get('user_type') as $message)
-                                    <div>{{ $message }}</div>
-                                @endforeach
-                            </template>
-                        @endif
-                    </list-view-form-group>
-                @endif
+                <list-view-form-group>
+                    <div class="form-radio">
+                        <label class="form-radio__label">
+                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios1" value="normal"
+                                {{ old('user_type', !$user->is_staff && !$user->is_admin ? 'normal' : '') === 'normal' ? 'checked' : '' }}
+                                {{ (!Auth::user()->is_admin && $user->is_admin) || Auth::id() === $user->id ? 'disabled' : '' }}>
+                            <strong>一般ユーザー</strong><br />
+                            <span class="text-muted">スタッフモードにアクセスできません。</span>
+                        </label>
+                        <label class="form-radio__label">
+                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios2" value="staff"
+                                {{ old('user_type', $user->is_staff && !$user->is_admin ? 'staff' : '') === 'staff' ? 'checked' : '' }}
+                                {{ (!Auth::user()->is_admin && $user->is_admin) || Auth::id() === $user->id ? 'disabled' : '' }}>
+                            <strong>スタッフ</strong><br />
+                            <span class="text-muted">スタッフモードにアクセスできます。</span>
+                        </label>
+                        <label class="form-radio__label">
+                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios3" value="admin"
+                                {{ old('user_type', $user->is_staff && $user->is_admin ? 'admin' : '') === 'admin' ? 'checked' : '' }}
+                                {{ Auth::user()->is_admin && Auth::id() !== $user->id ? '' : 'disabled' }}>
+                            <strong>管理者</strong><br />
+                            <span class="text-muted">スタッフモードを含む{{ config('app.name') }}の全機能を利用できます。{{ config('app.name') }}のシステム設定を変更することができます。</span>
+                        </label>
+                    </div>
+                    @if ($errors->has('user_type'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('user_type') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
                 <list-view-card>
                     @if (Auth::id() === $user->id)
                         <i class="fas fa-exclamation-circle"></i>
