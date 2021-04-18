@@ -16,11 +16,11 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Circle::submitted()->with(['leader', 'users', 'places', 'tags'])->get();
+        return Circle::submitted()->with(['leader', 'users', 'places', 'tags', 'statusSetBy'])->get();
     }
 
     /**
-    * @var Circle $circle
+    * @param Circle $circle
     */
     public function map($circle): array
     {
@@ -49,7 +49,10 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
             $circle->tags->implode('name', ','),
             $circle->submitted_at,
             $status,
-            $circle->status_set_by,
+            $circle->status_set_at,
+            $circle->statusSetBy
+            ? "{$circle->statusSetBy->name}(ID:{$circle->statusSetBy->id},{$circle->statusSetBy->student_id})"
+            : '',
             $circle->created_at,
             $circle->updated_at,
             $circle->notes,
@@ -73,7 +76,8 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
             'タグ',
             '参加登録提出日時',
             '登録受理状況',
-            '登録受理状況設定者ID',
+            '登録受理状況設定日時',
+            '登録受理状況設定ユーザー',
             '作成日時',
             '更新日時',
             'スタッフ用メモ',

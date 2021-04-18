@@ -22,6 +22,11 @@ class CirclesExportTest extends TestCase
     private $circlesExport;
 
     /**
+     * @var User
+     */
+    private $staff;
+
+    /**
      * @var Circle
      */
     private $circle;
@@ -56,12 +61,17 @@ class CirclesExportTest extends TestCase
         parent::setUp();
         $this->circlesExport = App::make(CirclesExport::class);
 
+        $this->staff = factory(User::class)->create([
+            'name' => '企画 チェック',
+            'student_id' => '9999999',
+        ]);
         $this->circle = factory(Circle::class)->create([
             'name' => '運河遊覧船',
             'name_yomi' => 'うんがゆうらんせん',
             'group_name' => '造船同好会',
             'group_name_yomi' => 'ぞうせんどうこうかい',
-            'notes' => '川の案内をするらしい'
+            'notes' => '川の案内をするらしい',
+            'status_set_by' => $this->staff->id,
         ]);
         $this->user = factory(User::class)->create([
             'name' => '企画 偉い人',
@@ -106,7 +116,8 @@ class CirclesExportTest extends TestCase
                 '特殊な企画',
                 $this->circle->submitted_at,
                 '受理',
-                null,
+                $this->circle->status_set_at,
+                "企画 チェック(ID:{$this->staff->id},9999999)",
                 $this->circle->created_at,
                 $this->circle->updated_at,
                 '川の案内をするらしい',
