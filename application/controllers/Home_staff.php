@@ -115,28 +115,6 @@ class Home_staff extends MY_Controller
     }
 
     /**
-     * 申請管理ページ
-     */
-    public function applications()
-    {
-        $vars = [];
-        $vars["page_title"] = "申請管理";
-        $vars["main_page_type"] = "applications";
-
-        $this->forms->include_private = true;
-
-        if ($this->uri->segment(3) === "read") {
-            // 個別表示の場合，Grocery CRUD を使用しない
-            $form_id = $this->uri->segment(4);
-            $mode = $this->uri->segment(5) ?? null;
-            return $this->_applications_read($form_id, $mode);
-        }
-
-        // 申請フォーム一覧・編集ページは Laravel へ移行したため、CodeIgniter 側の申請フォーム一覧ページの実装は削除しました
-        show_404();
-    }
-
-    /**
      * 申請フォーム情報ページ(個別表示)
      *
      * applications/read/:id として使用
@@ -172,12 +150,6 @@ class Home_staff extends MY_Controller
         switch ($mode) {
             case "csv":
                 $this->_application_read_csv($vars);
-                break;
-            case "print":
-                $this->_render('home_staff/applications_read_print', $vars);
-                break;
-            case null:
-                $this->_render('home_staff/applications_read', $vars);
                 break;
             default:
                 $this->_error("エラー", "このページは存在しません。", 404);
