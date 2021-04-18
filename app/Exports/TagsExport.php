@@ -14,7 +14,7 @@ class TagsExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Tag::with('circles:id,name')->get();
+        return Tag::with('circles')->get();
     }
 
     /**
@@ -23,13 +23,39 @@ class TagsExport implements FromCollection, WithHeadings, WithMapping
      */
     public function map($tag): array
     {
-        return [
-            $tag->id,
-            $tag->name,
-            $tag->created_at,
-            $tag->updated_at,
-            $tag->circles->makeHidden('pivot')->toJson(JSON_UNESCAPED_UNICODE),
-        ];
+        $firstCircle = $tag->circles->shift();
+        $circles = [];
+
+        foreach ($tag->circles as $circle) {
+            $circles[] = [
+                null,
+                null,
+                null,
+                null,
+                $circle->id,
+                $circle->name,
+                $circle->name_yomi,
+                $circle->group_name,
+                $circle->group_name_yomi,
+            ];
+        }
+
+        return array_merge(
+            [
+                [
+                    $tag->id,
+                    $tag->name,
+                    $tag->created_at,
+                    $tag->updated_at,
+                    $firstCircle->id,
+                    $firstCircle->name,
+                    $firstCircle->name_yomi,
+                    $firstCircle->group_name,
+                    $firstCircle->group_name_yomi,
+                ]
+            ],
+            $circles
+        );
     }
 
     /**
@@ -42,7 +68,11 @@ class TagsExport implements FromCollection, WithHeadings, WithMapping
             'タグ',
             '作成日時',
             '更新日時',
-            '付与されている企画',
+            '企画ID',
+            '企画名',
+            '企画名（よみ）',
+            '企画を出店する団体の名称',
+            '企画を出店する団体の名称（よみ）',
         ];
     }
 }

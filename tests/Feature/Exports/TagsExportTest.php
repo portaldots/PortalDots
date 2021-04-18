@@ -10,6 +10,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
+use function PHPSTORM_META\map;
+
 class TagsExportTest extends TestCase
 {
     use RefreshDatabase;
@@ -41,9 +43,15 @@ class TagsExportTest extends TestCase
         $this->tagsExport = App::make(TagsExport::class);
         $this->circle = factory(Circle::class)->create([
             'name' => 'タグがついた企画',
+            'name_yomi' => 'たぐがついたきかく',
+            'group_name' => '商品タグ愛好会',
+            'group_name_yomi' => 'しょうひんたぐあいこうかい',
         ]);
         $this->anotherCircle = factory(Circle::class)->create([
             'name' => 'タグをつけられた企画',
+            'name_yomi' => 'たぐをつけられたきかく',
+            'group_name' => '企画タグつけてほしい団体',
+            'group_name_yomi' => 'きかくたぐつけてほしいだんたい',
         ]);
         $this->tag = factory(Tag::class)->create([
             'name' => 'ぼくタグです',
@@ -62,14 +70,30 @@ class TagsExportTest extends TestCase
     {
         $this->assertEquals(
             [
-                $this->tag->id,
-                'ぼくタグです',
-                $this->tag->created_at,
-                $this->tag->updated_at,
-                "[{\"id\":{$this->circle->id},\"name\":\"タグがついた企画\"},"
-                . "{\"id\":{$this->anotherCircle->id},\"name\":\"タグをつけられた企画\"}]",
+                [
+                    $this->tag->id,
+                    'ぼくタグです',
+                    $this->tag->created_at,
+                    $this->tag->updated_at,
+                    $this->circle->id,
+                    'タグがついた企画',
+                    'たぐがついたきかく',
+                    '商品タグ愛好会',
+                    'しょうひんたぐあいこうかい',
+                ],
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    $this->anotherCircle->id,
+                    'タグをつけられた企画',
+                    'たぐをつけられたきかく',
+                    '企画タグつけてほしい団体',
+                    'きかくたぐつけてほしいだんたい',
+                ]
             ],
-            $this->tagsExport->map($this->tag->load('circles:id,name'))
+            $this->tagsExport->map($this->tag->load('circles'))
         );
     }
 }
