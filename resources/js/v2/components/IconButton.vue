@@ -24,7 +24,7 @@ export default {
       default: false
     },
     title: {
-      type: Boolean,
+      type: String,
       required: true
     },
     newtab: {
