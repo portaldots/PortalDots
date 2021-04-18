@@ -13,6 +13,6 @@ class ExportAction extends Controller
     public function __invoke()
     {
         $now = Carbon::now()->format('Y-m-d_H-i-s');
-        return Excel::download(new TagsExport(), "tags_{$now}.csv");
+        return Excel::download(new TagsExport(), "企画タグ一覧_{$now}.csv");
     }
 }

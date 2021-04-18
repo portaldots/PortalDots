@@ -14,6 +14,6 @@ class ExportAction extends Controller
     public function __invoke(Form $form)
     {
         $now = Carbon::now()->format('Y-m-d_H-i-s');
-        return Excel::download(new AnswersExport($form), "form_{$form->id}_{$now}.csv");
+        return Excel::download(new AnswersExport($form), "{$form->name}_回答一覧_{$now}.csv");
     }
 }

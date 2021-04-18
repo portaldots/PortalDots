@@ -61,7 +61,7 @@ class ExportActionTest extends TestCase
 
         $now = Carbon::now()->format('Y-m-d_H-i-s');
 
-        Excel::assertDownloaded("places_{$now}.csv", function (PlacesExport $export) {
+        Excel::assertDownloaded("場所一覧_{$now}.csv", function (PlacesExport $export) {
             return $export->collection()->contains('name', 'E208')
                 && $export->collection()->contains('name', 'E209');
         });

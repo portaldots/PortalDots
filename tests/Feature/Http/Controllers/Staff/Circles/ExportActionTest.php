@@ -48,7 +48,7 @@ class ExportActionTest extends TestCase
 
         $now = Carbon::now()->format('Y-m-d_H-i-s');
 
-        Excel::assertDownloaded("circles_{$now}.csv", function (CirclesExport $export) {
+        Excel::assertDownloaded("企画一覧_{$now}.csv", function (CirclesExport $export) {
             return $export->collection()->contains('name', $this->circle->name)
                 && $export->collection()->contains('name', '<>', $this->circle_not_submitted->name);
         });

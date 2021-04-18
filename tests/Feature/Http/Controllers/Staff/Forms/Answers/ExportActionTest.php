@@ -60,7 +60,9 @@ class ExportActionTest extends TestCase
 
         $this->circle = factory(Circle::class)->create();
 
-        $this->form = factory(Form::class)->create();
+        $this->form = factory(Form::class)->create([
+            'name' => '備品貸出',
+        ]);
         $this->question = factory(Question::class)->create([
             'form_id' => $this->form->id,
         ]);
@@ -85,7 +87,7 @@ class ExportActionTest extends TestCase
 
         $now = Carbon::now()->format('Y-m-d_H-i-s');
 
-        Excel::assertDownloaded("form_{$this->form->id}_{$now}.csv", function (AnswersExport $export) {
+        Excel::assertDownloaded("備品貸出_回答一覧_{$now}.csv", function (AnswersExport $export) {
             return $export->collection()->first()->circle->name === $this->circle->name
                 && $export->collection()->first()->details->contains('answer', $this->detail->answer);
         });
