@@ -132,18 +132,6 @@ class Home_staff extends MY_Controller
             return $this->_applications_read($form_id, $mode);
         }
 
-        if ($this->uri->segment(3) === "preview") {
-            // フォームプレビュー
-            $form_id = $this->uri->segment(4);
-            $vars["form"] = $this->forms->get_form_by_form_id($form_id);
-            $vars["is_preview"] = true;
-            if ($vars["form"] === false) {
-                $this->_error("申請フォームエラー", "このフォームは存在しません。", 404);
-            }
-            $this->_render('home_staff/applications_form', $vars);
-            return;
-        }
-
         // 申請フォーム一覧・編集ページは Laravel へ移行したため、CodeIgniter 側の申請フォーム一覧ページの実装は削除しました
         show_404();
     }
