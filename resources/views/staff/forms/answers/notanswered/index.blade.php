@@ -3,7 +3,7 @@
 @section('title', '未提出企画一覧')
 
 @section('navbar')
-    <app-nav-bar-back href="{{ url('home_staff/applications/read/' . $form->id) }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ route('staff.forms.answers.index', ['form' => $form]) }}">
         {{ $form->name }}
     </app-nav-bar-back>
 @endsection

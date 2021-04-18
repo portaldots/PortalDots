@@ -4,9 +4,54 @@
 
 @section('top_alert_props', 'container-fluid')
 
+@section('navbar')
+    <app-nav-bar-back href="{{ route('staff.forms.index') }}">
+        申請管理
+    </app-nav-bar-back>
+@endsection
+
 @section('content')
+    <app-header container-fluid>
+        <template v-slot:title>
+            {{ $form->name }}
+            @if ($form->is_public)
+                <app-badge success strong>公開</app-badge>
+            @else
+                <app-badge danger strong>非公開</app-badge>
+            @endif
+        </template>
+        <div data-turbolinks="false" class="markdown">
+            <p class="text-muted">
+                受付期間 : @datetime($form->open_at)〜@datetime($form->close_at)
+                @if (!$form->isOpen())
+                    —
+                    <strong class="text-danger">
+                        <i class="fas fa-info-circle"></i>
+                        受付期間外
+                    </strong>
+                @endif
+                <br />
+                @if (!$form->answerableTags->isEmpty())
+                    回答可能なタグ :
+                    {{ $form->answerableTags->implode('name', ',') }}
+                @else
+                    全体に公開 — 企画に所属しているユーザー全員が回答可能
+                @endif
+            </p>
+            @markdown($form->description)
+        </div>
+        <hr />
+        <a
+            class="btn is-primary"
+            href="{{ route('staff.forms.edit', ['form' => $form]) }}"
+            data-turbolinks="false"
+        >
+            <i class="fas fa-pencil-alt fa-fw"></i>
+            フォームを編集
+        </a>
+    </app-header>
     <staff-grid
-        api-url="{{ route('staff.forms.api') }}"
+        api-url="{{ route('staff.forms.answers.api', ['form' => $form]) }}"
         v-bind:key-translations="{
             id: 'フォームID',
             name: 'フォーム名',
@@ -37,10 +82,33 @@
         <template v-slot:toolbar>
             <a
                 class="btn is-primary"
-                href="{{ route('staff.forms.create') }}"
+                href="{{ route('staff.forms.answers.create', ['form' => $form]) }}"
             >
                 <i class="fas fa-plus fa-fw"></i>
-                新規フォーム
+                新規回答
+            </a>
+            <a
+                class="btn is-primary-inverse is-no-shadow is-no-border"
+                href="{{ url("/home_staff/applications/read/{$form->id}/csv") }}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
+                <i class="fas fa-file-csv fa-fw"></i>
+                CSVで出力
+            </a>
+            <a
+                class="btn is-primary-inverse is-no-shadow is-no-border"
+                href="{{ route('staff.forms.answers.uploads.index', ['form' => $form]) }}"
+            >
+                <i class="far fa-file-archive fa-fw"></i>
+                ファイルを一括ダウンロード
+            </a>
+            <a
+                class="btn is-primary-inverse is-no-shadow is-no-border"
+                href="{{ route('staff.forms.not_answered', ['form' => $form]) }}"
+            >
+                未提出企画を表示
             </a>
         </template>
         <template v-slot:activities="{ row }">
@@ -50,7 +118,7 @@
             <icon-button v-bind:href="`{{ route('staff.forms.editor', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="フォームエディター" data-turbolinks="false">
                 <i class="far fa-edit fa-fw"></i>
             </icon-button>
-            <icon-button v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="回答一覧">
+            <icon-button v-bind:href="`{{ url('/home_staff/applications/read/%%FORM%%') }}`.replace('%%FORM%%', row['id'])" title="回答一覧" data-turbolinks="false">
                 <i class="far fa-eye fa-fw"></i>
             </icon-button>
             <icon-button v-bind:href="`{{ route('staff.forms.copy', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="複製">

@@ -20,6 +20,8 @@ class CopyAction extends Controller
     {
         $form_copy = $this->formsService->copyForm($form, Auth::user());
 
-        return redirect("/home_staff/applications/read/{$form_copy->id}?copied=1");
+        return redirect()
+            ->route('staff.forms.answers.index', ['form' => $form_copy])
+            ->with('topAlert.title', 'フォームを複製しました');
     }
 }

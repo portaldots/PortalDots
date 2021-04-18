@@ -63,6 +63,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::prefix('/answers')
                     ->name('answers.')
                     ->group(function () {
+                        Route::get('/', 'Staff\Forms\Answers\IndexAction')->name('index');
+                        Route::get('/api', 'Staff\Forms\Answers\ApiAction')->name('api');
                         Route::get('/{answer}/edit', 'Staff\Forms\Answers\EditAction')->name('edit');
                         Route::patch('/{answer}', 'Staff\Forms\Answers\UpdateAction')->name('update');
                         Route::get('/create', 'Staff\Forms\Answers\CreateAction')->name('create');
@@ -87,7 +89,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                         Route::post('/api/delete_question', 'Staff\Forms\Editor\DeleteQuestionAction');
                     });
 
-                Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction');
+                Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction')->name('not_answered');
 
                 Route::get('/preview', 'Staff\Forms\PreviewAction')->name('preview');
 
