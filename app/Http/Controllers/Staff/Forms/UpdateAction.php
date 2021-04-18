@@ -26,6 +26,11 @@ class UpdateAction extends Controller
 
     public function __invoke(FormRequest $request, Form $form)
     {
+        // カスタムフォームのフォーム情報は修正禁止
+        if (isset($form->customForm)) {
+            return abort(400);
+        }
+
         $values = $request->validated();
 
         DB::transaction(function () use ($values, $form) {
