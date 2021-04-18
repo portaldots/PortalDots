@@ -89,6 +89,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
 
                 Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction');
 
+                Route::get('/preview', 'Staff\Forms\PreviewAction')->name('preview');
+
                 // フォームの複製
                 // TODO: CopyConfirmAction は、CodeIgniter から CopyAction へ直接 POST できない都合で挟んだクッションページなので、
                 // スタッフモードが Laravel 化したら CopyConfirmAction は消す。

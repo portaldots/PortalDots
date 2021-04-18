@@ -154,7 +154,7 @@
                         <li>変更 : {{ form.updated_at }}</li>
                     </ul>
                     {% if form.custom_form is empty %}
-                      <a href="{{ base_url("home_staff/applications/preview/#{form.id}") }}"
+                      <a href="{{ base_url("staff/forms/#{form.id}/preview") }}"
                         class="btn btn-info btn-wide">
                           <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
                           フォームをプレビュー
