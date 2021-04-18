@@ -56,7 +56,7 @@
             @if (Auth::user()->is_admin)
                 <a href="{{ route('admin.portal.edit') }}" class="drawer-nav__link{{ Request::is('admin/portal*') ? ' is-active' : '' }}">
                     <i class="fas fa-cog drawer-nav__icon fa-fw"></i>
-                    ポータル情報設定
+                    PortalDots の設定
                     <app-badge danger>管理者</app-badge>
                 </a>
             @endif

@@ -70,7 +70,7 @@
                     <template v-slot:title>
                         <i class="fas fa-cog fa-lg text-muted fa-fw"></i>
                         <span class="px-spacing-sm">
-                            ポータル情報設定
+                            PortalDots の設定
                             <app-badge danger>管理者</app-badge>
                         </span>
                     </template>

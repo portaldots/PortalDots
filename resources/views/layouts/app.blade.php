@@ -100,7 +100,7 @@
             </div>
             <app-footer>{{ config('app.name') }}</app-footer>
         </div>
-        @if (!Request::is('staff*'))
+        @if (!Request::is('staff*') && !Request::is('admin*'))
             @section('bottom_tabs')
                 @include('includes.bottom_tabs')
             @show

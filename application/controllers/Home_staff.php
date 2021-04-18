@@ -588,7 +588,7 @@ class Home_staff extends MY_Controller
                 $vars["_sidebar_menu"]["system"] =
                     [
                         "icon" => "gear",
-                        "name" => "ポータル情報設定(管理者)",
+                        "name" => "PortalDots の設定(管理者)",
                         "url" => "admin/portal",
                     ];
             } else {
