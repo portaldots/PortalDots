@@ -7,11 +7,9 @@ namespace App\Http\Controllers\Staff\Pages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\Pages\PageRequest;
 use App\Services\Pages\PagesService;
-use App\Services\Emails\SendEmailService;
-use App\Eloquents\User;
 use App\Eloquents\Page;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UpdateAction extends Controller
 {

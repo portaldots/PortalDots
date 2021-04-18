@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', empty($form) ? '新規作成 — 申請' : "{$form->title} — 申請")
+@section('title', empty($form) ? '新規作成 — 申請' : "{$form->name} — 申請")
 
 @section('navbar')
     <app-nav-bar-back href="{{ route('staff.forms.index') }}">

@@ -4,46 +4,44 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Staff\Forms;
 
+use App\Eloquents\Form;
 use App\Http\Controllers\Controller;
-use Auth;
-use DB;
+use App\Http\Requests\Staff\Forms\FormRequest;
+use App\Services\Forms\FormsService;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class StoreAction extends Controller
 {
-    // /**
-    //  * @var FormEditorService
-    //  */
-    // private $pagesService;
+    /**
+     * @var FormsService
+     */
+    private $formsService;
 
-    // public function __construct(FormEditorService $pagesService)
-    // {
-    //     $this->pagesService = $pagesService;
-    // }
-
-    public function __invoke()
+    public function __construct(FormsService $formsService)
     {
-        //     $values = $request->validated();
+        $this->formsService = $formsService;
+    }
 
-    //     DB::transaction(function () use ($values) {
-    //         $page = $this->pagesService->createForm(
-    //             $values['title'],
-    //             $values['body'],
-    //             Auth::user(),
-    //             $values['notes'] ?? '',
-    //             $values['viewable_tags'] ?? []
-    //         );
+    public function __invoke(FormRequest $request)
+    {
+        $values = $request->validated();
 
-    //         if ($values['send_emails'] ?? false) {
-    //             // 一斉送信をオンにした場合
-    //             $this->pagesService->sendEmailsByForm($page);
-    //         }
-    //     });
+        return DB::transaction(function () use ($values) {
+            $form = $this->formsService->createForm(
+                $values['name'],
+                $values['description'] ?? '',
+                new Carbon($values['open_at']),
+                new Carbon($values['close_at']),
+                Auth::user(),
+                (int)$values['max_answers'] ?? 1,
+                isset($values['is_public']) && $values['is_public'] === "1",
+                $values['answerable_tags'] ?? []
+            );
 
-    //     return redirect()
-    //         ->route('staff.pages.create')
-    //         ->with('topAlert.title', 'お知らせを作成しました')
-    //         ->with('topAlert.body', ($values['send_emails'] ?? false)
-    //             ? 'また、このお知らせの一斉送信を予約しました'
-    //             : null);
+            return redirect()
+                ->route('staff.forms.editor', ['form' => $form]);
+        });
     }
 }
