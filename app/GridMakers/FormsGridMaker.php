@@ -35,6 +35,7 @@ class FormsGridMaker implements GridMakable
         return Form::select([
             'id',
             'name',
+            'is_public',
             'description',
             'open_at',
             'close_at',
@@ -52,6 +53,7 @@ class FormsGridMaker implements GridMakable
         return [
             'id',
             'name',
+            'is_public',
             'answerableTags',
             'description',
             'open_at',
@@ -96,6 +98,7 @@ class FormsGridMaker implements GridMakable
         return new FilterableKeysDict([
             'id' => FilterableKey::number(),
             'name' => FilterableKey::string(),
+            'is_public' => FilterableKey::bool(),
             'answerableTags' => FilterableKey::belongsToMany(
                 'form_answerable_tags',
                 'form_id',
@@ -120,6 +123,7 @@ class FormsGridMaker implements GridMakable
         return [
             'id',
             'name',
+            'is_public',
             'description',
             'open_at',
             'close_at',

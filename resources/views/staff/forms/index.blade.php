@@ -10,6 +10,7 @@
         v-bind:key-translations="{
             id: 'フォームID',
             name: 'フォーム名',
+            is_public: '公開',
             answerableTags: '回答可能なタグ',
             description: 'フォームの説明',
             open_at: '受付開始日時',
