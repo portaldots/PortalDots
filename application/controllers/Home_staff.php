@@ -272,34 +272,6 @@ class Home_staff extends MY_Controller
     }
 
     /**
-     * 回答個別表示
-     */
-    public function applications_answer_read($answer_id)
-    {
-        $vars = [];
-        $vars["page_title"] = "申請管理";
-        $vars["main_page_type"] = "applications";
-
-        $this->forms->include_private = true;
-
-        // 回答情報を取得する
-        $answer = $this->forms->get_answer_by_answer_id($answer_id);
-        if ($answer !== false) {
-            // 存在する場合
-            $vars["form"] = $this->forms->get_form_by_form_id($answer->form_id);
-            $vars["answer_info"] = $answer;
-            $vars["answers"] = $answer->answers;
-            $vars["next_answer"] = $this->forms->next_answer($answer_id, $vars["form"]->id);
-            $vars["prev_answer"] = $this->forms->prev_answer($answer_id, $vars["form"]->id);
-        } else {
-            // 存在しない場合
-            show_404();
-        }
-
-        $this->_render('home_staff/applications_answer_read', $vars);
-    }
-
-    /**
      * ユーザー権限管理ページ( Admin によるアクセスのみを許可する )
      */
     public function roles()
