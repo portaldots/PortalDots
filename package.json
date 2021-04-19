@@ -76,7 +76,7 @@
         "resolve-url-loader": "^3.1.2",
         "sass": "^1.32.8",
         "sass-loader": "^11.0.1",
-        "sass-resources-loader": "^2.1.1",
+        "sass-resources-loader": "^2.2.1",
         "shx": "^0.3.3",
         "stylelint": "^13.12.0",
         "stylelint-config-prettier": "^8.0.2",
