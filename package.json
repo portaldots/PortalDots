@@ -87,7 +87,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.15.2",
+        "@fortawesome/fontawesome-free": "^5.15.3",
         "@johmun/vue-tags-input": "^2.1.0",
         "axios": "^0.21",
         "bootstrap": "^4.6.0",
