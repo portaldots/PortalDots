@@ -18,6 +18,7 @@
         "maatwebsite/excel": "^3.1",
         "phpgangsta/googleauthenticator": "dev-master",
         "simplesoftwareio/simple-qrcode": "~4",
+        "spatie/laravel-permission": "^4.0",
         "twig/twig": "^2.0",
         "vlucas/phpdotenv": "^3.3"
     },
