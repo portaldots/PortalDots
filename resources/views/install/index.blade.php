@@ -2,6 +2,10 @@
 
 @section('title', 'PortalDots のインストール')
 
+@prepend('meta')
+<meta name="robots" content="noindex">
+@endprepend
+
 @section('content')
     @include('includes.install_header')
 
