@@ -445,50 +445,6 @@ class Home_staff extends MY_Controller
         }
     }
 
-    /**
-     * スタッフ認証ページ
-     */
-    public function verify_access()
-    {
-        $vars = [];
-        $vars["main_page_type"] = "verify_access";
-        $vars["xs_navbar_title"] = "スタッフ認証";
-        $vars["xs_navbar_back"] = true; // 戻るボタンを表示
-
-        if ($this->input->method() !== "post") {
-            // POST でないとき
-            // 認証コードを作成して送付
-            $code = random_int(100000, 999999);
-            $_SESSION["staff_verify_code"] = $code;
-
-            $vars_email = [];
-            $vars_email["name_to"] = $this->_get_login_user()->name_family . " " . $this->_get_login_user()->name_given;
-            $vars_email["verify_code"] = $code;
-            $this->_send_email(
-                $this->_get_login_user()->email,
-                "スタッフ用認証コード送付",
-                'email/verify_staff',
-                $vars_email
-            );
-        } else {
-            // POST のとき
-            $code_on_session = isset($_SESSION["staff_verify_code"]) ? $_SESSION["staff_verify_code"] : null;
-            unset($_SESSION["staff_verify_code"]);
-
-            if (isset($code_on_session) &&
-                (int)$code_on_session === (int)$this->input->post("verify_code")) {
-                // 認証成功
-                $_SESSION['staff_authorized'] = true;
-                codeigniter_redirect("staff");
-            } else {
-                // 認証失敗
-                $this->_error("認証失敗", "入力されたコードが間違っています。");
-            }
-        }
-
-        $this->_render('home_staff/verify_access', $vars);
-    }
-
     public function _render($template_filename, $vars = [], $file_type = 'html')
     {
         $vars["_home_type"] = "staff"; // staff or default
@@ -502,7 +458,7 @@ class Home_staff extends MY_Controller
         // メールによる２段階認証が完了していない場合，ログイン画面を表示する
         if (isset($vars["main_page_type"]) && $vars["main_page_type"] !== "verify_access"
             && (!isset($_SESSION['staff_authorized']) || $_SESSION['staff_authorized'] === false)) {
-            codeigniter_redirect("home_staff/verify_access");
+            codeigniter_redirect("staff/verify");
         }
 
         // xs_main_title をセット
