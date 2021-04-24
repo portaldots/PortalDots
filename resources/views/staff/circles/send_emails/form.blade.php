@@ -18,6 +18,11 @@
                 <input type="text" id="circle" readonly value="{{ $circle->name }}" class="form-control is-plaintext">
             </list-view-form-group>
 
+            @if ($circle->users->isEmpty())
+            <list-view-card>
+                <list-view-empty icon-class="far fa-envelope" text="企画に所属しているメンバーがいないため、この企画に対しメールを送ることはできません。"></list-view-empty>
+            </list-view-card>
+            @else
             <list-view-form-group label-for="recipient">
                 <template v-slot:label>宛先</template>
                 <div class="form-radio">
@@ -72,10 +77,17 @@
                     <template v-slot:invalid>{{ $message }}</template>
                 @enderror
             </list-view-form-group>
+            <list-view-card>
+                <i class="fas fa-exclamation-circle"></i>
+                メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
+            </list-view-card>
+            @endif
         </list-view>
+        @if (!$circle->users->isEmpty())
         <div class="text-center pt-spacing-md pb-spacing">
             <button type="submit" class="btn is-primary is-wide">送信</button>
         </div>
+        @endif
     </app-container>
 </form>
 @endsection
