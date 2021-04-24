@@ -1,16 +1,22 @@
 @extends('layouts.app')
 
-@section('title', 'メール送信フォーム')
+@section('title', '企画へメール送信')
 
 @section('navbar')
-    <app-nav-bar-back href="{{ url("home_staff/circles/read/{$circle->id}") }}" data-turbolinks="false">
-        {{ $circle->name }}
+    <app-nav-bar-back href="{{ route('staff.circles.index') }}">
+        企画情報管理
     </app-nav-bar-back>
 @endsection
 
 @section('content')
 <form method="post" action="{{ route('staff.circles.email', ['circle' => $circle]) }}">
     @csrf
+
+    <app-header>
+        <template v-slot:title>企画へメール送信</template>
+        <div>企画ID : {{ $circle->id }}</div>
+    </app-header>
+
     <app-container>
         <list-view>
             <list-view-form-group label-for="circle">
