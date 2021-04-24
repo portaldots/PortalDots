@@ -14,7 +14,7 @@ final class Version
     private $major;
 
     /**
-     * マイナー場ジョン
+     * マイナーバージョン
      *
      * @var int
      */
