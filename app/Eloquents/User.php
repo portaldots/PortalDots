@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Collection;
+use Spatie\Permission\Traits\HasRoles;
 use App\Eloquents\Circle;
 use App\Eloquents\CircleUser;
 
@@ -29,6 +30,7 @@ use App\Eloquents\CircleUser;
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
 
     /**
      * バリデーションルール
