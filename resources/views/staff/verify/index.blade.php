@@ -22,9 +22,9 @@
                 @enderror
             </list-view-form-group>
         </list-view>
-    </app-container>
-    <app-container class="text-center pt-spacing-md">
-        <button type="submit" class="btn is-primary is-wide">ログイン</button>
+        <div class="text-center pt-spacing-md">
+            <button type="submit" class="btn is-primary is-wide">ログイン</button>
+        </div>
     </app-container>
 </form>
 @endsection
