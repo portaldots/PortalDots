@@ -224,3 +224,13 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{document}', 'Staff\Documents\ShowAction')->name('show');
             });
     });
+
+// 管理者ページ（多要素認証も済んでいる状態）
+Route::middleware(['auth', 'verified', 'can:admin', 'staffAuthed'])
+    ->prefix('/admin')
+    ->name('admin.')
+    ->group(function () {
+        // ポータル情報編集
+        Route::get('/portal', 'Admin\Portal\EditAction')->name('portal.edit');
+        Route::patch('/portal', 'Admin\Portal\UpdateAction')->name('portal.update');
+    });

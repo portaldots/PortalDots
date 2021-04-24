@@ -87,7 +87,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/delete', 'Users\DeleteAction')->name('user.delete');
     Route::delete('/user', 'Users\DestroyAction')->name('user.destroy');
     // お問い合わせページ
-    Route::middleware(['circleSelected'])->group(function() {
+    Route::middleware(['circleSelected'])->group(function () {
         Route::get('/contacts', 'Contacts\CreateAction')->name('contacts');
         Route::post('/contacts', 'Contacts\PostAction')->name('contacts.post');
     });
@@ -144,13 +144,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 });
         });
 });
-
-// 管理者ページ（多要素認証も済んでいる状態）
-Route::middleware(['auth', 'verified', 'can:admin', 'staffAuthed'])
-    ->prefix('/admin')
-    ->name('admin.')
-    ->group(function () {
-        // ポータル情報編集
-        Route::get('/portal', 'Admin\Portal\EditAction')->name('portal.edit');
-        Route::patch('/portal', 'Admin\Portal\UpdateAction')->name('portal.update');
-    });
