@@ -69,6 +69,15 @@
                 </template>
             </list-view-item>
             @if (Auth::user()->is_admin)
+                <list-view-item href="{{ route('admin.permissions.index') }}">
+                    <template v-slot:title>
+                        <i class="fas fa-key fa-lg text-muted fa-fw"></i>
+                        <span class="px-spacing-sm">
+                            スタッフの権限設定
+                            <app-badge danger>管理者</app-badge>
+                        </span>
+                    </template>
+                </list-view-item>
                 <list-view-item href="{{ route('admin.portal.edit') }}">
                     <template v-slot:title>
                         <i class="fas fa-cog fa-lg text-muted fa-fw"></i>

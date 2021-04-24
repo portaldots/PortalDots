@@ -233,4 +233,15 @@ Route::middleware(['auth', 'verified', 'can:admin', 'staffAuthed'])
         // ポータル情報編集
         Route::get('/portal', 'Admin\Portal\EditAction')->name('portal.edit');
         Route::patch('/portal', 'Admin\Portal\UpdateAction')->name('portal.update');
+
+        // スタッフの権限設定
+        Route::prefix('/permissions')
+            ->name('permissions.')
+            ->group(function () {
+                Route::get('/', 'Admin\Permissions\IndexAction')->name('index');
+                Route::get('/api', 'Admin\Permissions\ApiAction')->name('api');
+                Route::get('/{user}/edit', 'Admin\Permissions\EditAction')->name('edit');
+                Route::patch('/{user}', 'Admin\Permissions\UpdateAction')->name('update');
+                Route::delete('/{user}', 'Admin\Permissions\DestroyAction')->name('destroy');
+            });
     });
