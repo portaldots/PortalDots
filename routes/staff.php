@@ -11,6 +11,15 @@
 |
 */
 
+// スタッフ認証
+Route::middleware(['auth', 'verified', 'can:staff'])
+    ->prefix('/staff/verify')
+    ->name('staff.verify.')
+    ->group(function () {
+        Route::get('/', 'Staff\Verify\IndexAction')->name('index');
+        Route::post('/', 'Staff\Verify\VerifyAction');
+    });
+
 // スタッフページ（多要素認証も済んでいる状態）
 Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
     ->prefix('/staff')

@@ -9,6 +9,7 @@ use App\Eloquents\Page;
 use App\Eloquents\Schedule;
 use App\Eloquents\Document;
 use App\Services\Circles\SelectorService;
+use App\Services\Auth\StaffAuthService;
 
 class LoginController extends Controller
 {
@@ -18,6 +19,11 @@ class LoginController extends Controller
      * @var SelectorService
      */
     private $selectorService;
+
+    /**
+     * @var StaffAuthService
+     */
+    private $staffAuthService;
 
     /*
     |--------------------------------------------------------------------------
@@ -47,11 +53,12 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct(SelectorService $selectorService)
+    public function __construct(SelectorService $selectorService, StaffAuthService $staffAuthService)
     {
         $this->middleware('guest')->except('logout', 'showLogout');
 
         $this->selectorService = $selectorService;
+        $this->staffAuthService = $staffAuthService;
     }
 
     /**
@@ -83,7 +90,7 @@ class LoginController extends Controller
     protected function loggedOut(Request $request)
     {
         // スタッフモードの二段階認証状態を解除する
-        $request->session()->forget('staff_authorized');
+        $this->staffAuthService->forget();
 
         // 選択中の企画からもログアウトする
         $this->selectorService->reset();
