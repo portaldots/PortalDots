@@ -5,6 +5,23 @@
 @section('top_alert_props', 'container-fluid')
 
 @section('content')
+    @if(empty($custom_form))
+        <top-alert type="primary" keep-visible container-fluid>
+            <template v-slot:title>
+                <i class="fa fa-star fa-fw" aria-hidden="true"></i>
+                企画参加登録をウェブ化して時短しませんか？
+            </template>
+
+            企画参加登録を「{{ config("app.name") }}」上で受け付けることで、参加登録にかかる事務作業を時短することができます。
+
+            <template v-slot:cta>
+                <a href="{{ route('staff.circles.custom_form.index') }}" class="btn is-primary-inverse is-no-border is-wide">
+                    <strong>もっと詳しく</strong>
+                </a>
+            </template>
+        </top-alert>
+    @endif
+
     <staff-grid
         api-url="{{ route('staff.circles.api') }}"
         v-bind:key-translations="{
