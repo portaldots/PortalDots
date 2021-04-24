@@ -38,6 +38,6 @@ class CopyActionTest extends TestCase
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.forms.copy', ['form' => $this->form]));
 
-        $response->assertRedirect(route('staff.forms.answers.index', ['form' => $this->form_copy->id]));
+        $response->assertRedirect(route('staff.forms.index'));
     }
 }

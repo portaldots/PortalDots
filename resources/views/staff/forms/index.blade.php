@@ -45,18 +45,28 @@
             </a>
         </template>
         <template v-slot:activities="{ row }">
-            <icon-button v-bind:href="`{{ route('staff.forms.edit', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="編集">
-                <i class="fas fa-pencil-alt fa-fw"></i>
-            </icon-button>
-            <icon-button v-bind:href="`{{ route('staff.forms.editor', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="フォームエディター" data-turbolinks="false">
-                <i class="far fa-edit fa-fw"></i>
-            </icon-button>
-            <icon-button v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="回答一覧">
-                <i class="far fa-eye fa-fw"></i>
-            </icon-button>
-            <icon-button v-bind:href="`{{ route('staff.forms.copy', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="複製">
-                <i class="far fa-copy fa-fw"></i>
-            </icon-button>
+            <form-with-confirm
+                v-bind:action="`{{ route('staff.forms.copy', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" method="post"
+                v-bind:confirm-message="`フォーム「${row['name']}」を複製しますか？
+
+• 設問は全て複製されます
+• 「${row['name']}のコピー」という名前のフォームが作成されます
+• 「${row['name']}のコピー」は非公開です。後から必要に応じて設定を変更してください`"
+            >
+                @csrf
+                <icon-button v-bind:href="`{{ route('staff.forms.edit', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="編集">
+                    <i class="fas fa-pencil-alt fa-fw"></i>
+                </icon-button>
+                <icon-button v-bind:href="`{{ route('staff.forms.editor', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="フォームエディター" data-turbolinks="false">
+                    <i class="far fa-edit fa-fw"></i>
+                </icon-button>
+                <icon-button v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="回答一覧">
+                    <i class="far fa-eye fa-fw"></i>
+                </icon-button>
+                <icon-button submit title="複製">
+                    <i class="far fa-copy fa-fw"></i>
+                </icon-button>
+            </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'created_by'">

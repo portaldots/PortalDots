@@ -18,10 +18,10 @@ class CopyAction extends Controller
 
     public function __invoke(Form $form)
     {
-        $form_copy = $this->formsService->copyForm($form, Auth::user());
+        $this->formsService->copyForm($form, Auth::user());
 
         return redirect()
-            ->route('staff.forms.answers.index', ['form' => $form_copy])
+            ->route('staff.forms.index')
             ->with('topAlert.title', 'フォームを複製しました');
     }
 }
