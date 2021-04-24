@@ -94,6 +94,9 @@
                 <icon-button v-bind:href="`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>
+                <icon-button v-bind:href="`{{ route('staff.circles.email', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="メール送信">
+                    <i class="far fa-envelope fa-fw"></i>
+                </icon-button>
                 <icon-button submit title="削除">
                     <i class="fas fa-trash fa-fw"></i>
                 </icon-button>
