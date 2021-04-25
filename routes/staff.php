@@ -88,7 +88,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
 
                 // 申請フォームエディタ
                 Route::prefix('/editor')
-                    ->middleware(['can:staff.forms.forms.edit'])
+                    ->middleware(['can:staff.forms.edit'])
                     ->group(function () {
                         Route::get('/', 'Staff\Forms\Editor\IndexAction')->name('editor');
                         // ↓「editor.api」のroute定義は resources/views/staff/forms/editor.blade.php で利用しているので、消さないこと
