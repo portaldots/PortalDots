@@ -83,6 +83,7 @@ class AnswersExportTest extends TestCase
             'form_id' => $this->form->id,
             'priority' => 3,
             'name' => 'せつもん',
+            'type' => 'text',
         ]);
 
         $this->upload_question = factory(Question::class)->create([
