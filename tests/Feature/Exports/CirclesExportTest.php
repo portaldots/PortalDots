@@ -2,8 +2,12 @@
 
 namespace Tests\Feature\Exports;
 
+use App\Eloquents\Answer;
+use App\Eloquents\AnswerDetail;
 use App\Eloquents\Circle;
+use App\Eloquents\CustomForm;
 use App\Eloquents\Place;
+use App\Eloquents\Question;
 use App\Eloquents\Tag;
 use App\Eloquents\User;
 use App\Exports\CirclesExport;
@@ -15,6 +19,16 @@ use Tests\TestCase;
 class CirclesExportTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @var CustomForm
+     */
+    private $customForm;
+
+    /**
+     * @var Question
+     */
+    private $question;
 
     /**
      * @var CirclesExport
@@ -56,9 +70,25 @@ class CirclesExportTest extends TestCase
      */
     private $tag;
 
+    /**
+     * @var Answer
+     */
+    private $answer;
+
+    /**
+     * @var AnswerDetail
+     */
+    private $answerDetail;
+
     public function setUp(): void
     {
         parent::setUp();
+        $this->customForm = factory(CustomForm::class)->create();
+        $this->question = factory(Question::class)->create([
+            'form_id' => $this->customForm->form->id,
+            'name' => 'どんなことをしますか',
+        ]);
+
         $this->circlesExport = App::make(CirclesExport::class);
 
         $this->staff = factory(User::class)->create([
@@ -92,6 +122,16 @@ class CirclesExportTest extends TestCase
             'name' => '特殊な企画'
         ]);
 
+        $this->answer = factory(Answer::class)->create([
+            'form_id' => $this->customForm->form->id,
+            'circle_id' => $this->circle->id,
+        ]);
+        $this->answerDetail = factory(AnswerDetail::class)->create([
+            'answer_id' => $this->answer->id,
+            'question_id' => $this->question->id,
+            'answer' => '作った船で川を渡ります',
+        ]);
+
         $this->user->circles()->attach($this->circle->id, ['is_leader' => true]);
         $this->member->circles()->attach($this->circle->id);
         $this->anotherMember->circles()->attach($this->circle->id);
@@ -123,8 +163,38 @@ class CirclesExportTest extends TestCase
                 '川の案内をするらしい',
                 "企画 偉い人(ID:{$this->user->id},0123ABC)",
                 "企画 運営(ID:{$this->member->id},7890XYZ),企画 手伝い(ID:{$this->anotherMember->id},123123)",
+                '作った船で川を渡ります',
             ],
             $this->circlesExport->map($this->circle)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function headings_カスタムフォームからヘッダーが作成される()
+    {
+        $this->assertEquals(
+            [
+                '企画ID',
+                '企画名',
+                '企画名（よみ）',
+                '企画を出店する団体の名称',
+                '企画を出店する団体の名称（よみ）',
+                '使用場所',
+                'タグ',
+                '参加登録提出日時',
+                '登録受理状況',
+                '登録受理状況設定日時',
+                '登録受理状況設定ユーザー',
+                '作成日時',
+                '更新日時',
+                'スタッフ用メモ',
+                '責任者',
+                '学園祭係',
+                'どんなことをしますか',
+            ],
+            $this->circlesExport->headings()
         );
     }
 }
