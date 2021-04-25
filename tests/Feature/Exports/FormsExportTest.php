@@ -32,16 +32,6 @@ class FormsExportTest extends TestCase
     private $form;
 
     /**
-     * @var Question
-     */
-    private $question;
-
-    /**
-     * @var Question
-     */
-    private $anotherQeustion;
-
-    /**
      * @var Tag
      */
     private $tag;
@@ -58,18 +48,6 @@ class FormsExportTest extends TestCase
             'name' => '場所登録申請',
             'created_by' => $this->user->id,
             'max_answers' => 2,
-        ]);
-        $this->question = factory(Question::class)->create([
-            'form_id' => $this->form->id,
-            'priority' => 2,
-            'name' => 'ブース名',
-            'type' => 'text',
-        ]);
-        $this->question = factory(Question::class)->create([
-            'form_id' => $this->form->id,
-            'priority' => 1,
-            'name' => 'ブースタイプ',
-            'type' => 'radio',
         ]);
 
         $this->tag = factory(Tag::class)->create([
@@ -93,13 +71,12 @@ class FormsExportTest extends TestCase
                 $this->form->close_at,
                 2,
                 'はい',
-                '[{"name":"ブースタイプ","type":"radio"},{"name":"ブース名","type":"text"}]',
                 $this->form->created_at,
                 "{$this->user->name}(ID:{$this->user->id},{$this->user->student_id})",
                 $this->form->updated_at,
             ],
             $this->formsExport->map(
-                $this->form->load(['answerableTags', 'userCreatedBy', 'questions:form_id,name,type,priority'])
+                $this->form->load(['answerableTags', 'userCreatedBy'])
             )
         );
     }
