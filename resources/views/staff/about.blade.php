@@ -67,30 +67,22 @@
                                 <ul style="column-count: 2; margin: 1rem 0;">
                                     <li>artisan ファイル</li>
                                     <li>app フォルダ</li>
-                                    <li>application フォルダ (※)</li>
                                     <li>bootstrap フォルダ</li>
                                     <li>config フォルダ</li>
                                     <li>database フォルダ</li>
                                     <li>resources フォルダ</li>
                                     <li>routes フォルダ</li>
-                                    <li>system フォルダ (※)</li>
                                     <li>vendor フォルダ</li>
-                                    <li>public フォルダ内の assets フォルダ内にある grocery_crud フォルダ (※)</li>
-                                    <li>public フォルダ内の common フォルダ (※)</li>
                                     <li>public フォルダ内の css フォルダ</li>
                                     <li>public フォルダ内の fonts フォルダ</li>
                                     <li>public フォルダ内の images フォルダ</li>
                                     <li>public フォルダ内の js フォルダ</li>
-                                    <li>public フォルダ内の index_laravel.php ファイル (※)</li>
                                     <li>public フォルダ内の index.php ファイル</li>
                                     <li>public フォルダ内の mix-manifest.json ファイル</li>
                                 </ul>
                             </li>
                             <li>アップロード完了後、<a href="{{ url('/') }}" target="_blank" rel="noopener">{{ config('app.name') }}</a>にアクセスし、正常に動作するか確認を行ってください。</li>
                         </ol>
-                        <p>
-                            (※) で示したフォルダやファイルは、PortalDots のバージョンによっては ZIP ファイルに含まれていない場合があります。ZIP ファイルに含まれていないが、サーバー上には存在するフォルダ・ファイルは、サーバーから削除してください。
-                        </p>
                     </list-view-card>
                     <list-view-action-btn href="{{ $latest_release->getBrowserDownloadUrl() }}" icon-class="far fa-file-archive" data-turbolinks="false">
                         PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }} をダウンロード(@filesize($latest_release->getSize()))
