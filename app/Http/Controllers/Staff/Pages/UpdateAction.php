@@ -37,7 +37,7 @@ class UpdateAction extends Controller
                 $values['viewable_tags'] ?? []
             );
 
-            if ($values['send_emails'] ?? false) {
+            if (($values['send_emails'] ?? false) && Auth::user()->can('staff.pages.send_emails')) {
                 // 一斉送信をオンにした場合
                 $this->pagesService->sendEmailsByPage($page);
             }
