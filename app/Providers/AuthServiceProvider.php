@@ -31,6 +31,14 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        // 管理者で、メール認証やスタッフ認証が済んでいる場合、
+        // auth()->user->can() や @can() などで true を返すようにする
+        Gate::before(function (User $user) {
+            return $user->is_admin && $user->areBothEmailsVerified() &&
+                session()->get('staff_authorized') ? true : null;
+        });
+
+
         Gate::guessPolicyNamesUsing(function ($modelClass) {
             return 'App\\Policies\\' . class_basename($modelClass) . 'Policy';
         });
