@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\GridMakers;
 
+use App\Eloquents\Permission;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\User;
 use App\GridMakers\Concerns\UseEloquent;
@@ -20,7 +21,15 @@ class PermissionsGridMaker implements GridMakable
      */
     protected function baseEloquentQuery(): Builder
     {
-        return User::select($this->keys())->staff();
+        return User::select([
+            'id',
+            'student_id',
+            'name_family',
+            'name_family_yomi',
+            'name_given',
+            'name_given_yomi',
+            'is_admin',
+        ])->with('permissions')->staff();
     }
 
     /**
@@ -30,21 +39,8 @@ class PermissionsGridMaker implements GridMakable
     {
         return [
             'id',
-            'student_id',
-            'name_family',
-            'name_family_yomi',
-            'name_given',
-            'name_given_yomi',
-            'email',
-            'tel',
-            'is_staff',
-            'is_admin',
-            'email_verified_at',
-            'univemail_verified_at',
-            'last_accessed_at',
-            'notes',
-            'created_at',
-            'updated_at',
+            'name',
+            'permissions',
         ];
     }
 
@@ -60,15 +56,7 @@ class PermissionsGridMaker implements GridMakable
             'name_family_yomi' => FilterableKey::string(),
             'name_given' => FilterableKey::string(),
             'name_given_yomi' => FilterableKey::string(),
-            'email' => FilterableKey::string(),
-            'tel' => FilterableKey::string(),
-            'is_staff' => FilterableKey::bool(),
             'is_admin' => FilterableKey::bool(),
-            'email_verified_at' => FilterableKey::isNull(),
-            'univemail_verified_at' => FilterableKey::isNull(),
-            'notes' => FilterableKey::string(),
-            'created_at' => FilterableKey::datetime(),
-            'updated_at' => FilterableKey::datetime(),
         ]);
     }
 
@@ -80,20 +68,6 @@ class PermissionsGridMaker implements GridMakable
         return [
             'id',
             'student_id',
-            'name_family',
-            'name_family_yomi',
-            'name_given',
-            'name_given_yomi',
-            'email',
-            'tel',
-            'is_staff',
-            'is_admin',
-            'email_verified_at',
-            'univemail_verified_at',
-            'last_accessed_at',
-            'notes',
-            'created_at',
-            'updated_at',
         ];
     }
 
@@ -102,17 +76,20 @@ class PermissionsGridMaker implements GridMakable
      */
     public function map($record): array
     {
+        $keys = [
+            'id',
+            'student_id',
+            'name',
+            'permissions',
+            'is_admin',
+        ];
         $item = [];
-        foreach ($this->keys() as $key) {
+        foreach ($keys as $key) {
             switch ($key) {
-                case 'last_accessed_at':
-                    $item[$key] = $record->formatLastAccessedAt();
-                    break;
-                case 'created_at':
-                    $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
-                    break;
-                case 'updated_at':
-                    $item[$key] = !empty($record->updated_at) ? $record->updated_at->format('Y/m/d H:i:s') : null;
+                case 'permissions':
+                    $item[$key] = $record->permissions->map(function ($permission) {
+                        return Permission::getDefinedPermissions()[$permission->name];
+                    });
                     break;
                 default:
                     $item[$key] = $record->$key;

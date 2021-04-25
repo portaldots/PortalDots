@@ -6,6 +6,7 @@
     :title="title"
     :target="newtab ? '_blank' : undefined"
     :rel="newtab ? 'noopener noreferrer' : undefined"
+    v-bind="disabledProps"
     class="icon-button"
   >
     <slot />
@@ -17,26 +18,42 @@ export default {
   props: {
     href: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     submit: {
       type: Boolean,
-      default: false
+      default: false,
     },
     title: {
       type: String,
-      required: true
+      required: true,
     },
     newtab: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     componentIs() {
       return this.href ? 'a' : 'button'
-    }
-  }
+    },
+    disabledProps() {
+      if (!this.disabled) return {}
+
+      if (this.href) {
+        return {
+          class: 'is-disabled',
+        }
+      }
+      return {
+        disabled: true,
+      }
+    },
+  },
 }
 </script>
 
@@ -64,7 +81,8 @@ export default {
     box-shadow: 0 0 0 3px $color-focus-primary;
     outline: none;
   }
-  &:disabled {
+  &:disabled,
+  &.is-disabled {
     cursor: not-allowed;
     opacity: 0.5;
     pointer-events: none;
