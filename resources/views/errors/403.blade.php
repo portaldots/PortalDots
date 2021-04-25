@@ -3,10 +3,19 @@
 @extends('errors.layout')
 
 @section('title', '403 Forbidden')
-@section('top', $exception->getMessage() ?: 'アクセスが拒否されました')
+@section('top', 'アクセス権がありません')
 @section('message')
     <p>権限がないか、アクセスできないページです</p>
     @auth
+        @staffpage
+            <p class="text-danger">
+                <i class="fas fa-info-circle fa-fw"></i>
+                <strong>
+                    {{ config('app.name') }}の管理者に「スタッフの権限設定」の変更を依頼することで、このページへアクセスできる場合があります。<br>
+                    詳細については{{ config('app.name') }}の管理者へお問い合わせください。
+                </strong>
+            </p>
+        @endstaffpage
         @if (count($selectorService->getSelectableCirclesList(Auth::user(), Request::path())) >= 2)
             <p>
                 <i class="fas fa-info-circle fa-fw"></i>
