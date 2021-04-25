@@ -8,6 +8,9 @@
             <list-view-action-btn href="{{ route('home') }}">
                 一般モードへ
             </list-view-action-btn>
+            <list-view-action-btn href="{{ route('staff.about') }}">
+                PortalDots のアップデートの確認
+            </list-view-action-btn>
         </list-view>
         <list-view>
             <template v-slot:title>メニュー</template>

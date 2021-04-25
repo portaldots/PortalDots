@@ -19,6 +19,9 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         // トップページ
         Route::get('/', 'Staff\HomeAction')->name('index');
 
+        // リリース情報
+        Route::get('/about', 'Staff\AboutAction')->name('about');
+
         // Markdown ガイド
         //
         // 外部サイトにしてしまうとリンク切れが発生する恐れがあるため、

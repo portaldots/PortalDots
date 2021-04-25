@@ -19,6 +19,7 @@ mix
       modules: [path.resolve('./node_modules')]
     }
   })
+  .copyDirectory('resources/img', 'public/images')
   .js('resources/js/app.js', 'public/js') // メインスクリプト
   .vue({
     globalStyles: 'resources/sass/_variables.scss'
