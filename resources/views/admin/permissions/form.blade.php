@@ -21,6 +21,9 @@
         <app-container>
             <list-view>
                 <template v-slot:title>{{ $user->name }}さんに割り当てる権限</template>
+                <template v-slot:description>
+                    Ctrl + F (macOS の場合 Command + F) で、このページの内容を検索できます
+                </template>
                 @if (is_array($errors->all()) && count($errors->all()) > 0)
                     <list-view-card>
                         <ul>
