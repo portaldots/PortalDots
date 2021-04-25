@@ -121,6 +121,17 @@ class User extends Authenticatable
     }
 
     /**
+     * スタッフユーザーだけに限定するクエリスコープ
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeStaff($query)
+    {
+        return $query->where('is_staff', true);
+    }
+
+    /**
      * ログイン ID から該当ユーザーを取得する
      *
      * @param string $login_id
