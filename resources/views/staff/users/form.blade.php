@@ -132,7 +132,7 @@
                     @else
                         <strong class="text-danger">
                             <i class="fas fa-exclamation-circle"></i>
-                            セキュリティのため、管理者権限を付与するユーザーの人数は最小限にしてください。
+                            セキュリティのため、管理者権限を割り当てるユーザーの人数は最小限にしてください。
                         </strong>
                     @endif
                 </list-view-card>
