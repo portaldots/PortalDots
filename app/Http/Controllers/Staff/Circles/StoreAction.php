@@ -78,7 +78,7 @@ class StoreAction extends Controller
         $this->circlesService->savePlaces($circle, $request->places ?? []);
 
         // タグの保存
-        $this->circlesService->saveTags($circle, $request->tags ?? []);
+        $this->circlesService->saveTags($circle, $request->tags ?? [], Auth::user()->can('staff.tags.edit'));
 
         return redirect()
             ->route('staff.circles.create')

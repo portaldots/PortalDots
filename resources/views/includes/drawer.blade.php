@@ -17,55 +17,55 @@
                 <i class="fas fa-home drawer-nav__icon fa-fw"></i>
                 スタッフモード ホーム
             </a>
-            @can('staff.users')
+            @can('staff.users.read')
             <a href="{{ route('staff.users.index') }}" class="drawer-nav__link{{ Request::is('staff/users*') ? ' is-active' : '' }}">
                 <i class="far fa-address-book drawer-nav__icon fa-fw"></i>
                 ユーザー情報管理
             </a>
             @endcan
-            @can('staff.circles')
+            @can('staff.circles.read')
             <a href="{{ route('staff.circles.index') }}" class="drawer-nav__link{{ Request::is('staff/circles*') ? ' is-active' : '' }}">
                 <i class="fas fa-star drawer-nav__icon fa-fw"></i>
                 企画情報管理
             </a>
             @endcan
-            @can('staff.tags')
+            @can('staff.tags.read')
             <a href="{{ route('staff.tags.index') }}" class="drawer-nav__link{{ Request::is('staff/tags*') ? ' is-active' : '' }}">
                 <i class="fas fa-tags drawer-nav__icon fa-fw"></i>
                 企画タグ管理
             </a>
             @endcan
-            @can('staff.places')
+            @can('staff.places.read')
             <a href="{{ route('staff.places.index') }}" class="drawer-nav__link{{ Request::is('staff/places*') ? ' is-active' : '' }}">
                 <i class="fas fa-store drawer-nav__icon fa-fw"></i>
                 場所情報管理
             </a>
             @endcan
-            @can('staff.pages')
+            @can('staff.pages.read')
             <a href="{{ route('staff.pages.index') }}" class="drawer-nav__link{{ Request::is('staff/pages*') ? ' is-active' : '' }}">
                 <i class="fas fa-bullhorn drawer-nav__icon fa-fw"></i>
                 お知らせ管理
             </a>
             @endcan
-            @can('staff.documents')
+            @can('staff.documents.read')
             <a href="{{ route('staff.documents.index') }}" class="drawer-nav__link{{ Request::is('staff/documents*') ? ' is-active' : '' }}">
                 <i class="far fa-file-alt drawer-nav__icon fa-fw"></i>
                 配布資料管理
             </a>
             @endcan
-            @can('staff.forms')
+            @can('staff.forms.read')
             <a href="{{ route('staff.forms.index') }}" class="drawer-nav__link{{ Request::is('staff/forms*') ? ' is-active' : '' }}">
                 <i class="far fa-edit drawer-nav__icon fa-fw"></i>
                 申請管理
             </a>
             @endcan
-            @can('staff.schedules')
+            @can('staff.schedules.read')
             <a href="{{ route('staff.schedules.index') }}" class="drawer-nav__link{{ Request::is('staff/schedules*') ? ' is-active' : '' }}">
                 <i class="far fa-calendar-alt drawer-nav__icon fa-fw"></i>
                 スケジュール管理
             </a>
             @endcan
-            @can('staff.contacts')
+            @can('staff.contacts.categories.read')
             <a href="{{ route('staff.contacts.categories.index') }}" class="drawer-nav__link{{ Request::is('staff/contacts/categories*') ? ' is-active' : '' }}">
                 <i class="fas fa-at drawer-nav__icon fa-fw"></i>
                 お問い合わせ受付設定

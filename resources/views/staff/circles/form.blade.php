@@ -63,7 +63,15 @@
                 @if (isset($custom_form))
                     <list-view-form-group>
                         <template v-slot:label>カスタムフォームへの回答</template>
-                        @empty ($circle)
+                        @if (Auth::user()->cannot('staff.forms.answers.edit'))
+                            <div class="text-muted">
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                <b>
+                                    申請フォームへの回答の編集が許可されていないため、カスタムフォームへの回答の編集はできません。
+                                    カスタムフォームへの回答を編集したい場合は、{{ config('app.name') }}の管理者へお問い合わせください。
+                            </b>
+                            </div>
+                        @elseif (empty($circle))
                             <div class="text-muted">
                                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
                                 カスタムフォーム回答の内容を編集するには、まず企画情報を保存してください
@@ -73,7 +81,7 @@
                                 class="btn is-primary">
                                 回答の内容を表示・編集
                             </a>
-                        @endempty
+                        @endif
                     </list-view-form-group>
                 @endif
                 <list-view-form-group>
@@ -87,9 +95,14 @@
                         企画をタグで分類できます(例 : <app-badge primary>ステージ企画</app-badge>、<app-badge primary>模擬店</app-badge>、<app-badge
                             primary>講義棟教室</app-badge>、<app-badge primary>食品販売</app-badge>)。<br>
                         タグに応じて、閲覧可能なお知らせ、回答可能な申請フォームを制限することもできます。
+                        @cannot('staff.tags.edit')
+                            <br>
+                            <i class="fas fa-info-circle fa-fw"></i>
+                            <b>企画タグの編集が許可されていないため、ここでは作成済みの企画タグのみを指定できます。企画タグを新しく作成したい場合は、{{ config('app.name') }}の管理者へお問い合わせください。</b>
+                        @endcannot
                     </template>
                     <tags-input input-name="tags" v-bind:default-tags="{{ $default_tags }}"
-                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}"></tags-input>
+                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}" {{ Auth::user()->can('staff.tags.edit') ? '' : 'add-only-from-autocomplete' }}></tags-input>
                 </list-view-form-group>
             </list-view>
 

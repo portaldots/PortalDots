@@ -90,7 +90,7 @@ class UpdateAction extends Controller
         $this->circlesService->savePlaces($circle, $request->places ?? []);
 
         // タグの保存
-        $this->circlesService->saveTags($circle, $request->tags ?? []);
+        $this->circlesService->saveTags($circle, $request->tags ?? [], Auth::user()->can('staff.tags.edit'));
 
         if ($status_changed === true) {
             $circle->load('users');
