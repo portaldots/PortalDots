@@ -167,7 +167,3 @@ Node.js を最新バージョンにアップグレードした上で、再度 `y
 
 ## ライセンス
 [MIT License](https://github.com/portal-dots/PortalDots/blob/master/LICENSE)
-
-- CodeIgniter - MIT License、一部改変
-- Grocery CRUD - MIT License、一部改変
-- Honoka - MIT License
