@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\Permissions;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Responders\Staff\GridResponder;
-use App\GridMakers\UsersGridMaker;
+use App\GridMakers\PermissionsGridMaker;
 
 class ApiAction extends Controller
 {
@@ -15,23 +15,23 @@ class ApiAction extends Controller
     private $gridResponder;
 
     /**
-     * @var UsersGridMaker
+     * @var PermissionsGridMaker
      */
-    private $usersGridMaker;
+    private $permissionsGridMaker;
 
     public function __construct(
         GridResponder $gridResponder,
-        UsersGridMaker $usersGridMaker
+        PermissionsGridMaker $permissionsGridMaker
     ) {
         $this->gridResponder = $gridResponder;
-        $this->usersGridMaker = $usersGridMaker;
+        $this->permissionsGridMaker = $permissionsGridMaker;
     }
 
     public function __invoke(Request $request)
     {
         return $this->gridResponder
             ->setRequest($request)
-            ->setGridMaker($this->usersGridMaker)
+            ->setGridMaker($this->permissionsGridMaker)
             ->response();
     }
 }

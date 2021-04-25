@@ -9,6 +9,6 @@ class IndexAction extends Controller
 {
     public function __invoke(Request $request)
     {
-        return view('staff.users.index');
+        return view('admin.permissions.index');
     }
 }
