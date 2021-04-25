@@ -47,7 +47,7 @@ class Permission extends SpatiePermission
                     'staff.circles.custom_form',
                     'スタッフモード › 企画情報管理 › 企画参加登録の設定変更',
                     '企画(企画参加登録)',
-                    '企画参加登録機能の設定、および企画参加登録フォームの編集が可能'
+                    '企画参加登録機能の設定が可能。ただし、企画参加登録フォームを編集したい場合、別途フォームの編集権限が必要です。'
                 ),
                 'staff.circles.read,edit,delete' => new PermissionInfo(
                     'staff.circles.read,edit,delete',
@@ -175,12 +175,6 @@ class Permission extends SpatiePermission
                     '配布資料(全機能)',
                     '配布資料管理の全機能を利用可能。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
                 ),
-                'staff.documents.read,edit,change_is_public' => new PermissionInfo(
-                    'staff.documents.read,edit,change_is_public',
-                    'スタッフモード › 配布資料管理 › 閲覧と編集、公開',
-                    '配布資料(公開)',
-                    'お知らせの閲覧と編集、公開状態の変更が可能'
-                ),
                 'staff.documents.read,edit' => new PermissionInfo(
                     'staff.documents.read,edit',
                     'スタッフモード › 配布資料管理 › 閲覧と編集',
@@ -210,12 +204,6 @@ class Permission extends SpatiePermission
                     'スタッフモード › 申請管理 › フォームの閲覧と編集、複製',
                     '申請(フォームの複製)',
                     'フォームの閲覧と編集、複製が可能。ただし、回答の閲覧・編集はできません。'
-                ),
-                'staff.forms.read,edit,change_is_public' => new PermissionInfo(
-                    'staff.forms.read,edit,change_is_public',
-                    'スタッフモード › 申請管理 › フォームの閲覧と編集、公開',
-                    '申請(フォームの公開)',
-                    'フォームの閲覧と編集、公開状態の変更が可能。ただし、回答の閲覧・編集はできません。'
                 ),
                 'staff.forms.read,edit' => new PermissionInfo(
                     'staff.forms.read,edit',
