@@ -12,7 +12,7 @@ class UpdateAction extends Controller
     public function __invoke(PermissionRequest $request, User $user)
     {
         $validated = $request->validated();
-        $new_permissions = $validated['permissions'];
+        $new_permissions = $validated['permissions'] ?? [];
 
         $exist_permissions = Permission::whereIn('name', $new_permissions)->get();
         $diff = array_udiff($new_permissions, $exist_permissions->pluck('name')->all(), 'strcasecmp');
