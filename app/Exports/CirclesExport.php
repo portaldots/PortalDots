@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Eloquents\Circle;
 use App\Eloquents\CustomForm;
+use App\Eloquents\Form;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -11,13 +12,16 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 class CirclesExport implements FromCollection, WithHeadings, WithMapping
 {
     /**
-     * @var CustomForm
+     * @var Form
      */
     private $customForm;
 
     public function __construct()
     {
-        $this->customForm = CustomForm::with('form.questions')->first();
+        $this->customForm = CustomForm::getFormByType('circle');
+        if (isset($this->customForm)) {
+            $this->customForm->load(['questions', 'answers.details']);
+        }
     }
 
     /**
@@ -48,7 +52,10 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
             $status = '確認中';
         }
 
-        $details = $circle->getCustomFormAnswer()->details ?? null;
+        if (isset($this->customForm)) {
+            $answers = $this->customForm->answers->where('circle_id', $circle->id)->first();
+            $details = isset($answers) ? $answers->details : null;
+        }
 
         return array_merge(
             [
@@ -71,7 +78,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
                 $leader ? "{$leader->name}(ID:{$leader->id},{$leader->student_id})" : '',
                 implode(',', $members),
             ],
-            $details ? $details->pluck('answer')->toArray() : [],
+            isset($details) ? $details->pluck('answer')->toArray() : [],
         );
     }
 
@@ -99,7 +106,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
                 '責任者',
                 '学園祭係',
             ],
-            $this->customForm->form->questions->pluck('name')->toArray()
+            isset($this->customForm) ? $this->customForm->questions->pluck('name')->toArray() : [],
         );
     }
 }
