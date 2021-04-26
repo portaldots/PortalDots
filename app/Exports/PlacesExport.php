@@ -14,7 +14,7 @@ class PlacesExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Place::with('circles:id,name')->get();
+        return Place::with('circles')->get();
     }
 
     /**
@@ -23,6 +23,23 @@ class PlacesExport implements FromCollection, WithHeadings, WithMapping
      */
     public function map($place): array
     {
+        $firstCircle = $place->circles->shift();
+        $circles = [];
+
+        foreach ($place->circles as $circle) {
+            $circles[] = [
+                null,
+                null,
+                null,
+                null,
+                $circle->id,
+                $circle->name,
+                $circle->name_yomi,
+                $circle->group_name,
+                $circle->group_name_yomi,
+            ];
+        }
+
         if ($place->type === 1) {
             $type = '屋内';
         } elseif ($place->type === 2) {
@@ -31,13 +48,22 @@ class PlacesExport implements FromCollection, WithHeadings, WithMapping
             $type = '特殊場所';
         }
 
-        return [
-            $place->id,
-            $place->name,
-            $type,
-            $place->notes,
-            $place->circles->makeHidden('pivot')->toJson(JSON_UNESCAPED_UNICODE),
-        ];
+        return array_merge(
+            [
+                [
+                    $place->id,
+                    $place->name,
+                    $type,
+                    $place->notes,
+                    $firstCircle->id,
+                    $firstCircle->name,
+                    $firstCircle->name_yomi,
+                    $firstCircle->group_name,
+                    $firstCircle->group_name_yomi,
+                ],
+            ],
+            $circles,
+        );
     }
 
     /**
@@ -50,7 +76,11 @@ class PlacesExport implements FromCollection, WithHeadings, WithMapping
             '場所名',
             'タイプ',
             'スタッフ用メモ',
-            '使用企画(企画ID+企画名)',
+            '企画ID',
+            '企画名',
+            '企画名（よみ）',
+            '企画を出店する団体の名称',
+            '企画を出店する団体の名称（よみ）',
         ];
     }
 }
