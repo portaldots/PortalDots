@@ -89,13 +89,13 @@ class Permission extends SpatiePermission
                     'staff.tags.read,edit,delete',
                     'スタッフモード › 企画タグ管理 › 閲覧と編集、削除',
                     '企画タグ(削除)',
-                    '企画タグの閲覧と編集、削除が可能'
+                    '企画タグの閲覧と編集、作成、削除が可能'
                 ),
                 'staff.tags.read,edit' => new PermissionInfo(
                     'staff.tags.read,edit',
                     'スタッフモード › 企画タグ管理 › 閲覧と編集',
                     '企画タグ(編集)',
-                    '企画タグの閲覧と編集が可能'
+                    '企画タグの閲覧と編集、作成が可能'
                 ),
                 'staff.tags.read,export' => new PermissionInfo(
                     'staff.tags.read,export',
@@ -119,13 +119,13 @@ class Permission extends SpatiePermission
                     'staff.places.read,edit,delete',
                     'スタッフモード › 場所情報管理 › 閲覧と編集、削除',
                     '場所(削除)',
-                    '場所の閲覧と編集、削除が可能'
+                    '場所の閲覧と編集、作成、削除が可能'
                 ),
                 'staff.places.read,edit' => new PermissionInfo(
                     'staff.places.read,edit',
                     'スタッフモード › 場所情報管理 › 閲覧と編集',
                     '場所(編集)',
-                    '場所の閲覧と編集が可能'
+                    '場所の閲覧と編集、作成が可能'
                 ),
                 'staff.places.read,export' => new PermissionInfo(
                     'staff.places.read,export',
@@ -149,13 +149,13 @@ class Permission extends SpatiePermission
                     'staff.pages.read,edit,send_emails',
                     'スタッフモード › お知らせ管理 › 閲覧と編集、メール配信',
                     'お知らせ(メール配信)',
-                    'お知らせの閲覧と編集、メール配信機能の利用が可能'
+                    'お知らせの閲覧と編集、作成、メール配信機能の利用が可能'
                 ),
                 'staff.pages.read,edit' => new PermissionInfo(
                     'staff.pages.read,edit',
                     'スタッフモード › お知らせ管理 › 閲覧と編集',
                     'お知らせ(編集)',
-                    'お知らせの閲覧と編集が可能。ただし、お知らせをメールで配信することはできません。'
+                    'お知らせの閲覧と編集、作成が可能。ただし、お知らせをメールで配信することはできません。'
                 ),
                 'staff.pages.read,export' => new PermissionInfo(
                     'staff.pages.read,export',
@@ -179,7 +179,7 @@ class Permission extends SpatiePermission
                     'staff.documents.read,edit',
                     'スタッフモード › 配布資料管理 › 閲覧と編集',
                     '配布資料(編集)',
-                    '配布資料の閲覧と編集が可能'
+                    '配布資料の閲覧と編集、作成が可能'
                 ),
                 'staff.documents.read,export' => new PermissionInfo(
                     'staff.documents.read,export',
@@ -203,13 +203,13 @@ class Permission extends SpatiePermission
                     'staff.forms.read,edit,duplicate',
                     'スタッフモード › 申請管理 › フォームの閲覧と編集、複製',
                     '申請(フォームの複製)',
-                    'フォームの閲覧と編集、複製が可能。ただし、回答の閲覧・編集はできません。'
+                    'フォームの閲覧と編集、作成、複製が可能。ただし、回答の閲覧・編集はできません。'
                 ),
                 'staff.forms.read,edit' => new PermissionInfo(
                     'staff.forms.read,edit',
                     'スタッフモード › 申請管理 › フォームの閲覧と編集',
                     '申請(フォームの編集)',
-                    'フォームの閲覧と編集が可能'
+                    'フォームの閲覧と編集、作成が可能'
                 ),
                 'staff.forms.read,export' => new PermissionInfo(
                     'staff.forms.read,export',
@@ -227,7 +227,7 @@ class Permission extends SpatiePermission
                     'staff.forms.answers.read,edit',
                     'スタッフモード › 申請管理 › 回答の閲覧と編集',
                     '申請(回答の編集)',
-                    '回答の閲覧と編集が可能'
+                    '回答の閲覧と編集、作成が可能'
                 ),
                 'staff.forms.answers.read,export' => new PermissionInfo(
                     'staff.forms.answers.read,export',
@@ -251,13 +251,13 @@ class Permission extends SpatiePermission
                     'staff.schedules.read,edit,delete',
                     'スタッフモード › スケジュール管理 › 閲覧と編集、削除',
                     'スケジュール(削除)',
-                    'スケジュールの閲覧と編集、削除が可能'
+                    'スケジュールの閲覧と編集、作成、削除が可能'
                 ),
                 'staff.schedules.read,edit' => new PermissionInfo(
                     'staff.schedules.read,edit',
                     'スタッフモード › スケジュール管理 › 閲覧と編集',
                     'スケジュール(編集)',
-                    'スケジュールの閲覧と編集が可能'
+                    'スケジュールの閲覧と編集、作成が可能'
                 ),
                 'staff.schedules.read,export' => new PermissionInfo(
                     'staff.schedules.read,export',
@@ -282,13 +282,13 @@ class Permission extends SpatiePermission
                     'staff.contacts.categories.read,edit,delete',
                     'スタッフモード › お問い合わせ管理 › お問い合わせ受付設定の閲覧と編集、削除',
                     'お問い合わせ(受付設定の削除)',
-                    'お問い合わせ受付設定のお問い合わせ項目の閲覧、編集、削除が可能'
+                    'お問い合わせ受付設定のお問い合わせ項目の閲覧と編集、作成、削除が可能'
                 ),
                 'staff.contacts.categories.read,edit' => new PermissionInfo(
                     'staff.contacts.categories.read,edit',
                     'スタッフモード › ユーザー情報管理 › お問い合わせ受付設定の閲覧と編集',
                     'お問い合わせ(受付設定の編集)',
-                    'お問い合わせ受付設定のお問い合わせ項目の閲覧と編集が可能'
+                    'お問い合わせ受付設定のお問い合わせ項目の閲覧と編集、作成が可能'
                 ),
                 'staff.contacts.categories.read' => new PermissionInfo(
                     'staff.contacts.categories.read',
