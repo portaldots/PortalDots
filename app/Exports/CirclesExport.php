@@ -106,7 +106,9 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
                 '責任者',
                 '学園祭係',
             ],
-            isset($this->customForm) ? $this->customForm->questions->pluck('name')->toArray() : [],
+            isset($this->customForm)
+            ? $this->customForm->questions->where('type', '!==', 'heading')->pluck('name')->toArray()
+            : [],
         );
     }
 }

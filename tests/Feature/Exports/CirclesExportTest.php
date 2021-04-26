@@ -115,9 +115,17 @@ class CirclesExportTest extends TestCase
         ]);
 
         $this->customForm = factory(CustomForm::class)->create();
+        factory(Question::class)->create([
+            'form_id' => $this->customForm->form->id,
+            'name' => '見出しですよ',
+            'type' => 'heading',
+            'priority' => 1,
+        ]);
         $this->question = factory(Question::class)->create([
             'form_id' => $this->customForm->form->id,
             'name' => 'どんなことをしますか',
+            'type' => 'text',
+            'priority' => 2,
         ]);
 
         $this->answer = factory(Answer::class)->create([
