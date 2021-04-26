@@ -39,6 +39,9 @@
                     </app-badge>
                     @{{" "}}
                 </template>
+                <strong class="text-danger" v-if="row[keyName].length === 0">
+                    利用可能な機能なし
+                </strong>
             </template>
             <template v-else>
                 @{{ row[keyName] }}
