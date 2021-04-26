@@ -21,21 +21,6 @@ class CirclesExportTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @var CustomForm
-     */
-    private $customForm;
-
-    /**
-     * @var Question
-     */
-    private $question;
-
-    /**
-     * @var CirclesExport
-     */
-    private $circlesExport;
-
-    /**
      * @var User
      */
     private $staff;
@@ -71,6 +56,16 @@ class CirclesExportTest extends TestCase
     private $tag;
 
     /**
+     * @var CustomForm
+     */
+    private $customForm;
+
+    /**
+     * @var Question
+     */
+    private $question;
+
+    /**
      * @var Answer
      */
     private $answer;
@@ -80,17 +75,14 @@ class CirclesExportTest extends TestCase
      */
     private $answerDetail;
 
+    /**
+     * @var CirclesExport
+     */
+    private $circlesExport;
+
     public function setUp(): void
     {
         parent::setUp();
-        $this->customForm = factory(CustomForm::class)->create();
-        $this->question = factory(Question::class)->create([
-            'form_id' => $this->customForm->form->id,
-            'name' => 'どんなことをしますか',
-        ]);
-
-        $this->circlesExport = App::make(CirclesExport::class);
-
         $this->staff = factory(User::class)->create([
             'name' => '企画 チェック',
             'student_id' => '9999999',
@@ -122,6 +114,12 @@ class CirclesExportTest extends TestCase
             'name' => '特殊な企画'
         ]);
 
+        $this->customForm = factory(CustomForm::class)->create();
+        $this->question = factory(Question::class)->create([
+            'form_id' => $this->customForm->form->id,
+            'name' => 'どんなことをしますか',
+        ]);
+
         $this->answer = factory(Answer::class)->create([
             'form_id' => $this->customForm->form->id,
             'circle_id' => $this->circle->id,
@@ -138,6 +136,8 @@ class CirclesExportTest extends TestCase
 
         $this->place->circles()->attach($this->circle->id);
         $this->tag->circles()->attach($this->circle->id);
+
+        $this->circlesExport = App::make(CirclesExport::class);
     }
 
     /**
