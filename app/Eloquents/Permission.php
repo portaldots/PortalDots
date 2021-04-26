@@ -179,7 +179,7 @@ class Permission extends SpatiePermission
                     'staff.documents.read,edit',
                     'スタッフモード › 配布資料管理 › 閲覧と編集',
                     '配布資料(編集)',
-                    '配布資料の閲覧と編集が可能。ただし、配布資料を公開したり、既存の配布資料の公開設定を変更したりすることはできません。'
+                    '配布資料の閲覧と編集が可能'
                 ),
                 'staff.documents.read,export' => new PermissionInfo(
                     'staff.documents.read,export',
@@ -209,7 +209,7 @@ class Permission extends SpatiePermission
                     'staff.forms.read,edit',
                     'スタッフモード › 申請管理 › フォームの閲覧と編集',
                     '申請(フォームの編集)',
-                    'フォームの閲覧と編集が可能。ただし、フォームを公開したり、既存のフォームの公開設定を変更したりすることはできません。また、回答の閲覧・編集はできません。'
+                    'フォームの閲覧と編集が可能'
                 ),
                 'staff.forms.read,export' => new PermissionInfo(
                     'staff.forms.read,export',
