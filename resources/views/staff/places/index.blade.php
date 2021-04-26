@@ -35,7 +35,7 @@
             >
                 {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
                 <i class="fas fa-file-csv fa-fw"></i>
-                CSVで出力
+                CSVで出力(場所別企画一覧)
             </a>
         </template>
         <template v-slot:activities="{ row }">
