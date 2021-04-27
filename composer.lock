@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "977bd8915214b610b310c98c96408797",
+    "content-hash": "f75c2c14fcd29523d119d11fad3fbb2d",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1224,16 +1224,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v6.20.26",
+            "version": "v6.20.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "0117d797dc1ab64b1f88d4f6b966380ea7def091"
+                "reference": "addc44fce390c783b2dee0d617300dce97e895f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/0117d797dc1ab64b1f88d4f6b966380ea7def091",
-                "reference": "0117d797dc1ab64b1f88d4f6b966380ea7def091",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/addc44fce390c783b2dee0d617300dce97e895f4",
+                "reference": "addc44fce390c783b2dee0d617300dce97e895f4",
                 "shasum": ""
             },
             "require": {
@@ -1373,7 +1373,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-04-28T14:38:32+00:00"
+            "time": "2021-04-20T13:46:19+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -6303,57 +6303,6 @@
                 "source": "https://github.com/hamcrest/hamcrest-php/tree/v2.0.1"
             },
             "time": "2020-07-09T08:09:16+00:00"
-        },
-        {
-            "name": "kenjis/ci-phpunit-test",
-            "version": "v3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kenjis/ci-phpunit-test.git",
-                "reference": "d6be984ea405c3e7c6adc9692f2e27f883d90af1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kenjis/ci-phpunit-test/zipball/d6be984ea405c3e7c6adc9692f2e27f883d90af1",
-                "reference": "d6be984ea405c3e7c6adc9692f2e27f883d90af1",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/php-parser": "^4.2",
-                "php": ">=7.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kenji Suzuki",
-                    "homepage": "https://github.com/kenjis"
-                }
-            ],
-            "description": "An easier way to use PHPUnit with CodeIgniter 3.x",
-            "homepage": "http://kenjis.github.io/ci-phpunit-test/",
-            "keywords": [
-                "codeigniter",
-                "codeigniter3",
-                "monkey patch",
-                "phpunit",
-                "test",
-                "unit testing"
-            ],
-            "support": {
-                "forum": "http://forum.codeigniter.com/thread-61725.html",
-                "issues": "https://github.com/kenjis/ci-phpunit-test/issues",
-                "source": "https://github.com/kenjis/ci-phpunit-test/tree/v3.0.0"
-            },
-            "time": "2021-03-03T05:44:41+00:00"
         },
         {
             "name": "maximebf/debugbar",
