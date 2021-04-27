@@ -11,8 +11,5 @@ class EncryptCookies extends Middleware
      *
      * @var array
      */
-    protected $except = [
-        // CodeIgniter 側のセッション ID
-        'session_id',
-    ];
+    protected $except = [];
 }
