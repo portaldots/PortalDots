@@ -34,16 +34,18 @@ class AnswersExport implements FromCollection, WithHeadings, WithMapping
     public function map($answer): array
     {
         foreach ($this->form->questions->where('type', '!==', 'heading') as $question) {
-            if ($question->type === 'upload') {
+            if (empty($answer)) {
+                break;
+            } elseif ($question->type === 'upload') {
                 $details[] = preg_replace(
                     '/^answer_details\//',
                     '',
-                    $answer->details->where('question_id', $question->id)->first()->answer ?? null
+                    $answer->details->where('question_id', $question->id)->first()->answer ?? ''
                 );
             } elseif ($question->type === 'checkbox') {
-                $details[] = $answer->details->where('question_id', $question->id)->implode('answer', ',');
+                $details[] = $answer->details->where('question_id', $question->id)->implode('answer', ',') ?? '';
             } else {
-                $details[] = $answer->details->where('question_id', $question->id)->first()->answer ?? null;
+                $details[] = $answer->details->where('question_id', $question->id)->first()->answer ?? '';
             }
         }
 
