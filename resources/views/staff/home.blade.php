@@ -14,6 +14,19 @@
         </list-view>
         <list-view>
             <template v-slot:title>メニュー</template>
+            @if (Auth::user()->permissions->isEmpty())
+                <list-view-card>
+                    <list-view-empty icon-class="fas fa-lock" text="管理者にアクセス権の付与を依頼してください">
+                        <p>
+                            スタッフモードには以下のような機能がありますが、アクセス権がないため利用できません。<br />
+                            利用したい機能がある場合、{{ config('app.name') }}の管理者へお問い合わせください。
+                        </p>
+                        <p>
+                            管理者の方へ : スタッフユーザーへのアクセス権は「スタッフの権限設定」で付与できます。
+                        </p>
+                    </list-view-empty>
+                </list-view-card>
+            @endif
             <list-view-item v-bind:href="{{ Auth::user()->can('staff.users.read') ? ("'" . route('staff.users.index') . "'") : 'undefined' }}">
                 <template v-slot:title>
                     <i class="far fa-address-book fa-lg text-muted fa-fw"></i>
