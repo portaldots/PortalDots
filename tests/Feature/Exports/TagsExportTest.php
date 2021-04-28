@@ -10,8 +10,6 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
-use function PHPSTORM_META\map;
-
 class TagsExportTest extends TestCase
 {
     use RefreshDatabase;
