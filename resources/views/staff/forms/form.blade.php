@@ -58,7 +58,7 @@
                         通常は「1」にします。1企画がこのフォームに対し複数の回答を作成できるようにするには、2以上の値を入力してください。
                     </template>
                     <input id="name" class="form-control @error('max_answers') is-invalid @enderror" type="number" name="max_answers"
-                        value="{{ old('max_answers', empty($form) ? 1 : $form->max_answers) }}" required>
+                        value="{{ old('max_answers', empty($form) ? 1 : $form->max_answers) }}" min="1" required>
                     @if ($errors->has('max_answers'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('max_answers') as $message)
