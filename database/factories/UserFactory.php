@@ -24,6 +24,7 @@ $factory->define(User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'tel' => $faker->phoneNumber,
         'is_staff' => false,
+        'is_admin' => false,
         'email_verified_at' => now(),
         'univemail_verified_at' => now(),
         'signed_up_at' => now(),
@@ -35,6 +36,12 @@ $factory->define(User::class, function (Faker $faker) {
 
 $factory->state(User::class, 'staff', [
     'is_staff' => true,
+    'is_admin' => false,
+]);
+
+$factory->state(User::class, 'admin', [
+    'is_staff' => true,
+    'is_admin' => true,
 ]);
 
 $factory->state(User::class, 'not_verified', [
