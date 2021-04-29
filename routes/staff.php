@@ -190,32 +190,6 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::delete('/{schedule}', 'Staff\Schedules\DestroyAction')->name('destroy')->middleware(['can:staff.schedules.delete']);
             });
 
-        Route::prefix('/places')
-            ->name('places.')
-            ->group(function () {
-                Route::get('/', 'Staff\Places\IndexAction')->name('index');
-                Route::get('/api', 'Staff\Places\ApiAction')->name('api');
-                Route::get('/create', 'Staff\Places\CreateAction')->name('create');
-                Route::post('/', 'Staff\Places\StoreAction')->name('store');
-                Route::get('/{place}/edit', 'Staff\Places\EditAction')->name('edit');
-                Route::patch('/{place}', 'Staff\Places\UpdateAction')->name('update');
-                Route::delete('/{place}', 'Staff\Places\DestroyAction')->name('destroy');
-                Route::get('/export', 'Staff\Places\ExportAction')->name('export');
-            });
-
-        Route::prefix('/schedules')
-            ->name('schedules.')
-            ->group(function () {
-                Route::get('/', 'Staff\Schedules\IndexAction')->name('index');
-                Route::get('/api', 'Staff\Schedules\ApiAction')->name('api');
-                Route::get('/create', 'Staff\Schedules\CreateAction')->name('create');
-                Route::post('/', 'Staff\Schedules\StoreAction')->name('store');
-                Route::get('/{schedule}/edit', 'Staff\Schedules\EditAction')->name('edit');
-                Route::patch('/{schedule}', 'Staff\Schedules\UpdateAction')->name('update');
-                Route::delete('/{schedule}', 'Staff\Schedules\DestroyAction')->name('destroy');
-                Route::get('/export', 'Staff\Schedules\ExportAction')->name('export');
-            });
-
         // メール一斉送信
         Route::get('/send_emails', 'Staff\SendEmails\ListAction')->name('send_emails')->middleware(['can:staff.pages.send_emails']);
         Route::delete('/send_emails', 'Staff\SendEmails\DestroyAction')->middleware(['can:staff.pages.send_emails']);

@@ -158,7 +158,8 @@ class CheckPermissionsTest extends TestCase
                     403,
                     $response->getStatusCode(),
                     "権限がない場合は " . $route_name_prefix .
-                    " にアクセスできないようにする必要があります。"
+                    " にアクセスできないようにする必要があります。権限 : " .
+                    $permission
                 );
             }
         }
