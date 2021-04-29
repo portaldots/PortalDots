@@ -141,8 +141,8 @@
                 <template v-if="row[keyName] && row[keyName].file_url">
                     <a v-bind:href="row[keyName].file_url" target="_blank" rel="noopener noreferrer">表示</a>
                 </template>
-                <template v-if="row[keyName] && row[keyName].answer">
-                    @{{ row[keyName].answer }}
+                <template v-else-if="row[keyName] && row[keyName].join">
+                    @{{ row[keyName].join(', ') }}
                 </template>
             </template>
             <template v-else-if="keyName === 'status'">
