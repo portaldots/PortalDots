@@ -49,6 +49,12 @@ class PermissionsGridMaker implements GridMakable
      */
     public function filterableKeys(): FilterableKeysDict
     {
+        static $permissions_choices = null;
+
+        if (empty($permissions_choices)) {
+            $permissions_choices = Permission::all()->toArray();
+        }
+
         return new FilterableKeysDict([
             'id' => FilterableKey::number(),
             'student_id' => FilterableKey::string(),
@@ -57,6 +63,13 @@ class PermissionsGridMaker implements GridMakable
             'name_given' => FilterableKey::string(),
             'name_given_yomi' => FilterableKey::string(),
             'is_admin' => FilterableKey::bool(),
+            'permissions' => FilterableKey::belongsToMany(
+                'model_has_permissions',
+                'model_id',
+                'permission_id',
+                $permissions_choices,
+                'display_name'
+            ),
         ]);
     }
 

@@ -7,6 +7,18 @@ use Spatie\Permission\Models\Permission as SpatiePermission;
 
 class Permission extends SpatiePermission
 {
+    /**
+     * モデルの配列形態に追加するアクセサ
+     *
+     * @var array
+     */
+    protected $appends = ['display_name'];
+
+    public function getDisplayNameAttribute(): string
+    {
+        return $this->getDefinedPermissions()[$this->name]->getDisplayName();
+    }
+
     public static function getDefinedPermissions()
     {
         static $defined_permissions = null;
