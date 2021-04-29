@@ -18,24 +18,24 @@ export default {
   props: {
     href: {
       type: String,
-      default: undefined,
+      default: undefined
     },
     submit: {
       type: Boolean,
-      default: false,
+      default: false
     },
     title: {
       type: String,
-      required: true,
+      required: true
     },
     newtab: {
       type: Boolean,
-      default: false,
+      default: false
     },
     disabled: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   computed: {
     componentIs() {
@@ -46,14 +46,14 @@ export default {
 
       if (this.href) {
         return {
-          class: 'is-disabled',
+          class: 'is-disabled'
         }
       }
       return {
-        disabled: true,
+        disabled: true
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
