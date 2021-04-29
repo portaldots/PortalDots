@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Eloquents\Answer;
 use App\Eloquents\Form;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -33,29 +34,13 @@ class AnswersExport implements FromCollection, WithHeadings, WithMapping
      */
     public function map($answer): array
     {
-        foreach ($this->form->questions->where('type', '!==', 'heading') as $question) {
-            if (empty($answer)) {
-                break;
-            } elseif ($question->type === 'upload') {
-                $details[] = preg_replace(
-                    '/^answer_details\//',
-                    '',
-                    $answer->details->where('question_id', $question->id)->first()->answer ?? ''
-                );
-            } elseif ($question->type === 'checkbox') {
-                $details[] = $answer->details->where('question_id', $question->id)->implode('answer', ',') ?? '';
-            } else {
-                $details[] = $answer->details->where('question_id', $question->id)->first()->answer ?? '';
-            }
-        }
-
         return array_merge(
             [
                 $answer->id,
                 $answer->circle->id,
                 $answer->circle->name,
             ],
-            $details
+            $this->getDetails($answer)
         );
     }
 
@@ -72,5 +57,31 @@ class AnswersExport implements FromCollection, WithHeadings, WithMapping
             ],
             $this->form->questions->where('type', '!==', 'heading')->pluck('name')->toArray()
         );
+    }
+
+    /**
+     * 回答を出力用の配列にする
+     *
+     * @param Answer $answer
+     * @return array
+     */
+    public function getDetails(Answer $answer): array
+    {
+        foreach ($this->form->questions->where('type', '!==', 'heading') as $question) {
+            if (empty($answer)) {
+                break;
+            } elseif ($question->type === 'upload') {
+                $details[] = preg_replace(
+                    '/^answer_details\//',
+                    '',
+                    $answer->details->where('question_id', $question->id)->first()->answer ?? ''
+                );
+            } elseif ($question->type === 'checkbox') {
+                $details[] = $answer->details->where('question_id', $question->id)->implode('answer', ',') ?? '';
+            } else {
+                $details[] = $answer->details->where('question_id', $question->id)->first()->answer ?? '';
+            }
+        }
+        return $details;
     }
 }

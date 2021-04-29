@@ -16,11 +16,17 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
      */
     private $customForm;
 
+    /**
+     * @var AnswersExport
+     */
+    private $answersExport;
+
     public function __construct()
     {
         $this->customForm = CustomForm::getFormByType('circle');
         if (isset($this->customForm)) {
             $this->customForm->load(['questions', 'answers.details']);
+            $this->answersExport = new AnswersExport($this->customForm);
         }
     }
 
@@ -54,21 +60,6 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
 
         if (isset($this->customForm)) {
             $answer = $this->customForm->answers->where('circle_id', $circle->id)->first();
-            foreach ($this->customForm->questions->where('type', '!==', 'heading') as $question) {
-                if (empty($answer)) {
-                    break;
-                } elseif ($question->type === 'upload') {
-                    $details[] = preg_replace(
-                        '/^answer_details\//',
-                        '',
-                        $answer->details->where('question_id', $question->id)->first()->answer ?? ''
-                    );
-                } elseif ($question->type === 'checkbox') {
-                    $details[] = $answer->details->where('question_id', $question->id)->implode('answer', ',') ?? '';
-                } else {
-                    $details[] = $answer->details->where('question_id', $question->id)->first()->answer ?? '';
-                }
-            }
         }
 
         return array_merge(
@@ -92,7 +83,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
                 $leader ? "{$leader->name}(ID:{$leader->id},{$leader->student_id})" : '',
                 implode(',', $members),
             ],
-            $details ?? [],
+            isset($answer) ? $this->answersExport->getDetails($answer) : []
         );
     }
 
