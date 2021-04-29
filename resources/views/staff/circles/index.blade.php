@@ -98,6 +98,13 @@
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力
             </a>
+            <a
+                class="btn is-primary-inverse is-no-shadow is-no-border"
+                href="{{ route('staff.forms.answers.uploads.index', ['form' => $custom_form]) }}"
+            >
+                <i class="far fa-file-archive fa-fw"></i>
+                ファイルを一括ダウンロード
+            </a>
         </template>
         <template v-slot:activities="{ row }">
             <form-with-confirm
