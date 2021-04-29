@@ -2,13 +2,12 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Forms\Answers\Uploads;
 
-use Mockery;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use App\Eloquents\Form;
+use App\Eloquents\Permission;
 use App\Eloquents\User;
 use App\Services\Forms\DownloadZipService;
 use App\Services\Forms\Exceptions\NoDownloadFileExistException;
@@ -18,7 +17,14 @@ class DownloadZipActionTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @var Form
+     */
     private $form;
+
+    /**
+     * @var User
+     */
     private $staff;
 
     public function setUp(): void
@@ -33,6 +39,9 @@ class DownloadZipActionTest extends TestCase
      */
     public function ダウンロードできる()
     {
+        Permission::create(['name' => 'staff.forms.answers.export']);
+        $this->staff->syncPermissions(['staff.forms.answers.export']);
+
         // ダウンロードされるZIPファイルの代わり
         $example_file = new File(base_path('tests/TestFile.png'));
         Storage::putFileAs('answer_details_zip', $example_file, 'TestFile.png');
@@ -55,6 +64,9 @@ class DownloadZipActionTest extends TestCase
      */
     public function ダウンロードできるファイルがない時に適切にエラー表示される()
     {
+        Permission::create(['name' => 'staff.forms.answers.export']);
+        $this->staff->syncPermissions(['staff.forms.answers.export']);
+
         $this->mock(DownloadZipService::class, function ($mock) {
             $mock->shouldReceive('makeZip')
             ->once()
@@ -73,6 +85,9 @@ class DownloadZipActionTest extends TestCase
      */
     public function ZipArchive非対応時に適切にエラー表示される()
     {
+        Permission::create(['name' => 'staff.forms.answers.export']);
+        $this->staff->syncPermissions(['staff.forms.answers.export']);
+
         $this->mock(DownloadZipService::class, function ($mock) {
             $mock->shouldReceive('makeZip')
             ->once()
@@ -84,6 +99,18 @@ class DownloadZipActionTest extends TestCase
             ->post(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
 
         $response->assertSessionHas('topAlert.title');
+    }
+
+    /**
+     * @test
+     */
+    public function 権限がない場合はダウンロードできない()
+    {
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
+
+        $response->assertStatus(403);
     }
 
     /**
