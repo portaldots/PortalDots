@@ -40,15 +40,17 @@
             </p>
             @markdown($form->description)
         </div>
-        <hr />
-        <a
-            class="btn is-primary"
-            href="{{ route('staff.forms.edit', ['form' => $form]) }}"
-            data-turbolinks="false"
-        >
-            <i class="fas fa-pencil-alt fa-fw"></i>
-            フォームを編集
-        </a>
+        @if (!isset($form->customForm))
+            <hr />
+            <a
+                class="btn is-primary"
+                href="{{ route('staff.forms.edit', ['form' => $form]) }}"
+                data-turbolinks="false"
+            >
+                <i class="fas fa-pencil-alt fa-fw"></i>
+                フォームを編集
+            </a>
+        @endif
     </app-header>
     <staff-grid
         api-url="{{ route('staff.forms.answers.api', ['form' => $form]) }}"
@@ -99,12 +101,14 @@
                 <i class="far fa-file-archive fa-fw"></i>
                 ファイルを一括ダウンロード
             </a>
-            <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
-                href="{{ route('staff.forms.not_answered', ['form' => $form]) }}"
-            >
-                未提出企画を表示
-            </a>
+            @if (!isset($form->customForm))
+                <a
+                    class="btn is-primary-inverse is-no-shadow is-no-border"
+                    href="{{ route('staff.forms.not_answered', ['form' => $form]) }}"
+                >
+                    未提出企画を表示
+                </a>
+            @endif
         </template>
         <template v-slot:activities="{ row }">
             <icon-button v-bind:href="`{{ route('staff.forms.answers.edit', ['form' => $form, 'answer' => '%%ANSWER%%']) }}`.replace('%%ANSWER%%', row['id'])" title="編集">
