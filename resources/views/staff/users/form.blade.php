@@ -52,7 +52,7 @@
                 <list-view-form-group label-for="name_yomi">
                     <template v-slot:label>名前(よみ)</template>
                     <template v-slot:description>
-                        と名の間にはスペースを入れてください
+                        姓と名の間にはスペースを入れてください
                     </template>
                     <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror"
                         name="name_yomi" value="{{ old('name_yomi', $user->name_yomi) }}" required>
