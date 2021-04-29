@@ -77,6 +77,9 @@ class AnswersExportTest extends TestCase
 
         $this->circle = factory(Circle::class)->create([
             'name' => '片付けチェック見守ります',
+            'name_yomi' => 'かたづけちぇっくみまもります',
+            'group_name' => 'お世話好きサークル',
+            'group_name_yomi' => 'おせわずきさーくる',
         ]);
 
         $this->question = factory(Question::class)->create([
@@ -146,6 +149,9 @@ class AnswersExportTest extends TestCase
                 $this->answer->id,
                 $this->circle->id,
                 '片付けチェック見守ります',
+                'かたづけちぇっくみまもります',
+                'お世話好きサークル',
+                'おせわずきさーくる',
                 'TEST.png',
                 $this->detail->answer,
                 'ひとつめ,ふたつめ',
@@ -164,6 +170,9 @@ class AnswersExportTest extends TestCase
                 '回答ID',
                 '企画ID',
                 '企画名',
+                '企画名（よみ）',
+                '企画を出店する団体の名称',
+                '企画を出店する団体の名称（よみ）',
                 'あっぷろーど',
                 'せつもん',
                 'チェックボックス',
