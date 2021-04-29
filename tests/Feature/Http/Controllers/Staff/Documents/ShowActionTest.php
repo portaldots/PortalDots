@@ -3,18 +3,21 @@
 namespace Tests\Feature\Http\Controllers\Staff\Documents;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use App\Eloquents\Document;
+use App\Eloquents\Permission;
 use App\Eloquents\User;
 
 class ShowActionTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** @var Document */
     private $document;
+
+    /** @var User */
     private $staff;
 
     public function setUp(): void
@@ -40,6 +43,9 @@ class ShowActionTest extends TestCase
      */
     public function ダウンロードできる()
     {
+        Permission::create(['name' => 'staff.documents.read']);
+        $this->staff->syncPermissions(['staff.documents.read']);
+
         $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->get(route('staff.documents.show', [
@@ -52,6 +58,19 @@ class ShowActionTest extends TestCase
     /**
      * @test
      */
+    public function 権限がない場合はダウンロードできない()
+    {
+        $response = $this->actingAs(factory(User::class)->create())
+            ->get(route('staff.documents.show', [
+                'document' => $this->document
+            ]));
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * @test
+     */
     public function スタッフ以外はダウンロードできない()
     {
         $response = $this->actingAs(factory(User::class)->create())
@@ -59,6 +78,6 @@ class ShowActionTest extends TestCase
                 'document' => $this->document
             ]));
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 }
