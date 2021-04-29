@@ -147,8 +147,13 @@ class AnswersGridMaker implements GridMakable
                             'question' => $detail->question_id
                         ])
                     ];
+                } elseif (
+                    isset($item[self::FORM_QUESTIONS_KEY_PREFIX . $detail->question_id]) &&
+                    is_array($item[self::FORM_QUESTIONS_KEY_PREFIX . $detail->question_id])
+                ) {
+                    $item[self::FORM_QUESTIONS_KEY_PREFIX . $detail->question_id][] = $detail->answer;
                 } else {
-                    $item[self::FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = $detail;
+                    $item[self::FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = [$detail->answer];
                 }
             }
         }
