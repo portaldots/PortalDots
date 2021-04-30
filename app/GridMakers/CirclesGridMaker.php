@@ -83,7 +83,8 @@ class CirclesGridMaker implements GridMakable
         ];
 
         $custom_form_keys = isset($this->custom_form) ?
-            $this->custom_form->questions->map(function (Question $question) {
+            $this->custom_form->questions()->where('type', '!=', 'heading')
+            ->get()->map(function (Question $question) {
                 return self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $question->id;
             })->all() : [];
 
@@ -198,6 +199,10 @@ class CirclesGridMaker implements GridMakable
             $answer = $record->answers->firstWhere('circle_id', $record->id);
             if (isset($answer) && isset($answer->details) && is_iterable($answer->details)) {
                 foreach ($record->answers->where('circle_id', $record->id)->first()->details as $detail) {
+                    if ($detail->question->type === 'heading') {
+                        continue;
+                    }
+
                     if ($detail->question->type === 'upload') {
                         $item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = [
                             'file_url' => route('staff.forms.answers.uploads.show', [
