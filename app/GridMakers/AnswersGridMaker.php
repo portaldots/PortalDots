@@ -5,12 +5,8 @@ declare(strict_types=1);
 namespace App\GridMakers;
 
 use App\Eloquents\Answer;
-use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
 use App\Eloquents\Form;
-use App\Eloquents\Place;
 use App\Eloquents\Question;
-use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use App\GridMakers\Concerns\UseEloquent;
 use App\GridMakers\Filter\FilterableKey;
