@@ -4,7 +4,6 @@ namespace Tests\Feature\Http\Controllers\Staff\Circles;
 
 use App\Exports\CirclesExport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
