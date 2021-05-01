@@ -60,6 +60,12 @@
             </a>
             <a
                 class="btn is-primary-inverse is-no-shadow is-no-border"
+                href="{{ route('staff.send_emails') }}"
+            >
+                メール配信設定
+            </a>
+            <a
+                class="btn is-primary-inverse is-no-shadow is-no-border"
                 href="{{ url('/home_staff/pages/export') }}"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -70,9 +76,9 @@
             </a>
         </template>
         <template v-slot:activities="{ row }">
-            <a v-bind:href="`{{ route('staff.pages.edit', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])" title="編集" class="btn text-primary">
+            <icon-button v-bind:href="`{{ route('staff.pages.edit', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])" title="編集">
                 <i class="fas fa-pencil-alt fa-fw"></i>
-            </a>
+            </icon-button>
         </template>
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'created_by' || keyName === 'updated_by'">

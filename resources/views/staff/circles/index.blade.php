@@ -5,6 +5,23 @@
 @section('top_alert_props', 'container-fluid')
 
 @section('content')
+    @if(empty($custom_form))
+        <top-alert type="primary" keep-visible container-fluid>
+            <template v-slot:title>
+                <i class="fa fa-star fa-fw" aria-hidden="true"></i>
+                企画参加登録をウェブ化して時短しませんか？
+            </template>
+
+            企画参加登録を「{{ config("app.name") }}」上で受け付けることで、参加登録にかかる事務作業を時短することができます。
+
+            <template v-slot:cta>
+                <a href="{{ route('staff.circles.custom_form.index') }}" class="btn is-primary-inverse is-no-border is-wide">
+                    <strong>もっと詳しく</strong>
+                </a>
+            </template>
+        </top-alert>
+    @endif
+
     <staff-grid
         api-url="{{ route('staff.circles.api') }}"
         v-bind:key-translations="{
@@ -81,6 +98,15 @@
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力
             </a>
+            @isset ($custom_form)
+                <a
+                    class="btn is-primary-inverse is-no-shadow is-no-border"
+                    href="{{ route('staff.forms.answers.uploads.index', ['form' => $custom_form]) }}"
+                >
+                    <i class="far fa-file-archive fa-fw"></i>
+                    ファイルを一括ダウンロード
+                </a>
+            @endisset
         </template>
         <template v-slot:activities="{ row }">
             <form-with-confirm
@@ -91,12 +117,15 @@
             >
                 @method('delete')
                 @csrf
-                <a v-bind:href="`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="編集" class="btn text-primary">
-                <i class="fas fa-pencil-alt fa-fw"></i>
-            </a>
-                <button type="submit" title="削除" class="btn text-danger">
+                <icon-button v-bind:href="`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="編集">
+                    <i class="fas fa-pencil-alt fa-fw"></i>
+                </icon-button>
+                <icon-button v-bind:href="`{{ route('staff.circles.email', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="メール送信">
+                    <i class="far fa-envelope fa-fw"></i>
+                </icon-button>
+                <icon-button submit title="削除">
                     <i class="fas fa-trash fa-fw"></i>
-                </button>
+                </icon-button>
             </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">
@@ -121,8 +150,8 @@
                 <template v-if="row[keyName] && row[keyName].file_url">
                     <a v-bind:href="row[keyName].file_url" target="_blank" rel="noopener noreferrer">表示</a>
                 </template>
-                <template v-if="row[keyName] && row[keyName].answer">
-                    @{{ row[keyName].answer }}
+                <template v-else-if="row[keyName] && row[keyName].join">
+                    @{{ row[keyName].join(', ') }}
                 </template>
             </template>
             <template v-else-if="keyName === 'status'">

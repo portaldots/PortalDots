@@ -47,12 +47,12 @@
             >
                 @method('delete')
                 @csrf
-                <a v-bind:href="`{{ route('staff.places.edit', ['place' => '%%PLACE%%']) }}`.replace('%%PLACE%%', row['id'])" title="編集" class="btn is-primary is-no-shadow">
+                <icon-button v-bind:href="`{{ route('staff.places.edit', ['place' => '%%PLACE%%']) }}`.replace('%%PLACE%%', row['id'])" title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
-                </a>
-                <button type="submit" title="削除" class="btn is-danger is-no-shadow">
+                </icon-button>
+                <icon-button submit title="削除">
                     <i class="fas fa-trash fa-fw"></i>
-                </button>
+                </icon-button>
             </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">

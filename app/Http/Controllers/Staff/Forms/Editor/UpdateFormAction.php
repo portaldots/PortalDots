@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Staff\Forms\Editor;
 
-use App\Services\Forms\FormsService;
+use App\Services\Forms\FormEditorService;
 use App\Http\Requests\Staff\Forms\Editor\UpdateFormRequest;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Form;
@@ -10,13 +10,13 @@ use App\Eloquents\Form;
 class UpdateFormAction extends Controller
 {
     /**
-     * @var FormsService
+     * @var FormEditorService
      */
-    private $formsService;
+    private $formEditorService;
 
-    public function __construct(FormsService $formsService)
+    public function __construct(FormEditorService $formEditorService)
     {
-        $this->formsService = $formsService;
+        $this->formEditorService = $formEditorService;
     }
 
     public function __invoke(int $form_id, UpdateFormRequest $request)
@@ -30,7 +30,7 @@ class UpdateFormAction extends Controller
 
         unset($form['created_by'], $form['created_at'], $form['updated_at'], $form['custom_form'], $form['id']);
 
-        $this->formsService->updateForm(
+        $this->formEditorService->updateForm(
             $form_id,
             $form
         );

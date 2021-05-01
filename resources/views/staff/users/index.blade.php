@@ -43,9 +43,9 @@
             </a>
         </template>
         <template v-slot:activities="{ row }">
-            <a v-bind:href="`/home_staff/users/edit/${row.id}`" title="編集" class="btn text-primary" data-turbolinks="false">
+            <icon-button v-bind:href="`{{ route('staff.users.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])" title="編集">
                 <i class="fas fa-pencil-alt fa-fw"></i>
-            </a>
+            </icon-button>
         </template>
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'email_verified_at'">

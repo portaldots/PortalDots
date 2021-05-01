@@ -30,6 +30,7 @@
         --color-top-alert-border: rgba(255, 255, 255, 0.16);
         --color-primary-hover: rgba(26, 121, 244, 0.8);
         --color-primary-inverse-hover: rgba(26, 121, 244, 0.15);
+        --color-icon-button-hover: rgba(26, 121, 244, 0.1);
         --color-danger-hover: rgba(219, 60, 62, 0.8);
         --color-success-hover: rgba(27, 162, 78, 0.8);
     }
@@ -65,6 +66,7 @@
             --color-top-alert-border: rgba(28, 28, 28, 0.16);
             --color-primary-hover: rgba(117, 170, 240, 0.8);
             --color-primary-inverse-hover: rgba(117, 170, 240, 0.15);
+            --color-icon-button-hover: rgba(117, 170, 240, 0.2);
             --color-danger-hover: rgba(226, 118, 120, 0.8);
             --color-success-hover: rgba(75, 189, 119, 0.8);
         }

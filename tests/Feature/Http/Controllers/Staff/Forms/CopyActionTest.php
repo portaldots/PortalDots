@@ -6,7 +6,6 @@ use App\Eloquents\Form;
 use App\Eloquents\User;
 use App\Services\Forms\FormsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Mockery;
 
@@ -39,7 +38,6 @@ class CopyActionTest extends TestCase
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.forms.copy', ['form' => $this->form]));
 
-        // CodeIgniter を廃止したら↓を書き換える
-        $response->assertRedirect("/home_staff/applications/read/{$this->form_copy->id}?copied=1");
+        $response->assertRedirect(route('staff.forms.index'));
     }
 }

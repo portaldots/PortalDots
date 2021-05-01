@@ -3,7 +3,7 @@
 
 @staffpage
     @if (Auth::check() && Auth::user()->is_staff)
-        <a class="drawer-header" href="/home_staff" data-turbolinks="false">
+        <a class="drawer-header" href="{{ route('staff.index') }}">
             {{ config('app.name') }}
             <app-badge primary>スタッフモード</app-badge>
         </a>
@@ -41,7 +41,7 @@
                 <i class="far fa-file-alt drawer-nav__icon fa-fw"></i>
                 配布資料管理
             </a>
-            <a href="{{ url('/home_staff/applications') }}" class="drawer-nav__link{{ Request::is('staff/forms*') ? ' is-active' : '' }}" data-turbolinks="false">
+            <a href="{{ route('staff.forms.index') }}" class="drawer-nav__link{{ Request::is('staff/forms*') ? ' is-active' : '' }}">
                 <i class="far fa-edit drawer-nav__icon fa-fw"></i>
                 申請管理
             </a>
@@ -56,7 +56,7 @@
             @if (Auth::user()->is_admin)
                 <a href="{{ route('admin.portal.edit') }}" class="drawer-nav__link{{ Request::is('admin/portal*') ? ' is-active' : '' }}">
                     <i class="fas fa-cog drawer-nav__icon fa-fw"></i>
-                    ポータル情報設定
+                    PortalDots の設定
                     <app-badge danger>管理者</app-badge>
                 </a>
             @endif

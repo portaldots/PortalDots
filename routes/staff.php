@@ -11,6 +11,15 @@
 |
 */
 
+// スタッフ認証
+Route::middleware(['auth', 'verified', 'can:staff'])
+    ->prefix('/staff/verify')
+    ->name('staff.verify.')
+    ->group(function () {
+        Route::get('/', 'Staff\Verify\IndexAction')->name('index');
+        Route::post('/', 'Staff\Verify\VerifyAction');
+    });
+
 // スタッフページ（多要素認証も済んでいる状態）
 Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
     ->prefix('/staff')
@@ -46,6 +55,19 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             });
 
         // 申請
+        Route::prefix('/forms')
+            ->name('forms.')
+            ->group(function () {
+                Route::get('/', 'Staff\Forms\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Forms\ApiAction')->name('api');
+                Route::get('/create', 'Staff\Forms\CreateAction')->name('create');
+                Route::post('/', 'Staff\Forms\StoreAction')->name('store');
+                Route::get('/{form}/edit', 'Staff\Forms\EditAction')->name('edit');
+                Route::patch('/{form}', 'Staff\Forms\UpdateAction')->name('update');
+                Route::delete('/{form}', 'Staff\Forms\DestroyAction')->name('destroy');
+            });
+
+        // 申請個別ページ
         Route::prefix('/forms/{form}')
             ->name('forms.')
             ->group(function () {
@@ -53,6 +75,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::prefix('/answers')
                     ->name('answers.')
                     ->group(function () {
+                        Route::get('/', 'Staff\Forms\Answers\IndexAction')->name('index');
+                        Route::get('/api', 'Staff\Forms\Answers\ApiAction')->name('api');
                         Route::get('/{answer}/edit', 'Staff\Forms\Answers\EditAction')->name('edit');
                         Route::patch('/{answer}', 'Staff\Forms\Answers\UpdateAction')->name('update');
                         Route::get('/create', 'Staff\Forms\Answers\CreateAction')->name('create');
@@ -77,13 +101,12 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                         Route::post('/api/delete_question', 'Staff\Forms\Editor\DeleteQuestionAction');
                     });
 
-                Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction');
+                Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction')->name('not_answered');
+
+                Route::get('/preview', 'Staff\Forms\PreviewAction')->name('preview');
 
                 // フォームの複製
-                // TODO: CopyConfirmAction は、CodeIgniter から CopyAction へ直接 POST できない都合で挟んだクッションページなので、
-                // スタッフモードが Laravel 化したら CopyConfirmAction は消す。
-                Route::get('/copy', 'Staff\Forms\CopyConfirmAction')->name('copy');
-                Route::post('/copy', 'Staff\Forms\CopyAction');
+                Route::post('/copy', 'Staff\Forms\CopyAction')->name('copy');
             });
 
         Route::prefix('/users')
@@ -91,9 +114,11 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             ->group(function () {
                 Route::get('/', 'Staff\Users\IndexAction')->name('index');
                 Route::get('/api', 'Staff\Users\ApiAction')->name('api');
+                Route::get('/{user}/edit', 'Staff\Users\EditAction')->name('edit');
+                Route::patch('/{user}', 'Staff\Users\UpdateAction')->name('update');
+                Route::delete('/{user}', 'Staff\Users\DestroyAction')->name('destroy');
 
                 // 手動本人確認
-                Route::get('/{user}/verify', 'Staff\Users\VerifyConfirmAction')->name('verify');
                 Route::patch('/{user}/verify', 'Staff\Users\VerifiedAction')->name('verified');
             });
 
