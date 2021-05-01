@@ -11,6 +11,15 @@
 |
 */
 
+// スタッフ認証
+Route::middleware(['auth', 'verified', 'can:staff'])
+    ->prefix('/staff/verify')
+    ->name('staff.verify.')
+    ->group(function () {
+        Route::get('/', 'Staff\Verify\IndexAction')->name('index');
+        Route::post('/', 'Staff\Verify\VerifyAction');
+    });
+
 // スタッフページ（多要素認証も済んでいる状態）
 Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
     ->prefix('/staff')
@@ -50,46 +59,57 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
         Route::prefix('/forms')
             ->name('forms.')
             ->group(function () {
-                Route::prefix('/{form}')
-                    ->group(function () {
-                        // 回答確認
-                        Route::prefix('/answers')
-                            ->name('answers.')
-                            ->group(function () {
-                                Route::get('/{answer}/edit', 'Staff\Forms\Answers\EditAction')->name('edit');
-                                Route::patch('/{answer}', 'Staff\Forms\Answers\UpdateAction')->name('update');
-                                Route::get('/create', 'Staff\Forms\Answers\CreateAction')->name('create');
-                                Route::post('/', 'Staff\Forms\Answers\StoreAction')->name('store');
-                                Route::get('/{answer}/uploads/{question}', 'Staff\Forms\Answers\Uploads\ShowAction')->name('uploads.show');
-                                Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index');
-                                Route::post('/uploads/download_zip', 'Staff\Forms\Answers\Uploads\DownloadZipAction')->name('uploads.download_zip');
-                                Route::get('/export', 'Staff\Forms\Answers\ExportAction')->name('export');
-                            });
-
-                        // 申請フォームエディタ
-                        Route::prefix('/editor')
-                            ->group(function () {
-                                Route::get('/', 'Staff\Forms\Editor\IndexAction')->name('editor');
-                                // ↓「editor.api」のroute定義は resources/views/staff/forms/editor.blade.php で利用しているので、消さないこと
-                                Route::get('/api', 'Staff\Forms\Editor\APIAction')->name('editor.api');
-                                Route::get('/api/get_form', 'Staff\Forms\Editor\GetFormAction');
-                                Route::post('/api/update_form', 'Staff\Forms\Editor\UpdateFormAction');
-                                Route::get('/api/get_questions', 'Staff\Forms\Editor\GetQuestionsAction');
-                                Route::post('/api/add_question', 'Staff\Forms\Editor\AddQuestionAction');
-                                Route::post('/api/update_questions_order', 'Staff\Forms\Editor\UpdateQuestionsOrderAction');
-                                Route::post('/api/update_question', 'Staff\Forms\Editor\UpdateQuestionAction');
-                                Route::post('/api/delete_question', 'Staff\Forms\Editor\DeleteQuestionAction');
-                            });
-
-                        Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction');
-
-                        // フォームの複製
-                        // TODO: CopyConfirmAction は、CodeIgniter から CopyAction へ直接 POST できない都合で挟んだクッションページなので、
-                        // スタッフモードが Laravel 化したら CopyConfirmAction は消す。
-                        Route::get('/copy', 'Staff\Forms\CopyConfirmAction')->name('copy');
-                        Route::post('/copy', 'Staff\Forms\CopyAction');
-                    });
+                Route::get('/', 'Staff\Forms\IndexAction')->name('index');
+                Route::get('/api', 'Staff\Forms\ApiAction')->name('api');
+                Route::get('/create', 'Staff\Forms\CreateAction')->name('create');
+                Route::post('/', 'Staff\Forms\StoreAction')->name('store');
+                Route::get('/{form}/edit', 'Staff\Forms\EditAction')->name('edit');
+                Route::patch('/{form}', 'Staff\Forms\UpdateAction')->name('update');
+                Route::delete('/{form}', 'Staff\Forms\DestroyAction')->name('destroy');
                 Route::get('/export', 'Staff\Forms\ExportAction')->name('export');
+            });
+
+        // 申請個別ページ
+        Route::prefix('/forms/{form}')
+            ->name('forms.')
+            ->group(function () {
+                // 回答確認
+                Route::prefix('/answers')
+                    ->name('answers.')
+                    ->group(function () {
+                        Route::get('/', 'Staff\Forms\Answers\IndexAction')->name('index');
+                        Route::get('/api', 'Staff\Forms\Answers\ApiAction')->name('api');
+                        Route::get('/{answer}/edit', 'Staff\Forms\Answers\EditAction')->name('edit');
+                        Route::patch('/{answer}', 'Staff\Forms\Answers\UpdateAction')->name('update');
+                        Route::get('/create', 'Staff\Forms\Answers\CreateAction')->name('create');
+                        Route::post('/', 'Staff\Forms\Answers\StoreAction')->name('store');
+                        Route::get('/{answer}/uploads/{question}', 'Staff\Forms\Answers\Uploads\ShowAction')->name('uploads.show');
+                        Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index');
+                        Route::post('/uploads/download_zip', 'Staff\Forms\Answers\Uploads\DownloadZipAction')->name('uploads.download_zip');
+                        Route::get('/export', 'Staff\Forms\Answers\ExportAction')->name('export');
+                    });
+
+                // 申請フォームエディタ
+                Route::prefix('/editor')
+                    ->group(function () {
+                        Route::get('/', 'Staff\Forms\Editor\IndexAction')->name('editor');
+                        // ↓「editor.api」のroute定義は resources/views/staff/forms/editor.blade.php で利用しているので、消さないこと
+                        Route::get('/api', 'Staff\Forms\Editor\APIAction')->name('editor.api');
+                        Route::get('/api/get_form', 'Staff\Forms\Editor\GetFormAction');
+                        Route::post('/api/update_form', 'Staff\Forms\Editor\UpdateFormAction');
+                        Route::get('/api/get_questions', 'Staff\Forms\Editor\GetQuestionsAction');
+                        Route::post('/api/add_question', 'Staff\Forms\Editor\AddQuestionAction');
+                        Route::post('/api/update_questions_order', 'Staff\Forms\Editor\UpdateQuestionsOrderAction');
+                        Route::post('/api/update_question', 'Staff\Forms\Editor\UpdateQuestionAction');
+                        Route::post('/api/delete_question', 'Staff\Forms\Editor\DeleteQuestionAction');
+                    });
+
+                Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction')->name('not_answered');
+
+                Route::get('/preview', 'Staff\Forms\PreviewAction')->name('preview');
+
+                // フォームの複製
+                Route::post('/copy', 'Staff\Forms\CopyAction')->name('copy');
             });
 
         Route::prefix('/users')
@@ -97,10 +117,12 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             ->group(function () {
                 Route::get('/', 'Staff\Users\IndexAction')->name('index');
                 Route::get('/api', 'Staff\Users\ApiAction')->name('api');
+                Route::get('/{user}/edit', 'Staff\Users\EditAction')->name('edit');
+                Route::patch('/{user}', 'Staff\Users\UpdateAction')->name('update');
+                Route::delete('/{user}', 'Staff\Users\DestroyAction')->name('destroy');
                 Route::get('/export', 'Staff\Users\ExportAction')->name('export');
 
                 // 手動本人確認
-                Route::get('/{user}/verify', 'Staff\Users\VerifyConfirmAction')->name('verify');
                 Route::patch('/{user}/verify', 'Staff\Users\VerifiedAction')->name('verified');
             });
 

@@ -24,6 +24,7 @@ import ListViewFormGroup from './components/ListViewFormGroup.vue'
 import ListViewPagination from './components/ListViewPagination.vue'
 import TopAlert from './components/TopAlert.vue'
 import FormWithConfirm from './components/FormWithConfirm.vue'
+import IconButton from './components/IconButton.vue'
 import StaffGrid from './components/StaffGrid.vue'
 import StepsList from './components/StepsList.vue'
 import StepsListItem from './components/StepsListItem.vue'
@@ -77,6 +78,7 @@ export function mountV2App() {
         ListViewPagination,
         TopAlert,
         FormWithConfirm,
+        IconButton,
         QuestionItem,
         QuestionHeading,
         StaffGrid,

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Staff\Forms;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Eloquents\Form;
 use App\Services\Forms\FormsService;
 use Illuminate\Support\Facades\Auth;
@@ -19,8 +18,10 @@ class CopyAction extends Controller
 
     public function __invoke(Form $form)
     {
-        $form_copy = $this->formsService->copyForm($form, Auth::user());
+        $this->formsService->copyForm($form, Auth::user());
 
-        return redirect("/home_staff/applications/read/{$form_copy->id}?copied=1");
+        return redirect()
+            ->route('staff.forms.index')
+            ->with('topAlert.title', 'フォームを複製しました');
     }
 }

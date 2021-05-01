@@ -126,14 +126,14 @@ class Form extends Model
         return $this->hasMany(Answer::class);
     }
 
-    public function userCreatedBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
     public function customForm()
     {
         return $this->hasOne(CustomForm::class);
+    }
+
+    public function userCreatedBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     // TODO: 意味的に isAnswered という名前に変えたい

@@ -34,7 +34,7 @@ class BladeServiceProvider extends ServiceProvider
         // @staffpage 〜 @endstaffpage
         // の中は、スタッフページの場合のみ表示される
         Blade::if('staffpage', function () {
-            return Request::is('staff*');
+            return Request::is('staff*') || Request::is('admin*');
         });
 
         // 渡された引数の文字列をMarkdownとして解釈し、

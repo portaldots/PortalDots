@@ -1,6 +1,10 @@
 <template>
   <div class="app-header" :class="{ 'is-text-center': textCenter }">
-    <AppContainer :narrow="containerNarrow" :medium="containerMedium">
+    <AppContainer
+      :narrow="containerNarrow"
+      :medium="containerMedium"
+      :fluid="containerFluid"
+    >
       <h1 class="app-header__title">
         <slot name="title" />
       </h1>
@@ -24,6 +28,10 @@ export default {
       default: false
     },
     containerMedium: {
+      type: Boolean,
+      default: false
+    },
+    containerFluid: {
       type: Boolean,
       default: false
     },

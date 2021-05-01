@@ -17,8 +17,8 @@ class RedirectIfStaffNotAuthenticated
     public function handle($request, Closure $next)
     {
         if (! $request->session()->get('staff_authorized')) {
-            // CodeIgntier 側の二段階認証画面へリダイレクト
-            return redirect('/home_staff/verify_access');
+            return redirect()
+                ->route('staff.verify.index');
         }
 
         return $next($request);
