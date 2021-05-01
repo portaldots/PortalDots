@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // 管理者で、メール認証やスタッフ認証が済んでいる場合、
         // auth()->user->can() や @can() などで true を返すようにする
-        Gate::before(function (User $user) {
+        Gate::after(function (User $user) {
             return $user->is_admin && $user->areBothEmailsVerified() &&
                 session()->get('staff_authorized') ? true : null;
         });
