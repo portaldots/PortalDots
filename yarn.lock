@@ -953,7 +953,7 @@
   dependencies:
     linguist-languages "^7.5.1"
     mem "^8.0.0"
-    php-parser czosel/php-parser#b55446b48a4a588e8b62c7f9085ce0e7cb3b70fa
+    php-parser shufo/php-parser#0b7781fdf88be4b8974320cf27af1588c07e2da8
 
 "@stylelint/postcss-css-in-js@^0.37.2":
   version "0.37.2"
