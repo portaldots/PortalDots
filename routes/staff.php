@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::post('/', 'Staff\Pages\StoreAction')->name('store')->middleware(['can:staff.pages.edit']);
                 Route::get('/{page}/edit', 'Staff\Pages\EditAction')->name('edit')->middleware(['can:staff.pages.edit']);
                 Route::patch('/{page}', 'Staff\Pages\UpdateAction')->name('update')->middleware(['can:staff.pages.edit']);
+                Route::get('/export', 'Staff\Pages\ExportAction')->name('export')->middleware(['can:staff.pages.export']);
             });
 
         // 申請
@@ -67,6 +68,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{form}/edit', 'Staff\Forms\EditAction')->name('edit')->middleware(['can:staff.forms.edit']);
                 Route::patch('/{form}', 'Staff\Forms\UpdateAction')->name('update')->middleware(['can:staff.forms.edit']);
                 Route::delete('/{form}', 'Staff\Forms\DestroyAction')->name('destroy')->middleware(['can:staff.forms.delete']);
+                Route::get('/export', 'Staff\Forms\ExportAction')->name('export')->middleware(['can:staff.forms.export']);
             });
 
         // 申請個別ページ
@@ -84,8 +86,9 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                         Route::get('/create', 'Staff\Forms\Answers\CreateAction')->name('create')->middleware(['can:staff.forms.answers.edit']);
                         Route::post('/', 'Staff\Forms\Answers\StoreAction')->name('store')->middleware(['can:staff.forms.answers.edit']);
                         Route::get('/{answer}/uploads/{question}', 'Staff\Forms\Answers\Uploads\ShowAction')->name('uploads.show')->middleware(['can:staff.forms.answers.read']);
-                        Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index')->middleware(['can:staff.forms.answers.export']);
+                        Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index')->middleware(['can:staff.forms.answers.export'])->middleware(['can:staff.forms.answers.export']);
                         Route::post('/uploads/download_zip', 'Staff\Forms\Answers\Uploads\DownloadZipAction')->name('uploads.download_zip')->middleware(['can:staff.forms.answers.export']);
+                        Route::get('/export', 'Staff\Forms\Answers\ExportAction')->name('export')->middleware(['can:staff.forms.answers.export']);
                     });
 
                 // 申請フォームエディタ
@@ -121,6 +124,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{user}/edit', 'Staff\Users\EditAction')->name('edit')->middleware(['can:staff.users.edit']);
                 Route::patch('/{user}', 'Staff\Users\UpdateAction')->name('update')->middleware(['can:staff.users.edit']);
                 Route::delete('/{user}', 'Staff\Users\DestroyAction')->name('destroy')->middleware(['can:staff.users.edit']);
+                Route::get('/export', 'Staff\Users\ExportAction')->name('export')->middleware(['can:staff.users.export']);
 
                 // 手動本人確認
                 Route::patch('/{user}/verify', 'Staff\Users\VerifiedAction')->name('verified')->middleware(['can:staff.users.edit']);
@@ -164,6 +168,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::patch('/{tag}', 'Staff\Tags\UpdateAction')->name('update')->middleware(['can:staff.tags.edit']);
                 Route::get('/{tag}/delete', 'Staff\Tags\DeleteAction')->name('delete')->middleware(['can:staff.tags.delete']);
                 Route::delete('/{tag}', 'Staff\Tags\DestroyAction')->name('destroy')->middleware(['can:staff.tags.delete']);
+                Route::get('/export', 'Staff\Tags\ExportAction')->name('export')->middleware(['can:staff.tags.export']);
             });
 
         Route::prefix('/places')
@@ -176,6 +181,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{place}/edit', 'Staff\Places\EditAction')->name('edit')->middleware(['can:staff.places.edit']);
                 Route::patch('/{place}', 'Staff\Places\UpdateAction')->name('update')->middleware(['can:staff.places.edit']);
                 Route::delete('/{place}', 'Staff\Places\DestroyAction')->name('destroy')->middleware(['can:staff.places.delete']);
+                Route::get('/export', 'Staff\Places\ExportAction')->name('export')->middleware(['can:staff.places.export']);
             });
 
         Route::prefix('/schedules')
@@ -188,6 +194,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{schedule}/edit', 'Staff\Schedules\EditAction')->name('edit')->middleware(['can:staff.schedules.edit']);
                 Route::patch('/{schedule}', 'Staff\Schedules\UpdateAction')->name('update')->middleware(['can:staff.schedules.edit']);
                 Route::delete('/{schedule}', 'Staff\Schedules\DestroyAction')->name('destroy')->middleware(['can:staff.schedules.delete']);
+                Route::get('/export', 'Staff\Schedules\ExportAction')->name('export')->middleware(['can:staff.schedules.export']);
             });
 
         // メール一斉送信
@@ -215,6 +222,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/api', 'Staff\Documents\ApiAction')->name('api')->middleware(['can:staff.documents.read']);
                 Route::get('/create', 'Staff\Documents\CreateAction')->name('create')->middleware(['can:staff.documents.edit']);
                 Route::post('/', 'Staff\Documents\StoreAction')->name('store')->middleware(['can:staff.documents.edit']);
+                Route::get('/export', 'Staff\Documents\ExportAction')->name('export')->middleware(['can:staff.documents.export']);
                 Route::get('/{document}/edit', 'Staff\Documents\EditAction')->name('edit')->middleware(['can:staff.documents.edit']);
                 Route::patch('/{document}', 'Staff\Documents\UpdateAction')->name('update')->middleware(['can:staff.documents.edit']);
                 Route::get('/{document}', 'Staff\Documents\ShowAction')->name('show')->middleware(['can:staff.documents.read']);
