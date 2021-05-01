@@ -47,11 +47,11 @@ class TagsExport implements FromCollection, WithHeadings, WithMapping
                     $tag->name,
                     $tag->created_at,
                     $tag->updated_at,
-                    $firstCircle->id,
-                    $firstCircle->name,
-                    $firstCircle->name_yomi,
-                    $firstCircle->group_name,
-                    $firstCircle->group_name_yomi,
+                    $firstCircle->id ?? null,
+                    $firstCircle->name ?? null,
+                    $firstCircle->name_yomi ?? null,
+                    $firstCircle->group_name ?? null,
+                    $firstCircle->group_name_yomi ?? null,
                 ]
             ],
             $circles
