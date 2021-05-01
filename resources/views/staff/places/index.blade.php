@@ -29,13 +29,13 @@
             </a>
             <a
                 class="btn is-primary-inverse is-no-shadow is-no-border"
-                href="{{ url('/home_staff/places/export') }}"
+                href="{{ route('staff.places.export') }}"
                 target="_blank"
                 rel="noopener noreferrer"
             >
                 {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
                 <i class="fas fa-file-csv fa-fw"></i>
-                CSVで出力
+                CSVで出力(場所別企画一覧)
             </a>
         </template>
         <template v-slot:activities="{ row }">

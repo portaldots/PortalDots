@@ -39,16 +39,16 @@ class ExportActionTest extends TestCase
     /**
      * @test
      */
-    public function 企画情報をダウンロードできる()
+    public function 企画情報をCSVでダウンロードできる()
     {
         Excel::fake();
         $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->get('/staff/circles/export');
 
-        $now = now()->format('Y-m-d_H-i-s');
+        $now = Carbon::now()->format('Y-m-d_H-i-s');
 
-        Excel::assertDownloaded("circles_{$now}.csv", function (CirclesExport $export) {
+        Excel::assertDownloaded("企画一覧_{$now}.csv", function (CirclesExport $export) {
             return $export->collection()->contains('name', $this->circle->name)
                 && $export->collection()->contains('name', '<>', $this->circle_not_submitted->name);
         });

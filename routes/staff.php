@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::post('/', 'Staff\Pages\StoreAction')->name('store');
                 Route::get('/{page}/edit', 'Staff\Pages\EditAction')->name('edit');
                 Route::patch('/{page}', 'Staff\Pages\UpdateAction')->name('update');
+                Route::get('/export', 'Staff\Pages\ExportAction')->name('export');
             });
 
         // 申請
@@ -65,6 +66,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{form}/edit', 'Staff\Forms\EditAction')->name('edit');
                 Route::patch('/{form}', 'Staff\Forms\UpdateAction')->name('update');
                 Route::delete('/{form}', 'Staff\Forms\DestroyAction')->name('destroy');
+                Route::get('/export', 'Staff\Forms\ExportAction')->name('export');
             });
 
         // 申請個別ページ
@@ -84,6 +86,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                         Route::get('/{answer}/uploads/{question}', 'Staff\Forms\Answers\Uploads\ShowAction')->name('uploads.show');
                         Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index');
                         Route::post('/uploads/download_zip', 'Staff\Forms\Answers\Uploads\DownloadZipAction')->name('uploads.download_zip');
+                        Route::get('/export', 'Staff\Forms\Answers\ExportAction')->name('export');
                     });
 
                 // 申請フォームエディタ
@@ -117,6 +120,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{user}/edit', 'Staff\Users\EditAction')->name('edit');
                 Route::patch('/{user}', 'Staff\Users\UpdateAction')->name('update');
                 Route::delete('/{user}', 'Staff\Users\DestroyAction')->name('destroy');
+                Route::get('/export', 'Staff\Users\ExportAction')->name('export');
 
                 // 手動本人確認
                 Route::patch('/{user}/verify', 'Staff\Users\VerifiedAction')->name('verified');
@@ -160,6 +164,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::patch('/{tag}', 'Staff\Tags\UpdateAction')->name('update');
                 Route::get('/{tag}/delete', 'Staff\Tags\DeleteAction')->name('delete');
                 Route::delete('/{tag}', 'Staff\Tags\DestroyAction')->name('destroy');
+                Route::get('/export', 'Staff\Tags\ExportAction')->name('export');
             });
 
         Route::prefix('/places')
@@ -172,6 +177,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{place}/edit', 'Staff\Places\EditAction')->name('edit');
                 Route::patch('/{place}', 'Staff\Places\UpdateAction')->name('update');
                 Route::delete('/{place}', 'Staff\Places\DestroyAction')->name('destroy');
+                Route::get('/export', 'Staff\Places\ExportAction')->name('export');
             });
 
         Route::prefix('/schedules')
@@ -184,6 +190,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{schedule}/edit', 'Staff\Schedules\EditAction')->name('edit');
                 Route::patch('/{schedule}', 'Staff\Schedules\UpdateAction')->name('update');
                 Route::delete('/{schedule}', 'Staff\Schedules\DestroyAction')->name('destroy');
+                Route::get('/export', 'Staff\Schedules\ExportAction')->name('export');
             });
 
         // メール一斉送信
@@ -211,6 +218,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/api', 'Staff\Documents\ApiAction')->name('api');
                 Route::get('/create', 'Staff\Documents\CreateAction')->name('create');
                 Route::post('/', 'Staff\Documents\StoreAction')->name('store');
+                Route::get('/export', 'Staff\Documents\ExportAction')->name('export');
                 Route::get('/{document}/edit', 'Staff\Documents\EditAction')->name('edit');
                 Route::patch('/{document}', 'Staff\Documents\UpdateAction')->name('update');
                 Route::get('/{document}', 'Staff\Documents\ShowAction')->name('show');

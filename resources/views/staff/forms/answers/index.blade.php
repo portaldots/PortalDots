@@ -86,7 +86,7 @@
             </a>
             <a
                 class="btn is-primary-inverse is-no-shadow is-no-border"
-                href="{{ url("/home_staff/applications/read/{$form->id}/csv") }}"
+                href="{{ route('staff.forms.answers.export', ['form' => $form]) }}"
                 target="_blank"
                 rel="noopener noreferrer"
             >

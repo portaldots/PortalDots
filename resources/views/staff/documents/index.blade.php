@@ -71,7 +71,7 @@
             </a>
             <a
                 class="btn is-primary-inverse is-no-shadow is-no-border"
-                href="{{ url('/home_staff/documents/export') }}"
+                href="{{ route('staff.documents.export') }}"
                 target="_blank"
                 rel="noopener noreferrer"
             >

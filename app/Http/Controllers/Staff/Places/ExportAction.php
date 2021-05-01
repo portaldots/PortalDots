@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Circles;
+namespace App\Http\Controllers\Staff\Places;
 
-use App\Exports\CirclesExport;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Exports\PlacesExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportAction extends Controller
@@ -13,6 +13,6 @@ class ExportAction extends Controller
     public function __invoke()
     {
         $now = Carbon::now()->format('Y-m-d_H-i-s');
-        return Excel::download(new CirclesExport(), "企画一覧_{$now}.csv");
+        return Excel::download(new PlacesExport(), "場所一覧_{$now}.csv");
     }
 }

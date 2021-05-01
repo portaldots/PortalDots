@@ -28,7 +28,7 @@
             </a>
             <a
                 class="btn is-primary-inverse is-no-shadow is-no-border"
-                href="{{ url('/home_staff/schedules/export') }}"
+                href="{{ route('staff.schedules.export') }}"
                 target="_blank"
                 rel="noopener noreferrer"
             >
