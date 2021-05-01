@@ -67,7 +67,7 @@ class ExportActionTest extends TestCase
     /**
      * @test
      */
-    public function 権限がない場合は企画情報をダウンロードできない()
+    public function 権限がない場合はCSVをダウンロードできない()
     {
         $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])

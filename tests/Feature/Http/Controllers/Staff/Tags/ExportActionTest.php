@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Tags;
 
+use App\Eloquents\Permission;
 use App\Eloquents\Tag;
 use App\Eloquents\User;
 use App\Exports\TagsExport;
@@ -40,6 +41,9 @@ class ExportActionTest extends TestCase
      */
     public function 企画タグのCSVがダウンロードできる()
     {
+        Permission::create(['name' => 'staff.tags.export']);
+        $this->staff->syncPermissions(['staff.tags.export']);
+
         Excel::fake();
         $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
@@ -52,5 +56,16 @@ class ExportActionTest extends TestCase
             return $export->collection()->contains('name', $names[0])
                 && $export->collection()->contains('name', $names[1]);
         });
+    }
+
+    /**
+     * @test
+     */
+    public function 権限がない場合はCSVをダウンロードできない()
+    {
+        $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.tags.export'))
+            ->assertForbidden();
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Staff\Documents;
 
 use App\Eloquents\Document;
+use App\Eloquents\Permission;
 use App\Eloquents\User;
 use App\Exports\DocumentsExport;
 use Carbon\Carbon;
@@ -52,6 +53,9 @@ class ExportActionTest extends TestCase
      */
     public function 配布資料の情報がCSVでダウンロードできる()
     {
+        Permission::create(['name' => 'staff.documents.export']);
+        $this->staff->syncPermissions(['staff.documents.export']);
+
         Excel::fake();
 
         $this->actingAs($this->staff)
@@ -64,5 +68,16 @@ class ExportActionTest extends TestCase
             return $export->collection()->contains('name', '配布資料')
                 && $export->collection()->contains('name', '見てほしい資料');
         });
+    }
+
+    /**
+     * @test
+     */
+    public function 権限がない場合はCSVをダウンロードできない()
+    {
+        $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.documents.export'))
+            ->assertForbidden();
     }
 }

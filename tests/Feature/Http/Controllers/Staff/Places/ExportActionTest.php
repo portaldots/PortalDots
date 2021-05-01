@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Places;
 
+use App\Eloquents\Permission;
 use App\Eloquents\Place;
 use App\Eloquents\User;
 use App\Exports\PlacesExport;
@@ -52,6 +53,9 @@ class ExportActionTest extends TestCase
      */
     public function ブース情報がCSVでダウンロードできる()
     {
+        Permission::create(['name' => 'staff.places.export']);
+        $this->staff->syncPermissions(['staff.places.export']);
+
         Excel::fake();
 
         $this->actingAs($this->staff)
@@ -64,5 +68,16 @@ class ExportActionTest extends TestCase
             return $export->collection()->contains('name', 'E208')
                 && $export->collection()->contains('name', 'E209');
         });
+    }
+
+    /**
+     * @test
+     */
+    public function 権限がない場合はCSVをダウンロードできない()
+    {
+        $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.places.export'))
+            ->assertForbidden();
     }
 }
