@@ -28,7 +28,8 @@
         "production": "mix --production",
         "eslint-check": "eslint --ext js,vue ./resources",
         "stylelint-check": "stylelint ./resources/**/*.{vue,scss}",
-        "phpunit": "cd docker_dev && docker-compose run web ./vendor/bin/phpunit"
+        "phpunit": "cd docker_dev && docker-compose run web ./vendor/bin/phpunit",
+        "prepare": "husky install"
     },
     "lint-staged": {
         "*.js": [
@@ -49,11 +50,6 @@
             "composer phpcs"
         ]
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
     "devDependencies": {
         "blade-formatter": "^1.10.5",
         "browser-sync": "^2.26.14",
@@ -65,7 +61,7 @@
         "eslint-plugin-import": "^2.22.1",
         "eslint-plugin-prettier": "^3.3.1",
         "eslint-plugin-vue": "^7.8.0",
-        "husky": "^4.3.8",
+        "husky": "^6.0.0",
         "jquery": "^3.5",
         "lint-staged": "^10.5.4",
         "lodash": "^4.17.21",
