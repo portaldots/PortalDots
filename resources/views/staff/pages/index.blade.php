@@ -59,13 +59,13 @@
                 新規お知らせ
             </a>
             <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
+                class="btn is-primary-inverse is-no-border"
                 href="{{ route('staff.send_emails') }}"
             >
                 メール配信設定
             </a>
             <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
+                class="btn is-primary-inverse is-no-border"
                 href="{{ route('staff.pages.export') }}"
                 target="_blank"
                 rel="noopener noreferrer"
