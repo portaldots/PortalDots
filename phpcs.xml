@@ -18,10 +18,6 @@
 
     <arg value="ps" />
 
-    <!-- CodeIgniter のコードはチェックしない -->
-    <exclude-pattern>/system/</exclude-pattern>
-    <exclude-pattern>/application/</exclude-pattern>
-
     <!-- 除外ディレクトリ -->
     <exclude-pattern>/bootstrap/</exclude-pattern>
     <exclude-pattern>/config/</exclude-pattern>
