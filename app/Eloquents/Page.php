@@ -5,6 +5,7 @@ namespace App\Eloquents;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Concerns\IsNewTrait;
+use Illuminate\Support\Facades\DB;
 
 class Page extends Model
 {
@@ -17,6 +18,23 @@ class Page extends Model
         'updated_by',
         'notes',
     ];
+
+    /**
+     * データベースが FULLTEXT INDEX に対応しているかどうかを調べる
+     *
+     * @return boolean
+     */
+    public static function isFulltextIndexSupported()
+    {
+        static $result = null;
+        if ($result === null) {
+            // MySQL 5.7 以上の場合のみ対応
+            $results = DB::select(DB::raw("select version()"));
+            $mysql_version =  $results[0]->{'version()'};
+            $result = version_compare($mysql_version, '5.7.6', '>=');
+        }
+        return $result;
+    }
 
     /**
      * モデルの「初期起動」メソッド
