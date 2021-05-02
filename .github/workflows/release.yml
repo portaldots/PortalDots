@@ -48,7 +48,7 @@ jobs:
         run: composer install --optimize-autoloader --no-dev
         working-directory: dist
       - name: Install JS dependencies
-        run: yarn install
+        run: yarn install --ignore-scripts
         working-directory: dist
       - name: Compile assets
         run: yarn run production
