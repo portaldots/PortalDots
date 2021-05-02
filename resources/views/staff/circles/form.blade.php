@@ -103,6 +103,13 @@
                     </template>
                     <tags-input input-name="tags" v-bind:default-tags="{{ $default_tags }}"
                         v-bind:autocomplete-items="{{ $tags_autocomplete_items }}" {{ Auth::user()->can('staff.tags.edit') ? '' : 'add-only-from-autocomplete' }}></tags-input>
+                    @if ($errors->has('tags'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('tags') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
                 </list-view-form-group>
             </list-view>
 
