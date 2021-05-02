@@ -24,16 +24,24 @@
                 <template v-slot:description>
                     Ctrl + F (macOS の場合 Command + F) で、このページの内容を検索できます
                 </template>
-                @if (Auth::id() !== $user->id)
-                    @if (is_array($errors->all()) && count($errors->all()) > 0)
-                        <list-view-card>
-                            <ul>
-                                @foreach ($errors->all() as $message)
-                                    <li class="text-danger">{{ $message }}</li>
-                                @endforeach
-                            </ul>
-                        </list-view-card>
-                    @endif
+                @if (is_array($errors->all()) && count($errors->all()) > 0)
+                    <list-view-card>
+                        <ul>
+                            @foreach ($errors->all() as $message)
+                                <li class="text-danger">{{ $message }}</li>
+                            @endforeach
+                        </ul>
+                    </list-view-card>
+                @endif
+                @if (Auth::id() === $user->id)
+                    <list-view-card>
+                        <list-view-empty icon-class="fas fa-key" text="自分自身の権限設定は変更できません"></list-view-empty>
+                    </list-view-card>
+                @elseif ($user->is_admin)
+                    <list-view-card>
+                        <list-view-empty icon-class="fas fa-key" text="管理者に対して権限を設定することはできません"></list-view-empty>
+                    </list-view-card>
+                @else
                     @foreach ($defined_permissions as $defined_permission)
                         <list-view-form-group>
                             <div class="form-checkbox">
@@ -46,14 +54,10 @@
                             </div>
                         </list-view-form-group>
                     @endforeach
-                @else
-                    <list-view-card>
-                        <list-view-empty icon-class="fas fa-key" text="自分自身の権限設定は変更できません"></list-view-empty>
-                    </list-view-card>
                 @endif
             </list-view>
 
-            @if (Auth::id() !== $user->id)
+            @if (Auth::id() !== $user->id && !$user->is_admin)
                 <div class="text-center pt-spacing-md pb-spacing">
                     <button type="submit" class="btn is-primary is-wide">保存</button>
                 </div>

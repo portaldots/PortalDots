@@ -14,8 +14,14 @@ class UpdateAction extends Controller
     {
         if (Auth::id() === $user->id) {
             return redirect()
-                ->withInput()
+                ->route('staff.permissions.edit', ['user' => $user])
                 ->withErrors(['permissions' => '自分自身の権限設定は変更できません']);
+        }
+
+        if ($user->is_admin) {
+            return redirect()
+                ->route('staff.permissions.edit', ['user' => $user])
+                ->withErrors(['permissions' => '管理者に対して権限を設定することはできません']);
         }
 
         $validated = $request->validated();

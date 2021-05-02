@@ -78,7 +78,7 @@ class UpdateActionTest extends TestCase
             ]
         ];
 
-        $this
+        $response = $this
             ->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->patch(
@@ -88,12 +88,50 @@ class UpdateActionTest extends TestCase
                 $data
             );
 
+        $response->assertSessionHasErrors();
+
         $this->staff->refresh();
         $this->assertEquals(1, $this->staff->permissions()->count());
         $this->assertFalse($this->staff->can('staff.users.read'));
         $this->assertFalse($this->staff->can('staff.users.edit'));
         $this->assertFalse($this->staff->can('staff.pages.read'));
         $this->assertFalse($this->staff->can('staff.pages.export'));
+    }
+
+    /**
+     * @test
+     */
+    public function 管理者の権限は更新できない()
+    {
+        /** @var User */
+        $admin = factory(User::class)->states('admin')->create();
+
+        /** @var User */
+        $target_user = factory(User::class)->states('admin')->create();
+
+        $this->assertEquals(0, $target_user->permissions()->count());
+
+        $data = [
+            'permissions' => [
+                'staff.users.read,edit',
+                'staff.pages.read,export',
+            ]
+        ];
+
+        $response = $this
+            ->actingAs($admin)
+            ->withSession(['staff_authorized' => true])
+            ->patch(
+                route('staff.permissions.update', [
+                    'user' => $target_user,
+                ]),
+                $data
+            );
+
+        $response->assertSessionHasErrors();
+
+        $target_user->refresh();
+        $this->assertEquals(0, $target_user->permissions()->count());
     }
 
     /**
