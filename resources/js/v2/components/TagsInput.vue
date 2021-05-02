@@ -129,7 +129,7 @@ export default {
   .ti-autocomplete {
     background: $color-behind-text;
     border: none;
-    box-shadow: 0 0.25rem 0.75rem $color-box-shadow;
+    box-shadow: 0 0.4rem 0.8rem -0.3rem $color-box-shadow;
   }
   .ti-item {
     margin: 0;

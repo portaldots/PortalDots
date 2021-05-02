@@ -85,7 +85,7 @@ $editor-sidebar-padding: $spacing-md;
 .editor-sidebar {
   background: $color-behind-text;
   bottom: 0;
-  box-shadow: -0.1rem 0 0.1rem $color-box-shadow-light;
+  box-shadow: -0.1rem 0 0.3rem -0.2rem $color-box-shadow;
   display: flex;
   flex-direction: column;
   position: fixed;

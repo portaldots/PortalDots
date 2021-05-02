@@ -57,7 +57,7 @@ export default {
 
   background: $color-behind-text;
   border: 0;
-  box-shadow: 0 1px 2px $color-box-shadow-light;
+  box-shadow: 0 2px 7px -5px $color-box-shadow;
   color: $color-text;
   cursor: pointer;
   display: block;

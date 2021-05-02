@@ -301,7 +301,7 @@ export default {
   &-menu {
     background: $color-behind-text;
     border-radius: $border-radius;
-    box-shadow: 0 0.4rem 0.8rem 0.1rem $color-box-shadow;
+    box-shadow: 0 0.4rem 0.8rem -0.3rem $color-box-shadow;
     overflow: auto;
     overflow-x: hidden;
     padding: $spacing-sm 0;
