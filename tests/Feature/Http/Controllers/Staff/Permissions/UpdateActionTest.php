@@ -63,6 +63,42 @@ class UpdateActionTest extends TestCase
     /**
      * @test
      */
+    public function 自分自身の権限は更新できない()
+    {
+        Permission::create(['name' => 'staff.permissions.edit']);
+        $this->staff->syncPermissions(['staff.permissions.edit']);
+
+        // staff.permissions.edit が割り当てられているので、 1
+        $this->assertEquals(1, $this->staff->permissions()->count());
+
+        $data = [
+            'permissions' => [
+                'staff.users.read,edit',
+                'staff.pages.read,export',
+            ]
+        ];
+
+        $this
+            ->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->patch(
+                route('staff.permissions.update', [
+                    'user' => $this->staff,
+                ]),
+                $data
+            );
+
+        $this->staff->refresh();
+        $this->assertEquals(1, $this->staff->permissions()->count());
+        $this->assertFalse($this->staff->can('staff.users.read'));
+        $this->assertFalse($this->staff->can('staff.users.edit'));
+        $this->assertFalse($this->staff->can('staff.pages.read'));
+        $this->assertFalse($this->staff->can('staff.pages.export'));
+    }
+
+    /**
+     * @test
+     */
     public function 存在しない権限を指定するとエラーになる()
     {
         Permission::create(['name' => 'staff.permissions.edit']);

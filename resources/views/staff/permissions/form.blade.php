@@ -24,32 +24,40 @@
                 <template v-slot:description>
                     Ctrl + F (macOS の場合 Command + F) で、このページの内容を検索できます
                 </template>
-                @if (is_array($errors->all()) && count($errors->all()) > 0)
+                @if (Auth::id() !== $user->id)
+                    @if (is_array($errors->all()) && count($errors->all()) > 0)
+                        <list-view-card>
+                            <ul>
+                                @foreach ($errors->all() as $message)
+                                    <li class="text-danger">{{ $message }}</li>
+                                @endforeach
+                            </ul>
+                        </list-view-card>
+                    @endif
+                    @foreach ($defined_permissions as $defined_permission)
+                        <list-view-form-group>
+                            <div class="form-checkbox">
+                                <label class="form-checkbox__label">
+                                    <input class="form-checkbox__input" type="checkbox" name="permissions[]" value="{{ $defined_permission->getIdentifier() }}" {{ $user->permissions->containsStrict('name', $defined_permission->getIdentifier()) ? 'checked' : '' }}>
+                                    <strong>{{ $defined_permission->getDisplayName() }}</strong><br>
+                                    {{ $defined_permission->getDescriptionHtml() }}<br>
+                                    <small class="text-muted">識別名 : {{ $defined_permission->getIdentifier() }}、短縮名 : {{ $defined_permission->getDisplayShortName() }}</small>
+                                </label>
+                            </div>
+                        </list-view-form-group>
+                    @endforeach
+                @else
                     <list-view-card>
-                        <ul>
-                            @foreach ($errors->all() as $message)
-                                <li class="text-danger">{{ $message }}</li>
-                            @endforeach
-                        </ul>
+                        <list-view-empty icon-class="fas fa-key" text="自分自身の権限設定は変更できません"></list-view-empty>
                     </list-view-card>
                 @endif
-                @foreach ($defined_permissions as $defined_permission)
-                    <list-view-form-group>
-                        <div class="form-checkbox">
-                            <label class="form-checkbox__label">
-                                <input class="form-checkbox__input" type="checkbox" name="permissions[]" value="{{ $defined_permission->getIdentifier() }}" {{ $user->permissions->containsStrict('name', $defined_permission->getIdentifier()) ? 'checked' : '' }}>
-                                <strong>{{ $defined_permission->getDisplayName() }}</strong><br>
-                                {{ $defined_permission->getDescriptionHtml() }}<br>
-                                <small class="text-muted">識別名 : {{ $defined_permission->getIdentifier() }}、短縮名 : {{ $defined_permission->getDisplayShortName() }}</small>
-                            </label>
-                        </div>
-                    </list-view-form-group>
-                @endforeach
             </list-view>
 
-            <div class="text-center pt-spacing-md pb-spacing">
-                <button type="submit" class="btn is-primary is-wide">保存</button>
-            </div>
+            @if (Auth::id() !== $user->id)
+                <div class="text-center pt-spacing-md pb-spacing">
+                    <button type="submit" class="btn is-primary is-wide">保存</button>
+                </div>
+            @endif
         </app-container>
     </form>
 @endsection

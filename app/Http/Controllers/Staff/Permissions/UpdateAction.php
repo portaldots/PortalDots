@@ -6,11 +6,18 @@ use App\Eloquents\Permission;
 use App\Http\Controllers\Controller;
 use App\Eloquents\User;
 use App\Http\Requests\Admin\Permissions\PermissionRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateAction extends Controller
 {
     public function __invoke(PermissionRequest $request, User $user)
     {
+        if (Auth::id() === $user->id) {
+            return redirect()
+                ->withInput()
+                ->withErrors(['permissions' => '自分自身の権限設定は変更できません']);
+        }
+
         $validated = $request->validated();
         $new_permissions = $validated['permissions'] ?? [];
 
