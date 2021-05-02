@@ -55,7 +55,10 @@
                         </small>
                     </template>
                     <template v-slot:description>
-                        「場所情報管理」にて登録した場所から選択できます — <a href="{{ route('staff.places.create') }}" target="_blank">場所の新規作成</a>
+                        「場所情報管理」にて登録した場所から選択できます
+                        @can('staff.places.edit')
+                            — <a href="{{ route('staff.places.create') }}" target="_blank">場所の新規作成</a>
+                        @endcan
                     </template>
                     <tags-input input-name="places" v-bind:default-tags="{{ $default_places }}"
                         v-bind:autocomplete-items="{{ $places_autocomplete_items }}" add-only-from-autocomplete placeholder="場所を追加"></tags-input>
