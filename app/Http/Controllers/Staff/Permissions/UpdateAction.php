@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Permissions;
+namespace App\Http\Controllers\Staff\Permissions;
 
 use App\Eloquents\Permission;
 use App\Http\Controllers\Controller;
@@ -23,7 +23,7 @@ class UpdateAction extends Controller
         $user->syncPermissions($new_permissions);
 
         return redirect()
-            ->route('admin.permissions.edit', ['user' => $user])
+            ->route('staff.permissions.edit', ['user' => $user])
             ->with('topAlert.title', 'スタッフの権限を更新しました');
     }
 }

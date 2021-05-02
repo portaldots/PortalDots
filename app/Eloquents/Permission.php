@@ -308,6 +308,24 @@ class Permission extends SpatiePermission
                     'お問い合わせ(受付設定の閲覧)',
                     'お問い合わせ受付設定のお問い合わせ項目の閲覧が可能'
                 ),
+                'staff.permissions' => new PermissionInfo(
+                    'staff.permissions',
+                    'スタッフモード › スタッフの権限設定 › 全機能',
+                    '権限設定(全機能)',
+                    'スタッフの権限設定の全機能を利用可能。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
+                ),
+                'staff.permissions.read,edit' => new PermissionInfo(
+                    'staff.permissions.read,edit',
+                    'スタッフモード › スタッフの権限設定 › 閲覧と編集',
+                    '権限設定(編集)',
+                    'スタッフの権限設定の閲覧と編集が可能'
+                ),
+                'staff.permissions.read' => new PermissionInfo(
+                    'staff.permissions.read',
+                    'スタッフモード › スタッフの権限設定 › 閲覧',
+                    '権限設定(閲覧)',
+                    'スタッフの権限設定の閲覧が可能'
+                ),
             ];
         }
 

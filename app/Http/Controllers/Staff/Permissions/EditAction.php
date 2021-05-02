@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Permissions;
+namespace App\Http\Controllers\Staff\Permissions;
 
 use App\Eloquents\Permission;
 use App\Http\Controllers\Controller;
@@ -12,7 +12,7 @@ class EditAction extends Controller
     {
         $user->load('permissions');
 
-        return view('admin.permissions.form')
+        return view('staff.permissions.form')
             ->with('defined_permissions', Permission::getDefinedPermissions())
             ->with('user', $user);
     }

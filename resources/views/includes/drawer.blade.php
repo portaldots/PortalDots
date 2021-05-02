@@ -71,12 +71,13 @@
                 お問い合わせ受付設定
             </a>
             @endcan
+            @can('staff.permissions.read')
+            <a href="{{ route('staff.permissions.index') }}" class="drawer-nav__link{{ Request::is('staff/permissions*') ? ' is-active' : '' }}">
+                <i class="fas fa-key drawer-nav__icon fa-fw"></i>
+                スタッフの権限設定
+            </a>
+            @endcan
             @if (Auth::user()->is_admin)
-                <a href="{{ route('admin.permissions.index') }}" class="drawer-nav__link{{ Request::is('admin/permissions*') ? ' is-active' : '' }}">
-                    <i class="fas fa-key drawer-nav__icon fa-fw"></i>
-                    スタッフの権限設定
-                    <app-badge danger>管理者</app-badge>
-                </a>
                 <a href="{{ route('admin.portal.edit') }}" class="drawer-nav__link{{ Request::is('admin/portal*') ? ' is-active' : '' }}">
                     <i class="fas fa-cog drawer-nav__icon fa-fw"></i>
                     PortalDots の設定

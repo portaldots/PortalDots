@@ -227,6 +227,16 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::patch('/{document}', 'Staff\Documents\UpdateAction')->name('update')->middleware(['can:staff.documents.edit']);
                 Route::get('/{document}', 'Staff\Documents\ShowAction')->name('show')->middleware(['can:staff.documents.read']);
             });
+
+        // スタッフの権限設定
+        Route::prefix('/permissions')
+            ->name('permissions.')
+            ->group(function () {
+                Route::get('/', 'Staff\Permissions\IndexAction')->name('index')->middleware(['can:staff.permissions.read']);
+                Route::get('/api', 'Staff\Permissions\ApiAction')->name('api')->middleware(['can:staff.permissions.read']);
+                Route::get('/{user}/edit', 'Staff\Permissions\EditAction')->name('edit')->middleware(['can:staff.permissions.edit']);
+                Route::patch('/{user}', 'Staff\Permissions\UpdateAction')->name('update')->middleware(['can:staff.permissions.edit']);
+            });
     });
 
 // 管理者ページ（多要素認証も済んでいる状態）
@@ -237,14 +247,4 @@ Route::middleware(['auth', 'verified', 'can:admin', 'staffAuthed'])
         // ポータル情報編集
         Route::get('/portal', 'Admin\Portal\EditAction')->name('portal.edit');
         Route::patch('/portal', 'Admin\Portal\UpdateAction')->name('portal.update');
-
-        // スタッフの権限設定
-        Route::prefix('/permissions')
-            ->name('permissions.')
-            ->group(function () {
-                Route::get('/', 'Admin\Permissions\IndexAction')->name('index');
-                Route::get('/api', 'Admin\Permissions\ApiAction')->name('api');
-                Route::get('/{user}/edit', 'Admin\Permissions\EditAction')->name('edit');
-                Route::patch('/{user}', 'Admin\Permissions\UpdateAction')->name('update');
-            });
     });

@@ -6,7 +6,7 @@
 
 @section('content')
     <staff-grid
-        api-url="{{ route('admin.permissions.api') }}"
+        api-url="{{ route('staff.permissions.api') }}"
         v-bind:key-translations="{
             id: 'ユーザーID',
             name: '名前',
@@ -20,7 +20,7 @@
         }"
     >
         <template v-slot:activities="{ row }">
-            <icon-button v-bind:href="`{{ route('admin.permissions.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])" v-bind:disabled="row['is_admin']" title="編集">
+            <icon-button v-bind:href="`{{ route('staff.permissions.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])" v-bind:disabled="row['is_admin']" title="編集">
                 <i class="fas fa-pencil-alt fa-fw"></i>
             </icon-button>
         </template>

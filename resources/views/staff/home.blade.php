@@ -108,16 +108,16 @@
                     @endcannot
                 </template>
             </list-view-item>
+            <list-view-item v-bind:href="{{ Auth::user()->can('staff.permissions.read') ? ("'" . route('staff.permissions.index') . "'") : 'undefined' }}">
+                <template v-slot:title>
+                    <i class="fas fa-key fa-lg text-muted fa-fw"></i>
+                    <span class="px-spacing-sm {{ Auth::user()->can('staff.permissions.read') ? '' : 'text-muted' }}">スタッフの権限設定</span>
+                    @cannot('staff.permissions.read')
+                        <br><small class="text-muted">この機能を利用するための権限がありません。アクセスする必要がある場合は、{{ config('app.name') }}の管理者へお問い合わせください。</small>
+                    @endcannot
+                </template>
+            </list-view-item>
             @if (Auth::user()->is_admin)
-                <list-view-item href="{{ route('admin.permissions.index') }}">
-                    <template v-slot:title>
-                        <i class="fas fa-key fa-lg text-muted fa-fw"></i>
-                        <span class="px-spacing-sm">
-                            スタッフの権限設定
-                            <app-badge danger>管理者</app-badge>
-                        </span>
-                    </template>
-                </list-view-item>
                 <list-view-item href="{{ route('admin.portal.edit') }}">
                     <template v-slot:title>
                         <i class="fas fa-cog fa-lg text-muted fa-fw"></i>

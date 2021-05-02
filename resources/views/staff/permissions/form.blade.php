@@ -3,13 +3,13 @@
 @section('title', '編集 — スタッフの権限設定')
 
 @section('navbar')
-    <app-nav-bar-back href="{{ route('admin.permissions.index') }}">
+    <app-nav-bar-back href="{{ route('staff.permissions.index') }}">
         スタッフの権限設定
     </app-nav-bar-back>
 @endsection
 
 @section('content')
-    <form method="post" action="{{ route('admin.permissions.update', $user) }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('staff.permissions.update', $user) }}" enctype="multipart/form-data">
         @method('patch')
         @csrf
 
