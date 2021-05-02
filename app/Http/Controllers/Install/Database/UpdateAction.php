@@ -11,7 +11,7 @@ class UpdateAction extends Controller
     /**
      * @var DatabaseService
      */
-    private $editor;
+    private $databaseService;
 
     public function __construct(DatabaseService $databaseService)
     {
@@ -31,6 +31,7 @@ class UpdateAction extends Controller
                 ->back()
                 ->withInput()
                 ->with('topAlert.type', 'danger')
+                ->with('topAlert.keepVisible', true)
                 ->with('topAlert.title', '設定をご確認ください')
                 ->with('topAlert.body', '入力された情報でデータベースに接続できませんでした。入力内容が正しいかご確認ください');
         }
