@@ -109,4 +109,26 @@ class SendEmailService
         Mail::to($recipient)
             ->send(new SendEmailServiceMailable($subject, $body));
     }
+
+    /**
+     * 予約されたメールが送信できていることを確認する
+     *
+     * 一番古い配信予約から24時間以上経過しても
+     * count_failed や sent_at が
+     * セットされていない場合に false を返す
+     *
+     * @return boolean
+     */
+    public static function hasSentEmail()
+    {
+        $email = Email::first();
+        if (
+            $email->created_at->gte(now()->subDay())
+            || $email->sent_at !== null
+            || $email->count_failed !== 0
+        ) {
+            return true;
+        }
+        return false;
+    }
 }

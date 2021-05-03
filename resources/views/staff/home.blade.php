@@ -3,6 +3,14 @@
 @section('title', 'スタッフモード')
 
 @section('content')
+    @unless ($hasSentEmail)
+        <top-alert type="danger" keep-visible>
+            <template v-slot:title>
+                メールの一斉配信に失敗しました
+            </template>
+            CRON が適切に設定されているかご確認ください
+        </top-alert>
+    @endunless
     <app-container medium>
         <list-view>
             <list-view-action-btn href="{{ route('home') }}">
