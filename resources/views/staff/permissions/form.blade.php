@@ -21,9 +21,6 @@
         <app-container>
             <list-view>
                 <template v-slot:title>{{ $user->name }}さんに割り当てる権限</template>
-                <template v-slot:description>
-                    Ctrl + F (macOS の場合 Command + F) で、このページの内容を検索できます
-                </template>
                 @if (is_array($errors->all()) && count($errors->all()) > 0)
                     <list-view-card>
                         <ul>
@@ -42,18 +39,11 @@
                         <list-view-empty icon-class="fas fa-key" text="管理者に対して権限を設定することはできません"></list-view-empty>
                     </list-view-card>
                 @else
-                    @foreach ($defined_permissions as $defined_permission)
-                        <list-view-form-group>
-                            <div class="form-checkbox">
-                                <label class="form-checkbox__label">
-                                    <input class="form-checkbox__input" type="checkbox" name="permissions[]" value="{{ $defined_permission->getIdentifier() }}" {{ $user->permissions->containsStrict('name', $defined_permission->getIdentifier()) ? 'checked' : '' }}>
-                                    <strong>{{ $defined_permission->getDisplayName() }}</strong><br>
-                                    {{ $defined_permission->getDescriptionHtml() }}<br>
-                                    <small class="text-muted">識別名 : {{ $defined_permission->getIdentifier() }}、短縮名 : {{ $defined_permission->getDisplayShortName() }}</small>
-                                </label>
-                            </div>
-                        </list-view-form-group>
-                    @endforeach
+                    <permissions-selector
+                        v-bind:defined-permissions="{{ json_encode($defined_permissions) }}"
+                        v-bind:default-permissions="{{ $user->permissions->pluck('name')->toJson() }}"
+                        input-name="permissions"
+                    ></permissions-selector>
                 @endif
             </list-view>
 
