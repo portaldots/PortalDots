@@ -123,7 +123,8 @@ class SendEmailService
     {
         $email = Email::first();
         if (
-            $email->created_at->gte(now()->subDay())
+            empty($email)
+            || $email->created_at->gte(now()->subDay())
             || $email->sent_at !== null
             || $email->count_failed !== 0
         ) {
