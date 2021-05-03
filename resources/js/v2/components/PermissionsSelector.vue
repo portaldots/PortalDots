@@ -127,12 +127,12 @@ export default {
         .map((permission) => permission.display_short_name)
     },
     filteredPermissions() {
+      const keyword = this.searchKeyword.trim()
       return Object.values(this.definedPermissions).filter(
         (permission) =>
-          permission.identifier.includes(this.searchKeyword) ||
-          permission.display_name.includes(this.searchKeyword) ||
-          permission.display_short_name.includes(this.searchKeyword) ||
-          permission.description_html.includes(this.searchKeyword)
+          permission.identifier.includes(keyword) ||
+          permission.display_name.includes(keyword) ||
+          permission.display_short_name.includes(keyword)
       )
     }
   }
