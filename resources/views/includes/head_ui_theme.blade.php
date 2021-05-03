@@ -48,8 +48,8 @@
             --color-muted-2: rgb(60, 65, 70);
             /* --color-muted-3: rgb(195, 207, 216); */
             --color-border: rgb(44, 44, 48);
-            --color-bg-grey: rgb(15, 15, 15);
-            --color-bg-light: rgb(20, 20, 20);
+            --color-bg-grey: rgb(5, 5, 5);
+            --color-bg-light: rgb(18, 18, 18);
             --color-behind-text: rgb(22, 22, 22);
             --color-form-control: rgb(18, 18, 18);
             --color-form-control-readonly: rgb(40, 40, 40);
