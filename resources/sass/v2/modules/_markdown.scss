@@ -3,6 +3,7 @@ $line-height: 1.7;
 $margin: $spacing;
 $heading-borders: true;
 
+/* stylelint-disable-next-line no-invalid-position-at-import-rule */
 @import 'wysiwyg.css/wysiwyg.sass';
 
 .markdown {
