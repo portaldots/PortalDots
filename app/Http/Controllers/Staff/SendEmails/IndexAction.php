@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Emails\SendEmailService;
 
-class ListAction extends Controller
+class IndexAction extends Controller
 {
     public function __invoke()
     {
-        return view('staff.send_emails.list')
+        return view('staff.send_emails.index')
             ->with('hasSentEmail', SendEmailService::isServiceOperational());
     }
 }
