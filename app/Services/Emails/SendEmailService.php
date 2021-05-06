@@ -119,13 +119,14 @@ class SendEmailService
      *
      * @return boolean
      */
-    public static function hasSentEmail()
+    public static function isServiceOperational()
     {
-        $email = Email::first();
-        if (
-            empty($email)
-            || !($email->created_at->lte(now()->subDay()) && $email->sent_at === null && $email->count_failed === 0)
-        ) {
+        $emails = Email::whereNull('sent_at')
+                    ->where('count_failed', '===', 0)
+                    ->where('created_at', '<', now()->subDay())
+                    ->get();
+
+        if ($emails->isEmpty()) {
             return true;
         }
         return false;

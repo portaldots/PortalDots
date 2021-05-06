@@ -11,6 +11,6 @@ class ListAction extends Controller
     public function __invoke()
     {
         return view('staff.send_emails.list')
-            ->with('hasSentEmail', SendEmailService::hasSentEmail());
+            ->with('hasSentEmail', SendEmailService::isServiceOperational());
     }
 }

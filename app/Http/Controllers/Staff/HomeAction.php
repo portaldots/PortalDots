@@ -10,6 +10,6 @@ class HomeAction extends Controller
     public function __invoke()
     {
         return view('staff.home')
-            ->with('hasSentEmail', SendEmailService::hasSentEmail());
+            ->with('hasSentEmail', SendEmailService::isServiceOperational());
     }
 }
