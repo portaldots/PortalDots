@@ -4,7 +4,7 @@
 
 @section('content')
     @unless ($hasSentEmail)
-        <top-alert type="danger" keep-visible>
+        <top-alert type="danger" container-medium keep-visible>
             <template v-slot:title>
                 メールの一斉配信に失敗しました
             </template>
