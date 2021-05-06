@@ -9,6 +9,8 @@ use App\Eloquents\User;
 use App\Http\Requests\Staff\Circles\CircleRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Circles\CirclesService;
+use App\Services\Circles\Exceptions\DenyCreateTagsException;
+use Illuminate\Support\Facades\DB;
 
 class UpdateAction extends Controller
 {
@@ -34,6 +36,8 @@ class UpdateAction extends Controller
             // 参加登録が未提出の企画の情報は閲覧・編集できない
             abort(404);
         }
+
+        DB::beginTransaction();
 
         $member_ids = str_replace(["\r\n", "\r", "\n"], "\n", $request->members);
         $member_ids = explode("\n", $member_ids);
@@ -90,7 +94,15 @@ class UpdateAction extends Controller
         $this->circlesService->savePlaces($circle, $request->places ?? []);
 
         // タグの保存
-        $this->circlesService->saveTags($circle, $request->tags ?? []);
+        try {
+            $this->circlesService->saveTags($circle, $request->tags ?? [], Auth::user()->can('staff.tags.edit'));
+        } catch (DenyCreateTagsException $e) {
+            DB::rollBack();
+            return redirect()
+                ->route('staff.circles.edit', $circle)
+                ->withInput()
+                ->withErrors(['tags' => $e->getMessage()]);
+        }
 
         if ($status_changed === true) {
             $circle->load('users');
@@ -104,6 +116,8 @@ class UpdateAction extends Controller
                 }
             }
         }
+
+        DB::commit();
 
         return redirect()
             ->route('staff.circles.edit', $circle)

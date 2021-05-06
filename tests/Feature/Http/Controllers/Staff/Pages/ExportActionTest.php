@@ -3,12 +3,12 @@
 namespace Tests\Feature\Http\Controllers\Staff\Pages;
 
 use App\Eloquents\Page;
+use App\Eloquents\Permission;
 use App\Eloquents\User;
 use App\Exports\PagesExport;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Maatwebsite\Excel\Facades\Excel;
 use Tests\TestCase;
 
@@ -42,6 +42,9 @@ class ExportActionTest extends TestCase
      */
     public function お知らせをCSVでダウンロードできる()
     {
+        Permission::create(['name' => 'staff.pages.export']);
+        $this->staff->syncPermissions(['staff.pages.export']);
+
         Excel::fake();
         $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
@@ -54,5 +57,16 @@ class ExportActionTest extends TestCase
             return $export->collection()->contains('title', $titles[0])
                 && $export->collection()->contains('title', $titles[1]);
         });
+    }
+
+    /**
+     * @test
+     */
+    public function 権限がない場合はCSVをダウンロードできない()
+    {
+        $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.pages.export'))
+            ->assertForbidden();
     }
 }

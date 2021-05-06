@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Schedules;
 
+use App\Eloquents\Permission;
 use App\Eloquents\Schedule;
 use App\Eloquents\User;
 use App\Exports\SchedulesExport;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Maatwebsite\Excel\Facades\Excel;
 use Tests\TestCase;
 
@@ -38,6 +38,9 @@ class ExportActionTest extends TestCase
      */
     public function 予定をCSVでダウンロードできる()
     {
+        Permission::create(['name' => 'staff.schedules.export']);
+        $this->staff->syncPermissions(['staff.schedules.export']);
+
         Excel::fake();
         $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
@@ -50,5 +53,16 @@ class ExportActionTest extends TestCase
             return $export->collection()->contains('name', $names[0])
                 && $export->collection()->contains('name', $names[1]);
         });
+    }
+
+    /**
+     * @test
+     */
+    public function 権限がない場合はCSVをダウンロードできない()
+    {
+        $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.schedules.export'))
+            ->assertForbidden();
     }
 }

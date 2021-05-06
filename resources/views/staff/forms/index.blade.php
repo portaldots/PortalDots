@@ -43,6 +43,16 @@
                 <i class="fas fa-plus fa-fw"></i>
                 新規フォーム
             </a>
+            <a
+                class="btn is-primary-inverse is-no-shadow is-no-border"
+                href="{{ route('staff.forms.export') }}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
+                <i class="fas fa-file-csv fa-fw"></i>
+                CSVで出力
+            </a>
         </template>
         <template v-slot:activities="{ row }">
             <form-with-confirm

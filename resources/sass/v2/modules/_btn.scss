@@ -41,7 +41,7 @@ button {
   color: $color-text;
 }
 
-body:not(.body-editor-v1):not(.body-v1) {
+body:not(.body-editor-v1) {
   .btn {
     appearance: none;
     background: none;

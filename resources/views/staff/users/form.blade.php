@@ -101,7 +101,7 @@
                                 {{ old('user_type', $user->is_staff && !$user->is_admin ? 'staff' : '') === 'staff' ? 'checked' : '' }}
                                 {{ (!Auth::user()->is_admin && $user->is_admin) || Auth::id() === $user->id ? 'disabled' : '' }}>
                             <strong>スタッフ</strong><br />
-                            <span class="text-muted">スタッフモードにアクセスできます。</span>
+                            <span class="text-muted">スタッフモードにアクセスできます。<strong>管理者が「スタッフの権限設定」で許可した機能のみ利用できます。</strong></span>
                         </label>
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios3" value="admin"
@@ -132,7 +132,7 @@
                     @else
                         <strong class="text-danger">
                             <i class="fas fa-exclamation-circle"></i>
-                            セキュリティのため、管理者権限を付与するユーザーの人数は最小限にしてください。
+                            セキュリティのため、管理者権限を割り当てるユーザーの人数は最小限にしてください。
                         </strong>
                     @endif
                 </list-view-card>
