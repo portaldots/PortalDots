@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Collection;
+use Spatie\Permission\Traits\HasRoles;
 use App\Eloquents\Circle;
 use App\Eloquents\CircleUser;
 
@@ -29,6 +30,7 @@ use App\Eloquents\CircleUser;
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
 
     /**
      * バリデーションルール
@@ -116,6 +118,17 @@ class User extends Authenticatable
     public function scopeVerified($query)
     {
         return $query->whereNotNull('email_verified_at')->whereNotNull('univemail_verified_at');
+    }
+
+    /**
+     * スタッフユーザーだけに限定するクエリスコープ
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeStaff($query)
+    {
+        return $query->where('is_staff', true);
     }
 
     /**

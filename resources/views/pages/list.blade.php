@@ -5,7 +5,7 @@
 @section('content')
     <app-container>
         <form class="pt-spacing" method="get" action="{{ route('pages.index') }}">
-            <search-input name="query" default-value="{{ old('query', $searchQuery) }}" placeholder="お知らせを検索…"></search-input>
+            <search-input name="query" value="{{ old('query', $searchQuery) }}" placeholder="お知らせを検索…"></search-input>
         </form>
 
         @isset ($searchQuery)

@@ -3,19 +3,30 @@
 namespace Tests\Feature\Http\Controllers\Staff\Circles\CustomForm;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Services\Utils\DotenvService;
 use App\Eloquents\User;
 use App\Eloquents\Form;
 use App\Eloquents\CustomForm;
+use App\Eloquents\Permission;
 
 class UpdateActionTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @var Form
+     */
     private $form;
+
+    /**
+     * @var CustomForm
+     */
     private $custom_form;
+
+    /**
+     * @var User
+     */
     private $staff;
 
     public function setUp(): void
@@ -37,6 +48,9 @@ class UpdateActionTest extends TestCase
      */
     public function カスタムフォームの設定を更新できる()
     {
+        Permission::create(['name' => 'staff.circles.custom_form']);
+        $this->staff->syncPermissions(['staff.circles.custom_form']);
+
         $this->mock(DotenvService::class, function ($mock) {
             // boolean の true ではなく、文字列の 'true' である点に注意
             $mock->shouldReceive('getValue')->once()->with('APP_NOT_INSTALLED', 'false')->andReturn('false');
@@ -68,8 +82,30 @@ class UpdateActionTest extends TestCase
     /**
      * @test
      */
+    public function 権限がない場合はカスタムフォームの設定を更新できない()
+    {
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->patch(route('staff.circles.custom_form.update'), [
+                'name' => '新しいフォーム名', // カスタムフォームではフォーム名の変更は不可
+                'open_at' => '2000-12-31T12:12',
+                'close_at' => '2040-12-31T11:15',
+                'users_number_to_submit_circle' => '6',
+                'is_public' => '1',
+                'description' => '参加登録前に読んでほしいもの',
+            ]);
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * @test
+     */
     public function 受付終了日時が開始日時より後でない場合はエラー()
     {
+        Permission::create(['name' => 'staff.circles.custom_form']);
+        $this->staff->syncPermissions(['staff.circles.custom_form']);
+
         $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->patch(route('staff.circles.custom_form.update'), [
