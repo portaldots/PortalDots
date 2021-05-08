@@ -198,7 +198,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             });
 
         // メール一斉送信
-        Route::get('/send_emails', 'Staff\SendEmails\ListAction')->name('send_emails')->middleware(['can:staff.pages.send_emails']);
+        Route::get('/send_emails', 'Staff\SendEmails\IndexAction')->name('send_emails')->middleware(['can:staff.pages.send_emails']);
         Route::delete('/send_emails', 'Staff\SendEmails\DestroyAction')->middleware(['can:staff.pages.send_emails']);
 
         Route::prefix('/contacts')
