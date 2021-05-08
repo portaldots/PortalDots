@@ -3,15 +3,18 @@
 namespace Tests\Feature\Http\Controllers\Staff\Circles\CustomForm;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Eloquents\User;
 use App\Eloquents\CustomForm;
+use App\Eloquents\Permission;
 
 class StoreActionTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @var User
+     */
     private $staff;
 
     public function setUp(): void
@@ -26,6 +29,9 @@ class StoreActionTest extends TestCase
      */
     public function 企画参加登録機能を有効にできる()
     {
+        Permission::create(['name' => 'staff.circles.custom_form']);
+        $this->staff->syncPermissions(['staff.circles.custom_form']);
+
         $this->assertDatabaseMissing('forms', [
             'name' => '企画参加登録',
         ]);
@@ -52,18 +58,49 @@ class StoreActionTest extends TestCase
     /**
      * @test
      */
-    public function 企画参加登録機能が既に有効になっている場合はエラー()
+    public function 権限がない場合は企画参加登録機能を有効にできない()
     {
-        $this->assertSame(0, CustomForm::count());
+        $this->assertDatabaseMissing('forms', [
+            'name' => '企画参加登録',
+        ]);
+
+        $this->assertDatabaseMissing('custom_forms', [
+            'type' => 'circle',
+        ]);
 
         $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.circles.custom_form.store'));
+
+        $response->assertForbidden();
+
+        $this->assertDatabaseMissing('forms', [
+            'name' => '企画参加登録',
+        ]);
+
+        $this->assertDatabaseMissing('custom_forms', [
+            'type' => 'circle',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function 企画参加登録機能が既に有効になっている場合はエラー()
+    {
+        Permission::create(['name' => 'staff.circles.custom_form']);
+        $this->staff->syncPermissions(['staff.circles.custom_form']);
+
+        $this->assertSame(0, CustomForm::count());
+
+        $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.circles.custom_form.store'));
 
         $this->assertSame(1, CustomForm::count());
 
         // もう一度POSTしてもカスタムフォームは新しく作成されない
-        $response = $this->actingAs($this->staff)
+        $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.circles.custom_form.store'));
 

@@ -3,9 +3,10 @@
     <input
       class="form-control search-input__input"
       type="search"
-      :name="name"
+      :name="name || undefined"
       :placeholder="placeholder"
-      :value="defaultValue"
+      v-model="inputValue"
+      @keydown.enter.exact="handleEnter"
     />
     <i class="fas fa-fw fa-search search-input__icon"></i>
   </div>
@@ -16,9 +17,9 @@ export default {
   props: {
     name: {
       type: String,
-      required: true
+      default: null
     },
-    defaultValue: {
+    value: {
       type: String,
       required: false,
       default: ''
@@ -27,6 +28,27 @@ export default {
       type: String,
       required: false,
       default: ''
+    },
+    preventEnter: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    inputValue: {
+      get() {
+        return this.value
+      },
+      set(value) {
+        this.$emit('input', value)
+      }
+    }
+  },
+  methods: {
+    handleEnter(e) {
+      if (this.preventEnter) {
+        e.preventDefault()
+      }
     }
   }
 }
