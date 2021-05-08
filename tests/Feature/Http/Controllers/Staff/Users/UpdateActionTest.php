@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Users;
 
+use App\Eloquents\Permission;
 use App\Eloquents\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -28,6 +29,9 @@ class UpdateActionTest extends TestCase
      */
     public function ユーザー情報を更新できる()
     {
+        Permission::create(['name' => 'staff.users.edit']);
+        $this->staff->syncPermissions(['staff.users.edit']);
+
         /** @var User */
         $target_user = factory(User::class)->create();
 
@@ -70,8 +74,47 @@ class UpdateActionTest extends TestCase
     /**
      * @test
      */
+    public function 権限がない場合はユーザー情報を更新できない()
+    {
+        /** @var User */
+        $target_user = factory(User::class)->create();
+
+        $this->assertFalse($target_user->is_staff);
+        $this->assertFalse($target_user->is_admin);
+
+        $data = [
+            'student_id' => '123updated',
+            'name' => '更新　され太',
+            'name_yomi' => 'コウシン された',
+            'email' => 'updated@example.com',
+            'tel' => '000-updated-000',
+            'notes' => '新しいメモ',
+            'user_type' => 'staff',
+        ];
+
+        $response = $this
+            ->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->patch(
+                route('staff.users.update', [
+                    'user' => $target_user,
+                ]),
+                $data
+            );
+
+        $response->assertForbidden();
+        $this->assertFalse($target_user->is_staff);
+        $this->assertFalse($target_user->is_admin);
+    }
+
+    /**
+     * @test
+     */
     public function スタッフ自身のユーザー種別は変更できない()
     {
+        Permission::create(['name' => 'staff.users.edit']);
+        $this->staff->syncPermissions(['staff.users.edit']);
+
         $data = [
             'student_id' => '123updated',
             'name' => '更新　され太',
@@ -103,6 +146,9 @@ class UpdateActionTest extends TestCase
      */
     public function 管理者であっても自身のユーザー種別は変更できない()
     {
+        Permission::create(['name' => 'staff.users.edit']);
+        $this->admin->syncPermissions(['staff.users.edit']);
+
         $data = [
             'student_id' => '123updated',
             'name' => '更新　され太',
@@ -134,6 +180,9 @@ class UpdateActionTest extends TestCase
      */
     public function 管理者であれば他のユーザーを管理者にできる()
     {
+        Permission::create(['name' => 'staff.users.edit']);
+        $this->admin->syncPermissions(['staff.users.edit']);
+
         /** @var User */
         $target_user = factory(User::class)->create();
 
@@ -170,6 +219,9 @@ class UpdateActionTest extends TestCase
      */
     public function 管理者ではない場合は他のユーザーを管理者にできない()
     {
+        Permission::create(['name' => 'staff.users.edit']);
+        $this->staff->syncPermissions(['staff.users.edit']);
+
         /** @var User */
         $target_user = factory(User::class)->create();
 
@@ -206,6 +258,9 @@ class UpdateActionTest extends TestCase
      */
     public function 管理者ではない場合は他の管理者のユーザー種別を変更できない()
     {
+        Permission::create(['name' => 'staff.users.edit']);
+        $this->staff->syncPermissions(['staff.users.edit']);
+
         $this->assertTrue($this->admin->is_admin);
 
         $data = [

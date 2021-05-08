@@ -9,6 +9,14 @@
 @endsection
 
 @section('content')
+    @unless ($hasSentEmail)
+        <top-alert type="danger" container-medium keep-visible>
+            <template v-slot:title>
+                メールの一斉配信に失敗しました
+            </template>
+            CRON が適切に設定されているかご確認ください
+        </top-alert>
+    @endunless
     <app-header container-medium>
         <template v-slot:title>
             メール配信設定

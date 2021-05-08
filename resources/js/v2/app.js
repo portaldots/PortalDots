@@ -31,6 +31,7 @@ import StepsListItem from './components/StepsListItem.vue'
 import TagsInput from './components/TagsInput.vue'
 import MarkdownEditor from './components/MarkdownEditor.vue'
 import SearchInput from './components/SearchInput.vue'
+import PermissionsSelector from './components/PermissionsSelector.vue'
 
 // Form Questions
 import QuestionItem from './components/Forms/QuestionItem.vue'
@@ -86,7 +87,8 @@ export function mountV2App() {
         StepsListItem,
         TagsInput,
         MarkdownEditor,
-        SearchInput
+        SearchInput,
+        PermissionsSelector
       },
       data() {
         return {

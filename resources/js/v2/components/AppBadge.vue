@@ -1,5 +1,6 @@
 <template>
   <span
+    :title="title"
     class="badge"
     :class="{
       'is-outline': outline,
@@ -21,6 +22,10 @@
 <script>
 export default {
   props: {
+    title: {
+      type: String,
+      default: ''
+    },
     outline: {
       type: Boolean,
       default: false
