@@ -8,18 +8,18 @@
             <form class="pt-spacing" method="get" action="{{ route('pages.index') }}">
                 <search-input name="query" value="{{ old('query', $searchQuery) }}" placeholder="お知らせを検索…"></search-input>
             </form>
-        @endif
 
-        @isset ($searchQuery)
-            <div class="pt-spacing-sm">
-                <a href="{{ URL::current() }}" class="text-muted">
-                    <strong>
-                        <i class="fas fa-fw fa-times-circle"></i>
-                        検索をリセット
-                    </strong>
-                </a>
-            </div>
-        @endisset
+            @isset ($searchQuery)
+                <div class="pt-spacing-sm">
+                    <a href="{{ URL::current() }}" class="text-muted">
+                        <strong>
+                            <i class="fas fa-fw fa-times-circle"></i>
+                            検索をリセット
+                        </strong>
+                    </a>
+                </div>
+            @endisset
+        @endif
 
         @if ($pages->isEmpty())
             @empty ($searchQuery)

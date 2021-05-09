@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Install\Portal;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Services\Install\PortalService;
 
 class EditAction extends Controller
@@ -11,14 +10,14 @@ class EditAction extends Controller
     /**
      * @var PortalService
      */
-    private $editor;
+    private $portalService;
 
     public function __construct(PortalService $portalService)
     {
         $this->portalService = $portalService;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke()
     {
         // 開発環境で http: が表示されないことがあるが、開発環境以外では
         // 正常に表示されるので問題がない
