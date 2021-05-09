@@ -51,7 +51,7 @@ class Page extends Model
         return false;
         // static $result = null;
         // if ($result === null) {
-        //     // MySQL 5.7 以上の場合のみ対応
+        //     // MariaDB 10 以上の場合のみ対応
         //     $results = DB::select(DB::raw("select version()"));
         //     $mariadb_version =  $results[0]->{'version()'};
         //     if (strpos(strtolower($mariadb_version), 'mariadb') === false) {
