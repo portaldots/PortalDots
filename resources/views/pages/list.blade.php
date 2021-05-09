@@ -4,7 +4,7 @@
 
 @section('content')
     <app-container>
-        @if (App\Eloquents\Page::isMySqlFulltextIndexSupported())
+        @if (App\Eloquents\Page::isMySqlFulltextIndexSupported() || App\Eloquents\Page::isMariaDbFulltextIndexSupported())
             <form class="pt-spacing" method="get" action="{{ route('pages.index') }}">
                 <search-input name="query" value="{{ old('query', $searchQuery) }}" placeholder="お知らせを検索…"></search-input>
             </form>
