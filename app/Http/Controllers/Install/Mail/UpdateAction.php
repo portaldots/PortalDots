@@ -33,8 +33,9 @@ class UpdateAction extends Controller
                 ->back()
                 ->withInput()
                 ->with('topAlert.type', 'danger')
+                ->with('topAlert.keepVisible', true)
                 ->with('topAlert.title', '設定をご確認ください')
-                ->with('topAlert.body', '入力された情報でメールを送信できませんでした。入力内容が正しいかご確認ください');
+                ->with('topAlert.body', '入力された情報でメールを送信できませんでした。入力内容が正しいかご確認ください : ' . $e->getMessage());
         }
     }
 
