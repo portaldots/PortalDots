@@ -28,6 +28,11 @@ class IndexAction extends Controller
 
         $searchQuery = $request->input('query');
 
+        if (!empty($searchQuery) && !Page::isFulltextIndexSupported()) {
+            return redirect()
+                ->route('pages.index');
+        }
+
         $pages = Page::byCircle($circle)->byKeywords($searchQuery)->with(['usersWhoRead' => function ($query) {
             $query->where('user_id', Auth::id());
         }])->paginate(10);
