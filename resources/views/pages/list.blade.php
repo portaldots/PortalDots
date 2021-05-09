@@ -4,9 +4,11 @@
 
 @section('content')
     <app-container>
-        <form class="pt-spacing" method="get" action="{{ route('pages.index') }}">
-            <search-input name="query" value="{{ old('query', $searchQuery) }}" placeholder="お知らせを検索…"></search-input>
-        </form>
+        @if (App\Eloquents\Page::isMySqlFulltextIndexSupported())
+            <form class="pt-spacing" method="get" action="{{ route('pages.index') }}">
+                <search-input name="query" value="{{ old('query', $searchQuery) }}" placeholder="お知らせを検索…"></search-input>
+            </form>
+        @endif
 
         @isset ($searchQuery)
             <div class="pt-spacing-sm">
