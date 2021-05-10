@@ -120,12 +120,14 @@ class DocumentsServiceTest extends TestCase
      */
     public function updateDocument_ファイルのアップデートができる()
     {
+        Storage::fake('local');
         $schedule = factory(Schedule::class)->create();
+        $oldFile = UploadedFile::fake()->create('第２回.pdf', 1, 'application/pdf');
 
         $document = $this->documentsService->createDocument(
             '第２回会議資料',
             '第２回会議にて配布した資料のPDFバージョンです',
-            UploadedFile::fake()->create('第２回.pdf', 1, 'application/pdf'),
+            $oldFile,
             $this->staff,
             true,
             false,
@@ -144,6 +146,8 @@ class DocumentsServiceTest extends TestCase
             null,
             'updated notes'
         );
+
+        Storage::disk('local')->assertMissing("document/{$oldFile->hashName()}");
 
         $this->assertDatabaseHas('documents', [
             'name' => 'updated filename',
