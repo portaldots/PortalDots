@@ -157,4 +157,34 @@ class DocumentsServiceTest extends TestCase
             'notes' => 'updated notes'
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function deleteDocument_ファイルの削除ができる()
+    {
+        Storage::fake('local');
+        $file = UploadedFile::fake()->create('削除されちゃう.pdf', 1, 'application/pdf');
+
+        $document = $this->documentsService->createDocument(
+            '削除される資料',
+            '削除される資料です。悲しいね。',
+            $file,
+            $this->staff,
+            true,
+            false,
+            null,
+            'ドロン'
+        );
+
+        Storage::disk('local')->assertExists("documents/{$file->hashName()}");
+
+        $this->documentsService->deleteDocument($document);
+
+        Storage::disk('local')->assertMissing("documents/{$file->hashName()}");
+        $this->assertDatabaseMissing('documents', [
+            'id' => $document->id,
+            'name' => '削除される資料です'
+        ]);
+    }
 }
