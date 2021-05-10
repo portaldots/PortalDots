@@ -78,6 +78,10 @@ class DocumentsService
         ?Schedule $schedule,
         ?string $notes
     ): bool {
+        if (!empty($file)) {
+            Storage::delete($document->path);
+        }
+
         return $document->update([
             'name' => $name,
             'description' => $description,
