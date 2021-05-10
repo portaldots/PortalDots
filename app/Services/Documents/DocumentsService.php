@@ -8,6 +8,7 @@ use App\Eloquents\Document;
 use App\Eloquents\User;
 use App\Eloquents\Schedule;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentsService
 {
@@ -89,5 +90,18 @@ class DocumentsService
             'schedule_id' => !empty($schedule) ? $schedule->id : null,
             'notes' => $notes,
         ]);
+    }
+
+    /**
+     * 配布資料を削除する
+     *
+     * @param Document $document
+     *
+     * @return bool
+     */
+    public function deleteDocument(Document $document): bool
+    {
+        Storage::delete($document->path);
+        return $document->delete();
     }
 }
