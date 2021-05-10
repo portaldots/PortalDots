@@ -187,6 +187,12 @@ class Permission extends SpatiePermission
                     '配布資料(全機能)',
                     '配布資料管理の全機能を利用可能。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
                 ),
+                'staff.documents.read,edit,delete' => new PermissionInfo(
+                    'staff.documents.read,edit,delete',
+                    'スタッフモード › 配布資料管理 › 閲覧と編集、削除',
+                    '配布資料(削除)',
+                    '配布資料の閲覧と編集、作成、削除が可能'
+                ),
                 'staff.documents.read,edit' => new PermissionInfo(
                     'staff.documents.read,edit',
                     'スタッフモード › 配布資料管理 › 閲覧と編集',
