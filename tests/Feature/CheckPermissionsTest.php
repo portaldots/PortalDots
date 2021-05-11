@@ -56,6 +56,7 @@ class CheckPermissionsTest extends TestCase
             'staff.pages.read,export',
             'staff.pages.read',
             'staff.documents',
+            'staff.documents.read,edit,delete',
             'staff.documents.read,edit',
             'staff.documents.read,export',
             'staff.documents.read',
