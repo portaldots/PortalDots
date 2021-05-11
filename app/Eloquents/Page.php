@@ -6,10 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Concerns\IsNewTrait;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Page extends Model
 {
     use IsNewTrait;
+    use LogsActivity;
+
+    protected static $logName = 'page';
+
+    protected static $logAttributes = [
+        'id',
+        'title',
+        'body',
+        'notes',
+    ];
+
+    protected static $logOnlyDirty = true;
 
     protected $fillable = [
         'title',

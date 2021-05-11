@@ -17,9 +17,17 @@ class Answer extends Model
         'circle_id'
     ];
 
-    protected static $logAttributes = ['circle.id', 'circle.name', 'form.id', 'form.name', 'details_array'];
+    protected static $logName = 'answer';
 
-    protected static $submitEmptyLogs = false;
+    protected static $logAttributes = [
+        'id',
+        'circle.id',
+        'circle.name',
+        'form.id',
+        'form.name',
+        // details_array に関しては、変更前の回答をログに残すことができないので注意
+        'details_array'
+    ];
 
     public function details()
     {

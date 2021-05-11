@@ -2,11 +2,46 @@
 
 namespace App\Eloquents;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Contracts\Activity;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Circle extends Model
 {
+    use LogsActivity;
+
+    protected static $logName = 'circle';
+
+    protected static $logAttributes = [
+        'id',
+        'name',
+        'name_yomi',
+        'group_name',
+        'group_name_yomi',
+        'submitted_at',
+        'status',
+        'status_reason',
+        'status_set_at',
+        'notes',
+    ];
+
+    protected static $logOnlyDirty = true;
+
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        $activityArray = $activity->changes()->toArray();
+
+        if (
+            !empty($activityArray['attributes']['submitted_at']) &&
+            empty($activityArray['old']['submitted_at'])
+        ) {
+            // 企画参加登録を提出した場合、 description を submitted にする。
+            $activity->description = 'submitted';
+        } else {
+            $activity->description = $eventName;
+        }
+    }
+
     /**
      * バリデーションルール
      */

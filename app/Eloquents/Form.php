@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property int $id
@@ -24,6 +25,22 @@ use Illuminate\Support\Facades\DB;
  */
 class Form extends Model
 {
+    use LogsActivity;
+
+    protected static $logName = 'form';
+
+    protected static $logAttributes = [
+        'id',
+        'name',
+        'description',
+        'open_at',
+        'close_at',
+        'max_answers',
+        'is_public',
+    ];
+
+    protected static $logOnlyDirty = true;
+
     protected $fillable = [
         'name',
         'description',

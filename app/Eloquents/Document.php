@@ -5,10 +5,29 @@ namespace App\Eloquents;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Concerns\IsNewTrait;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Document extends Model
 {
     use IsNewTrait;
+    use LogsActivity;
+
+    protected static $logName = 'document';
+
+    protected static $logAttributes = [
+        'id',
+        'name',
+        'description',
+        'path',
+        'size',
+        'extension',
+        'is_public',
+        'is_important',
+        'schedule',
+        'notes',
+    ];
+
+    protected static $logOnlyDirty = true;
 
     protected $casts = [
         'is_public' => 'bool',
