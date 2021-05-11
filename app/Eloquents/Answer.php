@@ -17,8 +17,9 @@ class Answer extends Model
         'circle_id'
     ];
 
-    // WIP: many-to-many のリレーションはログに残せる？
-    protected static $logAttributes = ['name', 'text', 'user.name'];
+    protected static $logAttributes = ['circle.id', 'circle.name', 'form.id', 'form.name', 'details_array'];
+
+    protected static $submitEmptyLogs = false;
 
     public function details()
     {
@@ -33,5 +34,17 @@ class Answer extends Model
     public function form()
     {
         return $this->belongsTo(Form::class);
+    }
+
+    /**
+     * laravel-activitylog に記録するための回答詳細配列を返すアクセサ
+     *
+     * 現在は laravel-activitylog 以外の目的では使わない
+     *
+     * @return array
+     */
+    public function getDetailsArrayAttribute()
+    {
+        return $this->details->loadMissing('question')->toArray();
     }
 }
