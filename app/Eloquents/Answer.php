@@ -3,17 +3,22 @@
 namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property integer $id
  */
 class Answer extends Model
 {
+    use LogsActivity;
+
     protected $fillable = [
         'form_id',
         'circle_id'
     ];
+
+    // WIP: many-to-many のリレーションはログに残せる？
+    protected static $logAttributes = ['name', 'text', 'user.name'];
 
     public function details()
     {
