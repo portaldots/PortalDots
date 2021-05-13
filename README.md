@@ -116,8 +116,9 @@ $ yarn docker
 $ yarn migrate
 
 # フロントエンド開発サーバーの起動
-$ yarn watch
-# Ctrl-C で停止
+$ yarn hot
+# → ブラウザで http://localhost にアクセスすると、PortalDots の開発環境が起動する
+# → フロントエンド開発サーバーを終了するには Ctrl + C を押す
 
 # 開発環境を停止する
 $ yarn docker-stop
@@ -146,7 +147,7 @@ $ yarn docker-stop
 Node.js を最新バージョンにアップグレードした上で、再度 `yarn install` を実行してください。
 
 ### 開発環境の各種 URL
-- 開発環境 : http://localhost:3000
+- 開発環境 : http://localhost
     - 初回アクセス時、データベースエラーが表示されることがありますが、数回再読み込みすることでエラーは解消するようです。もし解消しない場合、 `yarn docker-stop` コマンドを実行してから `yarn docker` コマンドを実行し、開発環境を再起動してください。
 - 開発環境から送信されるメールの確認(MailHog) : http://localhost:8025
 - phpMyAdmin : http://localhost:8080
