@@ -13,7 +13,7 @@ class AddFulltextIndexToPages extends Migration
      */
     public function up()
     {
-        if (Page::isFulltextIndexSupported()) {
+        if (Page::isMySqlFulltextIndexSupported()) {
             DB::statement('ALTER TABLE pages ADD FULLTEXT INDEX fulltext_index (title,body) WITH PARSER ngram');
         }
     }
@@ -25,7 +25,7 @@ class AddFulltextIndexToPages extends Migration
      */
     public function down()
     {
-        if (Page::isFulltextIndexSupported()) {
+        if (Page::isMySqlFulltextIndexSupported()) {
             DB::statement('ALTER TABLE pages DROP INDEX fulltext_index');
         }
     }

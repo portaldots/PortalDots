@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Pages;
 
 use Illuminate\Http\Request;
-use Auth;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Page;
 use App\Services\Circles\SelectorService;
+use Illuminate\Support\Facades\Auth;
 
 class IndexAction extends Controller
 {
@@ -28,7 +28,10 @@ class IndexAction extends Controller
 
         $searchQuery = $request->input('query');
 
-        if (!empty($searchQuery) && !Page::isFulltextIndexSupported()) {
+        if (
+            !empty($searchQuery) && !Page::isMySqlFulltextIndexSupported() &&
+            !Page::isMariaDbFulltextIndexSupported()
+        ) {
             return redirect()
                 ->route('pages.index');
         }
