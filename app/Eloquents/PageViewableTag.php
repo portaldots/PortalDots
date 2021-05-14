@@ -7,20 +7,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class PageViewableTag extends Pivot
 {
-    use LogsActivity;
-
-    protected static $logName = 'page_viewable_tag';
-
-    protected static $logAttributes = [
-        'id',
-        'page.id',
-        'page.title',
-        'tag.id',
-        'tag.name',
-    ];
-
-    protected static $logOnlyDirty = true;
-
     public function page()
     {
         return $this->belongsTo(Page::class);

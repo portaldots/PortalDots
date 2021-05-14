@@ -7,20 +7,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class CircleTag extends Pivot
 {
-    use LogsActivity;
-
-    protected static $logName = 'circle_tag';
-
-    protected static $logAttributes = [
-        'id',
-        'circle.id',
-        'circle.name',
-        'tag.id',
-        'tag.name',
-    ];
-
-    protected static $logOnlyDirty = true;
-
     public $incrementing = true;
 
     public function circle()
