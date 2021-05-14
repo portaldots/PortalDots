@@ -25,9 +25,9 @@ class Answer extends Model
         'circle.name',
         'form.id',
         'form.name',
-        // details_array に関しては、変更前の回答をログに残すことができないので注意
-        'details_array'
     ];
+
+    protected static $logOnlyDirty = true;
 
     public function details()
     {
@@ -42,17 +42,5 @@ class Answer extends Model
     public function form()
     {
         return $this->belongsTo(Form::class);
-    }
-
-    /**
-     * laravel-activitylog に記録するための回答詳細配列を返すアクセサ
-     *
-     * 現在は laravel-activitylog 以外の目的では使わない
-     *
-     * @return array
-     */
-    public function getDetailsArrayAttribute()
-    {
-        return $this->details->loadMissing('question')->toArray();
     }
 }
