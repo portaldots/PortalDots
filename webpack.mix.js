@@ -14,6 +14,12 @@ const mix = require('laravel-mix')
 const path = require('path')
 
 mix
+  .options({
+    hmrOptions: {
+      host: 'localhost',
+      port: 8181
+    }
+  })
   .webpackConfig({
     resolve: {
       modules: [path.resolve('./node_modules')]
@@ -40,17 +46,17 @@ mix
   // ↓ CodeIgniterを廃止したらこの行は削除する
   .sass('resources/sass/fontawesome.v4.scss', 'public/css') // Font Awesome Ver4
   .sass('resources/sass/app.scss', 'public/css') // メインスタイル
-  .browserSync({
-    proxy: 'localhost',
-    snippetOptions: {
-      rule: {
-        // これがないと Turbolinks が正常に動作しない
-        match: /<\/head>/i,
-        fn(snippet, match) {
-          return snippet + match
-        }
-      }
-    }
-  })
+  // .browserSync({
+  //   proxy: 'localhost',
+  //   snippetOptions: {
+  //     rule: {
+  //       // これがないと Turbolinks が正常に動作しない
+  //       match: /<\/head>/i,
+  //       fn(snippet, match) {
+  //         return snippet + match
+  //       }
+  //     }
+  //   }
+  // })
   .sourceMaps()
   .version()
