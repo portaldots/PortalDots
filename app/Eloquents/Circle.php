@@ -32,6 +32,7 @@ class Circle extends Model
         $activityArray = $activity->changes()->toArray();
 
         if (
+            $eventName !== 'created' &&
             !empty($activityArray['attributes']['submitted_at']) &&
             empty($activityArray['old']['submitted_at'])
         ) {

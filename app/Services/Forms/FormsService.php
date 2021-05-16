@@ -7,11 +7,23 @@ namespace App\Services\Forms;
 use App\Eloquents\Form;
 use App\Eloquents\User;
 use App\Eloquents\Tag;
+use App\Services\Utils\ActivityLogService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FormsService
 {
+    /**
+     * @var ActivityLogService
+     */
+    private $activityLogService;
+
+    public function __construct(ActivityLogService $activityLogService)
+    {
+        $this->activityLogService = $activityLogService;
+    }
+
     /**
      * フォームを作成する
      *
@@ -57,8 +69,24 @@ class FormsService
 
             // 検索時は大文字小文字の区別をしない
             // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
-            $exist_tags = Tag::select('id')->whereIn('name', $answerable_tags)->get();
+            $exist_tags = Tag::select('id', 'name')->whereIn('name', $answerable_tags)->get();
             $form->answerableTags()->sync($exist_tags->pluck('id')->all());
+
+            // ログに残す
+            $map_function = function ($tag) {
+                return [
+                    'id' => $tag->id,
+                    'name' => $tag->name,
+                ];
+            };
+
+            $this->activityLogService->logOnlyAttributesChanged(
+                'form_answerable_tag',
+                Auth::user(),
+                $form,
+                [],
+                $exist_tags->map($map_function)->toArray()
+            );
 
             return $form;
         });
@@ -109,10 +137,28 @@ class FormsService
                 'is_public' => $is_public,
             ]);
 
+            $old_tags = $form->answerableTags()->orderBy('id')->get();
+
             // 検索時は大文字小文字の区別をしない
             // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
-            $exist_tags = Tag::select('id')->whereIn('name', $answerable_tags)->get();
+            $exist_tags = Tag::select('id', 'name')->whereIn('name', $answerable_tags)->orderBy('id')->get();
             $form->answerableTags()->sync($exist_tags->pluck('id')->all());
+
+            // ログに残す
+            $map_function = function ($tag) {
+                return [
+                    'id' => $tag->id,
+                    'name' => $tag->name,
+                ];
+            };
+
+            $this->activityLogService->logOnlyAttributesChanged(
+                'form_answerable_tag',
+                Auth::user(),
+                $form,
+                $old_tags->map($map_function)->toArray(),
+                $exist_tags->map($map_function)->toArray()
+            );
 
             return true;
         });

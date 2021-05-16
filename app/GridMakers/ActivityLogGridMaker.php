@@ -55,10 +55,15 @@ class ActivityLogGridMaker implements GridMakable
         return [
             'answer' => '回答',
             'answer_detail' => '設問への回答',
+            'booth' => '企画の使用場所',
             'circle' => '企画',
+            'circle_tag' => '企画タグの紐付け',
+            'circle_user' => '企画とユーザーの紐付け',
             'document' => '配布資料',
             'form' => 'フォーム',
+            'form_answerable_tag' => 'フォームへ回答可能なユーザー(タグ)',
             'page' => 'お知らせ',
+            'page_viewable_tag' => 'お知らせを閲覧可能なユーザー(タグ)',
             'place' => '場所',
             'question' => 'フォームの設問',
             'schedule' => 'スケジュール',
@@ -115,7 +120,7 @@ class ActivityLogGridMaker implements GridMakable
      */
     public function defaultOrderBy(): string
     {
-        return 'created_at';
+        return 'id';
     }
 
     /**
