@@ -33,20 +33,47 @@ class Page extends Model
     ];
 
     /**
-     * データベースが FULLTEXT INDEX に対応しているかどうかを調べる
+     * データベースが MySQL の FULLTEXT INDEX に対応しているかどうかを調べる
      *
      * @return boolean
      */
-    public static function isFulltextIndexSupported()
+    public static function isMySqlFulltextIndexSupported()
     {
         static $result = null;
         if ($result === null) {
             // MySQL 5.7 以上の場合のみ対応
             $results = DB::select(DB::raw("select version()"));
             $mysql_version =  $results[0]->{'version()'};
+            if (strpos(strtolower($mysql_version), 'mariadb') !== false) {
+                // MariaDB を利用している場合
+                return false;
+            }
             $result = version_compare($mysql_version, '5.7.6', '>=');
         }
         return $result;
+    }
+
+    /**
+     * データベースが MariaDB の FULLTEXT INDEX に対応しているかどうかを調べる
+     *
+     * @return boolean
+     */
+    public static function isMariaDbFulltextIndexSupported()
+    {
+        // 現在は一律非対応
+        return false;
+        // static $result = null;
+        // if ($result === null) {
+        //     // MariaDB 10 以上の場合のみ対応
+        //     $results = DB::select(DB::raw("select version()"));
+        //     $mariadb_version =  $results[0]->{'version()'};
+        //     if (strpos(strtolower($mariadb_version), 'mariadb') === false) {
+        //         // MySQL を利用している場合
+        //         return false;
+        //     }
+        //     $result = version_compare($mariadb_version, '10.0.15', '>=');
+        // }
+        // return $result;
     }
 
     /**
