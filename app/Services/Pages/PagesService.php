@@ -73,7 +73,7 @@ class PagesService
 
             $this->activityLogService->logOnlyAttributesChanged(
                 'page_viewable_tag',
-                Auth::user(),
+                $created_by,
                 $page,
                 [],
                 $exist_tags->map($map_function)->toArray()
@@ -127,7 +127,7 @@ class PagesService
 
             $this->activityLogService->logOnlyAttributesChanged(
                 'page_viewable_tag',
-                Auth::user(),
+                $created_by,
                 $page,
                 $old_tags->map($map_function)->toArray(),
                 $exist_tags->map($map_function)->toArray()

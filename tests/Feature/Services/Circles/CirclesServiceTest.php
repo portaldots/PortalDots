@@ -14,6 +14,7 @@ use App\Mail\Circles\ApprovedMailable;
 use App\Mail\Circles\RejectedMailable;
 use App\Mail\Circles\SubmitedMailable;
 use App\Services\Circles\Exceptions\DenyCreateTagsException;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 
 class CirclesServiceTest extends TestCase
@@ -179,7 +180,7 @@ class CirclesServiceTest extends TestCase
             '新しいタグ1',
             '登録済みタグ',
             '新しいタグ2',
-        ]);
+        ], true, factory(User::class)->create());
 
         // 「登録済みタグ」は tags テーブルに 1 つしか存在しないかチェック
         // (saveTags 実行時、改めて「登録済みタグ」が新規作成されないことをチェック)
@@ -215,7 +216,7 @@ class CirclesServiceTest extends TestCase
             '新しいタグ1',
             '登録済みタグ',
             '新しいタグ2',
-        ], false);
+        ], false, factory(User::class)->create());
     }
 
     /**

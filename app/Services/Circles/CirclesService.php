@@ -107,10 +107,15 @@ class CirclesService
 
     /**
      * 指定された企画について場所を保存する
+     *
+     * @param Circle $circle
+     * @param array $place_ids
+     * @param User $caused_by 場所を保存したユーザー
+     * @return void
      */
-    public function savePlaces(Circle $circle, array $place_ids)
+    public function savePlaces(Circle $circle, array $place_ids, User $caused_by)
     {
-        DB::transaction(function () use ($circle, $place_ids) {
+        DB::transaction(function () use ($circle, $place_ids, $caused_by) {
             $old_places = $circle->places;
             $exist_places = Place::whereIn('id', $place_ids)->get();
             $circle->places()->sync($exist_places->pluck('id')->all());
@@ -124,7 +129,7 @@ class CirclesService
 
             $this->activityLogService->logOnlyAttributesChanged(
                 'booth',
-                Auth::user(),
+                $caused_by,
                 $circle,
                 $old_places->map($map_function)->toArray(),
                 $exist_places->map($map_function)->toArray()
@@ -138,12 +143,13 @@ class CirclesService
      * @param Circle $circle
      * @param array $tags
      * @param boolean $allow_create タグの新規作成を許可するかどうか
+     * @param User $caused_by タグを保存したユーザー
      * @throws DenyCreateTagsException $allow_create が false なのに企画タグの新規作成が必要になった場合に発生する例外
      * @return void
      */
-    public function saveTags(Circle $circle, array $tags, bool $allow_create = true)
+    public function saveTags(Circle $circle, array $tags, bool $allow_create, User $caused_by)
     {
-        DB::transaction(function () use ($circle, $tags, $allow_create) {
+        DB::transaction(function () use ($circle, $tags, $allow_create, $caused_by) {
             $old_tags = $circle->tags;
 
             // 検索時は大文字小文字の区別をしない
@@ -175,7 +181,7 @@ class CirclesService
 
             $this->activityLogService->logOnlyAttributesChanged(
                 'circle_tag',
-                Auth::user(),
+                $caused_by,
                 $circle,
                 $old_tags->map($map_function)->toArray(),
                 $tags_on_db->map($map_function)->toArray()

@@ -82,7 +82,7 @@ class FormsService
 
             $this->activityLogService->logOnlyAttributesChanged(
                 'form_answerable_tag',
-                Auth::user(),
+                $created_by,
                 $form,
                 [],
                 $exist_tags->map($map_function)->toArray()
@@ -154,7 +154,7 @@ class FormsService
 
             $this->activityLogService->logOnlyAttributesChanged(
                 'form_answerable_tag',
-                Auth::user(),
+                $created_by,
                 $form,
                 $old_tags->map($map_function)->toArray(),
                 $exist_tags->map($map_function)->toArray()
