@@ -5,7 +5,6 @@ namespace App\Eloquents;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -15,7 +14,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property string $description
  * @property Carbon $open_at
  * @property Carbon $close_at
- * @property int $created_by
  * @property string $type
  * @property int $max_answers
  * @property bool $is_public
@@ -46,7 +44,6 @@ class Form extends Model
         'description',
         'open_at',
         'close_at',
-        'created_by',
         'type',
         'max_answers',
         'is_public',
@@ -146,11 +143,6 @@ class Form extends Model
     public function customForm()
     {
         return $this->hasOne(CustomForm::class);
-    }
-
-    public function userCreatedBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
     }
 
     // TODO: 意味的に isAnswered という名前に変えたい

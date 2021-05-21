@@ -9,7 +9,6 @@ use App\Eloquents\User;
 use App\Eloquents\Tag;
 use App\Services\Utils\ActivityLogService;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FormsService
@@ -31,7 +30,6 @@ class FormsService
      * @param string $description フォームの説明
      * @param Carbon $open_at フォームの受付開始日
      * @param Carbon $close_at フォームの受付終了日
-     * @param User $created_by 作成者
      * @param int $max_answers 企画毎に回答可能とする回答数
      * @param bool $is_public フォームを公開するか
      * @param array|null $answerable_tags フォームを回答可能とする企画のタグ
@@ -62,7 +60,6 @@ class FormsService
                 'description' => $description,
                 'open_at' => $open_at,
                 'close_at' => $close_at,
-                'created_by' => $created_by->id,
                 'max_answers' => $max_answers,
                 'is_public' => $is_public,
             ]);
@@ -132,7 +129,6 @@ class FormsService
                 'description' => $description,
                 'open_at' => $open_at,
                 'close_at' => $close_at,
-                'created_by' => $created_by->id,
                 'max_answers' => $max_answers,
                 'is_public' => $is_public,
             ]);
@@ -176,15 +172,13 @@ class FormsService
      * フォームを複製する
      *
      * @param Form $form
-     * @param User $user フォームの作成者とするユーザー
      * @return Form|null
      */
-    public function copyForm(Form $form, User $user)
+    public function copyForm(Form $form)
     {
-        return DB::transaction(function () use ($form, $user) {
+        return DB::transaction(function () use ($form) {
             $form_copy = $form->replicate()->fill([
                 'name' => $form->name . 'のコピー',
-                'created_by' => $user->id,
                 'is_public' => false,
             ]);
 

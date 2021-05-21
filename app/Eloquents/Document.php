@@ -40,8 +40,6 @@ class Document extends Model
         'path',
         'size',
         'extension',
-        'created_by',
-        'updated_by',
         'is_public',
         'is_important',
         'schedule_id',
@@ -76,15 +74,5 @@ class Document extends Model
     public function schedule()
     {
         return $this->belongsTo(Schedule::class);
-    }
-
-    public function userCreatedBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function userUpdatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
     }
 }

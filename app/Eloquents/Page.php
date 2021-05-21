@@ -27,8 +27,6 @@ class Page extends Model
     protected $fillable = [
         'title',
         'body',
-        'created_by',
-        'updated_by',
         'notes',
     ];
 
@@ -143,15 +141,5 @@ class Page extends Model
             return $query;
         }
         return $query->whereRaw("match(title,body) against (? IN BOOLEAN MODE)", [$keywords]);
-    }
-
-    public function userCreatedBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function userUpdatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
     }
 }

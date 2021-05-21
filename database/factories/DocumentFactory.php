@@ -13,11 +13,9 @@ $factory->define(Document::class, function (Faker $faker) {
         'path' => 'documents/foobar.pdf',
         'size' => 1,
         'extension' => 'pdf',
-        'created_by' => 1,
-        'updated_by' => 1,
         'is_public' => true,
         'is_important' => false,
-        'schedule_id' => function() {
+        'schedule_id' => function () {
             return factory(Schedule::class)->create()->id;
         },
         'notes' => $faker->text,

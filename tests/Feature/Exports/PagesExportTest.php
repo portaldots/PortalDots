@@ -7,7 +7,6 @@ use App\Eloquents\Tag;
 use App\Eloquents\User;
 use App\Exports\PagesExport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
@@ -46,10 +45,7 @@ class PagesExportTest extends TestCase
         $this->tag = factory(Tag::class)->create([
             'name' => 'タグです',
         ]);
-        $this->page = factory(Page::class)->create([
-            'created_by' => $this->staff->id,
-            'updated_by' => $this->staff->id,
-        ]);
+        $this->page = factory(Page::class)->create();
         $this->page->viewableTags()->attach($this->tag->id);
     }
 

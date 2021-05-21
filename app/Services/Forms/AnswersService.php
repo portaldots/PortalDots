@@ -7,7 +7,6 @@ namespace App\Services\Forms;
 use App\Eloquents\Form;
 use App\Eloquents\Circle;
 use App\Eloquents\Answer;
-use App\Eloquents\AnswerDetail;
 use App\Eloquents\User;
 use App\Services\Forms\AnswerDetailsService;
 use App\Http\Requests\Forms\AnswerRequestInterface;
@@ -58,20 +57,20 @@ class AnswersService
         }
 
         // フォーム作成者にメールを送る
-        $creator = User::find($answer->form->created_by);
-        if (! empty($creator)) {
-            $this->sendToUser(
-                $answer->form,
-                $answer->form->questions,
-                $answer->circle,
-                $applicant,
-                $answer,
-                $answer_details,
-                $creator,
-                true,
-                $isEditedByStaff
-            );
-        }
+        // $creator = User::find($answer->form->created_by);
+        // if (! empty($creator)) {
+        //     $this->sendToUser(
+        //         $answer->form,
+        //         $answer->form->questions,
+        //         $answer->circle,
+        //         $applicant,
+        //         $answer,
+        //         $answer_details,
+        //         $creator,
+        //         true,
+        //         $isEditedByStaff
+        //     );
+        // }
     }
 
     /**

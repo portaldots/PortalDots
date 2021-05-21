@@ -9,7 +9,6 @@ use App\Eloquents\User;
 use App\Eloquents\Tag;
 use App\Services\Emails\SendEmailService;
 use App\Services\Utils\ActivityLogService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PagesService
@@ -53,8 +52,6 @@ class PagesService
             $page = Page::create([
                 'title' => $title,
                 'body' => $body,
-                'created_by' => $created_by->id,
-                'updated_by' => $created_by->id,
                 'notes' => $notes,
             ]);
 
@@ -106,7 +103,6 @@ class PagesService
             $page->update([
                 'title' => $title,
                 'body' => $body,
-                'updated_by' => $updated_by->id,
                 'notes' => $notes,
             ]);
 
@@ -127,7 +123,7 @@ class PagesService
 
             $this->activityLogService->logOnlyAttributesChanged(
                 'page_viewable_tag',
-                $created_by,
+                $updated_by,
                 $page,
                 $old_tags->map($map_function)->toArray(),
                 $exist_tags->map($map_function)->toArray()

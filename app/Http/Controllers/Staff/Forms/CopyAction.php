@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Staff\Forms;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Form;
 use App\Services\Forms\FormsService;
-use Illuminate\Support\Facades\Auth;
 
 class CopyAction extends Controller
 {
+    /**
+     * @var FormsService
+     */
     public $formsService;
 
     public function __construct(FormsService $formsService)
@@ -18,7 +20,7 @@ class CopyAction extends Controller
 
     public function __invoke(Form $form)
     {
-        $this->formsService->copyForm($form, Auth::user());
+        $this->formsService->copyForm($form);
 
         return redirect()
             ->route('staff.forms.index')
