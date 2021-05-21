@@ -3,13 +3,11 @@
 namespace Tests\Feature\Services\Circles;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Tag;
 use App\Services\Circles\CirclesService;
-use App;
 use App\Mail\Circles\ApprovedMailable;
 use App\Mail\Circles\RejectedMailable;
 use App\Mail\Circles\SubmitedMailable;
