@@ -76,9 +76,19 @@
             </a>
         </template>
         <template v-slot:activities="{ row }">
-            <icon-button v-bind:href="`{{ route('staff.pages.edit', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])" title="編集">
-                <i class="fas fa-pencil-alt fa-fw"></i>
-            </icon-button>
+            <form-with-confirm
+                v-bind:action="`{{ route('staff.pages.destroy', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])" method="post"
+                v-bind:confirm-message="`お知らせ「${row['title']}」を削除しますか？`"
+            >
+                @method('delete')
+                @csrf
+                <icon-button v-bind:href="`{{ route('staff.pages.edit', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])" title="編集">
+                    <i class="fas fa-pencil-alt fa-fw"></i>
+                </icon-button>
+                <icon-button submit title="削除">
+                    <i class="fas fa-trash fa-fw"></i>
+                </icon-button>
+            </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'created_by' || keyName === 'updated_by'">
