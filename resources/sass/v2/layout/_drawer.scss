@@ -87,12 +87,12 @@
           $bar-width: 4px;
 
           background: $color-primary;
-          border-radius: 0 $bar-width $bar-width 0;
+          border-radius: $bar-width 0 0 $bar-width;
           bottom: $spacing-sm;
           content: '';
           display: block;
-          left: 0;
           position: absolute;
+          right: 0;
           top: $spacing-sm;
           width: $bar-width;
         }
