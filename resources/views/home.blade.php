@@ -183,7 +183,7 @@
         @endif
 
         @if(empty($next_schedule) && $pages->isEmpty() && $documents->isEmpty() && $forms->isEmpty())
-            <list-view-empty icon-class="fas fa-home" text="まだ公開コンテンツはありません" />
+            <list-view-empty icon-class="fas fa-home" text="まだ公開コンテンツはありません"></list-view-empty>
         @endif
 
         @isset($next_schedule)

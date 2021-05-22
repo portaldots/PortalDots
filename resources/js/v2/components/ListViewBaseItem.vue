@@ -55,9 +55,7 @@ export default {
 .listview-base-item {
   $listview-border: 1px solid $color-border;
 
-  background: $color-behind-text;
   border: 0;
-  box-shadow: 0 2px 7px -5px $color-box-shadow;
   color: $color-text;
   cursor: pointer;
   display: block;
@@ -83,13 +81,7 @@ export default {
   &.is-no-border::after {
     display: none;
   }
-  &:first-child {
-    border-top-left-radius: $border-radius;
-    border-top-right-radius: $border-radius;
-  }
   &:last-child {
-    border-bottom-left-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
     &::after {
       display: none;
     }
