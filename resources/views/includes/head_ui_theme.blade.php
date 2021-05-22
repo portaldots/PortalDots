@@ -1,6 +1,12 @@
 @inject('uiThemeService', 'App\Services\Utils\UIThemeService')
 
-<meta name="color-scheme" content="{{ in_array($uiThemeService->getCurrentTheme(), ['light', 'system'], true) ? 'light' : '' }} {{ in_array($uiThemeService->getCurrentTheme(), ['dark', 'system'], true) ? 'dark' : '' }}">
+<meta name="color-scheme" content="{{ $uiThemeService->getCssColorScheme() }}">
+
+<style>
+    :root {
+        color-scheme: {{ $uiThemeService->getCssColorScheme() }};
+    }
+</style>
 
 @if (in_array($uiThemeService->getCurrentTheme(), ['light', 'system'], true))
 <style>

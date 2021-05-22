@@ -1,3 +1,5 @@
+@inject('uiThemeService', 'App\Services\Utils\UIThemeService')
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -52,7 +54,7 @@
     <meta name="format-detection" content="telephone=no">
 </head>
 
-<body>
+<body class="theme-{{ $uiThemeService->getCurrentTheme() }}">
     @include('includes.loading')
     <div class="app" id="v2-app">
         <portal-target name="portal-target"></portal-target>

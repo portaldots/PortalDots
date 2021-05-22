@@ -28,18 +28,25 @@ textarea {
     z-index: $z-index-form-group-control;
     @at-root {
       select#{&} {
+        // ライトモード用ドロップダウンアイコン
         background: right $spacing-md center / 1rem
             url(../../../img/dropdownTriangle.svg) no-repeat,
           $color-form-control !important;
+      }
 
+      body.theme-dark select#{&} {
+        // ダークモード用ドロップダウンアイコン
+        background: right $spacing-md center / 1rem
+            url(../../../img/dropdownTriangleDark.svg) no-repeat,
+          $color-form-control !important;
+      }
+
+      body.theme-system select#{&} {
         @media (prefers-color-scheme: dark) {
+          // ダークモード用ドロップダウンアイコン
           background: right $spacing-md center / 1rem
               url(../../../img/dropdownTriangleDark.svg) no-repeat,
             $color-form-control !important;
-        }
-        &::-ms-expand {
-          // IEで、ドロップダウンの標準の三角アイコンが表示されないようにする
-          display: none;
         }
       }
     }
