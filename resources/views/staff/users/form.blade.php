@@ -80,8 +80,9 @@
                     @enderror
                 </list-view-form-group>
                 <list-view-card>
-                    <i class="fas fa-exclamation-circle"></i>
-                    この画面ではパスワードの変更はできません。ユーザーがパスワードを忘れた場合、ユーザー自身がパスワードを再設定する必要があります。
+                    <app-info-box primary>
+                        この画面ではパスワードの変更はできません。ユーザーがパスワードを忘れた場合、ユーザー自身がパスワードを再設定する必要があります。
+                    </app-info-box>
                 </list-view-card>
             </list-view>
 
@@ -121,19 +122,21 @@
                 </list-view-form-group>
                 <list-view-card>
                     @if (Auth::id() === $user->id)
-                        <i class="fas fa-exclamation-circle"></i>
-                        自分自身の「ユーザー種別」を変更することはできません。
+                        <app-info-box primary>
+                            自分自身の「ユーザー種別」を変更することはできません。
+                        </app-info-box>
                     @elseif (!Auth::user()->is_admin && $user->is_admin)
-                        <i class="fas fa-exclamation-circle"></i>
-                        「ユーザー種別」が「管理者」のユーザーを「スタッフ」または「一般ユーザー」に変更するには、あなた自身が「管理者」である必要があります。
+                        <app-info-box primary>
+                            「ユーザー種別」が「管理者」のユーザーを「スタッフ」または「一般ユーザー」に変更するには、あなた自身が「管理者」である必要があります。
+                        </app-info-box>
                     @elseif (!Auth::user()->is_admin)
-                        <i class="fas fa-exclamation-circle"></i>
-                        「ユーザー種別」を「管理者」に変更するためには、あなた自身が「管理者」である必要があります。
+                        <app-info-box primary>
+                            「ユーザー種別」を「管理者」に変更するためには、あなた自身が「管理者」である必要があります。
+                        </app-info-box>
                     @else
-                        <strong class="text-danger">
-                            <i class="fas fa-exclamation-circle"></i>
-                            セキュリティのため、管理者権限を割り当てるユーザーの人数は最小限にしてください。
-                        </strong>
+                        <app-info-box danger>
+                            <strong>セキュリティのため、管理者権限を割り当てるユーザーの人数は最小限にしてください。</strong>
+                        </app-info-box>
                     @endif
                 </list-view-card>
             </list-view>

@@ -11,7 +11,9 @@ $font-size-input: #{(16 / $base-font-size-px) + 'rem'};
 // Color
 $color-text: var(--color-text);
 $color-primary: var(--color-primary);
+$color-primary-light: var(--color-primary-light);
 $color-danger: var(--color-danger);
+$color-danger-light: var(--color-danger-light);
 $color-success: var(--color-success);
 $color-muted: var(--color-muted);
 $color-muted-2: var(--color-muted-2);
@@ -40,7 +42,6 @@ $color-grid-table-stripe: var(--color-grid-table-stripe);
 $color-top-alert-border: var(--color-top-alert-border);
 $color-primary-hover: var(--color-primary-hover);
 $color-primary-inverse-hover: var(--color-primary-inverse-hover);
-$color-icon-button-hover: var(--color-icon-button-hover);
 $color-danger-hover: var(--color-danger-hover);
 $color-success-hover: var(--color-success-hover);
 

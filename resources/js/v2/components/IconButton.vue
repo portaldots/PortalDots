@@ -74,7 +74,7 @@ export default {
   width: $icon-button-size;
   &:hover,
   &:focus {
-    background-color: $color-icon-button-hover;
+    background-color: $color-primary-light;
     color: $color-primary;
   }
   &:focus {
