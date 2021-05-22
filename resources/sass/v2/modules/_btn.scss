@@ -1,4 +1,10 @@
-@mixin btn($color, $background, $hover-background, $border-color) {
+@mixin btn(
+  $color,
+  $background,
+  $hover-background,
+  $border-color,
+  $hover-border-color: transparent
+) {
   @if ($background == transparent) {
     background: transparent;
   } @else {
@@ -16,7 +22,7 @@
   &:not(.disabled):hover {
     background: linear-gradient(to top, $hover-background, $hover-background),
       $color-behind-text;
-    border-color: $hover-background;
+    border-color: $hover-border-color;
   }
 }
 
@@ -73,6 +79,7 @@ body:not(.body-editor-v1) {
         $color-text,
         $color-behind-text,
         $color-bg-grey,
+        $color-border,
         $color-border
       );
     }
