@@ -71,7 +71,8 @@ body:not(.body-editor-v1) {
         $color-primary,
         $color-behind-text,
         $color-primary-inverse-hover,
-        $color-behind-text
+        $color-behind-text,
+        $color-primary-inverse-hover
       );
     }
     &.is-secondary {
