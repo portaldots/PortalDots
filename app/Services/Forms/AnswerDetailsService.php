@@ -9,10 +9,21 @@ use App\Eloquents\Answer;
 use App\Eloquents\Question;
 use App\Eloquents\AnswerDetail;
 use App\Http\Requests\Forms\AnswerRequestInterface;
-use Storage;
+use App\Services\Utils\ActivityLogService;
+use Illuminate\Support\Facades\Auth;
 
 class AnswerDetailsService
 {
+    /**
+     * @var ActivityLogService
+     */
+    private $activityLogService;
+
+    public function __construct(ActivityLogService $activityLogService)
+    {
+        $this->activityLogService = $activityLogService;
+    }
+
     /**
      * $answer に紐づく、設問に対する回答を取得
      *
@@ -107,6 +118,15 @@ class AnswerDetailsService
 
         AnswerDetail::insert($data);
         $answer->touch();
+
+        // ログに残す
+        $this->activityLogService->logOnlyAttributesChanged(
+            'answer_detail',
+            Auth::user(),
+            $answer,
+            $answer_details_on_db,
+            $this->getAnswerDetailsByAnswer($answer)
+        );
     }
 
     /**
