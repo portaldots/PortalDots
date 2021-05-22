@@ -46,7 +46,6 @@ export default {
   min-width: 15rem;
   padding: 0.75rem $spacing-md;
   text-align: left;
-  transition: #{$transition-base} background-color, #{$transition-base} color;
   width: 100%;
   &:not(a):not(button) {
     cursor: auto;
