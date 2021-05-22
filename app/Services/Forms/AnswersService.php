@@ -59,19 +59,24 @@ class AnswersService
         // フォーム作成者にメールを送る
         /** @var Form */
         $form = $answer->form;
-        $creator = $form->activities()->first()->causer;
-        if (! empty($creator)) {
-            $this->sendToUser(
-                $answer->form,
-                $answer->form->questions,
-                $answer->circle,
-                $applicant,
-                $answer,
-                $answer_details,
-                $creator,
-                true,
-                $isEditedByStaff
-            );
+        /** @var Spatie\Activitylog\Models\Activity */
+        $first_activity = $form->activities()->first();
+        if (! empty($first_activity)) {
+            /** @var User */
+            $creator = $first_activity->causer;
+            if (! empty($creator)) {
+                $this->sendToUser(
+                    $answer->form,
+                    $answer->form->questions,
+                    $answer->circle,
+                    $applicant,
+                    $answer,
+                    $answer_details,
+                    $creator,
+                    true,
+                    $isEditedByStaff
+                );
+            }
         }
     }
 
