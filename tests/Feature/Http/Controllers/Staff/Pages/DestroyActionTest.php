@@ -8,6 +8,7 @@ use App\Eloquents\User;
 use App\Eloquents\Tag;
 use App\Eloquents\Page;
 use App\Eloquents\Permission;
+use App\Eloquents\Read;
 
 class DestroyActionTest extends TestCase
 {
@@ -22,6 +23,9 @@ class DestroyActionTest extends TestCase
     /** @var Page */
     private $page;
 
+    /** @var Read */
+    private $read;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -29,6 +33,7 @@ class DestroyActionTest extends TestCase
         $this->staff = factory(User::class)->states('staff')->create();
         $this->tag = factory(Tag::class)->create();
         $this->page = factory(Page::class)->create();
+        $this->read = factory(Read::class, 5)->create(['page_id' => $this->page->id]);
     }
 
     /**
@@ -54,6 +59,10 @@ class DestroyActionTest extends TestCase
             'tag_id' => $this->tag->id,
         ]);
 
+        $this->assertDatabaseHas('reads', [
+            'page_id' => $this->page->id,
+        ]);
+
         $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->delete(
@@ -69,6 +78,10 @@ class DestroyActionTest extends TestCase
         $this->assertDatabaseMissing('page_viewable_tags', [
             'page_id' => $this->page->id,
             'tag_id' => $this->tag->id,
+        ]);
+
+        $this->assertDatabaseMissing('reads', [
+            'page_id' => $this->page->id,
         ]);
     }
 
