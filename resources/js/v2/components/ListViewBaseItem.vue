@@ -81,7 +81,13 @@ export default {
   &.is-no-border::after {
     display: none;
   }
+  &:first-child {
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+  }
   &:last-child {
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
     &::after {
       display: none;
     }

@@ -40,7 +40,6 @@ export default {}
     background: $color-behind-text;
     border-radius: $border-radius;
     box-shadow: 0 2px 7px -5px $color-box-shadow;
-    overflow: hidden;
   }
 }
 </style>
