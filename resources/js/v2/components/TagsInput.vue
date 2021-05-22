@@ -120,6 +120,7 @@ export default {
   }
   .ti-tag {
     background: $color-primary;
+    border-radius: $border-radius;
     color: $color-behind-text;
     &.ti-invalid,
     &.ti-deletion-mark {
