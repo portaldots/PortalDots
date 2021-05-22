@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Staff\Documents;
 
 use App\Eloquents\Document;
+use App\Eloquents\Permission;
 use App\Eloquents\User;
 use App\Eloquents\Schedule;
 use App\Services\Documents\DocumentsService;
@@ -33,6 +34,9 @@ class StoreActionTest extends TestCase
      */
     public function DocumentsServiceのcreateDocumentが呼び出される()
     {
+        Permission::create(['name' => 'staff.documents.edit']);
+        $this->staff->syncPermissions(['staff.documents.edit']);
+
         Storage::fake('local');
 
         $filesize = 1;  // 単位 : KiB
@@ -78,5 +82,29 @@ class StoreActionTest extends TestCase
         $response->assertSessionHasNoErrors();
 
         $response->assertRedirect(route('staff.documents.create'));
+    }
+
+    /**
+     * @test
+     */
+    public function 権限がない場合は配布資料を保存できない()
+    {
+        $filesize = 1;  // 単位 : KiB
+        $file = UploadedFile::fake()->create('配布資料.pdf', $filesize, 'application/pdf');
+
+        $schedule = factory(Schedule::class)->create();
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.documents.store'), [
+                'name' => 'document name',
+                'description' => 'document description',
+                'file' => $file,
+                'is_public' => '0',
+                'is_important' => '1',
+                'schedule_id' => $schedule->id,
+                'notes' => 'notes',
+            ]);
+
+        $response->assertForbidden();
     }
 }

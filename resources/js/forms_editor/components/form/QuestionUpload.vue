@@ -9,7 +9,17 @@
         <p class="form-text text-muted mb-2">
           {{ description }}
         </p>
-        <input type="file" class="form-control" tabindex="-1" />
+        <template v-if="question.allowed_types">
+          <input type="file" class="form-control" tabindex="-1" />
+        </template>
+        <template v-else>
+          <p>
+            <i class="fa fa-exclamation-triangle mr-1"></i>
+            <b
+              >ファイルアップロードを受け付けるには「許可される拡張子」を1つ以上指定してください</b
+            >
+          </p>
+        </template>
       </div>
     </template>
     <template v-slot:edit-panel>

@@ -4,12 +4,12 @@ namespace Tests\Feature\Http\Controllers\Staff\Forms;
 
 use App\Eloquents\CustomForm;
 use App\Eloquents\Form;
+use App\Eloquents\Permission;
 use App\Eloquents\User;
 use App\Exports\FormsExport;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Maatwebsite\Excel\Facades\Excel;
 use Tests\TestCase;
 
@@ -61,6 +61,9 @@ class ExportActionTest extends TestCase
      */
     public function フォーム情報がCSVでダウンロードできる()
     {
+        Permission::create(['name' => 'staff.forms.export']);
+        $this->staff->syncPermissions(['staff.forms.export']);
+
         Excel::fake();
 
         $this->actingAs($this->staff)
@@ -74,5 +77,16 @@ class ExportActionTest extends TestCase
                 && $export->collection()->contains('name', 'パンフレット掲載内容')
                 && !$export->collection()->contains('name', $this->customForm->form->name);
         });
+    }
+
+    /**
+     * @test
+     */
+    public function 権限がない場合はCSVをダウンロードできない()
+    {
+        $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.forms.export'))
+            ->assertForbidden();
     }
 }

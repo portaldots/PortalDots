@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
     <template v-if="paginator">
-      <div class="grid-toolbar">
+      <div class="grid-toolbar" v-if="$slots.toolbar">
         <slot name="toolbar" />
       </div>
       <div class="grid-controls">

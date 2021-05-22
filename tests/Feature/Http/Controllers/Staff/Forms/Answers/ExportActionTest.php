@@ -6,13 +6,13 @@ use App\Eloquents\Answer;
 use App\Eloquents\AnswerDetail;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
+use App\Eloquents\Permission;
 use App\Eloquents\Question;
 use App\Eloquents\User;
 use App\Exports\AnswersExport;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Maatwebsite\Excel\Facades\Excel;
 use Tests\TestCase;
 
@@ -80,6 +80,9 @@ class ExportActionTest extends TestCase
      */
     public function 回答をCSVでダウンロードできる()
     {
+        Permission::create(['name' => 'staff.forms.answers.export']);
+        $this->staff->syncPermissions(['staff.forms.answers.export']);
+
         Excel::fake();
         $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
@@ -91,5 +94,16 @@ class ExportActionTest extends TestCase
             return $export->collection()->first()->circle->name === $this->circle->name
                 && $export->collection()->first()->details->contains('answer', $this->detail->answer);
         });
+    }
+
+    /**
+     * @test
+     */
+    public function 権限がない場合はCSVをダウンロードできない()
+    {
+        $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.forms.answers.export', ['form' => $this->form]))
+            ->assertForbidden();
     }
 }

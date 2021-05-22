@@ -120,12 +120,14 @@ class DocumentsServiceTest extends TestCase
      */
     public function updateDocument_ファイルのアップデートができる()
     {
+        Storage::fake('local');
         $schedule = factory(Schedule::class)->create();
+        $oldFile = UploadedFile::fake()->create('第２回.pdf', 1, 'application/pdf');
 
         $document = $this->documentsService->createDocument(
             '第２回会議資料',
             '第２回会議にて配布した資料のPDFバージョンです',
-            UploadedFile::fake()->create('第２回.pdf', 1, 'application/pdf'),
+            $oldFile,
             $this->staff,
             true,
             false,
@@ -145,6 +147,8 @@ class DocumentsServiceTest extends TestCase
             'updated notes'
         );
 
+        Storage::disk('local')->assertMissing("document/{$oldFile->hashName()}");
+
         $this->assertDatabaseHas('documents', [
             'name' => 'updated filename',
             'description' => 'updated description',
@@ -155,6 +159,36 @@ class DocumentsServiceTest extends TestCase
             'is_important' => true,
             'schedule_id' => null,
             'notes' => 'updated notes'
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function deleteDocument_ファイルの削除ができる()
+    {
+        Storage::fake('local');
+        $file = UploadedFile::fake()->create('削除されちゃう.pdf', 1, 'application/pdf');
+
+        $document = $this->documentsService->createDocument(
+            '削除される資料',
+            '削除される資料です。悲しいね。',
+            $file,
+            $this->staff,
+            true,
+            false,
+            null,
+            'ドロン'
+        );
+
+        Storage::disk('local')->assertExists("documents/{$file->hashName()}");
+
+        $this->documentsService->deleteDocument($document);
+
+        Storage::disk('local')->assertMissing("documents/{$file->hashName()}");
+        $this->assertDatabaseMissing('documents', [
+            'id' => $document->id,
+            'name' => '削除される資料です'
         ]);
     }
 }

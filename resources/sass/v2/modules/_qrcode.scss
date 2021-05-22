@@ -1,6 +1,3 @@
-.qrcode-wrap {
-  @media (prefers-color-scheme: dark) {
-    filter: invert(1);
-    opacity: 0.8;
-  }
+.qrcode-wrap path {
+  fill: var(--color-text) !important;
 }
