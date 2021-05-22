@@ -9,6 +9,6 @@ class UIThemeService
     public static function getCurrentTheme(): string
     {
         // light, dark, system のどれか
-        return 'system';
+        return 'light';
     }
 }
