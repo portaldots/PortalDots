@@ -14,6 +14,8 @@ class Page extends Model
     protected $fillable = [
         'title',
         'body',
+        'is_pinned',
+        'is_public',
         'created_by',
         'updated_by',
         'notes',

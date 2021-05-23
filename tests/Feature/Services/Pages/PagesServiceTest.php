@@ -3,7 +3,6 @@
 namespace Tests\Feature\Services\Pages;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Services\Pages\PagesService;
 use App\Eloquents\Tag;
@@ -11,8 +10,8 @@ use App\Eloquents\Circle;
 use App\Eloquents\User;
 use App\Eloquents\Page;
 use App\Eloquents\Email;
-use App;
-use DB;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class PagesServiceTest extends TestCase
 {
@@ -23,18 +22,16 @@ class PagesServiceTest extends TestCase
      */
     private $pagesService;
 
+    /**
+     * @var User
+     */
     private $staff;
 
     private $content = [
-    'title' => 'お知らせ作成テスト123',
-    'body' => <<< EOL
-これはお知らせです。
-
-# 見出しです。
-- リストです
-- リストです
-    - リストです
-EOL
+        'title' => 'お知らせ作成テスト123',
+        'is_pinned' => true,
+        'is_public' => false,
+        'body' => "これはお知らせです。\n\n# 見出しです。\n- リストです\n- リストです\n    - リストです"
     ];
 
     public function setUp(): void
@@ -58,12 +55,52 @@ EOL
             $this->content['body'],
             $this->staff,
             '',
-            []
+            [],
+            $this->content['is_public'],
+            $this->content['is_pinned'],
         );
 
         $content_on_db = $this->content;
         $content_on_db['created_by'] = $this->staff->id;
 
+        $this->assertDatabaseHas('pages', $content_on_db);
+    }
+
+    /**
+     * @test
+     */
+    public function updatePage()
+    {
+        $this->assertSame(0, Page::count());
+
+        $page = $this->pagesService->createPage(
+            $this->content['title'],
+            $this->content['body'],
+            $this->staff,
+            '',
+            [],
+            $this->content['is_public'],
+            $this->content['is_pinned'],
+        );
+
+        $this->pagesService->updatePage(
+            $page,
+            $this->content['title'],
+            "更新した本文",
+            $this->staff,
+            '',
+            [],
+            true,
+            true,
+        );
+
+        $content_on_db = $this->content;
+        $content_on_db['body'] = "更新した本文";
+        $content_on_db['is_public'] = true;
+        $content_on_db['is_pinned'] = true;
+        $content_on_db['created_by'] = $this->staff->id;
+
+        $this->assertSame(1, Page::count());
         $this->assertDatabaseHas('pages', $content_on_db);
     }
 
@@ -82,7 +119,9 @@ EOL
             $this->content['body'],
             $this->staff,
             '',
-            []
+            [],
+            $this->content['is_public'],
+            $this->content['is_pinned'],
         );
 
         $this->pagesService->sendEmailsByPage($page);
@@ -119,7 +158,9 @@ EOL
             '',
             // $tags[2] と $tags[5] の2つを、閲覧可能なタグとして指定する
             // （該当する企画数は 8）
-            $post_content['viewable_tags'] = [$tags[2]->name, $tags[5]->name]
+            $post_content['viewable_tags'] = [$tags[2]->name, $tags[5]->name],
+            $this->content['is_public'],
+            $this->content['is_pinned'],
         );
 
         $this->pagesService->sendEmailsByPage($page);
@@ -148,7 +189,9 @@ EOL
             $this->staff,
             '',
             // 未作成のタグを意図的に指定する。作成済みのタグも混ぜる
-            ['未作成のタグA', '未作成のタグB', $tag->name]
+            ['未作成のタグA', '未作成のタグB', $tag->name],
+            $this->content['is_public'],
+            $this->content['is_pinned'],
         );
 
         $this->assertSame(1, Page::count());
