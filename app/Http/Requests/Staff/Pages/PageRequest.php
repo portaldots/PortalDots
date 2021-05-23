@@ -26,7 +26,7 @@ class PageRequest extends FormRequest
         return [
             'title' => ['required', 'string'],
             'body' => ['required', 'string'],
-            'is_pinned' => ['boolean'],
+            'is_pinned' => ['nullable', 'boolean'],
             'is_public' => ['boolean'],
             'viewable_tags' => ['nullable', 'array'],
             'send_emails' => ['boolean'],
