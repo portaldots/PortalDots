@@ -1,26 +1,14 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', 'PortalDots の設定')
 
-@section('navbar')
-    <app-nav-bar-back href="{{ url('home_staff') }}" data-turbolinks="false">
-        スタッフモード
-    </app-nav-bar-back>
-@endsection
-
 @section('content')
-    <app-header container-medium>
-        <template v-slot:title>
-            ポータル情報の設定
-        </template>
-    </app-header>
-
     <form method="post" action="{{ route('admin.portal.update') }}">
         @csrf
 
         @method('patch')
 
-        <app-container medium>
+        <app-container>
             <list-view>
                 <template v-slot:title>ポータル情報の設定</template>
                 @foreach ($portal as $key => $value)

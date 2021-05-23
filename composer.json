@@ -3,29 +3,30 @@
     "description": "",
     "type": "project",
     "license": "MIT",
-	"require": {
+    "require": {
         "php": "^7.3.6",
-        "ext-mbstring": "*",
         "ext-json": "*",
+        "ext-mbstring": "*",
         "cebe/markdown": "*",
         "doctrine/dbal": "^2.10",
         "ezyang/htmlpurifier": "^4.9",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^7.2",
         "jackiedo/dotenv-editor": "^1.1",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^2.0",
         "maatwebsite/excel": "^3.1",
         "phpgangsta/googleauthenticator": "dev-master",
         "simplesoftwareio/simple-qrcode": "~4",
+        "spatie/laravel-permission": "^4.0",
         "twig/twig": "^2.0",
         "vlucas/phpdotenv": "^3.3"
     },
-	"require-dev": {
+    "require-dev": {
         "facade/ignition": "^1.4",
         "barryvdh/laravel-debugbar": "^3.2",
         "beyondcode/laravel-dump-server": "^1.0",
         "fzaninotto/faker": "^1.9.1",
-        "kenjis/ci-phpunit-test": "^3.0.0",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
         "phpmd/phpmd": "*",
@@ -58,7 +59,7 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-	"scripts": {
+    "scripts": {
         "phpcs": [
             "phpcs --standard=phpcs.xml ./"
         ],
@@ -75,5 +76,5 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-	}
+    }
 }

@@ -7,6 +7,7 @@ namespace App\GridMakers;
 use App\Eloquents\Circle;
 use App\Eloquents\CustomForm;
 use App\Eloquents\Form;
+use App\Eloquents\Place;
 use App\Eloquents\Question;
 use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
@@ -56,7 +57,7 @@ class CirclesGridMaker implements GridMakable
             'notes',
             'created_at',
             'updated_at',
-        ])->with(['tags', 'statusSetBy', 'answers' => function ($query) {
+        ])->with(['places', 'tags', 'statusSetBy', 'answers' => function ($query) {
             if (isset($this->custom_form)) {
                 $query->with('details.question')->where('form_id', $this->custom_form->id);
             }
@@ -77,11 +78,13 @@ class CirclesGridMaker implements GridMakable
             'name_yomi',
             'group_name',
             'group_name_yomi',
+            'places',
             'tags',
         ];
 
         $custom_form_keys = isset($this->custom_form) ?
-            $this->custom_form->questions->map(function (Question $question) {
+            $this->custom_form->questions()->where('type', '!=', 'heading')
+            ->get()->map(function (Question $question) {
                 return self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $question->id;
             })->all() : [];
 
@@ -104,9 +107,14 @@ class CirclesGridMaker implements GridMakable
     public function filterableKeys(): FilterableKeysDict
     {
         static $tags_choices = null;
+        static $places_choices = null;
 
         if (empty($tags_choices)) {
             $tags_choices = Tag::all()->toArray();
+        }
+
+        if (empty($places_choices)) {
+            $places_choices = Place::all()->toArray();
         }
 
         $users_type = FilterableKey::belongsTo('users', new FilterableKeysDict([
@@ -133,6 +141,13 @@ class CirclesGridMaker implements GridMakable
             'name_yomi' => FilterableKey::string(),
             'group_name' => FilterableKey::string(),
             'group_name_yomi' => FilterableKey::string(),
+            'places' => FilterableKey::belongsToMany(
+                'booths',
+                'circle_id',
+                'place_id',
+                $places_choices,
+                'name'
+            ),
             'tags' => FilterableKey::belongsToMany(
                 'circle_tag',
                 'circle_id',
@@ -184,6 +199,10 @@ class CirclesGridMaker implements GridMakable
             $answer = $record->answers->firstWhere('circle_id', $record->id);
             if (isset($answer) && isset($answer->details) && is_iterable($answer->details)) {
                 foreach ($record->answers->where('circle_id', $record->id)->first()->details as $detail) {
+                    if ($detail->question->type === 'heading') {
+                        continue;
+                    }
+
                     if ($detail->question->type === 'upload') {
                         $item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = [
                             'file_url' => route('staff.forms.answers.uploads.show', [
@@ -192,8 +211,13 @@ class CirclesGridMaker implements GridMakable
                                 'question' => $detail->question_id
                             ])
                         ];
+                    } elseif (
+                        isset($item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id]) &&
+                        is_array($item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id])
+                    ) {
+                        $item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id][] = $detail->answer;
                     } else {
-                        $item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = $detail;
+                        $item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = [$detail->answer];
                     }
                 }
             }
@@ -213,10 +237,10 @@ class CirclesGridMaker implements GridMakable
                     $item[$key] = !empty($record->status_set_at) ? $record->status_set_at->format('Y/m/d H:i:s') : null;
                     break;
                 case 'created_at':
-                    $item[$key] = $record->created_at->format('Y/m/d H:i:s');
+                    $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
                     break;
                 case 'updated_at':
-                    $item[$key] = $record->updated_at->format('Y/m/d H:i:s');
+                    $item[$key] = !empty($record->updated_at) ? $record->updated_at->format('Y/m/d H:i:s') : null;
                     break;
                 default:
                     $item[$key] = $record->$key;

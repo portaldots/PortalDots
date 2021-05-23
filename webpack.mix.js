@@ -14,11 +14,18 @@ const mix = require('laravel-mix')
 const path = require('path')
 
 mix
+  .options({
+    hmrOptions: {
+      host: 'localhost',
+      port: 8181
+    }
+  })
   .webpackConfig({
     resolve: {
       modules: [path.resolve('./node_modules')]
     }
   })
+  .copyDirectory('resources/img', 'public/images')
   .js('resources/js/app.js', 'public/js') // メインスクリプト
   .vue({
     globalStyles: 'resources/sass/_variables.scss'
@@ -37,20 +44,18 @@ mix
   ])
   .sass('resources/sass/bootstrap.scss', 'public/css') // Bootstrap
   .sass('resources/sass/fontawesome.scss', 'public/css') // Font Awesome
-  // ↓ CodeIgniterを廃止したらこの行は削除する
-  .sass('resources/sass/fontawesome.v4.scss', 'public/css') // Font Awesome Ver4
   .sass('resources/sass/app.scss', 'public/css') // メインスタイル
-  .browserSync({
-    proxy: 'localhost',
-    snippetOptions: {
-      rule: {
-        // これがないと Turbolinks が正常に動作しない
-        match: /<\/head>/i,
-        fn(snippet, match) {
-          return snippet + match
-        }
-      }
-    }
-  })
+  // .browserSync({
+  //   proxy: 'localhost',
+  //   snippetOptions: {
+  //     rule: {
+  //       // これがないと Turbolinks が正常に動作しない
+  //       match: /<\/head>/i,
+  //       fn(snippet, match) {
+  //         return snippet + match
+  //       }
+  //     }
+  //   }
+  // })
   .sourceMaps()
   .version()

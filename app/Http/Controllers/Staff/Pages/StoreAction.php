@@ -7,10 +7,8 @@ namespace App\Http\Controllers\Staff\Pages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\Pages\PageRequest;
 use App\Services\Pages\PagesService;
-use App\Services\Emails\SendEmailService;
-use App\Eloquents\User;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class StoreAction extends Controller
 {
@@ -37,7 +35,7 @@ class StoreAction extends Controller
                 $values['viewable_tags'] ?? []
             );
 
-            if ($values['send_emails'] ?? false) {
+            if (($values['send_emails'] ?? false) && Auth::user()->can('staff.pages.send_emails')) {
                 // 一斉送信をオンにした場合
                 $this->pagesService->sendEmailsByPage($page);
             }

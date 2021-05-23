@@ -6,23 +6,23 @@ use App\Services\Utils\DotenvService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\Circles\CustomFormRequest;
 use App\Eloquents\CustomForm;
-use App\Services\Forms\FormsService;
+use App\Services\Forms\FormEditorService;
 
 class UpdateAction extends Controller
 {
     /**
-     * @var FormsService
+     * @var FormEditorService
      */
-    private $formsService;
+    private $formEditorService;
 
     /**
      * @var DotenvService
      */
     private $dotenvService;
 
-    public function __construct(FormsService $formsService, DotenvService $dotenvService)
+    public function __construct(FormEditorService $formEditorService, DotenvService $dotenvService)
     {
-        $this->formsService = $formsService;
+        $this->formEditorService = $formEditorService;
         $this->dotenvService = $dotenvService;
     }
 
@@ -37,7 +37,7 @@ class UpdateAction extends Controller
             'PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE' => (int)$request->users_number_to_submit_circle
         ]);
 
-        $this->formsService->updateForm($form->id, [
+        $this->formEditorService->updateForm($form->id, [
             'open_at' => $request->open_at,
             'close_at' => $request->close_at,
             'is_public' => $request->is_public ?? false,

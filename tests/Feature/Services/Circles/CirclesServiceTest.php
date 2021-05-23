@@ -13,6 +13,7 @@ use App;
 use App\Mail\Circles\ApprovedMailable;
 use App\Mail\Circles\RejectedMailable;
 use App\Mail\Circles\SubmitedMailable;
+use App\Services\Circles\Exceptions\DenyCreateTagsException;
 use Illuminate\Support\Facades\Mail;
 
 class CirclesServiceTest extends TestCase
@@ -194,6 +195,27 @@ class CirclesServiceTest extends TestCase
             ],
             $circle->tags->pluck('name')->all()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function saveTags_タグの新規作成が許可されていない場合は例外が発生する()
+    {
+        $this->expectException(DenyCreateTagsException::class);
+
+        // 予め tag テーブルに登録されているタグ
+        Tag::create([
+            'name' => '登録済みタグ'
+        ]);
+
+        [ $circle ] = $this->createCircle();
+
+        $this->circlesService->saveTags($circle, [
+            '新しいタグ1',
+            '登録済みタグ',
+            '新しいタグ2',
+        ], false);
     }
 
     /**

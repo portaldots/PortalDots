@@ -16,9 +16,25 @@ class ShowActionTest extends BaseTestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @var User
+     */
     private $user;
+
+    /**
+     * @var User
+     */
     private $mamber;
+
+    /**
+     * @var Circle
+     */
     private $circle;
+
+    /**
+     * @var Circle
+     */
+    private $notSubmittedCircle;
 
     public function setUp(): void
     {
@@ -26,9 +42,16 @@ class ShowActionTest extends BaseTestCase
 
         $this->user = factory(User::class)->create();
         $this->member = factory(User::class)->create();
-        $this->circle = factory(Circle::class)->states('notSubmitted')->create();
+        $this->circle = factory(Circle::class)->create();
+
+        $this->notSubmittedCircle = factory(Circle::class)->states('notSubmitted')->create();
 
         $this->circle->users()->attach([
+            $this->user->id => ['is_leader' => true],
+            $this->member->id => ['is_leader' => false],
+        ]);
+
+        $this->notSubmittedCircle->users()->attach([
             $this->user->id => ['is_leader' => true],
             $this->member->id => ['is_leader' => false],
         ]);
@@ -41,18 +64,17 @@ class ShowActionTest extends BaseTestCase
     /**
      * @test
      */
-    public function 未認証ユーザーには認証ページを表示()
+    public function 提出済み企画の場合で未認証ユーザーには認証ページを表示する()
     {
-        $responce = $this
-                    ->actingAs($this->user)
+        $response = $this->actingAs($this->user)
                     ->get(
                         route('circles.show', [
                             'circle' => $this->circle,
                         ])
                     );
 
-        $responce->assertStatus(302);
-        $responce->assertRedirect(
+        $response->assertStatus(302);
+        $response->assertRedirect(
             route('circles.auth', [
                 'circle' => $this->circle
             ])
@@ -62,9 +84,24 @@ class ShowActionTest extends BaseTestCase
     /**
      * @test
      */
+    public function 未提出の企画の場合は認証画面を表示しない()
+    {
+        $response = $this->actingAs($this->user)
+                        ->get(
+                            route('circles.show', [
+                                'circle' => $this->notSubmittedCircle,
+                            ])
+                        );
+
+        $response->assertOk();
+    }
+
+    /**
+     * @test
+     */
     public function メンバーは企画の詳細を表示できる()
     {
-        $responce = $this
+        $response = $this
                     ->actingAs($this->user)
                     ->withSession(['user_reauthorized_at' => now()])
                     ->get(
@@ -73,7 +110,7 @@ class ShowActionTest extends BaseTestCase
                         ])
                     );
 
-        $responce->assertOk();
+        $response->assertOk();
     }
 
     /**
@@ -81,17 +118,16 @@ class ShowActionTest extends BaseTestCase
      */
     public function 未提出の場合副責任者は削除ボタンが表示される()
     {
-        $responce = $this
+        $response = $this
                     ->actingAs($this->member)
-                    ->withSession(['user_reauthorized_at' => now()])
                     ->get(
                         route('circles.show', [
-                            'circle' => $this->circle,
+                            'circle' => $this->notSubmittedCircle,
                         ])
                     );
 
-        $responce->assertOk();
-        $responce->assertSee('この企画から抜ける');
+        $response->assertOk();
+        $response->assertSee('この企画から抜ける');
     }
 
     /**
@@ -102,7 +138,7 @@ class ShowActionTest extends BaseTestCase
         $this->circle->submitted_at = now();
         $this->circle->save();
 
-        $responce = $this
+        $response = $this
                     ->actingAs($this->member)
                     ->withSession(['user_reauthorized_at' => now()])
                     ->get(
@@ -111,8 +147,8 @@ class ShowActionTest extends BaseTestCase
                         ])
                     );
 
-        $responce->assertOk();
-        $responce->assertDontSee('この企画から抜ける');
+        $response->assertOk();
+        $response->assertDontSee('この企画から抜ける');
     }
 
     /**
@@ -120,17 +156,16 @@ class ShowActionTest extends BaseTestCase
      */
     public function 責任者には削除ボタンを表示しない()
     {
-        $responce = $this
+        $response = $this
                     ->actingAs($this->user)
-                    ->withSession(['user_reauthorized_at' => now()])
                     ->get(
                         route('circles.show', [
-                            'circle' => $this->circle,
+                            'circle' => $this->notSubmittedCircle,
                         ])
                     );
 
-        $responce->assertOk();
-        $responce->assertDontSee('この企画から抜ける');
+        $response->assertOk();
+        $response->assertDontSee('この企画から抜ける');
     }
 
     /**
@@ -140,7 +175,7 @@ class ShowActionTest extends BaseTestCase
     {
         $anotherUser = factory(User::class)->create();
 
-        $responce = $this
+        $response = $this
                     ->actingAs($anotherUser)
                     ->withSession(['user_reauthorized_at' => now()])
                     ->get(
@@ -149,7 +184,7 @@ class ShowActionTest extends BaseTestCase
                         ])
                     );
 
-        $responce->assertStatus(403);
+        $response->assertStatus(403);
     }
 
     /**
@@ -158,14 +193,9 @@ class ShowActionTest extends BaseTestCase
     public function 使用場所が表示される()
     {
         $place = factory(Place::class)->create();
-        $this->circle->places()->attach($place->id, [
-            'created_at' => now(),
-            'updated_at' => now(),
-            'created_by' => 1,
-            'updated_by' => 1,
-            ]);
+        $this->circle->places()->attach($place->id);
 
-        $responce = $this
+        $response = $this
                     ->actingAs($this->user)
                     ->withSession(['user_reauthorized_at' => now()])
                     ->get(
@@ -173,9 +203,9 @@ class ShowActionTest extends BaseTestCase
                             'circle' => $this->circle,
                         ])
                     );
-        $responce->assertOk();
-        $responce->assertSee('使用場所');
-        $responce->assertSee($place->name);
+        $response->assertOk();
+        $response->assertSee('使用場所');
+        $response->assertSee($place->name);
     }
 
     /**
@@ -183,7 +213,7 @@ class ShowActionTest extends BaseTestCase
      */
     public function 場所が登録されていないときは使用場所を表示しない()
     {
-        $responce = $this
+        $response = $this
                     ->actingAs($this->user)
                     ->withSession(['user_reauthorized_at' => now()])
                     ->get(
@@ -191,7 +221,7 @@ class ShowActionTest extends BaseTestCase
                             'circle' => $this->circle,
                         ])
                     );
-        $responce->assertOk();
-        $responce->assertDontSee('使用場所');
+        $response->assertOk();
+        $response->assertDontSee('使用場所');
     }
 }

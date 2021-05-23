@@ -1,9 +1,9 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', $form->name . ' — 申請')
 
 @section('navbar')
-    <app-nav-bar-back href="{{ url('/home_staff/applications/read/' . $form->id) }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ route('staff.forms.answers.index', ['form' => $form]) }}">
         {{ $form->name }}
     </app-nav-bar-back>
 @endsection

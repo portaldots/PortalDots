@@ -16,6 +16,9 @@
   &-lg {
     padding-bottom: $spacing-lg !important;
   }
+  &-md {
+    padding-bottom: $spacing-md !important;
+  }
   &-sm {
     padding-bottom: $spacing-sm !important;
   }
@@ -31,6 +34,10 @@
   &-md {
     padding-left: $spacing-md !important;
     padding-right: $spacing-md !important;
+  }
+  &-sm {
+    padding-left: $spacing-sm !important;
+    padding-right: $spacing-sm !important;
   }
 }
 

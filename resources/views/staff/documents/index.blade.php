@@ -71,7 +71,7 @@
             </a>
             <a
                 class="btn is-primary-inverse is-no-shadow is-no-border"
-                href="{{ url('/home_staff/documents/export') }}"
+                href="{{ route('staff.documents.export') }}"
                 target="_blank"
                 rel="noopener noreferrer"
             >
@@ -81,9 +81,20 @@
             </a>
         </template>
         <template v-slot:activities="{ row }">
-            <a v-bind:href="`{{ route('staff.documents.edit', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])" title="編集" class="btn text-primary">
-                <i class="fas fa-pencil-alt fa-fw"></i>
-            </a>
+            <form-with-confirm
+                v-bind:action="`{{ route('staff.documents.destroy', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])"
+                method="post"
+                v-bind:confirm-message="`配布資料「${row['name']}」を削除しますか？`"
+            >
+                @method('delete')
+                @csrf
+                <icon-button v-bind:href="`{{ route('staff.documents.edit', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])" title="編集">
+                    <i class="fas fa-pencil-alt fa-fw"></i>
+                </icon-button>
+                <icon-button submit title="削除">
+                    <i class="fas fa-trash fa-fw"></i>
+                </icon-button>
+            </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'path'">

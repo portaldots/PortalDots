@@ -1,21 +1,12 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
-@section('title', 'メールアドレス一覧 - お問い合わせ')
-
-@section('navbar')
-    <app-nav-bar-back href="{{ url('/home_staff') }}" data-turbolinks="false">
-        戻る
-    </app-nav-bar-back>
-@endsection
+@section('title', 'お問い合わせ受付設定')
 
 @section('content')
-    <app-header container-medium>
-        <template v-slot:title>お問い合わせ受付設定</template>
-    </app-header>
-    <app-container medium>
+    <app-container>
         <list-view>
             <list-view-card>
-                <p>ここでメールアドレスを設定するとポータルからのお問い合わせを振り分けることができます。</p>
+                ここでメールアドレスを設定するとポータルからのお問い合わせを振り分けることができます。
             </list-view-card>
             @foreach ($categories as $category)
                 <list-view-item href="{{ route('staff.contacts.categories.edit', ['category' => $category]) }}">

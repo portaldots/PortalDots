@@ -80,7 +80,7 @@ export default {
     },
     preview_url() {
       const form_id = this.$store.state.editor.form.id
-      return `/home_staff/applications/preview/${form_id}`
+      return `/staff/forms/${form_id}/preview`
     },
     is_public() {
       return this.$store.state.editor.form.is_public

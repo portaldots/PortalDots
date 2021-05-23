@@ -1,9 +1,9 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', empty($document) ? '新規作成 — 配布資料' : "{$document->name} — 配布資料")
 
 @section('navbar')
-    <app-nav-bar-back href="{{ url('/home_staff/documents') }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ route('staff.documents.index') }}">
         配布資料情報管理
     </app-nav-bar-back>
 @endsection

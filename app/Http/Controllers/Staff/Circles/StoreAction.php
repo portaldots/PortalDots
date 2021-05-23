@@ -9,6 +9,8 @@ use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Http\Requests\Staff\Circles\CircleRequest;
 use App\Services\Circles\CirclesService;
+use App\Services\Circles\Exceptions\DenyCreateTagsException;
+use Illuminate\Support\Facades\DB;
 
 class StoreAction extends Controller
 {
@@ -30,6 +32,8 @@ class StoreAction extends Controller
 
     public function __invoke(CircleRequest $request)
     {
+        DB::beginTransaction();
+
         $member_ids = str_replace(["\r\n", "\r", "\n"], "\n", $request->members);
         $member_ids = explode("\n", $member_ids);
         $member_ids = array_unique(array_filter($member_ids, "strlen"));
@@ -74,8 +78,21 @@ class StoreAction extends Controller
             $member->circles()->attach($circle->id, ['is_leader' => false]);
         }
 
+        // 場所の保存
+        $this->circlesService->savePlaces($circle, $request->places ?? []);
+
         // タグの保存
-        $this->circlesService->saveTags($circle, $request->tags ?? []);
+        try {
+            $this->circlesService->saveTags($circle, $request->tags ?? [], Auth::user()->can('staff.tags.edit'));
+        } catch (DenyCreateTagsException $e) {
+            DB::rollBack();
+            return redirect()
+                ->route('staff.circles.create')
+                ->withInput()
+                ->withErrors(['tags' => $e->getMessage()]);
+        }
+
+        DB::commit();
 
         return redirect()
             ->route('staff.circles.create')

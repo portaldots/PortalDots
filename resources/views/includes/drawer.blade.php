@@ -3,7 +3,7 @@
 
 @staffpage
     @if (Auth::check() && Auth::user()->is_staff)
-        <a class="drawer-header" href="/home_staff" data-turbolinks="false">
+        <a class="drawer-header" href="{{ route('staff.index') }}">
             {{ config('app.name') }}
             <app-badge primary>スタッフモード</app-badge>
         </a>
@@ -13,18 +13,77 @@
                     一般モードへ
                 </a>
             </div>
-            <a href="/home_staff" class="drawer-nav__link{{ Request::is('/') ? ' is-active' : '' }}" data-turbolinks="false">
+            <a href="{{ route('staff.index') }}" class="drawer-nav__link{{ Request::is('staff') ? ' is-active' : '' }}">
                 <i class="fas fa-home drawer-nav__icon fa-fw"></i>
-                旧バージョンへ戻す
+                スタッフモード ホーム
             </a>
-{{--            <a href="{{ route('staff.users.index') }}" class="drawer-nav__link{{ Request::is('staff/users*') ? ' is-active' : '' }}">--}}
-{{--                <i class="fas fa-users drawer-nav__icon fa-fw"></i>--}}
-{{--                ユーザー情報管理--}}
-{{--            </a>--}}
-{{--            <a href="{{ route('staff.documents.index') }}" class="drawer-nav__link{{ Request::is('staff/documents*') ? ' is-active' : '' }}">--}}
-{{--                <i class="far fa-file-alt drawer-nav__icon fa-fw"></i>--}}
-{{--                配布資料管理--}}
-{{--            </a>--}}
+            @can('staff.users.read')
+            <a href="{{ route('staff.users.index') }}" class="drawer-nav__link{{ Request::is('staff/users*') ? ' is-active' : '' }}">
+                <i class="far fa-address-book drawer-nav__icon fa-fw"></i>
+                ユーザー情報管理
+            </a>
+            @endcan
+            @can('staff.circles.read')
+            <a href="{{ route('staff.circles.index') }}" class="drawer-nav__link{{ Request::is('staff/circles*') ? ' is-active' : '' }}">
+                <i class="fas fa-star drawer-nav__icon fa-fw"></i>
+                企画情報管理
+            </a>
+            @endcan
+            @can('staff.tags.read')
+            <a href="{{ route('staff.tags.index') }}" class="drawer-nav__link{{ Request::is('staff/tags*') ? ' is-active' : '' }}">
+                <i class="fas fa-tags drawer-nav__icon fa-fw"></i>
+                企画タグ管理
+            </a>
+            @endcan
+            @can('staff.places.read')
+            <a href="{{ route('staff.places.index') }}" class="drawer-nav__link{{ Request::is('staff/places*') ? ' is-active' : '' }}">
+                <i class="fas fa-store drawer-nav__icon fa-fw"></i>
+                場所情報管理
+            </a>
+            @endcan
+            @can('staff.pages.read')
+            <a href="{{ route('staff.pages.index') }}" class="drawer-nav__link{{ Request::is('staff/pages*') ? ' is-active' : '' }}">
+                <i class="fas fa-bullhorn drawer-nav__icon fa-fw"></i>
+                お知らせ管理
+            </a>
+            @endcan
+            @can('staff.documents.read')
+            <a href="{{ route('staff.documents.index') }}" class="drawer-nav__link{{ Request::is('staff/documents*') ? ' is-active' : '' }}">
+                <i class="far fa-file-alt drawer-nav__icon fa-fw"></i>
+                配布資料管理
+            </a>
+            @endcan
+            @can('staff.forms.read')
+            <a href="{{ route('staff.forms.index') }}" class="drawer-nav__link{{ Request::is('staff/forms*') ? ' is-active' : '' }}">
+                <i class="far fa-edit drawer-nav__icon fa-fw"></i>
+                申請管理
+            </a>
+            @endcan
+            @can('staff.schedules.read')
+            <a href="{{ route('staff.schedules.index') }}" class="drawer-nav__link{{ Request::is('staff/schedules*') ? ' is-active' : '' }}">
+                <i class="far fa-calendar-alt drawer-nav__icon fa-fw"></i>
+                スケジュール管理
+            </a>
+            @endcan
+            @can('staff.contacts.categories.read')
+            <a href="{{ route('staff.contacts.categories.index') }}" class="drawer-nav__link{{ Request::is('staff/contacts/categories*') ? ' is-active' : '' }}">
+                <i class="fas fa-at drawer-nav__icon fa-fw"></i>
+                お問い合わせ受付設定
+            </a>
+            @endcan
+            @can('staff.permissions.read')
+            <a href="{{ route('staff.permissions.index') }}" class="drawer-nav__link{{ Request::is('staff/permissions*') ? ' is-active' : '' }}">
+                <i class="fas fa-key drawer-nav__icon fa-fw"></i>
+                スタッフの権限設定
+            </a>
+            @endcan
+            @if (Auth::user()->is_admin)
+                <a href="{{ route('admin.portal.edit') }}" class="drawer-nav__link{{ Request::is('admin/portal*') ? ' is-active' : '' }}">
+                    <i class="fas fa-cog drawer-nav__icon fa-fw"></i>
+                    PortalDots の設定
+                    <app-badge danger>管理者</app-badge>
+                </a>
+            @endif
         </nav>
     @endif
 @else
@@ -34,7 +93,7 @@
     <nav class="drawer-nav">
         @if (Auth::check() && Auth::user()->is_staff)
             <div class="px-spacing py-spacing">
-                <a href="/home_staff" class="btn is-primary is-block" data-turbolinks="false">
+                <a href="{{ route('staff.index') }}" class="btn is-primary is-block">
                     スタッフモードへ
                 </a>
             </div>

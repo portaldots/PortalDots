@@ -1,9 +1,9 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', '企画タグの削除')
 
 @section('navbar')
-    <app-nav-bar-back href="{{ url('home_staff/tags') }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ route('staff.tags.index') }}">
         企画タグ管理
     </app-nav-bar-back>
 @endsection

@@ -64,13 +64,6 @@ class Handler extends ExceptionHandler
             //  2. 接続先のデータベースにPortalDotsで利用するテーブルがない
             //     →データベース内のデータを全削除した上でテーブルを作り直す
             //       コマンド : php artisan migrate:refresh
-            //
-            // (CodeIgniterを完全に廃止した場合、以下のコメントは削除する)
-            // 同じHTMLコードが
-            //  application/views/errors/html/error_db.php
-            // にも書かれている。このファイルを修正する際は、
-            //  application/views/errors/html/error_db.php
-            // に書かれている同様のHTMLコードも修正すること。
             $app_name = config('app.name');
             return response("
                 <!doctype html>

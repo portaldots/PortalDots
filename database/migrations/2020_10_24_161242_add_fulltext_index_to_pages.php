@@ -1,7 +1,7 @@
 <?php
 
+use App\Eloquents\Page;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 
 class AddFulltextIndexToPages extends Migration
@@ -13,7 +13,9 @@ class AddFulltextIndexToPages extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE pages ADD FULLTEXT INDEX fulltext_index (title,body) WITH PARSER ngram');
+        if (Page::isMySqlFulltextIndexSupported()) {
+            DB::statement('ALTER TABLE pages ADD FULLTEXT INDEX fulltext_index (title,body) WITH PARSER ngram');
+        }
     }
 
     /**
@@ -23,6 +25,8 @@ class AddFulltextIndexToPages extends Migration
      */
     public function down()
     {
-        DB::statement('ALTER TABLE pages DROP INDEX fulltext_index');
+        if (Page::isMySqlFulltextIndexSupported()) {
+            DB::statement('ALTER TABLE pages DROP INDEX fulltext_index');
+        }
     }
 }

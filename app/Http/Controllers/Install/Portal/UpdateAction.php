@@ -11,7 +11,7 @@ class UpdateAction extends Controller
     /**
      * @var PortalService
      */
-    private $editor;
+    private $portalService;
 
     public function __construct(PortalService $portalService)
     {

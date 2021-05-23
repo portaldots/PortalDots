@@ -6,25 +6,124 @@ namespace App\Services\Forms;
 
 use App\Eloquents\Form;
 use App\Eloquents\User;
+use App\Eloquents\Tag;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FormsService
 {
     /**
+     * フォームを作成する
+     *
+     * @param string $name フォーム名
+     * @param string $description フォームの説明
+     * @param Carbon $open_at フォームの受付開始日
+     * @param Carbon $close_at フォームの受付終了日
+     * @param User $created_by 作成者
+     * @param int $max_answers 企画毎に回答可能とする回答数
+     * @param bool $is_public フォームを公開するか
+     * @param array|null $answerable_tags フォームを回答可能とする企画のタグ
+     * @return Form
+     */
+    public function createForm(
+        string $name,
+        string $description,
+        Carbon $open_at,
+        Carbon $close_at,
+        User $created_by,
+        int $max_answers,
+        bool $is_public,
+        ?array $answerable_tags = null
+    ): Form {
+        return DB::transaction(function () use (
+            $name,
+            $description,
+            $open_at,
+            $close_at,
+            $created_by,
+            $max_answers,
+            $is_public,
+            $answerable_tags
+        ) {
+            $form = Form::create([
+                'name' => $name,
+                'description' => $description,
+                'open_at' => $open_at,
+                'close_at' => $close_at,
+                'created_by' => $created_by->id,
+                'max_answers' => $max_answers,
+                'is_public' => $is_public,
+            ]);
+
+            // 検索時は大文字小文字の区別をしない
+            // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
+            $exist_tags = Tag::select('id')->whereIn('name', $answerable_tags)->get();
+            $form->answerableTags()->sync($exist_tags->pluck('id')->all());
+
+            return $form;
+        });
+    }
+
+    /**
      * フォームを更新する
      *
-     * @param int $form_id フォームID
-     * @param array $form フォーム情報配列
+     * @param Form $form 更新するフォーム
+     * @param string $description フォームの説明
+     * @param Carbon $open_at フォームの受付開始日
+     * @param Carbon $close_at フォームの受付終了日
+     * @param User $created_by 作成者
+     * @param int $max_answers 企画毎に回答可能とする回答数
+     * @param bool $is_public フォームを公開するか
+     * @param array|null $answerable_tags フォームを回答可能とする企画のタグ
+     * @return boolean
      */
-    public function updateForm(int $form_id, array $form)
+    public function updateForm(
+        Form $form,
+        string $name,
+        string $description,
+        Carbon $open_at,
+        Carbon $close_at,
+        User $created_by,
+        int $max_answers,
+        bool $is_public,
+        ?array $answerable_tags = null
+    ): bool {
+        return DB::transaction(function () use (
+            $form,
+            $name,
+            $description,
+            $open_at,
+            $close_at,
+            $created_by,
+            $max_answers,
+            $is_public,
+            $answerable_tags
+        ) {
+            $form->update([
+                'name' => $name,
+                'description' => $description,
+                'open_at' => $open_at,
+                'close_at' => $close_at,
+                'created_by' => $created_by->id,
+                'max_answers' => $max_answers,
+                'is_public' => $is_public,
+            ]);
+
+            // 検索時は大文字小文字の区別をしない
+            // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
+            $exist_tags = Tag::select('id')->whereIn('name', $answerable_tags)->get();
+            $form->answerableTags()->sync($exist_tags->pluck('id')->all());
+
+            return true;
+        });
+    }
+
+    public function removeForm(Form $form)
     {
-        $eloquent = Form::findOrFail($form_id);
-        $form['open_at'] = new Carbon($form['open_at']);
-        $form['close_at'] = new Carbon($form['close_at']);
-        $eloquent->fill($form);
-        $eloquent->save();
+        return DB::transaction(function () use ($form) {
+            $form->answerableTags()->detach();
+            return $form->delete();
+        });
     }
 
     /**

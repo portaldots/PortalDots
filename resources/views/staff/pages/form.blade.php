@@ -1,9 +1,9 @@
-@extends('layouts.no_drawer')
+@extends('layouts.app')
 
 @section('title', empty($page) ? '新規作成 — お知らせ' : "{$page->title} — お知らせ")
 
 @section('navbar')
-    <app-nav-bar-back href="{{ url('/home_staff/pages') }}" data-turbolinks="false">
+    <app-nav-bar-back href="{{ route('staff.pages.index') }}">
         お知らせ管理
     </app-nav-bar-back>
 @endsection
@@ -82,7 +82,7 @@
                 <list-view-form-group>
                     <div class="form-checkbox">
                         <label class="form-checkbox__label">
-                            <input class="form-checkbox__input" type="checkbox" name="send_emails" value="1">
+                            <input class="form-checkbox__input" type="checkbox" name="send_emails" value="1" {{ Auth::user()->can('staff.pages.send_emails') ? '' : 'disabled' }}>
                             <strong>保存後にこのお知らせを「閲覧可能なユーザー」で指定したユーザー全員にメール配信</strong><br>
                             <span class="text-muted">このお知らせを保存したタイミングでの内容が配信されます。お知らせを編集しても、メール配信が完了するまで編集内容は反映されません。</span>
                         </label>
@@ -96,8 +96,15 @@
                     @endif
                 </list-view-form-group>
                 <list-view-card>
-                    <i class="fas fa-exclamation-circle"></i>
-                    メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
+                    @can('staff.pages.send_emails')
+                        <i class="fas fa-exclamation-circle"></i>
+                        メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
+                    @else
+                        <span class="text-danger">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <strong>メール配信機能の利用は許可されていません。メール配信機能を利用したい場合、{{ config('app.name') }}の管理者へお問い合わせください。</strong>
+                        </span>
+                    @endcan
                 </list-view-card>
             </list-view>
 

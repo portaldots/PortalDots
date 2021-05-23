@@ -7,10 +7,12 @@ namespace App\Services\Circles;
 use DB;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
+use App\Eloquents\Place;
 use App\Eloquents\Tag;
 use App\Mail\Circles\ApprovedMailable;
 use App\Mail\Circles\RejectedMailable;
 use App\Mail\Circles\SubmitedMailable;
+use App\Services\Circles\Exceptions\DenyCreateTagsException;
 use Illuminate\Support\Facades\Mail;
 
 class CirclesService
@@ -92,9 +94,24 @@ class CirclesService
     }
 
     /**
-     * 指定された企画についてタグを保存する
+     * 指定された企画について場所を保存する
      */
-    public function saveTags(Circle $circle, array $tags)
+    public function savePlaces(Circle $circle, array $place_ids)
+    {
+        $exist_places = Place::whereIn('id', $place_ids)->get();
+        $circle->places()->sync($exist_places->pluck('id')->all());
+    }
+
+    /**
+     * 指定された企画についてタグを保存する
+     *
+     * @param Circle $circle
+     * @param array $tags
+     * @param boolean $allow_create タグの新規作成を許可するかどうか
+     * @throws DenyCreateTagsException $allow_create が false なのに企画タグの新規作成が必要になった場合に発生する例外
+     * @return void
+     */
+    public function saveTags(Circle $circle, array $tags, bool $allow_create = true)
     {
         // 検索時は大文字小文字の区別をしない
         // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
@@ -103,6 +120,10 @@ class CirclesService
         $diff = array_udiff($tags, $exist_tags->pluck('name')->all(), 'strcasecmp');
 
         foreach ($diff as $insert) {
+            if (!$allow_create) {
+                throw new DenyCreateTagsException('企画タグの作成は許可されていません');
+            }
+
             Tag::create(['name' => $insert]);
         }
 

@@ -4,10 +4,10 @@ namespace Tests\Feature\Http\Controllers\Staff\Circles;
 
 use App\Exports\CirclesExport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
+use App\Eloquents\Permission;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Maatwebsite\Excel\Facades\Excel;
@@ -16,9 +16,16 @@ class ExportActionTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** @var User */
     private $staff;
+
+    /** @var User */
     private $user;
+
+    /** @var Circle */
     private $circle;
+
+    /** @var Circle */
     private $circle_not_submitted;
 
     public function setUp(): void
@@ -39,18 +46,32 @@ class ExportActionTest extends TestCase
     /**
      * @test
      */
-    public function 企画情報をダウンロードできる()
+    public function 企画情報をCSVでダウンロードできる()
     {
+        Permission::create(['name' => 'staff.circles.export']);
+        $this->staff->syncPermissions(['staff.circles.export']);
+
         Excel::fake();
         $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->get('/staff/circles/export');
 
-        $now = now()->format('Y-m-d_H-i-s');
+        $now = Carbon::now()->format('Y-m-d_H-i-s');
 
-        Excel::assertDownloaded("circles_{$now}.csv", function (CirclesExport $export) {
+        Excel::assertDownloaded("企画一覧_{$now}.csv", function (CirclesExport $export) {
             return $export->collection()->contains('name', $this->circle->name)
                 && $export->collection()->contains('name', '<>', $this->circle_not_submitted->name);
         });
+    }
+
+    /**
+     * @test
+     */
+    public function 権限がない場合はCSVをダウンロードできない()
+    {
+        $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get('/staff/circles/export')
+            ->assertForbidden();
     }
 }

@@ -9,9 +9,7 @@ use App\Services\Auth\RegisterService;
 use App\Services\Auth\EmailService;
 use App\Services\Auth\VerifyService;
 use App\Services\Install\RunInstallService;
-use App\Eloquents\User;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth;
 
 class StoreAction extends Controller
 {
@@ -58,7 +56,8 @@ class StoreAction extends Controller
                 ->back()
                 ->withInput()
                 ->with('topAlert.type', 'danger')
-                ->with('topAlert.title', '不明なエラーが発生しました');
+                ->with('topAlert.keepVisible', true)
+                ->with('topAlert.title', '不明なエラーが発生しました : ' . $e->getMessage());
         }
 
         $user = $this->registerService->create(

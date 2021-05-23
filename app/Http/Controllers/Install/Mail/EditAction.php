@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Install\Mail;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Services\Install\MailService;
 
 class EditAction extends Controller
@@ -11,14 +10,14 @@ class EditAction extends Controller
     /**
      * @var MailService
      */
-    private $editor;
+    private $mailService;
 
     public function __construct(MailService $mailService)
     {
         $this->mailService = $mailService;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke()
     {
         return view('install.mail.form')
             ->with('labels', $this->mailService->getFormLabels())
