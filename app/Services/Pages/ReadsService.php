@@ -46,7 +46,7 @@ class ReadsService
         $pages = Page::byCircle($this->selectorService->getCircle())
             ->with(['usersWhoRead' => function ($query) {
                 $query->where('user_id', Auth::id());
-            }])->get();
+            }])->public()->pinned(false)->get();
         $this->unreadsCountOnSelectedCircle = $pages->reduce(function (int $carry, Page $page) {
             if ($page->usersWhoRead->isEmpty()) {
                 return $carry + 1;

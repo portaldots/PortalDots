@@ -10,10 +10,12 @@ $factory->define(Page::class, function (Faker $faker) {
     return [
         'title' => $faker->name,
         'body' => $faker->text,
-        'created_by' => function() {
+        'is_pinned' => false,
+        'is_public' => true,
+        'created_by' => function () {
             return factory(User::class)->create()->id;
         },
-        'updated_by' => function() {
+        'updated_by' => function () {
             return factory(User::class)->create()->id;
         },
     ];

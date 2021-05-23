@@ -11,6 +11,11 @@ class Page extends Model
 {
     use IsNewTrait;
 
+    protected $casts = [
+        'is_pinned' => 'bool',
+        'is_public' => 'bool',
+    ];
+
     protected $fillable = [
         'title',
         'body',
@@ -91,6 +96,29 @@ class Page extends Model
     public function usersWhoRead()
     {
         return $this->belongsToMany(User::class, 'reads')->using(Read::class);
+    }
+
+    /**
+     * 公開されているお知らせに限定するクエリスコープ
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePublic($query)
+    {
+        return $query->where('is_public', true);
+    }
+
+    /**
+     * 固定されたお知らせに限定するクエリスコープ
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool $is_pinned 固定されたお知らせ以外を取得する場合は false を指定する
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePinned($query, bool $is_pinned = true)
+    {
+        return $query->where('is_pinned', $is_pinned);
     }
 
     /**

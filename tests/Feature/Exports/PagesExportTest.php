@@ -7,7 +7,6 @@ use App\Eloquents\Tag;
 use App\Eloquents\User;
 use App\Exports\PagesExport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
@@ -64,6 +63,8 @@ class PagesExportTest extends TestCase
                 $this->page->title,
                 'タグです',
                 $this->page->body,
+                $this->page->is_pinned,
+                $this->page->is_public,
                 $this->page->notes,
                 $this->page->created_at,
                 "野田 一郎(ID:{$this->staff->id},{$this->staff->student_id})",

@@ -5,9 +5,6 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Controllers\Controller;
-use App\Eloquents\Page;
-use App\Eloquents\Schedule;
-use App\Eloquents\Document;
 use App\Services\Circles\SelectorService;
 use App\Services\Auth\StaffAuthService;
 
