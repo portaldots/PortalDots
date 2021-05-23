@@ -26,6 +26,8 @@ class PageRequest extends FormRequest
         return [
             'title' => ['required', 'string'],
             'body' => ['required', 'string'],
+            'is_pinned' => ['boolean'],
+            'is_public' => ['boolean'],
             'viewable_tags' => ['nullable', 'array'],
             'send_emails' => ['boolean'],
             'notes' => ['nullable'],
@@ -41,6 +43,9 @@ class PageRequest extends FormRequest
     {
         return [
             'title' => 'タイトル',
+            'body' => '本文',
+            'is_pinned' => 'お知らせを固定表示',
+            'is_public' => '公開設定',
             'body' => '本文',
             'viewable_tags' => 'お知らせを閲覧可能なユーザー',
             'send_emails' => 'メール配信',
