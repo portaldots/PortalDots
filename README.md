@@ -6,7 +6,7 @@
         <img src="https://circleci.com/gh/portal-dots/PortalDots.svg?style=svg" alt="CircleCI" />
     </a>
     <a href="https://codecov.io/gh/portal-dots/PortalDots">
-        <img src="https://codecov.io/gh/portal-dots/PortalDots/branch/master/graph/badge.svg" />
+        <img src="https://codecov.io/gh/portal-dots/PortalDots/branch/3.x/graph/badge.svg" />
     </a>
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" />
