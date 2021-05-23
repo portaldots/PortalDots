@@ -17,9 +17,15 @@ class PagesService
      */
     private $sendEmailService;
 
-    public function __construct(SendEmailService $sendEmailService)
+    /**
+     * @var ReadsService
+     */
+    private $readsService;
+
+    public function __construct(SendEmailService $sendEmailService, ReadsService $readsService)
     {
         $this->sendEmailService = $sendEmailService;
+        $this->readsService = $readsService;
     }
 
     /**
@@ -83,6 +89,9 @@ class PagesService
                 'updated_by' => $updated_by->id,
                 'notes' => $notes,
             ]);
+
+            // 既読情報を管理する reads テーブルから、このお知らせの既読情報を全て削除する
+            $this->readsService->deleteAllReadsByPage($page);
 
             // 検索時は大文字小文字の区別をしない
             // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)

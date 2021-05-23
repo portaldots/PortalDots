@@ -70,4 +70,15 @@ class ReadsService
             $page->usersWhoRead()->attach($user->id, ['created_at' => now()]);
         }
     }
+
+    /**
+     * 指定されたお知らせの既読情報を全て削除する
+     *
+     * @param Page $page
+     * @return void
+     */
+    public function deleteAllReadsByPage(Page $page)
+    {
+        $page->usersWhoRead()->detach();
+    }
 }
