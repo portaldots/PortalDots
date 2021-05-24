@@ -19,6 +19,8 @@ class Page extends Model
         'id',
         'title',
         'body',
+        'is_pinned',
+        'is_public',
         'notes',
     ];
 
