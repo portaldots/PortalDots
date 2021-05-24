@@ -73,7 +73,7 @@
                 新規企画
             </a>
             <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
+                class="btn is-primary-inverse is-no-border"
                 href="{{ route('staff.circles.custom_form.index') }}"
             >
                 <i class="fas fa-users-cog fa-fw"></i>
@@ -89,7 +89,7 @@
                 @endif
             </a>
             <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
+                class="btn is-primary-inverse is-no-border"
                 href="{{ route('staff.circles.export') }}"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -100,7 +100,7 @@
             </a>
             @isset ($custom_form)
                 <a
-                    class="btn is-primary-inverse is-no-shadow is-no-border"
+                    class="btn is-primary-inverse is-no-border"
                     href="{{ route('staff.forms.answers.uploads.index', ['form' => $custom_form]) }}"
                 >
                     <i class="far fa-file-archive fa-fw"></i>

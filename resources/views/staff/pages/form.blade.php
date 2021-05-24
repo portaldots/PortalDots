@@ -141,13 +141,13 @@
                 </list-view-form-group>
                 <list-view-card>
                     @can('staff.pages.send_emails')
-                        <i class="fas fa-exclamation-circle"></i>
-                        メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
+                        <app-info-box primary>
+                            メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
+                        </app-info-box>
                     @else
-                        <span class="text-danger">
-                            <i class="fas fa-exclamation-circle"></i>
+                        <app-info-box danger>
                             <strong>メール配信機能の利用は許可されていません。メール配信機能を利用したい場合、{{ config('app.name') }}の管理者へお問い合わせください。</strong>
-                        </span>
+                        </app-info-box>
                     @endcan
                 </list-view-card>
             </list-view>

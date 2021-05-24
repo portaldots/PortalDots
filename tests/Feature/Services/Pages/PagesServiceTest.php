@@ -61,7 +61,6 @@ class PagesServiceTest extends TestCase
         );
 
         $content_on_db = $this->content;
-        $content_on_db['created_by'] = $this->staff->id;
 
         $this->assertDatabaseHas('pages', $content_on_db);
     }

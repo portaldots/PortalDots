@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Circles;
 
 use Auth;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Eloquents\Circle;
 use App\Services\Circles\CirclesService;
 

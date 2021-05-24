@@ -21,6 +21,8 @@ class DestroyAction extends Controller
             abort(403);
         }
 
+        $circle->disableLogging();
+
         $circle->delete();
 
         return redirect()

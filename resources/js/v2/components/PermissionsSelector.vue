@@ -1,26 +1,28 @@
 <template>
   <div>
-    <div class="pb-spacing-md">
-      <template v-for="badge in permissionBadges">
-        <AppBadge primary :key="badge">
-          {{ badge }}
-        </AppBadge>
-        {{ ' ' }}
-      </template>
-      <strong
-        class="text-danger"
-        v-if="!permissions || permissions.length === 0"
-      >
-        利用可能な機能なし
-      </strong>
-    </div>
-    <div class="pb-spacing-md">
-      <SearchInput
-        v-model="searchKeyword"
-        placeholder="権限を検索…"
-        preventEnter
-      />
-    </div>
+    <ListViewCard noBorder>
+      <div class="pb-spacing-md">
+        <template v-for="badge in permissionBadges">
+          <AppBadge primary :key="badge">
+            {{ badge }}
+          </AppBadge>
+          {{ ' ' }}
+        </template>
+        <strong
+          class="text-danger"
+          v-if="!permissions || permissions.length === 0"
+        >
+          利用可能な機能なし
+        </strong>
+      </div>
+      <div class="pb-spacing-md">
+        <SearchInput
+          v-model="searchKeyword"
+          placeholder="権限を検索…"
+          preventEnter
+        />
+      </div>
+    </ListViewCard>
     <ListViewBaseItem class="selector">
       <template v-if="inputName">
         <input
@@ -87,10 +89,12 @@
 <script>
 import AppBadge from './AppBadge.vue'
 import ListViewBaseItem from './ListViewBaseItem.vue'
+import ListViewCard from './ListViewCard.vue'
 import SearchInput from './SearchInput.vue'
 
 export default {
   components: {
+    ListViewCard,
     ListViewBaseItem,
     SearchInput,
     AppBadge

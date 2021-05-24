@@ -246,6 +246,10 @@ Route::middleware(['auth', 'verified', 'can:admin', 'staffAuthed'])
     ->prefix('/admin')
     ->name('admin.')
     ->group(function () {
+        // アクティビティログ
+        Route::get('/activity_log', 'Admin\ActivityLog\IndexAction')->name('activity_log.index');
+        Route::get('/activity_log/api', 'Admin\ActivityLog\ApiAction')->name('activity_log.api');
+
         // ポータル情報編集
         Route::get('/portal', 'Admin\Portal\EditAction')->name('portal.edit');
         Route::patch('/portal', 'Admin\Portal\UpdateAction')->name('portal.update');

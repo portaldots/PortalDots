@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Circles;
 
-use Auth;
-use DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Circles\CircleRequest;
 use App\Services\Circles\CirclesService;
 use App\Services\Forms\AnswersService;
 use App\Eloquents\CustomForm;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class StoreAction extends Controller
 {
@@ -32,7 +32,9 @@ class StoreAction extends Controller
     {
         $this->authorize('circle.create');
 
-        return DB::transaction(function () use ($request) {
+        activity()->disableLogging();
+
+        $result = DB::transaction(function () use ($request) {
             $circle = $this->circlesService->create(
                 Auth::user(),
                 $request->name,
@@ -50,5 +52,9 @@ class StoreAction extends Controller
             return redirect()
                 ->route('circles.users.index', ['circle' => $circle]);
         });
+
+        activity()->enableLogging();
+
+        return $result;
     }
 }

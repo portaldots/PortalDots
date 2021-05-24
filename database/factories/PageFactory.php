@@ -3,7 +3,6 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Eloquents\Page;
-use App\Eloquents\User;
 use Faker\Generator as Faker;
 
 $factory->define(Page::class, function (Faker $faker) {
@@ -12,11 +11,5 @@ $factory->define(Page::class, function (Faker $faker) {
         'body' => $faker->text,
         'is_pinned' => false,
         'is_public' => true,
-        'created_by' => function () {
-            return factory(User::class)->create()->id;
-        },
-        'updated_by' => function () {
-            return factory(User::class)->create()->id;
-        },
     ];
 });

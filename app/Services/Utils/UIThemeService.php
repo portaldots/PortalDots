@@ -11,4 +11,15 @@ class UIThemeService
         // light, dark, system のどれか
         return 'light';
     }
+
+    public static function getCssColorScheme(): string
+    {
+        if (static::getCurrentTheme() === 'light') {
+            return 'light';
+        } elseif (static::getCurrentTheme() === 'dark') {
+            return 'dark';
+        } else {
+            return 'light dark';
+        }
+    }
 }

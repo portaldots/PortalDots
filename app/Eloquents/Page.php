@@ -6,10 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Concerns\IsNewTrait;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Page extends Model
 {
     use IsNewTrait;
+    use LogsActivity;
+
+    protected static $logName = 'page';
+
+    protected static $logAttributes = [
+        'id',
+        'title',
+        'body',
+        'notes',
+    ];
+
+    protected static $logOnlyDirty = true;
 
     protected $casts = [
         'is_pinned' => 'bool',
@@ -160,15 +173,5 @@ class Page extends Model
             return $query;
         }
         return $query->whereRaw("match(title,body) against (? IN BOOLEAN MODE)", [$keywords]);
-    }
-
-    public function userCreatedBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function userUpdatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
     }
 }

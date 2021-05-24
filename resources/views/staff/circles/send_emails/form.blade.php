@@ -84,8 +84,9 @@
                 @enderror
             </list-view-form-group>
             <list-view-card>
-                <i class="fas fa-exclamation-circle"></i>
-                メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
+                <app-info-box primary>
+                    メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
+                </app-info-box>
             </list-view-card>
             @endif
         </list-view>

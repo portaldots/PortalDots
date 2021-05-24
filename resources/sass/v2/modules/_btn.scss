@@ -3,7 +3,7 @@
   $background,
   $hover-background,
   $border-color,
-  $has-shadow: false
+  $hover-border-color: transparent
 ) {
   @if ($background == transparent) {
     background: transparent;
@@ -22,18 +22,7 @@
   &:not(.disabled):hover {
     background: linear-gradient(to top, $hover-background, $hover-background),
       $color-behind-text;
-    border-color: $hover-background;
-  }
-  @if ($has-shadow) {
-    box-shadow: 0 0.25rem 0.75rem $color-box-shadow;
-    &:not([disabled]):hover,
-    &:not(.disabled):hover {
-      box-shadow: 0 0.5rem 0.75rem $color-box-shadow;
-    }
-    &:not([disabled]):active,
-    &:not(.disabled):active {
-      box-shadow: 0 0.1rem 0.3rem $color-box-shadow;
-    }
+    border-color: $hover-border-color;
   }
 }
 
@@ -53,8 +42,7 @@ body:not(.body-editor-v1) {
     padding: 0.75rem $spacing-md;
     text-align: center;
     text-decoration: none;
-    transition: #{$transition-base-fast} background-color,
-      #{$transition-base-fast} box-shadow, #{$transition-base-fast} transform;
+    transition: #{$transition-base-fast} background-color;
     white-space: nowrap;
     &:disabled,
     &.disabled {
@@ -66,6 +54,8 @@ body:not(.body-editor-v1) {
       text-decoration: none;
     }
     &:focus {
+      box-shadow: 0 0 0 3px $color-focus-primary;
+      outline: none;
       text-decoration: none;
     }
     &.is-primary {
@@ -73,8 +63,7 @@ body:not(.body-editor-v1) {
         $color-behind-text,
         $color-primary,
         $color-primary-hover,
-        $color-primary,
-        true
+        $color-primary
       );
     }
     &.is-primary-inverse {
@@ -83,7 +72,7 @@ body:not(.body-editor-v1) {
         $color-behind-text,
         $color-primary-inverse-hover,
         $color-behind-text,
-        true
+        $color-primary-inverse-hover
       );
     }
     &.is-secondary {
@@ -91,6 +80,7 @@ body:not(.body-editor-v1) {
         $color-text,
         $color-behind-text,
         $color-bg-grey,
+        $color-border,
         $color-border
       );
     }
@@ -102,8 +92,7 @@ body:not(.body-editor-v1) {
         $color-behind-text,
         $color-danger,
         $color-danger-hover,
-        $color-danger,
-        true
+        $color-danger
       );
     }
     &.is-success {
@@ -111,8 +100,7 @@ body:not(.body-editor-v1) {
         $color-behind-text,
         $color-success,
         $color-success-hover,
-        $color-success,
-        true
+        $color-success
       );
     }
     &.is-block {
@@ -121,9 +109,6 @@ body:not(.body-editor-v1) {
     }
     &.is-no-border {
       border: none;
-    }
-    &.is-no-shadow {
-      box-shadow: none;
     }
     &.is-wide {
       padding-left: $spacing-lg;

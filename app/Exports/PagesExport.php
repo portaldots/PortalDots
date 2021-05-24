@@ -14,7 +14,7 @@ class PagesExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Page::with(['viewableTags', 'userCreatedBy', 'userUpdatedBy'])->orderBy('id')->get();
+        return Page::with(['viewableTags'])->orderBy('id')->get();
     }
 
     /**
@@ -32,9 +32,7 @@ class PagesExport implements FromCollection, WithHeadings, WithMapping
             $page->is_public ? 'はい' : 'いいえ',
             $page->notes,
             $page->created_at,
-            "{$page->userCreatedBy->name}(ID:{$page->userCreatedBy->id},{$page->userCreatedBy->student_id})",
             $page->updated_at,
-            "{$page->userUpdatedBy->name}(ID:{$page->userUpdatedBy->id},{$page->userUpdatedBy->student_id})",
         ];
     }
 
@@ -52,9 +50,7 @@ class PagesExport implements FromCollection, WithHeadings, WithMapping
             '公開',
             'スタッフ用メモ',
             '作成日時',
-            '作成者',
             '更新日時',
-            '更新者',
         ];
     }
 }

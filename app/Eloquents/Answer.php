@@ -3,17 +3,31 @@
 namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property integer $id
  */
 class Answer extends Model
 {
+    use LogsActivity;
+
     protected $fillable = [
         'form_id',
         'circle_id'
     ];
+
+    protected static $logName = 'answer';
+
+    protected static $logAttributes = [
+        'id',
+        'circle.id',
+        'circle.name',
+        'form.id',
+        'form.name',
+    ];
+
+    protected static $logOnlyDirty = true;
 
     public function details()
     {

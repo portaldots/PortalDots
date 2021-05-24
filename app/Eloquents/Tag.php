@@ -3,16 +3,28 @@
 namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Tag extends Model
 {
+    use LogsActivity;
+
+    protected static $logName = 'tag';
+
+    protected static $logAttributes = [
+        'id',
+        'name',
+    ];
+
+    protected static $logOnlyDirty = true;
+
     protected $fillable = [
         'name'
     ];
 
     public function circles()
     {
-        return $this->belongsToMany(Circle::class);
+        return $this->belongsToMany(Circle::class)->using(CircleTag::class);
     }
 
     public function pages()

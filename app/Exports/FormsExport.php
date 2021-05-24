@@ -15,7 +15,7 @@ class FormsExport implements FromCollection, WithHeadings, WithMapping
     public function collection()
     {
         return Form::withoutCustomForms()
-            ->with(['answerableTags', 'userCreatedBy'])
+            ->with(['answerableTags'])
             ->get();
     }
 
@@ -31,7 +31,6 @@ class FormsExport implements FromCollection, WithHeadings, WithMapping
             $form->max_answers,
             $form->is_public ? 'はい' : 'いいえ',
             $form->created_at,
-            "{$form->userCreatedBy->name}(ID:{$form->userCreatedBy->id},{$form->userCreatedBy->student_id})",
             $form->updated_at,
         ];
     }
@@ -48,7 +47,6 @@ class FormsExport implements FromCollection, WithHeadings, WithMapping
             '回答可能数',
             '公開',
             '作成日時',
-            '作成者',
             '更新日時',
         ];
     }

@@ -7,6 +7,7 @@ import TurbolinksAdapter from './vue-turbolinks'
 
 import AppFooter from './components/AppFooter.vue'
 import AppHeader from './components/AppHeader.vue'
+import AppInfoBox from './components/AppInfoBox.vue'
 import AppNavBar from './components/AppNavBar.vue'
 import AppNavBarBack from './components/AppNavBarBack.vue'
 import AppNavBarToggle from './components/AppNavBarToggle.vue'
@@ -62,6 +63,7 @@ export function mountV2App() {
         GlobalEvents,
         AppFooter,
         AppHeader,
+        AppInfoBox,
         AppNavBar,
         AppNavBarBack,
         AppNavBarToggle,
