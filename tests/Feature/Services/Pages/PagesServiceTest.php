@@ -97,7 +97,6 @@ class PagesServiceTest extends TestCase
         $content_on_db['body'] = "更新した本文";
         $content_on_db['is_public'] = true;
         $content_on_db['is_pinned'] = true;
-        $content_on_db['created_by'] = $this->staff->id;
 
         $this->assertSame(1, Page::count());
         $this->assertDatabaseHas('pages', $content_on_db);

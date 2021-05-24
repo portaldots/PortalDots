@@ -36,8 +36,6 @@ class Page extends Model
         'body',
         'is_pinned',
         'is_public',
-        'created_by',
-        'updated_by',
         'notes',
     ];
 

@@ -139,7 +139,6 @@ class PagesService
                 'body' => $body,
                 'is_pinned' => $is_pinned,
                 'is_public' => $is_public,
-                'updated_by' => $updated_by->id,
                 'notes' => $notes,
             ]);
 
