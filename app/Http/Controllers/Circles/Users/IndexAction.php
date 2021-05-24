@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Circles\Users;
 
-use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Eloquents\Circle;
-use QrCode;
 use BaconQrCode\Exception\RuntimeException;
+use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class IndexAction extends Controller
 {

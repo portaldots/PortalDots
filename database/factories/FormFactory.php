@@ -11,7 +11,6 @@ $factory->define(Form::class, function (Faker $faker) {
         'description' => $faker->text,
         'open_at' => now()->subMonth(1),
         'close_at' => now()->addMonth(1),
-        'created_by' => 1,
         'type' => 'circle',
         'max_answers' => 1,
         'is_public' => true,

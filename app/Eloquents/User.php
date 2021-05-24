@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Spatie\Permission\Traits\HasRoles;
 use App\Eloquents\Circle;
 use App\Eloquents\CircleUser;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property string $id
@@ -31,6 +32,36 @@ class User extends Authenticatable
 {
     use Notifiable;
     use HasRoles;
+    use LogsActivity;
+
+    protected static $logName = 'user';
+
+    // 電話番号などの情報はログに残さない
+    protected static $logAttributes = [
+        'id',
+        'student_id',
+        'name_family',
+        'name_family_yomi',
+        'name_given',
+        'name_given_yomi',
+        'is_staff',
+        'is_admin',
+        'is_verified_by_staff',
+        'notes',
+    ];
+
+    protected static $ignoreChangedAttributes = [
+        'email',
+        'tel',
+        'email_verified_at',
+        'univemail_verified_at',
+        'password',
+        'remember_token',
+        'last_accessed_at',
+        'updated_at'
+    ];
+
+    protected static $logOnlyDirty = true;
 
     /**
      * バリデーションルール

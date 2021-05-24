@@ -7,13 +7,12 @@ namespace App\Services\Forms;
 use App\Eloquents\Form;
 use App\Eloquents\Circle;
 use App\Eloquents\Answer;
-use App\Eloquents\AnswerDetail;
 use App\Eloquents\User;
 use App\Services\Forms\AnswerDetailsService;
 use App\Http\Requests\Forms\AnswerRequestInterface;
 use App\Mail\Forms\AnswerConfirmationMailable;
 use Illuminate\Database\Eloquent\Collection;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class AnswersService
@@ -58,19 +57,26 @@ class AnswersService
         }
 
         // フォーム作成者にメールを送る
-        $creator = User::find($answer->form->created_by);
-        if (! empty($creator)) {
-            $this->sendToUser(
-                $answer->form,
-                $answer->form->questions,
-                $answer->circle,
-                $applicant,
-                $answer,
-                $answer_details,
-                $creator,
-                true,
-                $isEditedByStaff
-            );
+        /** @var Form */
+        $form = $answer->form;
+        /** @var Spatie\Activitylog\Models\Activity */
+        $first_activity = $form->activities()->first();
+        if (! empty($first_activity)) {
+            /** @var User */
+            $creator = $first_activity->causer;
+            if (! empty($creator)) {
+                $this->sendToUser(
+                    $answer->form,
+                    $answer->form->questions,
+                    $answer->circle,
+                    $applicant,
+                    $answer,
+                    $answer_details,
+                    $creator,
+                    true,
+                    $isEditedByStaff
+                );
+            }
         }
     }
 
@@ -100,9 +106,11 @@ class AnswersService
         bool $isEditedByStaff
     ) {
         $subject = '申請「' . $form->name . '」を承りました';
+
         if ($isForStaff) {
             $subject = '【スタッフ用控え】' . $subject;
         }
+
         Mail::to($recipient)
             ->send(
                 (new AnswerConfirmationMailable(

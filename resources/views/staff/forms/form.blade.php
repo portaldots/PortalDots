@@ -118,7 +118,7 @@
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group>
-                    <template v-slot:label>フォームへ可能なユーザー</template>
+                    <template v-slot:label>フォームへ回答可能なユーザー</template>
                     <template v-slot:description>
                         空欄の場合、企画に所属するユーザー全員がフォームに回答できます。
                         タグを指定した場合、指定したタグのうち、1つ以上該当する企画がフォームに回答できます。

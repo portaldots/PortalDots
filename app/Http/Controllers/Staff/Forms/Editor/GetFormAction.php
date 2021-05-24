@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Staff\Forms\Editor;
 
 use App\Eloquents\Form;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class GetFormAction extends Controller
@@ -16,7 +15,6 @@ class GetFormAction extends Controller
             'description' => $form->description,
             'open_at' => $form->open_at,
             'close_at' => $form->close_at,
-            'created_by' => $form->created_by,
             'type' => $form->type,
             'max_answers' => $form->max_answers,
             'is_public' => $form->is_public,

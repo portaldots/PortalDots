@@ -46,9 +46,6 @@ class UpdateActionTest extends TestCase
                 'document name',
                 'document description',
                 null,
-                Mockery::on(function ($arg) {
-                    return $this->staff->id === $arg->id && $this->staff->name === $arg->name;
-                }),
                 false,
                 true,
                 Mockery::on(function ($arg) use ($schedule) {

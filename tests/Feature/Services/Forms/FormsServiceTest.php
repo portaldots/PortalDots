@@ -3,7 +3,6 @@
 namespace Tests\Feature\Services\Forms;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Eloquents\Form;
 use App\Eloquents\Question;
@@ -34,14 +33,13 @@ class FormsServiceTest extends TestCase
      */
     public function copyForm_申請の複製ができる()
     {
-        $form = $this->formsService->copyForm($this->form, $this->user);
+        $form = $this->formsService->copyForm($this->form);
 
         $this->assertInstanceOf(Form::class, $form);
 
         $this->assertDatabaseHas('forms', [
             'name' => 'テスト申請のコピー',
             'is_public' => false,
-            'created_by' => $this->user->id,
         ]);
 
         foreach ($this->questions as $q) {

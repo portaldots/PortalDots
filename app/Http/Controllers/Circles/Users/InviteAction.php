@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Circles\Users;
 
-use Auth;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Eloquents\Circle;
 use App\Eloquents\CustomForm;
+use Illuminate\Support\Facades\Auth;
 
 class InviteAction extends Controller
 {

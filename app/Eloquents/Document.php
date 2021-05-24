@@ -5,10 +5,29 @@ namespace App\Eloquents;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Concerns\IsNewTrait;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Document extends Model
 {
     use IsNewTrait;
+    use LogsActivity;
+
+    protected static $logName = 'document';
+
+    protected static $logAttributes = [
+        'id',
+        'name',
+        'description',
+        'path',
+        'size',
+        'extension',
+        'is_public',
+        'is_important',
+        'schedule',
+        'notes',
+    ];
+
+    protected static $logOnlyDirty = true;
 
     protected $casts = [
         'is_public' => 'bool',
@@ -21,8 +40,6 @@ class Document extends Model
         'path',
         'size',
         'extension',
-        'created_by',
-        'updated_by',
         'is_public',
         'is_important',
         'schedule_id',
@@ -57,15 +74,5 @@ class Document extends Model
     public function schedule()
     {
         return $this->belongsTo(Schedule::class);
-    }
-
-    public function userCreatedBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function userUpdatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
     }
 }
