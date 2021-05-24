@@ -7,7 +7,6 @@ use App\Eloquents\Schedule;
 use App\Eloquents\User;
 use App\Exports\DocumentsExport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
@@ -57,8 +56,6 @@ class DocumentsExportTest extends TestCase
             'is_public' => true,
             'is_important' => true,
             'schedule_id' => $this->schedule->id,
-            'created_by' => $this->user->id,
-            'updated_by' => $this->user->id,
         ]);
     }
 
@@ -80,9 +77,7 @@ class DocumentsExportTest extends TestCase
                 'はい',
                 $this->document->notes,
                 $this->document->created_at,
-                "{$this->user->name}(ID:{$this->user->id},{$this->user->student_id})",
                 $this->document->updated_at,
-                "{$this->user->name}(ID:{$this->user->id},{$this->user->student_id})",
             ],
             $this->documentsExport->map($this->document)
         );

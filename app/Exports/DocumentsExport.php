@@ -14,7 +14,7 @@ class DocumentsExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Document::with(['schedule', 'userCreatedBy', 'userUpdatedBy'])->get();
+        return Document::with(['schedule'])->get();
     }
 
     /**
@@ -35,11 +35,7 @@ class DocumentsExport implements FromCollection, WithHeadings, WithMapping
             $document->is_important ? 'はい' : 'いいえ',
             $document->notes,
             $document->created_at,
-            "{$document->userCreatedBy->name}"
-            . "(ID:{$document->userCreatedBy->id},{$document->userCreatedBy->student_id})",
             $document->updated_at,
-            "{$document->userUpdatedBy->name}"
-            . "(ID:{$document->userUpdatedBy->id},{$document->userUpdatedBy->student_id})",
         ];
     }
 
@@ -60,9 +56,7 @@ class DocumentsExport implements FromCollection, WithHeadings, WithMapping
             '重要',
             'スタッフ用メモ',
             '作成日時',
-            '作成者',
             '更新日時',
-            '更新者',
         ];
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Circles;
 
-use Auth;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Eloquents\Circle;
 use App\Eloquents\CustomForm;
 use App\Services\Forms\AnswerDetailsService;
+use Illuminate\Support\Facades\Auth;
 
 class EditAction extends Controller
 {

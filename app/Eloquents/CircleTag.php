@@ -5,17 +5,17 @@ namespace App\Eloquents;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class PageViewableTag extends Pivot
+class CircleTag extends Pivot
 {
-    public function page()
+    public $incrementing = true;
+
+    public function circle()
     {
-        return $this->belongsTo(Page::class);
+        return $this->belongsTo(Circle::class);
     }
 
     public function tag()
     {
         return $this->belongsTo(Tag::class);
     }
-
-    public $incrementing = true;
 }

@@ -42,8 +42,6 @@ class CopyActionTest extends TestCase
         $this->mock(FormsService::class, function ($mock) {
             $mock->shouldReceive('copyForm')->once()->with(Mockery::on(function ($arg) {
                 return $this->form->id === $arg->id && $this->form->name === $arg->name;
-            }), Mockery::on(function ($arg) {
-                return $this->staff->id === $arg->id && $this->staff->name === $arg->name;
             }))->andReturn($this->form_copy);
         });
 

@@ -28,7 +28,9 @@ class RegenerateTokenAction extends Controller
             abort(403);
         }
 
+        activity()->disableLogging();
         $this->circlesService->regenerateInvitationToken($circle);
+        activity()->enableLogging();
 
         return redirect()
             ->route('circles.users.index', ['circle' => $circle])

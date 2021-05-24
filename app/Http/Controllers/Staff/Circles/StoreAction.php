@@ -79,11 +79,16 @@ class StoreAction extends Controller
         }
 
         // 場所の保存
-        $this->circlesService->savePlaces($circle, $request->places ?? []);
+        $this->circlesService->savePlaces($circle, $request->places ?? [], Auth::user());
 
         // タグの保存
         try {
-            $this->circlesService->saveTags($circle, $request->tags ?? [], Auth::user()->can('staff.tags.edit'));
+            $this->circlesService->saveTags(
+                $circle,
+                $request->tags ?? [],
+                Auth::user()->can('staff.tags.edit'),
+                Auth::user()
+            );
         } catch (DenyCreateTagsException $e) {
             DB::rollBack();
             return redirect()

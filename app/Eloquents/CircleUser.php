@@ -3,8 +3,6 @@
 namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use App\Eloquents\Circle;
-use App\Eloquents\User;
 
 class CircleUser extends Pivot
 {
@@ -13,4 +11,14 @@ class CircleUser extends Pivot
     protected $casts = [
         'is_leader' => 'bool',
     ];
+
+    public function circle()
+    {
+        return $this->belongsTo(Circle::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

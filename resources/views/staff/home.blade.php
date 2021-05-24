@@ -126,6 +126,15 @@
                 </template>
             </list-view-item>
             @if (Auth::user()->is_admin)
+                <list-view-item href="{{ route('admin.activity_log.index') }}">
+                    <template v-slot:title>
+                        <i class="fas fa-user-edit fa-lg text-muted fa-fw"></i>
+                        <span class="px-spacing-sm">
+                            アクティビティログ
+                            <app-badge danger>管理者</app-badge>
+                        </span>
+                    </template>
+                </list-view-item>
                 <list-view-item href="{{ route('admin.portal.edit') }}">
                     <template v-slot:title>
                         <i class="fas fa-cog fa-lg text-muted fa-fw"></i>

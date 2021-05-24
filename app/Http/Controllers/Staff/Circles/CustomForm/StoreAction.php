@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Staff\Circles\CustomForm;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Auth;
-use DB;
 use App\Eloquents\Form;
 use App\Eloquents\CustomForm;
+use Illuminate\Support\Facades\DB;
 
 class StoreAction extends Controller
 {
@@ -25,7 +23,6 @@ class StoreAction extends Controller
                 'name' => '企画参加登録',
                 'open_at' => now()->addWeek(),
                 'close_at' => now()->addWeek()->addMonth(),
-                'created_by' => Auth::id(),
                 'is_public' => false,
             ]);
 

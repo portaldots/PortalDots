@@ -40,9 +40,8 @@ class FormsGridMaker implements GridMakable
             'open_at',
             'close_at',
             'created_at',
-            'created_by',
             'updated_at',
-        ])->with(['answerableTags', 'userCreatedBy'])->withoutCustomForms();
+        ])->with(['answerableTags'])->withoutCustomForms();
     }
 
     /**
@@ -59,7 +58,6 @@ class FormsGridMaker implements GridMakable
             'open_at',
             'close_at',
             'created_at',
-            'created_by',
             'updated_at',
         ];
     }
@@ -74,26 +72,6 @@ class FormsGridMaker implements GridMakable
         if (empty($tags_choices)) {
             $tags_choices = Tag::all()->toArray();
         }
-
-        $users_type = FilterableKey::belongsTo(
-            'users',
-            new FilterableKeysDict([
-                'id' => FilterableKey::number(),
-                'student_id' => FilterableKey::string(),
-                'name_family' => FilterableKey::string(),
-                'name_family_yomi' => FilterableKey::string(),
-                'name_given' => FilterableKey::string(),
-                'name_given_yomi' => FilterableKey::string(),
-                'email' => FilterableKey::string(),
-                'tel' => FilterableKey::string(),
-                'is_staff' => FilterableKey::bool(),
-                'is_admin' => FilterableKey::bool(),
-                'email_verified_at' => FilterableKey::isNull(),
-                'univemail_verified_at' => FilterableKey::isNull(),
-                'created_at' => FilterableKey::datetime(),
-                'updated_at' => FilterableKey::datetime()
-            ])
-        );
 
         return new FilterableKeysDict([
             'id' => FilterableKey::number(),
@@ -110,7 +88,6 @@ class FormsGridMaker implements GridMakable
             'open_at' => FilterableKey::datetime(),
             'close_at' => FilterableKey::datetime(),
             'created_at' => FilterableKey::datetime(),
-            'created_by' => $users_type,
             'updated_at' => FilterableKey::datetime(),
         ]);
     }
@@ -128,7 +105,6 @@ class FormsGridMaker implements GridMakable
             'open_at',
             'close_at',
             'created_at',
-            'created_by',
             'updated_at',
         ];
     }
@@ -154,9 +130,6 @@ class FormsGridMaker implements GridMakable
                     break;
                 case 'created_at':
                     $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
-                    break;
-                case 'created_by':
-                    $item[$key] = $record->userCreatedBy;
                     break;
                 case 'updated_at':
                     $item[$key] = !empty($record->updated_at) ? $record->updated_at->format('Y/m/d H:i:s') : null;

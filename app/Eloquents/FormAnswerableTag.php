@@ -3,10 +3,19 @@
 namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use App\Eloquents\Circle;
-use App\Eloquents\User;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class FormAnswerableTag extends Pivot
 {
     public $incrementing = true;
+
+    public function form()
+    {
+        return $this->belongsTo(Form::class);
+    }
+
+    public function tag()
+    {
+        return $this->belongsTo(Tag::class);
+    }
 }
