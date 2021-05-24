@@ -38,7 +38,7 @@
                 新規配布資料
             </a>
             <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
+                class="btn is-primary-inverse is-no-border"
                 href="{{ route('staff.documents.export') }}"
                 target="_blank"
                 rel="noopener noreferrer"

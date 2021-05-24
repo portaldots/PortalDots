@@ -170,7 +170,7 @@ export default {
   }
   &__edit-panel {
     /* border-top: 1px solid $color-border; */
-    box-shadow: inset 0 0.3rem 0.25rem -0.2rem $color-box-shadow-light;
+    box-shadow: inset 0 0.2rem 0.8rem -0.6rem $color-box-shadow;
     display: none;
     overflow: hidden;
     padding: $spacing;

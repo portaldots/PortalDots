@@ -27,7 +27,7 @@
                 新規予定
             </a>
             <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
+                class="btn is-primary-inverse is-no-border"
                 href="{{ route('staff.schedules.export') }}"
                 target="_blank"
                 rel="noopener noreferrer"

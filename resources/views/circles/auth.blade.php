@@ -11,7 +11,9 @@
         <list-view>
             <template v-slot:title>認証が必要</template>
             <list-view-card>
-                <i class="fas fa-exclamation-circle"></i> このページへアクセスするにはパスワードを入力してください
+                <app-info-box primary>
+                    このページへアクセスするにはパスワードを入力してください
+                </app-info-box>
             </list-view-card>
             <list-view-form-group label-for="password">
                 <template v-slot:label>
