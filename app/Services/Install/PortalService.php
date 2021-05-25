@@ -42,9 +42,9 @@ class PortalService extends AbstractService
             'PORTAL_ADMIN_NAME' => '実行委員会の名称',
             'PORTAL_CONTACT_EMAIL' => '実行委員会のメールアドレス',
             'PORTAL_UNIVEMAIL_DOMAIN' => '学校発行メールアドレスのドメイン',
-            'PORTAL_PRIMARY_COLOR_H' => 'テーマカラー(H)',
-            'PORTAL_PRIMARY_COLOR_S' => 'テーマカラー(S)',
-            'PORTAL_PRIMARY_COLOR_L' => 'テーマカラー(L)',
+            'PORTAL_PRIMARY_COLOR_H' => 'アクセントカラー(H)',
+            'PORTAL_PRIMARY_COLOR_S' => 'アクセントカラー(S)',
+            'PORTAL_PRIMARY_COLOR_L' => 'アクセントカラー(L)',
         ];
     }
 }

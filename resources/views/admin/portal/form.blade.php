@@ -69,7 +69,7 @@
                 @endforeach
                 <list-view-form-group>
                     <template v-slot:label>
-                        テーマカラー
+                        アクセントカラー
                     </template>
                     <template v-slot:description>
                         ポータル内のボタンやリンクの色を好きな色に設定できます
