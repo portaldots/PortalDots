@@ -23,7 +23,7 @@
       v-model="hexValue"
       class="form-control ui-primary-color-picker__input"
     />
-    <button type="button" class="btn is-secondary is-sm" @click="reset">
+    <button type="button" class="btn is-primary-inverse is-sm" @click="reset">
       デフォルトにもどす
     </button>
   </div>
