@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ui-primary-color-picker">
     <input
       type="hidden"
       :name="inputNameH"
@@ -23,14 +23,22 @@
       v-model="hexValue"
       class="form-control ui-primary-color-picker__input"
     />
+    <button type="button" class="btn is-secondary is-sm" @click="reset">
+      デフォルトにもどす
+    </button>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.ui-primary-color-picker__input {
-  height: 2rem;
-  padding: $spacing-xs;
-  width: 4rem;
+.ui-primary-color-picker {
+  align-items: center;
+  display: flex;
+  &__input {
+    height: 2rem;
+    margin-right: $spacing-sm;
+    padding: $spacing-xs;
+    width: 4rem;
+  }
 }
 </style>
 
@@ -80,6 +88,9 @@ export default {
     },
     convertHexToHsl(hex) {
       return convert.hex.hsl(hex.replace('#', ''))
+    },
+    reset() {
+      this.hexValue = '#1a79f4'
     }
   },
   watch: {
