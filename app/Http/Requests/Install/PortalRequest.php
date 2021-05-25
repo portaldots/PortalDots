@@ -56,7 +56,7 @@ class PortalRequest extends FormRequest
             $l = (int)$this->PORTAL_PRIMARY_COLOR_L;
 
             if ($h < 0 || $h > 360 || $s < 0 || $s > 100 || $l < 0 || $l > 100) {
-                $validator->errors()->add('primary_color', 'お問い合わせ項目を選択肢から選んでください');
+                $validator->errors()->add('primary_color', 'アクセントカラーを選択してください');
             }
         });
     }
