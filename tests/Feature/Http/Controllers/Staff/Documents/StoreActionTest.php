@@ -8,7 +8,6 @@ use App\Eloquents\User;
 use App\Eloquents\Schedule;
 use App\Services\Documents\DocumentsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Mockery;
 use Illuminate\Support\Facades\Storage;
@@ -55,9 +54,6 @@ class StoreActionTest extends TestCase
                 'document name',
                 'document description',
                 Mockery::any(),
-                Mockery::on(function ($arg) {
-                    return $this->staff->id === $arg->id && $this->staff->name === $arg->name;
-                }),
                 false,
                 true,
                 Mockery::on(function ($arg) use ($schedule) {

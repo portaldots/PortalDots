@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Staff\Documents;
 
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Services\Documents\DocumentsService;
 use App\Http\Requests\Staff\Documents\UpdateDocumentRequest;
@@ -30,7 +29,6 @@ class UpdateAction extends Controller
             $validated['name'],
             $validated['description'],
             $request->file('file'),
-            Auth::user(),
             (bool)$validated['is_public'],
             (bool)$validated['is_important'],
             !empty($validated['schedule_id']) ? Schedule::findOrFail($validated['schedule_id']) : null,

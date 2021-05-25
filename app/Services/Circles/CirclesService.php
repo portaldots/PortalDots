@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\Circles;
 
-use DB;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Place;
@@ -13,10 +12,23 @@ use App\Mail\Circles\ApprovedMailable;
 use App\Mail\Circles\RejectedMailable;
 use App\Mail\Circles\SubmitedMailable;
 use App\Services\Circles\Exceptions\DenyCreateTagsException;
+use App\Services\Utils\ActivityLogService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class CirclesService
 {
+    /**
+     * @var ActivityLogService
+     */
+    private $activityLogService;
+
+    public function __construct(ActivityLogService $activityLogService)
+    {
+        $this->activityLogService = $activityLogService;
+    }
+
     /**
      * 企画を作成する
      *
@@ -95,11 +107,34 @@ class CirclesService
 
     /**
      * 指定された企画について場所を保存する
+     *
+     * @param Circle $circle
+     * @param array $place_ids
+     * @param User $caused_by 場所を保存したユーザー
+     * @return void
      */
-    public function savePlaces(Circle $circle, array $place_ids)
+    public function savePlaces(Circle $circle, array $place_ids, User $caused_by)
     {
-        $exist_places = Place::whereIn('id', $place_ids)->get();
-        $circle->places()->sync($exist_places->pluck('id')->all());
+        DB::transaction(function () use ($circle, $place_ids, $caused_by) {
+            $old_places = $circle->places;
+            $exist_places = Place::whereIn('id', $place_ids)->get();
+            $circle->places()->sync($exist_places->pluck('id')->all());
+
+            $map_function = function ($place) {
+                return [
+                    'id' => $place->id,
+                    'name' => $place->name,
+                ];
+            };
+
+            $this->activityLogService->logOnlyAttributesChanged(
+                'booth',
+                $caused_by,
+                $circle,
+                $old_places->map($map_function)->toArray(),
+                $exist_places->map($map_function)->toArray()
+            );
+        });
     }
 
     /**
@@ -108,29 +143,50 @@ class CirclesService
      * @param Circle $circle
      * @param array $tags
      * @param boolean $allow_create タグの新規作成を許可するかどうか
+     * @param User $caused_by タグを保存したユーザー
      * @throws DenyCreateTagsException $allow_create が false なのに企画タグの新規作成が必要になった場合に発生する例外
      * @return void
      */
-    public function saveTags(Circle $circle, array $tags, bool $allow_create = true)
+    public function saveTags(Circle $circle, array $tags, bool $allow_create, User $caused_by)
     {
-        // 検索時は大文字小文字の区別をしない
-        // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
-        $exist_tags = Tag::whereIn('name', $tags)->get();
+        DB::transaction(function () use ($circle, $tags, $allow_create, $caused_by) {
+            $old_tags = $circle->tags;
 
-        $diff = array_udiff($tags, $exist_tags->pluck('name')->all(), 'strcasecmp');
+            // 検索時は大文字小文字の区別をしない
+            // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
+            $exist_tags = Tag::whereIn('name', $tags)->get();
 
-        foreach ($diff as $insert) {
-            if (!$allow_create) {
-                throw new DenyCreateTagsException('企画タグの作成は許可されていません');
+            $diff = array_udiff($tags, $exist_tags->pluck('name')->all(), 'strcasecmp');
+
+            foreach ($diff as $insert) {
+                if (!$allow_create) {
+                    throw new DenyCreateTagsException('企画タグの作成は許可されていません');
+                }
+
+                Tag::create(['name' => $insert]);
             }
 
-            Tag::create(['name' => $insert]);
-        }
+            // $tags 配列の順番で保存するため、もう一度 DB からタグ一覧を取得する
+            $tags_on_db = Tag::whereIn('name', $tags)->get();
 
-        // $tags 配列の順番で保存するため、もう一度 DB からタグ一覧を取得する
-        $tags_on_db = Tag::whereIn('name', $tags)->get();
+            $circle->tags()->sync($tags_on_db->pluck('id')->all());
 
-        $circle->tags()->sync($tags_on_db->pluck('id')->all());
+            // ログに残す
+            $map_function = function ($tag) {
+                return [
+                    'id' => $tag->id,
+                    'name' => $tag->name,
+                ];
+            };
+
+            $this->activityLogService->logOnlyAttributesChanged(
+                'circle_tag',
+                $caused_by,
+                $circle,
+                $old_tags->map($map_function)->toArray(),
+                $tags_on_db->map($map_function)->toArray()
+            );
+        });
     }
 
     public function sendSubmitedEmail(User $user, Circle $circle)

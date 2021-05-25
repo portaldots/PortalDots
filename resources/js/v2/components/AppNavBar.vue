@@ -23,7 +23,7 @@ export default {
 .navbar {
   align-items: center;
   background: $color-behind-text;
-  box-shadow: 0 0 0.5rem $color-box-shadow-light;
+  box-shadow: 0 -0.5rem 0.8rem 0 $color-box-shadow;
   display: flex;
   height: $navbar-height;
   left: $drawer-width;

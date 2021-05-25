@@ -28,7 +28,7 @@ class UpdateFormAction extends Controller
             return abort(400);
         }
 
-        unset($form['created_by'], $form['created_at'], $form['updated_at'], $form['custom_form'], $form['id']);
+        unset($form['created_at'], $form['updated_at'], $form['custom_form'], $form['id']);
 
         $this->formEditorService->updateForm(
             $form_id,

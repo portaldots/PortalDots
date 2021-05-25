@@ -3,12 +3,10 @@
 namespace Tests\Feature\Exports;
 
 use App\Eloquents\Form;
-use App\Eloquents\Question;
 use App\Eloquents\Tag;
 use App\Eloquents\User;
 use App\Exports\FormsExport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
@@ -46,7 +44,6 @@ class FormsExportTest extends TestCase
 
         $this->form = factory(Form::class)->create([
             'name' => '場所登録申請',
-            'created_by' => $this->user->id,
             'max_answers' => 2,
         ]);
 
@@ -72,11 +69,10 @@ class FormsExportTest extends TestCase
                 2,
                 'はい',
                 $this->form->created_at,
-                "{$this->user->name}(ID:{$this->user->id},{$this->user->student_id})",
                 $this->form->updated_at,
             ],
             $this->formsExport->map(
-                $this->form->load(['answerableTags', 'userCreatedBy'])
+                $this->form->load(['answerableTags'])
             )
         );
     }

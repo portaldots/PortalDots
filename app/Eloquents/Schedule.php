@@ -4,9 +4,25 @@ namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Schedule extends Model
 {
+    use LogsActivity;
+
+    protected static $logName = 'schedule';
+
+    protected static $logAttributes = [
+        'id',
+        'name',
+        'start_at',
+        'place',
+        'description',
+        'notes'
+    ];
+
+    protected static $logOnlyDirty = true;
+
     protected $fillable = [
         'name',
         'start_at',

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Circles;
 
-use Auth;
-use DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Circles\CircleRequest;
 use App\Services\Circles\CirclesService;
 use App\Services\Forms\AnswersService;
 use App\Eloquents\Circle;
 use App\Eloquents\CustomForm;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UpdateAction extends Controller
 {
@@ -37,6 +37,8 @@ class UpdateAction extends Controller
             abort(403);
         }
 
+        activity()->disableLogging();
+
         DB::transaction(function () use ($request, $circle) {
             $this->circlesService->update(
                 $circle,
@@ -62,6 +64,8 @@ class UpdateAction extends Controller
                 );
             }
         });
+
+        activity()->enableLogging();
 
         return redirect()
             ->route('circles.users.index', ['circle' => $circle]);

@@ -32,7 +32,7 @@
     >
         <template v-slot:toolbar>
             <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
+                class="btn is-primary-inverse is-no-border"
                 href="{{ route('staff.users.export') }}"
                 target="_blank"
                 rel="noopener noreferrer"

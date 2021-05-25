@@ -78,6 +78,11 @@
             </a>
             @endcan
             @if (Auth::user()->is_admin)
+                <a href="{{ route('admin.activity_log.index') }}" class="drawer-nav__link{{ Request::is('admin/activity_log*') ? ' is-active' : '' }}">
+                    <i class="fas fa-user-edit drawer-nav__icon fa-fw"></i>
+                    アクティビティログ
+                    <app-badge danger>管理者</app-badge>
+                </a>
                 <a href="{{ route('admin.portal.edit') }}" class="drawer-nav__link{{ Request::is('admin/portal*') ? ' is-active' : '' }}">
                     <i class="fas fa-cog drawer-nav__icon fa-fw"></i>
                     PortalDots の設定

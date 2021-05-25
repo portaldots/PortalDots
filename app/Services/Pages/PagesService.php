@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services\Pages;
 
-use DB;
 use App\Eloquents\Page;
 use App\Eloquents\User;
 use App\Eloquents\Tag;
 use App\Services\Emails\SendEmailService;
+use App\Services\Utils\ActivityLogService;
+use Illuminate\Support\Facades\DB;
 
 class PagesService
 {
@@ -17,9 +18,17 @@ class PagesService
      */
     private $sendEmailService;
 
-    public function __construct(SendEmailService $sendEmailService)
-    {
+    /**
+     * @var ActivityLogService
+     */
+    private $activityLogService;
+
+    public function __construct(
+        SendEmailService $sendEmailService,
+        ActivityLogService $activityLogService
+    ) {
         $this->sendEmailService = $sendEmailService;
+        $this->activityLogService = $activityLogService;
     }
 
     /**
@@ -43,15 +52,29 @@ class PagesService
             $page = Page::create([
                 'title' => $title,
                 'body' => $body,
-                'created_by' => $created_by->id,
-                'updated_by' => $created_by->id,
                 'notes' => $notes,
             ]);
 
             // 検索時は大文字小文字の区別をしない
             // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
-            $exist_tags = Tag::select('id')->whereIn('name', $viewable_tags)->get();
+            $exist_tags = Tag::select('id', 'name')->whereIn('name', $viewable_tags)->get();
             $page->viewableTags()->sync($exist_tags->pluck('id')->all());
+
+            // ログに残す
+            $map_function = function ($tag) {
+                return [
+                    'id' => $tag->id,
+                    'name' => $tag->name,
+                ];
+            };
+
+            $this->activityLogService->logOnlyAttributesChanged(
+                'page_viewable_tag',
+                $created_by,
+                $page,
+                [],
+                $exist_tags->map($map_function)->toArray()
+            );
 
             return $page;
         });
@@ -80,14 +103,31 @@ class PagesService
             $page->update([
                 'title' => $title,
                 'body' => $body,
-                'updated_by' => $updated_by->id,
                 'notes' => $notes,
             ]);
 
+            $old_tags = $page->viewableTags()->orderBy('id')->get();
+
             // 検索時は大文字小文字の区別をしない
             // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
-            $exist_tags = Tag::select('id')->whereIn('name', $viewable_tags)->get();
+            $exist_tags = Tag::select('id', 'name')->whereIn('name', $viewable_tags)->orderBy('id')->get();
             $page->viewableTags()->sync($exist_tags->pluck('id')->all());
+
+            // ログに残す
+            $map_function = function ($tag) {
+                return [
+                    'id' => $tag->id,
+                    'name' => $tag->name,
+                ];
+            };
+
+            $this->activityLogService->logOnlyAttributesChanged(
+                'page_viewable_tag',
+                $updated_by,
+                $page,
+                $old_tags->map($map_function)->toArray(),
+                $exist_tags->map($map_function)->toArray()
+            );
 
             return true;
         });

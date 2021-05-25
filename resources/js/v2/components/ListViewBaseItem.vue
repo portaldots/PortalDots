@@ -55,9 +55,8 @@ export default {
 .listview-base-item {
   $listview-border: 1px solid $color-border;
 
-  background: $color-behind-text;
+  background-color: transparent;
   border: 0;
-  box-shadow: 0 1px 2px $color-box-shadow-light;
   color: $color-text;
   cursor: pointer;
   display: block;

@@ -3,7 +3,6 @@
 namespace Tests\Feature\Services\Pages;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Services\Pages\PagesService;
 use App\Eloquents\Tag;
@@ -11,8 +10,8 @@ use App\Eloquents\Circle;
 use App\Eloquents\User;
 use App\Eloquents\Page;
 use App\Eloquents\Email;
-use App;
-use DB;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class PagesServiceTest extends TestCase
 {
@@ -62,7 +61,6 @@ EOL
         );
 
         $content_on_db = $this->content;
-        $content_on_db['created_by'] = $this->staff->id;
 
         $this->assertDatabaseHas('pages', $content_on_db);
     }
