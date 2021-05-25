@@ -26,6 +26,11 @@ class UIThemeService
     public static function getCssPrimaryColor(float $alpha = 1): string
     {
         $hsl = config('portal.primary_color_hsl');
+
+        if (empty($hsl[0]) && empty($hsl[1]) && empty($hsl[2])) {
+            return 'hsla(214, 91, 53, 1)';
+        }
+
         if (static::getCurrentTheme() === 'dark') {
             $s = $hsl[1] - 10;
             $l = $hsl[2] + 10;

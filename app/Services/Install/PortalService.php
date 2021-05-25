@@ -30,9 +30,6 @@ class PortalService extends AbstractService
             'PORTAL_ADMIN_NAME' => ['required'],
             'PORTAL_CONTACT_EMAIL' => ['required'],
             'PORTAL_UNIVEMAIL_DOMAIN' => ['required'],
-            'PORTAL_PRIMARY_COLOR_H' => ['required', 'integer', 'min:0', 'max:360'],
-            'PORTAL_PRIMARY_COLOR_S' => ['required', 'integer', 'min:0', 'max:100'],
-            'PORTAL_PRIMARY_COLOR_L' => ['required', 'integer', 'min:0', 'max:100'],
         ];
     }
 

@@ -3,19 +3,19 @@
     <input
       type="hidden"
       :name="inputNameH"
-      :value="hslValue[0]"
+      :value="!waitForReset ? hslValue[0] : 'null'"
       v-if="inputNameH"
     />
     <input
       type="hidden"
       :name="inputNameS"
-      :value="hslValue[1]"
+      :value="!waitForReset ? hslValue[1] : 'null'"
       v-if="inputNameS"
     />
     <input
       type="hidden"
       :name="inputNameL"
-      :value="hslValue[2]"
+      :value="!waitForReset ? hslValue[2] : 'null'"
       v-if="inputNameL"
     />
     <input
@@ -66,7 +66,8 @@ export default {
   },
   data() {
     return {
-      hexValue: '#000000'
+      hexValue: '#000000',
+      waitForReset: false
     }
   },
   mounted() {
@@ -91,10 +92,14 @@ export default {
     },
     reset() {
       this.hexValue = '#1a79f4'
+      this.$nextTick(() => {
+        this.waitForReset = true
+      })
     }
   },
   watch: {
     hexValue(value) {
+      this.waitForReset = false
       const hsl = this.convertHexToHsl(value)
       document.documentElement.style.setProperty(
         '--color-primary',

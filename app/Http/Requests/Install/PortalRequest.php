@@ -33,4 +33,32 @@ class PortalRequest extends FormRequest
         $portalService = App::make(PortalService::class);
         return $portalService->getFormLabels();
     }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $this->validated();
+            if (
+                empty($this->PORTAL_PRIMARY_COLOR_H) ||
+                empty($this->PORTAL_PRIMARY_COLOR_S) || empty($this->PORTAL_PRIMARY_COLOR_L)
+            ) {
+                return;
+            }
+
+            if (
+                $this->PORTAL_PRIMARY_COLOR_H === 'null' &&
+                $this->PORTAL_PRIMARY_COLOR_S === 'null' && $this->PORTAL_PRIMARY_COLOR_L === 'null'
+            ) {
+                return;
+            }
+
+            $h = (int)$this->PORTAL_PRIMARY_COLOR_H;
+            $s = (int)$this->PORTAL_PRIMARY_COLOR_S;
+            $l = (int)$this->PORTAL_PRIMARY_COLOR_L;
+
+            if ($h < 0 || $h > 360 || $s < 0 || $s > 100 || $l < 0 || $l > 100) {
+                $validator->errors()->add('primary_color', 'お問い合わせ項目を選択肢から選んでください');
+            }
+        });
+    }
 }
