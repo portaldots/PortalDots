@@ -1,3 +1,5 @@
+@inject('uiThemeService', 'App\Services\Utils\UIThemeService')
+
 @extends('layouts.app')
 
 @section('title', 'PortalDots の設定')
@@ -34,25 +36,27 @@
                             <template v-slot:invalid>{{ $message }}</template>
                             @enderror
                         </list-view-form-group>
+                    @elseif (strpos($key, 'PORTAL_PRIMARY_COLOR_') === 0)
+                        @continue
                     @else
                         <list-view-form-group label-for="name">
                             <template v-slot:label>
                                 {{ [
-                                            'APP_NAME' => 'ポータルの名前',
-                                            'APP_URL' => 'ポータルのURL',
-                                            'PORTAL_ADMIN_NAME' => '実行委員会の名称',
-                                            'PORTAL_CONTACT_EMAIL' => '実行委員会のメールアドレス',
-                                            'PORTAL_UNIVEMAIL_DOMAIN' => '学校発行メールアドレスのドメイン'
-                                        ][$key] }}
+                                    'APP_NAME' => 'ポータルの名前',
+                                    'APP_URL' => 'ポータルのURL',
+                                    'PORTAL_ADMIN_NAME' => '実行委員会の名称',
+                                    'PORTAL_CONTACT_EMAIL' => '実行委員会のメールアドレス',
+                                    'PORTAL_UNIVEMAIL_DOMAIN' => '学校発行メールアドレスのドメイン'
+                                ][$key] }}
                             </template>
                             <template v-slot:description>
                                 {{ [
-                                            'APP_NAME' => '例 : 野田祭ウェブシステム',
-                                            'APP_URL' => '不必要に変更するとポータルにアクセスできなくなる可能性があります',
-                                            'PORTAL_ADMIN_NAME' => '',
-                                            'PORTAL_CONTACT_EMAIL' => 'ユーザーからの問い合わせはこのメールアドレスに届きます',
-                                            'PORTAL_UNIVEMAIL_DOMAIN' => '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります'
-                                        ][$key] }}
+                                    'APP_NAME' => '例 : 野田祭ウェブシステム',
+                                    'APP_URL' => '不必要に変更するとポータルにアクセスできなくなる可能性があります',
+                                    'PORTAL_ADMIN_NAME' => '',
+                                    'PORTAL_CONTACT_EMAIL' => 'ユーザーからの問い合わせはこのメールアドレスに届きます',
+                                    'PORTAL_UNIVEMAIL_DOMAIN' => '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります'
+                                ][$key] }}
                             </template>
                             <input id="{{ $key }}" type="text" class="form-control @error($key) is-invalid @enderror"
                                 name="{{ $key }}"
@@ -63,6 +67,26 @@
                         </list-view-form-group>
                     @endif
                 @endforeach
+                <list-view-form-group>
+                    <template v-slot:label>
+                        テーマカラー
+                    </template>
+                    <template v-slot:description>
+                        ポータル内のボタンやリンクの色を好きな色に設定できます
+                    </template>
+                    <ui-primary-color-picker input-name-h="PORTAL_PRIMARY_COLOR_H" input-name-s="PORTAL_PRIMARY_COLOR_S"
+                        input-name-l="PORTAL_PRIMARY_COLOR_L"
+                        default-hsla-value="{{ old('theme_color', $uiThemeService->getCssPrimaryColor()) }}"></ui-primary-color-picker>
+                    @error('PORTAL_PRIMARY_COLOR_H')
+                    <template v-slot:invalid>{{ $message }}</template>
+                    @enderror
+                    @error('PORTAL_PRIMARY_COLOR_S')
+                    <template v-slot:invalid>{{ $message }}</template>
+                    @enderror
+                    @error('PORTAL_PRIMARY_COLOR_L')
+                    <template v-slot:invalid>{{ $message }}</template>
+                    @enderror
+                </list-view-form-group>
             </list-view>
 
             <div class="text-center pt-spacing-md pb-spacing">

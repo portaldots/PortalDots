@@ -1,0 +1,103 @@
+<template>
+  <div>
+    <input
+      type="hidden"
+      :name="inputNameH"
+      :value="hslValue[0]"
+      v-if="inputNameH"
+    />
+    <input
+      type="hidden"
+      :name="inputNameS"
+      :value="hslValue[1]"
+      v-if="inputNameS"
+    />
+    <input
+      type="hidden"
+      :name="inputNameL"
+      :value="hslValue[2]"
+      v-if="inputNameL"
+    />
+    <input
+      type="color"
+      v-model="hexValue"
+      class="form-control ui-primary-color-picker__input"
+    />
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.ui-primary-color-picker__input {
+  height: 2rem;
+  padding: $spacing-xs;
+  width: 4rem;
+}
+</style>
+
+<script>
+import convert from 'color-convert'
+
+export default {
+  props: {
+    inputNameH: {
+      type: String,
+      default: null
+    },
+    inputNameS: {
+      type: String,
+      default: null
+    },
+    inputNameL: {
+      type: String,
+      default: null
+    },
+    defaultHslaValue: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      hexValue: '#000000'
+    }
+  },
+  mounted() {
+    this.hexValue = this.convertHslaToHex(this.defaultHslaValue)
+  },
+  computed: {
+    hslValue() {
+      return this.convertHexToHsl(this.hexValue)
+    }
+  },
+  methods: {
+    convertHslaToHex(hsla) {
+      const hsl_array = hsla
+        .replace('hsla(', '')
+        .replace(')', '')
+        .split(',')
+        .map((value) => parseInt(value.trim(), 10))
+      return `#${convert.hsl.hex(hsl_array[0], hsl_array[1], hsl_array[2])}`
+    },
+    convertHexToHsl(hex) {
+      return convert.hex.hsl(hex.replace('#', ''))
+    }
+  },
+  watch: {
+    hexValue(value) {
+      const hsl = this.convertHexToHsl(value)
+      document.documentElement.style.setProperty(
+        '--color-primary',
+        `hsla(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%, 1)`
+      )
+      document.documentElement.style.setProperty(
+        '--color-primary-hover',
+        `hsla(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%, 0.8)`
+      )
+      document.documentElement.style.setProperty(
+        '--color-focus-primary',
+        `hsla(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%, 0.25)`
+      )
+    }
+  }
+}
+</script>

@@ -41,6 +41,8 @@
                             <template v-slot:invalid>{{ $message }}</template>
                             @enderror
                         </list-view-form-group>
+                    @elseif (strpos($key, 'PORTAL_PRIMARY_COLOR_') === 0)
+                        @continue
                     @else
                         <list-view-form-group label-for="name">
                             <template v-slot:label>
@@ -48,12 +50,12 @@
                             </template>
                             <template v-slot:description>
                                 {{ [
-                                            'APP_NAME' => '例 : 野田祭ウェブシステム',
-                                            'APP_URL' => 'このページの URL から /install/portal を抜いたもの',
-                                            'PORTAL_ADMIN_NAME' => '',
-                                            'PORTAL_CONTACT_EMAIL' => 'ユーザーからの問い合わせはこのメールアドレスに届きます',
-                                            'PORTAL_UNIVEMAIL_DOMAIN' => '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります'
-                                        ][$key] }}
+                                    'APP_NAME' => '例 : 野田祭ウェブシステム',
+                                    'APP_URL' => 'このページの URL から /install/portal を抜いたもの',
+                                    'PORTAL_ADMIN_NAME' => '',
+                                    'PORTAL_CONTACT_EMAIL' => 'ユーザーからの問い合わせはこのメールアドレスに届きます',
+                                    'PORTAL_UNIVEMAIL_DOMAIN' => '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります'
+                                ][$key] }}
                             </template>
                             <input id="{{ $key }}" type="text" class="form-control @error($key) is-invalid @enderror"
                                 name="{{ $key }}"
