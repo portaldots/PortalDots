@@ -37,10 +37,9 @@ class PortalRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            $this->validated();
             if (
-                empty($this->PORTAL_PRIMARY_COLOR_H) ||
-                empty($this->PORTAL_PRIMARY_COLOR_S) || empty($this->PORTAL_PRIMARY_COLOR_L)
+                !isset($this->PORTAL_PRIMARY_COLOR_H) ||
+                !isset($this->PORTAL_PRIMARY_COLOR_S) || !isset($this->PORTAL_PRIMARY_COLOR_L)
             ) {
                 return;
             }

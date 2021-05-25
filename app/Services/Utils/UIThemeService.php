@@ -27,7 +27,7 @@ class UIThemeService
     {
         $hsl = config('portal.primary_color_hsl');
 
-        if (empty($hsl[0]) && empty($hsl[1]) && empty($hsl[2])) {
+        if (!isset($hsl[0]) && !isset($hsl[1]) && !isset($hsl[2])) {
             return 'hsla(214, 91, 53, 1)';
         }
 
