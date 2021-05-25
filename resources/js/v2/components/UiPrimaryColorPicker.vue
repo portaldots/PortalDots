@@ -106,12 +106,16 @@ export default {
         `hsla(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%, 1)`
       )
       document.documentElement.style.setProperty(
+        '--color-focus-primary',
+        `hsla(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%, 0.25)`
+      )
+      document.documentElement.style.setProperty(
         '--color-primary-hover',
         `hsla(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%, 0.8)`
       )
       document.documentElement.style.setProperty(
-        '--color-focus-primary',
-        `hsla(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%, 0.25)`
+        '--color-primary-inverse-hover',
+        `hsla(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%, 0.15)`
       )
     }
   }
