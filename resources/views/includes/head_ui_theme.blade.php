@@ -5,6 +5,11 @@
 <style>
     :root {
         color-scheme: {{ $uiThemeService->getCssColorScheme() }};
+        --color-primary: {{ $uiThemeService->getCssPrimaryColor() }};
+        --color-primary-light: {{ $uiThemeService->getCssPrimaryColor(0.1) }};
+        --color-focus-primary: {{ $uiThemeService->getCssPrimaryColor(0.25) }};
+        --color-primary-hover: {{ $uiThemeService->getCssPrimaryColor(0.8) }};
+        --color-primary-inverse-hover: {{ $uiThemeService->getCssPrimaryColor(0.15) }};
     }
 </style>
 
@@ -12,8 +17,6 @@
 <style>
     :root {
         --color-text: rgb(34, 41, 47);
-        --color-primary: rgb(26, 121, 244);
-        --color-primary-light: rgba(26, 121, 244, 0.1);
         --color-danger: rgb(219, 60, 62);
         --color-danger-light: rgb(219, 60, 62, 0.1);
         --color-success: rgb(27, 162, 78);
@@ -28,15 +31,12 @@
         --color-form-control-readonly: rgb(255, 255, 255);
         --color-form-control-focus: rgb(255, 255, 255);
         --color-box-shadow: rgba(34, 41, 47, 0.5);
-        --color-focus-primary: rgba(26, 121, 244, 0.25);
         --color-focus-danger: rgba(219, 60, 62, 0.25);
         --color-pre-background: rgba(255, 255, 255, 0.25);
         --color-code-background: rgba(27, 162, 78, 0.1);
         --color-drawer-backdrop: rgba(34, 41, 47, 0.75);
         --color-grid-table-stripe: rgba(239, 239, 239, 0.4);
         --color-top-alert-border: rgba(255, 255, 255, 0.16);
-        --color-primary-hover: rgba(26, 121, 244, 0.8);
-        --color-primary-inverse-hover: rgba(26, 121, 244, 0.15);
         --color-danger-hover: rgba(219, 60, 62, 0.8);
         --color-success-hover: rgba(27, 162, 78, 0.8);
     }
@@ -48,7 +48,6 @@
     {{ $uiThemeService->getCurrentTheme() === 'system' ? '@media (prefers-color-scheme: dark) {' : '' }}
         :root {
             --color-text: rgb(196, 199, 202);
-            --color-primary: rgb(117, 170, 240);
             --color-primary-light: rgba(117, 170, 240, 0.2);
             --color-danger: rgb(226, 118, 120);
             --color-danger-light: rgb(226, 118, 120, 0.2);
@@ -64,15 +63,12 @@
             --color-form-control-readonly: rgb(40, 40, 40);
             --color-form-control-focus: rgb(18, 18, 18);
             --color-box-shadow: rgba(0, 0, 0, 1);
-            --color-focus-primary: rgba(117, 170, 240, 0.3);
             --color-focus-danger: rgba(226, 118, 120, 0.4);
             --color-pre-background: rgba(255, 255, 255, 0.02);
             --color-code-background: rgba(75, 189, 119, 0.15);
             --color-drawer-backdrop: rgba(0, 0, 0, 0.75);
             --color-grid-table-stripe: rgba(12, 12, 12, 0.4);
             --color-top-alert-border: rgba(28, 28, 28, 0.16);
-            --color-primary-hover: rgba(117, 170, 240, 0.8);
-            --color-primary-inverse-hover: rgba(117, 170, 240, 0.15);
             --color-danger-hover: rgba(226, 118, 120, 0.8);
             --color-success-hover: rgba(75, 189, 119, 0.8);
         }
