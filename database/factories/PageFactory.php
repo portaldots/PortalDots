@@ -9,5 +9,7 @@ $factory->define(Page::class, function (Faker $faker) {
     return [
         'title' => $faker->name,
         'body' => $faker->text,
+        'is_pinned' => false,
+        'is_public' => true,
     ];
 });

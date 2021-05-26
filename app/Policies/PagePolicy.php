@@ -21,6 +21,9 @@ class PagePolicy
      */
     public function view(?User $user, Page $page, ?Circle $circle): bool
     {
+        if (!$page->is_public || $page->is_pinned) {
+            return false;
+        }
         if (!$page->viewableTags->isEmpty()) {
             if (empty($circle)) {
                 return false;

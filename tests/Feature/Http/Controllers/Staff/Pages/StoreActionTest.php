@@ -42,6 +42,8 @@ class StoreActionTest extends TestCase
                 }),
                 'スタッフ用メモです！123',
                 ['Cブース', '屋外模擬店'],
+                false,
+                false
             )->andReturn(new Page());
         });
 
@@ -51,6 +53,8 @@ class StoreActionTest extends TestCase
                 'title' => 'お知らせのタイトル',
                 'body' => "本文です\n\n# 見出し\n- リストです\n- リストです",
                 'viewable_tags' => ['Cブース', '屋外模擬店'],
+                'is_public' => '0',
+                'is_pinned' => null,
                 'send_emails' => '0',
                 'notes' => 'スタッフ用メモです！123',
             ]);
@@ -69,6 +73,8 @@ class StoreActionTest extends TestCase
                 'title' => 'お知らせのタイトル',
                 'body' => "本文です\n\n# 見出し\n- リストです\n- リストです",
                 'viewable_tags' => ['Cブース', '屋外模擬店'],
+                'is_public' => '0',
+                'is_pinned' => null,
                 'send_emails' => '0',
                 'notes' => 'スタッフ用メモです！123',
             ]);
@@ -115,6 +121,9 @@ class StoreActionTest extends TestCase
                 }),
                 'スタッフ用メモです！123',
                 ['Cブース', '屋外模擬店'],
+                // お知らせは非公開でもメール配信は可能
+                false,
+                false,
             )->andReturn($page);
 
             $mock->shouldReceive('sendEmailsByPage')->once()->with(
@@ -130,6 +139,8 @@ class StoreActionTest extends TestCase
                 'title' => $page->title,
                 'body' => "本文です\n\n# 見出し\n- リストです\n- リストです",
                 'viewable_tags' => ['Cブース', '屋外模擬店'],
+                'is_public' => '0',
+                'is_pinned' => null,
                 'send_emails' => '1',
                 'notes' => 'スタッフ用メモです！123',
             ]);
