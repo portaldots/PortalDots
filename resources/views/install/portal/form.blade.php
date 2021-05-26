@@ -77,7 +77,7 @@
                     </template>
                     <ui-primary-color-picker input-name-h="PORTAL_PRIMARY_COLOR_H" input-name-s="PORTAL_PRIMARY_COLOR_S"
                         input-name-l="PORTAL_PRIMARY_COLOR_L"
-                        default-hsla-value="{{ old('theme_color', $uiThemeService->getCssPrimaryColor()) }}"></ui-primary-color-picker>
+                        default-hsla-value="{{ $uiThemeService->getCssPrimaryColor() }}"></ui-primary-color-picker>
                     @error('primary_color')
                     <template v-slot:invalid>{{ $message }}</template>
                     @enderror
