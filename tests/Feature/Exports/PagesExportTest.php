@@ -45,7 +45,10 @@ class PagesExportTest extends TestCase
         $this->tag = factory(Tag::class)->create([
             'name' => 'タグです',
         ]);
-        $this->page = factory(Page::class)->create();
+        $this->page = factory(Page::class)->create([
+            'is_pinned' => false,
+            'is_public' => true,
+        ]);
         $this->page->viewableTags()->attach($this->tag->id);
     }
 
@@ -60,6 +63,8 @@ class PagesExportTest extends TestCase
                 $this->page->title,
                 'タグです',
                 $this->page->body,
+                'いいえ',
+                'はい',
                 $this->page->notes,
                 $this->page->created_at,
                 $this->page->updated_at,

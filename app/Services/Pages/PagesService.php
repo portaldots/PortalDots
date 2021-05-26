@@ -19,15 +19,22 @@ class PagesService
     private $sendEmailService;
 
     /**
+     * @var ReadsService
+     */
+    private $readsService;
+
+    /**
      * @var ActivityLogService
      */
     private $activityLogService;
 
     public function __construct(
         SendEmailService $sendEmailService,
+        ReadsService $readsService,
         ActivityLogService $activityLogService
     ) {
         $this->sendEmailService = $sendEmailService;
+        $this->readsService = $readsService;
         $this->activityLogService = $activityLogService;
     }
 
@@ -38,7 +45,9 @@ class PagesService
      * @param string $body 本文
      * @param User $created_by 作成者
      * @param string $notes スタッフ用メモ
-     * @param array|null $viewable_tags お知らせを閲覧可能な企画のタグ
+     * @param array $viewable_tags お知らせを閲覧可能な企画のタグ
+     * @param bool $is_public お知らせを公開するか
+     * @param bool $is_pinned お知らせを固定表示するか
      * @return Page
      */
     public function createPage(
@@ -46,12 +55,24 @@ class PagesService
         string $body,
         User $created_by,
         string $notes,
-        ?array $viewable_tags = null
+        array $viewable_tags,
+        bool $is_public,
+        bool $is_pinned
     ): Page {
-        return DB::transaction(function () use ($title, $body, $created_by, $notes, $viewable_tags) {
+        return DB::transaction(function () use (
+            $title,
+            $body,
+            $created_by,
+            $notes,
+            $viewable_tags,
+            $is_public,
+            $is_pinned
+        ) {
             $page = Page::create([
                 'title' => $title,
                 'body' => $body,
+                'is_pinned' => $is_pinned,
+                'is_public' => $is_public,
                 'notes' => $notes,
             ]);
 
@@ -88,7 +109,9 @@ class PagesService
      * @param string $body 本文
      * @param User $updated_by 更新者
      * @param string $notes スタッフ用メモ
-     * @param array|null $viewable_tags お知らせを閲覧可能な企画のタグ
+     * @param array $viewable_tags お知らせを閲覧可能な企画のタグ
+     * @param bool $is_public お知らせを公開するか
+     * @param bool $is_pinned お知らせを固定表示するか
      * @return bool
      */
     public function updatePage(
@@ -97,14 +120,30 @@ class PagesService
         string $body,
         User $updated_by,
         string $notes,
-        ?array $viewable_tags = null
+        array $viewable_tags,
+        bool $is_public,
+        bool $is_pinned
     ): bool {
-        return DB::transaction(function () use ($page, $title, $body, $updated_by, $notes, $viewable_tags) {
+        return DB::transaction(function () use (
+            $page,
+            $title,
+            $body,
+            $updated_by,
+            $notes,
+            $viewable_tags,
+            $is_public,
+            $is_pinned
+        ) {
             $page->update([
                 'title' => $title,
                 'body' => $body,
+                'is_pinned' => $is_pinned,
+                'is_public' => $is_public,
                 'notes' => $notes,
             ]);
+
+            // 既読情報を管理する reads テーブルから、このお知らせの既読情報を全て削除する
+            $this->readsService->deleteAllReadsByPage($page);
 
             $old_tags = $page->viewableTags()->orderBy('id')->get();
 

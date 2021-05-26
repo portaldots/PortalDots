@@ -45,7 +45,7 @@
             <list-view-card>
                 PortalDots(ポータルドット)は、学園祭実行委員会と参加企画担当者との間のコミュニケーションを支援するウェブシステムです。お知らせメールの一斉送信や各種申請の受付をオンラインで簡単に行うことができます。
             </list-view-card>
-            <list-view-action-btn href="https://dots.soji.dev" target="_blank" rel="noopener">
+            <list-view-action-btn href="https://www.portaldots.com" target="_blank" rel="noopener">
                 PortalDots 公式ウェブサイト
                 <i class="fas fa-external-link-alt fa-fw"></i>
             </list-view-action-btn>

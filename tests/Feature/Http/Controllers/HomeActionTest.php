@@ -3,14 +3,13 @@
 namespace Tests\Feature\Http\Controllers;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Carbon\CarbonImmutable;
 use App\Services\Utils\DotenvService;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
 use App\Eloquents\CustomForm;
+use App\Eloquents\Page;
 
 class HomeActionTest extends TestCase
 {
@@ -77,6 +76,46 @@ class HomeActionTest extends TestCase
     /**
      * @test
      */
+    public function 非公開のお知らせは一覧に表示されない()
+    {
+        // 固定されたお知らせ
+        $pinnedPrivatePageTitle = 'this is a pinned private page';
+        $pinnedPublicPageTitle = 'this is a pinned public page';
+
+        // 通常のお知らせ
+        $privatePageTitle = 'this is a private page';
+        $publicPageTitle = 'this is a public form';
+
+        factory(Page::class)->create([
+            'title' => $pinnedPrivatePageTitle,
+            'is_pinned' => true,
+            'is_public' => false,
+        ]);
+        factory(Page::class)->create([
+            'title' => $pinnedPublicPageTitle,
+            'is_pinned' => true,
+            'is_public' => true,
+        ]);
+        factory(Page::class)->create([
+            'title' => $privatePageTitle,
+            'is_public' => false,
+        ]);
+        factory(Page::class)->create([
+            'title' => $publicPageTitle,
+            'is_public' => true,
+        ]);
+
+        $response = $this->get(route('home'));
+
+        $response->assertDontSee($pinnedPrivatePageTitle);
+        $response->assertSee($pinnedPublicPageTitle);
+        $response->assertDontSee($privatePageTitle);
+        $response->assertSee($publicPageTitle);
+    }
+
+    /**
+     * @test
+     */
     public function カスタムフォームは一覧に表示されない()
     {
         $customFormName = 'this is custom form';
@@ -94,7 +133,7 @@ class HomeActionTest extends TestCase
         CustomForm::noCacheForm();
 
         // カスタムフォームではない通常のフォームも作成
-        $normalForm = factory(Form::class)->create([
+        factory(Form::class)->create([
             'name' => $normalFormName
         ]);
 
