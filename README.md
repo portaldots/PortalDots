@@ -36,9 +36,11 @@ PortalDots(ポータルドット)は、 **学園祭実行委員会と参加企�
 ![企画参加登録](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/readme/screenshot_circle_register.png)
 
 ## セットアップ方法
+※「ロリポップ！レンタルサーバー」や「コアサーバー」で PortalDots を利用する方法は [PortalDots マニュアル](https://www.portaldots.com/docs/setup/) に掲載しています。
+
 ※もしご不明な点がありましたら、 [PortalDots 公式 LINE アカウント](https://lin.ee/aeee9s9) または **portal-dots at hrgrweb dot com** (at と dot はそれぞれ `@` と `.` に置き換える)にてサポートいたします。お気軽にご連絡ください。
 
-1. PHP(7.3以上)、MySQL(5.7以上) が利用できるサーバーを用意します。 [さくらのレンタルサーバ](https://www.sakura.ne.jp/) スタンダードプランでの動作を確認しています。
+1. PHP(7.3以上)、MySQL(5.7以上) が利用できるサーバーを用意します。 [ロリポップ！レンタルサーバー](https://lolipop.jp/) ライトプラン、[コアサーバー](https://www.coreserver.jp/) CORE-X、[さくらのレンタルサーバ](https://www.sakura.ne.jp/) スタンダードプランでの動作を確認しています。
 1. PortalDots をダウンロードします。 **[ここをクリックすると最新バージョンをダウンロードできます](https://github.com/portal-dots/PortalDots/releases/latest/download/PortalDots.zip)**
 1. 展開したZIPファイルの中身をサーバーにアップロードします。
     - **注意 (macOSを利用の場合)** — ZIPファイルを展開した後、Finder上でキーボードの<kbd>command</kbd> + <kbd>shift</kbd> + <kbd>.(ピリオド)</kbd>キーを押すと、不可視ファイル(半透明のファイル)が表示されます。サーバー上には、 **この不可視ファイルも含めてアップロードしてください** 。
