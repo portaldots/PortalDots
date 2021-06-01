@@ -15,4 +15,6 @@ return [
     // 企画参加登録に必要なユーザーの人数
     // 責任者と学園祭係(副責任者)のの合計人数
     'users_number_to_submit_circle' => (int)env('PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE', 2),
+    // デモモード
+    'enable_demo_mode' => env('PORTAL_ENABLE_DEMO_MODE', false),
 ];
