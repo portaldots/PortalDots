@@ -87,7 +87,7 @@
         "bootstrap": "^4.6.0",
         "easymde": "^2.14.0",
         "laravel-mix": "^6.0.19",
-        "marked": "^2.0.5",
+        "marked": "^2.0.6",
         "portal-vue": "^2.1.7",
         "turbolinks": "^5.2.0",
         "vue": "^2.6.12",
