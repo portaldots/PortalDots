@@ -30,93 +30,91 @@ button {
   color: $color-text;
 }
 
-body:not(.body-editor-v1) {
-  .btn {
-    appearance: none;
-    background: none;
-    border: 0;
-    border-radius: $border-radius;
-    cursor: pointer;
-    display: inline-block;
-    line-height: 1.15;
-    padding: 0.75rem $spacing-md;
-    text-align: center;
+.btn {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-radius: $border-radius;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 1.15;
+  padding: 0.75rem $spacing-md;
+  text-align: center;
+  text-decoration: none;
+  transition: #{$transition-base-fast} background-color;
+  white-space: nowrap;
+  &:disabled,
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  &:hover {
     text-decoration: none;
-    transition: #{$transition-base-fast} background-color;
-    white-space: nowrap;
-    &:disabled,
-    &.disabled {
-      cursor: not-allowed;
-      opacity: 0.5;
-      pointer-events: none;
-    }
-    &:hover {
-      text-decoration: none;
-    }
-    &:focus {
-      box-shadow: 0 0 0 3px $color-focus-primary;
-      outline: none;
-      text-decoration: none;
-    }
-    &.is-primary {
-      @include btn(
-        $color-behind-text,
-        $color-primary,
-        $color-primary-hover,
-        $color-primary
-      );
-    }
-    &.is-primary-inverse {
-      @include btn(
-        $color-primary,
-        $color-behind-text,
-        $color-primary-inverse-hover,
-        $color-behind-text,
-        $color-primary-inverse-hover
-      );
-    }
-    &.is-secondary {
-      @include btn(
-        $color-text,
-        $color-behind-text,
-        $color-bg-grey,
-        $color-border,
-        $color-border
-      );
-    }
-    &.is-transparent {
-      @include btn($color-text, transparent, $color-behind-text, $color-border);
-    }
-    &.is-danger {
-      @include btn(
-        $color-behind-text,
-        $color-danger,
-        $color-danger-hover,
-        $color-danger
-      );
-    }
-    &.is-success {
-      @include btn(
-        $color-behind-text,
-        $color-success,
-        $color-success-hover,
-        $color-success
-      );
-    }
-    &.is-block {
-      display: block;
-      width: 100%;
-    }
-    &.is-no-border {
-      border: none;
-    }
-    &.is-wide {
-      padding-left: $spacing-lg;
-      padding-right: $spacing-lg;
-    }
-    &.is-sm {
-      font-size: 0.9rem;
-      padding: $spacing-xs $spacing-sm;
-    }
+  }
+  &:focus {
+    box-shadow: 0 0 0 3px $color-focus-primary;
+    outline: none;
+    text-decoration: none;
+  }
+  &.is-primary {
+    @include btn(
+      $color-behind-text,
+      $color-primary,
+      $color-primary-hover,
+      $color-primary
+    );
+  }
+  &.is-primary-inverse {
+    @include btn(
+      $color-primary,
+      $color-behind-text,
+      $color-primary-inverse-hover,
+      $color-behind-text,
+      $color-primary-inverse-hover
+    );
+  }
+  &.is-secondary {
+    @include btn(
+      $color-text,
+      $color-behind-text,
+      $color-bg-grey,
+      $color-border,
+      $color-border
+    );
+  }
+  &.is-transparent {
+    @include btn($color-text, transparent, $color-behind-text, $color-border);
+  }
+  &.is-danger {
+    @include btn(
+      $color-behind-text,
+      $color-danger,
+      $color-danger-hover,
+      $color-danger
+    );
+  }
+  &.is-success {
+    @include btn(
+      $color-behind-text,
+      $color-success,
+      $color-success-hover,
+      $color-success
+    );
+  }
+  &.is-block {
+    display: block;
+    width: 100%;
+  }
+  &.is-no-border {
+    border: none;
+  }
+  &.is-wide {
+    padding-left: $spacing-lg;
+    padding-right: $spacing-lg;
+  }
+  &.is-sm {
+    font-size: 0.9rem;
+    padding: $spacing-xs $spacing-sm;
   }
 }
