@@ -126,6 +126,11 @@ $editor-sidebar-padding: $spacing-md;
     &:last-child {
       margin-bottom: 0;
     }
+    &:focus {
+      box-shadow: none;
+      outline: 3px solid $color-focus-primary;
+      outline-offset: -3px;
+    }
     &:hover:not(:disabled) {
       background: $color-bg-light;
     }

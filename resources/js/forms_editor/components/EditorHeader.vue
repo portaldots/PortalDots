@@ -29,11 +29,11 @@
       </span>
     </div>
     <div class="editor-header__actions">
-      <a class="btn btn-link" :href="preview_url" target="_blank">プレビュー</a>
+      <a :href="preview_url" target="_blank">プレビュー</a>
       <template v-if="is_public">
-        <span class="badge badge-primary mr-2">公開</span>
+        <AppBadge success strong>公開</AppBadge>
         <button
-          class="btn btn-danger"
+          class="btn is-danger"
           :disabled="is_saving"
           @click="setPrivate()"
         >
@@ -41,9 +41,9 @@
         </button>
       </template>
       <template v-else>
-        <span class="badge badge-danger mr-2">非公開</span>
+        <AppBadge danger strong>非公開</AppBadge>
         <button
-          class="btn btn-primary"
+          class="btn is-primary"
           :disabled="is_saving"
           @click="setPublic()"
         >
@@ -57,8 +57,12 @@
 <script>
 import { SAVE_STATUS_SAVING, SAVE_STATUS_SAVED } from '../store/status'
 import { SET_FORM_PUBLIC, SET_FORM_PRIVATE, SAVE_FORM } from '../store/editor'
+import AppBadge from '../../v2/components/AppBadge.vue'
 
 export default {
+  components: {
+    AppBadge
+  },
   computed: {
     save_status() {
       return this.$store.state.status.save_status
