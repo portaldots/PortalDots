@@ -35,14 +35,12 @@ mix
   })
   .extract([
     'axios',
-    'bootstrap',
     'marked',
     'turbolinks',
     'vue',
     'vue-global-events',
     'vuex'
   ])
-  .sass('resources/sass/bootstrap.scss', 'public/css') // Bootstrap
   .sass('resources/sass/fontawesome.scss', 'public/css') // Font Awesome
   .sass('resources/sass/app.scss', 'public/css') // メインスタイル
   // .browserSync({

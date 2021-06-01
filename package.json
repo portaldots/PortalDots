@@ -84,7 +84,6 @@
         "@fortawesome/fontawesome-free": "^5.15.2",
         "@johmun/vue-tags-input": "^2.1.0",
         "axios": "^0.21",
-        "bootstrap": "^4.6.0",
         "easymde": "^2.14.0",
         "laravel-mix": "^6.0.19",
         "marked": "^2.0.5",
