@@ -1,10 +1,5 @@
 <template>
   <div class="editor-wrap">
-    <div
-      class="alert alert-danger rounded-0 m-0 d-block d-md-none fixed-bottom text-center"
-    >
-      フォームエディターは、パソコンのみ対応しています。
-    </div>
     <editor-loading v-show="!loaded" />
     <editor-header />
     <editor-content />
