@@ -1,106 +1,88 @@
 <template>
   <div class="edit-panel">
-    <div class="form-group row" v-if="show_required_switch">
-      <span class="col-sm-2 col-form-label">回答必須か</span>
-      <div class="col-sm-10">
-        <label class="custom-control custom-switch">
+    <ListViewFormGroup v-if="show_required_switch">
+      <div class="form-checkbox">
+        <label class="form-checkbox__label">
           <input
             type="checkbox"
-            class="custom-control-input"
             v-model="is_required"
             :disabled="is_deleting"
           />
-          <span class="custom-control-label">この設問への回答は必須</span>
+          <strong>この設問への回答は必須</strong>
         </label>
       </div>
-    </div>
-    <label class="form-group row" v-if="label_name">
-      <span class="col-sm-2 col-form-label">{{ label_name }}</span>
-      <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model="name"
-          @blur="save"
-          :disabled="is_deleting"
-        />
-      </div>
-    </label>
-    <label class="form-group row" v-if="label_description">
-      <span class="col-sm-2 col-form-label">{{ label_description }}</span>
-      <div class="col-sm-10">
-        <textarea
-          class="form-control"
-          v-model="description"
-          @blur="save"
-          :disabled="is_deleting"
-          rows="4"
-        />
-      </div>
-    </label>
-    <label class="form-group row" v-if="show_options">
-      <span class="col-sm-2 col-form-label">選択肢</span>
-      <div class="col-sm-10">
-        <textarea
-          class="form-control"
-          v-model="options"
-          @blur="onBlur"
-          :disabled="is_deleting"
-          rows="4"
-          placeholder="1行に1つ選択肢を入力"
-        />
-        <small class="form-text text-muted mb-0">
-          改行区切りで選択肢を入力。
-        </small>
-      </div>
-    </label>
-    <label class="form-group row" v-if="label_number_min">
-      <span class="col-sm-2 col-form-label">{{ label_number_min }}</span>
-      <div class="col-sm-10">
-        <input
-          type="number"
-          min="0"
-          class="form-control"
-          v-model="number_min"
-          @blur="save"
-          :disabled="is_deleting"
-        />
-      </div>
-    </label>
-    <label class="form-group row" v-if="label_number_max">
-      <span class="col-sm-2 col-form-label">{{ label_number_max }}</span>
-      <div class="col-sm-10">
-        <input
-          type="number"
-          min="0"
-          class="form-control"
-          v-model="number_max"
-          @blur="save"
-          :disabled="is_deleting"
-        />
-        <small class="form-text text-muted mb-0" v-if="help_number_max">
-          {{ help_number_max }}
-        </small>
-      </div>
-    </label>
-    <label class="form-group row" v-if="show_allowed_types">
-      <span class="col-sm-2 col-form-label">
-        許可される拡張子(<code>|</code>区切りで指定)
-      </span>
-      <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model="allowed_types"
-          @blur="save"
-          :disabled="is_deleting"
-        />
-        <small class="form-text text-muted mb-0">
-          画像アップロードを許可したい場合 :
-          <code>png|jpg|jpeg|gif</code> と入力。
-        </small>
-      </div>
-    </label>
+    </ListViewFormGroup>
+    <ListViewFormGroup v-if="label_name">
+      <template #label>{{ label_name }}</template>
+      <input
+        type="text"
+        class="form-control"
+        v-model="name"
+        @blur="save"
+        :disabled="is_deleting"
+      />
+    </ListViewFormGroup>
+    <ListViewFormGroup v-if="label_description">
+      <template #label>{{ label_description }}</template>
+      <textarea
+        class="form-control"
+        v-model="description"
+        @blur="save"
+        :disabled="is_deleting"
+        rows="4"
+      />
+    </ListViewFormGroup>
+    <ListViewFormGroup v-if="show_options">
+      <template #label>選択肢</template>
+      <textarea
+        class="form-control"
+        v-model="options"
+        @blur="onBlur"
+        :disabled="is_deleting"
+        rows="4"
+        placeholder="1行に1つ選択肢を入力"
+      />
+      <small class="text-muted">改行区切りで選択肢を入力。</small>
+    </ListViewFormGroup>
+    <ListViewFormGroup v-if="label_number_min">
+      <template #label>{{ label_number_min }}</template>
+      <input
+        type="number"
+        min="0"
+        class="form-control"
+        v-model="number_min"
+        @blur="save"
+        :disabled="is_deleting"
+      />
+    </ListViewFormGroup>
+    <ListViewFormGroup v-if="label_number_max">
+      <template #label>{{ label_number_max }}</template>
+      <input
+        type="number"
+        min="0"
+        class="form-control"
+        v-model="number_max"
+        @blur="save"
+        :disabled="is_deleting"
+      />
+      <small class="text-muted" v-if="help_number_max">
+        {{ help_number_max }}
+      </small>
+    </ListViewFormGroup>
+    <ListViewFormGroup v-if="show_allowed_types">
+      <template #label>許可される拡張子(<code>|</code>区切りで指定)</template>
+      <input
+        type="text"
+        class="form-control"
+        v-model="allowed_types"
+        @blur="save"
+        :disabled="is_deleting"
+      />
+      <small class="text-muted">
+        画像アップロードを許可したい場合 :
+        <code>png|jpg|jpeg|gif</code> と入力。
+      </small>
+    </ListViewFormGroup>
     <div class="row mb-2">
       <div class="offset-sm-2 col-sm-10 text-right">
         <button
@@ -116,6 +98,7 @@
 </template>
 
 <script>
+import ListViewFormGroup from '../../../v2/components/ListViewFormGroup.vue'
 import {
   UPDATE_QUESTION,
   SAVE_QUESTION,
@@ -123,6 +106,7 @@ import {
 } from '../../store/editor'
 
 export default {
+  components: { ListViewFormGroup },
   props: {
     question: {
       required: true

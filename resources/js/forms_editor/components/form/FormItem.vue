@@ -162,14 +162,14 @@ export default {
     box-shadow: inset 0 0.2rem 0.8rem -0.6rem $color-box-shadow;
     display: none;
     overflow: hidden;
-    padding: $spacing;
+    padding: $spacing 0;
     &--open {
       display: block;
     }
     &__type {
       border-bottom: 1px solid $color-border;
       font-weight: bold;
-      margin-bottom: 1rem;
+      margin: 0 $spacing 1rem;
       padding-bottom: 0.5rem;
     }
   }

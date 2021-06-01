@@ -13,32 +13,26 @@
       </ListViewCard>
     </template>
     <template v-slot:edit-panel>
-      <div class="form-group row">
-        <label for="inputTitle" class="col-sm-2 col-form-label">タイトル</label>
-        <div class="col-sm-10">
-          <input
-            type="text"
-            class="form-control input-lg"
-            id="inputTitle"
-            v-model="name"
-            @blur="save"
-          />
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="inputDescription" class="col-sm-2 col-form-label">
-          説明
-        </label>
-        <div class="col-sm-10">
-          <textarea
-            class="form-control"
-            id="inputDescription"
-            v-model="description"
-            @blur="save"
-            rows="4"
-          />
-        </div>
-      </div>
+      <ListViewFormGroup labelFor="inputTitle">
+        <template #label>タイトル</template>
+        <input
+          type="text"
+          class="form-control input-lg"
+          id="inputTitle"
+          v-model="name"
+          @blur="save"
+        />
+      </ListViewFormGroup>
+      <ListViewFormGroup labelFor="inputDescription">
+        <template #label>説明</template>
+        <textarea
+          class="form-control"
+          id="inputDescription"
+          v-model="description"
+          @blur="save"
+          rows="4"
+        />
+      </ListViewFormGroup>
     </template>
   </form-item>
 </template>
@@ -48,11 +42,13 @@ import marked from 'marked'
 import FormItem from './FormItem.vue'
 import { ITEM_HEADER, UPDATE_FORM, SAVE_FORM } from '../../store/editor'
 import ListViewCard from '../../../v2/components/ListViewCard.vue'
+import ListViewFormGroup from '../../../v2/components/ListViewFormGroup.vue'
 
 export default {
   components: {
     FormItem,
-    ListViewCard
+    ListViewCard,
+    ListViewFormGroup
   },
   methods: {
     save() {
