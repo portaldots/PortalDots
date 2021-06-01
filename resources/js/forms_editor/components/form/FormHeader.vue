@@ -7,8 +7,10 @@
     :disable_edit="!!custom_form"
   >
     <template v-slot:content>
-      <h1 class="form-header__name">{{ computed_name }}</h1>
-      <div v-if="!custom_form" v-html="description_html" />
+      <ListViewCard>
+        <h1 class="form-header__name">{{ computed_name }}</h1>
+        <div class="markdown" v-if="!custom_form" v-html="description_html" />
+      </ListViewCard>
     </template>
     <template v-slot:edit-panel>
       <div class="form-group row">
@@ -45,10 +47,12 @@
 import marked from 'marked'
 import FormItem from './FormItem.vue'
 import { ITEM_HEADER, UPDATE_FORM, SAVE_FORM } from '../../store/editor'
+import ListViewCard from '../../../v2/components/ListViewCard.vue'
 
 export default {
   components: {
-    FormItem
+    FormItem,
+    ListViewCard
   },
   methods: {
     save() {

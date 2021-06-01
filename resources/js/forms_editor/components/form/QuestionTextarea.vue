@@ -1,20 +1,17 @@
 <template>
   <form-item :item_id="question_id" type_label="複数行入力">
     <template v-slot:content>
-      <div class="form-group mb-0">
-        <label class="mb-1">
-          {{ name }}
-          <span class="badge badge-danger" v-if="is_required">必須</span>
-        </label>
-        <p class="form-text text-muted mb-2">
-          {{ description }}
-        </p>
-        <textarea
-          class="form-control"
-          tabindex="-1"
-          placeholder="複数行入力"
-        ></textarea>
-      </div>
+      <QuestionItem
+        :required="is_required"
+        type="textarea"
+        :questionId="question_id"
+        :name="name"
+        :description="description"
+        :numberMin="number_min"
+        :numberMax="number_max"
+        value="複数行入力"
+        disabled
+      />
     </template>
     <template v-slot:edit-panel>
       <edit-panel :question="question" />
@@ -26,6 +23,7 @@
 import FormItem from './FormItem.vue'
 import EditPanel from './EditPanel.vue'
 import { GET_QUESTION_BY_ID } from '../../store/editor'
+import QuestionItem from '../../../v2/components/Forms/QuestionItem.vue'
 
 export default {
   props: {
@@ -36,7 +34,8 @@ export default {
   },
   components: {
     FormItem,
-    EditPanel
+    EditPanel,
+    QuestionItem
   },
   computed: {
     question() {
@@ -46,6 +45,16 @@ export default {
     },
     name() {
       return this.question.name || '(無題の設問)'
+    },
+    number_min() {
+      return this.question.number_min
+        ? parseInt(this.question.number_min, 10)
+        : undefined
+    },
+    number_max() {
+      return this.question.number_max
+        ? parseInt(this.question.number_max, 10)
+        : undefined
     },
     description() {
       return this.question.description

@@ -5,10 +5,9 @@
     class="form-item"
   >
     <template v-slot:content>
-      <div class="form-group mb-0">
-        <h2 class="heading">{{ name }}</h2>
-        <div v-html="description_html" />
-      </div>
+      <QuestionHeading :name="name">
+        <div class="markdown" v-html="description_html" />
+      </QuestionHeading>
     </template>
     <template v-slot:edit-panel>
       <edit-panel
@@ -27,6 +26,7 @@ import marked from 'marked'
 import FormItem from './FormItem.vue'
 import EditPanel from './EditPanel.vue'
 import { GET_QUESTION_BY_ID } from '../../store/editor'
+import QuestionHeading from '../../../v2/components/Forms/QuestionHeading.vue'
 
 export default {
   props: {
@@ -37,7 +37,8 @@ export default {
   },
   components: {
     FormItem,
-    EditPanel
+    EditPanel,
+    QuestionHeading
   },
   computed: {
     question() {

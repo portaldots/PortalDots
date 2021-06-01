@@ -113,18 +113,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-/* Bootstrap を廃止したら以下のコードは不要 */
-
-.form-item .form-control,
-.form-item .form-control:focus {
-  color: $color-text;
-}
-</style>
-
 <style lang="scss" scoped>
 .form-item {
-  background: $color-behind-text;
   border: 1px solid transparent;
   border-left-width: 5px;
   box-shadow: none;
@@ -159,7 +149,6 @@ export default {
   }
   &__content {
     cursor: pointer;
-    padding: $spacing;
     &__inner {
       pointer-events: none;
       user-select: none;

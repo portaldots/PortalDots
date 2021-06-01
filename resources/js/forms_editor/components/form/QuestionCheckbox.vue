@@ -1,32 +1,23 @@
 <template>
   <form-item :item_id="question_id" type_label="複数選択(チェックボックス)">
     <template v-slot:content>
-      <div class="form-group mb-0">
-        <p class="mb-2">
-          {{ name }}
-          <span class="badge badge-danger" v-if="is_required">必須</span>
-        </p>
-        <p class="form-text text-muted mb-2">
-          {{ description }}
-        </p>
-        <template v-if="options">
-          <div class="form-check mb-1" v-for="option in options" :key="option">
-            <input class="form-check-input" type="checkbox" tabindex="-1" />
-            <p class="form-check-label">
-              {{ option }}
-            </p>
-          </div>
-        </template>
-        <template v-else>
-          <div class="empty-option">
-            <p class="empty-option-text">
-              <i class="fa fa-exclamation-triangle mr-1"></i>
-              <b>選択肢がありません。</b>
-            </p>
-            <p class="empty-option-text">選択肢を1つ以上入力してください。</p>
-          </div>
-        </template>
-      </div>
+      <QuestionItem
+        :required="is_required"
+        type="checkbox"
+        :questionId="question_id"
+        :name="name"
+        :description="description"
+        :options="options"
+        :numberMin="number_min"
+        :numberMax="number_max"
+        disabled
+      />
+      <ListViewCard v-if="!options">
+        <AppInfoBox danger>
+          <b>選択肢がありません。</b>
+          選択肢を1つ以上入力してください。
+        </AppInfoBox>
+      </ListViewCard>
     </template>
     <template v-slot:edit-panel>
       <edit-panel
@@ -43,6 +34,9 @@
 import FormItem from './FormItem.vue'
 import EditPanel from './EditPanel.vue'
 import { GET_QUESTION_BY_ID } from '../../store/editor'
+import QuestionItem from '../../../v2/components/Forms/QuestionItem.vue'
+import AppInfoBox from '../../../v2/components/AppInfoBox.vue'
+import ListViewCard from '../../../v2/components/ListViewCard.vue'
 
 export default {
   props: {
@@ -53,7 +47,10 @@ export default {
   },
   components: {
     FormItem,
-    EditPanel
+    EditPanel,
+    QuestionItem,
+    AppInfoBox,
+    ListViewCard
   },
   computed: {
     question() {
@@ -66,6 +63,16 @@ export default {
     },
     description() {
       return this.question.description
+    },
+    number_min() {
+      return this.question.number_min
+        ? parseInt(this.question.number_min, 10)
+        : undefined
+    },
+    number_max() {
+      return this.question.number_max
+        ? parseInt(this.question.number_max, 10)
+        : undefined
     },
     options() {
       if (this.question.options) {

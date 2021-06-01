@@ -1,26 +1,23 @@
 <template>
   <form-item :item_id="question_id" type_label="ファイルアップロード">
     <template v-slot:content>
-      <div class="form-group mb-0">
-        <label class="mb-1">
-          {{ name }}
-          <span class="badge badge-danger" v-if="is_required">必須</span>
-        </label>
-        <p class="form-text text-muted mb-2">
-          {{ description }}
-        </p>
-        <template v-if="question.allowed_types">
-          <input type="file" class="form-control" tabindex="-1" />
-        </template>
-        <template v-else>
-          <p>
-            <i class="fa fa-exclamation-triangle mr-1"></i>
-            <b
-              >ファイルアップロードを受け付けるには「許可される拡張子」を1つ以上指定してください</b
-            >
-          </p>
-        </template>
-      </div>
+      <QuestionItem
+        :required="is_required"
+        type="upload"
+        :questionId="question_id"
+        :name="name"
+        :description="description"
+        :numberMax="number_max"
+        :allowedTypes="allowed_types"
+        disabled
+      />
+      <ListViewCard v-if="!question.allowed_types">
+        <AppInfoBox danger>
+          <b>
+            ファイルアップロードを受け付けるには「許可される拡張子」を1つ以上指定してください
+          </b>
+        </AppInfoBox>
+      </ListViewCard>
     </template>
     <template v-slot:edit-panel>
       <edit-panel
@@ -38,6 +35,9 @@
 import FormItem from './FormItem.vue'
 import EditPanel from './EditPanel.vue'
 import { GET_QUESTION_BY_ID } from '../../store/editor'
+import QuestionItem from '../../../v2/components/Forms/QuestionItem.vue'
+import ListViewCard from '../../../v2/components/ListViewCard.vue'
+import AppInfoBox from '../../../v2/components/AppInfoBox.vue'
 
 export default {
   props: {
@@ -48,7 +48,10 @@ export default {
   },
   components: {
     FormItem,
-    EditPanel
+    EditPanel,
+    QuestionItem,
+    ListViewCard,
+    AppInfoBox
   },
   computed: {
     question() {
@@ -59,11 +62,21 @@ export default {
     name() {
       return this.question.name || '(無題の設問)'
     },
+    number_max() {
+      return this.question.number_max
+        ? parseInt(this.question.number_max, 10)
+        : undefined
+    },
     description() {
       return this.question.description
     },
     is_required() {
       return this.question.is_required
+    },
+    allowed_types() {
+      return this.question.allowed_types
+        ? this.question.allowed_types.split('|')
+        : undefined
     }
   }
 }

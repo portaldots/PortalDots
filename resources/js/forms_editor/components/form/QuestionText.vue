@@ -6,21 +6,17 @@
     type_label="一行入力"
   >
     <template v-slot:content>
-      <div class="form-group mb-0">
-        <label class="mb-1">
-          {{ name }}
-          <span class="badge badge-danger" v-if="is_required">必須</span>
-        </label>
-        <p class="form-text text-muted mb-2">
-          {{ description }}
-        </p>
-        <input
-          type="text"
-          class="form-control"
-          tabindex="-1"
-          placeholder="一行入力"
-        />
-      </div>
+      <QuestionItem
+        :required="is_required"
+        type="text"
+        :questionId="question_id"
+        :name="name"
+        :description="description"
+        :numberMin="number_min"
+        :numberMax="number_max"
+        value="一行入力"
+        disabled
+      />
     </template>
     <template v-slot:edit-panel>
       <edit-panel :question="question" />
@@ -32,6 +28,7 @@
 import FormItem from './FormItem.vue'
 import EditPanel from './EditPanel.vue'
 import { GET_QUESTION_BY_ID } from '../../store/editor'
+import QuestionItem from '../../../v2/components/Forms/QuestionItem.vue'
 
 export default {
   props: {
@@ -46,7 +43,8 @@ export default {
   },
   components: {
     FormItem,
-    EditPanel
+    EditPanel,
+    QuestionItem
   },
   computed: {
     question() {
@@ -59,6 +57,16 @@ export default {
     },
     description() {
       return this.question.description
+    },
+    number_min() {
+      return this.question.number_min
+        ? parseInt(this.question.number_min, 10)
+        : undefined
+    },
+    number_max() {
+      return this.question.number_max
+        ? parseInt(this.question.number_max, 10)
+        : undefined
     },
     is_required() {
       return this.question.is_required

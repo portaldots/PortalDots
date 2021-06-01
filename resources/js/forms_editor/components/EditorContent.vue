@@ -1,65 +1,70 @@
 <template>
   <div class="editor-content editor-content-styling">
-    <div class="editor-body">
-      <form-header />
-      <div
-        class="editor-content__permanent-questions-info"
-        v-if="has_permanent_questions"
-      >
-        このフォームには「{{ form_name }}」固有の設問が含まれます。
-        <button
-          class="btn btn-primary btn-sm"
-          @click="toggle_permanent_questions"
+    <AppContainer>
+      <ListView>
+        <form-header />
+        <div
+          class="editor-content__permanent-questions-info"
+          v-if="has_permanent_questions"
         >
-          <template v-if="is_permanent_questions_visible">
-            固有の設問を非表示
-          </template>
-          <template v-else>固有の設問を表示</template>
-        </button>
-      </div>
-      <div v-if="has_permanent_questions && is_permanent_questions_visible">
-        <component
-          v-for="question in permanent_questions"
-          :is="question_component_name(question.type)"
-          :question_id="question.id"
-          :key="question.id"
-          :is_permanent="question.is_permanent || undefined"
-          class="question question--permanent"
-        />
-      </div>
-      <div
-        class="editor-content__no-question text-muted"
-        v-if="questions.length === 0"
-      >
-        <p class="mb-4">
-          <i class="far fa-edit fa-3x"></i>
-        </p>
-        <p class="lead">右側の[設問を追加]から設問を追加しましょう</p>
-        <p class="mb-0">
-          このフォームには設問が1つもありません。[設問を追加]から設問を追加してください。
-        </p>
-      </div>
-      <draggable
-        tag="div"
-        v-model="questions"
-        :animation="200"
-        ghostClass="ghost"
-        handle=".form-item__handle"
-        @start="on_drag_start"
-        @end="on_drag_end"
-      >
-        <transition-group type="transition" :name="!drag ? 'flip-list' : 'no'">
+          このフォームには「{{ form_name }}」固有の設問が含まれます。
+          <button
+            class="btn btn-primary btn-sm"
+            @click="toggle_permanent_questions"
+          >
+            <template v-if="is_permanent_questions_visible">
+              固有の設問を非表示
+            </template>
+            <template v-else>固有の設問を表示</template>
+          </button>
+        </div>
+        <div v-if="has_permanent_questions && is_permanent_questions_visible">
           <component
-            v-for="question in questions"
+            v-for="question in permanent_questions"
             :is="question_component_name(question.type)"
             :question_id="question.id"
             :key="question.id"
             :is_permanent="question.is_permanent || undefined"
-            class="question"
+            class="question question--permanent"
           />
-        </transition-group>
-      </draggable>
-    </div>
+        </div>
+        <div
+          class="editor-content__no-question text-muted"
+          v-if="questions.length === 0"
+        >
+          <p class="mb-4">
+            <i class="far fa-edit fa-3x"></i>
+          </p>
+          <p class="lead">右側の[設問を追加]から設問を追加しましょう</p>
+          <p class="mb-0">
+            このフォームには設問が1つもありません。[設問を追加]から設問を追加してください。
+          </p>
+        </div>
+        <draggable
+          tag="div"
+          v-model="questions"
+          :animation="200"
+          ghostClass="ghost"
+          handle=".form-item__handle"
+          @start="on_drag_start"
+          @end="on_drag_end"
+        >
+          <transition-group
+            type="transition"
+            :name="!drag ? 'flip-list' : 'no'"
+          >
+            <component
+              v-for="question in questions"
+              :is="question_component_name(question.type)"
+              :question_id="question.id"
+              :key="question.id"
+              :is_permanent="question.is_permanent || undefined"
+              class="question"
+            />
+          </transition-group>
+        </draggable>
+      </ListView>
+    </AppContainer>
   </div>
 </template>
 
@@ -76,10 +81,13 @@ import QuestionSelect from './form/QuestionSelect.vue'
 import QuestionCheckbox from './form/QuestionCheckbox.vue'
 import { DRAG_START, DRAG_END, UPDATE_QUESTIONS_ORDER } from '../store/editor'
 import { SAVE_STATUS_SAVING } from '../store/status'
+import ListView from '../../v2/components/ListView.vue'
+import AppContainer from '../../v2/components/AppContainer.vue'
 
 export default {
   components: {
     draggable,
+    ListView,
     FormHeader,
     QuestionText,
     QuestionHeading,
@@ -88,7 +96,8 @@ export default {
     QuestionUpload,
     QuestionRadio,
     QuestionSelect,
-    QuestionCheckbox
+    QuestionCheckbox,
+    AppContainer
   },
   data() {
     return {
@@ -158,14 +167,6 @@ export default {
   &--permanent {
     background: $color-bg-light;
   }
-}
-
-.editor-body {
-  background: $color-behind-text;
-  box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.07);
-  margin: 0 auto;
-  max-width: 960px;
-  width: 100%;
 }
 
 .ghost {
