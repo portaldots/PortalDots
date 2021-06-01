@@ -29,7 +29,7 @@
         v-model="description"
         @blur="save"
         :disabled="is_deleting"
-        rows="4"
+        rows="2"
       />
     </ListViewFormGroup>
     <ListViewFormGroup v-if="show_options">
@@ -42,33 +42,35 @@
         rows="4"
         placeholder="1行に1つ選択肢を入力"
       />
-      <small class="text-muted">改行区切りで選択肢を入力。</small>
+      <small class="edit-panel__help-text">改行区切りで選択肢を入力。</small>
     </ListViewFormGroup>
-    <ListViewFormGroup v-if="label_number_min">
-      <template #label>{{ label_number_min }}</template>
-      <input
-        type="number"
-        min="0"
-        class="form-control"
-        v-model="number_min"
-        @blur="save"
-        :disabled="is_deleting"
-      />
-    </ListViewFormGroup>
-    <ListViewFormGroup v-if="label_number_max">
-      <template #label>{{ label_number_max }}</template>
-      <input
-        type="number"
-        min="0"
-        class="form-control"
-        v-model="number_max"
-        @blur="save"
-        :disabled="is_deleting"
-      />
-      <small class="text-muted" v-if="help_number_max">
-        {{ help_number_max }}
-      </small>
-    </ListViewFormGroup>
+    <div class="edit-panel__grid">
+      <ListViewFormGroup v-if="label_number_min">
+        <template #label>{{ label_number_min }}</template>
+        <input
+          type="number"
+          min="0"
+          class="form-control"
+          v-model="number_min"
+          @blur="save"
+          :disabled="is_deleting"
+        />
+      </ListViewFormGroup>
+      <ListViewFormGroup v-if="label_number_max">
+        <template #label>{{ label_number_max }}</template>
+        <input
+          type="number"
+          min="0"
+          class="form-control"
+          v-model="number_max"
+          @blur="save"
+          :disabled="is_deleting"
+        />
+        <small class="edit-panel__help-text" v-if="help_number_max">
+          {{ help_number_max }}
+        </small>
+      </ListViewFormGroup>
+    </div>
     <ListViewFormGroup v-if="show_allowed_types">
       <template #label>許可される拡張子(<code>|</code>区切りで指定)</template>
       <input
@@ -78,7 +80,7 @@
         @blur="save"
         :disabled="is_deleting"
       />
-      <small class="text-muted">
+      <small class="edit-panel__help-text">
         画像アップロードを許可したい場合 :
         <code>png|jpg|jpeg|gif</code> と入力。
       </small>
@@ -269,3 +271,17 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.edit-panel {
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  &__help-text {
+    color: $color-muted;
+    display: block;
+    margin-top: $spacing-sm;
+  }
+}
+</style>
