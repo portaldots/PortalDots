@@ -15,4 +15,6 @@ return [
     // 企画参加登録に必要なユーザーの人数
     // 責任者と学園祭係(副責任者)のの合計人数
     'users_number_to_submit_circle' => (int)env('PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE', 2),
+    // アクセントカラー
+    'primary_color_hsl' => [env('PORTAL_PRIMARY_COLOR_H', null), env('PORTAL_PRIMARY_COLOR_S', null), env('PORTAL_PRIMARY_COLOR_L', null)],
 ];

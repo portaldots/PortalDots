@@ -45,7 +45,7 @@ abstract class AbstractService
     {
         $save_keys = [];
         foreach ($this->getEnvKeys() as $key) {
-            if (empty($info[$key])) {
+            if (!isset($info[$key])) {
                 continue;
             }
             $save_keys[$key] = $info[$key];
