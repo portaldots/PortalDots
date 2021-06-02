@@ -14,6 +14,8 @@ class DemoMode
     private $exceptPaths = [
         'login',
         'logout',
+        // デモモードの場合、AddQuestionAction はダミーのレスポンスを返す
+        'staff/forms/*/editor/api/add_question',
     ];
 
     /**
@@ -36,7 +38,11 @@ class DemoMode
         }
 
         if ($request->method() !== 'GET') {
-            return redirect()->back()->with('topAlert.title', 'デモサイトではこの機能は利用できません');
+            if ($request->ajax()) {
+                return response()->json(['message' => 'デモサイトではこの機能は利用できません', 'demo_mode' => true], 403);
+            } else {
+                return redirect()->back()->with('topAlert.title', 'デモサイトではこの機能は利用できません');
+            }
         }
 
         return $next($request);
