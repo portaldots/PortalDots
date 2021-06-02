@@ -16,7 +16,7 @@ class RedirectIfStaffNotAuthenticated
      */
     public function handle($request, Closure $next)
     {
-        if (! $request->session()->get('staff_authorized')) {
+        if (!$request->session()->get('staff_authorized') && !config('portal.enable_demo_mode')) {
             return redirect()
                 ->route('staff.verify.index');
         }
