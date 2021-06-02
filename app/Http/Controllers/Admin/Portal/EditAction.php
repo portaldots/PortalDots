@@ -11,14 +11,14 @@ class EditAction extends Controller
     /**
      * @var PortalService
      */
-    private $editor;
+    private $portalService;
 
     public function __construct(PortalService $portalService)
     {
         $this->portalService = $portalService;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke()
     {
         return view('admin.portal.form')
             ->with('portal', $this->portalService->getInfo());

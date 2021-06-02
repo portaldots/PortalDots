@@ -80,6 +80,50 @@
 
             <list-view>
                 <list-view-form-group>
+                    <template v-slot:label>公開設定</template>
+                    <div class="form-radio">
+                        <label class="form-radio__label">
+                            <input class="form-radio__input" type="radio" name="is_public" id="isPublicRadios1" value="1"
+                                {{ (bool)old('is_public', isset($page) ? $page->is_public : true) === true ? 'checked' : '' }}>
+                            <strong>公開</strong>
+                        </label>
+                        <label class="form-radio__label">
+                            <input class="form-radio__input" type="radio" name="is_public" id="isPublicRadios2" value="0"
+                                {{ (bool)old('is_public', isset($page) ? $page->is_public : true) === false ? 'checked' : '' }}>
+                            <strong>非公開</strong>
+                        </label>
+                    </div>
+                    @if ($errors->has('is_public'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('is_public') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
+            </list-view>
+
+            <list-view>
+                <list-view-form-group>
+                    <div class="form-checkbox">
+                        <label class="form-checkbox__label">
+                            <input class="form-checkbox__input" type="checkbox" name="is_pinned" value="1" {{ (bool)old('is_pinned', isset($page) ? $page->is_pinned : false) === true ? 'checked' : '' }}>
+                            <strong>お知らせを固定表示</strong><br>
+                            <span class="text-muted">ホームの一番上にお知らせを全文表示します。お知らせ一覧では非表示になります。</span>
+                        </label>
+                    </div>
+                    @if ($errors->has('is_pinned'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('is_pinned') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
+            </list-view>
+
+            <list-view>
+                <list-view-form-group>
                     <div class="form-checkbox">
                         <label class="form-checkbox__label">
                             <input class="form-checkbox__input" type="checkbox" name="send_emails" value="1" {{ Auth::user()->can('staff.pages.send_emails') ? '' : 'disabled' }}>
@@ -97,13 +141,13 @@
                 </list-view-form-group>
                 <list-view-card>
                     @can('staff.pages.send_emails')
-                        <i class="fas fa-exclamation-circle"></i>
-                        メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
+                        <app-info-box primary>
+                            メール配信機能を利用するには、予めサーバー側での設定(CRON)が必要です。
+                        </app-info-box>
                     @else
-                        <span class="text-danger">
-                            <i class="fas fa-exclamation-circle"></i>
+                        <app-info-box danger>
                             <strong>メール配信機能の利用は許可されていません。メール配信機能を利用したい場合、{{ config('app.name') }}の管理者へお問い合わせください。</strong>
-                        </span>
+                        </app-info-box>
                     @endcan
                 </list-view-card>
             </list-view>

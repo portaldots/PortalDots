@@ -3,7 +3,6 @@
 namespace Tests\Feature\Services\Documents;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use App\Services\Documents\DocumentsService;
 use Tests\TestCase;
 use Illuminate\Support\Facades\App;
@@ -45,11 +44,10 @@ class DocumentsServiceTest extends TestCase
 
         $schedule = factory(Schedule::class)->create();
 
-        $document = $this->documentsService->createDocument(
+        $this->documentsService->createDocument(
             '第２回会議資料',
             '第２回会議にて配布した資料のPDFバージョンです',
             $file,
-            $this->staff,
             true,
             false,
             $schedule,
@@ -64,8 +62,6 @@ class DocumentsServiceTest extends TestCase
             'path' => "documents/{$file->hashName()}",
             'size' => $filesize * 1024, // 単位 : バイト
             'extension' => 'pdf',
-            'created_by' => $this->staff->id,
-            'updated_by' => $this->staff->id,
             'is_public' => true,
             'is_important' => false,
             'schedule_id' => $schedule->id,
@@ -84,7 +80,6 @@ class DocumentsServiceTest extends TestCase
             '第２回会議資料',
             '第２回会議にて配布した資料のPDFバージョンです',
             UploadedFile::fake()->create('第２回.pdf', 1, 'application/pdf'),
-            $this->staff,
             true,
             false,
             $schedule,
@@ -96,7 +91,6 @@ class DocumentsServiceTest extends TestCase
             'updated filename',
             'updated description',
             null,
-            $this->staff,
             false,
             true,
             null,
@@ -106,8 +100,6 @@ class DocumentsServiceTest extends TestCase
         $this->assertDatabaseHas('documents', [
             'name' => 'updated filename',
             'description' => 'updated description',
-            'created_by' => $this->staff->id,
-            'updated_by' => $this->staff->id,
             'is_public' => false,
             'is_important' => true,
             'schedule_id' => null,
@@ -128,7 +120,6 @@ class DocumentsServiceTest extends TestCase
             '第２回会議資料',
             '第２回会議にて配布した資料のPDFバージョンです',
             $oldFile,
-            $this->staff,
             true,
             false,
             $schedule,
@@ -140,7 +131,6 @@ class DocumentsServiceTest extends TestCase
             'updated filename',
             'updated description',
             UploadedFile::fake()->create('update.jpeg', 1, 'image/jpeg'),
-            $this->staff,
             false,
             true,
             null,
@@ -153,8 +143,6 @@ class DocumentsServiceTest extends TestCase
             'name' => 'updated filename',
             'description' => 'updated description',
             'extension' => 'jpeg',
-            'created_by' => $this->staff->id,
-            'updated_by' => $this->staff->id,
             'is_public' => false,
             'is_important' => true,
             'schedule_id' => null,
@@ -174,7 +162,6 @@ class DocumentsServiceTest extends TestCase
             '削除される資料',
             '削除される資料です。悲しいね。',
             $file,
-            $this->staff,
             true,
             false,
             null,

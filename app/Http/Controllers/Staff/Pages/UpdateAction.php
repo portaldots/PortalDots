@@ -34,7 +34,9 @@ class UpdateAction extends Controller
                 $values['body'],
                 Auth::user(),
                 $values['notes'] ?? '',
-                $values['viewable_tags'] ?? []
+                $values['viewable_tags'] ?? [],
+                isset($values['is_public']) && $values['is_public'] === '1',
+                isset($values['is_pinned']) && $values['is_pinned'] === '1'
             );
 
             if (($values['send_emails'] ?? false) && Auth::user()->can('staff.pages.send_emails')) {

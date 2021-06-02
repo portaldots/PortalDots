@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::post('/', 'Staff\Pages\StoreAction')->name('store')->middleware(['can:staff.pages.edit']);
                 Route::get('/{page}/edit', 'Staff\Pages\EditAction')->name('edit')->middleware(['can:staff.pages.edit']);
                 Route::patch('/{page}', 'Staff\Pages\UpdateAction')->name('update')->middleware(['can:staff.pages.edit']);
+                Route::delete('/{page}', 'Staff\Pages\DestroyAction')->name('destroy')->middleware(['can:staff.pages.delete']);
                 Route::get('/export', 'Staff\Pages\ExportAction')->name('export')->middleware(['can:staff.pages.export']);
             });
 
@@ -245,6 +246,10 @@ Route::middleware(['auth', 'verified', 'can:admin', 'staffAuthed'])
     ->prefix('/admin')
     ->name('admin.')
     ->group(function () {
+        // アクティビティログ
+        Route::get('/activity_log', 'Admin\ActivityLog\IndexAction')->name('activity_log.index');
+        Route::get('/activity_log/api', 'Admin\ActivityLog\ApiAction')->name('activity_log.api');
+
         // ポータル情報編集
         Route::get('/portal', 'Admin\Portal\EditAction')->name('portal.edit');
         Route::patch('/portal', 'Admin\Portal\UpdateAction')->name('portal.update');

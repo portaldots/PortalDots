@@ -23,7 +23,7 @@
                 新規タグ
             </a>
             <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
+                class="btn is-primary-inverse is-no-border"
                 href="{{ route('staff.tags.export') }}"
                 target="_blank"
                 rel="noopener noreferrer"

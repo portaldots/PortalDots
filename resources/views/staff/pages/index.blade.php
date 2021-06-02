@@ -12,41 +12,10 @@
             title: 'タイトル',
             viewableTags: '閲覧可能なタグ',
             body: '本文',
-            is_important: '重要',
+            is_pinned: '固定',
+            is_public: '公開',
             created_at: '作成日時',
-            created_by: '作成者',
-            'created_by.id': 'ユーザーID',
-            'created_by.student_id': '学籍番号',
-            'created_by.name_family': '姓',
-            'created_by.name_family_yomi': '姓(よみ)',
-            'created_by.name_given': '名',
-            'created_by.name_given_yomi': '名(よみ)',
-            'created_by.email': '連絡先メールアドレス',
-            'created_by.tel': '電話番号',
-            'created_by.is_staff': 'スタッフ',
-            'created_by.is_admin': '管理者',
-            'created_by.email_verified_at': 'メール認証',
-            'created_by.univemail_verified_at': '本人確認',
-            'created_by.notes': 'スタッフ用メモ',
-            'created_by.created_at': '作成日時',
-            'created_by.updated_at': '更新日時',
             updated_at: '更新日時',
-            updated_by: '更新者',
-            'updated_by.id': 'ユーザーID',
-            'updated_by.student_id': '学籍番号',
-            'updated_by.name_family': '姓',
-            'updated_by.name_family_yomi': '姓(よみ)',
-            'updated_by.name_given': '名',
-            'updated_by.name_given_yomi': '名(よみ)',
-            'updated_by.email': '連絡先メールアドレス',
-            'updated_by.tel': '電話番号',
-            'updated_by.is_staff': 'スタッフ',
-            'updated_by.is_admin': '管理者',
-            'updated_by.email_verified_at': 'メール認証',
-            'updated_by.univemail_verified_at': '本人確認',
-            'updated_by.notes': 'スタッフ用メモ',
-            'updated_by.created_at': '作成日時',
-            'updated_by.updated_at': '更新日時',
             notes: 'スタッフ用メモ',
         }"
     >
@@ -59,13 +28,13 @@
                 新規お知らせ
             </a>
             <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
+                class="btn is-primary-inverse is-no-border"
                 href="{{ route('staff.send_emails') }}"
             >
                 メール配信設定
             </a>
             <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
+                class="btn is-primary-inverse is-no-border"
                 href="{{ route('staff.pages.export') }}"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -76,16 +45,22 @@
             </a>
         </template>
         <template v-slot:activities="{ row }">
-            <icon-button v-bind:href="`{{ route('staff.pages.edit', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])" title="編集">
-                <i class="fas fa-pencil-alt fa-fw"></i>
-            </icon-button>
+            <form-with-confirm
+                v-bind:action="`{{ route('staff.pages.destroy', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])" method="post"
+                v-bind:confirm-message="`お知らせ「${row['title']}」を削除しますか？`"
+            >
+                @method('delete')
+                @csrf
+                <icon-button v-bind:href="`{{ route('staff.pages.edit', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])" title="編集">
+                    <i class="fas fa-pencil-alt fa-fw"></i>
+                </icon-button>
+                <icon-button submit title="削除">
+                    <i class="fas fa-trash fa-fw"></i>
+                </icon-button>
+            </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">
-            <template v-if="keyName === 'created_by' || keyName === 'updated_by'">
-                {{-- 作成者・更新者 --}}
-                @{{ row[keyName].name_family  }} @{{ row[keyName].name_given  }} (@{{ row[keyName].student_id  }} • ID : @{{ row[keyName].id }})
-            </template>
-            <template v-else-if="keyName === 'viewableTags'">
+            <template v-if="keyName === 'viewableTags'">
                 {{-- 閲覧可能なタグ --}}
                 <template v-for="tag in row[keyName]">
                     <app-badge primary strong v-bind:key="tag.id">

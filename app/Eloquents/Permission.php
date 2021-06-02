@@ -157,6 +157,12 @@ class Permission extends SpatiePermission
                     'お知らせ(全機能)',
                     'お知らせ管理の全機能を利用可能。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
                 ),
+                'staff.pages.read,edit,delete' => new PermissionInfo(
+                    'staff.pages.read,edit,delete',
+                    'スタッフモード › お知らせ管理 › 閲覧と編集、削除',
+                    'お知らせ(削除)',
+                    'お知らせの閲覧と編集、作成、削除が可能'
+                ),
                 'staff.pages.read,edit,send_emails' => new PermissionInfo(
                     'staff.pages.read,edit,send_emails',
                     'スタッフモード › お知らせ管理 › 閲覧と編集、メール配信',

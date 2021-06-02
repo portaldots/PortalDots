@@ -7,6 +7,7 @@ import TurbolinksAdapter from './vue-turbolinks'
 
 import AppFooter from './components/AppFooter.vue'
 import AppHeader from './components/AppHeader.vue'
+import AppInfoBox from './components/AppInfoBox.vue'
 import AppNavBar from './components/AppNavBar.vue'
 import AppNavBarBack from './components/AppNavBarBack.vue'
 import AppNavBarToggle from './components/AppNavBarToggle.vue'
@@ -32,6 +33,7 @@ import TagsInput from './components/TagsInput.vue'
 import MarkdownEditor from './components/MarkdownEditor.vue'
 import SearchInput from './components/SearchInput.vue'
 import PermissionsSelector from './components/PermissionsSelector.vue'
+import UiPrimaryColorPicker from './components/UiPrimaryColorPicker.vue'
 
 // Form Questions
 import QuestionItem from './components/Forms/QuestionItem.vue'
@@ -62,6 +64,7 @@ export function mountV2App() {
         GlobalEvents,
         AppFooter,
         AppHeader,
+        AppInfoBox,
         AppNavBar,
         AppNavBarBack,
         AppNavBarToggle,
@@ -88,7 +91,8 @@ export function mountV2App() {
         TagsInput,
         MarkdownEditor,
         SearchInput,
-        PermissionsSelector
+        PermissionsSelector,
+        UiPrimaryColorPicker
       },
       data() {
         return {

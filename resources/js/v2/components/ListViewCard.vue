@@ -1,5 +1,5 @@
 <template>
-  <ListViewBaseItem>
+  <ListViewBaseItem :noBorder="noBorder">
     <slot />
   </ListViewBaseItem>
 </template>
@@ -10,6 +10,12 @@ import ListViewBaseItem from './ListViewBaseItem.vue'
 export default {
   components: {
     ListViewBaseItem
+  },
+  props: {
+    noBorder: {
+      type: Boolean,
+      default: false
+    }
   }
 }
 </script>

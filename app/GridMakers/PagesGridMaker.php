@@ -36,12 +36,12 @@ class PagesGridMaker implements GridMakable
             'id',
             'title',
             'body',
+            'is_pinned',
+            'is_public',
             'notes',
             'created_at',
-            'created_by',
             'updated_at',
-            'updated_by'
-        ])->with(['viewableTags', 'userCreatedBy', 'userUpdatedBy']);
+        ])->with(['viewableTags']);
     }
 
     /**
@@ -54,11 +54,11 @@ class PagesGridMaker implements GridMakable
             'title',
             'viewableTags',
             'body',
+            'is_pinned',
+            'is_public',
             'notes',
             'created_at',
-            'created_by',
             'updated_at',
-            'updated_by'
         ];
     }
 
@@ -73,27 +73,6 @@ class PagesGridMaker implements GridMakable
             $tags_choices = Tag::all()->toArray();
         }
 
-        $users_type = FilterableKey::belongsTo(
-            'users',
-            new FilterableKeysDict([
-                'id' => FilterableKey::number(),
-                'student_id' => FilterableKey::string(),
-                'name_family' => FilterableKey::string(),
-                'name_family_yomi' => FilterableKey::string(),
-                'name_given' => FilterableKey::string(),
-                'name_given_yomi' => FilterableKey::string(),
-                'email' => FilterableKey::string(),
-                'tel' => FilterableKey::string(),
-                'is_staff' => FilterableKey::bool(),
-                'is_admin' => FilterableKey::bool(),
-                'email_verified_at' => FilterableKey::isNull(),
-                'univemail_verified_at' => FilterableKey::isNull(),
-                'notes' => FilterableKey::string(),
-                'created_at' => FilterableKey::datetime(),
-                'updated_at' => FilterableKey::datetime()
-            ])
-        );
-
         return new FilterableKeysDict([
             'id' => FilterableKey::number(),
             'title' => FilterableKey::string(),
@@ -105,11 +84,11 @@ class PagesGridMaker implements GridMakable
                 'name'
             ),
             'body' => FilterableKey::string(),
+            'is_pinned' => FilterableKey::bool(),
+            'is_public' => FilterableKey::bool(),
             'notes' => FilterableKey::string(),
             'created_at' => FilterableKey::datetime(),
-            'created_by' => $users_type,
             'updated_at' => FilterableKey::datetime(),
-            'updated_by' => $users_type
         ]);
     }
 
@@ -122,11 +101,11 @@ class PagesGridMaker implements GridMakable
             'id',
             'title',
             'body',
+            'is_pinned',
+            'is_public',
             'notes',
             'created_at',
-            'created_by',
             'updated_at',
-            'updated_by'
         ];
     }
 
@@ -146,14 +125,8 @@ class PagesGridMaker implements GridMakable
                 case 'created_at':
                     $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
                     break;
-                case 'created_by':
-                    $item[$key] = $record->userCreatedBy;
-                    break;
                 case 'updated_at':
                     $item[$key] = !empty($record->updated_at) ? $record->updated_at->format('Y/m/d H:i:s') : null;
-                    break;
-                case 'updated_by':
-                    $item[$key] = $record->userUpdatedBy;
                     break;
                 default:
                     $item[$key] = $record->$key;

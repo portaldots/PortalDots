@@ -106,6 +106,23 @@
             </list-view>
         @endif
 
+        @foreach ($pinned_pages as $pinned_page)
+            <list-view>
+                <template v-slot:title>{{ $pinned_page->title }}</template>
+                <template v-slot:description>
+                    @datetime($pinned_page->updated_at) 更新
+                    @if (!$pinned_page->viewableTags->isEmpty())
+                        <app-badge primary outline>限定公開</app-badge>
+                    @endif
+                </template>
+                <list-view-card>
+                    <div data-turbolinks="false" class="markdown">
+                        @markdown($pinned_page->body)
+                    </div>
+                </list-view-card>
+            </list-view>
+        @endforeach
+
         @if (Gate::allows('circle.create'))
             <list-view>
                 <template v-slot:title>企画参加登録</template>
@@ -182,8 +199,8 @@
             </list-view>
         @endif
 
-        @if(empty($next_schedule) && $pages->isEmpty() && $documents->isEmpty() && $forms->isEmpty())
-            <list-view-empty icon-class="fas fa-home" text="まだ公開コンテンツはありません" />
+        @if(empty($next_schedule) && $pinned_pages->isEmpty() && $pages->isEmpty() && $documents->isEmpty() && $forms->isEmpty())
+            <list-view-empty icon-class="fas fa-home" text="まだ公開コンテンツはありません"></list-view-empty>
         @endif
 
         @isset($next_schedule)

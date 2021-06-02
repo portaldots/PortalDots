@@ -85,7 +85,7 @@
                 新規回答
             </a>
             <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
+                class="btn is-primary-inverse is-no-border"
                 href="{{ route('staff.forms.answers.export', ['form' => $form]) }}"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -95,7 +95,7 @@
                 CSVで出力
             </a>
             <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
+                class="btn is-primary-inverse is-no-border"
                 href="{{ route('staff.forms.answers.uploads.index', ['form' => $form]) }}"
             >
                 <i class="far fa-file-archive fa-fw"></i>
@@ -103,7 +103,7 @@
             </a>
             @if (!isset($form->customForm))
                 <a
-                    class="btn is-primary-inverse is-no-shadow is-no-border"
+                    class="btn is-primary-inverse is-no-border"
                     href="{{ route('staff.forms.not_answered', ['form' => $form]) }}"
                 >
                     未提出企画を表示

@@ -6,16 +6,36 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Concerns\IsNewTrait;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Page extends Model
 {
     use IsNewTrait;
+    use LogsActivity;
+
+    protected static $logName = 'page';
+
+    protected static $logAttributes = [
+        'id',
+        'title',
+        'body',
+        'is_pinned',
+        'is_public',
+        'notes',
+    ];
+
+    protected static $logOnlyDirty = true;
+
+    protected $casts = [
+        'is_pinned' => 'bool',
+        'is_public' => 'bool',
+    ];
 
     protected $fillable = [
         'title',
         'body',
-        'created_by',
-        'updated_by',
+        'is_pinned',
+        'is_public',
         'notes',
     ];
 
@@ -92,6 +112,29 @@ class Page extends Model
     }
 
     /**
+     * 公開されているお知らせに限定するクエリスコープ
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePublic($query)
+    {
+        return $query->where('is_public', true);
+    }
+
+    /**
+     * 固定されたお知らせに限定するクエリスコープ
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param bool $is_pinned 固定されたお知らせ以外を取得する場合は false を指定する
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePinned($query, bool $is_pinned = true)
+    {
+        return $query->where('is_pinned', $is_pinned);
+    }
+
+    /**
      * 指定した企画が閲覧できるお知らせの一覧を取得できるクエリスコープ
      *
      * $circle を省略した場合、閲覧できる企画が限られているお知らせを
@@ -130,15 +173,5 @@ class Page extends Model
             return $query;
         }
         return $query->whereRaw("match(title,body) against (? IN BOOLEAN MODE)", [$keywords]);
-    }
-
-    public function userCreatedBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function userUpdatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
     }
 }

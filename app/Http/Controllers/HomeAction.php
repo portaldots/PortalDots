@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Eloquents\Page;
 use App\Eloquents\Schedule;
 use App\Eloquents\Document;
@@ -44,9 +43,10 @@ class HomeAction extends Controller
                                     ? Auth::user()->circles()->get()
                                     : collect([]))
             ->with('circle', $circle)
+            ->with('pinned_pages', Page::byCircle($circle)->public()->pinned()->get())
             ->with('pages', Page::byCircle($circle)->take(self::TAKE_COUNT)->with(['usersWhoRead' => function ($query) {
                 $query->where('user_id', Auth::id());
-            }])->get())
+            }])->public()->pinned(false)->get())
             ->with('next_schedule', Schedule::startOrder()->notStarted()->first())
             ->with('documents', Document::take(self::TAKE_COUNT)->public()->with('schedule')->get())
             ->with('forms', Form::byCircle($circle)->take(self::TAKE_COUNT)
