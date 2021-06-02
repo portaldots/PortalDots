@@ -11,12 +11,12 @@
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" />
     </a>
+    <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fportal-dots%2FPortalDots?ref=badge_shield" alt="FOSSA Status">
+        <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fportal-dots%2FPortalDots.svg?type=shield"/>
+    </a>
 </p>
 
 ![PortalDots](https://user-images.githubusercontent.com/6687653/83792485-142e1d00-a6d6-11ea-94a6-7fb3f712252a.png)
-
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fportal-dots%2FPortalDots.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fportal-dots%2FPortalDots?ref=badge_large)
 
 ## PortalDotsとは
 PortalDots(ポータルドット)は、 **学園祭実行委員会と参加企画担当者との間のコミュニケーションを支援するウェブシステム** です。お知らせメールの一斉送信や各種申請の受付をオンラインで簡単に行うことができます。
@@ -28,7 +28,6 @@ PortalDots(ポータルドット)は、 **学園祭実行委員会と参加企�
 
 ## スクリーンショット
 ![PortalDotsスクリーンショット](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/readme/main_screenshot.png)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fportal-dots%2FPortalDots.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fportal-dots%2FPortalDots?ref=badge_shield)
 
 ### ホーム画面
 ![ホーム](https://raw.githubusercontent.com/portal-dots/PortalDots/master/docs/readme/screenshot_home.png)
@@ -156,3 +155,5 @@ Node.js を最新バージョンにアップグレードした上で、再度 `y
 
 ## ライセンス
 [MIT License](https://github.com/portal-dots/PortalDots/blob/master/LICENSE)
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fportal-dots%2FPortalDots.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fportal-dots%2FPortalDots?ref=badge_large)
