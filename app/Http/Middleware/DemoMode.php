@@ -7,7 +7,7 @@ use Closure;
 class DemoMode
 {
     /**
-     * デモモードであっても GET 以外のリクエストを許可するルート
+     * デモモードであっても GET 以外のリクエストを許可するパス
      *
      * @var array
      */
