@@ -21,6 +21,7 @@ class GetFormAction extends Controller
             'created_at' => $form->created_at,
             'updated_at' => $form->updated_at,
             'custom_form' => $form->customForm,
+            'demo_mode' => config('portal.enable_demo_mode'),
         ];
     }
 }
