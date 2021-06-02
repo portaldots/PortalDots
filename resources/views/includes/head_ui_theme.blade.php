@@ -48,7 +48,6 @@
     {{ $uiThemeService->getCurrentTheme() === 'system' ? '@media (prefers-color-scheme: dark) {' : '' }}
         :root {
             --color-text: rgb(196, 199, 202);
-            --color-primary-light: rgba(117, 170, 240, 0.2);
             --color-danger: rgb(226, 118, 120);
             --color-danger-light: rgb(226, 118, 120, 0.2);
             --color-success: rgb(75, 189, 119);
