@@ -53,6 +53,7 @@
     color: $color-text;
     display: block;
     font-weight: bold;
+    outline-offset: -3px;
     padding: $spacing;
     padding-top: #{$navbar-height + $spacing};
     &:hover,
