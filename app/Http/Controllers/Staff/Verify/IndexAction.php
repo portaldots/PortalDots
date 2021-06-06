@@ -20,6 +20,10 @@ class IndexAction extends Controller
 
     public function __invoke()
     {
+        if (config('portal.enable_demo_mode')) {
+            return redirect()->route('staff.index');
+        }
+
         $this->staffAuthService->send(Auth::user());
         return view('staff.verify.index');
     }
