@@ -14,6 +14,7 @@ class DemoMode
     private $exceptPaths = [
         'login',
         'logout',
+        'circles/*/auth',
         // デモモードの場合、AddQuestionAction はダミーのレスポンスを返す
         'staff/forms/*/editor/api/add_question',
     ];
