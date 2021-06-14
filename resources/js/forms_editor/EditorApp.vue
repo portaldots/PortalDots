@@ -1,6 +1,13 @@
 <template>
   <div class="editor-wrap">
     <div
+      class="alert alert-primary rounded-0 m-0 d-none d-md-block fixed-bottom text-center"
+      v-if="demo_mode"
+    >
+      <strong>デモモード</strong> —
+      フォームエディター上での変更は、実際には保存されません
+    </div>
+    <div
       class="alert alert-danger rounded-0 m-0 d-block d-md-none fixed-bottom text-center"
     >
       フォームエディターは、パソコンのみ対応しています。
@@ -57,6 +64,9 @@ export default {
     },
     custom_form() {
       return this.$store.state.editor.form.custom_form
+    },
+    demo_mode() {
+      return this.$store.state.editor.form.demo_mode
     }
   },
   watch: {

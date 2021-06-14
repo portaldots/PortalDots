@@ -34,6 +34,11 @@
     @guest
         <header class="jumbotron">
             <app-container narrow>
+                @if (config('portal.enable_demo_mode'))
+                    <p class="text-center">
+                        <app-badge primary outline>PortalDots デモサイト</app-badge>
+                    </p>
+                @endif
                 <h1 class="jumbotron__title">
                     {{ config('app.name') }}
                 </h1>

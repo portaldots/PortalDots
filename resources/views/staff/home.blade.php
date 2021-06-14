@@ -22,7 +22,7 @@
         </list-view>
         <list-view>
             <template v-slot:title>メニュー</template>
-            @if (!Auth::user()->is_admin && Auth::user()->permissions->isEmpty())
+            @if (!Auth::user()->is_admin && Auth::user()->permissions->isEmpty() && !config('portal.enable_demo_mode'))
                 <list-view-card>
                     <list-view-empty icon-class="fas fa-lock" text="管理者にアクセス権の付与を依頼してください">
                         <p>

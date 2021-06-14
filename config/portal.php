@@ -17,4 +17,6 @@ return [
     'users_number_to_submit_circle' => (int)env('PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE', 2),
     // アクセントカラー
     'primary_color_hsl' => [env('PORTAL_PRIMARY_COLOR_H', null), env('PORTAL_PRIMARY_COLOR_S', null), env('PORTAL_PRIMARY_COLOR_L', null)],
+    // デモモード
+    'enable_demo_mode' => env('PORTAL_ENABLE_DEMO_MODE', false),
 ];
