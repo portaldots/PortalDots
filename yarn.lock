@@ -1897,10 +1897,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blade-formatter@^1.10.5:
-  version "1.11.5"
-  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.11.5.tgz#a3b4175603f4c038ca39d013825532c435a83c65"
-  integrity sha512-BtRTC2mbCw0etWomcUHkefqAzInzOYO7FoqyhwQrat9+2PYhF0qcnqjG37UPJggFW0ohqHXsPXwnDYJp7mquhw==
+blade-formatter@^1.11.6:
+  version "1.11.6"
+  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.11.6.tgz#2ee724c3d8eb5d865258c5d0d4303575120e3d5a"
+  integrity sha512-N00KagtvYZLSDzHoeAzU5q6PqyyWOlYStmGv82fS6NIV1Ob+9BFpBWJ4pNTmtMqUgEE14EoT9QkxBSQEb1jnmw==
   dependencies:
     "@prettier/plugin-php" shufo/plugin-php#a18627e03748ee5dd0218b7685a6564672f6c3e7
     aigle "^1.14.1"
