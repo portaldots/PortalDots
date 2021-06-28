@@ -8103,10 +8103,10 @@ sass-loader@^12.1.0:
     klona "^2.0.4"
     neo-async "^2.6.2"
 
-sass-resources-loader@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/sass-resources-loader/-/sass-resources-loader-2.2.2.tgz#a3d40a317c7f1863080b72233b49dbe34f380c92"
-  integrity sha512-D+BxTcWouyp0ZLN1D5QUbdvJIVgq3eBHrgsLudsO8dD0JaUG6PgoEzu3Hi3A1jVMBUoxd4gF44/h90Zy1guPbA==
+sass-resources-loader@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/sass-resources-loader/-/sass-resources-loader-2.2.3.tgz#1be92ea326a4a2d8d7c3483a01577a70df7d7fa1"
+  integrity sha512-QHyhf1euMF16qC5R24felQYkg7NvSlsNkidUpgrga27hMLqNP5TfmQ6K0iVn7BurKmUU/CDuygZh0py9lXeYPQ==
   dependencies:
     async "^3.2.0"
     chalk "^4.1.0"
