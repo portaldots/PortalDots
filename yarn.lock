@@ -2000,10 +2000,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blade-formatter@^1.11.8:
-  version "1.11.8"
-  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.11.8.tgz#3a7b489b11192a472b69530b105ce9aae4fc095f"
-  integrity sha512-Ve2/i02PGcE9MKf/726tHhqK5o1fQwt/7kHt1WwEiBPlBoq9xlWX6G6FIvD3v+82xI7B54FGsyLAvyif+99uSA==
+blade-formatter@^1.11.9:
+  version "1.11.9"
+  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.11.9.tgz#a21ef81c6155c458f1a1bf3fa9e762186758718e"
+  integrity sha512-EX9H+uF772ntWKUksrjf6BqWWavaMWIjlUgkq+kQ40uYb8ksPY8xzzk7yL2YNcaJ08nui1WESRESYuU/3OKBsA==
   dependencies:
     "@prettier/plugin-php" shufo/plugin-php#a18627e03748ee5dd0218b7685a6564672f6c3e7
     aigle "^1.14.1"
