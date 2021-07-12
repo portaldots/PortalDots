@@ -1100,13 +1100,14 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@prettier/plugin-php@shufo/plugin-php#a18627e03748ee5dd0218b7685a6564672f6c3e7":
-  version "0.16.1"
-  resolved "https://codeload.github.com/shufo/plugin-php/tar.gz/a18627e03748ee5dd0218b7685a6564672f6c3e7"
+"@prettier/plugin-php@0.17.2":
+  version "0.17.2"
+  resolved "https://registry.yarnpkg.com/@prettier/plugin-php/-/plugin-php-0.17.2.tgz#33f30a640e0c3798c528a7e52b6153ad731c89f3"
+  integrity sha512-0TB3rrQgCELav68Rkk0EPoanJw4tiT879pSsG4AvuvEHtPBSVHgg+lgYSCCOmdfWfTXAa/lvq5c13r0sdt2vUQ==
   dependencies:
     linguist-languages "^7.5.1"
     mem "^8.0.0"
-    php-parser shufo/php-parser#0b7781fdf88be4b8974320cf27af1588c07e2da8
+    php-parser "git+https://github.com/glayzzle/php-parser.git#cca83041d938b972c7ef74648f29de03777b0ea4"
 
 "@stylelint/postcss-css-in-js@^0.37.2":
   version "0.37.2"
@@ -2000,12 +2001,12 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blade-formatter@^1.11.8:
-  version "1.11.8"
-  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.11.8.tgz#3a7b489b11192a472b69530b105ce9aae4fc095f"
-  integrity sha512-Ve2/i02PGcE9MKf/726tHhqK5o1fQwt/7kHt1WwEiBPlBoq9xlWX6G6FIvD3v+82xI7B54FGsyLAvyif+99uSA==
+blade-formatter@^1.11.10:
+  version "1.11.10"
+  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.11.10.tgz#71a95ff356993f51b1694099a2544477419d13b3"
+  integrity sha512-Gkp6Dde5u6AfPYuz8u03cN3E4coi/XD0aW1aGG7w87BuVfiZwqi9W2qtRMJmQOGw7KLJEFguW60f8v1z6CjJhg==
   dependencies:
-    "@prettier/plugin-php" shufo/plugin-php#a18627e03748ee5dd0218b7685a6564672f6c3e7
+    "@prettier/plugin-php" "0.17.2"
     aigle "^1.14.1"
     chalk "^4.1.0"
     concat-stream "^2.0.0"
@@ -2015,7 +2016,7 @@ blade-formatter@^1.11.8:
     ignore "^5.1.8"
     js-beautify "^1.10.2"
     lodash "^4.17.19"
-    php-parser shufo/php-parser#0b7781fdf88be4b8974320cf27af1588c07e2da8
+    php-parser "3.0.1"
     prettier "^2.2.0"
     vscode-oniguruma "1.5.1"
     vscode-textmate "^5.4.0"
@@ -6859,9 +6860,15 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-php-parser@shufo/php-parser#0b7781fdf88be4b8974320cf27af1588c07e2da8:
+php-parser@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/php-parser/-/php-parser-3.0.1.tgz#69ae957362717cfefbc58eb208d12e48dab2e809"
+  integrity sha512-m6CBPHOoMkzEHoXG0rhEg/VegSNemUNQepHnYtrRgTAh8rsqoO65KqQ32KJ5xe2iplhO0jdwd1UJ9Ea0yHsgYQ==
+
+"php-parser@git+https://github.com/glayzzle/php-parser.git#cca83041d938b972c7ef74648f29de03777b0ea4":
   version "3.0.2"
-  resolved "https://codeload.github.com/shufo/php-parser/tar.gz/0b7781fdf88be4b8974320cf27af1588c07e2da8"
+  uid cca83041d938b972c7ef74648f29de03777b0ea4
+  resolved "git+https://github.com/glayzzle/php-parser.git#cca83041d938b972c7ef74648f29de03777b0ea4"
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
   version "2.2.3"
