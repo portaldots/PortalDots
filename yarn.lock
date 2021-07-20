@@ -2008,10 +2008,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blade-formatter@^1.11.10:
-  version "1.11.10"
-  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.11.10.tgz#71a95ff356993f51b1694099a2544477419d13b3"
-  integrity sha512-Gkp6Dde5u6AfPYuz8u03cN3E4coi/XD0aW1aGG7w87BuVfiZwqi9W2qtRMJmQOGw7KLJEFguW60f8v1z6CjJhg==
+blade-formatter@^1.11.11:
+  version "1.11.11"
+  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.11.11.tgz#b8e630bad093b27fe4df897a224f5188d3e93324"
+  integrity sha512-C4MAeJcooi6nVopBr88CtQt77Bagji6uxpoebt2s0A/qw94nts5nSrA73RCTDmBnpm4piT/tVtMBnN7WrOimiA==
   dependencies:
     "@prettier/plugin-php" "0.17.2"
     aigle "^1.14.1"
@@ -5564,10 +5564,10 @@ linguist-languages@^7.5.1:
   resolved "https://registry.yarnpkg.com/linguist-languages/-/linguist-languages-7.14.0.tgz#62a6bdbe1ef80d0715d16c0bb8e953ee93c95dfc"
   integrity sha512-VqnUYHOSqRqAGnIl+7SCnFxK+sX0x7LXe5qn0TG6t9SViofQgN7272PLCFZ/lgkT7tAO5CA/2pCsZGlGvGhfWA==
 
-lint-staged@^11.0.0:
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-11.0.0.tgz#24d0a95aa316ba28e257f5c4613369a75a10c712"
-  integrity sha512-3rsRIoyaE8IphSUtO1RVTFl1e0SLBtxxUOPBtHxQgBHS5/i6nqvjcUfNioMa4BU9yGnPzbO+xkfLtXtxBpCzjw==
+lint-staged@^11.0.1:
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-11.0.1.tgz#1b8ae8ed5a52ed87252db95fe008c2618c85f55a"
+  integrity sha512-RkTA1ulE6jAGFskxpGAwxfVRXjHp7D9gFg/+KMARUWMPiVFP0t28Em2u0gL8sA0w3/ck3TC57F2v2RNeQ5XPnw==
   dependencies:
     chalk "^4.1.1"
     cli-truncate "^2.1.0"
