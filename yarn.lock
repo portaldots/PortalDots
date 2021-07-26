@@ -5478,10 +5478,10 @@ known-css-properties@^0.21.0:
   resolved "https://registry.yarnpkg.com/known-css-properties/-/known-css-properties-0.21.0.tgz#15fbd0bbb83447f3ce09d8af247ed47c68ede80d"
   integrity sha512-sZLUnTqimCkvkgRS+kbPlYW5o8q5w1cu+uIisKpEWkj31I8mx8kNG162DwRav8Zirkva6N5uoFsm9kzK4mUXjw==
 
-laravel-mix@^6.0.25:
-  version "6.0.25"
-  resolved "https://registry.yarnpkg.com/laravel-mix/-/laravel-mix-6.0.25.tgz#6989f3e1a6d4cc0b73732bf02e5355a8f3696156"
-  integrity sha512-SDpLGUnXJ8g0rvtiLljSTJSR6awj86M2Jd3MhbtT32TCgwXdtajVLF7Mv2blsPLixGHtynwZgi+UFlYQbquPLg==
+laravel-mix@^6.0.27:
+  version "6.0.27"
+  resolved "https://registry.yarnpkg.com/laravel-mix/-/laravel-mix-6.0.27.tgz#56f7902a1162312844fce4f0cd60b86e7b07770c"
+  integrity sha512-27KljRLiksseUNFwL3KhsdUKTBzo0JJllJAb1GhASq1JUg7YcP1f0uMj5xtdPBTdx3wOBraRWkGe82oCwpfU7g==
   dependencies:
     "@babel/core" "^7.14.5"
     "@babel/plugin-proposal-object-rest-spread" "^7.14.5"
