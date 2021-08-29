@@ -38,10 +38,10 @@ class ShowAction extends Controller
 
             return view('circles.show')
                 ->with('circle', $circle)
-                ->with('form', $form)
                 ->with('questions', $form->questions()->get())
                 ->with('answer', $answer)
-                ->with('answer_details', $this->answerDetailsService->getAnswerDetailsByAnswer($answer));
+                ->with('answer_details', !empty($answer)
+                    ? $this->answerDetailsService->getAnswerDetailsByAnswer($answer) : []);
         }
         return redirect()
             ->route('circles.auth', ['circle' => $circle]);
