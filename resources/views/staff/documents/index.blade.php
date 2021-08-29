@@ -30,19 +30,12 @@
         }"
     >
         <template v-slot:toolbar>
-            <a
-                class="btn is-primary"
-                href="{{ route('staff.documents.create') }}"
-            >
+            <a class="btn is-primary" href="{{ route('staff.documents.create') }}">
                 <i class="fas fa-plus fa-fw"></i>
                 新規配布資料
             </a>
-            <a
-                class="btn is-primary-inverse is-no-border"
-                href="{{ route('staff.documents.export') }}"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
+            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.documents.export') }}" target="_blank"
+                rel="noopener noreferrer">
                 {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力
@@ -51,12 +44,12 @@
         <template v-slot:activities="{ row }">
             <form-with-confirm
                 v-bind:action="`{{ route('staff.documents.destroy', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])"
-                method="post"
-                v-bind:confirm-message="`配布資料「${row['name']}」を削除しますか？`"
-            >
+                method="post" v-bind:confirm-message="`配布資料「${row['name']}」を削除しますか？`">
                 @method('delete')
                 @csrf
-                <icon-button v-bind:href="`{{ route('staff.documents.edit', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])" title="編集">
+                <icon-button
+                    v-bind:href="`{{ route('staff.documents.edit', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])"
+                    title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>
                 <icon-button submit title="削除">
@@ -67,15 +60,12 @@
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'path'">
                 {{-- ファイル --}}
-                <a
-                    v-bind:href="`{{ route('staff.documents.show', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >表示</a>
+                <a v-bind:href="`{{ route('staff.documents.show', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])"
+                    target="_blank" rel="noopener noreferrer">表示</a>
             </template>
             <template v-else-if="keyName === 'schedule_id' && row[keyName]">
                 {{-- イベント --}}
-                @{{ row[keyName].name  }} (ID : @{{ row[keyName].id }})
+                @{{ row[keyName] . name }} (ID : @{{ row[keyName] . id }})
             </template>
             <template v-else-if="row[keyName] === true">
                 <strong>はい</strong>

@@ -74,7 +74,7 @@
                             <template v-slot:title>
                                 @datetime($_->created_at) に新規作成した回答 — 回答ID : {{ $_->id }}
                             </template>
-                            @unless ($_->created_at->eq($_->updated_at))
+                            @unless($_->created_at->eq($_->updated_at))
                                 <template v-slot:meta>回答の最終更新日時 : @datetime($_->updated_at)</template>
                             @endunless
                         </list-view-item>
@@ -87,13 +87,14 @@
                 @if (empty($answer) && $form->max_answers > 1)
                     <template v-slot:title>回答を新規作成</template>
                     @if ($form->max_answers - count($answers) > 0)
-                        <template v-slot:description>貴企画はこの申請を、あと{{ $form->max_answers - count($answers) }}つ新規作成できます</template>
+                        <template
+                            v-slot:description>貴企画はこの申請を、あと{{ $form->max_answers - count($answers) }}つ新規作成できます</template>
                     @else
                         <template
                             v-slot:description>回答数上限({{ $form->max_answers }}つ)に達したため、これ以上新規作成できません。以前の回答の編集は上記より可能です。</template>
                     @endif
                 @endif
-                @isset ($answer)
+                @isset($answer)
                     <template v-slot:title>{{ $form->isOpen() ? '回答を編集' : '回答を閲覧' }} — 回答ID : {{ $answer->id }}</template>
                     <template v-slot:description>回答の最終更新日時 : @datetime($form->updated_at)</template>
                 @endisset
@@ -102,16 +103,16 @@
                     @include('includes.question', ['is_disabled' => !$form->isOpen() || (empty($answer) && $form->max_answers
                 <= count($answers))]) @endforeach </list-view>
 
-                    <div class="text-center pt-spacing-md pb-spacing">
-                        <button type="submit" class="btn is-primary is-wide"
-                            {{ !$form->isOpen() || (empty($answer) && $form->max_answers <= count($answers)) ? ' disabled' : '' }}>送信</button>
-                        @if (config('app.debug'))
-                            <button type="submit" class="btn is-primary-inverse" formnovalidate>
-                                <app-badge primary strong>開発モード</app-badge>
-                                バリデーションせずに送信
-                            </button>
-                        @endif
-                    </div>
+            <div class="text-center pt-spacing-md pb-spacing">
+                <button type="submit" class="btn is-primary is-wide"
+                    {{ !$form->isOpen() || (empty($answer) && $form->max_answers <= count($answers)) ? ' disabled' : '' }}>送信</button>
+                @if (config('app.debug'))
+                    <button type="submit" class="btn is-primary-inverse" formnovalidate>
+                        <app-badge primary strong>開発モード</app-badge>
+                        バリデーションせずに送信
+                    </button>
+                @endif
+            </div>
         </app-container>
     </form>
 @endsection

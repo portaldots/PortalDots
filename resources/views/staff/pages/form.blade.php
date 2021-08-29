@@ -17,7 +17,7 @@
             @if (empty($page))
                 <template v-slot:title>お知らせを新規作成</template>
             @endif
-            @isset ($page)
+            @isset($page)
                 <template v-slot:title>お知らせを編集</template>
                 <div>お知らせID : {{ $page->id }}</div>
             @endisset
@@ -42,7 +42,8 @@
                         本文&nbsp;
                         <app-badge outline muted>Markdown</app-badge>
                     </template>
-                    <markdown-editor input-name="body" default-value="{{ old('body', empty($page) ? '' : $page->body) }}"></markdown-editor>
+                    <markdown-editor input-name="body" default-value="{{ old('body', empty($page) ? '' : $page->body) }}">
+                    </markdown-editor>
                     @if ($errors->has('body'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('body') as $message)
@@ -60,14 +61,10 @@
                         空欄の場合、未ログインユーザーを含む全員に公開されます。
                         タグを指定した場合、指定したタグのうち、1つ以上該当する企画に公開されます。
                     </template>
-                    <tags-input
-                        input-name="viewable_tags"
-                        placeholder="企画タグを指定"
-                        placeholder-empty="企画タグを指定 (空欄の場合すべてのユーザーに公開)"
-                        v-bind:default-tags="{{ $default_tags }}"
-                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}"
-                        add-only-from-autocomplete
-                    ></tags-input>
+                    <tags-input input-name="viewable_tags" placeholder="企画タグを指定"
+                        placeholder-empty="企画タグを指定 (空欄の場合すべてのユーザーに公開)" v-bind:default-tags="{{ $default_tags }}"
+                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}" add-only-from-autocomplete>
+                    </tags-input>
                     @if ($errors->has('viewable_tags'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('viewable_tags') as $message)
@@ -84,12 +81,12 @@
                     <div class="form-radio">
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="is_public" id="isPublicRadios1" value="1"
-                                {{ (bool)old('is_public', isset($page) ? $page->is_public : true) === true ? 'checked' : '' }}>
+                                {{ (bool) old('is_public', isset($page) ? $page->is_public : true) === true ? 'checked' : '' }}>
                             <strong>公開</strong>
                         </label>
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="is_public" id="isPublicRadios2" value="0"
-                                {{ (bool)old('is_public', isset($page) ? $page->is_public : true) === false ? 'checked' : '' }}>
+                                {{ (bool) old('is_public', isset($page) ? $page->is_public : true) === false ? 'checked' : '' }}>
                             <strong>非公開</strong>
                         </label>
                     </div>
@@ -107,7 +104,8 @@
                 <list-view-form-group>
                     <div class="form-checkbox">
                         <label class="form-checkbox__label">
-                            <input class="form-checkbox__input" type="checkbox" name="is_pinned" value="1" {{ (bool)old('is_pinned', isset($page) ? $page->is_pinned : false) === true ? 'checked' : '' }}>
+                            <input class="form-checkbox__input" type="checkbox" name="is_pinned" value="1"
+                                {{ (bool) old('is_pinned', isset($page) ? $page->is_pinned : false) === true ? 'checked' : '' }}>
                             <strong>お知らせを固定表示</strong><br>
                             <span class="text-muted">ホームの一番上にお知らせを全文表示します。お知らせ一覧では非表示になります。</span>
                         </label>
@@ -126,7 +124,8 @@
                 <list-view-form-group>
                     <div class="form-checkbox">
                         <label class="form-checkbox__label">
-                            <input class="form-checkbox__input" type="checkbox" name="send_emails" value="1" {{ Auth::user()->can('staff.pages.send_emails') ? '' : 'disabled' }}>
+                            <input class="form-checkbox__input" type="checkbox" name="send_emails" value="1"
+                                {{ Auth::user()->can('staff.pages.send_emails') ? '' : 'disabled' }}>
                             <strong>保存後にこのお知らせを「閲覧可能なユーザー」で指定したユーザー全員にメール配信</strong><br>
                             <span class="text-muted">このお知らせを保存したタイミングでの内容が配信されます。お知らせを編集しても、メール配信が完了するまで編集内容は反映されません。</span>
                         </label>

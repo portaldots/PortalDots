@@ -42,11 +42,7 @@
         </div>
         @if (!isset($form->customForm))
             <hr />
-            <a
-                class="btn is-primary"
-                href="{{ route('staff.forms.edit', ['form' => $form]) }}"
-                data-turbolinks="false"
-            >
+            <a class="btn is-primary" href="{{ route('staff.forms.edit', ['form' => $form]) }}" data-turbolinks="false">
                 <i class="fas fa-pencil-alt fa-fw"></i>
                 フォームを編集
             </a>
@@ -77,41 +73,33 @@
         }"
     >
         <template v-slot:toolbar>
-            <a
-                class="btn is-primary"
-                href="{{ route('staff.forms.answers.create', ['form' => $form]) }}"
-            >
+            <a class="btn is-primary" href="{{ route('staff.forms.answers.create', ['form' => $form]) }}">
                 <i class="fas fa-plus fa-fw"></i>
                 新規回答
             </a>
-            <a
-                class="btn is-primary-inverse is-no-border"
-                href="{{ route('staff.forms.answers.export', ['form' => $form]) }}"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
+            <a class="btn is-primary-inverse is-no-border"
+                href="{{ route('staff.forms.answers.export', ['form' => $form]) }}" target="_blank"
+                rel="noopener noreferrer">
                 {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力
             </a>
-            <a
-                class="btn is-primary-inverse is-no-border"
-                href="{{ route('staff.forms.answers.uploads.index', ['form' => $form]) }}"
-            >
+            <a class="btn is-primary-inverse is-no-border"
+                href="{{ route('staff.forms.answers.uploads.index', ['form' => $form]) }}">
                 <i class="far fa-file-archive fa-fw"></i>
                 ファイルを一括ダウンロード
             </a>
             @if (!isset($form->customForm))
-                <a
-                    class="btn is-primary-inverse is-no-border"
-                    href="{{ route('staff.forms.not_answered', ['form' => $form]) }}"
-                >
+                <a class="btn is-primary-inverse is-no-border"
+                    href="{{ route('staff.forms.not_answered', ['form' => $form]) }}">
                     未提出企画を表示
                 </a>
             @endif
         </template>
         <template v-slot:activities="{ row }">
-            <icon-button v-bind:href="`{{ route('staff.forms.answers.edit', ['form' => $form, 'answer' => '%%ANSWER%%']) }}`.replace('%%ANSWER%%', row['id'])" title="編集">
+            <icon-button
+                v-bind:href="`{{ route('staff.forms.answers.edit', ['form' => $form, 'answer' => '%%ANSWER%%']) }}`.replace('%%ANSWER%%', row['id'])"
+                title="編集">
                 <i class="fas fa-pencil-alt fa-fw"></i>
             </icon-button>
         </template>
@@ -127,7 +115,7 @@
                     <a v-bind:href="row[keyName].file_url" target="_blank" rel="noopener noreferrer">表示</a>
                 </template>
                 <template v-if="row[keyName] && row[keyName].join">
-                    @{{ row[keyName].join(', ') }}
+                    @{{ row[keyName] . join(', ') }}
                 </template>
             </template>
             <template v-else>

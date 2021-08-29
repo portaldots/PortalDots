@@ -20,7 +20,8 @@
                 @if (isset($circle))
                     <list-view-form-group>
                         <template v-slot:label>企画名</template>
-                        <input type="text" readonly value="{{ $circle->name }}({{ $circle->group_name }})" class="form-control">
+                        <input type="text" readonly value="{{ $circle->name }}({{ $circle->group_name }})"
+                            class="form-control">
                         @if (Auth::user()->circles()->approved()->count() > 1)
                             <template v-slot:append>
                                 <a href="{{ route('circles.selector.show', ['redirect_to' => Request::path()]) }}">変更</a>
@@ -30,7 +31,8 @@
                 @else
                     <list-view-form-group label-for="name">
                         <template v-slot:label>名前</template>
-                        <input type="text" id="name" readonly value="{{ Auth::user()->name }}({{ Auth::user()->student_id }})"
+                        <input type="text" id="name" readonly
+                            value="{{ Auth::user()->name }}({{ Auth::user()->student_id }})"
                             class="form-control is-plaintext">
                     </list-view-form-group>
                 @endif
@@ -41,16 +43,17 @@
                         <select id="category" name="category" class="form-control @error('category') is-invalid @enderror ">
                             <option hidden>選択してください</option>
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category', 0) == $category->id ? 'selected' : '' }}>
+                                <option value="{{ $category->id }}"
+                                    {{ old('category', 0) == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
                                 </option>
                             @endforeach
                             <option value="0">その他</option>
                         </select>
                         @error('category')
-                        <template v-slot:invalid>
-                            {{ $message }}
-                        </template>
+                            <template v-slot:invalid>
+                                {{ $message }}
+                            </template>
                         @enderror
                     </list-view-form-group>
                 @else

@@ -19,7 +19,7 @@
                         @markdown($form->description)
                     </list-view-card>
                 </list-view>
-                <hr/>
+                <hr />
             @endisset
             <list-view>
                 <template v-slot:title>企画情報を入力</template>
@@ -43,7 +43,7 @@
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
                         value="{{ old('name', isset($circle) ? $circle->name : '') }}" required>
                     @error('name')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="name_yomi">
@@ -52,9 +52,10 @@
                         <app-badge danger>必須</app-badge>
                     </template>
                     <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror"
-                        name="name_yomi" value="{{ old('name_yomi', isset($circle) ? $circle->name_yomi : '') }}" required>
+                        name="name_yomi" value="{{ old('name_yomi', isset($circle) ? $circle->name_yomi : '') }}"
+                        required>
                     @error('name_yomi')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="group_name">
@@ -66,7 +67,7 @@
                         name="group_name" value="{{ old('group_name', isset($circle) ? $circle->group_name : '') }}"
                         required>
                     @error('group_name')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="group_name_yomi">
@@ -78,7 +79,7 @@
                         class="form-control @error('group_name_yomi') is-invalid @enderror" name="group_name_yomi"
                         value="{{ old('group_name_yomi', isset($circle) ? $circle->group_name_yomi : '') }}" required>
                     @error('group_name_yomi')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 @foreach ($questions as $question)

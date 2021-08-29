@@ -3,7 +3,7 @@
 @section('title', 'PortalDots のインストール')
 
 @prepend('meta')
-<meta name="robots" content="noindex">
+    <meta name="robots" content="noindex">
 @endprepend
 
 @section('content')
@@ -20,15 +20,16 @@
                     確認メールに記載されているパスワードを入力してください。<br>
                     メールが届かない場合、
                     <a href="{{ route('install.mail.edit') }}">メール設定に誤りがないかご確認ください</a>。
-                </a>
                 </list-view-card>
                 <list-view-form-group label-for="install_password">
                     <template v-slot:label>
                         確認メールに記載のパスワード
                     </template>
-                    <input id="install_password" type="text" class="form-control @error('install_password') is-invalid @enderror" name="install_password" required>
+                    <input id="install_password" type="text"
+                        class="form-control @error('install_password') is-invalid @enderror" name="install_password"
+                        required>
                     @error('install_password')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
             </list-view>
