@@ -2003,10 +2003,10 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-blade-formatter@^1.11.11:
-  version "1.11.11"
-  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.11.11.tgz#b8e630bad093b27fe4df897a224f5188d3e93324"
-  integrity sha512-C4MAeJcooi6nVopBr88CtQt77Bagji6uxpoebt2s0A/qw94nts5nSrA73RCTDmBnpm4piT/tVtMBnN7WrOimiA==
+blade-formatter@^1.12.2:
+  version "1.12.2"
+  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.12.2.tgz#81f3fb4254305af10ad7f8bc3e4f09c4ab97a3ce"
+  integrity sha512-GFNhpXgB8YbHS0Pm58UH7yGPnnNccTo9Hyuk1UxB8G/i48wFcMQx3VBHbLbV1BHi4yKTn/Xus5VC7+t4T1EqFA==
   dependencies:
     "@prettier/plugin-php" "0.17.2"
     aigle "^1.14.1"
