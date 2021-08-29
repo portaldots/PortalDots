@@ -22,7 +22,7 @@
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
                         name="password" required autocomplete="current-password">
                     @error('password')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="new_password">
@@ -32,7 +32,7 @@
                         class="form-control @error('new_password') is-invalid @enderror" name="new_password" required
                         autocomplete="new-password">
                     @error('new_password')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="new_password_confirmation">

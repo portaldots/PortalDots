@@ -39,11 +39,9 @@
                         <list-view-empty icon-class="fas fa-key" text="管理者に対して権限を設定することはできません"></list-view-empty>
                     </list-view-card>
                 @else
-                    <permissions-selector
-                        v-bind:defined-permissions="{{ json_encode($defined_permissions) }}"
+                    <permissions-selector v-bind:defined-permissions="{{ json_encode($defined_permissions) }}"
                         v-bind:default-permissions="{{ $user->permissions->pluck('name')->toJson() }}"
-                        input-name="permissions"
-                    ></permissions-selector>
+                        input-name="permissions"></permissions-selector>
                 @endif
             </list-view>
 

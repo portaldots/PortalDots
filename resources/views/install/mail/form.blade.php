@@ -3,7 +3,7 @@
 @section('title', 'PortalDots のインストール')
 
 @prepend('meta')
-<meta name="robots" content="noindex">
+    <meta name="robots" content="noindex">
 @endprepend
 
 @section('content')
@@ -23,10 +23,12 @@
                         <template v-slot:label>
                             {{ $labels[$key] }}
                         </template>
-                        <input id="{{ $key }}" type="text" class="form-control @error($key) is-invalid @enderror" name="{{ $key }}"
-                            value="{{ old($key, $key === 'MAIL_FROM_NAME' && empty($value) ? config('app.name') : $value ) }}" required>
+                        <input id="{{ $key }}" type="text" class="form-control @error($key) is-invalid @enderror"
+                            name="{{ $key }}"
+                            value="{{ old($key, $key === 'MAIL_FROM_NAME' && empty($value) ? config('app.name') : $value) }}"
+                            required>
                         @error($key)
-                        <template v-slot:invalid>{{ $message }}</template>
+                            <template v-slot:invalid>{{ $message }}</template>
                         @enderror
                     </list-view-form-group>
                 @endforeach

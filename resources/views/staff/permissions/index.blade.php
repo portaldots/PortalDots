@@ -20,7 +20,9 @@
         }"
     >
         <template v-slot:activities="{ row }">
-            <icon-button v-bind:href="`{{ route('staff.permissions.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])" v-bind:disabled="row['is_admin']" title="編集">
+            <icon-button
+                v-bind:href="`{{ route('staff.permissions.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])"
+                v-bind:disabled="row['is_admin']" title="編集">
                 <i class="fas fa-pencil-alt fa-fw"></i>
             </icon-button>
         </template>
@@ -34,10 +36,11 @@
             </template>
             <template v-else-if="keyName === 'permissions'">
                 <template v-for="permission in row[keyName]">
-                    <app-badge primary v-bind:key="permission.identifier" v-bind:title="`${permission.display_name} — ${permission.description_html} (${permission.identifier})`">
-                        @{{ permission.display_short_name }}
+                    <app-badge primary v-bind:key="permission.identifier"
+                        v-bind:title="`${permission.display_name} — ${permission.description_html} (${permission.identifier})`">
+                        @{{ permission . display_short_name }}
                     </app-badge>
-                    @{{" "}}
+                    @{{ ' ' }}
                 </template>
                 <strong class="text-danger" v-if="row[keyName].length === 0">
                     利用可能な機能なし

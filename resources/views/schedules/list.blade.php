@@ -32,7 +32,7 @@
                 @endforeach
             </list-view>
         @endforeach
-        @empty ($schedules)
+        @empty($schedules)
             <list-view-empty icon-class="far fa-calendar-alt" text="予定はありません" />
         @endempty
     </app-container>

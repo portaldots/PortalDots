@@ -9,7 +9,8 @@
 @endsection
 
 @section('content')
-    <form method="post" action="{{ empty($place) ? route('staff.places.store') : route('staff.places.update', $place) }}" enctype="multipart/form-data">
+    <form method="post" action="{{ empty($place) ? route('staff.places.store') : route('staff.places.update', $place) }}"
+        enctype="multipart/form-data">
         @method(empty($place) ? 'post' : 'patch' )
         @csrf
 
@@ -17,7 +18,7 @@
             @if (empty($place))
                 <template v-slot:title>場所を新規作成</template>
             @endif
-            @isset ($place)
+            @isset($place)
                 <template v-slot:title>場所を編集</template>
                 <div>場所ID : {{ $place->id }}</div>
             @endisset
@@ -30,9 +31,8 @@
                         場所名
                         <app-badge danger>必須</app-badge>
                     </template>
-                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text"
-                        name="name" value="{{ old('name', empty($place) ? '' : $place->name) }}"
-                        required>
+                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text" name="name"
+                        value="{{ old('name', empty($place) ? '' : $place->name) }}" required>
                     @if ($errors->has('name'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('name') as $message)
@@ -46,11 +46,13 @@
                         タイプ
                         <app-badge danger>必須</app-badge>
                     </template>
-                    <select id="type" class="form-control @error('type') is-invalid @enderror"
-                        name="type" required>
-                        <option value="1" {{ old('type', empty($place) ? 1 : $place->type) === 1 ? 'selected' : '' }}>屋内</option>
-                        <option value="2" {{ old('type', empty($place) ? 1 : $place->type) === 2 ? 'selected' : '' }}>屋外</option>
-                        <option value="3" {{ old('type', empty($place) ? 1 : $place->type) === 3 ? 'selected' : '' }}>特殊場所</option>
+                    <select id="type" class="form-control @error('type') is-invalid @enderror" name="type" required>
+                        <option value="1" {{ old('type', empty($place) ? 1 : $place->type) === 1 ? 'selected' : '' }}>屋内
+                        </option>
+                        <option value="2" {{ old('type', empty($place) ? 1 : $place->type) === 2 ? 'selected' : '' }}>屋外
+                        </option>
+                        <option value="3" {{ old('type', empty($place) ? 1 : $place->type) === 3 ? 'selected' : '' }}>特殊場所
+                        </option>
                     </select>
                     @if ($errors->has('type'))
                         <template v-slot:invalid>

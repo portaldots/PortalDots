@@ -18,8 +18,7 @@
         このフォームから実際に送信することはできません。
     </top-alert>
 
-    <form method="post"
-        enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         @csrf
 
         @method(empty($answer) ? 'post' : 'patch' )

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="turbolinks-cache-control" content="no-cache">
     <title>
-        @hasSection ('title')
+        @hasSection('title')
             @yield('title') —
         @endif
         {{ empty(config('app.name')) ? 'PortalDots' : config('app.name') }}
@@ -18,8 +18,8 @@
     @include('includes.head_ui_theme')
 
     @prepend('css')
-    <link href="{{ mix('css/fontawesome.css') }}" rel="stylesheet">
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+        <link href="{{ mix('css/fontawesome.css') }}" rel="stylesheet">
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @endprepend
     @stack('css')
 
@@ -28,9 +28,9 @@
 
     <!-- Scripts -->
     @prepend('js')
-    <script src="{{ mix('js/manifest.js') }}" defer></script>
-    <script src="{{ mix('js/vendor.js') }}" defer></script>
-    <script src="{{ mix('js/app.js') }}" defer></script>
+        <script src="{{ mix('js/manifest.js') }}" defer></script>
+        <script src="{{ mix('js/vendor.js') }}" defer></script>
+        <script src="{{ mix('js/app.js') }}" defer></script>
     @endprepend
     @if (config('app.debug'))
         {{-- Laravel Debugbar か Turbolinks かは不明だが、jQuery.noConflict() --}}
@@ -38,15 +38,15 @@
         {{-- jQuery.noConflict() が呼び出されるとエラーになってしまうので、 --}}
         {{-- ダミーの関数を用意する。 --}}
         @prepend('js')
-        <script defer>
-            if (typeof jQuery === 'undefined') {
-                window.jQuery = {
-                    noConflict: function() {
-                        console.log('do nothing');
-                    }
-                };
-            }
-        </script>
+            <script defer>
+                if (typeof jQuery === 'undefined') {
+                    window.jQuery = {
+                        noConflict: function() {
+                            console.log('do nothing');
+                        }
+                    };
+                }
+            </script>
         @endprepend
     @endif
     @stack('js')

@@ -17,14 +17,14 @@
             @if (empty($form))
                 <template v-slot:title>フォームを新規作成</template>
             @endif
-            @isset ($form)
+            @isset($form)
                 <template v-slot:title>フォームを編集</template>
                 <div>フォームID : {{ $form->id }}</div>
             @endisset
         </app-header>
 
         <app-container>
-            @isset ($form)
+            @isset($form)
                 <list-view>
                     <list-view-action-btn href="{{ route('staff.forms.editor', ['form' => $form]) }}" icon-class="far fa-edit"
                         newtab>
@@ -57,8 +57,9 @@
                     <template v-slot:description>
                         通常は「1」にします。1企画がこのフォームに対し複数の回答を作成できるようにするには、2以上の値を入力してください。
                     </template>
-                    <input id="name" class="form-control @error('max_answers') is-invalid @enderror" type="number" name="max_answers"
-                        value="{{ old('max_answers', empty($form) ? 1 : $form->max_answers) }}" min="1" required>
+                    <input id="name" class="form-control @error('max_answers') is-invalid @enderror" type="number"
+                        name="max_answers" value="{{ old('max_answers', empty($form) ? 1 : $form->max_answers) }}" min="1"
+                        required>
                     @if ($errors->has('max_answers'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('max_answers') as $message)
@@ -79,7 +80,7 @@
                         name="open_at"
                         value="{{ old('open_at', isset($form) ? $form->open_at->format('Y-m-d\TH:i') : '') }}" required>
                     @error('open_at')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="close_at">
@@ -92,9 +93,10 @@
                     </template>
                     <input id="close_at" type="datetime-local" class="form-control @error('close_at') is-invalid @enderror"
                         name="close_at"
-                        value="{{ old('close_at', isset($form) ? $form->close_at->format('Y-m-d\TH:i') : '') }}" required>
+                        value="{{ old('close_at', isset($form) ? $form->close_at->format('Y-m-d\TH:i') : '') }}"
+                        required>
                     @error('close_at')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group>
@@ -114,7 +116,7 @@
                     </div>
 
                     @error('is_public')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group>
@@ -123,14 +125,10 @@
                         空欄の場合、企画に所属するユーザー全員がフォームに回答できます。
                         タグを指定した場合、指定したタグのうち、1つ以上該当する企画がフォームに回答できます。
                     </template>
-                    <tags-input
-                        input-name="answerable_tags"
-                        placeholder="企画タグを指定"
-                        placeholder-empty="企画タグを指定 (空欄の場合、企画に所属するユーザー全員が回答可能)"
-                        v-bind:default-tags="{{ $default_tags }}"
-                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}"
-                        add-only-from-autocomplete
-                    ></tags-input>
+                    <tags-input input-name="answerable_tags" placeholder="企画タグを指定"
+                        placeholder-empty="企画タグを指定 (空欄の場合、企画に所属するユーザー全員が回答可能)" v-bind:default-tags="{{ $default_tags }}"
+                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}" add-only-from-autocomplete>
+                    </tags-input>
                     @if ($errors->has('answerable_tags'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('answerable_tags') as $message)
@@ -144,7 +142,9 @@
                         フォームの説明&nbsp;
                         <app-badge outline muted>Markdown</app-badge>
                     </template>
-                    <markdown-editor input-name="description" default-value="{{ old('description', empty($form) ? '' : $form->description) }}"></markdown-editor>
+                    <markdown-editor input-name="description"
+                        default-value="{{ old('description', empty($form) ? '' : $form->description) }}">
+                    </markdown-editor>
                     @if ($errors->has('description'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('description') as $message)
@@ -156,10 +156,10 @@
             </list-view>
 
             <div class="text-center pt-spacing-md pb-spacing">
-                @isset ($form)
-                <button type="submit" class="btn is-primary is-wide">保存</button>
+                @isset($form)
+                    <button type="submit" class="btn is-primary is-wide">保存</button>
                 @else
-                <button type="submit" class="btn is-primary is-wide">次に、フォームエディターで設問を作成する</button>
+                    <button type="submit" class="btn is-primary is-wide">次に、フォームエディターで設問を作成する</button>
                 @endisset
             </div>
         </app-container>

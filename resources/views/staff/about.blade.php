@@ -3,18 +3,19 @@
 @section('title', 'PortalDotsについて')
 
 @prepend('css')
-<style>
-.logo-wrapper {
-    margin: 0 0 1rem;
-}
-.logo {
-    display: block;
-    width: 100%;
-    max-width: 240px;
-    height: auto;
-    margin: 0 auto;
-}
-</style>
+    <style>
+        .logo-wrapper {
+            margin: 0 0 1rem;
+        }
+
+        .logo {
+            display: block;
+            width: 100%;
+            max-width: 240px;
+            height: auto;
+            margin: 0 auto;
+        }
+    </style>
 @endprepend
 
 @section('content')
@@ -54,13 +55,16 @@
         @if (isset($latest_release) && !$current_version_info->equals($latest_release->getVersion()))
             <list-view>
                 <template v-slot:title>アップデート</template>
-                <template v-slot:description>PortalDots を最新バージョンにアップデートできます。PortalDots 管理者ユーザーは、このページで PortalDots のアップデート方法を確認できます。</template>
+                <template v-slot:description>PortalDots を最新バージョンにアップデートできます。PortalDots 管理者ユーザーは、このページで PortalDots
+                    のアップデート方法を確認できます。</template>
                 @if (Auth::user()->is_admin)
                     <list-view-card>
                         <p>PortalDots を最新バージョンにアップデートするには、以下の方法に従ってください。</p>
                         <ol>
                             <li>MySQL データベースとファイルをバックアップします。</li>
-                            <li>以下の「PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }} をダウンロード(@filesize($latest_release->getSize()))」というリンクより、PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }} の ZIP ファイルをダウンロードします。</li>
+                            <li>以下の「PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }}
+                                をダウンロード(@filesize($latest_release->getSize()))」というリンクより、PortalDots バージョン
+                                {{ $latest_release->getVersion()->getFullVersion() }} の ZIP ファイルをダウンロードします。</li>
                             <li>ZIP ファイルを解凍します。</li>
                             <li>
                                 以下のフォルダおよびファイルをサーバーへ上書きアップロードします。<strong>これら以外のファイルをアップロードすると、{{ config('app.name') }}や保存データが破損する可能性があります。</strong>
@@ -81,11 +85,14 @@
                                     <li>public フォルダ内の mix-manifest.json ファイル</li>
                                 </ul>
                             </li>
-                            <li>アップロード完了後、<a href="{{ url('/') }}" target="_blank" rel="noopener">{{ config('app.name') }}</a>にアクセスし、正常に動作するか確認を行ってください。</li>
+                            <li>アップロード完了後、<a href="{{ url('/') }}" target="_blank"
+                                    rel="noopener">{{ config('app.name') }}</a>にアクセスし、正常に動作するか確認を行ってください。</li>
                         </ol>
                     </list-view-card>
-                    <list-view-action-btn href="{{ $latest_release->getBrowserDownloadUrl() }}" icon-class="far fa-file-archive" data-turbolinks="false">
-                        PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }} をダウンロード(@filesize($latest_release->getSize()))
+                    <list-view-action-btn href="{{ $latest_release->getBrowserDownloadUrl() }}"
+                        icon-class="far fa-file-archive" data-turbolinks="false">
+                        PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }}
+                        をダウンロード(@filesize($latest_release->getSize()))
                     </list-view-action-btn>
                 @else
                     <list-view-card>

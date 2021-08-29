@@ -20,19 +20,12 @@
         }"
     >
         <template v-slot:toolbar>
-            <a
-                class="btn is-primary"
-                href="{{ route('staff.places.create') }}"
-            >
+            <a class="btn is-primary" href="{{ route('staff.places.create') }}">
                 <i class="fas fa-plus fa-fw"></i>
                 新規場所
             </a>
-            <a
-                class="btn is-primary-inverse is-no-border"
-                href="{{ route('staff.places.export') }}"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
+            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.places.export') }}" target="_blank"
+                rel="noopener noreferrer">
                 {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力(場所別企画一覧)
@@ -40,14 +33,15 @@
         </template>
         <template v-slot:activities="{ row }">
             <form-with-confirm
-                v-bind:action="`{{ route('staff.places.destroy', ['place' => '%%PLACE%%']) }}`.replace('%%PLACE%%', row['id'])" method="post"
-                v-bind:confirm-message="`場所「${row['name']}」を削除しますか？
+                v-bind:action="`{{ route('staff.places.destroy', ['place' => '%%PLACE%%']) }}`.replace('%%PLACE%%', row['id'])"
+                method="post" v-bind:confirm-message="`場所「${row['name']}」を削除しますか？
 
-• 企画の使用場所として「${row['name']}」が設定されている場合、その設定は解除されます。企画自体は削除されません`"
-            >
+• 企画の使用場所として「${row['name']}」が設定されている場合、その設定は解除されます。企画自体は削除されません`">
                 @method('delete')
                 @csrf
-                <icon-button v-bind:href="`{{ route('staff.places.edit', ['place' => '%%PLACE%%']) }}`.replace('%%PLACE%%', row['id'])" title="編集">
+                <icon-button
+                    v-bind:href="`{{ route('staff.places.edit', ['place' => '%%PLACE%%']) }}`.replace('%%PLACE%%', row['id'])"
+                    title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>
                 <icon-button submit title="削除">

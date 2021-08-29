@@ -18,7 +18,7 @@
             @if (empty($circle))
                 <template v-slot:title>企画を新規作成</template>
             @endif
-            @isset ($circle)
+            @isset($circle)
                 <template v-slot:title>企画を編集</template>
                 <div>企画ID : {{ $circle->id }}</div>
             @endisset
@@ -35,9 +35,9 @@
                     ] as $field_name => $display_name)
                     <list-view-form-group label-for="{{ $field_name }}">
                         <template v-slot:label>{{ $display_name }}</template>
-                        <input id="{{ $field_name }}" class="form-control @error($field_name) is-invalid @enderror" type="text"
-                            name="{{ $field_name }}" value="{{ old($field_name, empty($circle) ? '' : $circle->$field_name) }}"
-                            required>
+                        <input id="{{ $field_name }}" class="form-control @error($field_name) is-invalid @enderror"
+                            type="text" name="{{ $field_name }}"
+                            value="{{ old($field_name, empty($circle) ? '' : $circle->$field_name) }}" required>
                         @if ($errors->has($field_name))
                             <template v-slot:invalid>
                                 @foreach ($errors->get($field_name) as $message)
@@ -61,7 +61,8 @@
                         @endcan
                     </template>
                     <tags-input input-name="places" v-bind:default-tags="{{ $default_places }}"
-                        v-bind:autocomplete-items="{{ $places_autocomplete_items }}" add-only-from-autocomplete placeholder="場所を追加"></tags-input>
+                        v-bind:autocomplete-items="{{ $places_autocomplete_items }}" add-only-from-autocomplete
+                        placeholder="場所を追加"></tags-input>
                 </list-view-form-group>
                 @if (isset($custom_form))
                     <list-view-form-group>
@@ -72,7 +73,7 @@
                                 <b>
                                     申請フォームへの回答の編集が許可されていないため、カスタムフォームへの回答の編集はできません。
                                     カスタムフォームへの回答を編集したい場合は、{{ config('app.name') }}の管理者へお問い合わせください。
-                            </b>
+                                </b>
                             </div>
                         @elseif (empty($circle))
                             <div class="text-muted">
@@ -105,7 +106,8 @@
                         @endcannot
                     </template>
                     <tags-input input-name="tags" v-bind:default-tags="{{ $default_tags }}"
-                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}" {{ Auth::user()->can('staff.tags.edit') ? '' : 'add-only-from-autocomplete' }}></tags-input>
+                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}"
+                        {{ Auth::user()->can('staff.tags.edit') ? '' : 'add-only-from-autocomplete' }}></tags-input>
                     @if ($errors->has('tags'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('tags') as $message)
@@ -185,7 +187,9 @@
                     <template v-slot:description>
                         この内容はユーザーに通知されます。参加登録を不受理とする際、ユーザーに伝達したい事項があれば入力してください。
                     </template>
-                    <markdown-editor input-name="status_reason" default-value="{{ old('status_reason', empty($circle) ? '' : $circle->status_reason) }}"></markdown-editor>
+                    <markdown-editor input-name="status_reason"
+                        default-value="{{ old('status_reason', empty($circle) ? '' : $circle->status_reason) }}">
+                    </markdown-editor>
                     @if ($errors->has('status_reason'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('status_reason') as $message)

@@ -56,8 +56,12 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td v-if="row[keyName]['old']"><pre><code>@{{ row[keyName]['old'] }}</code></pre></td>
-                                    <td><pre><code>@{{ row[keyName]['attributes'] }}</code></pre></td>
+                                    <td v-if="row[keyName]['old']">
+                                        <pre><code>@{{ row[keyName]['old'] }}</code></pre>
+                                    </td>
+                                    <td>
+                                        <pre><code>@{{ row[keyName]['attributes'] }}</code></pre>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

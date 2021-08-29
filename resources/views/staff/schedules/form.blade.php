@@ -9,7 +9,9 @@
 @endsection
 
 @section('content')
-    <form method="post" action="{{ empty($schedule) ? route('staff.schedules.store') : route('staff.schedules.update', $schedule) }}" enctype="multipart/form-data">
+    <form method="post"
+        action="{{ empty($schedule) ? route('staff.schedules.store') : route('staff.schedules.update', $schedule) }}"
+        enctype="multipart/form-data">
         @method(empty($schedule) ? 'post' : 'patch' )
         @csrf
 
@@ -17,7 +19,7 @@
             @if (empty($schedule))
                 <template v-slot:title>予定を新規作成</template>
             @endif
-            @isset ($schedule)
+            @isset($schedule)
                 <template v-slot:title>予定を編集</template>
                 <div>予定ID : {{ $schedule->id }}</div>
             @endisset
@@ -30,9 +32,8 @@
                         予定名
                         <app-badge danger>必須</app-badge>
                     </template>
-                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text"
-                        name="name" value="{{ old('name', empty($schedule) ? '' : $schedule->name) }}"
-                        required>
+                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text" name="name"
+                        value="{{ old('name', empty($schedule) ? '' : $schedule->name) }}" required>
                     @if ($errors->has('name'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('name') as $message)
@@ -51,7 +52,8 @@
                     </template>
                     <input id="start_at" type="datetime-local" class="form-control @error('start_at') is-invalid @enderror"
                         name="start_at"
-                        value="{{ old('start_at', isset($schedule) ? $schedule->start_at->format('Y-m-d\TH:i') : '') }}" required>
+                        value="{{ old('start_at', isset($schedule) ? $schedule->start_at->format('Y-m-d\TH:i') : '') }}"
+                        required>
                     @if ($errors->has('start_at'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('start_at') as $message)
@@ -65,9 +67,8 @@
                         場所
                         <app-badge danger>必須</app-badge>
                     </template>
-                    <input id="place" class="form-control @error('place') is-invalid @enderror" type="text"
-                        name="place" value="{{ old('place', empty($schedule) ? '' : $schedule->place) }}"
-                        required>
+                    <input id="place" class="form-control @error('place') is-invalid @enderror" type="text" name="place"
+                        value="{{ old('place', empty($schedule) ? '' : $schedule->place) }}" required>
                     @if ($errors->has('place'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('place') as $message)
@@ -81,7 +82,9 @@
                         説明&nbsp;
                         <app-badge outline muted>Markdown</app-badge>
                     </template>
-                    <markdown-editor input-name="description" default-value="{{ old('description', empty($schedule) ? '' : $schedule->description) }}"></markdown-editor>
+                    <markdown-editor input-name="description"
+                        default-value="{{ old('description', empty($schedule) ? '' : $schedule->description) }}">
+                    </markdown-editor>
                     @if ($errors->has('description'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('description') as $message)

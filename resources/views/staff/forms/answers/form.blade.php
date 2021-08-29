@@ -64,7 +64,7 @@
                             <template v-slot:title>
                                 @datetime($_->created_at) に新規作成した回答 — 回答ID : {{ $_->id }}
                             </template>
-                            @unless ($_->created_at->eq($_->updated_at))
+                            @unless($_->created_at->eq($_->updated_at))
                                 <template v-slot:meta>回答の最終更新日時 : @datetime($_->updated_at)</template>
                             @endunless
                         </list-view-item>
@@ -77,7 +77,7 @@
                 @if (empty($answer))
                     <template v-slot:title>回答を新規作成</template>
                 @endif
-                @isset ($answer)
+                @isset($answer)
                     <template v-slot:title>回答を編集 — 回答ID : {{ $answer->id }}</template>
                     <template v-slot:description>回答の最終更新日時 : @datetime($form->updated_at)</template>
                 @endisset
