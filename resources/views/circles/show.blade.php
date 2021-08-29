@@ -51,5 +51,10 @@
                 </list-view-card>
             </list-view>
         @endif
+        <list-view>
+            @foreach ($questions as $question)
+                @include('includes.question', ['is_disabled' => true])
+            @endforeach
+        </list-view>
     </app-container>
 @endsection
