@@ -4,7 +4,8 @@
 ## {{ $question->name }}
 @isset ($question->description){{ $question->description }}@endisset
 @else
-### {{ $question->name }}
+
+<h3>{{ $question->name }}</h3>
 
 @if (empty($answer_details[$question->id]))
 —{{-- 未回答  --}}
