@@ -34,11 +34,11 @@ class ShowAction extends Controller
             $circle->load('users', 'places');
 
             $form = CustomForm::getFormByType('circle');
-            $answer = $circle->getCustomFormAnswer();
+            $answer = !empty($form) ? $circle->getCustomFormAnswer() : null;
 
             return view('circles.show')
                 ->with('circle', $circle)
-                ->with('questions', $form->questions()->get())
+                ->with('questions', !empty($form) ? $form->questions()->get() : null)
                 ->with('answer', $answer)
                 ->with('answer_details', !empty($answer)
                     ? $this->answerDetailsService->getAnswerDetailsByAnswer($answer) : []);

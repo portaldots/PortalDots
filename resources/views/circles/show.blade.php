@@ -51,10 +51,17 @@
                 </list-view-card>
             </list-view>
         @endif
-        <list-view>
-            @foreach ($questions as $question)
-                @include('includes.question', ['is_disabled' => true])
-            @endforeach
-        </list-view>
+        @if (!empty($questions))
+            <list-view>
+                @if (Auth::user()->isLeaderInCircle($circle) && Gate::allows('circle.update', $circle))
+                    <list-view-card>
+                        <a href="{{ route('circles.edit', ['circle' => $circle]) }}" class="btn is-secondary">下記回答の変更</a>
+                    </list-view-card>
+                @endif
+                @foreach ($questions as $question)
+                    @include('includes.question', ['is_disabled' => true])
+                @endforeach
+            </list-view>
+        @endif
     </app-container>
 @endsection

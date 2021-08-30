@@ -5,15 +5,19 @@ namespace App\Http\Controllers\Circles;
 use Auth;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
-use App\Services\Circles\CirclesService;
+use App\Eloquents\CustomForm;
+use App\Services\Forms\AnswerDetailsService;
 
 class ConfirmAction extends Controller
 {
-    private $circlesService;
+    /**
+     * @var AnswerDetailsService
+     */
+    private $answerDetailsService;
 
-    public function __construct(CirclesService $circlesService)
+    public function __construct(AnswerDetailsService $answerDetailsService)
     {
-        $this->circlesService = $circlesService;
+        $this->answerDetailsService = $answerDetailsService;
     }
 
     public function __invoke(Circle $circle)
@@ -33,7 +37,14 @@ class ConfirmAction extends Controller
 
         $circle->load('users');
 
+        $form = CustomForm::getFormByType('circle');
+        $answer = !empty($form) ? $circle->getCustomFormAnswer() : null;
+
         return view('circles.confirm')
-            ->with('circle', $circle);
+            ->with('circle', $circle)
+            ->with('questions', !empty($form) ? $form->questions()->get() : null)
+            ->with('answer', $answer)
+            ->with('answer_details', !empty($answer)
+                ? $this->answerDetailsService->getAnswerDetailsByAnswer($answer) : []);
     }
 }
