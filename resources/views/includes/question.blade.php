@@ -4,7 +4,7 @@
             @markdown($question->description)
         </div>
     </question-heading>
-@elseif ($question->type === 'textarea' && $is_disabled)
+@elseif ($question->type === 'textarea' && !empty($is_disabled) && $is_disabled)
     {{-- 複数行入力されたテキストをスクロールすることなく全文表示できるよう、 --}}
     {{-- textareaタグではなくpreタグで回答内容を表示 --}}
     <list-view-form-group>
@@ -34,7 +34,7 @@
         v-bind:number-min="{{ $question->number_min ?? 'null' }}"
         v-bind:number-max="{{ $question->number_max ?? 'null' }}"
         v-bind:allowed-types="{{ json_encode($question->allowed_types_array) }}"
-        v-bind:disabled="{{ json_encode($is_disabled ?? false) }}"
+        v-bind:disabled="{{ json_encode($is_disabled ?? '' ?? false) }}"
         @if ($question->type === 'upload' && empty($question->allowed_types))
         invalid="この設問は、スタッフによる設定不備があるためファイルをアップロードできません。申し訳ございませんが {{ config('portal.admin_name') }} までお問い合わせください。"
         @endif
