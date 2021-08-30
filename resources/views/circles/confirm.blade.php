@@ -15,7 +15,7 @@
             </list-view-card>
         </list-view>
 
-        @if (!empty($questions))
+        @if (count($questions) > 0)
             <list-view>
                 @if (Auth::user()->isLeaderInCircle($circle) && Gate::allows('circle.update', $circle))
                     <list-view-card>
