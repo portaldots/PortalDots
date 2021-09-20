@@ -96,6 +96,6 @@
         "vue-global-events": "^1.2.1",
         "vuedraggable": "^2.24.3",
         "vuex": "^3.6.2",
-        "wysiwyg.css": "^0.0.3"
+        "wysiwyg.css": "^0.0.4"
     }
 }
