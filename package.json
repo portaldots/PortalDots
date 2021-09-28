@@ -59,7 +59,7 @@
         "eslint-plugin-import": "^2.24.2",
         "eslint-plugin-prettier": "^4.0.0",
         "eslint-plugin-vue": "^7.18.0",
-        "husky": "^6.0.0",
+        "husky": "^7.0.2",
         "jquery": "^3.5",
         "lint-staged": "^11.1.2",
         "lodash": "^4.17.21",
