@@ -120,20 +120,20 @@ $ cd PortalDots/
 # ※ エラーが表示される場合は、後述の *1 を参照してください
 $ yarn install
 
-# 設定ファイルを作成
-$ cp .env.example .env
-$ php artisan key:generate
-
 # 開発環境を起動する
 $ yarn docker
-
-# マイグレーション(データベースのセットアップ)
-$ yarn migrate
 
 # Docker コンテナ内で必要な PHP パッケージをインストール
 $ yarn docker-bash
 $ composer install
 $ exit
+
+# 設定ファイルを作成
+$ cp .env.example .env
+$ php artisan key:generate
+
+# マイグレーション(データベースのセットアップ)
+$ yarn migrate
 
 # フロントエンド開発サーバーの起動
 $ yarn hot
