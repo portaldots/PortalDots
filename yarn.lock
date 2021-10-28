@@ -1114,7 +1114,7 @@
   dependencies:
     linguist-languages "^7.5.1"
     mem "^8.0.0"
-    php-parser "git+https://github.com/glayzzle/php-parser.git#e61e26102144f267ecf5e09020865a9baa6ca2f1"
+    php-parser "https://github.com/glayzzle/php-parser#e61e26102144f267ecf5e09020865a9baa6ca2f1"
 
 "@stylelint/postcss-css-in-js@^0.37.2":
   version "0.37.2"
@@ -5718,7 +5718,6 @@ php-parser@3.0.3:
 
 "php-parser@git+https://github.com/glayzzle/php-parser.git#e61e26102144f267ecf5e09020865a9baa6ca2f1":
   version "3.0.2"
-  uid e61e26102144f267ecf5e09020865a9baa6ca2f1
   resolved "git+https://github.com/glayzzle/php-parser.git#e61e26102144f267ecf5e09020865a9baa6ca2f1"
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
@@ -8079,11 +8078,6 @@ ws@^8.1.0:
   version "8.2.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.2.1.tgz#bdd92b3c56fdb47d2379b5ae534281922cc5bd12"
   integrity sha512-XkgWpJU3sHU7gX8f13NqTn6KQ85bd1WU7noBHTT8fSohx7OS1TPY8k+cyRPCzFkia7C4mM229yeHr1qK9sM4JQ==
-
-wysiwyg.css@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/wysiwyg.css/-/wysiwyg.css-0.0.4.tgz#2633dac57331a5737d98b9ca32b241b297321175"
-  integrity sha512-exEb0wIaJPR7urr1Eeeb2VYeZFXVGE2c+0nf+Sd1y2p4UXiEvmUZgMV5J2ztFtyFT20XG+jLJzmEvP0jz7/bPg==
 
 xregexp@^5.0.1:
   version "5.0.2"
