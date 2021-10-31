@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Forms;
 
 use ZipArchive;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 use App\Eloquents\Form;
 use App\Services\Forms\Exceptions\NoDownloadFileExistException;
 use App\Services\Forms\Exceptions\ZipArchiveNotSupportedException;
@@ -29,34 +29,18 @@ class DownloadZipService
      * 作成したZIPファイルのパスを返す
      *
      * @param Form $form
-     * @param array $uploaded_file_paths
+     * @param array $uploaded_file_infos  [(フルパス), (ZIPファイル内でのファイル名)] という形式のタプル配列
      * @throws NoDownloadFileExistException
      * @throws ZipArchiveNotSupportedException
      * @return string
      */
-    public function makeZip(Form $form, array $uploaded_file_paths): string
+    public function makeZip(Form $form, array $uploaded_file_infos): string
     {
         if (! file_exists(storage_path('app/answer_details_zip'))) {
             Storage::makeDirectory('answer_details_zip');
         }
 
-        // [(フルパス), (ZIPファイル内でのファイル名)] という形式のタプルにする
-        $tuples = array_map(function ($path) {
-            if (empty($path)) {
-                return null;
-            } elseif (
-                strpos($path, 'answer_details/') === 0 &&
-                file_exists($fullpath = Storage::path($path)) &&
-                is_file($fullpath)
-            ) {
-                // Project v2 申請フォームからアップロードされたファイル
-                return [$fullpath, str_replace('answer_details/', '', $path)];
-            }
-            return null;
-        }, $uploaded_file_paths);
-        $tuples = array_filter($tuples);
-
-        if (!is_array($tuples) || count($tuples) === 0) {
+        if (!is_array($uploaded_file_infos) || count($uploaded_file_infos) === 0) {
             throw new NoDownloadFileExistException();
         }
 
@@ -67,7 +51,7 @@ class DownloadZipService
             throw new ZipArchiveNotSupportedException();
         }
 
-        foreach ($tuples as $tuple) {
+        foreach ($uploaded_file_infos as $tuple) {
             [$fullpath, $localname] = $tuple;
             $this->zip->addFile($fullpath, $localname);
         }

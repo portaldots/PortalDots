@@ -21,7 +21,9 @@ class AnswerDetail extends Model
 
     protected static $logOnlyDirty = true;
 
-    public function answer()
+    protected $appends = ['user_friendly_file_name'];
+
+    public function answerOf()
     {
         return $this->belongsTo(Answer::class);
     }
@@ -29,5 +31,25 @@ class AnswerDetail extends Model
     public function question()
     {
         return $this->belongsTo(Question::class);
+    }
+
+    public function getUserFriendlyFileNameAttribute(): ?string
+    {
+        if (empty($this->question) || empty($this->answerOf) || empty($this->answerOf->circle)) {
+            dd($this->question, $this->answer, $this->answerOf);
+            return null;
+        }
+
+        $question_id = str_pad($this->question->id, 6, "0", STR_PAD_LEFT);
+        $answer_id = str_pad($this->answerOf->id, 6, "0", STR_PAD_LEFT);
+        $circle_id = str_pad($this->answerOf->circle->id, 6, "0", STR_PAD_LEFT);
+        $circle_name = $this->answerOf->circle->name;
+        return implode('_', [
+            'q' . $question_id,
+            'a' . $answer_id,
+            'c' . $circle_id,
+            $circle_name,
+            $this->id
+        ]);
     }
 }
