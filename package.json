@@ -56,12 +56,12 @@
         "eslint": "^7.32.0",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-prettier": "^8.0.0",
-        "eslint-plugin-import": "^2.24.2",
+        "eslint-plugin-import": "^2.25.2",
         "eslint-plugin-prettier": "^4.0.0",
         "eslint-plugin-vue": "^7.20.0",
-        "husky": "^7.0.2",
+        "husky": "^7.0.4",
         "jquery": "^3.5",
-        "lint-staged": "^11.2.3",
+        "lint-staged": "^11.2.6",
         "lodash": "^4.17.21",
         "popper.js": "^1.12",
         "postcss": "^8.3",
@@ -73,7 +73,7 @@
         "sass-resources-loader": "^2.2.4",
         "shx": "^0.3.3",
         "stylelint": "^13.13.1",
-        "stylelint-config-prettier": "^8.0.2",
+        "stylelint-config-prettier": "^9.0.3",
         "stylelint-config-standard": "^22.0.0",
         "stylelint-order": "^4.1.0",
         "stylelint-scss": "^3.21.0",
@@ -84,7 +84,7 @@
         "@fortawesome/fontawesome-free": "^5.15.4",
         "@johmun/vue-tags-input": "^2.1.0",
         "axios": "^0.24",
-        "bootstrap": "^4.6.0",
+        "bootstrap": "^4.6.1",
         "color-convert": "^2.0.1",
         "easymde": "^2.14.0",
         "laravel-mix": "^6.0.34",
@@ -95,7 +95,6 @@
         "vue-easymde": "^2.0.0",
         "vue-global-events": "^1.2.1",
         "vuedraggable": "^2.24.3",
-        "vuex": "^3.6.2",
-        "wysiwyg.css": "^0.0.4"
+        "vuex": "^3.6.2"
     }
 }
