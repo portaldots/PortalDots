@@ -13,7 +13,7 @@
     // 白色のベースの上に $background を重ねて表示することで、
     // 背面要素の背景色に関わらずボタンが同じ色で表示されるようにしている。
     background: linear-gradient(to top, $background, $background),
-      $color-behind-text;
+      $color-bg-base;
   }
 
   border: 1px solid $border-color;
@@ -21,7 +21,7 @@
   &:not([disabled]):hover,
   &:not(.disabled):hover {
     background: linear-gradient(to top, $hover-background, $hover-background),
-      $color-behind-text;
+      $color-bg-base;
     border-color: $hover-border-color;
   }
 }
@@ -60,7 +60,7 @@ body:not(.body-editor-v1) {
     }
     &.is-primary {
       @include btn(
-        $color-behind-text,
+        $color-text-inverse,
         $color-primary,
         $color-primary-hover,
         $color-primary
@@ -69,27 +69,27 @@ body:not(.body-editor-v1) {
     &.is-primary-inverse {
       @include btn(
         $color-primary,
-        $color-behind-text,
+        $color-bg-base,
         $color-primary-inverse-hover,
-        $color-behind-text,
+        $color-bg-base,
         $color-primary-inverse-hover
       );
     }
     &.is-secondary {
       @include btn(
         $color-text,
-        $color-behind-text,
+        $color-bg-base,
         $color-bg-grey,
         $color-border,
         $color-border
       );
     }
     &.is-transparent {
-      @include btn($color-text, transparent, $color-behind-text, $color-border);
+      @include btn($color-text, transparent, $color-bg-base, $color-border);
     }
     &.is-danger {
       @include btn(
-        $color-behind-text,
+        $color-text-inverse,
         $color-danger,
         $color-danger-hover,
         $color-danger
@@ -97,7 +97,7 @@ body:not(.body-editor-v1) {
     }
     &.is-success {
       @include btn(
-        $color-behind-text,
+        $color-text-inverse,
         $color-success,
         $color-success-hover,
         $color-success

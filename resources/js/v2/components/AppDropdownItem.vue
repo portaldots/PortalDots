@@ -61,7 +61,7 @@ export default {
   }
   &:focus {
     background: $color-primary;
-    color: $color-behind-text;
+    color: $color-text-inverse;
     outline: 0;
   }
 }

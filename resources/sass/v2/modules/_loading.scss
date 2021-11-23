@@ -4,7 +4,7 @@
 
 .loading {
   align-items: center;
-  background: $color-behind-text;
+  background: $color-bg-base;
   display: flex;
   flex-direction: column-reverse;
   height: 100%;
@@ -18,19 +18,13 @@
     display: none;
   }
   &-circle {
-    $circle-size: 5rem;
+    $circle-size: 3rem;
 
-    align-items: center;
     animation: loading 0.75s linear infinite;
-    background: linear-gradient(
-      to bottom right,
-      $color-primary,
-      $color-behind-text 40%
-    );
+    border: 0.25rem solid $color-primary;
     border-radius: 50%;
-    display: flex;
+    border-top: 0;
     height: $circle-size;
-    justify-content: center;
     width: $circle-size;
 
     @keyframes loading {
@@ -40,14 +34,6 @@
       to {
         transform: rotate(360deg);
       }
-    }
-    &::after {
-      background: $color-behind-text;
-      border-radius: 50%;
-      content: '';
-      display: block;
-      height: calc(#{$circle-size} - 4px);
-      width: calc(#{$circle-size} - 4px);
     }
   }
   &-noscript {

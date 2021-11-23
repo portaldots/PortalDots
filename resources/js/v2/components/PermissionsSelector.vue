@@ -178,7 +178,7 @@ export default {
       }
       &::-webkit-scrollbar-thumb {
         background-color: $color-muted-3;
-        border: 4px solid $color-behind-text;
+        border: 4px solid $color-bg-base;
         border-radius: 9999px;
         width: $scrollbar-width;
         &:hover {

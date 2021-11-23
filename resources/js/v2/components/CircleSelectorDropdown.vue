@@ -78,7 +78,7 @@ export default {
 
 <style lang="scss" scoped>
 .selector {
-  background: $color-behind-text;
+  background: $color-bg-base;
   border-bottom: 1px solid $color-border;
   padding: $spacing 0;
   &-dropdown {
@@ -88,7 +88,7 @@ export default {
   &-button {
     align-items: center;
     appearance: none;
-    background: $color-behind-text;
+    background: $color-bg-base;
     border: none;
     cursor: pointer;
     display: flex;

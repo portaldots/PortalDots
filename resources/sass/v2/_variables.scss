@@ -1,7 +1,7 @@
 // Font Size
 $base-font-size-px: 15;
 $base-font-size: #{$base-font-size-px + 'px'};
-$font-size-xl: #{(24 / $base-font-size-px) + 'rem'};
+$font-size-xl: #{(28 / $base-font-size-px) + 'rem'};
 $font-size-lg: #{(20 / $base-font-size-px) + 'rem'};
 $font-size: #{(14 / $base-font-size-px) + 'rem'};
 // inputのフォントサイズは16px以上にしないと、フォーカス時 iOS デバイスで
@@ -10,6 +10,7 @@ $font-size-input: #{(16 / $base-font-size-px) + 'rem'};
 
 // Color
 $color-text: var(--color-text);
+$color-text-inverse: var(--color-text-inverse);
 $color-primary: var(--color-primary);
 $color-primary-light: var(--color-primary-light);
 $color-danger: var(--color-danger);
@@ -19,9 +20,10 @@ $color-muted: var(--color-muted);
 $color-muted-2: var(--color-muted-2);
 $color-muted-3: var(--color-muted-3);
 $color-border: var(--color-border);
+$color-bg-base: var(--color-bg-base);
 $color-bg-grey: var(--color-bg-grey);
 $color-bg-light: var(--color-bg-light);
-$color-behind-text: var(--color-behind-text);
+$color-bg-navigation: var(--color-bg-navigatio);
 $color-form-control: var(--color-form-control);
 $color-form-control-readonly: var(--color-form-control-readonly);
 $color-form-control-focus: var(--color-form-control-focus);
@@ -46,7 +48,7 @@ $color-danger-hover: var(--color-danger-hover);
 $color-success-hover: var(--color-success-hover);
 
 // Spacing (WIP)
-$spacing-xl: 4rem;
+$spacing-xl: 4.25rem;
 $spacing-lg: 2rem;
 $spacing: 1.5rem;
 $spacing-s: 1.2rem;

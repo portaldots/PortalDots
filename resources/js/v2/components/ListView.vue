@@ -19,16 +19,22 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
+@use "sass:math";
+
 .listview {
-  padding: $spacing 0 $spacing-sm;
-  &:last-child {
-    padding-bottom: $spacing-lg;
+  border-top: 1px solid $color-border;
+  padding: $spacing-lg 0 0;
+  &:first-of-type {
+    border-top: 0;
+    margin-top: 0;
+  }
+  & + & {
+    margin-top: 3rem;
   }
   &-header {
-    padding: 0 0 $spacing-sm;
     width: 100%;
     &__title {
-      font-size: $font-size-lg;
+      font-size: $font-size-xl;
       font-weight: bold;
       margin: 0;
     }
@@ -37,9 +43,8 @@ export default {}
     }
   }
   &-body {
-    background: $color-behind-text;
-    border-radius: $border-radius;
-    box-shadow: 0 2px 7px -5px $color-box-shadow;
+    margin-left: math.div(-$spacing, 2);
+    margin-right: math.div(-$spacing, 2);
   }
 }
 </style>

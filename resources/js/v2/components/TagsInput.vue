@@ -97,7 +97,7 @@ export default {
 
 <style lang="scss" scoped>
 .vue-tags-input {
-  background-color: $color-behind-text;
+  background-color: $color-text-inverse;
   max-width: 100%;
 }
 </style>
@@ -121,14 +121,14 @@ export default {
   .ti-tag {
     background: $color-primary;
     border-radius: $border-radius;
-    color: $color-behind-text;
+    color: $color-text-inverse;
     &.ti-invalid,
     &.ti-deletion-mark {
       background: $color-danger !important;
     }
   }
   .ti-autocomplete {
-    background: $color-behind-text;
+    background: $color-bg-base;
     border: none;
     box-shadow: 0 0.4rem 0.8rem -0.3rem $color-box-shadow;
   }
@@ -141,7 +141,7 @@ export default {
   }
   .ti-selected-item {
     background: $color-primary;
-    color: $color-behind-text;
+    color: $color-text-inverse;
   }
   .ti-new-tag-input-wrapper {
     &:first-child {

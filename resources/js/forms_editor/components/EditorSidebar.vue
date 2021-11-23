@@ -83,7 +83,7 @@ export default {
 $editor-sidebar-padding: $spacing-md;
 
 .editor-sidebar {
-  background: $color-behind-text;
+  background: $color-bg-base;
   bottom: 0;
   box-shadow: -0.1rem 0 0.3rem -0.2rem $color-box-shadow;
   display: flex;

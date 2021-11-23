@@ -17,6 +17,7 @@
 <style>
     :root {
         --color-text: rgb(34, 41, 47);
+        --color-text-inverse: rgb(255, 255, 255);
         --color-danger: rgb(219, 60, 62);
         --color-danger-light: rgb(219, 60, 62, 0.1);
         --color-success: rgb(27, 162, 78);
@@ -24,9 +25,10 @@
         --color-muted-2: rgb(167, 182, 194);
         --color-muted-3: rgb(195, 207, 216);
         --color-border: rgb(218, 224, 230);
+        --color-bg-base: rgb(255, 255, 255);
         --color-bg-grey: rgb(243, 244, 250);
         --color-bg-light: rgb(239, 239, 239);
-        --color-behind-text: rgb(255, 255, 255);
+        --color-bg-navigatio: rgba(255, 255, 255, 0.9);
         --color-form-control: rgb(250, 250, 252);
         --color-form-control-readonly: rgb(255, 255, 255);
         --color-form-control-focus: rgb(255, 255, 255);
@@ -48,6 +50,7 @@
     {{ $uiThemeService->getCurrentTheme() === 'system' ? '@media (prefers-color-scheme: dark) {' : '' }}
         :root {
             --color-text: rgb(196, 199, 202);
+            --color-text-inverse: rgb(34, 41, 47);
             --color-danger: rgb(226, 118, 120);
             --color-danger-light: rgb(226, 118, 120, 0.2);
             --color-success: rgb(75, 189, 119);
@@ -55,9 +58,10 @@
             --color-muted-2: rgb(60, 65, 70);
             /* --color-muted-3: rgb(195, 207, 216); */
             --color-border: rgb(44, 44, 48);
+            --color-bg-base: rgb(0, 0, 0);
             --color-bg-grey: rgb(5, 5, 5);
             --color-bg-light: rgb(18, 18, 18);
-            --color-behind-text: rgb(22, 22, 22);
+            --color-bg-navigatio: rgba(0, 0, 0, 0.9);
             --color-form-control: rgb(18, 18, 18);
             --color-form-control-readonly: rgb(40, 40, 40);
             --color-form-control-focus: rgb(18, 18, 18);

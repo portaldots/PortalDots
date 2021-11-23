@@ -68,12 +68,12 @@ export default {
   }
   &__label {
     display: block;
+    font-size: $font-size-lg;
     font-weight: bold;
     margin: 0 0 $spacing-xs;
   }
   &__description {
     color: $color-muted;
-    font-size: 0.9rem;
     margin: 0 0 $spacing-sm;
   }
   &__body {

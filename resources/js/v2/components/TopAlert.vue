@@ -81,7 +81,7 @@ export default {
 
 <style lang="scss" scoped>
 .top_alert {
-  color: $color-behind-text;
+  color: $color-text-inverse;
   overflow: hidden;
   transition: 0.75s ease height, 0.75s ease color, 0.75s ease visibility;
   &.is-hidden {

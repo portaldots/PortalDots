@@ -22,8 +22,8 @@ export default {
 <style lang="scss" scoped>
 .navbar {
   align-items: center;
-  background: $color-behind-text;
-  box-shadow: 0 -0.5rem 0.8rem 0 $color-box-shadow;
+  backdrop-filter: blur(20px);
+  background: $color-bg-navigation;
   display: flex;
   height: $navbar-height;
   left: $drawer-width;

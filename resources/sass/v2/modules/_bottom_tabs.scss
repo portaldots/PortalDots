@@ -6,9 +6,9 @@ body {
 }
 
 .bottom_tabs {
-  background: $color-behind-text;
+  backdrop-filter: blur(20px);
+  background: $color-bg-navigation;
   bottom: 0;
-  box-shadow: 0 -0.1rem 0.8rem -0.6rem $color-box-shadow;
   height: $bottom-tabs-height;
   height: calc(env(safe-area-inset-bottom) + #{$bottom-tabs-height});
   left: 0;

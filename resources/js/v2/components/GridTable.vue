@@ -288,7 +288,7 @@ export default {
     width: 100%;
   }
   &__table_wrap {
-    background: $color-behind-text;
+    background: $color-bg-base;
     border-bottom: 1px solid $color-border;
     border-top: 1px solid $color-border;
     overflow: auto;

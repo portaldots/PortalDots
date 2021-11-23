@@ -1,8 +1,10 @@
 .jumbotron {
-  background: $color-behind-text;
+  background: $color-bg-grey;
+  border-radius: 2rem;
+  margin: 0 $spacing;
   padding: $spacing-xl 0;
   &__title {
-    font-size: 1.5rem;
+    font-size: 2rem;
     margin: 0 0 $spacing-xs;
     text-align: center;
   }

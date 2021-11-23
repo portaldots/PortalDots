@@ -52,46 +52,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use "sass:math";
+
 .listview-base-item {
   $listview-border: 1px solid $color-border;
 
   background-color: transparent;
   border: 0;
+  border-radius: $border-radius;
   color: $color-text;
   cursor: pointer;
   display: block;
-  margin: 0;
+  margin: $spacing-sm 0;
   outline-offset: -3px;
-  padding: $spacing-s $spacing;
+  padding: $spacing-sm math.div($spacing, 2);
   position: relative;
   transition: #{$transition-base-fast} background-color;
   width: 100%;
   &:not(a):not(button) {
     cursor: auto;
-  }
-  &::after {
-    border-bottom: $listview-border;
-    bottom: 0;
-    content: '';
-    display: block;
-    height: 1px;
-    left: $spacing;
-    position: absolute;
-    right: 0;
-  }
-  &.is-no-border::after {
-    display: none;
-  }
-  &:first-child {
-    border-top-left-radius: $border-radius;
-    border-top-right-radius: $border-radius;
-  }
-  &:last-child {
-    border-bottom-left-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
-    &::after {
-      display: none;
-    }
   }
   &:hover,
   &:active,
@@ -103,7 +82,7 @@ export default {
   &:not(a):not(button):hover,
   &:not(a):not(button):active,
   &:not(a):not(button):focus {
-    background: $color-behind-text;
+    background: $color-bg-base;
   }
   &.is-action-btn {
     align-items: center;

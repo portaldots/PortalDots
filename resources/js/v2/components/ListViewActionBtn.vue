@@ -59,21 +59,35 @@ export default {
 <style lang="scss" scoped>
 .action-btn {
   align-items: center;
+  background-color: $color-primary-light;
   color: $color-primary;
   display: flex;
   font-weight: bold;
   justify-content: center;
   padding-bottom: $spacing-md;
   padding-top: $spacing-md;
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: $color-primary-light;
+    opacity: 0.8;
+  }
   &.is-danger {
+    background-color: $color-danger-light;
     color: $color-danger;
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: $color-danger-light;
+      opacity: 1;
+    }
   }
   &:disabled {
     cursor: auto;
     &:hover,
     &:active,
     &:focus {
-      background: $color-behind-text;
+      background: $color-bg-base;
     }
   }
   &:disabled &__inner {
