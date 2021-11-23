@@ -30,7 +30,7 @@ class MailService extends AbstractService
             'MAIL_PORT' => ['required'],
             'MAIL_USERNAME' => ['required'],
             'MAIL_PASSWORD' => ['required'],
-            'MAIL_FROM_ADDRESS' => ['required'],
+            'MAIL_FROM_ADDRESS' => ['required', 'email'],
             'MAIL_FROM_NAME' => ['required'],
         ];
     }
