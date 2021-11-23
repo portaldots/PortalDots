@@ -14,7 +14,7 @@ class DocumentsExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Document::with(['schedule'])->get();
+        return Document::get();
     }
 
     /**
@@ -29,7 +29,6 @@ class DocumentsExport implements FromCollection, WithHeadings, WithMapping
             preg_replace('/^documents\//', '', $document->path),
             $document->size,
             $document->extension,
-            $document->schedule ? "{$document->schedule->name}(ID:{$document->schedule->id})" : null,
             $document->description,
             $document->is_public ? 'はい' : 'いいえ',
             $document->is_important ? 'はい' : 'いいえ',
@@ -50,7 +49,6 @@ class DocumentsExport implements FromCollection, WithHeadings, WithMapping
             'ファイル名',
             'サイズ（バイト）',
             'ファイル形式',
-            'イベント',
             '説明',
             '公開',
             '重要',

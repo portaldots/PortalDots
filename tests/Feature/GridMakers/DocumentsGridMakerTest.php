@@ -35,7 +35,6 @@ class DocumentsGridMakerTest extends TestCase
         $result = $this->documentsGridMaker->map($document);
 
         $this->assertSame('PDF', $result['extension']);
-        $this->assertSame($document->schedule->name, $result['schedule_id']->name);
         $this->assertSame('2020/02/02 02:02:02', $result['created_at']);
         $this->assertSame('2020/02/02 02:02:02', $result['updated_at']);
     }

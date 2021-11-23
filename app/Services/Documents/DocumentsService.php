@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Services\Documents;
 
 use App\Eloquents\Document;
-use App\Eloquents\User;
-use App\Eloquents\Schedule;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,7 +18,6 @@ class DocumentsService
      * @param UploadedFile $file
      * @param boolean $is_public 公開するかどうか
      * @param boolean $is_important 重要かどうか
-     * @param Schedule|null $schedule 配布資料に紐付けるスケジュールのID
      * @param string|null $notes スタッフ用メモ
      * @return Document
      */
@@ -30,7 +27,6 @@ class DocumentsService
         UploadedFile $file,
         bool $is_public,
         bool $is_important,
-        ?Schedule $schedule,
         ?string $notes
     ): Document {
         $path = $file->store('documents');
@@ -43,7 +39,6 @@ class DocumentsService
             'extension' => $file->getClientOriginalExtension(),
             'is_public' => $is_public,
             'is_important' => $is_important,
-            'schedule_id' => !empty($schedule) ? $schedule->id : null,
             'notes' => $notes,
         ]);
     }
@@ -58,7 +53,6 @@ class DocumentsService
      * @param UploadedFile|null $file
      * @param boolean $is_public 公開するかどうか
      * @param boolean $is_important 重要かどうか
-     * @param Schedule|null $schedule 配布資料に紐付けるスケジュールのID
      * @param string|null $notes スタッフ用メモ
      * @return bool
      */
@@ -69,7 +63,6 @@ class DocumentsService
         ?UploadedFile $file,
         bool $is_public,
         bool $is_important,
-        ?Schedule $schedule,
         ?string $notes
     ): bool {
         if (!empty($file)) {
@@ -84,7 +77,6 @@ class DocumentsService
             'extension' => empty($file) ? $document->extension : $file->getClientOriginalExtension(),
             'is_public' => $is_public,
             'is_important' => $is_important,
-            'schedule_id' => !empty($schedule) ? $schedule->id : null,
             'notes' => $notes,
         ]);
     }

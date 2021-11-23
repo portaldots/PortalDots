@@ -20,7 +20,7 @@ class DocumentsGridMaker implements GridMakable
      */
     protected function baseEloquentQuery(): Builder
     {
-        return Document::select($this->keys())->with(['schedule']);
+        return Document::select($this->keys());
     }
 
     /**
@@ -34,7 +34,6 @@ class DocumentsGridMaker implements GridMakable
             'path',
             'size',
             'extension',
-            'schedule_id',
             'description',
             'is_public',
             'is_important',
@@ -54,15 +53,6 @@ class DocumentsGridMaker implements GridMakable
             'name' => FilterableKey::string(),
             'size' => FilterableKey::number(),
             'extension' => FilterableKey::string(),
-            'schedule_id' => FilterableKey::belongsTo('schedules', new FilterableKeysDict([
-                'id' => FilterableKey::number(),
-                'name' => FilterableKey::string(),
-                'start_at' => FilterableKey::datetime(),
-                'place' => FilterableKey::string(),
-                'notes' => FilterableKey::string(),
-                'created_at' => FilterableKey::datetime(),
-                'updated_at' => FilterableKey::datetime(),
-            ])),
             'description' => FilterableKey::string(),
             'is_public' => FilterableKey::bool(),
             'is_important' => FilterableKey::bool(),
@@ -82,7 +72,6 @@ class DocumentsGridMaker implements GridMakable
             'name',
             'size',
             'extension',
-            'schedule_id',
             'description',
             'is_public',
             'is_important',
@@ -102,9 +91,6 @@ class DocumentsGridMaker implements GridMakable
             switch ($key) {
                 case 'extension':
                     $item[$key] = mb_strtoupper($record->extension);
-                    break;
-                case 'schedule_id':
-                    $item[$key] = $record->schedule;
                     break;
                 case 'created_at':
                     $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;

@@ -23,7 +23,6 @@ class Document extends Model
         'extension',
         'is_public',
         'is_important',
-        'schedule',
         'notes',
     ];
 
@@ -42,7 +41,6 @@ class Document extends Model
         'extension',
         'is_public',
         'is_important',
-        'schedule_id',
         'notes',
     ];
 
@@ -69,10 +67,5 @@ class Document extends Model
     public function scopePublic($query)
     {
         return $query->where('is_public', true);
-    }
-
-    public function schedule()
-    {
-        return $this->belongsTo(Schedule::class);
     }
 }

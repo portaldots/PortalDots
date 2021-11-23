@@ -27,10 +27,5 @@
                 <div class="bottom_tabs-tab__label">申請</div>
             </a>
         @endif
-        <a href="{{ route('schedules.index') }}"
-            class="bottom_tabs-tab{{ Request::is('schedules*') ? ' is-active' : '' }}">
-            <i class="far fa-calendar-alt bottom_tabs-tab__icon"></i>
-            <div class="bottom_tabs-tab__label">予定</div>
-        </a>
     </div>
 </div>

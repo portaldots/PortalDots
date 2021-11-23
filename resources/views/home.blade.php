@@ -205,32 +205,9 @@
             </list-view>
         @endif
 
-        @if (empty($next_schedule) && $pinned_pages->isEmpty() && $pages->isEmpty() && $documents->isEmpty() && $forms->isEmpty())
+        @if ($pinned_pages->isEmpty() && $pages->isEmpty() && $documents->isEmpty() && $forms->isEmpty())
             <list-view-empty icon-class="fas fa-home" text="まだ公開コンテンツはありません"></list-view-empty>
         @endif
-
-        @isset($next_schedule)
-            <list-view>
-                <template v-slot:title>次の予定</template>
-                <list-view-item>
-                    <template v-slot:title>
-                        {{ $next_schedule->name }}
-                    </template>
-                    <template v-slot:meta>
-                        @datetime($next_schedule->start_at)〜 • {{ $next_schedule->place }}
-                    </template>
-                    @isset($next_schedule->description)
-                        <div data-turbolinks="false" class="markdown">
-                            <hr>
-                            @markdown($next_schedule->description)
-                        </div>
-                    @endisset
-                </list-view-item>
-                <list-view-action-btn href="{{ route('schedules.index') }}">
-                    他の予定を見る
-                </list-view-action-btn>
-            </list-view>
-        @endisset
 
         @if (!$pages->isEmpty())
             <list-view>
@@ -279,10 +256,6 @@
                         </template>
                         <template v-slot:meta>
                             @datetime($document->updated_at) 更新
-                            @isset($document->schedule)
-                                •
-                                {{ $document->schedule->name }}で配布
-                            @endisset
                             <br>
                             {{ strtoupper($document->extension) }}ファイル
                             •

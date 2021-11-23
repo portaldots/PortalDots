@@ -5,7 +5,6 @@ namespace Tests\Feature\Http\Controllers\Staff\Documents;
 use App\Eloquents\Document;
 use App\Eloquents\Permission;
 use App\Eloquents\User;
-use App\Eloquents\Schedule;
 use App\Services\Documents\DocumentsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -47,18 +46,13 @@ class StoreActionTest extends TestCase
             'extension' => 'pdf',
         ]);
 
-        $schedule = factory(Schedule::class)->create();
-
-        $this->mock(DocumentsService::class, function ($mock) use ($document, $schedule) {
+        $this->mock(DocumentsService::class, function ($mock) use ($document) {
             $mock->shouldReceive('createDocument')->once()->with(
                 'document name',
                 'document description',
                 Mockery::any(),
                 false,
                 true,
-                Mockery::on(function ($arg) use ($schedule) {
-                    return $schedule->id === $arg->id && $schedule->name === $arg->name;
-                }),
                 'notes'
             )->andReturn($document);
         });
@@ -71,7 +65,6 @@ class StoreActionTest extends TestCase
                 'file' => $file,
                 'is_public' => '0',
                 'is_important' => '1',
-                'schedule_id' => $schedule->id,
                 'notes' => 'notes',
             ]);
 
@@ -88,7 +81,6 @@ class StoreActionTest extends TestCase
         $filesize = 1;  // 単位 : KiB
         $file = UploadedFile::fake()->create('配布資料.pdf', $filesize, 'application/pdf');
 
-        $schedule = factory(Schedule::class)->create();
         $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->post(route('staff.documents.store'), [
@@ -97,7 +89,6 @@ class StoreActionTest extends TestCase
                 'file' => $file,
                 'is_public' => '0',
                 'is_important' => '1',
-                'schedule_id' => $schedule->id,
                 'notes' => 'notes',
             ]);
 

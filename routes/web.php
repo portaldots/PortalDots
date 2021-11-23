@@ -38,16 +38,6 @@ Route::prefix('/documents')
         Route::get('/{document}', 'Documents\ShowAction')->name('show');
     });
 
-// スケジュール
-Route::prefix('/schedules')
-    ->name('schedules.')
-    ->middleware(['circleSelected'])
-    ->group(function () {
-        Route::get('/', 'Schedules\IndexAction')->name('index');
-        Route::get('/ended', 'Schedules\EndedAction')->name('ended');
-        Route::get('/{schedule}', 'Schedules\ShowAction')->name('show');
-    });
-
 // 認証系
 Auth::routes([
     'register' => true,

@@ -265,36 +265,6 @@ class Permission extends SpatiePermission
                     '申請(回答の閲覧)',
                     '回答の閲覧が可能'
                 ),
-                'staff.schedules' => new PermissionInfo(
-                    'staff.schedules',
-                    'スタッフモード › スケジュール管理 › 全機能',
-                    'スケジュール(全機能)',
-                    'スケジュール管理の全機能を利用可能。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
-                ),
-                'staff.schedules.read,edit,delete' => new PermissionInfo(
-                    'staff.schedules.read,edit,delete',
-                    'スタッフモード › スケジュール管理 › 閲覧と編集、削除',
-                    'スケジュール(削除)',
-                    'スケジュールの閲覧と編集、作成、削除が可能'
-                ),
-                'staff.schedules.read,edit' => new PermissionInfo(
-                    'staff.schedules.read,edit',
-                    'スタッフモード › スケジュール管理 › 閲覧と編集',
-                    'スケジュール(編集)',
-                    'スケジュールの閲覧と編集、作成が可能'
-                ),
-                'staff.schedules.read,export' => new PermissionInfo(
-                    'staff.schedules.read,export',
-                    'スタッフモード › スケジュール管理 › 閲覧とCSVエクスポート',
-                    'スケジュール(エクスポート)',
-                    'スケジュールの閲覧とCSVエクスポートが可能'
-                ),
-                'staff.schedules.read' => new PermissionInfo(
-                    'staff.schedules.read',
-                    'スタッフモード › スケジュール管理 › 閲覧',
-                    'スケジュール(閲覧)',
-                    'スケジュールの閲覧が可能'
-                ),
                 'staff.contacts' => new PermissionInfo(
                     'staff.contacts',
                     'スタッフモード › お問い合わせ管理 › 全機能',

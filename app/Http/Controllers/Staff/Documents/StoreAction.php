@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Staff\Documents;
 use App\Http\Controllers\Controller;
 use App\Services\Documents\DocumentsService;
 use App\Http\Requests\Staff\Documents\CreateDocumentRequest;
-use App\Eloquents\Schedule;
 
 class StoreAction extends Controller
 {
@@ -29,7 +28,6 @@ class StoreAction extends Controller
             $request->file('file'),
             (bool)$validated['is_public'],
             (bool)$validated['is_important'],
-            !empty($validated['schedule_id']) ? Schedule::findOrFail($validated['schedule_id']) : null,
             $validated['notes']
         );
 

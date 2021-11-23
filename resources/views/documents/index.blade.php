@@ -25,10 +25,6 @@
                         </template>
                         <template v-slot:meta>
                             @datetime($document->updated_at) 更新
-                            @isset($document->schedule)
-                                •
-                                {{ $document->schedule->name }}で配布
-                            @endisset
                             <br>
                             {{ strtoupper($document->extension) }}ファイル
                             •

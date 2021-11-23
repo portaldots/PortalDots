@@ -185,19 +185,6 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/export', 'Staff\Places\ExportAction')->name('export')->middleware(['can:staff.places.export']);
             });
 
-        Route::prefix('/schedules')
-            ->name('schedules.')
-            ->group(function () {
-                Route::get('/', 'Staff\Schedules\IndexAction')->name('index')->middleware(['can:staff.schedules.read']);
-                Route::get('/api', 'Staff\Schedules\ApiAction')->name('api')->middleware(['can:staff.schedules.read']);
-                Route::get('/create', 'Staff\Schedules\CreateAction')->name('create')->middleware(['can:staff.schedules.edit']);
-                Route::post('/', 'Staff\Schedules\StoreAction')->name('store')->middleware(['can:staff.schedules.edit']);
-                Route::get('/{schedule}/edit', 'Staff\Schedules\EditAction')->name('edit')->middleware(['can:staff.schedules.edit']);
-                Route::patch('/{schedule}', 'Staff\Schedules\UpdateAction')->name('update')->middleware(['can:staff.schedules.edit']);
-                Route::delete('/{schedule}', 'Staff\Schedules\DestroyAction')->name('destroy')->middleware(['can:staff.schedules.delete']);
-                Route::get('/export', 'Staff\Schedules\ExportAction')->name('export')->middleware(['can:staff.schedules.export']);
-            });
-
         // メール一斉送信
         Route::get('/send_emails', 'Staff\SendEmails\IndexAction')->name('send_emails')->middleware(['can:staff.pages.send_emails']);
         Route::delete('/send_emails', 'Staff\SendEmails\DestroyAction')->middleware(['can:staff.pages.send_emails']);
