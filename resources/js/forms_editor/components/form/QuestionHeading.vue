@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import marked from 'marked'
+import { marked } from 'marked'
 import FormItem from './FormItem.vue'
 import EditPanel from './EditPanel.vue'
 import { GET_QUESTION_BY_ID } from '../../store/editor'
