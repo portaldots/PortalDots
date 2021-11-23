@@ -20,19 +20,12 @@
         }"
     >
         <template v-slot:toolbar>
-            <a
-                class="btn is-primary"
-                href="{{ route('staff.forms.create') }}"
-            >
+            <a class="btn is-primary" href="{{ route('staff.forms.create') }}">
                 <i class="fas fa-plus fa-fw"></i>
                 新規フォーム
             </a>
-            <a
-                class="btn is-primary-inverse is-no-shadow is-no-border"
-                href="{{ route('staff.forms.export') }}"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
+            <a class="btn is-primary-inverse is-no-shadow is-no-border" href="{{ route('staff.forms.export') }}"
+                target="_blank" rel="noopener noreferrer">
                 {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力
@@ -40,21 +33,26 @@
         </template>
         <template v-slot:activities="{ row }">
             <form-with-confirm
-                v-bind:action="`{{ route('staff.forms.copy', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" method="post"
-                v-bind:confirm-message="`フォーム「${row['name']}」を複製しますか？
+                v-bind:action="`{{ route('staff.forms.copy', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
+                method="post" v-bind:confirm-message="`フォーム「${row['name']}」を複製しますか？
 
 • 設問は全て複製されます
 • 「${row['name']}のコピー」という名前のフォームが作成されます
-• 「${row['name']}のコピー」は非公開です。後から必要に応じて設定を変更してください`"
-            >
+• 「${row['name']}のコピー」は非公開です。後から必要に応じて設定を変更してください`">
                 @csrf
-                <icon-button v-bind:href="`{{ route('staff.forms.edit', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="編集">
+                <icon-button
+                    v-bind:href="`{{ route('staff.forms.edit', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
+                    title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>
-                <icon-button v-bind:href="`{{ route('staff.forms.editor', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="フォームエディター" data-turbolinks="false">
+                <icon-button
+                    v-bind:href="`{{ route('staff.forms.editor', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
+                    title="フォームエディター" data-turbolinks="false">
                     <i class="far fa-edit fa-fw"></i>
                 </icon-button>
-                <icon-button v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])" title="回答一覧">
+                <icon-button
+                    v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
+                    title="回答一覧">
                     <i class="far fa-eye fa-fw"></i>
                 </icon-button>
                 <icon-button submit title="複製">
@@ -67,7 +65,7 @@
                 {{-- 閲覧可能なタグ --}}
                 <template v-for="tag in row[keyName]">
                     <app-badge primary strong v-bind:key="tag.id">
-                        @{{ tag.name }}
+                        @{{ tag . name }}
                     </app-badge>&nbsp;
                 </template>
                 <span class="text-muted" v-if="row[keyName].length === 0">

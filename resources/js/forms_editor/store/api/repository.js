@@ -43,6 +43,11 @@ axios.interceptors.response.use(
   },
   // リクエスト失敗時
   (error) => {
+    if (error.response.data.demo_mode) {
+      isProcessing = false
+      return error.response
+    }
+
     if (error.response.status === UNPROCESSABLE_ENTITY) {
       isProcessing = false
     }

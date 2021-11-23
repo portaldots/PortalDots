@@ -1,5 +1,5 @@
 # コントリビューションガイドライン
-PortalDots では、Issue や Pull Request を歓迎します。
+PortalDots は、Issue や Pull Request の作成大歓迎です！
 
 ## 不具合を発見した場合
 [こちらから Issue を作成してください](https://github.com/portal-dots/PortalDots/issues/new?assignees=&labels=bug&template=bug.md&title=%E3%80%90%E7%94%BB%E9%9D%A2%E5%90%8D%E3%80%91+%E4%B8%8D%E5%85%B7%E5%90%88%E3%81%AE%E5%86%85%E5%AE%B9)
@@ -31,6 +31,6 @@ PortalDots では、Issue や Pull Request を歓迎します。
     - e.g. `feature/13_update_readme`
 1. 開発を行う。
     - コミットの粒度、コミットメッセージの書き方は自由です。
-1. Pull Request を提出する。マージ先は master としてください。
+1. Pull Request を提出する。マージ先は 3.x としてください。
 1. PortalDots 開発チームによるレビューを受ける。
-1. 問題がなければ master ブランチへマージされます。
+1. 問題がなければ 3.x ブランチへマージされます。

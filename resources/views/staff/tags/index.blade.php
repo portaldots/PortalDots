@@ -15,19 +15,12 @@
         }"
     >
         <template v-slot:toolbar>
-            <a
-                class="btn is-primary"
-                href="{{ route('staff.tags.create') }}"
-            >
+            <a class="btn is-primary" href="{{ route('staff.tags.create') }}">
                 <i class="fas fa-plus fa-fw"></i>
                 新規タグ
             </a>
-            <a
-                class="btn is-primary-inverse is-no-border"
-                href="{{ route('staff.tags.export') }}"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
+            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.tags.export') }}" target="_blank"
+                rel="noopener noreferrer">
                 {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力(タグ別企画一覧)
@@ -35,16 +28,17 @@
         </template>
         <template v-slot:activities="{ row }">
             <form-with-confirm
-                v-bind:action="`{{ route('staff.tags.destroy', ['tag' => '%%TAG%%']) }}`.replace('%%TAG%%', row['id'])" method="post"
-                v-bind:confirm-message="`タグ「${row['name']}」を削除しますか？
+                v-bind:action="`{{ route('staff.tags.destroy', ['tag' => '%%TAG%%']) }}`.replace('%%TAG%%', row['id'])"
+                method="post" v-bind:confirm-message="`タグ「${row['name']}」を削除しますか？
 
 • 企画に「${row['name']}」タグが紐付けられている場合、紐付け解除されます。企画自体は削除されません
 • 「お知らせを閲覧可能なユーザー」から「${row['name']}」タグの指定が解除されます。「${row['name']}」タグしか指定されていないお知らせは、【全ユーザーが閲覧可能】となります
-• 申請フォームの「回答可能な企画タグ」から「${row['name']}」タグの指定が解除されます。「${row['name']}」タグしか指定されていないフォームは、【企画に所属している全ユーザーが回答可能】となります`"
-            >
+• 申請フォームの「回答可能な企画タグ」から「${row['name']}」タグの指定が解除されます。「${row['name']}」タグしか指定されていないフォームは、【企画に所属している全ユーザーが回答可能】となります`">
                 @method('delete')
                 @csrf
-                <icon-button v-bind:href="`{{ route('staff.tags.edit', ['tag' => '%%TAG%%']) }}`.replace('%%TAG%%', row['id'])" title="編集">
+                <icon-button
+                    v-bind:href="`{{ route('staff.tags.edit', ['tag' => '%%TAG%%']) }}`.replace('%%TAG%%', row['id'])"
+                    title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>
                 <icon-button submit title="削除">

@@ -6,6 +6,9 @@
         <a class="drawer-header" href="{{ route('staff.index') }}">
             {{ config('app.name') }}
             <app-badge primary>スタッフモード</app-badge>
+            @if (config('portal.enable_demo_mode'))
+                <br /><small class="text-muted">デモサイト</small>
+            @endif
         </a>
         <nav class="drawer-nav">
             <div class="px-spacing py-spacing">
@@ -94,6 +97,9 @@
 @else
     <a class="drawer-header" href="{{ route('home') }}">
         {{ config('app.name') }}
+        @if (config('portal.enable_demo_mode'))
+            <br /><small class="text-muted">デモサイト</small>
+        @endif
     </a>
     <nav class="drawer-nav">
         @if (Auth::check() && Auth::user()->is_staff)

@@ -9,7 +9,8 @@
 @endsection
 
 @section('content')
-    <form method="post" action="{{ empty($user) ? route('staff.users.store') : route('staff.users.update', $user) }}" enctype="multipart/form-data">
+    <form method="post" action="{{ empty($user) ? route('staff.users.store') : route('staff.users.update', $user) }}"
+        enctype="multipart/form-data">
         @method(empty($user) ? 'post' : 'patch' )
         @csrf
 
@@ -17,7 +18,7 @@
             @if (empty($user))
                 <template v-slot:title>ユーザーを新規作成</template>
             @endif
-            @isset ($user)
+            @isset($user)
                 <template v-slot:title>ユーザーを編集</template>
                 <div>ユーザーID : {{ $user->id }}</div>
             @endisset
@@ -29,10 +30,10 @@
                 <list-view-form-group label-for="student_id">
                     <template v-slot:label>学籍番号</template>
                     <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror"
-                        name="student_id" value="{{ old('student_id', $user->student_id) }}"
-                        required autocomplete="username">
+                        name="student_id" value="{{ old('student_id', $user->student_id) }}" required
+                        autocomplete="username">
                     @error('student_id')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                     <template v-slot:append>
                         {{ '@' . config('portal.univemail_domain') }}
@@ -46,7 +47,7 @@
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
                         value="{{ old('name', $user->name) }}" required autocomplete="name">
                     @error('name')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="name_yomi">
@@ -57,7 +58,7 @@
                     <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror"
                         name="name_yomi" value="{{ old('name_yomi', $user->name_yomi) }}" required>
                     @error('name_yomi')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="email">
@@ -68,7 +69,7 @@
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
                         value="{{ old('email', $user->email) }}" required autocomplete="email">
                     @error('email')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="tel">
@@ -76,7 +77,7 @@
                     <input id="tel" type="tel" class="form-control @error('tel') is-invalid @enderror" name="tel"
                         value="{{ old('tel', $user->tel) }}" required>
                     @error('tel')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-card>
@@ -91,25 +92,30 @@
                 <list-view-form-group>
                     <div class="form-radio">
                         <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios1" value="normal"
+                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios1"
+                                value="normal"
                                 {{ old('user_type', !$user->is_staff && !$user->is_admin ? 'normal' : '') === 'normal' ? 'checked' : '' }}
                                 {{ (!Auth::user()->is_admin && $user->is_admin) || Auth::id() === $user->id ? 'disabled' : '' }}>
                             <strong>一般ユーザー</strong><br />
                             <span class="text-muted">スタッフモードにアクセスできません。</span>
                         </label>
                         <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios2" value="staff"
+                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios2"
+                                value="staff"
                                 {{ old('user_type', $user->is_staff && !$user->is_admin ? 'staff' : '') === 'staff' ? 'checked' : '' }}
                                 {{ (!Auth::user()->is_admin && $user->is_admin) || Auth::id() === $user->id ? 'disabled' : '' }}>
                             <strong>スタッフ</strong><br />
-                            <span class="text-muted">スタッフモードにアクセスできます。<strong>管理者が「スタッフの権限設定」で許可した機能のみ利用できます。</strong></span>
+                            <span
+                                class="text-muted">スタッフモードにアクセスできます。<strong>管理者が「スタッフの権限設定」で許可した機能のみ利用できます。</strong></span>
                         </label>
                         <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios3" value="admin"
+                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios3"
+                                value="admin"
                                 {{ old('user_type', $user->is_staff && $user->is_admin ? 'admin' : '') === 'admin' ? 'checked' : '' }}
                                 {{ Auth::user()->is_admin && Auth::id() !== $user->id ? '' : 'disabled' }}>
                             <strong>管理者</strong><br />
-                            <span class="text-muted">スタッフモードを含む{{ config('app.name') }}の全機能を利用できます。{{ config('app.name') }}のシステム設定を変更することができます。</span>
+                            <span
+                                class="text-muted">スタッフモードを含む{{ config('app.name') }}の全機能を利用できます。{{ config('app.name') }}のシステム設定を変更することができます。</span>
                         </label>
                     </div>
                     @if ($errors->has('user_type'))

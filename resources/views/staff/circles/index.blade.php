@@ -5,17 +5,18 @@
 @section('top_alert_props', 'container-fluid')
 
 @section('content')
-    @if(empty($custom_form))
+    @if (empty($custom_form))
         <top-alert type="primary" keep-visible container-fluid>
             <template v-slot:title>
                 <i class="fa fa-star fa-fw" aria-hidden="true"></i>
                 企画参加登録をウェブ化して時短しませんか？
             </template>
 
-            企画参加登録を「{{ config("app.name") }}」上で受け付けることで、参加登録にかかる事務作業を時短することができます。
+            企画参加登録を「{{ config('app.name') }}」上で受け付けることで、参加登録にかかる事務作業を時短することができます。
 
             <template v-slot:cta>
-                <a href="{{ route('staff.circles.custom_form.index') }}" class="btn is-primary-inverse is-no-border is-wide">
+                <a href="{{ route('staff.circles.custom_form.index') }}"
+                    class="btn is-primary-inverse is-no-border is-wide">
                     <strong>もっと詳しく</strong>
                 </a>
             </template>
@@ -65,20 +66,14 @@
         }"
     >
         <template v-slot:toolbar>
-            <a
-                class="btn is-primary"
-                href="{{ route('staff.circles.create') }}"
-            >
+            <a class="btn is-primary" href="{{ route('staff.circles.create') }}">
                 <i class="fas fa-plus fa-fw"></i>
                 新規企画
             </a>
-            <a
-                class="btn is-primary-inverse is-no-border"
-                href="{{ route('staff.circles.custom_form.index') }}"
-            >
+            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.circles.custom_form.index') }}">
                 <i class="fas fa-users-cog fa-fw"></i>
                 企画参加登録機能の設定
-                @if(empty($custom_form))
+                @if (empty($custom_form))
                     <app-badge muted outline strong>未設定</app-badge>
                 @elseif(!$custom_form->is_public)
                     <app-badge danger>非公開</app-badge>
@@ -88,21 +83,15 @@
                     <app-badge primary strong>受付期間内</app-badge>
                 @endif
             </a>
-            <a
-                class="btn is-primary-inverse is-no-border"
-                href="{{ route('staff.circles.export') }}"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
+            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.circles.export') }}" target="_blank"
+                rel="noopener noreferrer">
                 {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力
             </a>
-            @isset ($custom_form)
-                <a
-                    class="btn is-primary-inverse is-no-border"
-                    href="{{ route('staff.forms.answers.uploads.index', ['form' => $custom_form]) }}"
-                >
+            @isset($custom_form)
+                <a class="btn is-primary-inverse is-no-border"
+                    href="{{ route('staff.forms.answers.uploads.index', ['form' => $custom_form]) }}">
                     <i class="far fa-file-archive fa-fw"></i>
                     ファイルを一括ダウンロード
                 </a>
@@ -110,17 +99,20 @@
         </template>
         <template v-slot:activities="{ row }">
             <form-with-confirm
-                v-bind:action="`{{ route('staff.circles.destroy', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" method="post"
-                v-bind:confirm-message="`企画「${row['name']}」を削除しますか？
+                v-bind:action="`{{ route('staff.circles.destroy', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])"
+                method="post" v-bind:confirm-message="`企画「${row['name']}」を削除しますか？
 
-• 「${row['name']}」が送信した申請の回答はすべて削除されます。`"
-            >
+• 「${row['name']}」が送信した申請の回答はすべて削除されます。`">
                 @method('delete')
                 @csrf
-                <icon-button v-bind:href="`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="編集">
+                <icon-button
+                    v-bind:href="`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])"
+                    title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>
-                <icon-button v-bind:href="`{{ route('staff.circles.email', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])" title="メール送信">
+                <icon-button
+                    v-bind:href="`{{ route('staff.circles.email', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])"
+                    title="メール送信">
                     <i class="far fa-envelope fa-fw"></i>
                 </icon-button>
                 <icon-button submit title="削除">
@@ -133,7 +125,7 @@
                 {{-- 使用場所 --}}
                 <template v-for="place in row[keyName]">
                     <app-badge primary strong v-bind:key="place.id">
-                        @{{ place.name }}
+                        @{{ place . name }}
                     </app-badge>&nbsp;
                 </template>
             </template>
@@ -141,17 +133,18 @@
                 {{-- タグ --}}
                 <template v-for="tag in row[keyName]">
                     <app-badge primary strong v-bind:key="tag.id">
-                        @{{ tag.name }}
+                        @{{ tag . name }}
                     </app-badge>&nbsp;
                 </template>
             </template>
-            <template v-else-if="keyName.includes('{{ App\GridMakers\CirclesGridMaker::CUSTOM_FORM_QUESTIONS_KEY_PREFIX }}')">
+            <template
+                v-else-if="keyName.includes('{{ App\GridMakers\CirclesGridMaker::CUSTOM_FORM_QUESTIONS_KEY_PREFIX }}')">
                 {{-- カスタムフォームへの回答 --}}
                 <template v-if="row[keyName] && row[keyName].file_url">
                     <a v-bind:href="row[keyName].file_url" target="_blank" rel="noopener noreferrer">表示</a>
                 </template>
                 <template v-else-if="row[keyName] && row[keyName].join">
-                    @{{ row[keyName].join(', ') }}
+                    @{{ row[keyName] . join(', ') }}
                 </template>
             </template>
             <template v-else-if="keyName === 'status'">
@@ -162,7 +155,9 @@
             </template>
             <template v-else-if="keyName === 'status_set_by' && row[keyName]">
                 {{-- 登録受理状況設定ユーザー --}}
-                @{{ row[keyName].name_family  }} @{{ row[keyName].name_given  }} (@{{ row[keyName].student_id  }} • ID : @{{ row[keyName].id }})
+                @{{ row[keyName] . name_family }} @{{ row[keyName] . name_given }}
+                (@{{ row[keyName] . student_id }} •
+                ID : @{{ row[keyName] . id }})
             </template>
             <template v-else-if="row[keyName] === true">
                 <strong>はい</strong>

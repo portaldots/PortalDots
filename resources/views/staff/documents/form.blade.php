@@ -9,7 +9,9 @@
 @endsection
 
 @section('content')
-    <form method="post" action="{{ empty($document) ? route('staff.documents.store') : route('staff.documents.update', $document) }}" enctype="multipart/form-data">
+    <form method="post"
+        action="{{ empty($document) ? route('staff.documents.store') : route('staff.documents.update', $document) }}"
+        enctype="multipart/form-data">
         @method(empty($document) ? 'post' : 'patch' )
         @csrf
 
@@ -17,7 +19,7 @@
             @if (empty($document))
                 <template v-slot:title>配布資料を新規作成</template>
             @endif
-            @isset ($document)
+            @isset($document)
                 <template v-slot:title>配布資料を編集</template>
                 <div>配布資料ID : {{ $document->id }}</div>
             @endisset
@@ -34,11 +36,13 @@
                     </template>
                     @isset($document)
                         <template v-slot:description>
-                            <a href="{{ route('staff.documents.show', ['document' => $document]) }}" target="_blank" rel="noopener">アップロード済ファイルを表示</a> {{ strtoupper($document->extension) }}ファイル • @filesize($document->size)
+                            <a href="{{ route('staff.documents.show', ['document' => $document]) }}" target="_blank"
+                                rel="noopener">アップロード済ファイルを表示</a> {{ strtoupper($document->extension) }}ファイル •
+                            @filesize($document->size)
                         </template>
                     @endisset
-                    <input id="file" class="form-control @error('file') is-invalid @enderror" type="file"
-                        name="file" @empty($document) required @endempty>
+                    <input id="file" class="form-control @error('file') is-invalid @enderror" type="file" name="file"
+                        @empty($document) required @endempty>
                     @if ($errors->has('file'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('file') as $message)
@@ -52,9 +56,8 @@
                         配布資料名
                         <app-badge danger>必須</app-badge>
                     </template>
-                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text"
-                        name="name" value="{{ old('name', empty($document) ? '' : $document->name) }}"
-                        required>
+                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text" name="name"
+                        value="{{ old('name', empty($document) ? '' : $document->name) }}" required>
                     @if ($errors->has('name'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('name') as $message)
@@ -67,12 +70,12 @@
                     <template v-slot:label>配布したイベント</template>
                     <select id="schedule_id" class="form-control @error('schedule_id') is-invalid @enderror" type="text"
                         name="schedule_id">
-                        <option value="" {{ old('schedule_id', empty($document) ? null : $document->schedule_id) === null ? 'selected' : '' }}>指定しない</option>
-                        @foreach($schedules as $_)
-                            <option
-                                value="{{ $_->id }}"
-                                {{ old('schedule_id', empty($document) ? null : $document->schedule_id) === $_->id ? 'selected' : '' }}
-                            >
+                        <option value=""
+                            {{ old('schedule_id', empty($document) ? null : $document->schedule_id) === null ? 'selected' : '' }}>
+                            指定しない</option>
+                        @foreach ($schedules as $_)
+                            <option value="{{ $_->id }}"
+                                {{ old('schedule_id', empty($document) ? null : $document->schedule_id) === $_->id ? 'selected' : '' }}>
                                 {{ $_->name }}
                                 (@datetime($_->start_at))
                             </option>
@@ -105,12 +108,12 @@
                     <div class="form-radio">
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="is_public" id="isPublicRadios1" value="1"
-                                {{ (bool)old('is_public', isset($document) ? $document->is_public : true) === true ? 'checked' : '' }}>
+                                {{ (bool) old('is_public', isset($document) ? $document->is_public : true) === true ? 'checked' : '' }}>
                             <strong>公開</strong>
                         </label>
                         <label class="form-radio__label">
                             <input class="form-radio__input" type="radio" name="is_public" id="isPublicRadios2" value="0"
-                                {{ (bool)old('is_public', isset($document) ? $document->is_public : true) === false ? 'checked' : '' }}>
+                                {{ (bool) old('is_public', isset($document) ? $document->is_public : true) === false ? 'checked' : '' }}>
                             <strong>非公開</strong>
                         </label>
                     </div>
@@ -128,14 +131,16 @@
                     <template v-slot:label>この配布資料は重要かどうか</template>
                     <div class="form-radio">
                         <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="is_important" id="isImportantRadios1" value="1"
-                                {{ (bool)old('is_important', isset($document) ? $document->is_important : false) === true ? 'checked' : '' }}>
+                            <input class="form-radio__input" type="radio" name="is_important" id="isImportantRadios1"
+                                value="1"
+                                {{ (bool) old('is_important', isset($document) ? $document->is_important : false) === true ? 'checked' : '' }}>
                             <strong>重要</strong><br>
                             <span class="text-muted">ユーザーには配布資料が強調されて表示されます</span>
                         </label>
                         <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="is_important" id="isImportantRadios2" value="0"
-                                {{ (bool)old('is_important', isset($document) ? $document->is_important : false) === false ? 'checked' : '' }}>
+                            <input class="form-radio__input" type="radio" name="is_important" id="isImportantRadios2"
+                                value="0"
+                                {{ (bool) old('is_important', isset($document) ? $document->is_important : false) === false ? 'checked' : '' }}>
                             <strong>重要ではない</strong>
                         </label>
                     </div>

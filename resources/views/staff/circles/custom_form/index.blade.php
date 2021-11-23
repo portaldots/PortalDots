@@ -36,7 +36,7 @@
                         name="users_number_to_submit_circle" min="1" step="1"
                         value="{{ old('users_number_to_submit_circle', $users_number_to_submit_circle) }}" required>
                     @error('users_number_to_submit_circle')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="open_at">
@@ -48,7 +48,7 @@
                         name="open_at"
                         value="{{ old('open_at', isset($form) ? $form->open_at->format('Y-m-d\TH:i') : '') }}" required>
                     @error('open_at')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="close_at">
@@ -60,7 +60,7 @@
                         name="close_at"
                         value="{{ old('close_at', isset($form) ? $form->close_at->format('Y-m-d\TH:i') : '') }}" required>
                     @error('close_at')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group>
@@ -80,7 +80,7 @@
                     </div>
 
                     @error('is_public')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group>
@@ -91,9 +91,11 @@
                     <template v-slot:description>
                         参加登録のページにここで設定した内容を表示できます。規約の表示などにご利用ください。
                     </template>
-                    <markdown-editor input-name="description" default-value="{{ old('description', isset($form) ? $form->description : '') }}"></markdown-editor>
+                    <markdown-editor input-name="description"
+                        default-value="{{ old('description', isset($form) ? $form->description : '') }}">
+                    </markdown-editor>
                     @error('description')
-                    <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
             </list-view>

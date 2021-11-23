@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::post('/', 'Staff\Pages\StoreAction')->name('store')->middleware(['can:staff.pages.edit']);
                 Route::get('/{page}/edit', 'Staff\Pages\EditAction')->name('edit')->middleware(['can:staff.pages.edit']);
                 Route::patch('/{page}', 'Staff\Pages\UpdateAction')->name('update')->middleware(['can:staff.pages.edit']);
+                Route::delete('/{page}', 'Staff\Pages\DestroyAction')->name('destroy')->middleware(['can:staff.pages.delete']);
                 Route::get('/export', 'Staff\Pages\ExportAction')->name('export')->middleware(['can:staff.pages.export']);
             });
 

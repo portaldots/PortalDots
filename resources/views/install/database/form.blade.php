@@ -3,7 +3,7 @@
 @section('title', 'PortalDots のインストール')
 
 @prepend('meta')
-<meta name="robots" content="noindex">
+    <meta name="robots" content="noindex">
 @endprepend
 
 @section('content')
@@ -28,17 +28,17 @@
                         </template>
                         <template v-slot:description>
                             {{ [
-                                        'DB_HOST' => '',
-                                        'DB_PORT' => '通常は 3306 です',
-                                        'DB_DATABASE' => '',
-                                        'DB_USERNAME' => '',
-                                        'DB_PASSWORD' => ''
-                                    ][$key] }}
+                                'DB_HOST' => '',
+                                'DB_PORT' => '通常は 3306 です',
+                                'DB_DATABASE' => '',
+                                'DB_USERNAME' => '',
+                                'DB_PASSWORD' => ''
+                            ][$key] }}
                         </template>
                         <input id="{{ $key }}" type="text" class="form-control @error($key) is-invalid @enderror"
                             name="{{ $key }}" value="{{ old($key, $value) }}" required>
                         @error($key)
-                        <template v-slot:invalid>{{ $message }}</template>
+                            <template v-slot:invalid>{{ $message }}</template>
                         @enderror
                     </list-view-form-group>
                 @endforeach

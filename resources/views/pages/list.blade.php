@@ -9,7 +9,7 @@
                 <search-input name="query" value="{{ old('query', $searchQuery) }}" placeholder="お知らせを検索…"></search-input>
             </form>
 
-            @isset ($searchQuery)
+            @isset($searchQuery)
                 <div class="pt-spacing-sm">
                     <a href="{{ URL::current() }}" class="text-muted">
                         <strong>
@@ -22,7 +22,7 @@
         @endif
 
         @if ($pages->isEmpty())
-            @empty ($searchQuery)
+            @empty($searchQuery)
                 <list-view-empty icon-class="fas fa-bullhorn" text="お知らせはまだありません"></list-view-empty>
             @else
                 <list-view-empty icon-class="fas fa-search" text="検索結果が見つかりませんでした">
@@ -38,10 +38,8 @@
         @else
             <list-view>
                 @foreach ($pages as $page)
-                    <list-view-item
-                        href="{{ route('pages.show', $page) }}"
-                        {{ Auth::check() && $page->usersWhoRead->isEmpty() ? 'unread' : '' }}
-                    >
+                    <list-view-item href="{{ route('pages.show', $page) }}"
+                        {{ Auth::check() && $page->usersWhoRead->isEmpty() ? 'unread' : '' }}>
                         <template v-slot:title>
                             @if (!$page->viewableTags->isEmpty())
                                 <app-badge primary outline>限定公開</app-badge>

@@ -34,6 +34,11 @@ class AuthServiceProvider extends ServiceProvider
         // 管理者で、メール認証やスタッフ認証が済んでいる場合、
         // auth()->user->can() や @can() などで true を返すようにする
         Gate::after(function (User $user) {
+            if (config('portal.enable_demo_mode')) {
+                // デモモードの場合は許可
+                return true;
+            }
+
             return $user->is_admin && $user->areBothEmailsVerified() &&
                 session()->get('staff_authorized') ? true : null;
         });

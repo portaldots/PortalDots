@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import marked from 'marked'
+import { marked } from 'marked'
 import FormItem from './FormItem.vue'
 import { ITEM_HEADER, UPDATE_FORM, SAVE_FORM } from '../../store/editor'
 

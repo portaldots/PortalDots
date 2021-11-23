@@ -15,7 +15,7 @@
                     分以内</strong>に、確認メールに記載されている URL にアクセスしてください。
             </list-view-card>
             {{-- 大学提供メールアドレス --}}
-            @unless (Auth::user()->is_verified_by_staff)
+            @unless(Auth::user()->is_verified_by_staff)
                 <list-view-item>
                     <template v-slot:title>
                         {{ Auth::user()->univemail }}

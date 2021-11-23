@@ -1,0 +1,13 @@
+diff --git a/node_modules/vue-easymde/src/index.vue b/node_modules/vue-easymde/src/index.vue
+index 16c64f4..e6926e3 100644
+--- a/node_modules/vue-easymde/src/index.vue
++++ b/node_modules/vue-easymde/src/index.vue
+@@ -13,7 +13,7 @@
+ // eslint-disable-next-line import/extensions
+ import EasyMDE from 'easymde';
+ // eslint-disable-next-line import/extensions
+-import marked from 'marked';
++import { marked } from 'marked';
+ 
+ export default {
+   name: 'vue-easymde',

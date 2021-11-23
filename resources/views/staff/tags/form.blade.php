@@ -9,7 +9,8 @@
 @endsection
 
 @section('content')
-    <form method="post" action="{{ empty($tag) ? route('staff.tags.store') : route('staff.tags.update', $tag) }}" enctype="multipart/form-data">
+    <form method="post" action="{{ empty($tag) ? route('staff.tags.store') : route('staff.tags.update', $tag) }}"
+        enctype="multipart/form-data">
         @method(empty($tag) ? 'post' : 'patch' )
         @csrf
 
@@ -17,7 +18,7 @@
             @if (empty($tag))
                 <template v-slot:title>企画タグを新規作成</template>
             @endif
-            @isset ($tag)
+            @isset($tag)
                 <template v-slot:title>企画タグを編集</template>
                 <div>タグID : {{ $tag->id }}</div>
             @endisset
@@ -30,9 +31,8 @@
                         タグ名
                         <app-badge danger>必須</app-badge>
                     </template>
-                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text"
-                        name="name" value="{{ old('name', empty($tag) ? '' : $tag->name) }}"
-                        required>
+                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text" name="name"
+                        value="{{ old('name', empty($tag) ? '' : $tag->name) }}" required>
                     @if ($errors->has('name'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('name') as $message)

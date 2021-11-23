@@ -2,7 +2,7 @@
 
 @section('content')
     @auth
-        @unless (Auth::user()->areBothEmailsVerified())
+        @unless(Auth::user()->areBothEmailsVerified())
             <top-alert type="primary" keep-visible>
                 <template v-slot:title>
                     <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
@@ -11,13 +11,13 @@
 
                 {{ config('app.name') }}の全機能を利用するには、次のメールアドレス宛に送信された確認メール内のURLにアクセスしてください。
                 <strong>
-                    @unless (Auth::user()->hasVerifiedUnivemail())
+                    @unless(Auth::user()->hasVerifiedUnivemail())
                         {{ Auth::user()->univemail }}
-                        @unless (Auth::user()->hasVerifiedEmail())
+                        @unless(Auth::user()->hasVerifiedEmail())
                             •
                         @endunless
                     @endunless
-                    @unless (Auth::user()->hasVerifiedEmail())
+                    @unless(Auth::user()->hasVerifiedEmail())
                         {{ Auth::user()->email }}
                     @endunless
                 </strong>
@@ -34,6 +34,11 @@
     @guest
         <header class="jumbotron">
             <app-container narrow>
+                @if (config('portal.enable_demo_mode'))
+                    <p class="text-center">
+                        <app-badge primary outline>PortalDots デモサイト</app-badge>
+                    </p>
+                @endif
                 <h1 class="jumbotron__title">
                     {{ config('app.name') }}
                 </h1>
@@ -106,6 +111,23 @@
             </list-view>
         @endif
 
+        @foreach ($pinned_pages as $pinned_page)
+            <list-view>
+                <template v-slot:title>{{ $pinned_page->title }}</template>
+                <template v-slot:description>
+                    @datetime($pinned_page->updated_at) 更新
+                    @if (!$pinned_page->viewableTags->isEmpty())
+                        <app-badge primary outline>限定公開</app-badge>
+                    @endif
+                </template>
+                <list-view-card>
+                    <div data-turbolinks="false" class="markdown">
+                        @markdown($pinned_page->body)
+                    </div>
+                </list-view-card>
+            </list-view>
+        @endforeach
+
         @if (Gate::allows('circle.create'))
             <list-view>
                 <template v-slot:title>企画参加登録</template>
@@ -116,7 +138,8 @@
                     <list-view-card>
                         <list-view-empty text="企画参加登録するには、まずログインしてください">
                             <p>
-                                {{ config('app.name') }}の利用がはじめての場合は<a href="{{ route('register') }}">ユーザー登録</a>を行ってください。<br>
+                                {{ config('app.name') }}の利用がはじめての場合は<a
+                                    href="{{ route('register') }}">ユーザー登録</a>を行ってください。<br>
                                 <a href="{{ route('login') }}">ログインはこちら</a>
                             </p>
                         </list-view-empty>
@@ -153,7 +176,7 @@
             </list-view>
         @endif
 
-        @if(Auth::check() && isset($circle))
+        @if (Auth::check() && isset($circle))
             <list-view>
                 <template v-slot:title>企画情報</template>
                 <list-view-card>
@@ -182,7 +205,7 @@
             </list-view>
         @endif
 
-        @if(empty($next_schedule) && $pages->isEmpty() && $documents->isEmpty() && $forms->isEmpty())
+        @if (empty($next_schedule) && $pinned_pages->isEmpty() && $pages->isEmpty() && $documents->isEmpty() && $forms->isEmpty())
             <list-view-empty icon-class="fas fa-home" text="まだ公開コンテンツはありません"></list-view-empty>
         @endif
 
@@ -196,7 +219,7 @@
                     <template v-slot:meta>
                         @datetime($next_schedule->start_at)〜 • {{ $next_schedule->place }}
                     </template>
-                    @isset ($next_schedule->description)
+                    @isset($next_schedule->description)
                         <div data-turbolinks="false" class="markdown">
                             <hr>
                             @markdown($next_schedule->description)
@@ -213,10 +236,8 @@
             <list-view>
                 <template v-slot:title>お知らせ</template>
                 @foreach ($pages as $page)
-                    <list-view-item
-                        href="{{ route('pages.show', $page) }}"
-                        {{ Auth::check() && $page->usersWhoRead->isEmpty() ? 'unread' : '' }}
-                    >
+                    <list-view-item href="{{ route('pages.show', $page) }}"
+                        {{ Auth::check() && $page->usersWhoRead->isEmpty() ? 'unread' : '' }}>
                         <template v-slot:title>
                             @if (!$page->viewableTags->isEmpty())
                                 <app-badge primary outline>限定公開</app-badge>
@@ -276,7 +297,9 @@
             </list-view>
         @endif
 
-        @if (!$forms->isEmpty() && Auth::check() && Auth::user()->circles()->approved()->count() > 0)
+        @if (!$forms->isEmpty() &&
+        Auth::check() &&
+        Auth::user()->circles()->approved()->count() > 0)
             <list-view>
                 <template v-slot:title>受付中の申請</template>
                 @foreach ($forms as $form)

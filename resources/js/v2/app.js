@@ -33,6 +33,7 @@ import TagsInput from './components/TagsInput.vue'
 import MarkdownEditor from './components/MarkdownEditor.vue'
 import SearchInput from './components/SearchInput.vue'
 import PermissionsSelector from './components/PermissionsSelector.vue'
+import UiPrimaryColorPicker from './components/UiPrimaryColorPicker.vue'
 
 // Form Questions
 import QuestionItem from './components/Forms/QuestionItem.vue'
@@ -90,7 +91,8 @@ export function mountV2App() {
         TagsInput,
         MarkdownEditor,
         SearchInput,
-        PermissionsSelector
+        PermissionsSelector,
+        UiPrimaryColorPicker
       },
       data() {
         return {
