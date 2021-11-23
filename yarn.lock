@@ -1847,10 +1847,10 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-blade-formatter@^1.14.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.14.0.tgz#43bfd19f75872b9dbfd6da915674b60812ebfdf8"
-  integrity sha512-n9FYm9mm6zRNKrhOTciow+0hKQz9Ajx+Ot5MViGyG1YdWjNb8ijZu7RqTUKGzz4jnNcW/T10WOY1ZMbkSXYM9g==
+blade-formatter@^1.14.3:
+  version "1.14.3"
+  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.14.3.tgz#b5c9f3a19bcdcd1f5d9295bfabb115cacb0a6fa4"
+  integrity sha512-6zHmjBudWQCivCey65Kf4ZUlW7CMhoCkjZm3OT/+74hR8aH6QRhhw+rlRC7g028fJdPLNr59s+UR6De4u3JHoA==
   dependencies:
     "@prettier/plugin-php" "^0.17.4"
     aigle "^1.14.1"
