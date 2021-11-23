@@ -85,7 +85,6 @@ class DocumentsServiceTest extends TestCase
             null,
             false,
             true,
-            null,
             'updated notes'
         );
 
@@ -122,7 +121,6 @@ class DocumentsServiceTest extends TestCase
             UploadedFile::fake()->create('update.jpeg', 1, 'image/jpeg'),
             false,
             true,
-            null,
             'updated notes'
         );
 
@@ -152,7 +150,6 @@ class DocumentsServiceTest extends TestCase
             $file,
             true,
             false,
-            null,
             'ドロン'
         );
 
