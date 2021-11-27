@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\Circles;
 
+use App\Eloquents\Answer;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
+use App\Eloquents\Form;
 use App\Eloquents\Place;
 use App\Eloquents\Tag;
 use App\Mail\Circles\ApprovedMailable;
@@ -13,7 +15,7 @@ use App\Mail\Circles\RejectedMailable;
 use App\Mail\Circles\SubmitedMailable;
 use App\Services\Circles\Exceptions\DenyCreateTagsException;
 use App\Services\Utils\ActivityLogService;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -189,12 +191,22 @@ class CirclesService
         });
     }
 
-    public function sendSubmitedEmail(User $user, Circle $circle)
-    {
+    public function sendSubmitedEmail(
+        User $user,
+        Circle $circle,
+        Form $customForm = null,
+        Collection $questions = null,
+        Answer $answer = null,
+        array $answerDetails = null
+    ) {
         Mail::to($user)
         ->send(
             (new SubmitedMailable(
                 $circle,
+                $customForm,
+                $questions,
+                $answer,
+                $answerDetails
             ))
                 ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
                 ->subject("【参加登録】「{$circle->name}」の参加登録を提出しました")
