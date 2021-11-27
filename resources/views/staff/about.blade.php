@@ -52,6 +52,14 @@
             </list-view-action-btn>
         </list-view>
 
+        <form action="{{ route('admin.update.run') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-sync-alt"></i>
+                更新を実行する
+            </button>
+        </form>
+
         @if (isset($latest_release) && !$current_version_info->equals($latest_release->getVersion()))
             <list-view>
                 <template v-slot:title>アップデート</template>

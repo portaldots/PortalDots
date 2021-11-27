@@ -253,4 +253,11 @@ Route::middleware(['auth', 'verified', 'can:admin', 'staffAuthed'])
         // ポータル情報編集
         Route::get('/portal', 'Admin\Portal\EditAction')->name('portal.edit');
         Route::patch('/portal', 'Admin\Portal\UpdateAction')->name('portal.update');
+
+        // アップデーター
+        Route::prefix('/update')
+            ->name('update.')
+            ->group(function () {
+                Route::post('/', 'Admin\Update\RunAction')->name('run');
+            });
     });
