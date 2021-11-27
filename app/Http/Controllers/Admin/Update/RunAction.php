@@ -22,18 +22,14 @@ class RunAction extends Controller
     {
         // Check if new version is available
         if ($this->updater->source()->isNewVersionAvailable()) {
-            // Get the current installed version
-            echo $this->updater->source()->getVersionInstalled();
-
             // Get the new version available
             $versionAvailable = $this->updater->source()->getVersionAvailable();
-            echo($versionAvailable);
 
-        // Create a release
-            // $release = $this->updater->source()->fetch($versionAvailable);
+            // Create a release
+            $release = $this->updater->source()->fetch($versionAvailable);
 
             // Run the update process
-            // $this->updater->source()->update($release);
+            $this->updater->source()->update($release);
         } else {
             echo "No new version available.";
         }
