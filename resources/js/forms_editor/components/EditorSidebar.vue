@@ -80,6 +80,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use "sass:math";
+
 $editor-sidebar-padding: $spacing-md;
 
 .editor-sidebar {
@@ -132,7 +134,7 @@ $editor-sidebar-padding: $spacing-md;
     &__icon {
       color: $color-muted;
       font-size: 1.25rem;
-      margin-right: $editor-sidebar-padding / 2;
+      margin-right: math.div($editor-sidebar-padding, 2);
     }
   }
 }
