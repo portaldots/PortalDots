@@ -1,5 +1,10 @@
 <?php
 
+use App\ReleaseInfo;
+use App\Services\Utils\ValueObjects\Version;
+
+$version = Version::parse(ReleaseInfo::VERSION) ?? new Version(1, 0, 0);
+
 return [
 
     /*
@@ -11,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('SELF_UPDATER_SOURCE', 'github'),
+    'default' => 'http',
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +27,7 @@ return [
     |
     */
 
-    'version_installed' => env('SELF_UPDATER_VERSION_INSTALLED', ''),
+    'version_installed' => $version->getFullVersion(),
 
     /*
     |--------------------------------------------------------------------------
@@ -39,19 +44,19 @@ return [
     'repository_types' => [
         'github' => [
             'type' => 'github',
-            'repository_vendor' => env('SELF_UPDATER_REPO_VENDOR', ''),
-            'repository_name' => env('SELF_UPDATER_REPO_NAME', ''),
+            'repository_vendor' => '',
+            'repository_name' => '',
             'repository_url' => '',
-            'download_path' => env('SELF_UPDATER_DOWNLOAD_PATH', '/tmp'),
-            'private_access_token' => env('SELF_UPDATER_GITHUB_PRIVATE_ACCESS_TOKEN', ''),
-            'use_branch' => env('SELF_UPDATER_USE_BRANCH', ''),
+            'download_path' => '',
+            'private_access_token' => '',
+            'use_branch' => '',
         ],
         'http' => [
             'type' => 'http',
-            'repository_url' => env('SELF_UPDATER_REPO_URL', ''),
-            'pkg_filename_format' => env('SELF_UPDATER_PKG_FILENAME_FORMAT', 'v_VERSION_'),
+            'repository_url' => "http://releases.portaldots.com/releases?current_major_version={$version->getMajor()}",
+            'pkg_filename_format' => 'PortalDots-_VERSION_',
             'download_path' => env('SELF_UPDATER_DOWNLOAD_PATH', '/tmp'),
-            'private_access_token' => env('SELF_UPDATER_HTTP_PRIVATE_ACCESS_TOKEN', ''),
+            'private_access_token' => '',
         ],
     ],
 
@@ -76,7 +81,7 @@ return [
         'storage/framework',
         'storage/logs',
         'storage/self-update',
-        'vendor',
+        '.env',
     ],
 
     /*
@@ -114,13 +119,13 @@ return [
 
         'mail' => [
             'to' => [
-                'address' => env('SELF_UPDATER_MAILTO_ADDRESS', 'notifications@example.com'),
-                'name' => env('SELF_UPDATER_MAILTO_NAME', ''),
+                // 'address' => env('SELF_UPDATER_MAILTO_ADDRESS', 'notifications@example.com'),
+                // 'name' => env('SELF_UPDATER_MAILTO_NAME', ''),
             ],
 
             'from' => [
-                'address' => env('SELF_UPDATER_MAIL_FROM_ADDRESS', 'updater@example.com'),
-                'name' => env('SELF_UPDATER_MAIL_FROM_NAME', 'Update'),
+                // 'address' => env('SELF_UPDATER_MAIL_FROM_ADDRESS', 'updater@example.com'),
+                // 'name' => env('SELF_UPDATER_MAIL_FROM_NAME', 'Update'),
             ],
         ],
     ],
