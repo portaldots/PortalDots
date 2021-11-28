@@ -11,10 +11,16 @@
 
     <app-container medium>
         <list-view>
-            <list-view-card class="text-center">
-                <h2>PortalDots のアップデート</h2>
-                <p>PortalDots をアップデートすることで、不具合を解消し、{{ config('app.name') }}を常に安全な状態に保つことができます。</p>
-                <div class="pt-spacing">
+            <list-view-card>
+                <div class="text-center">
+                    <h2>PortalDots のアップデート</h2>
+                    <p>PortalDots をアップデートすることで、不具合を解消し、{{ config('app.name') }}を常に安全な状態に保つことができます。</p>
+                </div>
+                <app-info-box danger>
+                    <strong>このアップデート機能はベータ版です</strong><br>
+                    自動アップデート機能はベータ版のため、動作が安定しない可能性があります。アップデート実行前は必ずファイルやデータベースのバックアップを取得してください。
+                </app-info-box>
+                <div class="pt-spacing text-center">
                     <a href="{{ route('admin.update.before-update') }}" class="btn is-primary is-wide">
                         <strong>はじめる</strong>
                     </a>
