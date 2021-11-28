@@ -10,6 +10,7 @@ use App\ReleaseInfo;
 use App\Services\Utils\ValueObjects\Version;
 use App\Services\Utils\ValueObjects\Release;
 use Carbon\CarbonImmutable;
+use GuzzleHttp\Exception\ClientException;
 
 class ReleaseInfoService
 {
@@ -58,59 +59,30 @@ class ReleaseInfoService
     {
         $current_version_info = $this->getCurrentVersion();
 
-        return $this->cache->remember(
-            'getReleaseOfLatestVersionWithinSameMajorVersion/' . $current_version_info->getFullVersion(),
-            120,
-            function () use ($current_version_info) {
-                $found_latest_version = false;
-                $result = null;
-
-                // APIから1ページ分取得
-                for ($page = 1; $page <= 1; $page++) {
+        try {
+            return $this->cache->remember(
+                'getReleaseOfLatestVersionWithinSameMajorVersion/' . $current_version_info->getFullVersion(),
+                120,
+                function () use ($current_version_info) {
                     $path = sprintf(
-                        'https://api.github.com/repos/portal-dots/PortalDots/releases?per_page=%d&page=%d',
-                        100,
-                        $page
+                        'https://releases.portaldots.com/releases/latest.json?major_version=%d',
+                        $current_version_info->getMajor(),
                     );
-                    $releases = json_decode((string) $this->client->get($path)->getBody());
+                    $release = json_decode((string) $this->client->get($path)->getBody());
 
-                    foreach ($releases as $release) {
-                        $version_info = $this->version($release->tag_name);
-
-                        if (empty($version_info)) {
-                            continue;
-                        }
-
-                        if (
-                            $version_info->getMajor() === $current_version_info->getMajor() &&
-                            !$release->prerelease &&
-                            version_compare(
-                                $version_info->getFullVersion(),
-                                $current_version_info->getFullVersion(),
-                                '>'
-                            )
-                        ) {
-                            $found_latest_version = true;
-                            $result = new Release(
-                                $version_info,
-                                new CarbonImmutable($release->published_at),
-                                $release->html_url,
-                                $release->assets[0]->browser_download_url,
-                                $release->assets[0]->size,
-                                $release->body
-                            );
-                            break;
-                        }
-                    }
-
-                    if ($found_latest_version) {
-                        break;
-                    }
+                    return new Release(
+                        Version::parse($release->version),
+                        new CarbonImmutable($release->published_at),
+                        $release->html_url,
+                        $release->browser_download_url,
+                        $release->size,
+                        $release->body
+                    );
                 }
-
-                return $result;
-            }
-        );
+            );
+        } catch (ClientException $e) {
+            return null;
+        }
     }
 
     /**
