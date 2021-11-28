@@ -53,9 +53,9 @@ return [
         ],
         'http' => [
             'type' => 'http',
-            'repository_url' => "http://releases.portaldots.com/releases?current_major_version={$version->getMajor()}",
+            'repository_url' => "https://releases.portaldots.com/releases?current_major_version={$version->getMajor()}",
             'pkg_filename_format' => 'PortalDots-_VERSION_',
-            'pkg_url_format' => 'http://releases.portaldots.com/downloads/PortalDots-_VERSION_.zip',
+            'pkg_url_format' => 'https://releases.portaldots.com/downloads/PortalDots-_VERSION_.zip',
             'download_path' => env('SELF_UPDATER_DOWNLOAD_PATH', '/tmp'),
             'private_access_token' => '',
         ],
