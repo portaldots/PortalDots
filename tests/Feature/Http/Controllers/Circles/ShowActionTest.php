@@ -57,8 +57,8 @@ class ShowActionTest extends BaseTestCase
         ]);
 
         // 受付期間内
-        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
     }
 
     /**
