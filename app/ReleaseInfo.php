@@ -4,6 +4,8 @@ namespace App;
 
 /**
  * PortalDots のリリース情報
+ *
+ * 現在インストールされている PortalDots のバージョン情報などを管理するクラス。
  */
 class ReleaseInfo
 {
