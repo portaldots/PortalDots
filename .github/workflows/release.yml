@@ -60,8 +60,7 @@ jobs:
         run: VERSION=`echo "$GITHUB_REF" | sed -e 's/refs\/tags\/v//g'`; sed -i -e "s/###VERSION_PLACEHOLDER###/$VERSION/g" "$RELEASE_INFO_PATH";
         working-directory: dist
       - name: Build project
-        run: zip -9 -r ../PortalDots .* * -x node_modules/\* composer.json composer.lock package.json yarn.lock webpack.mix.js
-        working-directory: dist
+        run: zip -9 -r PortalDots dist -x node_modules/\* composer.json composer.lock package.json yarn.lock webpack.mix.js
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
