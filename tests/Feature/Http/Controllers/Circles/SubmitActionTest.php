@@ -70,9 +70,10 @@ class SubmitActionTest extends BaseTestCase
     {
         return [
             '受付開始はまだまだ先' => [new CarbonImmutable('2019-12-25 23:42:22'), false],
-            '受付開始直前' => [new CarbonImmutable('2020-01-26 11:41:50'), false],
+            '受付開始前' => [new CarbonImmutable('2020-01-26 11:42:50'), false],
+            '受付開始した瞬間' => [new CarbonImmutable('2020-01-26 11:42:51'), true],
             '受付期間中' => [new CarbonImmutable('2020-02-16 02:25:15'), true],
-            '受付終了直後' => [new CarbonImmutable('2020-03-26 15:24:00'), true],
+            '受付終了する瞬間' => [new CarbonImmutable('2020-03-26 15:23:31'), true],
             '受付終了後' => [new CarbonImmutable('2020-03-26 15:23:32'), false],
             '受付終了してだいぶ経過' => [new CarbonImmutable('2020-08-14 02:35:31'), false],
         ];
