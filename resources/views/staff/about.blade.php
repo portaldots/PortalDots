@@ -52,14 +52,6 @@
             </list-view-action-btn>
         </list-view>
 
-        <form action="{{ route('admin.update.run') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-sync-alt"></i>
-                更新を実行する
-            </button>
-        </form>
-
         @if (isset($latest_release) && !$current_version_info->equals($latest_release->getVersion()))
             <list-view>
                 <template v-slot:title>アップデート</template>
@@ -101,6 +93,10 @@
                         icon-class="far fa-file-archive" data-turbolinks="false">
                         PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }}
                         をダウンロード(@filesize($latest_release->getSize()))
+                    </list-view-action-btn>
+                    <list-view-action-btn href="{{ route('admin.update.index') }}"
+                        icon-class="fas fa-sync-alt">
+                        自動アップデート (BETA)
                     </list-view-action-btn>
                 @else
                     <list-view-card>
