@@ -1,5 +1,6 @@
 FROM php:7.3.16-apache-buster
 COPY ./php/php.ini /usr/local/etc/php/
+COPY ./php/cacert.pem /usr/local/etc/php/
 COPY ./apache/*.conf /etc/apache2/sites-enabled/
 
 RUN apt-get update \
