@@ -52,8 +52,8 @@ class StoreActionTest extends TestCase
         CarbonImmutable $today,
         bool $is_answerable
     ) {
-        Carbon::setTestNow($today);
-        CarbonImmutable::setTestNow($today);
+        Carbon::setTestNowAndTimezone($today);
+        CarbonImmutable::setTestNowAndTimezone($today);
 
         $response = $this
                     ->actingAs($this->user)
@@ -100,8 +100,8 @@ class StoreActionTest extends TestCase
      */
     public function カスタムフォームとして登録されているフォームには回答できない()
     {
-        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
         $customForm = factory(CustomForm::class)->create([
             'type' => 'circle',
@@ -132,8 +132,8 @@ class StoreActionTest extends TestCase
      */
     public function 非公開のフォームには回答できない()
     {
-        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
         $privateForm = factory(Form::class)->states('private')->create();
 
@@ -161,8 +161,8 @@ class StoreActionTest extends TestCase
      */
     public function 他企画に成り済ました回答はできない()
     {
-        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
         $anotherCircle = factory(Circle::class)->create();
 
@@ -190,8 +190,8 @@ class StoreActionTest extends TestCase
      */
     public function 参加登録が不受理となった企画は回答できない()
     {
-        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
         $rejectedCircle = factory(Circle::class)->states('rejected')->create();
         $this->user->circles()->attach($rejectedCircle->id, ['is_leader' => true]);
@@ -220,8 +220,8 @@ class StoreActionTest extends TestCase
      */
     public function 回答可能なタグを持つ企画に所属している場合回答できる()
     {
-        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
         $tag = factory(Tag::class)->create();
 
@@ -262,8 +262,8 @@ class StoreActionTest extends TestCase
      */
     public function 回答可能なタグを持つ企画に所属していない場合回答できない()
     {
-        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
         $tag = factory(Tag::class)->create();
 

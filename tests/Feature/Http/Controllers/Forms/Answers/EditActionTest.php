@@ -46,8 +46,8 @@ class EditActionTest extends TestCase
         CarbonImmutable $today,
         bool $is_answerable
     ) {
-        Carbon::setTestNow($today);
-        CarbonImmutable::setTestNow($today);
+        Carbon::setTestNowAndTimezone($today);
+        CarbonImmutable::setTestNowAndTimezone($today);
 
         $response = $this
                     ->actingAs($this->user)
