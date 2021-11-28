@@ -20,6 +20,10 @@
                 <list-view-card>
                     <p>PortalDots を<strong>バージョン {{ $current_version_info->getFullVersion() }}</strong> から<strong>バージョン {{ $latest_release->getVersion()->getFullVersion() }}</strong> にアップデートします。</p>
                     <p>この操作は取り消せません。</p>
+                    <app-info-box primary>
+                        アップデート中、{{ config('app.name') }}はメンテナンスモードになります。ユーザーは一時的に{{ config('app.name') }}へアクセスできなくなり、申請を提出することができなくなります。
+                    </app-info-box>
+                    <div class="pt-spacing-md"></div>
                     <app-info-box danger>
                         アップデート中、画面表示が固まったように見えることがありますが、<strong>「アップデートが完了しました」と表示されるまで、画面を閉じないでください。</strong>
                     </app-info-box>
