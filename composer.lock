@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1690d247dd7795ffd95f6e1725c3318",
+    "content-hash": "c059f4d82d109301f15712542c59870b",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -125,41 +125,42 @@
         },
         {
             "name": "codedge/laravel-selfupdater",
-            "version": "3.2.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/codedge/laravel-selfupdater.git",
-                "reference": "26adfb40be7a84b8746ac01bc34d2b0f50dd3d52"
+                "url": "https://github.com/portal-dots/laravel-selfupdater.git",
+                "reference": "203dea0c88456360e9356de2c400a4a18b8bcd59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codedge/laravel-selfupdater/zipball/26adfb40be7a84b8746ac01bc34d2b0f50dd3d52",
-                "reference": "26adfb40be7a84b8746ac01bc34d2b0f50dd3d52",
+                "url": "https://api.github.com/repos/portal-dots/laravel-selfupdater/zipball/203dea0c88456360e9356de2c400a4a18b8bcd59",
+                "reference": "203dea0c88456360e9356de2c400a4a18b8bcd59",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-zip": "*",
-                "guzzlehttp/guzzle": "6.*|7.*",
-                "laravel/framework": "^6.0|^7.0|^8.0",
-                "php": "^7.3|^7.4|^8.0"
+                "guzzlehttp/guzzle": "^7.4.0",
+                "laravel/framework": "^6.0",
+                "php": "^7.3 || ^7.4 || ^8.0"
             },
             "require-dev": {
-                "dg/bypass-finals": "^1.1",
+                "dg/bypass-finals": "^1.3",
                 "mikey179/vfsstream": "^1.6",
-                "mockery/mockery": "^1.3",
-                "orchestra/testbench": "^4.0|^5.0",
-                "phpunit/phpunit": "^8.4|^9.0"
+                "mockery/mockery": "^1.4",
+                "orchestra/testbench": "^6.23.0",
+                "phpunit/phpunit": "^9.5.10"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
-                    "providers": [
-                        "Codedge\\Updater\\UpdaterServiceProvider"
-                    ],
                     "aliases": {
                         "Updater": "Codedge\\Updater\\UpdaterFacade"
-                    }
+                    },
+                    "providers": [
+                        "Codedge\\Updater\\UpdaterServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -170,7 +171,16 @@
                     "src/helpers.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Codedge\\Updater\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "./vendor/bin/phpunit"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -178,7 +188,7 @@
                 {
                     "name": "Holger Lösken",
                     "email": "holger.loesken@codedge.de",
-                    "homepage": "http://codedge.de",
+                    "homepage": "https://codedge.de",
                     "role": "Developer"
                 }
             ],
@@ -199,11 +209,11 @@
             },
             "funding": [
                 {
-                    "url": "https://github.com/codedge",
-                    "type": "github"
+                    "type": "github",
+                    "url": "https://github.com/codedge"
                 }
             ],
-            "time": "2020-11-29T21:42:26+00:00"
+            "time": "2021-11-28T01:25:11+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -9247,7 +9257,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "codedge/laravel-selfupdater": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
