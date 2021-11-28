@@ -65,11 +65,11 @@ class ReleaseInfoService
                 $found_latest_version = false;
                 $result = null;
 
-                // APIから5ページ分取得
-                for ($page = 1; $page <= 5; $page++) {
+                // APIから1ページ分取得
+                for ($page = 1; $page <= 1; $page++) {
                     $path = sprintf(
                         'https://api.github.com/repos/portal-dots/PortalDots/releases?per_page=%d&page=%d',
-                        10,
+                        100,
                         $page
                     );
                     $releases = json_decode((string) $this->client->get($path)->getBody());
@@ -81,7 +81,15 @@ class ReleaseInfoService
                             continue;
                         }
 
-                        if ($version_info->getMajor() === $current_version_info->getMajor() && !$release->prerelease) {
+                        if (
+                            $version_info->getMajor() === $current_version_info->getMajor() &&
+                            !$release->prerelease &&
+                            version_compare(
+                                $version_info->getFullVersion(),
+                                $current_version_info->getFullVersion(),
+                                '>'
+                            )
+                        ) {
                             $found_latest_version = true;
                             $result = new Release(
                                 $version_info,
