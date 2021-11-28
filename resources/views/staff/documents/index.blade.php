@@ -13,14 +13,6 @@
             path: 'ファイル',
             size: 'サイズ(バイト)',
             extension: 'ファイル形式',
-            schedule_id: 'イベント',
-            'schedule_id.id': '予定ID',
-            'schedule_id.name': '予定名',
-            'schedule_id.start_at': '開始日時',
-            'schedule_id.place': '場所',
-            'schedule_id.notes': 'スタッフ用メモ',
-            'schedule_id.created_at': '作成日時',
-            'schedule_id.updated_at': '更新日時',
             description: '説明',
             is_public: '公開',
             is_important: '重要',
@@ -62,10 +54,6 @@
                 {{-- ファイル --}}
                 <a v-bind:href="`{{ route('staff.documents.show', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])"
                     target="_blank" rel="noopener noreferrer">表示</a>
-            </template>
-            <template v-else-if="keyName === 'schedule_id' && row[keyName]">
-                {{-- イベント --}}
-                @{{ row[keyName] . name }} (ID : @{{ row[keyName] . id }})
             </template>
             <template v-else-if="row[keyName] === true">
                 <strong>はい</strong>

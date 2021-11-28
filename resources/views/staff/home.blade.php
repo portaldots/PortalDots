@@ -120,18 +120,6 @@
                 </template>
             </list-view-item>
             <list-view-item
-                v-bind:href="{{ Auth::user()->can('staff.schedules.read') ? "'" . route('staff.schedules.index') . "'" : 'undefined' }}">
-                <template v-slot:title>
-                    <i class="far fa-calendar-alt fa-lg text-muted fa-fw"></i>
-                    <span
-                        class="px-spacing-sm {{ Auth::user()->can('staff.schedules.read') ? '' : 'text-muted' }}">スケジュール管理</span>
-                    @cannot('staff.schedules.read')
-                        <br><small
-                            class="text-muted">この機能を利用するための権限がありません。アクセスする必要がある場合は、{{ config('app.name') }}の管理者へお問い合わせください。</small>
-                    @endcannot
-                </template>
-            </list-view-item>
-            <list-view-item
                 v-bind:href="{{ Auth::user()->can('staff.contacts.categories.read') ? "'" . route('staff.contacts.categories.index') . "'" : 'undefined' }}">
                 <template v-slot:title>
                     <i class="fas fa-at fa-lg text-muted fa-fw"></i>

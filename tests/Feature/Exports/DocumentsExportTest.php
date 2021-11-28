@@ -3,7 +3,6 @@
 namespace Tests\Feature\Exports;
 
 use App\Eloquents\Document;
-use App\Eloquents\Schedule;
 use App\Eloquents\User;
 use App\Exports\DocumentsExport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,11 +24,6 @@ class DocumentsExportTest extends TestCase
     private $user;
 
     /**
-     * @var Schedule
-     */
-    private $schedule;
-
-    /**
      * @var Document
      */
     private $document;
@@ -42,11 +36,6 @@ class DocumentsExportTest extends TestCase
 
         $this->user = factory(User::class)->create();
 
-        $this->schedule = factory(Schedule::class)->create([
-            'name' => '第5回井戸端会議',
-            'place' => '井戸の横',
-        ]);
-
         $this->document = factory(Document::class)->create([
             'name' => '見たくなる資料',
             'description' => '第5回井戸端会議で配布した資料です。',
@@ -55,7 +44,6 @@ class DocumentsExportTest extends TestCase
             'extension' => 'pdf',
             'is_public' => true,
             'is_important' => true,
-            'schedule_id' => $this->schedule->id,
         ]);
     }
 
@@ -71,7 +59,6 @@ class DocumentsExportTest extends TestCase
                 'idobata.pdf',
                 64,
                 'pdf',
-                "第5回井戸端会議(ID:{$this->schedule->id})",
                 '第5回井戸端会議で配布した資料です。',
                 'はい',
                 'はい',

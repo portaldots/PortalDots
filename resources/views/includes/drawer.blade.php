@@ -62,12 +62,6 @@
                 申請管理
             </a>
             @endcan
-            @can('staff.schedules.read')
-            <a href="{{ route('staff.schedules.index') }}" class="drawer-nav__link{{ Request::is('staff/schedules*') ? ' is-active' : '' }}">
-                <i class="far fa-calendar-alt drawer-nav__icon fa-fw"></i>
-                スケジュール管理
-            </a>
-            @endcan
             @can('staff.contacts.categories.read')
             <a href="{{ route('staff.contacts.categories.index') }}" class="drawer-nav__link{{ Request::is('staff/contacts/categories*') ? ' is-active' : '' }}">
                 <i class="fas fa-at drawer-nav__icon fa-fw"></i>
@@ -133,11 +127,6 @@
                 申請
             </a>
         @endif
-        <a href="{{ route('schedules.index') }}"
-            class="drawer-nav__link{{ Request::is('schedules*') ? ' is-active' : '' }}">
-            <i class="far fa-calendar-alt drawer-nav__icon fa-fw"></i>
-            スケジュール
-        </a>
         @auth
             <a href="{{ route('contacts') }}" class="drawer-nav__link{{ Request::is('contacts*') ? ' is-active' : '' }}">
                 <i class="far fa-envelope drawer-nav__icon fa-fw"></i>

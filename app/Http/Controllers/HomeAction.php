@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Eloquents\Page;
-use App\Eloquents\Schedule;
 use App\Eloquents\Document;
 use App\Eloquents\Form;
 use App\Eloquents\CustomForm;
@@ -47,8 +46,7 @@ class HomeAction extends Controller
             ->with('pages', Page::byCircle($circle)->take(self::TAKE_COUNT)->with(['usersWhoRead' => function ($query) {
                 $query->where('user_id', Auth::id());
             }])->public()->pinned(false)->get())
-            ->with('next_schedule', Schedule::startOrder()->notStarted()->first())
-            ->with('documents', Document::take(self::TAKE_COUNT)->public()->with('schedule')->get())
+            ->with('documents', Document::take(self::TAKE_COUNT)->public()->get())
             ->with('forms', Form::byCircle($circle)->take(self::TAKE_COUNT)
                 ->public()->open()->withoutCustomForms()->closeOrder()->get());
     }

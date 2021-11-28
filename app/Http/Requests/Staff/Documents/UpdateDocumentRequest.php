@@ -31,7 +31,6 @@ class UpdateDocumentRequest extends FormRequest
             'file' => ['nullable', 'file'],
             'is_public' => ['required', 'boolean'],
             'is_important' => ['required', 'boolean'],
-            'schedule_id' => ['nullable', 'exists:schedules,id'],
             'notes' => ['nullable', 'string'],
         ];
     }
@@ -49,15 +48,12 @@ class UpdateDocumentRequest extends FormRequest
             'file' => 'ファイル',
             'is_public' => '公開設定',
             'is_important' => 'この配布資料は重要かどうか',
-            'schedule_id' => '配布したイベント',
             'notes' => 'スタッフ用メモ',
         ];
     }
 
     public function messages()
     {
-        return [
-            'schedule_id.exists' => '指定されたイベントは見つかりません',
-        ];
+        return [];
     }
 }

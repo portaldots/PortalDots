@@ -66,29 +66,6 @@
                         </template>
                     @endif
                 </list-view-form-group>
-                <list-view-form-group label-for="schedule_id">
-                    <template v-slot:label>配布したイベント</template>
-                    <select id="schedule_id" class="form-control @error('schedule_id') is-invalid @enderror" type="text"
-                        name="schedule_id">
-                        <option value=""
-                            {{ old('schedule_id', empty($document) ? null : $document->schedule_id) === null ? 'selected' : '' }}>
-                            指定しない</option>
-                        @foreach ($schedules as $_)
-                            <option value="{{ $_->id }}"
-                                {{ old('schedule_id', empty($document) ? null : $document->schedule_id) === $_->id ? 'selected' : '' }}>
-                                {{ $_->name }}
-                                (@datetime($_->start_at))
-                            </option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('schedule_id'))
-                        <template v-slot:invalid>
-                            @foreach ($errors->get('schedule_id') as $message)
-                                {{ $message }}
-                            @endforeach
-                        </template>
-                    @endif
-                </list-view-form-group>
                 <list-view-form-group label-for="description">
                     <template v-slot:label>説明</template>
                     <textarea id="description" class="form-control @error('description') is-invalid @enderror"

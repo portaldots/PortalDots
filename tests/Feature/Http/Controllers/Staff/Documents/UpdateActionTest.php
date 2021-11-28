@@ -5,7 +5,6 @@ namespace Tests\Feature\Http\Controllers\Staff\Documents;
 use App\Eloquents\Document;
 use App\Eloquents\Permission;
 use App\Eloquents\User;
-use App\Eloquents\Schedule;
 use App\Services\Documents\DocumentsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -36,9 +35,7 @@ class UpdateActionTest extends TestCase
 
         $document = factory(Document::class)->create();
 
-        $schedule = factory(Schedule::class)->create();
-
-        $this->mock(DocumentsService::class, function ($mock) use ($document, $schedule) {
+        $this->mock(DocumentsService::class, function ($mock) use ($document) {
             $mock->shouldReceive('updateDocument')->once()->with(
                 Mockery::on(function ($arg) use ($document) {
                     return $document->id === $arg->id;
@@ -48,9 +45,6 @@ class UpdateActionTest extends TestCase
                 null,
                 false,
                 true,
-                Mockery::on(function ($arg) use ($schedule) {
-                    return $schedule->id === $arg->id && $schedule->name === $arg->name;
-                }),
                 'notes'
             )->andReturn(true);
         });
@@ -62,7 +56,6 @@ class UpdateActionTest extends TestCase
                 'description' => 'document description',
                 'is_public' => '0',
                 'is_important' => '1',
-                'schedule_id' => $schedule->id,
                 'notes' => 'notes',
             ]);
 
@@ -78,8 +71,6 @@ class UpdateActionTest extends TestCase
     {
         $document = factory(Document::class)->create();
 
-        $schedule = factory(Schedule::class)->create();
-
         $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
             ->patch(route('staff.documents.update', ['document' => $document]), [
@@ -87,7 +78,6 @@ class UpdateActionTest extends TestCase
                 'description' => 'document description',
                 'is_public' => '0',
                 'is_important' => '1',
-                'schedule_id' => $schedule->id,
                 'notes' => 'notes',
             ]);
 

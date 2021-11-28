@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use App\Eloquents\User;
-use App\Eloquents\Schedule;
 
 class DocumentsServiceTest extends TestCase
 {
@@ -42,15 +41,12 @@ class DocumentsServiceTest extends TestCase
         $filesize = 1;  // 単位 : KiB
         $file = UploadedFile::fake()->create('第２回.pdf', $filesize, 'application/pdf');
 
-        $schedule = factory(Schedule::class)->create();
-
         $this->documentsService->createDocument(
             '第２回会議資料',
             '第２回会議にて配布した資料のPDFバージョンです',
             $file,
             true,
             false,
-            $schedule,
             'メモです'
         );
 
@@ -64,7 +60,6 @@ class DocumentsServiceTest extends TestCase
             'extension' => 'pdf',
             'is_public' => true,
             'is_important' => false,
-            'schedule_id' => $schedule->id,
             'notes' => 'メモです'
         ]);
     }
@@ -74,15 +69,12 @@ class DocumentsServiceTest extends TestCase
      */
     public function updateDocument_ファイルはアップデートせずに更新できる()
     {
-        $schedule = factory(Schedule::class)->create();
-
         $document = $this->documentsService->createDocument(
             '第２回会議資料',
             '第２回会議にて配布した資料のPDFバージョンです',
             UploadedFile::fake()->create('第２回.pdf', 1, 'application/pdf'),
             true,
             false,
-            $schedule,
             'メモです'
         );
 
@@ -93,7 +85,6 @@ class DocumentsServiceTest extends TestCase
             null,
             false,
             true,
-            null,
             'updated notes'
         );
 
@@ -102,7 +93,6 @@ class DocumentsServiceTest extends TestCase
             'description' => 'updated description',
             'is_public' => false,
             'is_important' => true,
-            'schedule_id' => null,
             'notes' => 'updated notes'
         ]);
     }
@@ -113,7 +103,6 @@ class DocumentsServiceTest extends TestCase
     public function updateDocument_ファイルのアップデートができる()
     {
         Storage::fake('local');
-        $schedule = factory(Schedule::class)->create();
         $oldFile = UploadedFile::fake()->create('第２回.pdf', 1, 'application/pdf');
 
         $document = $this->documentsService->createDocument(
@@ -122,7 +111,6 @@ class DocumentsServiceTest extends TestCase
             $oldFile,
             true,
             false,
-            $schedule,
             'メモです'
         );
 
@@ -133,7 +121,6 @@ class DocumentsServiceTest extends TestCase
             UploadedFile::fake()->create('update.jpeg', 1, 'image/jpeg'),
             false,
             true,
-            null,
             'updated notes'
         );
 
@@ -145,7 +132,6 @@ class DocumentsServiceTest extends TestCase
             'extension' => 'jpeg',
             'is_public' => false,
             'is_important' => true,
-            'schedule_id' => null,
             'notes' => 'updated notes'
         ]);
     }
@@ -164,7 +150,6 @@ class DocumentsServiceTest extends TestCase
             $file,
             true,
             false,
-            null,
             'ドロン'
         );
 
