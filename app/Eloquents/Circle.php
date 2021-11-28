@@ -202,6 +202,11 @@ class Circle extends Model
         $this->attributes['group_name_yomi'] = mb_convert_kana($value, 'HVc');
     }
 
+    /**
+     * 企画参加登録カスタムフォームへの回答を取得する
+     *
+     * @return Answer|null
+     */
     public function getCustomFormAnswer()
     {
         $form = CustomForm::getFormByType('circle');
