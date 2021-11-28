@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/portal-dots/PortalDots/3.x/docs/readme/logo.png" alt="PortalDots" height="40" />
+# <img src="https://raw.githubusercontent.com/portal-dots/PortalDots/3.x/docs/readme/logo_dark.png#gh-dark-mode-only" alt="PortalDots" height="40" /><img src="https://raw.githubusercontent.com/portal-dots/PortalDots/3.x/docs/readme/logo_light.png#gh-light-mode-only" alt="PortalDots" height="40" />
 学園祭実行委員会と参加企画との間のコミュニケーションを支援するオープンソースウェブシステム。
 
 <p>
