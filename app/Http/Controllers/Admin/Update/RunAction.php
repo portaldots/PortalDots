@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\Update;
 
 use App\Http\Controllers\Controller;
 use Codedge\Updater\UpdaterManager;
-use Illuminate\Http\Request;
 
 class RunAction extends Controller
 {
@@ -30,8 +29,12 @@ class RunAction extends Controller
 
             // Run the update process
             $this->updater->source()->update($release);
+
+            return view('admin.update.done');
         } else {
-            echo "No new version available.";
+            return redirect()
+                ->route('staff.about')
+                ->with('topAlert.title', 'すでに最新バージョンのPortalDotsがインストールされています。');
         }
     }
 }
