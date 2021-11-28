@@ -258,6 +258,9 @@ Route::middleware(['auth', 'verified', 'can:admin', 'staffAuthed'])
         Route::prefix('/update')
             ->name('update.')
             ->group(function () {
-                Route::post('/', 'Admin\Update\RunAction')->name('run');
+                Route::get('/', 'Admin\Update\IndexAction')->name('index');
+                Route::get('/before-update', 'Admin\Update\BeforeUpdateAction')->name('before-update');
+                Route::get('/last-step', 'Admin\Update\LastStepAction')->name('last-step');
+                Route::post('/run', 'Admin\Update\RunAction')->name('run');
             });
     });
