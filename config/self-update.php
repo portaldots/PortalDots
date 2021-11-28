@@ -82,6 +82,10 @@ return [
         'storage/framework',
         'storage/logs',
         'storage/self-update',
+        '.circleci',
+        '.git',
+        '.github',
+        '.husky',
         '.env',
     ],
 
