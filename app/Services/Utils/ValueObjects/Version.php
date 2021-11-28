@@ -34,6 +34,20 @@ final class Version
         $this->patch = $patch;
     }
 
+    /**
+     * バージョン文字列からバージョンオブジェクトを生成する
+     *
+     * @return self|null
+     */
+    public static function parse(string $version_string): ?self
+    {
+        preg_match('/(\d+)\.(\d+)\.(\d+)/', $version_string, $matches);
+        if (!isset($matches[1]) || !isset($matches[2]) || !isset($matches[3])) {
+            return null;
+        }
+        return new self((int)$matches[1], (int)$matches[2], (int)$matches[3]);
+    }
+
     public function equals(Version $version_info): bool
     {
         return $this->getMajor() === $version_info->getMajor() &&

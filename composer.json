@@ -3,11 +3,18 @@
     "description": "",
     "type": "project",
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/portal-dots/laravel-selfupdater"
+        }
+    ],
     "require": {
         "php": "^7.3.6",
         "ext-json": "*",
         "ext-mbstring": "*",
         "cebe/markdown": "*",
+        "codedge/laravel-selfupdater": "dev-master",
         "doctrine/dbal": "^2.10",
         "ezyang/htmlpurifier": "^4.9",
         "fideloper/proxy": "^4.0",

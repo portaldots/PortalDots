@@ -94,6 +94,10 @@
                         PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }}
                         をダウンロード(@filesize($latest_release->getSize()))
                     </list-view-action-btn>
+                    <list-view-action-btn href="{{ route('admin.update.index') }}"
+                        icon-class="fas fa-sync-alt">
+                        自動アップデート (BETA)
+                    </list-view-action-btn>
                 @else
                     <list-view-card>
                         <list-view-empty text="アップデートは管理者ユーザーが行います。">

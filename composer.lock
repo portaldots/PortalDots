@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "daf3c86c96c423ee55c19d739a4dc458",
+    "content-hash": "c059f4d82d109301f15712542c59870b",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -122,6 +122,98 @@
                 "source": "https://github.com/cebe/markdown"
             },
             "time": "2018-03-26T11:24:36+00:00"
+        },
+        {
+            "name": "codedge/laravel-selfupdater",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/portal-dots/laravel-selfupdater.git",
+                "reference": "203dea0c88456360e9356de2c400a4a18b8bcd59"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/portal-dots/laravel-selfupdater/zipball/203dea0c88456360e9356de2c400a4a18b8bcd59",
+                "reference": "203dea0c88456360e9356de2c400a4a18b8bcd59",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-zip": "*",
+                "guzzlehttp/guzzle": "^7.4.0",
+                "laravel/framework": "^6.0",
+                "php": "^7.3 || ^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "dg/bypass-finals": "^1.3",
+                "mikey179/vfsstream": "^1.6",
+                "mockery/mockery": "^1.4",
+                "orchestra/testbench": "^6.23.0",
+                "phpunit/phpunit": "^9.5.10"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Updater": "Codedge\\Updater\\UpdaterFacade"
+                    },
+                    "providers": [
+                        "Codedge\\Updater\\UpdaterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Codedge\\Updater\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Codedge\\Updater\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "./vendor/bin/phpunit"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Holger Lösken",
+                    "email": "holger.loesken@codedge.de",
+                    "homepage": "https://codedge.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Providing an auto-updating functionality for your self-hosted Laravel application.",
+            "keywords": [
+                "auto update",
+                "auto-update",
+                "laravel",
+                "laravel application",
+                "self update",
+                "self-hosted laravel application",
+                "self-update",
+                "update"
+            ],
+            "support": {
+                "issues": "https://github.com/codedge/laravel-selfupdater/issues",
+                "source": "https://github.com/codedge/laravel-selfupdater"
+            },
+            "funding": [
+                {
+                    "type": "github",
+                    "url": "https://github.com/codedge"
+                }
+            ],
+            "time": "2021-11-28T01:25:11+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -9165,7 +9257,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "codedge/laravel-selfupdater": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
