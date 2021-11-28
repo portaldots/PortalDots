@@ -41,8 +41,8 @@ class SubmitActionTest extends BaseTestCase
         CarbonImmutable $today,
         bool $is_answerable
     ) {
-        Carbon::setTestNow($today);
-        CarbonImmutable::setTestNow($today);
+        Carbon::setTestNowAndTimezone($today);
+        CarbonImmutable::setTestNowAndTimezone($today);
 
         $response = $this
                     ->actingAs($this->user)
@@ -88,8 +88,8 @@ class SubmitActionTest extends BaseTestCase
         Config::set('portal.users_number_to_submit_circle', 2);
 
         // 受付期間内
-        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
         // 企画には1名しか所属していない状態で参加登録を提出しようとする
         $response = $this
@@ -114,8 +114,8 @@ class SubmitActionTest extends BaseTestCase
      */
     public function 参加登録機能が非公開のときは提出できない()
     {
-        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
         $form = CustomForm::getFormByType('circle');
         $form->is_public = false;
@@ -140,8 +140,8 @@ class SubmitActionTest extends BaseTestCase
      */
     public function 他企画に成り済ました回答はできない()
     {
-        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
         $anotherCircle = factory(Circle::class)->states('notSubmitted')->create();
 
@@ -168,8 +168,8 @@ class SubmitActionTest extends BaseTestCase
         $member->circles()->attach($this->circle->id, ['is_leader' => false]);
 
         // 受付期間内
-        Carbon::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-16 02:25:15'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
         $responce = $this
                     ->actingAs($member)
