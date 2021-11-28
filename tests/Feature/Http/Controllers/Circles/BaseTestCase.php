@@ -20,8 +20,8 @@ abstract class BaseTestCase extends TestCase
         parent::setUp();
 
         $this->form = factory(Form::class)->create([
-            'open_at' => new CarbonImmutable('2020-01-26 11:42:51'),
-            'close_at' => new CarbonImmutable('2020-03-26 15:23:31'),
+            'open_at' => new CarbonImmutable('2020-01-26 11:42:00'),
+            'close_at' => new CarbonImmutable('2020-03-26 15:23:00'),
         ]);
         $this->customForm = factory(CustomForm::class)->create([
             'type' => 'circle',
