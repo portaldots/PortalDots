@@ -25,8 +25,8 @@ class SendEmailsServiceTest extends TestCase
         parent::setUp();
 
         $this->sendEmailService = App::make(SendEmailService::class);
-        Carbon::setTestNow(new CarbonImmutable('2020-02-02 20:20:20'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-02 20:20:20'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-02 20:20:20'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-02 20:20:20'));
     }
 
     /**

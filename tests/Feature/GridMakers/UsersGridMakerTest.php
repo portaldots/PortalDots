@@ -21,8 +21,8 @@ class UsersGridMakerTest extends TestCase
         parent::setUp();
 
         $this->usersGridMaker = App::make(UsersGridMaker::class);
-        Carbon::setTestNow(new CarbonImmutable('2020-02-08 00:00:00'));
-        CarbonImmutable::setTestNow(new CarbonImmutable('2020-02-08 00:00:00'));
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-08 00:00:00'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-08 00:00:00'));
     }
 
     /**

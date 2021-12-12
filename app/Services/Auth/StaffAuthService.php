@@ -22,6 +22,8 @@ final class StaffAuthService
 
     public const SESSION_KEY_STAFF_AUTHORIZED = 'staff_authorized';
 
+    public const SESSION_KEY_PREVIOUS_URL = 'staff_auth_service__previous_url';
+
     /**
      * ユーザーへスタッフ認証のためのメールを送信
      *
@@ -80,6 +82,29 @@ final class StaffAuthService
     }
 
     /**
+     * スタッフ認証画面にアクセスする前にアクセスしたURLをセッションに保存
+     *
+     * @param string $url
+     * @return void
+     */
+    public function setPreviousUrl(string $url)
+    {
+        session([self::SESSION_KEY_PREVIOUS_URL => $url]);
+    }
+
+    /**
+     * スタッフ認証画面にアクセスする前にアクセスしたURLを取得
+     *
+     * @return string|null
+     */
+    public function getPreviousUrl(): ?string
+    {
+        $url = session(self::SESSION_KEY_PREVIOUS_URL, null);
+        $filtered_url = filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED);
+        return !empty($filtered_url) ? $filtered_url : null;
+    }
+
+    /**
      * StaffAuthService で扱うセッションを全てリセット
      *
      * @return void
@@ -91,6 +116,7 @@ final class StaffAuthService
             self::SESSION_KEY_STAFF_AUTHORIZED => null,
             self::SESSION_KEY_USER_ID => null,
             self::SESSION_KEY_VERIFY_CODE_HASH => null,
+            self::SESSION_KEY_PREVIOUS_URL => null,
         ]);
     }
 }

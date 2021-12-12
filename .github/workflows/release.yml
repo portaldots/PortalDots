@@ -48,7 +48,7 @@ jobs:
         run: composer install --optimize-autoloader --no-dev
         working-directory: dist
       - name: Install JS dependencies
-        run: yarn install --ignore-scripts
+        run: yarn install --ignore-scripts && yarn patch-package
         working-directory: dist
       - name: Compile assets
         run: yarn run production
@@ -60,7 +60,7 @@ jobs:
         run: VERSION=`echo "$GITHUB_REF" | sed -e 's/refs\/tags\/v//g'`; sed -i -e "s/###VERSION_PLACEHOLDER###/$VERSION/g" "$RELEASE_INFO_PATH";
         working-directory: dist
       - name: Build project
-        run: zip -9 -r ../PortalDots .* * -x node_modules/\* composer.json composer.lock package.json yarn.lock webpack.mix.js
+        run: zip -9 -r ../PortalDots.zip . -x node_modules/\* composer.json composer.lock package.json yarn.lock webpack.mix.js patches/\*
         working-directory: dist
       - name: Create Release
         id: create_release
