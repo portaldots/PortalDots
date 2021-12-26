@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class UpdateAction extends Controller
 {
-
     /**
      * @var ContactCategoriesService
      */
