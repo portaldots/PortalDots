@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class StoreAction extends Controller
 {
-
     /**
      * @var ContactCategoriesService
      */
@@ -23,7 +22,6 @@ class StoreAction extends Controller
 
     public function __invoke(CategoryRequest $request)
     {
-
         $category = ContactCategory::create([
             'name' => $request->name,
             'email' => $request->email,
