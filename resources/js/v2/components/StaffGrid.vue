@@ -83,6 +83,7 @@
       <SideWindow
         :isOpen="isEditorSideWindowOpen"
         @clickClose="closeEditorSideWindow"
+        :popUpUrl="sideWindowEditorPopUpUrl"
       >
         <template #title>編集</template>
         <StaffGridEditor
@@ -293,6 +294,13 @@ export default {
     }
   },
   computed: {
+    sideWindowEditorPopUpUrl() {
+      if (!this.sideWindowEditorUrl) return null
+
+      const url = new URL(this.sideWindowEditorUrl)
+      url.searchParams.delete('iframe')
+      return url.href
+    },
     urlParams() {
       const params = new URLSearchParams()
       params.append('page', this.page)
