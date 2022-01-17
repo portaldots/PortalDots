@@ -4,6 +4,8 @@
       name="default"
       :isSideWindowOpen="isOpen"
       :toggleSideWindow="toggle"
+      :openSideWindow="open"
+      :closeSideWindow="close"
     />
   </div>
 </template>
@@ -18,6 +20,12 @@ export default {
   methods: {
     toggle() {
       this.isOpen = !this.isOpen
+    },
+    open() {
+      this.isOpen = true
+    },
+    close() {
+      this.isOpen = false
     }
   }
 }
