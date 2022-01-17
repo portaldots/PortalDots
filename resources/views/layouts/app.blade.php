@@ -81,7 +81,7 @@
                 </div>
             </div>
         @endif
-        <div class="content{{ $is_iframe ? " is-no-navbar" : "" }}">
+        <div class="content{{ $is_iframe ? " is-no-navbar is-no-drawer" : "" }}">
             <div class="content__body">
                 @include('includes.top_circle_selector')
                 @if (Session::has('topAlert.title'))
