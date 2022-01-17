@@ -1,13 +1,14 @@
 <template>
   <component
     :is="componentIs"
-    :type="submit ? 'submit' : undefined"
+    :type="type"
     :href="href"
     :title="title"
     :target="newtab ? '_blank' : undefined"
     :rel="newtab ? 'noopener noreferrer' : undefined"
     v-bind="disabledProps"
     class="icon-button"
+    @click="handleClick"
   >
     <slot />
   </component>
@@ -24,6 +25,10 @@ export default {
       type: Boolean,
       default: false
     },
+    button: {
+      type: Boolean,
+      default: true
+    },
     title: {
       type: String,
       required: true
@@ -37,9 +42,23 @@ export default {
       default: false
     }
   },
+  methods: {
+    handleClick(e) {
+      this.$emit('click', e)
+    }
+  },
   computed: {
     componentIs() {
       return this.href ? 'a' : 'button'
+    },
+    type() {
+      if (this.submit) {
+        return 'submit'
+      }
+      if (this.button) {
+        return 'button'
+      }
+      return undefined
     },
     disabledProps() {
       if (!this.disabled) return {}
