@@ -27,7 +27,7 @@
           @clickPrev="onClickPrev"
           @clickNext="onClickNext"
           @clickLast="onClickLast"
-          @clickReload="onClickReload"
+          @clickReload="reload"
           @clickFilter="() => onClickFilter(toggleFilterSideWindow)"
           @clickTh="onClickTh"
           @changePerPage="onChangePerPage"
@@ -71,7 +71,10 @@
         @clickClose="closeEditorSideWindow"
       >
         <template #title>編集</template>
-        <StaffGridEditor :editorUrl="sideWindowEditorUrl" />
+        <StaffGridEditor
+          :editorUrl="sideWindowEditorUrl"
+          @urlChanged="reload"
+        />
       </SideWindow>
     </SideWindowContainer>
   </SideWindowContainer>
@@ -184,7 +187,7 @@ export default {
       this.setUrlParams()
       await this.fetch()
     },
-    async onClickReload() {
+    async reload() {
       await this.fetch()
     },
     onClickFilter(toggleSideWindow) {

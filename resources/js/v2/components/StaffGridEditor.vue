@@ -26,7 +26,14 @@ export default {
     }
   },
   methods: {
-    handleLoad() {
+    handleLoad(e) {
+      // isLoaded がこの段階で true になっているときに handleLoad が呼ばれた時、
+      // すなわち、iframe 内に表示されている URL が変更された際、
+      // その旨を知らせるためにイベントを発火する
+      if (this.isLoaded) {
+        this.$emit('urlChanged', e)
+      }
+
       this.isLoaded = true
     }
   }
