@@ -97,7 +97,7 @@
                 </a>
             @endisset
         </template>
-        <template v-slot:activities="{ row }">
+        <template v-slot:activities="{ row, openEditorByUrl }">
             <form-with-confirm
                 v-bind:action="`{{ route('staff.circles.destroy', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])"
                 method="post" v-bind:confirm-message="`企画「${row['name']}」を削除しますか？
@@ -106,7 +106,8 @@
                 @method('delete')
                 @csrf
                 <icon-button
-                    v-bind:href="`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])"
+                    button
+                    v-on:click="() => openEditorByUrl(`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id']))"
                     title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>

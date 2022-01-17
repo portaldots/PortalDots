@@ -4,7 +4,15 @@
       <div class="side_window-header__title">
         <slot name="title" />
       </div>
-      <button class="side_window-header__close" @click="onClickClose">
+      <a
+        class="side_window-header__button"
+        :href="popUpUrl"
+        v-if="popUpUrl"
+        target="_blank"
+      >
+        <i class="fas fa-external-link-alt"></i>
+      </a>
+      <button class="side_window-header__button" @click="onClickClose">
         <i class="fas fa-times"></i>
       </button>
     </div>
@@ -20,6 +28,10 @@ export default {
     isOpen: {
       type: Boolean,
       default: false
+    },
+    popUpUrl: {
+      type: String,
+      default: null
     }
   },
   methods: {
@@ -54,9 +66,10 @@ export default {
     &__title {
       font-size: 1.1rem;
       font-weight: 600;
+      margin-right: auto;
       padding: 0 $spacing;
     }
-    &__close {
+    &__button {
       align-items: center;
       appearance: none;
       background: transparent;
@@ -66,7 +79,6 @@ export default {
       display: flex;
       height: 100%;
       justify-content: center;
-      margin-left: auto;
       padding: 0 $spacing;
     }
     &::after {
@@ -84,6 +96,7 @@ export default {
     overflow: auto;
     overflow-x: hidden;
     padding: 0 0 $spacing;
+    position: relative;
   }
 }
 </style>

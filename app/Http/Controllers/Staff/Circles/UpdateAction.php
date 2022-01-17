@@ -125,7 +125,7 @@ class UpdateAction extends Controller
         DB::commit();
 
         return redirect()
-            ->route('staff.circles.edit', $circle)
+            ->back()
             ->with('topAlert.title', '企画情報を更新しました');
     }
 }

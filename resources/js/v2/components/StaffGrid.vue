@@ -1,50 +1,97 @@
 <template>
-  <SideWindowContainer v-slot="{ isSideWindowOpen, toggleSideWindow }">
-    <div class="staff_grid">
-      <GridTable
-        :keys="keys"
-        :sortableKeys="sortableKeys"
-        :orderBy="orderBy"
-        :direction="direction"
-        :paginator="paginator"
-        :page="page"
-        :perPage="perPage"
-        :loading="loading"
-        :isFilterActive="filterQueries.length > 0"
-        @clickFirst="onClickFirst"
-        @clickPrev="onClickPrev"
-        @clickNext="onClickNext"
-        @clickLast="onClickLast"
-        @clickReload="onClickReload"
-        @clickFilter="() => onClickFilter(toggleSideWindow)"
-        @clickTh="onClickTh"
-        @changePerPage="onChangePerPage"
+  <SideWindowContainer
+    v-slot="{
+      isSideWindowOpen: isFilterSideWindowOpen,
+      toggleSideWindow: toggleFilterSideWindow,
+      closeSideWindow: closeFilterSideWindow
+    }"
+  >
+    <SideWindowContainer
+      v-slot="{
+        isSideWindowOpen: isEditorSideWindowOpen,
+        openSideWindow: openEditorSideWindow,
+        closeSideWindow: closeEditorSideWindow
+      }"
+    >
+      <div class="staff_grid">
+        <GridTable
+          :keys="keys"
+          :sortableKeys="sortableKeys"
+          :orderBy="orderBy"
+          :direction="direction"
+          :paginator="paginator"
+          :page="page"
+          :perPage="perPage"
+          :loading="loading"
+          :isFilterActive="filterQueries.length > 0"
+          @clickFirst="onClickFirst"
+          @clickPrev="onClickPrev"
+          @clickNext="onClickNext"
+          @clickLast="onClickLast"
+          @clickReload="reload"
+          @clickFilter="
+            () =>
+              onClickFilter(
+                toggleFilterSideWindow,
+                isFilterSideWindowOpen,
+                closeEditorSideWindow
+              )
+          "
+          @clickTh="onClickTh"
+          @changePerPage="onChangePerPage"
+        >
+          <template v-slot:toolbar>
+            <slot name="toolbar" />
+          </template>
+          <template v-slot:th="{ keyName }">
+            {{ keyTranslations[keyName] }}
+          </template>
+          <template v-slot:activities="{ row }">
+            <slot
+              name="activities"
+              :row="row"
+              :openEditorByUrl="
+                (url) =>
+                  openEditorByUrl(
+                    openEditorSideWindow,
+                    url,
+                    isEditorSideWindowOpen,
+                    closeFilterSideWindow
+                  )
+              "
+            />
+          </template>
+          <template v-slot:td="{ row, keyName }">
+            <slot name="td" :row="row" :keyName="keyName" />
+          </template>
+        </GridTable>
+      </div>
+      <SideWindow
+        :isOpen="isFilterSideWindowOpen"
+        @clickClose="toggleFilterSideWindow"
       >
-        <template v-slot:toolbar>
-          <slot name="toolbar" />
-        </template>
-        <template v-slot:th="{ keyName }">
-          {{ keyTranslations[keyName] }}
-        </template>
-        <template v-slot:activities="{ row }">
-          <slot name="activities" :row="row" />
-        </template>
-        <template v-slot:td="{ row, keyName }">
-          <slot name="td" :row="row" :keyName="keyName" />
-        </template>
-      </GridTable>
-    </div>
-    <SideWindow :isOpen="isSideWindowOpen" @clickClose="toggleSideWindow">
-      <template #title>絞り込み</template>
-      <StaffGridFilter
-        :filterableKeys="filterableKeys"
-        :keyTranslations="keyTranslations"
-        :defaultQueries="filterQueries"
-        :defaultMode="filterMode"
-        :loading="loading"
-        @clickApply="onClickApplyFilter"
-      />
-    </SideWindow>
+        <template #title>絞り込み</template>
+        <StaffGridFilter
+          :filterableKeys="filterableKeys"
+          :keyTranslations="keyTranslations"
+          :defaultQueries="filterQueries"
+          :defaultMode="filterMode"
+          :loading="loading"
+          @clickApply="onClickApplyFilter"
+        />
+      </SideWindow>
+      <SideWindow
+        :isOpen="isEditorSideWindowOpen"
+        @clickClose="closeEditorSideWindow"
+        :popUpUrl="sideWindowEditorPopUpUrl"
+      >
+        <template #title>編集</template>
+        <StaffGridEditor
+          :editorUrl="sideWindowEditorUrl"
+          @urlChanged="reload"
+        />
+      </SideWindow>
+    </SideWindowContainer>
   </SideWindowContainer>
 </template>
 
@@ -54,6 +101,7 @@ import GridTable from './GridTable.vue'
 import SideWindowContainer from './SideWindowContainer.vue'
 import SideWindow from './SideWindow.vue'
 import StaffGridFilter from './StaffGridFilter.vue'
+import StaffGridEditor from './StaffGridEditor.vue'
 
 const axios = Axios.create({
   headers: {
@@ -66,7 +114,8 @@ export default {
     GridTable,
     SideWindowContainer,
     SideWindow,
-    StaffGridFilter
+    StaffGridFilter,
+    StaffGridEditor
   },
   props: {
     apiUrl: {
@@ -91,7 +140,8 @@ export default {
       filterQueries: [],
       filterMode: 'and',
       needReload: false,
-      loading: true
+      loading: true,
+      sideWindowEditorUrl: ''
     }
   },
   async mounted() {
@@ -103,6 +153,23 @@ export default {
     this.needReload = true
   },
   methods: {
+    openEditorByUrl(
+      openEditorSideWindow,
+      url,
+      isEditorSideWindowOpen,
+      closeFilterSideWindow
+    ) {
+      if (!isEditorSideWindowOpen) {
+        closeFilterSideWindow()
+      }
+
+      // iframe 内でページが開いているということが、リンク先でわかるようにする
+      const urlObject = new URL(url)
+      urlObject.searchParams.set('iframe', true)
+      this.sideWindowEditorUrl = urlObject.href
+
+      openEditorSideWindow()
+    },
     async onPopState() {
       if (this.needReload) {
         // 別のページへ移動してからブラウザバックしてこのページに戻った場合、
@@ -144,10 +211,17 @@ export default {
       this.setUrlParams()
       await this.fetch()
     },
-    async onClickReload() {
+    async reload() {
       await this.fetch()
     },
-    onClickFilter(toggleSideWindow) {
+    onClickFilter(
+      toggleSideWindow,
+      isFilterSideWindowOpen,
+      closeEditorSideWindow
+    ) {
+      if (!isFilterSideWindowOpen) {
+        closeEditorSideWindow()
+      }
       toggleSideWindow()
     },
     async onClickApplyFilter(queries, mode) {
@@ -220,6 +294,13 @@ export default {
     }
   },
   computed: {
+    sideWindowEditorPopUpUrl() {
+      if (!this.sideWindowEditorUrl) return null
+
+      const url = new URL(this.sideWindowEditorUrl)
+      url.searchParams.delete('iframe')
+      return url.href
+    },
     urlParams() {
       const params = new URLSearchParams()
       params.append('page', this.page)
