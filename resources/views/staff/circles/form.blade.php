@@ -82,7 +82,7 @@
                             </div>
                         @else
                             <a href="{{ route('staff.forms.answers.create', ['form' => $custom_form, 'circle' => $circle]) }}"
-                                class="btn is-primary">
+                                class="btn is-primary" target="_blank">
                                 回答の内容を表示・編集
                             </a>
                         @endif
