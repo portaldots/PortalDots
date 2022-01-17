@@ -16,6 +16,7 @@ import AppContainer from './components/AppContainer.vue'
 import AppBadge from './components/AppBadge.vue'
 import AppDropdown from './components/AppDropdown.vue'
 import AppDropdownItem from './components/AppDropdownItem.vue'
+import AppFixedFormFooter from './components/AppFixedFormFooter.vue'
 import ListView from './components/ListView.vue'
 import ListViewCard from './components/ListViewCard.vue'
 import ListViewItem from './components/ListViewItem.vue'
@@ -73,6 +74,7 @@ export function mountV2App() {
         AppBadge,
         AppDropdown,
         AppDropdownItem,
+        AppFixedFormFooter,
         ListView,
         ListViewCard,
         ListViewItem,
