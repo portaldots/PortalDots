@@ -2,7 +2,8 @@
   <SideWindowContainer
     v-slot="{
       isSideWindowOpen: isFilterSideWindowOpen,
-      toggleSideWindow: toggleFilterSideWindow
+      toggleSideWindow: toggleFilterSideWindow,
+      closeSideWindow: closeFilterSideWindow
     }"
   >
     <SideWindowContainer
@@ -28,7 +29,14 @@
           @clickNext="onClickNext"
           @clickLast="onClickLast"
           @clickReload="reload"
-          @clickFilter="() => onClickFilter(toggleFilterSideWindow)"
+          @clickFilter="
+            () =>
+              onClickFilter(
+                toggleFilterSideWindow,
+                isFilterSideWindowOpen,
+                closeEditorSideWindow
+              )
+          "
           @clickTh="onClickTh"
           @changePerPage="onChangePerPage"
         >
@@ -43,7 +51,13 @@
               name="activities"
               :row="row"
               :openEditorByUrl="
-                (url) => openEditorByUrl(openEditorSideWindow, url)
+                (url) =>
+                  openEditorByUrl(
+                    openEditorSideWindow,
+                    url,
+                    isEditorSideWindowOpen,
+                    closeFilterSideWindow
+                  )
               "
             />
           </template>
@@ -138,7 +152,16 @@ export default {
     this.needReload = true
   },
   methods: {
-    openEditorByUrl(openEditorSideWindow, url) {
+    openEditorByUrl(
+      openEditorSideWindow,
+      url,
+      isEditorSideWindowOpen,
+      closeFilterSideWindow
+    ) {
+      if (!isEditorSideWindowOpen) {
+        closeFilterSideWindow()
+      }
+
       // iframe 内でページが開いているということが、リンク先でわかるようにする
       const urlObject = new URL(url)
       urlObject.searchParams.set('iframe', true)
@@ -190,7 +213,14 @@ export default {
     async reload() {
       await this.fetch()
     },
-    onClickFilter(toggleSideWindow) {
+    onClickFilter(
+      toggleSideWindow,
+      isFilterSideWindowOpen,
+      closeEditorSideWindow
+    ) {
+      if (!isFilterSideWindowOpen) {
+        closeEditorSideWindow()
+      }
       toggleSideWindow()
     },
     async onClickApplyFilter(queries, mode) {
