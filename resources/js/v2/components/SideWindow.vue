@@ -84,6 +84,7 @@ export default {
     overflow: auto;
     overflow-x: hidden;
     padding: 0 0 $spacing;
+    position: relative;
   }
 }
 </style>

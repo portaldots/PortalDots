@@ -6,6 +6,9 @@
   &.is-no-drawer {
     padding-left: 0;
   }
+  &.is-no-navbar {
+    padding-top: 0;
+  }
   &__body {
     flex: 1;
   }

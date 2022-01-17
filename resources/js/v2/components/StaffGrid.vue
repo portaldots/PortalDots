@@ -136,7 +136,11 @@ export default {
   },
   methods: {
     openEditorByUrl(openEditorSideWindow, url) {
-      this.sideWindowEditorUrl = url
+      // iframe 内でページが開いているということが、リンク先でわかるようにする
+      const urlObject = new URL(url)
+      urlObject.searchParams.set('iframe', true)
+      this.sideWindowEditorUrl = urlObject.href
+
       openEditorSideWindow()
     },
     async onPopState() {

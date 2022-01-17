@@ -1,5 +1,9 @@
 @inject('uiThemeService', 'App\Services\Utils\UIThemeService')
 
+@php
+    $is_iframe = (bool)request()->get('iframe');
+@endphp
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -54,28 +58,30 @@
     <meta name="format-detection" content="telephone=no">
 </head>
 
-<body class="theme-{{ $uiThemeService->getCurrentTheme() }}">
+<body class="theme-{{ $uiThemeService->getCurrentTheme() }}{{ $is_iframe ? " is-in-iframe" : "" }}">
     @include('includes.loading')
     <div class="app" id="v2-app">
         <portal-target name="portal-target"></portal-target>
         <global-events v-on:keyup.esc="closeDrawer"></global-events>
         <div class="drawer-backdrop" v-bind:class="{'is-open': isDrawerOpen}" v-on:click="closeDrawer"></div>
-        <app-nav-bar @staffpage staff @endstaffpage>
-            @section('navbar')
-                <app-nav-bar-toggle v-on:click="toggleDrawer" ref="toggle"></app-nav-bar-toggle>
-                <div class="navbar__title">
-                    @yield('title', config('app.name'))
-                </div>
-            @show
-        </app-nav-bar>
-        <div class="drawer" v-bind:class="{'is-open': isDrawerOpen}" v-on:click="closeDrawer" tabindex="0" ref="drawer">
-            <div class="drawer__content">
-                @section('drawer')
-                    @include('includes.drawer')
+        @if (!$is_iframe)
+            <app-nav-bar @staffpage staff @endstaffpage>
+                @section('navbar')
+                    <app-nav-bar-toggle v-on:click="toggleDrawer" ref="toggle"></app-nav-bar-toggle>
+                    <div class="navbar__title">
+                        @yield('title', config('app.name'))
+                    </div>
                 @show
+            </app-nav-bar>
+            <div class="drawer" v-bind:class="{'is-open': isDrawerOpen}" v-on:click="closeDrawer" tabindex="0" ref="drawer">
+                <div class="drawer__content">
+                    @section('drawer')
+                        @include('includes.drawer')
+                    @show
+                </div>
             </div>
-        </div>
-        <div class="content">
+        @endif
+        <div class="content{{ $is_iframe ? " is-no-navbar" : "" }}">
             <div class="content__body">
                 @include('includes.top_circle_selector')
                 @if (Session::has('topAlert.title'))
@@ -100,7 +106,9 @@
                 @endif
                 @yield('content')
             </div>
-            <app-footer>{{ config('app.name') }}</app-footer>
+            @if (!$is_iframe)
+                <app-footer>{{ config('app.name') }}</app-footer>
+            @endif
         </div>
         @if (!Request::is('staff*') && !Request::is('admin*'))
             @section('bottom_tabs')
