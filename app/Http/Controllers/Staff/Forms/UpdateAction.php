@@ -48,7 +48,7 @@ class UpdateAction extends Controller
         });
 
         return redirect()
-            ->route('staff.forms.edit', ['form' => $form])
+            ->back()
             ->with('topAlert.title', 'フォームを更新しました');
     }
 }
