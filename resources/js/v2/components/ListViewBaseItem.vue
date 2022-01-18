@@ -66,6 +66,9 @@ export default {
   position: relative;
   transition: #{$transition-base-fast} background-color;
   width: 100%;
+  @media screen and (max-width: $breakpoint-container-padding-reduce) {
+    padding: $spacing-md;
+  }
   &:not(a):not(button) {
     cursor: auto;
   }

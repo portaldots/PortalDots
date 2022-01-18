@@ -37,6 +37,9 @@ export default {
   max-width: $container-width;
   padding: $container-padding-y $container-padding-x;
   width: 100%;
+  @media screen and (max-width: $breakpoint-container-padding-reduce) {
+    padding: $container-padding-y $container-padding-x-reduce;
+  }
   &.is-narrow {
     max-width: $container-width-narrow;
   }
