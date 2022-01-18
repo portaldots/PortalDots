@@ -14,7 +14,7 @@ class UpdateAction extends Controller
         $tag->save();
 
         return redirect()
-            ->route('staff.tags.edit', ['tag' => $tag])
+            ->back()
             ->with('topAlert.title', 'タグを更新しました');
     }
 }
