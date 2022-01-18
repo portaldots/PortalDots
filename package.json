@@ -69,7 +69,7 @@
         "purify-css": "^1.2.5",
         "purifycss-webpack": "^0.7.0",
         "resolve-url-loader": "^4.0.0",
-        "sass": "^1.47.0",
+        "sass": "^1.48.0",
         "sass-loader": "^12.3.0",
         "sass-resources-loader": "^2.2.4",
         "shx": "^0.3.3",
@@ -84,7 +84,7 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
         "@johmun/vue-tags-input": "^2.1.0",
-        "axios": "^0.24",
+        "axios": "^0.25",
         "bootstrap": "^4.6.1",
         "color-convert": "^2.0.1",
         "easymde": "^2.14.0",
