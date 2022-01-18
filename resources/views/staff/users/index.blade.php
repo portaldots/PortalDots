@@ -38,12 +38,13 @@
                 CSVで出力
             </a>
         </template>
-        <template v-slot:activities="{ row }">
+        <template v-slot:activities="{ row, openEditorByUrl }">
             <icon-button
-                v-bind:href="`{{ route('staff.users.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])"
-                title="編集">
-                <i class="fas fa-pencil-alt fa-fw"></i>
-            </icon-button>
+                    button
+                    v-on:click="() => openEditorByUrl(`{{ route('staff.users.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id']))"
+                    title="編集">
+                    <i class="fas fa-pencil-alt fa-fw"></i>
+                </icon-button>
         </template>
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'email_verified_at'">

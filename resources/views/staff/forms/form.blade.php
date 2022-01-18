@@ -155,13 +155,13 @@
                 </list-view-form-group>
             </list-view>
 
-            <div class="text-center pt-spacing-md pb-spacing">
+            <app-fixed-form-footer>
                 @isset($form)
                     <button type="submit" class="btn is-primary is-wide">保存</button>
                 @else
                     <button type="submit" class="btn is-primary is-wide">次に、フォームエディターで設問を作成する</button>
                 @endisset
-            </div>
+            </app-fixed-form-footer>
         </app-container>
     </form>
 @endsection

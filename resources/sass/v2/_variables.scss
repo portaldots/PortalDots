@@ -69,6 +69,7 @@ $bottom-tabs-container-width: 600px;
 $listview-border: 1px solid $color-border;
 $container-padding-x: $spacing;
 $container-padding-y: 0;
+$container-padding-x-reduce: $spacing-md;
 $side-window-width: 400px;
 $focus-outline: 3px solid $color-focus-primary;
 $icon-button-size: 2.5rem;
@@ -85,6 +86,7 @@ $breakpoint-listview-sm: 860px;
 $breakpoint-bottom-tabs: $breakpoint-drawer-hide;
 $breakpoint-top-alert-col: 860px;
 $breakpoint-side-window-fluid: 860px;
+$breakpoint-container-padding-reduce: $breakpoint-drawer-hide;
 
 // Z indexes
 $z-index-loading: 9999;

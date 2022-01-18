@@ -26,7 +26,7 @@
                 CSVで出力(タグ別企画一覧)
             </a>
         </template>
-        <template v-slot:activities="{ row }">
+        <template v-slot:activities="{ row, openEditorByUrl }">
             <form-with-confirm
                 v-bind:action="`{{ route('staff.tags.destroy', ['tag' => '%%TAG%%']) }}`.replace('%%TAG%%', row['id'])"
                 method="post" v-bind:confirm-message="`タグ「${row['name']}」を削除しますか？
@@ -37,7 +37,8 @@
                 @method('delete')
                 @csrf
                 <icon-button
-                    v-bind:href="`{{ route('staff.tags.edit', ['tag' => '%%TAG%%']) }}`.replace('%%TAG%%', row['id'])"
+                    button
+                    v-on:click="() => openEditorByUrl(`{{ route('staff.tags.edit', ['tag' => '%%TAG%%']) }}`.replace('%%TAG%%', row['id']))"
                     title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>

@@ -31,7 +31,7 @@
                 CSVで出力(場所別企画一覧)
             </a>
         </template>
-        <template v-slot:activities="{ row }">
+        <template v-slot:activities="{ row, openEditorByUrl }">
             <form-with-confirm
                 v-bind:action="`{{ route('staff.places.destroy', ['place' => '%%PLACE%%']) }}`.replace('%%PLACE%%', row['id'])"
                 method="post" v-bind:confirm-message="`場所「${row['name']}」を削除しますか？
@@ -40,7 +40,8 @@
                 @method('delete')
                 @csrf
                 <icon-button
-                    v-bind:href="`{{ route('staff.places.edit', ['place' => '%%PLACE%%']) }}`.replace('%%PLACE%%', row['id'])"
+                    button
+                    v-on:click="() => openEditorByUrl(`{{ route('staff.places.edit', ['place' => '%%PLACE%%']) }}`.replace('%%PLACE%%', row['id']))"
                     title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>

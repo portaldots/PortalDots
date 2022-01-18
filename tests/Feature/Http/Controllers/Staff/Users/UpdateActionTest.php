@@ -51,6 +51,7 @@ class UpdateActionTest extends TestCase
         $response = $this
             ->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
+            ->from(route('staff.users.edit', ['user' => $target_user]))
             ->patch(
                 route('staff.users.update', [
                     'user' => $target_user,
@@ -201,6 +202,7 @@ class UpdateActionTest extends TestCase
         $response = $this
             ->actingAs($this->admin)
             ->withSession(['staff_authorized' => true])
+            ->from(route('staff.users.edit', ['user' => $target_user]))
             ->patch(
                 route('staff.users.update', [
                     'user' => $target_user,

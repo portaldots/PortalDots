@@ -51,6 +51,7 @@ class UpdateActionTest extends TestCase
 
         $response = $this->actingAs($this->staff)
             ->withSession(['staff_authorized' => true])
+            ->from(route('staff.documents.edit', ['document' => $document]))
             ->patch(route('staff.documents.update', ['document' => $document]), [
                 'name' => 'document name',
                 'description' => 'document description',

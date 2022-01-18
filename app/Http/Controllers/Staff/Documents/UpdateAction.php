@@ -34,7 +34,7 @@ class UpdateAction extends Controller
         );
 
         return redirect()
-            ->route('staff.documents.edit', ['document' => $document])
+            ->back()
             ->with('topAlert.title', '配布資料を更新しました');
     }
 }

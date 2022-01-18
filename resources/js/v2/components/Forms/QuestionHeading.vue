@@ -35,6 +35,9 @@ export default {
   &__body {
     border-top: $listview-border;
     padding: $spacing $container-padding-x 0;
+    @media screen and (max-width: $breakpoint-container-padding-reduce) {
+      padding: $spacing $container-padding-x-reduce 0;
+    }
   }
   &:first-child &__body {
     border: 0;
