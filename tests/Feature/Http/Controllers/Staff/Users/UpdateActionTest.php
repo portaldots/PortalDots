@@ -58,7 +58,8 @@ class UpdateActionTest extends TestCase
                 $data
             );
 
-        $response->assertRedirect(route('staff.users.edit', ['user' => $target_user]));
+        $response->from(route('staff.users.edit', ['user' => $target_user]))
+            ->assertRedirect(route('staff.users.edit', ['user' => $target_user]));
 
         $target_user->refresh();
         $this->assertEquals('123UPDATED', $target_user->student_id);
@@ -208,7 +209,8 @@ class UpdateActionTest extends TestCase
                 $data
             );
 
-        $response->assertRedirect(route('staff.users.edit', ['user' => $target_user]));
+        $response->from(route('staff.users.edit', ['user' => $target_user]))
+            ->assertRedirect(route('staff.users.edit', ['user' => $target_user]));
 
         $target_user->refresh();
         $this->assertTrue($target_user->is_admin);

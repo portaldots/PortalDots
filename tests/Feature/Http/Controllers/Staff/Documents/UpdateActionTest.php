@@ -61,7 +61,8 @@ class UpdateActionTest extends TestCase
 
         $response->assertSessionHasNoErrors();
 
-        $response->assertRedirect(route('staff.documents.edit', ['document' => $document]));
+        $response->from(route('staff.documents.edit', ['document' => $document]))
+            ->assertRedirect(route('staff.documents.edit', ['document' => $document]));
     }
 
     /**
