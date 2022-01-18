@@ -18,7 +18,7 @@ class UpdateAction extends Controller
         $place->save();
 
         return redirect()
-            ->route('staff.places.edit', ['place' => $place])
+            ->back()
             ->with('topAlert.title', '場所を更新しました');
     }
 }
