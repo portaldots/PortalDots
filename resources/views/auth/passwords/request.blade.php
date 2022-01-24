@@ -17,16 +17,17 @@
                 </list-view-card>
                 <list-view-form-group label-for="login_id">
                     <template v-slot:label>学籍番号または連絡先メールアドレス</template>
-                    <input id="login_id" type="text" class="form-control @error('login_id') is-invalid @enderror"
-                           name="login_id" value="{{ old('login_id') ?? auth()->user()->email }}" required autofocus>
+                    <input
+                        id="login_id"
+                        type="text"
+                        class="form-control @error('login_id') is-invalid @enderror"
+                        name="login_id"
+                        value="{{ auth()->user()->email ?? old('login_id') }}"
+                        required autofocus
+                    />
                     @error('login_id')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror
-                    <p>
-                        <a href="{{ route('password.request') }}">
-                            パスワードをお忘れの場合はこちら
-                        </a>
-                    </p>
                 </list-view-form-group>
             </list-view>
         </app-container>

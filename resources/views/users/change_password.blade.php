@@ -17,6 +17,11 @@
         <app-container>
             <list-view>
                 <template v-slot:title>パスワード変更</template>
+                <template v-slot:description>
+                    <a href="{{ route('password.request') }}">
+                        パスワードをお忘れの場合はこちら
+                    </a>
+                </template>
                 <list-view-form-group label-for="password">
                     <template v-slot:label>現在のパスワード</template>
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
@@ -24,11 +29,6 @@
                     @error('password')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror
-                    <p>
-                        <a href="{{ route('password.request') }}">
-                            パスワードをお忘れの場合はこちら
-                        </a>
-                    </p>
                 </list-view-form-group>
                 <list-view-form-group label-for="new_password">
                     <template v-slot:label>新しいパスワード</template>
