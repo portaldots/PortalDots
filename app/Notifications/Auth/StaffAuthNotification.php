@@ -58,7 +58,7 @@ class StaffAuthNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage())
-            ->subject('スタッフ認証')
+            ->subject('スタッフ認証 (認証コード : ' . $this->verify_code . ')')
             ->greeting('スタッフ認証')
             ->line($this->user->name . ' 様')
             ->line('スタッフモードにアクセスするには、以下の「認証コード」をスタッフ認証ページで入力してください。')
