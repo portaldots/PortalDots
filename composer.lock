@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "daf3c86c96c423ee55c19d739a4dc458",
+    "content-hash": "25370daae6aa323f60c195beb545e8ff",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3317,16 +3317,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "4.0.1",
+            "version": "5.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "29c05324c170c0be108ccb86dd29f6a719c0a617"
+                "reference": "10d4c14dd66f82ce777ab76f5708bd14ff5a1ef8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/29c05324c170c0be108ccb86dd29f6a719c0a617",
-                "reference": "29c05324c170c0be108ccb86dd29f6a719c0a617",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/10d4c14dd66f82ce777ab76f5708bd14ff5a1ef8",
+                "reference": "10d4c14dd66f82ce777ab76f5708bd14ff5a1ef8",
                 "shasum": ""
             },
             "require": {
@@ -3347,6 +3347,10 @@
                     "providers": [
                         "Spatie\\Permission\\PermissionServiceProvider"
                     ]
+                },
+                "branch-alias": {
+                    "dev-main": "5.x-dev",
+                    "dev-master": "5.x-dev"
                 }
             },
             "autoload": {
@@ -3383,7 +3387,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
-                "source": "https://github.com/spatie/laravel-permission/tree/4.0.1"
+                "source": "https://github.com/spatie/laravel-permission/tree/5.3.2"
             },
             "funding": [
                 {
@@ -3391,7 +3395,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-22T18:38:29+00:00"
+            "time": "2021-11-17T10:45:32+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
