@@ -37,7 +37,7 @@ export default {}
     }
   }
   &-body {
-    background: $color-behind-text;
+    background: $color-bg-surface;
     border-radius: $border-radius;
     box-shadow: 0 2px 7px -5px $color-box-shadow;
   }

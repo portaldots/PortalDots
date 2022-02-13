@@ -124,7 +124,7 @@ export default {
 
 <style lang="scss" scoped>
 .form-item {
-  background: $color-behind-text;
+  background: $color-bg-surface;
   border: 1px solid transparent;
   border-left-width: 5px;
   box-shadow: none;

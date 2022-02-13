@@ -106,7 +106,7 @@ export default {
   &:not(a):not(button):hover,
   &:not(a):not(button):active,
   &:not(a):not(button):focus {
-    background: $color-behind-text;
+    background: $color-bg-surface;
   }
   &.is-action-btn {
     align-items: center;
