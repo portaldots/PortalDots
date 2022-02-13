@@ -116,7 +116,7 @@ export default {
   &.ti-focus .ti-input {
     background: $color-form-control-focus;
     border-color: $color-primary;
-    box-shadow: 0 0 0 3px $color-focus-primary;
+    box-shadow: $box-shadow-focus;
   }
   .ti-tag {
     background: $color-primary;
@@ -130,7 +130,7 @@ export default {
   .ti-autocomplete {
     background: $color-bg-surface;
     border: none;
-    box-shadow: 0 0.4rem 0.8rem -0.3rem $color-box-shadow;
+    box-shadow: $box-shadow-lv3;
   }
   .ti-item {
     margin: 0;

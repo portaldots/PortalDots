@@ -35,6 +35,7 @@ $semantic-colors: (
 );
 
 $color-box-shadow: var(--color-box-shadow);
+$color-box-shadow-subdued: var(--color-box-shadow-subdued);
 $color-focus-primary: var(--color-focus-primary);
 $color-focus-danger: var(--color-focus-danger);
 $color-pre-background: var(--color-pre-background);
@@ -46,6 +47,17 @@ $color-primary-hover: var(--color-primary-hover);
 $color-primary-inverse-hover: var(--color-primary-inverse-hover);
 $color-danger-hover: var(--color-danger-hover);
 $color-success-hover: var(--color-success-hover);
+
+// Box Shadow
+$box-shadow-lv1: 0 2px 7px -5px $color-box-shadow,
+  0 0 0 1px $color-box-shadow-subdued;
+$box-shadow-lv2: 0 0.4rem 0.8rem -0.3rem $color-box-shadow,
+  0 0 0 1px $color-box-shadow-subdued;
+$box-shadow-lv3: 0 0.6rem 1.2rem -0.3rem $color-box-shadow,
+  0 0 0 1px $color-box-shadow-subdued;
+$box-shadow-lv4: 0 0.8rem 1.6rem -0.3rem $color-box-shadow,
+  0 0 0 1px $color-box-shadow-subdued;
+$box-shadow-focus: 0 0 0 3px $color-focus-primary;
 
 // Spacing (WIP)
 $spacing-xl: 4rem;
