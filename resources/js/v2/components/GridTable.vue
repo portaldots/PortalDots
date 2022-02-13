@@ -242,7 +242,7 @@ export default {
   }
   &-controls {
     align-items: center;
-    background: $color-bg-grey;
+    background: $color-bg-base;
     display: flex;
     flex-wrap: wrap;
     font-size: 0.9rem;
@@ -288,7 +288,7 @@ export default {
     width: 100%;
   }
   &__table_wrap {
-    background: $color-behind-text;
+    background: $color-bg-surface;
     border-bottom: 1px solid $color-border;
     border-top: 1px solid $color-border;
     overflow: auto;

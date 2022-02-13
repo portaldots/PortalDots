@@ -44,9 +44,9 @@ export default {
 
 <style lang="scss" scoped>
 .side_window {
-  background: $color-behind-text;
+  background: $color-bg-surface;
   bottom: 0;
-  box-shadow: -1px 0 2px $color-border;
+  box-shadow: $box-shadow-lv1;
   display: flex;
   flex-direction: column;
   position: fixed;

@@ -299,9 +299,9 @@ export default {
   display: inline-block;
   position: relative;
   &-menu {
-    background: $color-behind-text;
+    background: $color-bg-surface-3;
     border-radius: $border-radius;
-    box-shadow: 0 0.4rem 0.8rem -0.3rem $color-box-shadow;
+    box-shadow: $box-shadow-lv3;
     overflow: auto;
     overflow-x: hidden;
     padding: $spacing-sm 0;
@@ -312,7 +312,7 @@ export default {
       justify-content: space-between;
       &.is-open-submenu {
         background: $color-primary;
-        color: $color-behind-text;
+        color: $color-bg-surface;
       }
     }
   }

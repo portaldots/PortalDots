@@ -21,9 +21,11 @@ $color-muted: var(--color-muted);
 $color-muted-2: var(--color-muted-2);
 $color-muted-3: var(--color-muted-3);
 $color-border: var(--color-border);
-$color-bg-grey: var(--color-bg-grey);
+$color-bg-base: var(--color-bg-base);
 $color-bg-light: var(--color-bg-light);
-$color-behind-text: var(--color-behind-text);
+$color-bg-surface: var(--color-bg-surface);
+$color-bg-surface-2: var(--color-bg-surface-2);
+$color-bg-surface-3: var(--color-bg-surface-3);
 $color-form-control: var(--color-form-control);
 $color-form-control-readonly: var(--color-form-control-readonly);
 $color-form-control-focus: var(--color-form-control-focus);
@@ -35,6 +37,7 @@ $semantic-colors: (
 );
 
 $color-box-shadow: var(--color-box-shadow);
+$color-box-shadow-subdued: var(--color-box-shadow-subdued);
 $color-focus-primary: var(--color-focus-primary);
 $color-focus-danger: var(--color-focus-danger);
 $color-pre-background: var(--color-pre-background);
@@ -46,6 +49,17 @@ $color-primary-hover: var(--color-primary-hover);
 $color-primary-inverse-hover: var(--color-primary-inverse-hover);
 $color-danger-hover: var(--color-danger-hover);
 $color-success-hover: var(--color-success-hover);
+
+// Box Shadow
+$box-shadow-lv1: 0 0.2rem 0.4rem -0.3rem $color-box-shadow,
+  0 0 0 1px $color-box-shadow-subdued;
+$box-shadow-lv2: 0 0.4rem 0.8rem -0.3rem $color-box-shadow,
+  0 0 0 1px $color-box-shadow-subdued;
+$box-shadow-lv3: 0 0.6rem 1.2rem -0.3rem $color-box-shadow,
+  0 0 0 1px $color-box-shadow-subdued;
+$box-shadow-lv4: 0 0.8rem 1.6rem -0.3rem $color-box-shadow,
+  0 0 0 1px $color-box-shadow-subdued;
+$box-shadow-focus: 0 0 0 3px $color-focus-primary;
 
 // Spacing (WIP)
 $spacing-xl: 4rem;

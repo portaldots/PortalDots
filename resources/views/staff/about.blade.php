@@ -1,3 +1,5 @@
+@inject('uiThemeService', 'App\Services\Utils\UIThemeService')
+
 @extends('layouts.no_drawer')
 
 @section('title', 'PortalDotsについて')
@@ -15,6 +17,21 @@
             height: auto;
             margin: 0 auto;
         }
+
+        .logo.is-dark {
+            display: none;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .logo.is-light {
+                display: none;
+            }
+
+            .logo.is-dark {
+                display: block;
+            }
+        }
+
     </style>
 @endprepend
 
@@ -24,7 +41,18 @@
             <template v-slot:title>PortalDotsについて</template>
             <list-view-card class="text-center">
                 <h1 class="logo-wrapper">
-                    <img src="{{ mix('/images/portalDotsLogo.svg') }}" class="logo" alt="PortalDots">
+                    @switch($uiThemeService->getCurrentTheme())
+                        @case('light')
+                            <img src="{{ mix('/images/portalDotsLogo.svg') }}" class="logo" alt="PortalDots">
+                        @break
+                        @case('dark')
+                            <img src="{{ mix('/images/portalDotsLogoDark.svg') }}" class="logo" alt="PortalDots">
+                        @break
+                        @default
+                            <img src="{{ mix('/images/portalDotsLogo.svg') }}" class="logo is-light" alt="PortalDots">
+                            <img src="{{ mix('/images/portalDotsLogoDark.svg') }}" class="logo is-dark" alt="PortalDots">
+                    @endswitch
+
                 </h1>
                 <div>バージョン {{ $current_version_info->getFullVersion() }}</div>
                 @if (isset($latest_release) && !$current_version_info->equals($latest_release->getVersion()))
@@ -94,8 +122,7 @@
                         PortalDots バージョン {{ $latest_release->getVersion()->getFullVersion() }}
                         をダウンロード(@filesize($latest_release->getSize()))
                     </list-view-action-btn>
-                    <list-view-action-btn href="{{ route('admin.update.index') }}"
-                        icon-class="fas fa-sync-alt">
+                    <list-view-action-btn href="{{ route('admin.update.index') }}" icon-class="fas fa-sync-alt">
                         自動アップデート (BETA)
                     </list-view-action-btn>
                 @else

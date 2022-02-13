@@ -73,7 +73,7 @@ export default {
     &:hover,
     &:active,
     &:focus {
-      background: $color-behind-text;
+      background: $color-bg-surface;
     }
   }
   &:disabled &__inner {

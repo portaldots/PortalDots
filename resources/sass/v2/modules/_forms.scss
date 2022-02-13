@@ -35,7 +35,7 @@ textarea {
       }
 
       body.theme-dark select#{&} {
-        // ダークモード用ドロップダウンアイコン
+        // ダークテーマ用ドロップダウンアイコン
         background: right $spacing-md center / 1rem
             url(../../../img/dropdownTriangleDark.svg) no-repeat,
           $color-form-control !important;
@@ -43,7 +43,7 @@ textarea {
 
       body.theme-system select#{&} {
         @media (prefers-color-scheme: dark) {
-          // ダークモード用ドロップダウンアイコン
+          // ダークテーマ用ドロップダウンアイコン
           background: right $spacing-md center / 1rem
               url(../../../img/dropdownTriangleDark.svg) no-repeat,
             $color-form-control !important;

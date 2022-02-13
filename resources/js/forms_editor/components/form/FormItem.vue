@@ -124,7 +124,7 @@ export default {
 
 <style lang="scss" scoped>
 .form-item {
-  background: $color-behind-text;
+  background: $color-bg-surface;
   border: 1px solid transparent;
   border-left-width: 5px;
   box-shadow: none;
@@ -169,6 +169,8 @@ export default {
     cursor: auto;
   }
   &__edit-panel {
+    background: $color-bg-surface-3;
+
     /* border-top: 1px solid $color-border; */
     box-shadow: inset 0 0.2rem 0.8rem -0.6rem $color-box-shadow;
     display: none;

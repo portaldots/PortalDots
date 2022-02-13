@@ -97,7 +97,7 @@ export default {
 
 <style lang="scss" scoped>
 .vue-tags-input {
-  background-color: $color-behind-text;
+  background-color: $color-bg-surface;
   max-width: 100%;
 }
 </style>
@@ -116,21 +116,23 @@ export default {
   &.ti-focus .ti-input {
     background: $color-form-control-focus;
     border-color: $color-primary;
-    box-shadow: 0 0 0 3px $color-focus-primary;
+    box-shadow: $box-shadow-focus;
   }
   .ti-tag {
     background: $color-primary;
     border-radius: $border-radius;
-    color: $color-behind-text;
+    color: $color-bg-surface;
     &.ti-invalid,
     &.ti-deletion-mark {
       background: $color-danger !important;
     }
   }
   .ti-autocomplete {
-    background: $color-behind-text;
+    background: $color-bg-surface-3;
     border: none;
-    box-shadow: 0 0.4rem 0.8rem -0.3rem $color-box-shadow;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow-lv3;
+    padding: $border-radius 0;
   }
   .ti-item {
     margin: 0;
@@ -141,7 +143,7 @@ export default {
   }
   .ti-selected-item {
     background: $color-primary;
-    color: $color-behind-text;
+    color: $color-bg-surface-3;
   }
   .ti-new-tag-input-wrapper {
     &:first-child {

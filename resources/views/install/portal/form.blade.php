@@ -57,7 +57,7 @@
                                     'APP_URL' => 'このページの URL から /install/portal を抜いたもの',
                                     'PORTAL_ADMIN_NAME' => '',
                                     'PORTAL_CONTACT_EMAIL' => 'ユーザーからの問い合わせはこのメールアドレスに届きます',
-                                    'PORTAL_UNIVEMAIL_DOMAIN' => '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります'
+                                    'PORTAL_UNIVEMAIL_DOMAIN' => '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります',
                                 ][$key] }}
                             </template>
                             <input id="{{ $key }}" type="text"
@@ -75,7 +75,7 @@
                         アクセントカラー
                     </template>
                     <template v-slot:description>
-                        ポータル内のボタンやリンクの色を好きな色に設定できます
+                        ポータル内のボタンやリンクの色を好きな色に設定できます。ダークテーマの場合、ここで設定した色よりも明るい色になります。
                     </template>
                     <ui-primary-color-picker input-name-h="PORTAL_PRIMARY_COLOR_H" input-name-s="PORTAL_PRIMARY_COLOR_S"
                         input-name-l="PORTAL_PRIMARY_COLOR_L"
