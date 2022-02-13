@@ -22,7 +22,7 @@ export default {
 <style lang="scss" scoped>
 .navbar {
   align-items: center;
-  background: $color-bg-surface;
+  background: $color-bg-surface-2;
   box-shadow: $box-shadow-lv1;
   display: flex;
   height: $navbar-height;
