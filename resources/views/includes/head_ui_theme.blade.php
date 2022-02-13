@@ -2,21 +2,17 @@
 
 <meta name="color-scheme" content="{{ $uiThemeService->getCssColorScheme() }}">
 
-<style>
-    :root {
-        color-scheme: {{ $uiThemeService->getCssColorScheme() }};
-        --color-primary: {{ $uiThemeService->getCssPrimaryColor() }};
-        --color-primary-light: {{ $uiThemeService->getCssPrimaryColor(0.1) }};
-        --color-focus-primary: {{ $uiThemeService->getCssPrimaryColor(0.25) }};
-        --color-primary-hover: {{ $uiThemeService->getCssPrimaryColor(0.8) }};
-        --color-primary-inverse-hover: {{ $uiThemeService->getCssPrimaryColor(0.15) }};
-    }
-
-</style>
-
 @if (in_array($uiThemeService->getCurrentTheme(), ['light', 'system'], true))
     <style>
         :root {
+            /* Primary */
+            color-scheme: {{ $uiThemeService->getCssColorScheme() }};
+            --color-primary: {{ $uiThemeService->getCssPrimaryColor() }};
+            --color-primary-light: {{ $uiThemeService->getCssPrimaryColor(0.1) }};
+            --color-focus-primary: {{ $uiThemeService->getCssPrimaryColor(0.25) }};
+            --color-primary-hover: {{ $uiThemeService->getCssPrimaryColor(0.8) }};
+            --color-primary-inverse-hover: {{ $uiThemeService->getCssPrimaryColor(0.15) }};
+            /* Other */
             --color-text: rgb(34, 41, 47);
             --color-danger: rgb(219, 60, 62);
             --color-danger-light: rgb(219, 60, 62, 0.1);
@@ -50,6 +46,14 @@
 @if (in_array($uiThemeService->getCurrentTheme(), ['dark', 'system'], true))
     <style>
         {{ $uiThemeService->getCurrentTheme() === 'system' ? '@media (prefers-color-scheme: dark) {' : '' }} :root {
+            /* Primary */
+            color-scheme: {{ $uiThemeService->getCssColorScheme() }};
+            --color-primary: {{ $uiThemeService->getCssPrimaryColor(1, true) }};
+            --color-primary-light: {{ $uiThemeService->getCssPrimaryColor(0.1, true) }};
+            --color-focus-primary: {{ $uiThemeService->getCssPrimaryColor(0.25, true) }};
+            --color-primary-hover: {{ $uiThemeService->getCssPrimaryColor(0.8, true) }};
+            --color-primary-inverse-hover: {{ $uiThemeService->getCssPrimaryColor(0.15, true) }};
+            /* Other */
             --color-text: rgb(255, 255, 255);
             --color-danger: rgb(226, 118, 120);
             --color-danger-light: rgb(226, 118, 120, 0.2);
