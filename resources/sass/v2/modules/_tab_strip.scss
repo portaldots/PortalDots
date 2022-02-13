@@ -6,7 +6,9 @@
   overflow: hidden;
   padding: 0 $spacing;
   @media screen and (max-width: $breakpoint-listview-sm) {
-    padding: 0;
+    justify-content: flex-start;
+    overflow-x: scroll;
+    padding: 0 $spacing-sm;
   }
   &-tab {
     color: $color-text;
@@ -14,9 +16,7 @@
     padding: $spacing $spacing $spacing-md;
     text-align: center;
     @media screen and (max-width: $breakpoint-listview-sm) {
-      padding-left: 0;
-      padding-right: 0;
-      width: 100%;
+      white-space: nowrap;
     }
     &:hover,
     &:focus,
