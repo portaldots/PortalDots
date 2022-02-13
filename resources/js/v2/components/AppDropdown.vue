@@ -299,7 +299,7 @@ export default {
   display: inline-block;
   position: relative;
   &-menu {
-    background: $color-bg-surface;
+    background: $color-bg-surface-3;
     border-radius: $border-radius;
     box-shadow: $box-shadow-lv3;
     overflow: auto;

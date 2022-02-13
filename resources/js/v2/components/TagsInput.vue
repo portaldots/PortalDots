@@ -128,9 +128,11 @@ export default {
     }
   }
   .ti-autocomplete {
-    background: $color-bg-surface;
+    background: $color-bg-surface-3;
     border: none;
+    border-radius: $border-radius;
     box-shadow: $box-shadow-lv3;
+    padding: $border-radius 0;
   }
   .ti-item {
     margin: 0;
@@ -141,7 +143,7 @@ export default {
   }
   .ti-selected-item {
     background: $color-primary;
-    color: $color-bg-surface;
+    color: $color-bg-surface-3;
   }
   .ti-new-tag-input-wrapper {
     &:first-child {

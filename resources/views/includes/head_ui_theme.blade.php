@@ -25,6 +25,7 @@
             --color-bg-light: rgb(239, 239, 239);
             --color-bg-surface: rgb(255, 255, 255);
             --color-bg-surface-2: rgb(255, 255, 255);
+            --color-bg-surface-3: rgb(255, 255, 255);
             --color-form-control: rgb(250, 250, 252);
             --color-form-control-readonly: rgb(255, 255, 255);
             --color-form-control-focus: rgb(255, 255, 255);
@@ -63,14 +64,15 @@
             /* --color-muted-3: rgb(195, 207, 216); */
             --color-border: rgba(255, 255, 255, 0.12);
             --color-bg-base: rgb(30, 30, 30);
-            --color-bg-light: rgb(36, 36, 36);
+            --color-bg-light: rgb(53, 53, 53);
             --color-bg-surface: rgb(39, 39, 39);
             --color-bg-surface-2: rgb(46, 46, 46);
+            --color-bg-surface-3: rgb(51, 51, 51);
             --color-form-control: rgba(0, 0, 0, 0.2);
             --color-form-control-readonly: rgb(53, 53, 53);
             --color-form-control-focus: rgba(0, 0, 0, 0.2);
             --color-box-shadow: rgba(0, 0, 0, 1);
-            --color-box-shadow-subdued: rgba(0, 0, 0, 0.25);
+            --color-box-shadow-subdued: rgba(0, 0, 0, 0.4);
             --color-focus-danger: rgba(226, 118, 120, 0.4);
             --color-pre-background: rgba(255, 255, 255, 0.02);
             --color-code-background: rgba(75, 189, 119, 0.15);
