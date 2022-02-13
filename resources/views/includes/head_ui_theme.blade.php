@@ -25,7 +25,7 @@
             --color-muted-2: rgb(167, 182, 194);
             --color-muted-3: rgb(195, 207, 216);
             --color-border: rgb(218, 224, 230);
-            --color-bg-grey: rgb(243, 244, 250);
+            --color-bg-base: rgb(243, 244, 250);
             --color-bg-light: rgb(239, 239, 239);
             --color-behind-text: rgb(255, 255, 255);
             --color-form-control: rgb(250, 250, 252);
@@ -57,7 +57,7 @@
             --color-muted-2: rgb(60, 65, 70);
             /* --color-muted-3: rgb(195, 207, 216); */
             --color-border: rgb(44, 44, 48);
-            --color-bg-grey: rgb(5, 5, 5);
+            --color-bg-base: rgb(5, 5, 5);
             --color-bg-light: rgb(18, 18, 18);
             --color-behind-text: rgb(22, 22, 22);
             --color-form-control: rgb(18, 18, 18);

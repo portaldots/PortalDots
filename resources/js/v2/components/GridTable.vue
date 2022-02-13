@@ -242,7 +242,7 @@ export default {
   }
   &-controls {
     align-items: center;
-    background: $color-bg-grey;
+    background: $color-bg-base;
     display: flex;
     flex-wrap: wrap;
     font-size: 0.9rem;

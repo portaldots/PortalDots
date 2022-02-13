@@ -91,7 +91,7 @@ export default {
   flex-wrap: wrap;
   &__body {
     align-items: center;
-    background-color: $color-bg-grey;
+    background-color: $color-bg-base;
     border: 1px solid $color-border;
     border-radius: $border-radius;
     color: $color-muted;

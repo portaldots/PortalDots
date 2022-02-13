@@ -96,7 +96,7 @@ $editor-sidebar-padding: $spacing-md;
   width: $editor-sidebar-width;
   z-index: 10;
   &__header {
-    background: $color-bg-grey;
+    background: $color-bg-base;
     color: $color-text;
     padding: $editor-sidebar-padding;
   }
