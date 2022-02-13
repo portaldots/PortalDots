@@ -4,12 +4,34 @@ declare(strict_types=1);
 
 namespace App\Services\Utils;
 
+use Illuminate\Support\Facades\Cookie;
+
 class UIThemeService
 {
+    private const COOKIE_KEY = 'ui_theme';
+
+    public const AVAILABLE_THEMES = [
+        'system',
+        'light',
+        'dark',
+    ];
+
     public static function getCurrentTheme(): string
     {
-        // light, dark, system のどれか
+        $theme = Cookie::get(self::COOKIE_KEY, 'system');
+
+        if (in_array($theme, UIThemeService::AVAILABLE_THEMES, true)) {
+            return $theme;
+        }
+
         return 'system';
+    }
+
+    public function setCurrentTheme(string $theme)
+    {
+        if (in_array($theme, UIThemeService::AVAILABLE_THEMES, true)) {
+            Cookie::queue(self::COOKIE_KEY, $theme, 60 * 60 * 24 * 365);
+        }
     }
 
     public static function getCssColorScheme(): string
