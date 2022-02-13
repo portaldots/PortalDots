@@ -113,7 +113,7 @@ export default {
 <style lang="scss" scoped>
 .editor-header {
   align-items: center;
-  background: $color-bg-surface;
+  background: $color-bg-surface-2;
   border-bottom: 1px solid $color-border;
   display: flex;
   justify-content: space-between;

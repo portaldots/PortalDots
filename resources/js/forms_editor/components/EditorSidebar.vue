@@ -85,7 +85,7 @@ export default {
 $editor-sidebar-padding: $spacing-md;
 
 .editor-sidebar {
-  background: $color-bg-surface;
+  background: $color-bg-surface-2;
   bottom: 0;
   box-shadow: -0.1rem 0 0.3rem -0.2rem $color-box-shadow;
   display: flex;
@@ -96,7 +96,8 @@ $editor-sidebar-padding: $spacing-md;
   width: $editor-sidebar-width;
   z-index: 10;
   &__header {
-    background: $color-bg-base;
+    background: $color-bg-surface-3;
+    border-bottom: 1px solid $color-border;
     color: $color-text;
     padding: $editor-sidebar-padding;
   }
