@@ -22,7 +22,7 @@ Issue や Pull Request の作成は大歓迎です！
     - コミットの粒度、コミットメッセージの書き方は自由です。
 1. Pull Request を提出する。
 
-## その他
+## コントリビューター行動規範
 PortalDots では「コントリビューター行動規範」を定めています。Issue や Pull Request の作成前に一読していただけますと幸いです。
 
 - [コントリビューター行動規範](https://github.com/portal-dots/PortalDots/blob/3.x/CODE_OF_CONDUCT.md)
