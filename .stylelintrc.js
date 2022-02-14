@@ -4,6 +4,7 @@ module.exports = {
     'stylelint-config-prettier',
     'stylelint-config-recommended-vue',
     'stylelint-config-recommended-vue/scss',
+    'stylelint-config-standard-scss',
   ],
   plugins: ['stylelint-order', 'stylelint-scss'],
   ignoreFiles: ['resources/sass/v2/_normalize.scss'],
