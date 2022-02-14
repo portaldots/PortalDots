@@ -1,3 +1,9 @@
+@inject('uiThemeService', 'App\Services\Utils\UIThemeService')
+
+@php
+$is_iframe = (bool) request()->get('iframe');
+@endphp
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -50,7 +56,7 @@
     <meta name="format-detection" content="telephone=no">
 </head>
 
-<body>
+<body class="theme-{{ $uiThemeService->getCurrentTheme() }}{{ $is_iframe ? ' is-in-iframe' : '' }}">
     @include('includes.loading')
     <div class="app" id="v2-app">
         <portal-target name="portal-target"></portal-target>
@@ -66,7 +72,7 @@
                 @include('includes.top_circle_selector')
                 @if (Session::has('topAlert.title'))
                     <top-alert type="{{ session('topAlert.type', 'primary') }}"
-                        @yield('top_alert_props', 'container-medium')
+                        @yield('top_alert_props', 'container-medium' )
                         {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}>
                         <template v-slot:title>
                             {{ session('topAlert.title') }}

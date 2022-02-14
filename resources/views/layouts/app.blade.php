@@ -1,7 +1,7 @@
 @inject('uiThemeService', 'App\Services\Utils\UIThemeService')
 
 @php
-    $is_iframe = (bool)request()->get('iframe');
+$is_iframe = (bool) request()->get('iframe');
 @endphp
 
 <!DOCTYPE html>
@@ -58,7 +58,7 @@
     <meta name="format-detection" content="telephone=no">
 </head>
 
-<body class="theme-{{ $uiThemeService->getCurrentTheme() }}{{ $is_iframe ? " is-in-iframe" : "" }}">
+<body class="theme-{{ $uiThemeService->getCurrentTheme() }}{{ $is_iframe ? ' is-in-iframe' : '' }}">
     @include('includes.loading')
     <div class="app" id="v2-app">
         <portal-target name="portal-target"></portal-target>
@@ -73,7 +73,8 @@
                     </div>
                 @show
             </app-nav-bar>
-            <div class="drawer" v-bind:class="{'is-open': isDrawerOpen}" v-on:click="closeDrawer" tabindex="0" ref="drawer">
+            <div class="drawer" v-bind:class="{'is-open': isDrawerOpen}" v-on:click="closeDrawer" tabindex="0"
+                ref="drawer">
                 <div class="drawer__content">
                     @section('drawer')
                         @include('includes.drawer')
@@ -81,13 +82,13 @@
                 </div>
             </div>
         @endif
-        <div class="content{{ $is_iframe ? " is-no-navbar is-no-drawer" : "" }}">
+        <div class="content{{ $is_iframe ? ' is-no-navbar is-no-drawer' : '' }}">
             <div class="content__body">
                 @include('includes.top_circle_selector')
                 @if (Session::has('topAlert.title'))
                     <top-alert type="{{ session('topAlert.type', 'primary') }}"
                         {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}
-                        @yield('top_alert_props', '')>
+                        @yield('top_alert_props', '' )>
                         <template v-slot:title>
                             {{ session('topAlert.title') }}
                         </template>

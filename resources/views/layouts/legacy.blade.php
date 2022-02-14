@@ -1,3 +1,9 @@
+@inject('uiThemeService', 'App\Services\Utils\UIThemeService')
+
+@php
+$is_iframe = (bool) request()->get('iframe');
+@endphp
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -30,7 +36,8 @@
     <meta name="format-detection" content="telephone=no">
 </head>
 
-<body ontouchstart="" class="body-editor-v1">
+<body ontouchstart=""
+    class="body-editor-v1 theme-{{ $uiThemeService->getCurrentTheme() }}{{ $is_iframe ? ' is-in-iframe' : '' }}">
 
     @yield('content')
 
