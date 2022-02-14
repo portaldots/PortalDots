@@ -45,7 +45,7 @@
 <script>
 import convert from 'color-convert'
 
-const rootElement = document.documentElement
+const bodyElement = document.body
 
 export default {
   props: {
@@ -76,10 +76,10 @@ export default {
     this.hexValue = this.convertHslaToHex(this.defaultHslaValue)
   },
   destroyed() {
-    rootElement.style.removeProperty('--color-primary')
-    rootElement.style.removeProperty('--color-focus-primary')
-    rootElement.style.removeProperty('--color-primary-hover')
-    rootElement.style.removeProperty('--color-primary-inverse-hover')
+    bodyElement.style.removeProperty('--color-primary')
+    bodyElement.style.removeProperty('--color-focus-primary')
+    bodyElement.style.removeProperty('--color-primary-hover')
+    bodyElement.style.removeProperty('--color-primary-inverse-hover')
   },
   computed: {
     hslValue() {
@@ -109,19 +109,19 @@ export default {
     hexValue(value) {
       this.waitForReset = false
       const hsl = this.convertHexToHsl(value)
-      rootElement.style.setProperty(
+      bodyElement.style.setProperty(
         '--color-primary',
         `hsla(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%, 1)`
       )
-      rootElement.style.setProperty(
+      bodyElement.style.setProperty(
         '--color-focus-primary',
         `hsla(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%, 0.25)`
       )
-      rootElement.style.setProperty(
+      bodyElement.style.setProperty(
         '--color-primary-hover',
         `hsla(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%, 0.8)`
       )
-      rootElement.style.setProperty(
+      bodyElement.style.setProperty(
         '--color-primary-inverse-hover',
         `hsla(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%, 0.15)`
       )
