@@ -1,5 +1,7 @@
+@inject('uiThemeService', 'App\Services\Utils\UIThemeService')
+
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="theme-{{ $uiThemeService->getCurrentTheme() }}">
 
 <head>
     <meta charset="utf-8">
