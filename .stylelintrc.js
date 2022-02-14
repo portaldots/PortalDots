@@ -1,12 +1,11 @@
 module.exports = {
   extends: [
     'stylelint-config-standard',
-    'stylelint-config-prettier'
+    'stylelint-config-prettier',
+    'stylelint-config-recommended-vue',
   ],
   plugins: ['stylelint-order', 'stylelint-scss'],
-  ignoreFiles: [
-    'resources/sass/v2/_normalize.scss'
-  ],
+  ignoreFiles: ['resources/sass/v2/_normalize.scss'],
   rules: {
     'at-rule-no-unknown': null,
     'scss/at-rule-no-unknown': true,
@@ -19,4 +18,4 @@ module.exports = {
       },
     ],
   },
-};
+}
