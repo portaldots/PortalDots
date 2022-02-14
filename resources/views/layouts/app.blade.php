@@ -5,7 +5,7 @@ $is_iframe = (bool) request()->get('iframe');
 @endphp
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="theme-{{ $uiThemeService->getCurrentTheme() }}">
 
 <head>
     <meta charset="utf-8">
@@ -58,7 +58,7 @@ $is_iframe = (bool) request()->get('iframe');
     <meta name="format-detection" content="telephone=no">
 </head>
 
-<body class="theme-{{ $uiThemeService->getCurrentTheme() }}{{ $is_iframe ? ' is-in-iframe' : '' }}">
+<body class="{{ $is_iframe ? 'is-in-iframe' : '' }}">
     @include('includes.loading')
     <div class="app" id="v2-app">
         <portal-target name="portal-target"></portal-target>

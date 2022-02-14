@@ -34,14 +34,14 @@ textarea {
           $color-form-control !important;
       }
 
-      body.theme-dark select#{&} {
+      html.theme-dark select#{&} {
         // ダークテーマ用ドロップダウンアイコン
         background: right $spacing-md center / 1rem
             url(../../../img/dropdownTriangleDark.svg) no-repeat,
           $color-form-control !important;
       }
 
-      body.theme-system select#{&} {
+      html.theme-system select#{&} {
         @media (prefers-color-scheme: dark) {
           // ダークテーマ用ドロップダウンアイコン
           background: right $spacing-md center / 1rem

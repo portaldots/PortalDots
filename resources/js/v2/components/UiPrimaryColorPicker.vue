@@ -45,7 +45,7 @@
 <script>
 import convert from 'color-convert'
 
-const bodyElement = document.body
+const rootElement = document.documentElement
 
 export default {
   props: {
@@ -76,10 +76,10 @@ export default {
     this.hexValue = this.convertHslaToHex(this.defaultHslaValue)
   },
   destroyed() {
-    bodyElement.style.removeProperty('--color-primary')
-    bodyElement.style.removeProperty('--color-focus-primary')
-    bodyElement.style.removeProperty('--color-primary-hover')
-    bodyElement.style.removeProperty('--color-primary-inverse-hover')
+    rootElement.style.removeProperty('--color-primary')
+    rootElement.style.removeProperty('--color-focus-primary')
+    rootElement.style.removeProperty('--color-primary-hover')
+    rootElement.style.removeProperty('--color-primary-inverse-hover')
   },
   computed: {
     hslValue() {
@@ -113,8 +113,8 @@ export default {
       let s = hsl[1]
       let l = hsl[2]
       const isDarkTheme =
-        bodyElement.classList.contains('theme-dark') ||
-        (bodyElement.classList.contains('theme-system') &&
+        rootElement.classList.contains('theme-dark') ||
+        (rootElement.classList.contains('theme-system') &&
           window.matchMedia('(prefers-color-scheme: dark)').matches)
 
       if (isDarkTheme) {
@@ -122,23 +122,23 @@ export default {
         l = Math.min(l + 20, 100)
       }
 
-      bodyElement.style.setProperty(
+      rootElement.style.setProperty(
         '--color-primary',
         `hsla(${h}, ${s}%, ${l}%, 1)`
       )
-      bodyElement.style.setProperty(
+      rootElement.style.setProperty(
         '--color-primary-light',
         `hsla(${h}, ${s}%, ${l}%, 0.1)`
       )
-      bodyElement.style.setProperty(
+      rootElement.style.setProperty(
         '--color-focus-primary',
         `hsla(${h}, ${s}%, ${l}%, 0.25)`
       )
-      bodyElement.style.setProperty(
+      rootElement.style.setProperty(
         '--color-primary-hover',
         `hsla(${h}, ${s}%, ${l}%, 0.8)`
       )
-      bodyElement.style.setProperty(
+      rootElement.style.setProperty(
         '--color-primary-inverse-hover',
         `hsla(${h}, ${s}%, ${l}%, 0.15)`
       )
