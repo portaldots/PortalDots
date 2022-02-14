@@ -45,6 +45,7 @@ class UIThemeService
         }
     }
 
+    // このメソッドのロジックを変更した場合、 UiPrimaryColorPicker にあるロジックも修正する必要がある
     public static function getCssPrimaryColor(float $alpha = 1, bool $isDark = false): string
     {
         $hsl = config('portal.primary_color_hsl');
