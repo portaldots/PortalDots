@@ -15,7 +15,7 @@ color-scheme: dark;
 /* --color-muted-3: rgb(195, 207, 216); */
 --color-border: rgba(255, 255, 255, 0.12);
 --color-bg-base: rgb(30, 30, 30);
---color-bg-light: rgb(53, 53, 53);
+--color-bg-light: rgba(255, 255, 255, 0.05);
 --color-bg-surface: rgb(39, 39, 39);
 --color-bg-surface-2: rgb(46, 46, 46);
 --color-bg-surface-3: rgb(51, 51, 51);
