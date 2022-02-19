@@ -13,6 +13,7 @@
                 name_given: '名',
                 name_given_yomi: '名(よみ)',
                 email: '連絡先メールアドレス',
+                univemail: '{{ config('portal.univemail_name') }}',
                 tel: '電話番号',
                 is_staff: 'スタッフ',
                 is_admin: '管理者',
