@@ -22,6 +22,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property string $name_given_yomi
  * @property string $email
  * @property Carbon $email_verified_at
+ * @property string $univemail_local_part
+ * @property string $univemail_domain_part
  * @property-read string $univemail
  * @property Carbon $univemail_verified_at
  * @property string $tel
@@ -52,13 +54,15 @@ class User extends Authenticatable
 
     protected static $ignoreChangedAttributes = [
         'email',
+        'univemail_local_part',
+        'univemail_domain_part',
         'tel',
         'email_verified_at',
         'univemail_verified_at',
         'password',
         'remember_token',
         'last_accessed_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected static $logOnlyDirty = true;
@@ -68,9 +72,19 @@ class User extends Authenticatable
      */
     public const STUDENT_ID_RULES = ['required', 'string'];
     // ↓姓と名の間であれば，何個でもスペースを入れてもよしとする
-    public const NAME_RULES = ['required', 'string', 'max:255', 'regex:/^([^\s　]+)([\s　]+)([^\s　]+)$/u'];
+    public const NAME_RULES = [
+        'required',
+        'string',
+        'max:255',
+        'regex:/^([^\s　]+)([\s　]+)([^\s　]+)$/u',
+    ];
     // ↓姓と名の間であれば，何個でもスペースを入れてもよしとする
-    public const NAME_YOMI_RULES = ['required', 'string', 'max:255', 'regex:/^([ぁ-んァ-ヶー]+)([\s　]+)([ぁ-んァ-ヶー]+)$/u'];
+    public const NAME_YOMI_RULES = [
+        'required',
+        'string',
+        'max:255',
+        'regex:/^([ぁ-んァ-ヶー]+)([\s　]+)([ぁ-んァ-ヶー]+)$/u',
+    ];
     public const EMAIL_RULES = ['required', 'string', 'email', 'max:255'];
     public const TEL_RULES = ['required', 'string', 'max:255'];
     public const PASSWORD_RULES = ['required', 'string', 'min:8'];
@@ -81,7 +95,16 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'student_id', 'name', 'name_yomi', 'email', 'tel', 'password', 'is_staff', 'is_admin',
+        'student_id',
+        'name',
+        'name_yomi',
+        'email',
+        'univemail_local_part',
+        'univemail_domain_part',
+        'tel',
+        'password',
+        'is_staff',
+        'is_admin',
     ];
 
     /**
@@ -89,9 +112,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     protected $dates = [
         'email_verified_at',
@@ -108,7 +129,9 @@ class User extends Authenticatable
 
     public function circles()
     {
-        return $this->belongsToMany(Circle::class)->using(CircleUser::class)->withPivot('is_leader');
+        return $this->belongsToMany(Circle::class)
+            ->using(CircleUser::class)
+            ->withPivot('is_leader');
     }
 
     /**
@@ -148,7 +171,9 @@ class User extends Authenticatable
      */
     public function scopeVerified($query)
     {
-        return $query->whereNotNull('email_verified_at')->whereNotNull('univemail_verified_at');
+        return $query
+            ->whereNotNull('email_verified_at')
+            ->whereNotNull('univemail_verified_at');
     }
 
     /**
@@ -252,7 +277,9 @@ class User extends Authenticatable
      */
     public function getUnivemailAttribute()
     {
-        return mb_strtolower($this->student_id) . '@' . config('portal.univemail_domain_part');
+        return mb_strtolower($this->univemail_local_part) .
+            '@' .
+            mb_strtolower($this->univemail_domain_part);
     }
 
     /**
@@ -272,7 +299,7 @@ class User extends Authenticatable
      */
     public function hasVerifiedEmail(): bool
     {
-        return (!empty($this->email_verified_at));
+        return !empty($this->email_verified_at);
     }
 
     /**
@@ -282,7 +309,7 @@ class User extends Authenticatable
      */
     public function hasVerifiedUnivemail(): bool
     {
-        return (!empty($this->univemail_verified_at));
+        return !empty($this->univemail_verified_at);
     }
 
     /**
@@ -333,20 +360,36 @@ class User extends Authenticatable
     {
         $last_accessed_at = $this->last_accessed_at;
         if (empty($last_accessed_at)) {
-            return "-";
+            return '-';
         }
-        if (now()->subHour()->lte($last_accessed_at)) {
+        if (
+            now()
+                ->subHour()
+                ->lte($last_accessed_at)
+        ) {
             return '1時間以内';
         }
-        if (now()->subDay()->lte($last_accessed_at)) {
+        if (
+            now()
+                ->subDay()
+                ->lte($last_accessed_at)
+        ) {
             return "{$last_accessed_at->diffInHours(now())}時間前";
         }
-        if (now()->subMonth()->lte($last_accessed_at)) {
+        if (
+            now()
+                ->subMonth()
+                ->lte($last_accessed_at)
+        ) {
             return "{$last_accessed_at->diffInDays(now())}日前";
         }
-        if (now()->subYear()->lte($last_accessed_at)) {
+        if (
+            now()
+                ->subYear()
+                ->lte($last_accessed_at)
+        ) {
             return "{$last_accessed_at->diffInMonths(now())}ヶ月前";
         }
-        return "1年以上前";
+        return '1年以上前';
     }
 }
