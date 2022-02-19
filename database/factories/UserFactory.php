@@ -22,6 +22,8 @@ $factory->define(User::class, function (Faker $faker) {
         'name' => $faker->name,
         'name_yomi' => $faker->kanaName,
         'email' => $faker->unique()->safeEmail,
+        'univemail_local_part' => $faker->unique()->slug,
+        'univemail_domain_part' => $faker->unique()->safeEmailDomain,
         'tel' => $faker->phoneNumber,
         'is_staff' => false,
         'is_admin' => false,
