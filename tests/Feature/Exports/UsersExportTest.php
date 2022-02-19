@@ -29,6 +29,8 @@ class UsersExportTest extends TestCase
         $this->usersExport = App::make(UsersExport::class);
         $this->user = factory(User::class)->create([
             'student_id' => '0123456',
+            'univemail_local_part' => 'this-is-local-part-12345',
+            'univemail_domain_part' => 's.example.ac.jp',
             'tel' => '09012345678',
             'notes' => '"こんにちは,'
         ]);
@@ -46,6 +48,7 @@ class UsersExportTest extends TestCase
                 $this->user->name,
                 $this->user->name_yomi,
                 $this->user->email,
+                'this-is-local-part-12345@s.example.ac.jp',
                 '"09012345678"',
                 'いいえ',
                 'いいえ',
