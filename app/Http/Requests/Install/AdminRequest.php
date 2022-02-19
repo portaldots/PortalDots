@@ -45,7 +45,7 @@ class AdminRequest extends FormRequest
     public function attributes()
     {
         return [
-            'student_id' => '学籍番号',
+            'student_id' => config('portal.student_id_name'),
             'name' => '名前',
             'name_yomi' => '名前(よみ)',
             'email' => '連絡先メールアドレス',

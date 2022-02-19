@@ -1,5 +1,5 @@
 <list-view-form-group label-for="student_id">
-    <template v-slot:label>学籍番号</template>
+    <template v-slot:label>{{ config('portal.student_id_name') }}</template>
     <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror" name="student_id"
         value="{{ old('student_id') }}" required autocomplete="username">
     @error('student_id')

@@ -48,7 +48,7 @@ class UsersExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             'ユーザーID',
-            '学籍番号',
+            config('portal.student_id_name'),
             '氏名',
             '氏名（よみ）',
             '連絡先メールアドレス',

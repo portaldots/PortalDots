@@ -5,20 +5,17 @@
 @section('top_alert_props', 'container-fluid')
 
 @section('content')
-    <staff-grid
-        api-url="{{ route('staff.permissions.api') }}"
-        v-bind:key-translations="{
-            id: 'ユーザーID',
-            name: '名前',
-            student_id: '学籍番号',
-            name_family: '姓',
-            name_family_yomi: '姓(よみ)',
-            name_given: '名',
-            name_given_yomi: '名(よみ)',
-            is_admin: '管理者',
-            permissions: '割り当てられた権限',
-        }"
-    >
+    <staff-grid api-url="{{ route('staff.permissions.api') }}" v-bind:key-translations="{
+                    id: 'ユーザーID',
+                    name: '名前',
+                    student_id: '{{ config('portal.student_id_name') }}',
+                    name_family: '姓',
+                    name_family_yomi: '姓(よみ)',
+                    name_given: '名',
+                    name_given_yomi: '名(よみ)',
+                    is_admin: '管理者',
+                    permissions: '割り当てられた権限',
+                }">
         <template v-slot:activities="{ row }">
             <icon-button
                 v-bind:href="`{{ route('staff.permissions.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])"
@@ -38,7 +35,7 @@
                 <template v-for="permission in row[keyName]">
                     <app-badge primary v-bind:key="permission.identifier"
                         v-bind:title="`${permission.display_name} — ${permission.description_html} (${permission.identifier})`">
-                        @{{ permission . display_short_name }}
+                        @{{ permission.display_short_name }}
                     </app-badge>
                     @{{ ' ' }}
                 </template>

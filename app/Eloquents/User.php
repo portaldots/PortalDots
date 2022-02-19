@@ -186,7 +186,7 @@ class User extends Authenticatable
     }
 
     /**
-     * 学籍番号のアルファベットを大文字に変換してセットする(セッター)
+     * student_idのアルファベットを大文字に変換してセットする(セッター)
      *
      * @param string $value
      */

@@ -13,7 +13,7 @@
                 <template v-slot:title>一般設定</template>
 
                 <list-view-form-group label-for="student_id">
-                    <template v-slot:label>学籍番号</template>
+                    <template v-slot:label>{{ config('portal.student_id_name') }}</template>
                     <template v-slot:description>
                         @if (!$circles->isEmpty())
                             企画に所属しているため修正できません

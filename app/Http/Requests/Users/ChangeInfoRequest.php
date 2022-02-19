@@ -51,7 +51,7 @@ class ChangeInfoRequest extends FormRequest
     public function attributes()
     {
         return [
-            'student_id' => '学籍番号',
+            'student_id' => config('portal.student_id_name'),
             'name' => '名前',
             'name_yomi' => '名前(よみ)',
             'email' => '連絡先メールアドレス',
@@ -63,7 +63,7 @@ class ChangeInfoRequest extends FormRequest
     public function messages()
     {
         return [
-            'student_id.unique' => '入力された学籍番号はすでに登録されています',
+            'student_id.unique' => '入力された' . config('portal.student_id_name') . 'はすでに登録されています',
             'email.unique' => '入力されたメールアドレスはすでに登録されています',
             'name.regex' => '姓と名の間にはスペースを入れてください',
             'name_yomi.regex' => '姓と名の間にはスペースを入れてください。また、ひらがなで記入してください',
