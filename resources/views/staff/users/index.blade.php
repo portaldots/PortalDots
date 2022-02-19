@@ -56,8 +56,8 @@
                 <span v-else class="text-danger">
                     <form-with-confirm
                         v-bind:action="`{{ route('staff.users.verified', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])"
-                        method="post" confirm-message="本人確認は本来、「{{ config('app.name') }}」からユーザー自身が持つ学校発行メールアドレスに届く本人確認メールによって行われます。
-    しかし、ユーザーが学校発行メールアドレスを利用できない場合、代替手段として「本人確認済としてマーク」できます。
+                        method="post" confirm-message="本人確認は本来、「{{ config('app.name') }}」からユーザー自身が持つ{{ config('portal.univemail_name') }}に届く本人確認メールによって行われます。
+    しかし、ユーザーが{{ config('portal.univemail_name') }}を利用できない場合、代替手段として「本人確認済としてマーク」できます。
     ユーザー本人に学生証を提示してもらう等して、あなたが手動で本人確認を行ってください。
 
     本人確認はできましたか？
