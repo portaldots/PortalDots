@@ -3,10 +3,10 @@
     <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror" name="student_id"
         value="{{ old('student_id') }}" required autocomplete="username">
     @error('student_id')
-    <template v-slot:invalid>{{ $message }}</template>
+        <template v-slot:invalid>{{ $message }}</template>
     @enderror
     <template v-slot:append>
-        {{ '@' . config('portal.univemail_domain') }}
+        {{ '@' . config('portal.univemail_domain_part') }}
     </template>
 </list-view-form-group>
 <list-view-form-group label-for="name">
@@ -17,7 +17,7 @@
     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
         value="{{ old('name') }}" required autocomplete="name">
     @error('name')
-    <template v-slot:invalid>{{ $message }}</template>
+        <template v-slot:invalid>{{ $message }}</template>
     @enderror
 </list-view-form-group>
 <list-view-form-group label-for="name_yomi">
@@ -28,7 +28,7 @@
     <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror" name="name_yomi"
         value="{{ old('name_yomi') }}" required>
     @error('name_yomi')
-    <template v-slot:invalid>{{ $message }}</template>
+        <template v-slot:invalid>{{ $message }}</template>
     @enderror
 </list-view-form-group>
 <list-view-form-group label-for="email">
@@ -39,7 +39,7 @@
     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
         value="{{ old('email') }}" required autocomplete="email">
     @error('email')
-    <template v-slot:invalid>{{ $message }}</template>
+        <template v-slot:invalid>{{ $message }}</template>
     @enderror
 </list-view-form-group>
 <list-view-form-group label-for="tel">
@@ -47,7 +47,7 @@
     <input id="tel" type="tel" class="form-control @error('tel') is-invalid @enderror" name="tel"
         value="{{ old('tel') }}" required>
     @error('tel')
-    <template v-slot:invalid>{{ $message }}</template>
+        <template v-slot:invalid>{{ $message }}</template>
     @enderror
 </list-view-form-group>
 <list-view-form-group label-for="password">
@@ -56,7 +56,7 @@
     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"
         required autocomplete="new-password">
     @error('password')
-    <template v-slot:invalid>{{ $message }}</template>
+        <template v-slot:invalid>{{ $message }}</template>
     @enderror
 </list-view-form-group>
 <list-view-form-group label-for="password_confirmation">

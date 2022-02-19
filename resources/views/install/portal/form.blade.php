@@ -57,7 +57,7 @@
                                     'APP_URL' => 'このページの URL から /install/portal を抜いたもの',
                                     'PORTAL_ADMIN_NAME' => '',
                                     'PORTAL_CONTACT_EMAIL' => 'ユーザーからの問い合わせはこのメールアドレスに届きます',
-                                    'PORTAL_UNIVEMAIL_DOMAIN' => '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります',
+                                    'PORTAL_UNIVEMAIL_DOMAIN_PART' => '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります',
                                 ][$key] }}
                             </template>
                             <input id="{{ $key }}" type="text"

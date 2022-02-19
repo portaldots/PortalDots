@@ -9,9 +9,16 @@ return [
     'contact_email' => env('PORTAL_CONTACT_EMAIL'),
     // 管理者のTwitterのスクリーンネーム
     'admin_twitter' => env('PORTAL_ADMIN_TWITTER'),
-    // 大学提供メールアドレスのドメイン
-    // @ より後ろの文字列を指定
-    'univemail_domain' => env('PORTAL_UNIVEMAIL_DOMAIN'),
+    // 大学提供メールアドレスのドメイン・@ より前の種別を指定
+    // 'student_id' (学籍番号) または 'user_id` (学籍番号ではない文字列) のどちらかを指定
+    'univemail_local_part' => env('PORTAL_UNIVEMAIL_DOMAIN_PART'),
+    // 大学提供メールアドレスのドメイン・@ より後ろの文字列を指定
+    // `|` 区切りで複数のドメインを指定可能
+    'univemail_domain_part' => env('PORTAL_UNIVEMAIL_DOMAIN_PART'),
+    // 「学籍番号」の呼称
+    'student_id_name' => env('PORTAL_STUDENT_ID_NAME'),
+    // 「学校発行メールアドレス」の呼称
+    'univemail_name' => env('PORTAL_UNIVEMAIL_NAME'),
     // 企画参加登録に必要なユーザーの人数
     // 責任者と学園祭係(副責任者)のの合計人数
     'users_number_to_submit_circle' => (int)env('PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE', 2),
