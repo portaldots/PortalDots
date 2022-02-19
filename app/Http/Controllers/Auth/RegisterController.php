@@ -110,7 +110,7 @@ class RegisterController extends Controller
             return redirect()
                 ->route('register')
                 ->withInput()
-                ->withErrors(['student_id' => '学籍番号を正しく入力してください']);
+                ->withErrors(['student_id' => config('portal.student_id_name') . 'を正しく入力してください']);
         }
 
         DB::commit();

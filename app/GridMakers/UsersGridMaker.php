@@ -20,7 +20,26 @@ class UsersGridMaker implements GridMakable
      */
     protected function baseEloquentQuery(): Builder
     {
-        return User::select($this->keys());
+        return User::select([
+            'id',
+            'student_id',
+            'name_family',
+            'name_family_yomi',
+            'name_given',
+            'name_given_yomi',
+            'email',
+            'univemail_local_part',
+            'univemail_domain_part',
+            'tel',
+            'is_staff',
+            'is_admin',
+            'email_verified_at',
+            'univemail_verified_at',
+            'last_accessed_at',
+            'notes',
+            'created_at',
+            'updated_at',
+        ]);
     }
 
     /**
@@ -36,6 +55,7 @@ class UsersGridMaker implements GridMakable
             'name_given',
             'name_given_yomi',
             'email',
+            'univemail',
             'tel',
             'is_staff',
             'is_admin',

@@ -38,7 +38,10 @@ jobs:
       - MYSQL_ALLOW_EMPTY_PASSWORD: true
       - PORTAL_ADMIN_NAME: 継続的インテグレーション実行委員会
       - PORTAL_CONTACT_EMAIL: info@example.com
-      - PORTAL_UNIVEMAIL_DOMAIN: univemail.example.com
+      - PORTAL_UNIVEMAIL_LOCAL_PART: student_id
+      - PORTAL_UNIVEMAIL_DOMAIN_PART: univemail.example.com
+      - PORTAL_STUDENT_ID_NAME: 学籍番号
+      - PORTAL_UNIVEMAIL_NAME: 学校発行メールアドレス
 
     steps:
       - checkout

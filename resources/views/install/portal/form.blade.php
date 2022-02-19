@@ -57,13 +57,35 @@
                                     'APP_URL' => 'このページの URL から /install/portal を抜いたもの',
                                     'PORTAL_ADMIN_NAME' => '',
                                     'PORTAL_CONTACT_EMAIL' => 'ユーザーからの問い合わせはこのメールアドレスに届きます',
-                                    'PORTAL_UNIVEMAIL_DOMAIN' => '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります',
+                                    'PORTAL_STUDENT_ID_NAME' => '例 : 学籍番号、学生番号、学生証番号、学生教職員番号など ・ 個人ごとに割り振られる番号の呼び方を指定します',
+                                    'PORTAL_UNIVEMAIL_NAME' => '例 : 学生用メールアドレス、全学メールアドレス、大学のメールアドレスなど',
+                                    'PORTAL_UNIVEMAIL_DOMAIN_PART' => '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります。ユーザーごとにドメインが異なる場合、縦棒(|)で区切って複数のドメインを指定できます。',
+                                    'PORTAL_UNIVEMAIL_LOCAL_PART' => '学校発行メールアドレスにおいて、アットマーク(@)より前の文字列が下記のうちのどちらに当てはまるかを指定します',
                                 ][$key] }}
                             </template>
-                            <input id="{{ $key }}" type="text"
-                                class="form-control @error($key) is-invalid @enderror" name="{{ $key }}"
-                                value="{{ old($key, $key === 'APP_URL' && empty($value) ? $suggested_app_url : $value) }}"
-                                required>
+                            @if ($key === 'PORTAL_UNIVEMAIL_LOCAL_PART')
+                                <div class="form-radio">
+                                    <label class="form-radio__label">
+                                        <input class="form-radio__input" type="radio" name="{{ $key }}"
+                                            id="localPartRadios1" value="student_id"
+                                            {{ old($key, $value ?? '') === 'student_id' ? 'checked' : '' }}>
+                                        <strong>学籍番号</strong><br>
+                                        <span class="text-muted">アットマーク(@)より前に、学籍番号以外の文字列が含まれない場合のみ、こちらを選択してください</span>
+                                    </label>
+                                    <label class="form-radio__label">
+                                        <input class="form-radio__input" type="radio" name="{{ $key }}"
+                                            id="localPartRadios2" value="user_id"
+                                            {{ old($key, $value ?? '') === 'user_id' ? 'checked' : '' }}>
+                                        <strong>学籍番号ではない文字列</strong><br>
+                                        <span class="text-muted">アットマーク(@)より前の文字列が学籍番号ではない場合は、こちらを選択してください</span>
+                                    </label>
+                                </div>
+                            @else
+                                <input id="{{ $key }}" type="text"
+                                    class="form-control @error($key) is-invalid @enderror" name="{{ $key }}"
+                                    value="{{ old($key, $key === 'APP_URL' && empty($value) ? $suggested_app_url : $value) }}"
+                                    required>
+                            @endif
                             @error($key)
                                 <template v-slot:invalid>{{ $message }}</template>
                             @enderror

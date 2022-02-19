@@ -28,11 +28,12 @@
             <list-view>
                 <template v-slot:title>企画基本情報</template>
                 @foreach ([
-                    'name' => '企画名',
-                    'name_yomi' => '企画名(よみ)',
-                    'group_name' => '企画を出店する団体の名称',
-                    'group_name_yomi' => '企画を出店する団体の名称(よみ)'
-                    ] as $field_name => $display_name)
+            'name' => '企画名',
+            'name_yomi' => '企画名(よみ)',
+            'group_name' => '企画を出店する団体の名称',
+            'group_name_yomi' => '企画を出店する団体の名称(よみ)',
+        ]
+        as $field_name => $display_name)
                     <list-view-form-group label-for="{{ $field_name }}">
                         <template v-slot:label>{{ $display_name }}</template>
                         <input id="{{ $field_name }}" class="form-control @error($field_name) is-invalid @enderror"
@@ -121,7 +122,7 @@
             <list-view>
                 <template v-slot:title>企画のメンバー</template>
                 <list-view-form-group label-for="leader">
-                    <template v-slot:label>責任者の学籍番号</template>
+                    <template v-slot:label>責任者の{{ config('portal.student_id_name') }}</template>
                     <input type="text" class="form-control @error('leader') is-invalid @enderror" id="leader" name="leader"
                         value="{{ old('leader', empty($leader) ? '' : $leader->student_id) }}">
                     @if ($errors->has('leader'))
@@ -133,9 +134,9 @@
                     @endif
                 </list-view-form-group>
                 <list-view-form-group label-for="members">
-                    <template v-slot:label>学園祭係(副責任者)の学籍番号</template>
+                    <template v-slot:label>学園祭係(副責任者)の{{ config('portal.student_id_name') }}</template>
                     <template
-                        v-slot:description>学籍番号を改行して入力することで複数の学園祭係を追加できます。{{ config('portal.users_number_to_submit_circle') - 1 }}人を下回っていても構いません。</template>
+                        v-slot:description>{{ config('portal.student_id_name') }}を改行して入力することで複数の学園祭係を追加できます。{{ config('portal.users_number_to_submit_circle') - 1 }}人を下回っていても構いません。</template>
                     <textarea id="members" class="form-control @error('members') is-invalid @enderror" name="members"
                         rows="3">{{ old('members', empty($members) ? '' : $members) }}</textarea>
                     @if ($errors->has('members'))

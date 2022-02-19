@@ -29,6 +29,7 @@ class UsersExport implements FromCollection, WithHeadings, WithMapping
             $user->name,
             $user->name_yomi,
             $user->email,
+            $user->univemail,
             "\"{$user->tel}\"",
             $user->is_staff ? 'はい' : 'いいえ',
             $user->is_admin ? 'はい' : 'いいえ',
@@ -48,10 +49,11 @@ class UsersExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             'ユーザーID',
-            '学籍番号',
+            config('portal.student_id_name'),
             '氏名',
             '氏名（よみ）',
             '連絡先メールアドレス',
+            config('portal.univemail_name'),
             '電話番号',
             'スタッフ',
             '管理者',

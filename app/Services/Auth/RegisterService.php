@@ -12,7 +12,7 @@ class RegisterService
     /**
      * ユーザーを作成する
      *
-     * @param string $student_id ユーザーの学籍番号
+     * @param string $student_id ユーザーのstudent_id
      * @param string $name ユーザーの名前。姓名の間にはスペースを1個以上入れること
      * @param string $name_yomi ユーザーの名前の読み。姓名の間にはスペースを1個以上入れること
      * @param string $email ユーザーの連絡先メールアドレス

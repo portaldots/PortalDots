@@ -14,7 +14,7 @@
 （場合によっては、責任者・学園祭係(副責任者)の双方へ返答を行うことがあります）
 
 - 名前 : {{ $sender->name }}
-- 学籍番号 : {{ $sender->student_id }}
+- {{ config('portal.student_id_name') }} : {{ $sender->student_id }}
 
 ## お問い合わせの内容 {{ isset($category->id) ? " ( {$category->name} ) " : '' }}
 

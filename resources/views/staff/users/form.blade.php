@@ -28,7 +28,7 @@
             <list-view>
                 <template v-slot:title>一般設定</template>
                 <list-view-form-group label-for="student_id">
-                    <template v-slot:label>学籍番号</template>
+                    <template v-slot:label>{{ config('portal.student_id_name') }}</template>
                     <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror"
                         name="student_id" value="{{ old('student_id', $user->student_id) }}" required
                         autocomplete="username">
@@ -36,7 +36,7 @@
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                     <template v-slot:append>
-                        {{ '@' . config('portal.univemail_domain') }}
+                        {{ '@' . config('portal.univemail_domain_part') }}
                     </template>
                 </list-view-form-group>
                 <list-view-form-group label-for="name">
@@ -64,7 +64,7 @@
                 <list-view-form-group label-for="email">
                     <template v-slot:label>連絡先メールアドレス</template>
                     <template v-slot:description>
-                        連絡先メールアドレスとして学校発行のメールアドレスもご利用になれます
+                        連絡先メールアドレスとして{{ config('portal.univemail_name') }}もご利用になれます
                     </template>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
                         value="{{ old('email', $user->email) }}" required autocomplete="email">

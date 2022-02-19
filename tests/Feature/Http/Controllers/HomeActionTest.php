@@ -37,7 +37,7 @@ class HomeActionTest extends TestCase
         $response = $this->get(route('home'));
         $response->assertStatus(200);
 
-        $response->assertSee('学籍番号または連絡先メールアドレス');
+        $response->assertSee('または連絡先メールアドレス');
         $response->assertSee('パスワード');
         $response->assertSee('ログインしたままにする');
         $response->assertSee('ログイン');
