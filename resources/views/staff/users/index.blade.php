@@ -58,12 +58,12 @@
                     <form-with-confirm
                         v-bind:action="`{{ route('staff.users.verified', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])"
                         method="post" confirm-message="本人確認は本来、「{{ config('app.name') }}」からユーザー自身が持つ{{ config('portal.univemail_name') }}に届く本人確認メールによって行われます。
-    しかし、ユーザーが{{ config('portal.univemail_name') }}を利用できない場合、代替手段として「本人確認済としてマーク」できます。
-    ユーザー本人に学生証を提示してもらう等して、あなたが手動で本人確認を行ってください。
+しかし、ユーザーが{{ config('portal.univemail_name') }}を利用できない場合、代替手段として「本人確認済としてマーク」できます。
+ユーザー本人に学生証を提示してもらう等して、あなたが手動で本人確認を行ってください。
 
-    本人確認はできましたか？
+本人確認はできましたか？
 
-    ※ ユーザーが「{{ config('app.name') }}」に登録している{{ config('portal.student_id_name') }}を変更した場合、本人確認未完了状態に戻ります">
+※ ユーザーが「{{ config('app.name') }}」に登録している{{ config('portal.student_id_name') }}を変更した場合、本人確認未完了状態に戻ります">
                         @method('patch')
                         @csrf
                         未確認
