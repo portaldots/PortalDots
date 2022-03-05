@@ -6055,12 +6055,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Facade\\FlareClient\\": "src"
-                },
                 "files": [
                     "src/helpers.php"
-                ]
+                ],
+                "psr-4": {
+                    "Facade\\FlareClient\\": "src"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6088,16 +6088,16 @@
         },
         {
             "name": "facade/ignition",
-            "version": "1.18.0",
+            "version": "1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facade/ignition.git",
-                "reference": "fca0cbe5f900f94773d821b481c16d4ea3503491"
+                "reference": "d173a101b3dbbd7a3a7b849ab388a7a7ef6d90bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facade/ignition/zipball/fca0cbe5f900f94773d821b481c16d4ea3503491",
-                "reference": "fca0cbe5f900f94773d821b481c16d4ea3503491",
+                "url": "https://api.github.com/repos/facade/ignition/zipball/d173a101b3dbbd7a3a7b849ab388a7a7ef6d90bf",
+                "reference": "d173a101b3dbbd7a3a7b849ab388a7a7ef6d90bf",
                 "shasum": ""
             },
             "require": {
@@ -6135,12 +6135,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Facade\\Ignition\\": "src"
-                },
                 "files": [
                     "src/helpers.php"
-                ]
+                ],
+                "psr-4": {
+                    "Facade\\Ignition\\": "src"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6160,7 +6160,7 @@
                 "issues": "https://github.com/facade/ignition/issues",
                 "source": "https://github.com/facade/ignition"
             },
-            "time": "2021-08-02T07:45:03+00:00"
+            "time": "2022-02-23T20:20:52+00:00"
         },
         {
             "name": "facade/ignition-contracts",
@@ -7694,13 +7694,13 @@
             },
             "type": "library",
             "autoload": {
+                "files": [
+                    "HighlightUtilities/functions.php"
+                ],
                 "psr-0": {
                     "Highlight\\": "",
                     "HighlightUtilities\\": ""
-                },
-                "files": [
-                    "HighlightUtilities/functions.php"
-                ]
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
