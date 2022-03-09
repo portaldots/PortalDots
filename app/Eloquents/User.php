@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Spatie\Permission\Traits\HasRoles;
 use App\Eloquents\Circle;
 use App\Eloquents\CircleUser;
+use Illuminate\Validation\Rule;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
@@ -88,6 +89,35 @@ class User extends Authenticatable
     public const EMAIL_RULES = ['required', 'string', 'email', 'max:255'];
     public const TEL_RULES = ['required', 'string', 'max:255'];
     public const PASSWORD_RULES = ['required', 'string', 'min:8'];
+
+    /**
+     * `_RULES` で終わる定数ではなくこの関数を使ってバリデーションルールを取得すること
+     */
+    public static function getValidationRules()
+    {
+        return [
+            'student_id' => self::STUDENT_ID_RULES,
+            'name' => self::NAME_RULES,
+            'name_yomi' => self::NAME_YOMI_RULES,
+            'email' => self::EMAIL_RULES,
+            'univemail_local_part' =>
+                config('portal.univemail_local_part') === 'student_id'
+                    ? ['required', 'string', 'same:student_id']
+                    : ['required', 'string'],
+            'univemail_domain_part' => [
+                'required',
+                Rule::in(config('portal.univemail_domain_part')),
+            ],
+            'tel' => self::TEL_RULES,
+            'password' => self::PASSWORD_RULES,
+        ];
+    }
+
+    public static function isValidUnivemailByLocalPartAndDomainPart(?string $localPart = '', ?string $domainPart = '')
+    {
+        $univemail = $localPart . '@' . $domainPart;
+        return (bool)filter_var($univemail, FILTER_VALIDATE_EMAIL);
+    }
 
     /**
      * The attributes that are mass assignable.

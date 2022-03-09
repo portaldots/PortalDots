@@ -26,7 +26,8 @@
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                     <template v-slot:append>
-                        {{ '@' . config('portal.univemail_domain_part') }}
+                        {{-- TODO: portal.univemail_domain_part が複数ある場合はドロップダウンで選択可能にする --}}
+                        {{ '@' . config('portal.univemail_domain_part')[0] }}
                     </template>
                 </list-view-form-group>
                 <list-view-form-group label-for="name">

@@ -1,14 +1,18 @@
-<list-view-form-group label-for="student_id">
-    <template v-slot:label>{{ config('portal.student_id_name') }}</template>
-    <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror" name="student_id"
-        value="{{ old('student_id') }}" required autocomplete="username">
+<list-view-student-id-and-univemail-input
+    v-bind:allowed-domain-parts="{{ json_encode(config('portal.univemail_domain_part')) }}"
+    v-bind:allow-arbitrary-local-part="{{ config('portal.univemail_local_part') === 'user_id' ? 'true' : 'false' }}"
+    student-id-input-name="student_id" univemail-local-part-input-name="univemail_local_part"
+    univemail-domain-part-input-name="univemail_domain_part" student-id-label="{{ config('portal.student_id_name') }}"
+    univemail-label="{{ config('portal.univemail_name') }}" default-student-id-value="{{ old('student_id') }}"
+    default-univemail-local-part-value="{{ old('univemail_local_part') }}"
+    default-univemail-domain-part-value="{{ old('univemail_domain_part') }}">
     @error('student_id')
-        <template v-slot:invalid>{{ $message }}</template>
+        <template v-slot:invalid-student-id>{{ $message }}</template>
     @enderror
-    <template v-slot:append>
-        {{ '@' . config('portal.univemail_domain_part') }}
-    </template>
-</list-view-form-group>
+    @error('univemail')
+        <template v-slot:invalid-univemail>{{ $message }}</template>
+    @enderror
+</list-view-student-id-and-univemail-input>
 <list-view-form-group label-for="name">
     <template v-slot:label>名前</template>
     <template v-slot:description>
