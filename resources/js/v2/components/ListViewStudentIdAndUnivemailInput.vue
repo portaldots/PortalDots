@@ -40,8 +40,17 @@
         :name="univemailDomainPartInputName"
         :value="allowedDomainParts[0]"
       />
-      <template v-slot:invalid v-if="$slots['invalid-student-id']">
+      <template
+        v-slot:invalid
+        v-if="
+          $slots['invalid-student-id'] ||
+          (!allowArbitraryLocalPart && $slots['invalid-univemail'])
+        "
+      >
         <slot name="invalid-student-id" />
+        <template v-if="!allowArbitraryLocalPart"
+          ><slot name="invalid-univemail"
+        /></template>
       </template>
     </ListViewFormGroup>
     <ListViewFormGroup v-if="allowArbitraryLocalPart">
