@@ -156,7 +156,8 @@ export default {
   mounted() {
     this.studentId = this.defaultStudentIdValue
     this.univemailLocalPart = this.defaultUnivemailLocalPartValue
-    this.univemailDomainPart = this.defaultUnivemailDomainPartValue
+    this.univemailDomainPart =
+      this.defaultUnivemailDomainPartValue || this.allowedDomainParts[0]
   },
   computed: {
     appendSelectableDomainPartToStudentIdArea() {
