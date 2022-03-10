@@ -19,6 +19,12 @@
                 <button type="submit" class="btn is-primary is-wide">
                     登録
                 </button>
+                @if (config('app.debug'))
+                    <button type="submit" class="btn is-primary-inverse" formnovalidate>
+                        <app-badge primary strong>開発モード</app-badge>
+                        バリデーションせずに送信
+                    </button>
+                @endif
             </div>
         </app-container>
     </form>

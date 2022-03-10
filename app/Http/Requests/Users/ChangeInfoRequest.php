@@ -26,6 +26,7 @@ class ChangeInfoRequest extends FormRequest
      */
     public function rules()
     {
+        $rules = User::getValidationRules();
         return [
             'student_id' => array_merge(
                 User::STUDENT_ID_RULES,
@@ -34,6 +35,8 @@ class ChangeInfoRequest extends FormRequest
             'name' => User::NAME_RULES,
             'name_yomi' => User::NAME_YOMI_RULES,
             'email' => array_merge(User::EMAIL_RULES, [Rule::unique('users')->ignore(Auth::user())]),
+            'univemail_local_part' => $rules['univemail_local_part'],
+            'univemail_domain_part' => $rules['univemail_domain_part'],
             'tel' => User::TEL_RULES,
             'password' => array_merge(User::PASSWORD_RULES, [
                 // 現在のパスワードが正しいものか検証する
@@ -73,10 +76,20 @@ class ChangeInfoRequest extends FormRequest
 
     public function withValidator($validator)
     {
+        /** @var User */
         $user = Auth::user();
         $circles = $user->circles()->submitted()->get();
         if (!$circles->isEmpty()) {
             $validator->after(function ($validator) use ($user) {
+                if (
+                    !User::isValidUnivemailByLocalPartAndDomainPart(
+                        $this->univemail_local_part,
+                        $this->univemail_domain_part
+                    )
+                ) {
+                    $validator->errors()->add('univemail', '不正なメールアドレスです。');
+                }
+
                 if (!empty($this->name) && $this->name !== $user->name) {
                     $validator->errors()->add('name', '企画に所属しているため修正できません');
                 }

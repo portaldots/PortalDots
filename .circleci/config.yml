@@ -24,24 +24,12 @@ jobs:
       # - image: redis:2.8.19
 
     environment:
-      - APP_NOT_INSTALLED: false
-      - APP_NAME: 継続的インテグレーション祭
-      - APP_DEBUG: true
-      - APP_ENV: testing
-      - APP_KEY: base64:xWEI4OS7YZ0rIxmMfJaAgbRiMkOkFsf5Bn1QEO+iP4k=
-      - DB_CONNECTION: mysql
       - DB_HOST: 127.0.0.1
       - DB_PORT: 3306
       - DB_DATABASE: circle_test
       - DB_USERNAME: root
       - DB_PASSWORD: ''
       - MYSQL_ALLOW_EMPTY_PASSWORD: true
-      - PORTAL_ADMIN_NAME: 継続的インテグレーション実行委員会
-      - PORTAL_CONTACT_EMAIL: info@example.com
-      - PORTAL_UNIVEMAIL_LOCAL_PART: student_id
-      - PORTAL_UNIVEMAIL_DOMAIN_PART: univemail.example.com
-      - PORTAL_STUDENT_ID_NAME: 学籍番号
-      - PORTAL_UNIVEMAIL_NAME: 学校発行メールアドレス
 
     steps:
       - checkout

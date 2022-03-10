@@ -93,6 +93,8 @@ class RegisterController extends Controller
             $request->name,
             $request->name_yomi,
             $request->email,
+            $request->univemail_local_part,
+            $request->univemail_domain_part,
             $request->tel,
             $request->password
         );

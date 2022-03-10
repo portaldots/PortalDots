@@ -24,6 +24,7 @@ import ListViewActionBtn from './components/ListViewActionBtn.vue'
 import ListViewEmpty from './components/ListViewEmpty.vue'
 import ListViewFormGroup from './components/ListViewFormGroup.vue'
 import ListViewPagination from './components/ListViewPagination.vue'
+import ListViewStudentIdAndUnivemailInput from './components/ListViewStudentIdAndUnivemailInput.vue'
 import TopAlert from './components/TopAlert.vue'
 import FormWithConfirm from './components/FormWithConfirm.vue'
 import IconButton from './components/IconButton.vue'
@@ -82,6 +83,7 @@ export function mountV2App() {
         ListViewEmpty,
         ListViewFormGroup,
         ListViewPagination,
+        ListViewStudentIdAndUnivemailInput,
         TopAlert,
         FormWithConfirm,
         IconButton,
