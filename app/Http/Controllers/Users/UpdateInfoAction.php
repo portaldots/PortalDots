@@ -29,9 +29,13 @@ class UpdateInfoAction extends Controller
             $user->email_verified_at = null;
             $changed_email = true;
         }
-        if (!empty($request->student_id)) {
-            if ($user->student_id !== $request->student_id) {
-                $user->student_id = $request->student_id;
+        if (!empty($request->univemail_local_part) || !empty($request->univemail_domain_part)) {
+            if (
+                $user->univemail_local_part !== $request->univemail_local_part ||
+                $user->univemail_domain_part !== $request->univemail_domain_part
+            ) {
+                $user->univemail_local_part = $request->univemail_local_part;
+                $user->univemail_domain_part = $request->univemail_domain_part;
                 $user->univemail_verified_at = null;
                 $user->is_verified_by_staff = false;
                 $changed_univemail = true;
@@ -64,7 +68,7 @@ class UpdateInfoAction extends Controller
             return redirect()
                 ->route('user.edit')
                 ->withInput()
-                ->withErrors(['student_id' => '学籍番号を正しく入力してください']);
+                ->withErrors(['student_id' => config('portal.student_id_name') . 'を正しく入力してください']);
         }
 
         if (!$user->save()) {

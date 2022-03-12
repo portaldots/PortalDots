@@ -12,6 +12,8 @@ class UpdateAction extends Controller
     {
         $validated = $request->validated();
         $user->student_id = $validated['student_id'];
+        $user->univemail_local_part = $validated['univemail_local_part'];
+        $user->univemail_domain_part = $validated['univemail_domain_part'];
         $user->name = $validated['name'];
         $user->name_yomi = $validated['name_yomi'];
         $user->email = $validated['email'];

@@ -25,7 +25,6 @@ textarea {
     transition: #{$transition-base-fast} background-color,
       #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color;
     width: 100%;
-    z-index: $z-index-form-group-control;
     @at-root {
       select#{&} {
         // ライトモード用ドロップダウンアイコン
@@ -70,6 +69,7 @@ textarea {
     }
     &:focus {
       outline: 0;
+      z-index: $z-index-form-group-control;
     }
     &:not([readonly]):focus {
       background: $color-form-control-focus;

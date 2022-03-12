@@ -15,7 +15,8 @@
 
         <app-header>
             <template v-slot:title>スタッフの権限を編集</template>
-            <div>{{ $user->name }} (ID: {{ $user->id }}、学籍番号: {{ $user->student_id }})</div>
+            <div>{{ $user->name }} (ID: {{ $user->id }}、{{ config('portal.student_id_name') }}:
+                {{ $user->student_id }})</div>
         </app-header>
 
         <app-container>

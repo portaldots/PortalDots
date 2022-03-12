@@ -14,10 +14,7 @@
     <div class="listview-form-group__description" v-if="$slots.description">
       <slot name="description" />
     </div>
-    <div
-      class="listview-form-group__body"
-      :class="{ 'form-addon': $slots.prepend || $slots.append }"
-    >
+    <div class="listview-form-group__body form-addon">
       <div class="form-addon__body" v-if="$slots.prepend">
         <slot name="prepend" />
       </div>
@@ -127,6 +124,9 @@ export default {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
     }
+  }
+  .form-control ~ .form-control:not(:focus) {
+    border-left: 0;
   }
 }
 </style>

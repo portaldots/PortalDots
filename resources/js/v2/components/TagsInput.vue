@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tags-input">
     <vue-tags-input
       v-model="inputTag"
       :tags="tags"
@@ -96,6 +96,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tags-input {
+  width: 100%;
+}
+
 .vue-tags-input {
   background-color: $color-bg-surface;
   max-width: 100%;

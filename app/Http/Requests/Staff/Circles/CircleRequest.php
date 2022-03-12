@@ -66,7 +66,7 @@ class CircleRequest extends FormRequest
             'name_yomi.regex' => 'ひらがなで入力してください',
             'group_name_yomi.regex' => 'ひらがなで入力してください',
             // ひらがなもカタカナも入力可能だが，説明が面倒なので，エラー上ではひらがなでの入力を促す
-            'leader.exists' => 'この学籍番号は登録されていません',
+            'leader.exists' => 'この' . config('portal.student_id_name') . 'は登録されていません',
         ];
     }
 

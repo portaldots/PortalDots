@@ -46,7 +46,7 @@
             status_set_at: '登録受理状況設定日時',
             status_set_by: '登録受理状況設定ユーザー',
             'status_set_by.id': 'ユーザーID',
-            'status_set_by.student_id': '学籍番号',
+            'status_set_by.student_id': '{{ config('portal.student_id_name') }}',
             'status_set_by.name_family': '姓',
             'status_set_by.name_family_yomi': '姓(よみ)',
             'status_set_by.name_given': '名',

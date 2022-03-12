@@ -27,18 +27,23 @@
         <app-container>
             <list-view>
                 <template v-slot:title>一般設定</template>
-                <list-view-form-group label-for="student_id">
-                    <template v-slot:label>学籍番号</template>
-                    <input id="student_id" type="text" class="form-control @error('student_id') is-invalid @enderror"
-                        name="student_id" value="{{ old('student_id', $user->student_id) }}" required
-                        autocomplete="username">
+                <list-view-student-id-and-univemail-input
+                    v-bind:allowed-domain-parts="{{ json_encode(config('portal.univemail_domain_part')) }}"
+                    v-bind:allow-arbitrary-local-part="{{ config('portal.univemail_local_part') === 'user_id' ? 'true' : 'false' }}"
+                    student-id-input-name="student_id" univemail-local-part-input-name="univemail_local_part"
+                    univemail-domain-part-input-name="univemail_domain_part"
+                    student-id-label="{{ config('portal.student_id_name') }}"
+                    univemail-label="{{ config('portal.univemail_name') }}"
+                    default-student-id-value="{{ old('student_id', $user->student_id) }}"
+                    default-univemail-local-part-value="{{ old('univemail_local_part', $user->univemail_local_part) }}"
+                    default-univemail-domain-part-value="{{ old('univemail_domain_part', $user->univemail_domain_part) }}">
                     @error('student_id')
-                        <template v-slot:invalid>{{ $message }}</template>
+                        <template v-slot:invalid-student-id>{{ $message }}</template>
                     @enderror
-                    <template v-slot:append>
-                        {{ '@' . config('portal.univemail_domain') }}
-                    </template>
-                </list-view-form-group>
+                    @error('univemail')
+                        <template v-slot:invalid-univemail>{{ $message }}</template>
+                    @enderror
+                </list-view-student-id-and-univemail-input>
                 <list-view-form-group label-for="name">
                     <template v-slot:label>名前</template>
                     <template v-slot:description>
@@ -64,7 +69,7 @@
                 <list-view-form-group label-for="email">
                     <template v-slot:label>連絡先メールアドレス</template>
                     <template v-slot:description>
-                        連絡先メールアドレスとして学校発行のメールアドレスもご利用になれます
+                        連絡先メールアドレスとして{{ config('portal.univemail_name') }}もご利用になれます
                     </template>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
                         value="{{ old('email', $user->email) }}" required autocomplete="email">
@@ -100,8 +105,7 @@
                             <span class="text-muted">スタッフモードにアクセスできません。</span>
                         </label>
                         <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios2"
-                                value="staff"
+                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios2" value="staff"
                                 {{ old('user_type', $user->is_staff && !$user->is_admin ? 'staff' : '') === 'staff' ? 'checked' : '' }}
                                 {{ (!Auth::user()->is_admin && $user->is_admin) || Auth::id() === $user->id ? 'disabled' : '' }}>
                             <strong>スタッフ</strong><br />

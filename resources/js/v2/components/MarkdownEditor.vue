@@ -1,5 +1,5 @@
 <template>
-  <div data-turbolinks="false">
+  <div data-turbolinks="false" class="markdown-editor">
     <vue-easymde v-model="content" ref="markdownEditor" :configs="configs" />
     <input
       type="hidden"
@@ -188,6 +188,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '~easymde/dist/easymde.min.css';
+
+.markdown-editor {
+  width: 100%;
+}
 </style>
 
 <style lang="scss">

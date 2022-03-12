@@ -40,6 +40,8 @@ class UpdateActionTest extends TestCase
 
         $data = [
             'student_id' => '123updated',
+            'univemail_local_part' => '123updated',
+            'univemail_domain_part' => 'ed.tus.ac.jp',
             'name' => '更新　され太',
             'name_yomi' => 'コウシン された',
             'email' => 'updated@example.com',
@@ -63,6 +65,8 @@ class UpdateActionTest extends TestCase
 
         $target_user->refresh();
         $this->assertEquals('123UPDATED', $target_user->student_id);
+        $this->assertEquals('123updated', $target_user->univemail_local_part);
+        $this->assertEquals('ed.tus.ac.jp', $target_user->univemail_domain_part);
         $this->assertEquals('更新 され太', $target_user->name);
         $this->assertEquals('こうしん された', $target_user->name_yomi);
         $this->assertEquals($data['email'], $target_user->email);
@@ -85,6 +89,8 @@ class UpdateActionTest extends TestCase
 
         $data = [
             'student_id' => '123updated',
+            'univemail_local_part' => '123updated',
+            'univemail_domain_part' => 'ed.tus.ac.jp',
             'name' => '更新　され太',
             'name_yomi' => 'コウシン された',
             'email' => 'updated@example.com',
@@ -118,6 +124,8 @@ class UpdateActionTest extends TestCase
 
         $data = [
             'student_id' => '123updated',
+            'univemail_local_part' => '123updated',
+            'univemail_domain_part' => 'ed.tus.ac.jp',
             'name' => '更新　され太',
             'name_yomi' => 'コウシン された',
             'email' => 'updated@example.com',
@@ -152,6 +160,8 @@ class UpdateActionTest extends TestCase
 
         $data = [
             'student_id' => '123updated',
+            'univemail_local_part' => '123updated',
+            'univemail_domain_part' => 'ed.tus.ac.jp',
             'name' => '更新　され太',
             'name_yomi' => 'コウシン された',
             'email' => 'updated@example.com',
@@ -191,6 +201,8 @@ class UpdateActionTest extends TestCase
 
         $data = [
             'student_id' => '123updated',
+            'univemail_local_part' => '123updated',
+            'univemail_domain_part' => 'ed.tus.ac.jp',
             'name' => '更新　され太',
             'name_yomi' => 'コウシン された',
             'email' => 'updated@example.com',
@@ -231,6 +243,8 @@ class UpdateActionTest extends TestCase
 
         $data = [
             'student_id' => '123updated',
+            'univemail_local_part' => '123updated',
+            'univemail_domain_part' => 'ed.tus.ac.jp',
             'name' => '更新　され太',
             'name_yomi' => 'コウシン された',
             'email' => 'updated@example.com',
@@ -267,6 +281,8 @@ class UpdateActionTest extends TestCase
 
         $data = [
             'student_id' => '123updated',
+            'univemail_local_part' => '123updated',
+            'univemail_domain_part' => 'ed.tus.ac.jp',
             'name' => '更新　され太',
             'name_yomi' => 'コウシン された',
             'email' => 'updated@example.com',
@@ -304,6 +320,8 @@ class UpdateActionTest extends TestCase
 
         $data = [
             'student_id' => '123updated',
+            'univemail_local_part' => '123updated',
+            'univemail_domain_part' => 'ed.tus.ac.jp',
             'name' => '更新　され太',
             'name_yomi' => 'コウシン された',
             'email' => 'updated@example.com',
