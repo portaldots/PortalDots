@@ -68,7 +68,7 @@
         "postcss": "^8.4",
         "purify-css": "^1.2.5",
         "purifycss-webpack": "^0.7.0",
-        "resolve-url-loader": "^4.0.0",
+        "resolve-url-loader": "^5.0.0",
         "sass": "^1.48.0",
         "sass-loader": "^12.4.0",
         "sass-resources-loader": "^2.2.4",
