@@ -96,6 +96,7 @@ class GridResponder implements Respondable
                 ]
             ]
         );
+        unset($paginator['links']);
         return response([
             'keys' => $this->gridMaker->keys(),
             'paginator' => $paginator,
