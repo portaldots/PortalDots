@@ -24,6 +24,8 @@ class AdminRequest extends FormRequest
      */
     public function rules()
     {
+        $rules = User::getValidationRules();
+
         // このバリデーションが実行されるタイミングでは、まだマイグレーション
         // が行われていない。そのため、ここでは unique ルールなど、
         // データベースへの接続が必要なルールを追加しないこと。
@@ -32,6 +34,8 @@ class AdminRequest extends FormRequest
             'name' => User::NAME_RULES,
             'name_yomi' => User::NAME_YOMI_RULES,
             'email' => User::EMAIL_RULES,
+            'univemail_local_part' => $rules['univemail_local_part'],
+            'univemail_domain_part' => $rules['univemail_domain_part'],
             'tel' => User::TEL_RULES,
             'password' => array_merge(User::PASSWORD_RULES, ['confirmed']),
         ];
@@ -66,5 +70,19 @@ class AdminRequest extends FormRequest
             'name_yomi.regex' => '姓と名の間にはスペースを入れてください。また、ひらがなで記入してください',
             // ひらがなもカタカナも入力可能だが，説明が面倒なので，エラー上ではひらがなでの記入を促す
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if (
+                !User::isValidUnivemailByLocalPartAndDomainPart(
+                    $this->univemail_local_part,
+                    $this->univemail_domain_part
+                )
+            ) {
+                $validator->errors()->add('univemail', '不正なメールアドレスです。');
+            }
+        });
     }
 }
