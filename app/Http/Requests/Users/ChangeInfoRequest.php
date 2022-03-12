@@ -79,17 +79,18 @@ class ChangeInfoRequest extends FormRequest
         /** @var User */
         $user = Auth::user();
         $circles = $user->circles()->submitted()->get();
-        if (!$circles->isEmpty()) {
-            $validator->after(function ($validator) use ($user) {
-                if (
-                    !User::isValidUnivemailByLocalPartAndDomainPart(
-                        $this->univemail_local_part,
-                        $this->univemail_domain_part
-                    )
-                ) {
-                    $validator->errors()->add('univemail', '不正なメールアドレスです。');
-                }
 
+        $validator->after(function ($validator) use ($user, $circles) {
+            if (
+                !User::isValidUnivemailByLocalPartAndDomainPart(
+                    $this->univemail_local_part,
+                    $this->univemail_domain_part
+                )
+            ) {
+                $validator->errors()->add('univemail', '不正なメールアドレスです。');
+            }
+
+            if (!$circles->isEmpty()) {
                 if (!empty($this->name) && $this->name !== $user->name) {
                     $validator->errors()->add('name', '企画に所属しているため修正できません');
                 }
@@ -101,7 +102,7 @@ class ChangeInfoRequest extends FormRequest
                 if (!empty($this->student_id) && $this->student_id !== $user->student_id) {
                     $validator->errors()->add('student_id', '企画に所属しているため修正できません');
                 }
-            });
-        }
+            }
+        });
     }
 }
