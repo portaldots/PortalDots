@@ -84,7 +84,7 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
         "@johmun/vue-tags-input": "^2.1.0",
-        "axios": "^0.25",
+        "axios": "^0.26",
         "bootstrap": "^4.6.1",
         "color-convert": "^2.0.1",
         "easymde": "^2.16.1",
