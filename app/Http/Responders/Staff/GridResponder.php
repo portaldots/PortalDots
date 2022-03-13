@@ -77,7 +77,7 @@ class GridResponder implements Respondable
             ? $this->request->mode
             : 'and';
 
-        $paginator = new LengthAwarePaginator(
+        $paginator = (new LengthAwarePaginator(
             $this->gridMaker->getArray(
                 $order_by,
                 $direction,
@@ -95,7 +95,8 @@ class GridResponder implements Respondable
                     'per_page' => $per_page
                 ]
             ]
-        );
+        ))->toArray();
+        unset($paginator['links']);
         return response([
             'keys' => $this->gridMaker->keys(),
             'paginator' => $paginator,

@@ -18,43 +18,36 @@
         "doctrine/dbal": "^2.10",
         "ezyang/htmlpurifier": "^4.9",
         "fideloper/proxy": "^4.0",
-        "guzzlehttp/guzzle": "^7.2",
+        "fruitcake/laravel-cors": "^2.2",
+        "guzzlehttp/guzzle": "^7.0.1",
         "jackiedo/dotenv-editor": "^1.1",
-        "laravel/framework": "^6.0",
+        "laravel/framework": "^8.0",
+        "laravel/legacy-factories": "^1.3",
         "laravel/tinker": "^2.0",
+        "laravel/ui": "^3.0",
         "maatwebsite/excel": "^3.1",
         "simplesoftwareio/simple-qrcode": "~4",
         "spatie/laravel-activitylog": "^3.17",
         "spatie/laravel-permission": "^4.0",
-        "vlucas/phpdotenv": "^3.3"
+        "vlucas/phpdotenv": "^5.4.1"
     },
     "require-dev": {
-        "facade/ignition": "^1.4",
+        "facade/ignition": "^2.3.6",
         "barryvdh/laravel-debugbar": "^3.2",
         "beyondcode/laravel-dump-server": "^1.0",
         "fzaninotto/faker": "^1.9.1",
         "mockery/mockery": "^1.0",
-        "nunomaduro/collision": "^3.0",
+        "nunomaduro/collision": "^5.0",
         "phpmd/phpmd": "*",
         "phpunit/phpunit": "^9.2",
         "squizlabs/php_codesniffer": "^3.5"
     },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true
-    },
-    "extra": {
-        "laravel": {
-            "dont-discover": []
-        }
-    },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Database\\Seeders\\": "database/seeders/"
         },
         "classmap": [
-            "database/seeds",
             "database/factories"
         ]
     },
@@ -63,8 +56,6 @@
             "Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "scripts": {
         "phpcs": [
             "phpcs --standard=phpcs.xml ./"
@@ -76,11 +67,26 @@
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
