@@ -12,7 +12,7 @@
         "ezyang/htmlpurifier": "^4.9",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.2",
-        "jackiedo/dotenv-editor": "^1.1",
+        "jackiedo/dotenv-editor": "^2.0",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^2.0",
         "maatwebsite/excel": "^3.1",
