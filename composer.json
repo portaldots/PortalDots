@@ -15,7 +15,7 @@
         "ext-mbstring": "*",
         "cebe/markdown": "*",
         "codedge/laravel-selfupdater": "dev-master",
-        "doctrine/dbal": "^2.10",
+        "doctrine/dbal": "^3.3",
         "ezyang/htmlpurifier": "^4.9",
         "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^2.2",
