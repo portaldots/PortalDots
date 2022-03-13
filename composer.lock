@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba8a69fe83d521a1068d743ddc8f1608",
+    "content-hash": "e4fb534009b2fcd21986f44542e797d2",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1597,25 +1597,29 @@
         },
         {
             "name": "jackiedo/dotenv-editor",
-            "version": "1.2.1",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JackieDo/Laravel-Dotenv-Editor.git",
-                "reference": "154228bacd1f3eddc38371cb309c45e0e0d3f071"
+                "reference": "0971d876567b4bcf96078f8e55700b4726431704"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JackieDo/Laravel-Dotenv-Editor/zipball/154228bacd1f3eddc38371cb309c45e0e0d3f071",
-                "reference": "154228bacd1f3eddc38371cb309c45e0e0d3f071",
+                "url": "https://api.github.com/repos/JackieDo/Laravel-Dotenv-Editor/zipball/0971d876567b4bcf96078f8e55700b4726431704",
+                "reference": "0971d876567b4bcf96078f8e55700b4726431704",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "^5.8|^6.0|^7.0|^8.0",
-                "illuminate/contracts": "^5.8|^6.0|^7.0|^8.0",
-                "illuminate/support": "^5.8|^6.0|^7.0|^8.0"
+                "illuminate/console": "^9.0|^8.0|7.0|^6.0|^5.8",
+                "illuminate/contracts": "^9.0|^8.0|7.0|^6.0|^5.8",
+                "illuminate/support": "^9.0|^8.0|7.0|^6.0|^5.8",
+                "jackiedo/path-helper": "^1.0"
             },
             "type": "library",
             "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                },
                 "laravel": {
                     "providers": [
                         "Jackiedo\\DotenvEditor\\DotenvEditorServiceProvider"
@@ -1627,7 +1631,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Jackiedo\\DotenvEditor\\": "src/Jackiedo/DotenvEditor"
+                    "Jackiedo\\DotenvEditor\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1648,9 +1652,61 @@
             ],
             "support": {
                 "issues": "https://github.com/JackieDo/Laravel-Dotenv-Editor/issues",
-                "source": "https://github.com/JackieDo/Laravel-Dotenv-Editor/tree/1.2.1"
+                "source": "https://github.com/JackieDo/Laravel-Dotenv-Editor/tree/2.0.1"
             },
-            "time": "2022-02-19T16:24:16+00:00"
+            "time": "2022-03-10T17:04:52+00:00"
+        },
+        {
+            "name": "jackiedo/path-helper",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JackieDo/Path-Helper.git",
+                "reference": "43179cfa17d01f94f4889f286430c2cec1071fb2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JackieDo/Path-Helper/zipball/43179cfa17d01f94f4889f286430c2cec1071fb2",
+                "reference": "43179cfa17d01f94f4889f286430c2cec1071fb2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Jackiedo\\PathHelper\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jackie Do",
+                    "email": "anhvudo@gmail.com"
+                }
+            ],
+            "description": "Helper class for working with local paths in PHP",
+            "homepage": "https://github.com/JackieDo/path-helper",
+            "keywords": [
+                "helper",
+                "helpers",
+                "library",
+                "path",
+                "paths",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/JackieDo/Path-Helper/issues",
+                "source": "https://github.com/JackieDo/Path-Helper/tree/v1.0.0"
+            },
+            "time": "2022-03-07T20:28:08+00:00"
         },
         {
             "name": "laravel/framework",

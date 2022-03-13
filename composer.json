@@ -20,7 +20,7 @@
         "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^2.2",
         "guzzlehttp/guzzle": "^7.0.1",
-        "jackiedo/dotenv-editor": "^1.1",
+        "jackiedo/dotenv-editor": "^2.0",
         "laravel/framework": "^8.0",
         "laravel/legacy-factories": "^1.3",
         "laravel/tinker": "^2.0",
