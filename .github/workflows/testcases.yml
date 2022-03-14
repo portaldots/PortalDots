@@ -58,8 +58,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install Dependencies
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
     - name: Use Node.js (Yarnをインストールするため)
       uses: actions/setup-node@v2
       with:
@@ -111,6 +110,21 @@ jobs:
       with:
         php-version: ${{ matrix.php-version }}
     - uses: actions/checkout@v2
+    - name: Use Node.js (Yarnをインストールするため)
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+    - name: Install Yarn
+      run: npm install -g yarn
+    # https://github.com/actions/setup-node/issues/182#issuecomment-966885975
+    - name: Use Node.js (Yarnパッケージのキャッシュを有効化するため)
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+        cache: yarn
+      if: ${{ !env.ACT }}
+    - run: yarn install
+    - run: yarn dev
     - name: Get Composer Cache Directory
       id: composer-cache
       run: |
@@ -123,7 +137,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-composer-
       if: ${{ !env.ACT }}
-    - name: Install Dependencies
+    - name: Install Dependencies (Composer)
       run: composer install --no-ansi --prefer-dist
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
