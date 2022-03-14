@@ -2,9 +2,6 @@
 学園祭実行委員会と参加企画との間のコミュニケーションを支援するオープンソースウェブシステム。
 
 <p>
-    <a href="https://circleci.com/gh/portal-dots/PortalDots">
-        <img src="https://circleci.com/gh/portal-dots/PortalDots.svg?style=svg" alt="CircleCI" />
-    </a>
     <a href="https://codecov.io/gh/portal-dots/PortalDots">
         <img src="https://codecov.io/gh/portal-dots/PortalDots/branch/3.x/graph/badge.svg" />
     </a>
