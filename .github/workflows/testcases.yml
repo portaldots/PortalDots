@@ -98,12 +98,13 @@ jobs:
         env:
           MYSQL_DATABASE: ci_database
           MYSQL_USER: dbuser
+          MYSQL_ROOT_PASSWORD: dbpassword
           MYSQL_PASSWORD: dbpassword
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=5
 
     steps:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
