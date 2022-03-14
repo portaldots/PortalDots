@@ -45,8 +45,8 @@ env:
   DB_HOST: 127.0.0.1
   DB_PORT: 3306
   DB_DATABASE: ci_database
-  DB_USERNAME: root
-  DB_PASSWORD: root
+  DB_USERNAME: dbuser
+  DB_PASSWORD: dbpassword
   MYSQL_ALLOW_EMPTY_PASSWORD: true
   PORTAL_ADMIN_NAME: 継続的インテグレーション実行委員会
   PORTAL_CONTACT_EMAIL: info@example.com
@@ -94,12 +94,12 @@ jobs:
       mysql:
         image: mysql:5.7
         ports:
-          - "${{ env.DB_PORT }}:3306"
+          - "3306:3306"
         env:
-          MYSQL_DATABASE: ${{ env.DB_DATABASE }}
-          MYSQL_USER: ${{ env.DB_USERNAME }}
-          MYSQL_ROOT_PASSWORD: ${{ env.DB_PASSWORD }}
-          MYSQL_PASSWORD: ${{ env.DB_PASSWORD }}
+          MYSQL_DATABASE: ci_database
+          MYSQL_USER: dbuser
+          MYSQL_ROOT_PASSWORD: dbpassword
+          MYSQL_PASSWORD: root
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
