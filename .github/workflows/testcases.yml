@@ -98,8 +98,7 @@ jobs:
         env:
           MYSQL_DATABASE: ci_database
           MYSQL_USER: dbuser
-          MYSQL_ROOT_PASSWORD: dbpassword
-          MYSQL_PASSWORD: root
+          MYSQL_PASSWORD: dbpassword
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
