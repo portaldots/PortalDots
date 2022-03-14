@@ -58,11 +58,19 @@ jobs:
     steps:
     - name: Install Dependencies
       uses: actions/checkout@v2
-    - name: Use Node.js
+    - name: Use Node.js (Yarnをインストールするため)
       uses: actions/setup-node@v2
       with:
         node-version: 16.x
-        cache: 'yarn'
+    - name: Install Yarn
+      run: npm install -g yarn
+    # https://github.com/actions/setup-node/issues/182#issuecomment-966885975
+    - name: Use Node.js (Yarnパッケージのキャッシュを有効化するため)
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+        cache: yarn
+      if: ${{ !env.ACT }}
     - name: Install Dependencies
       run: yarn install
     - name: Bladeファイルのフォーマット
