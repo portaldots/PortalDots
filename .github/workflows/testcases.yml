@@ -33,7 +33,7 @@ on:
       - 3.x
       - 4.x
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, synchronize]
 
 env:
   APP_NOT_INSTALLED: false
