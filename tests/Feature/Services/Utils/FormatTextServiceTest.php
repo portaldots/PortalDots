@@ -38,4 +38,32 @@ class FormatTextServiceTest extends TestCase
     {
         $this->assertSame($result, $this->formatTextService->filesize($arg));
     }
+
+    public function escapeMarkdownProvider()
+    {
+        return [
+            ['Hello, *World*!', 'Hello, \\*World\\*\!'],
+            ['こんにちは、**世界**！', 'こんにちは、\\*\\*世界\\*\\*！'],
+            ['\\* テキスト \\*', '\\\\\\* テキスト \\\\\\*'],
+            ['This is `code`.', 'This is \\`code\\`\\.'],
+            ['## Title', '\\#\\# Title'],
+            ['+ Plus', '\\+ Plus'],
+            ['- Minus', '\\- Minus'],
+            ['Hello, World.', 'Hello, World\\.'],
+            [
+                '![Example Image](https://example.com/image.png)',
+                '\\!\\[Example Image\\]\\(https://example\\.com/image\\.png\\)',
+            ],
+            ['Hello, {{World}}', 'Hello, \\{\\{World\\}\\}'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider escapeMarkdownProvider
+     */
+    public function escapeMarkdown($arg, $result)
+    {
+        $this->assertSame($result, $this->formatTextService->escapeMarkdown($arg));
+    }
 }

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Eloquents\User;
 use App\Eloquents\Page;
+use App\Eloquents\Document;
 use App\Eloquents\Permission;
 use App\Services\Pages\PagesService;
 use Mockery;
@@ -19,10 +20,16 @@ class StoreActionTest extends TestCase
      */
     private $staff;
 
+    /**
+     * @var Document
+     */
+    private $document;
+
     public function setUp(): void
     {
         parent::setUp();
         $this->staff = factory(User::class)->states('staff')->create();
+        $this->document = factory(Document::class)->create();
     }
 
     /**
@@ -42,6 +49,7 @@ class StoreActionTest extends TestCase
                 }),
                 'スタッフ用メモです！123',
                 ['Cブース', '屋外模擬店'],
+                [$this->document->id],
                 false,
                 false
             )->andReturn(new Page());
@@ -53,6 +61,7 @@ class StoreActionTest extends TestCase
                 'title' => 'お知らせのタイトル',
                 'body' => "本文です\n\n# 見出し\n- リストです\n- リストです",
                 'viewable_tags' => ['Cブース', '屋外模擬店'],
+                'documents' => [(string)$this->document->id],
                 'is_public' => '0',
                 'is_pinned' => null,
                 'send_emails' => '0',
@@ -73,6 +82,7 @@ class StoreActionTest extends TestCase
                 'title' => 'お知らせのタイトル',
                 'body' => "本文です\n\n# 見出し\n- リストです\n- リストです",
                 'viewable_tags' => ['Cブース', '屋外模擬店'],
+                'documents' => [(string)$this->document->id],
                 'is_public' => '0',
                 'is_pinned' => null,
                 'send_emails' => '0',
@@ -121,6 +131,7 @@ class StoreActionTest extends TestCase
                 }),
                 'スタッフ用メモです！123',
                 ['Cブース', '屋外模擬店'],
+                [],
                 // お知らせは非公開でもメール配信は可能
                 false,
                 false,
@@ -139,6 +150,7 @@ class StoreActionTest extends TestCase
                 'title' => $page->title,
                 'body' => "本文です\n\n# 見出し\n- リストです\n- リストです",
                 'viewable_tags' => ['Cブース', '屋外模擬店'],
+                'documents' => [],
                 'is_public' => '0',
                 'is_pinned' => null,
                 'send_emails' => '1',

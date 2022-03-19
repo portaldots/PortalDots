@@ -56,6 +56,7 @@ class PagesServiceTest extends TestCase
             $this->staff,
             '',
             [],
+            [],
             $this->content['is_public'],
             $this->content['is_pinned'],
         );
@@ -78,6 +79,7 @@ class PagesServiceTest extends TestCase
             $this->staff,
             '',
             [],
+            [],
             $this->content['is_public'],
             $this->content['is_pinned'],
         );
@@ -88,6 +90,7 @@ class PagesServiceTest extends TestCase
             "更新した本文",
             $this->staff,
             '',
+            [],
             [],
             true,
             true,
@@ -117,6 +120,7 @@ class PagesServiceTest extends TestCase
             $this->content['body'],
             $this->staff,
             '',
+            [],
             [],
             $this->content['is_public'],
             $this->content['is_pinned'],
@@ -157,6 +161,7 @@ class PagesServiceTest extends TestCase
             // $tags[2] と $tags[5] の2つを、閲覧可能なタグとして指定する
             // （該当する企画数は 8）
             $post_content['viewable_tags'] = [$tags[2]->name, $tags[5]->name],
+            [],
             $this->content['is_public'],
             $this->content['is_pinned'],
         );
@@ -188,6 +193,7 @@ class PagesServiceTest extends TestCase
             '',
             // 未作成のタグを意図的に指定する。作成済みのタグも混ぜる
             ['未作成のタグA', '未作成のタグB', $tag->name],
+            [],
             $this->content['is_public'],
             $this->content['is_pinned'],
         );

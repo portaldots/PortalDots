@@ -52,6 +52,26 @@
                         </template>
                     @endif
                 </list-view-form-group>
+                <list-view-form-group>
+                    <template v-slot:label>関連する配布資料</template>
+                    <template v-slot:description>
+                        「配布資料管理」にて登録した配布資料から選択できます
+                        @can('staff.documents.edit')
+                            — <a href="{{ route('staff.documents.create') }}" target="_blank">配布資料の新規作成</a>
+                        @endcan
+                    </template>
+                    <tags-input input-name="documents" placeholder="配布資料を指定"
+                        v-bind:default-tags="{{ $default_documents }}"
+                        v-bind:autocomplete-items="{{ $documents_autocomplete_items }}" add-only-from-autocomplete>
+                    </tags-input>
+                    @if ($errors->has('documents'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('documents') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
             </list-view>
 
             <list-view>
@@ -127,7 +147,8 @@
                             <input class="form-checkbox__input" type="checkbox" name="send_emails" value="1"
                                 {{ Auth::user()->can('staff.pages.send_emails') ? '' : 'disabled' }}>
                             <strong>保存後にこのお知らせを「閲覧可能なユーザー」で指定したユーザー全員にメール配信</strong><br>
-                            <span class="text-muted">このお知らせを保存したタイミングでの内容が配信されます。お知らせを編集しても、メール配信が完了するまで編集内容は反映されません。</span>
+                            <span
+                                class="text-muted">このお知らせを保存したタイミングでの内容が配信されます。お知らせを編集しても、メール配信が完了するまで編集内容は反映されません。</span>
                         </label>
                     </div>
                     @if ($errors->has('send_emails'))
