@@ -127,6 +127,26 @@
                         @markdown($pinned_page->body)
                     </div>
                 </list-view-card>
+                @if ($pinned_page->documents->count() > 0)
+                    <list-view-card>
+                        <app-chips-container>
+                            @foreach ($pinned_page->documents as $document)
+                                <app-chip href="{{ route('documents.show', ['document' => $document]) }}"
+                                    target="_blank">
+                                    <template v-slot:icon>
+                                        <i class="far fa-file-alt fa-fw"></i>
+                                    </template>
+                                    {{ $document->name }}
+                                    <small class="text-muted">
+                                        ({{ strtoupper($document->extension) }}
+                                        •
+                                        @filesize($document->size))
+                                    </small>
+                                </app-chip>
+                            @endforeach
+                        </app-chips-container>
+                    </list-view-card>
+                @endif
             </list-view>
         @endforeach
 
