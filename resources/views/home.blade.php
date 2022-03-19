@@ -100,19 +100,8 @@
             </app-container>
         </header>
     @endguest
+    @include('includes.staff_home_tab_strip')
     <app-container>
-        @if (Auth::check() && Auth::user()->is_staff)
-            <list-view>
-                <template v-slot:title>
-                    スタッフメニュー
-                    <small class="text-muted">(スタッフにのみ表示)</small>
-                </template>
-                <list-view-action-btn href="{{ route('staff.index') }}">
-                    スタッフモードへ
-                </list-view-action-btn>
-            </list-view>
-        @endif
-
         @foreach ($pinned_pages as $pinned_page)
             <list-view>
                 <template v-slot:title>{{ $pinned_page->title }}</template>

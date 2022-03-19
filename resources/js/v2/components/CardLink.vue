@@ -1,0 +1,81 @@
+<template>
+  <component
+    :is="href ? 'a' : 'div'"
+    :href="href"
+    class="card-link"
+    :class="{ 'is-disabled': !href }"
+  >
+    <div class="card-link-body">
+      <div class="card-link__icon">
+        <slot name="icon" />
+      </div>
+      <div class="card-link__title">
+        <slot name="title" />
+      </div>
+      <div class="card-link__description" v-if="$slots.description">
+        <slot name="description" />
+      </div>
+    </div>
+  </component>
+</template>
+
+<script>
+export default {
+  props: {
+    href: {
+      type: String,
+      default: ''
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.card-link {
+  background: $color-bg-surface;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-lv1;
+  color: currentColor;
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  &.is-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  &-body {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    padding: $spacing-lg $spacing;
+    text-align: center;
+    transition: #{$transition-base-fast} background-color;
+  }
+  &:not(.is-disabled):hover > &-body,
+  &:not(.is-disabled):focus > &-body {
+    background-color: $color-bg-light;
+  }
+  &__icon {
+    color: $color-primary;
+    font-size: 2.25rem;
+    line-height: 1;
+    opacity: 0.6;
+  }
+  &.is-disabled &__icon {
+    color: $color-muted;
+  }
+  &__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-top: $spacing-md;
+  }
+  &__description {
+    color: $color-muted;
+    line-height: 1.4;
+    margin-top: $spacing-sm;
+  }
+}
+</style>

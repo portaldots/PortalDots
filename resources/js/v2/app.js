@@ -11,6 +11,7 @@ import AppInfoBox from './components/AppInfoBox.vue'
 import AppNavBar from './components/AppNavBar.vue'
 import AppNavBarBack from './components/AppNavBarBack.vue'
 import AppNavBarToggle from './components/AppNavBarToggle.vue'
+import CardLink from './components/CardLink.vue'
 import CircleSelectorDropdown from './components/CircleSelectorDropdown.vue'
 import AppContainer from './components/AppContainer.vue'
 import AppBadge from './components/AppBadge.vue'
@@ -30,6 +31,8 @@ import ListViewStudentIdAndUnivemailInput from './components/ListViewStudentIdAn
 import TopAlert from './components/TopAlert.vue'
 import FormWithConfirm from './components/FormWithConfirm.vue'
 import IconButton from './components/IconButton.vue'
+import LayoutRow from './components/LayoutRow.vue'
+import LayoutColumn from './components/LayoutColumn.vue'
 import StaffGrid from './components/StaffGrid.vue'
 import StepsList from './components/StepsList.vue'
 import StepsListItem from './components/StepsListItem.vue'
@@ -72,6 +75,7 @@ export function mountV2App() {
         AppNavBar,
         AppNavBarBack,
         AppNavBarToggle,
+        CardLink,
         CircleSelectorDropdown,
         AppContainer,
         AppBadge,
@@ -91,6 +95,8 @@ export function mountV2App() {
         TopAlert,
         FormWithConfirm,
         IconButton,
+        LayoutRow,
+        LayoutColumn,
         QuestionItem,
         QuestionHeading,
         StaffGrid,
