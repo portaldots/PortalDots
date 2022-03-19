@@ -8,8 +8,16 @@ use DateTime;
 
 class FormatTextService
 {
-    private const DAYS = [ '日', '月', '火', '水', '木', '金', '土' ];
-    private const DAYS_FULL = [ '日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日' ];
+    private const DAYS = ['日', '月', '火', '水', '木', '金', '土'];
+    private const DAYS_FULL = [
+        '日曜日',
+        '月曜日',
+        '火曜日',
+        '水曜日',
+        '木曜日',
+        '金曜日',
+        '土曜日',
+    ];
 
     /**
      * 100文字で要約されたテキストを生成する
@@ -22,8 +30,14 @@ class FormatTextService
      */
     public static function summary(?string $text): string
     {
-        return empty($text) ? ''
-            : mb_strimwidth(strip_tags(ParseMarkdownService::render($text)), 0, 100, '...');
+        return empty($text)
+            ? ''
+            : mb_strimwidth(
+                strip_tags(ParseMarkdownService::render($text)),
+                0,
+                100,
+                '...'
+            );
     }
 
     /**
@@ -36,7 +50,7 @@ class FormatTextService
     {
         $format = 'Y年n月j日';
         $date = (new DateTime($datetime))->format($format);
-        $dayId = (int)(new DateTime($datetime))->format('w');
+        $dayId = (int) (new DateTime($datetime))->format('w');
         $day = self::getDayByDayId($dayId);
         $time = (new DateTime($datetime))->format('H:i');
         return "{$date}({$day}) {$time}";
@@ -76,5 +90,35 @@ class FormatTextService
         $result = round($result, 2);
 
         return "{$result}{$unit}";
+    }
+
+    /**
+     * Markdownにおける特殊文字をエスケープする
+     */
+    public static function escapeMarkdown(string $text): string
+    {
+        $special_chars = [
+            // バックスラッシュを配列の先頭にすることで、
+            // バックスラッシュが二重にエスケープされないようにしている
+            '\\',
+            '*',
+            '_',
+            '`',
+            '#',
+            '+',
+            '-',
+            '.',
+            '!',
+            '{',
+            '}',
+            '[',
+            ']',
+            '(',
+            ')',
+        ];
+        $escaped_special_chars = array_map(function ($char) {
+            return "\\{$char}";
+        }, $special_chars);
+        return str_replace($special_chars, $escaped_special_chars, $text);
     }
 }
