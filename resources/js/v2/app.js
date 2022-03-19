@@ -30,6 +30,8 @@ import ListViewStudentIdAndUnivemailInput from './components/ListViewStudentIdAn
 import TopAlert from './components/TopAlert.vue'
 import FormWithConfirm from './components/FormWithConfirm.vue'
 import IconButton from './components/IconButton.vue'
+import LayoutRow from './components/LayoutRow.vue'
+import LayoutColumn from './components/LayoutColumn.vue'
 import StaffGrid from './components/StaffGrid.vue'
 import StepsList from './components/StepsList.vue'
 import StepsListItem from './components/StepsListItem.vue'
@@ -91,6 +93,8 @@ export function mountV2App() {
         TopAlert,
         FormWithConfirm,
         IconButton,
+        LayoutRow,
+        LayoutColumn,
         QuestionItem,
         QuestionHeading,
         StaffGrid,
