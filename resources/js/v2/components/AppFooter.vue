@@ -1,6 +1,6 @@
 <template>
-  <AppContainer class="footer">
-    <div class="footer__body">
+  <div class="footer">
+    <div class="footer-line">
       <template v-if="$slots.default"> <slot /> • </template>
       Powered by
       <a
@@ -9,32 +9,29 @@
         target="_blank"
         rel="noopener"
         >PortalDots</a
-      ><br />
+      >
+    </div>
+    <div class="footer-line">
       <a href="/support" class="footer__link" rel="noopener">推奨動作環境</a>
     </div>
-  </AppContainer>
+  </div>
 </template>
 
 <script>
-import AppContainer from './AppContainer.vue'
-
-export default {
-  components: {
-    AppContainer
-  }
-}
+export default {}
 </script>
 
 <style lang="scss" scoped>
 .footer {
-  border-top: 1px solid $color-border;
+  color: $color-muted-2;
+  font-size: 0.9rem;
   margin-top: $spacing-md;
+  padding: $spacing $spacing-lg;
   text-align: center;
-  &__body {
-    color: $color-muted-2;
-    margin-top: $spacing-lg;
-    @media screen and (max-width: $breakpoint-bottom-tabs) {
-      padding-bottom: $spacing-lg;
+  &-line {
+    margin: 0 0 $spacing-xs;
+    &:last-child {
+      margin: 0;
     }
   }
   &__link {
