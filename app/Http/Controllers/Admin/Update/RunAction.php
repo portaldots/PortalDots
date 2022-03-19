@@ -23,7 +23,7 @@ class RunAction extends Controller
         // Check if new version is available
         if ($this->updater->source()->isNewVersionAvailable()) {
             try {
-                Artisan::call('down --message="ソフトウェアアップデート中です"');
+                Artisan::call('down');
 
                 // Get the new version available
                 $versionAvailable = $this->updater->source()->getVersionAvailable();
