@@ -10,6 +10,7 @@ use App\Eloquents\User;
 use App\Eloquents\Tag;
 use App\Services\Emails\SendEmailService;
 use App\Services\Utils\ActivityLogService;
+use App\Services\Utils\FormatTextService;
 use Illuminate\Support\Facades\DB;
 
 class PagesService
@@ -29,14 +30,21 @@ class PagesService
      */
     private $activityLogService;
 
+    /**
+     * @var FormatTextService
+     */
+    private $formatTextService;
+
     public function __construct(
         SendEmailService $sendEmailService,
         ReadsService $readsService,
-        ActivityLogService $activityLogService
+        ActivityLogService $activityLogService,
+        FormatTextService $formatTextService
     ) {
         $this->sendEmailService = $sendEmailService;
         $this->readsService = $readsService;
         $this->activityLogService = $activityLogService;
+        $this->formatTextService = $formatTextService;
     }
 
     /**
@@ -266,21 +274,35 @@ class PagesService
 
         // 関連する配布資料の一覧を末尾に追加する
         if ($page->documents->count() > 0) {
-            $documents_markdown_list = $page->documents()->get()->map(function ($document) {
-                $escaped_name = e($document->name);
-                $url = route('documents.show', ['document' => $document]);
-                $list_item = "- [{$escaped_name}]({$url})";
-                if (!empty($document->description)) {
-                    $list_item .= "\n   - {$document->description}";
-                }
-                return $list_item;
-            })->join("\n");
-            $body .= <<< EOL
+            $documents_markdown_list = $page
+                ->documents()
+                ->get()
+                ->map(function ($document) {
+                    $escaped_name = $this->formatTextService->escapeMarkdown(
+                        e($document->name)
+                    );
+                    $url = route('documents.show', ['document' => $document]);
+                    $list_item = "- [{$escaped_name}]({$url})";
+                    if (!empty($document->description)) {
+                        $escaped_description = $this->formatTextService->escapeMarkdown(
+                            e($document->description)
+                        );
+                        $escaped_description = str_replace(
+                            ["\r\n", "\n", "\r"],
+                            '',
+                            $escaped_description
+                        );
+                        $list_item .= "\n   - {$escaped_description}";
+                    }
+                    return $list_item;
+                })
+                ->join("\n");
+            $body .= <<<EOL
 
 
-            ## 関連する配布資料
-            {$documents_markdown_list}
-            EOL;
+## 関連する配布資料
+{$documents_markdown_list}
+EOL;
         }
 
         $this->sendEmailService->bulkEnqueue($page->title, $body, $users);
