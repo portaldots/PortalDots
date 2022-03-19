@@ -134,7 +134,11 @@
                                 <app-chip href="{{ route('documents.show', ['document' => $document]) }}"
                                     target="_blank">
                                     <template v-slot:icon>
-                                        <i class="far fa-file-alt fa-fw"></i>
+                                        @if ($document->is_important)
+                                            <i class="fas fa-exclamation-circle fa-fw text-danger"></i>
+                                        @else
+                                            <i class="far fa-file-alt fa-fw"></i>
+                                        @endif
                                     </template>
                                     {{ $document->name }}
                                     <small class="text-muted">
