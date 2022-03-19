@@ -64,6 +64,7 @@ class ActivityLogGridMaker implements GridMakable
             'form_answerable_tag' => 'フォームへ回答可能なユーザー(タグ)',
             'page' => 'お知らせ',
             'page_viewable_tag' => 'お知らせを閲覧可能なユーザー(タグ)',
+            'page_document' => 'お知らせに関連する配布資料',
             'place' => '場所',
             'question' => 'フォームの設問',
             'tag' => 'タグ',
