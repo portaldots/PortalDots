@@ -105,7 +105,7 @@ class PagesService
             );
 
             // 関連する配布資料を保存する
-            $exist_documents = Document::select('id')
+            $exist_documents = Document::select('id', 'name')
                 ->whereIn('id', $documents)
                 ->orderBy('id')
                 ->get();
@@ -212,7 +212,7 @@ class PagesService
             );
 
             // 関連する配布資料を保存する
-            $exist_documents = Document::select('id')
+            $exist_documents = Document::select('id', 'name')
                 ->whereIn('id', $documents)
                 ->orderBy('id')
                 ->get();
