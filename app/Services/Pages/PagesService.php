@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Pages;
 
+use App\Eloquents\Document;
 use App\Eloquents\Page;
 use App\Eloquents\User;
 use App\Eloquents\Tag;
@@ -46,6 +47,7 @@ class PagesService
      * @param User $created_by 作成者
      * @param string $notes スタッフ用メモ
      * @param array $viewable_tags お知らせを閲覧可能な企画のタグ
+     * @param array $documents お知らせに関連する配布資料のID
      * @param bool $is_public お知らせを公開するか
      * @param bool $is_pinned お知らせを固定表示するか
      * @return Page
@@ -56,6 +58,7 @@ class PagesService
         User $created_by,
         string $notes,
         array $viewable_tags,
+        array $documents,
         bool $is_public,
         bool $is_pinned
     ): Page {
@@ -65,6 +68,7 @@ class PagesService
             $created_by,
             $notes,
             $viewable_tags,
+            $documents,
             $is_public,
             $is_pinned
         ) {
@@ -76,25 +80,51 @@ class PagesService
                 'notes' => $notes,
             ]);
 
-            // 検索時は大文字小文字の区別をしない
+            // タグ検索時は大文字小文字の区別をしない
             // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
-            $exist_tags = Tag::select('id', 'name')->whereIn('name', $viewable_tags)->get();
+            $exist_tags = Tag::select('id', 'name')
+                ->whereIn('name', $viewable_tags)
+                ->orderBy('id')
+                ->get();
             $page->viewableTags()->sync($exist_tags->pluck('id')->all());
 
-            // ログに残す
-            $map_function = function ($tag) {
-                return [
-                    'id' => $tag->id,
-                    'name' => $tag->name,
-                ];
-            };
-
+            // タグの変更をログに残す
             $this->activityLogService->logOnlyAttributesChanged(
                 'page_viewable_tag',
                 $created_by,
                 $page,
                 [],
-                $exist_tags->map($map_function)->toArray()
+                $exist_tags
+                    ->map(function ($tag) {
+                        return [
+                            'id' => $tag->id,
+                            'name' => $tag->name,
+                        ];
+                    })
+                    ->toArray()
+            );
+
+            // 関連する配布資料を保存する
+            $exist_documents = Document::select('id')
+                ->whereIn('id', $documents)
+                ->orderBy('id')
+                ->get();
+            $page->documents()->sync($exist_documents->pluck('id')->all());
+
+            // 関連する配布資料の変更をログに残す
+            $this->activityLogService->logOnlyAttributesChanged(
+                'page_document',
+                $created_by,
+                $page,
+                [],
+                $exist_documents
+                    ->map(function ($document) {
+                        return [
+                            'id' => $document->id,
+                            'name' => $document->name,
+                        ];
+                    })
+                    ->toArray()
             );
 
             return $page;
@@ -110,6 +140,7 @@ class PagesService
      * @param User $updated_by 更新者
      * @param string $notes スタッフ用メモ
      * @param array $viewable_tags お知らせを閲覧可能な企画のタグ
+     * @param array $documents お知らせに関連する配布資料のID
      * @param bool $is_public お知らせを公開するか
      * @param bool $is_pinned お知らせを固定表示するか
      * @return bool
@@ -121,6 +152,7 @@ class PagesService
         User $updated_by,
         string $notes,
         array $viewable_tags,
+        array $documents,
         bool $is_public,
         bool $is_pinned
     ): bool {
@@ -131,6 +163,7 @@ class PagesService
             $updated_by,
             $notes,
             $viewable_tags,
+            $documents,
             $is_public,
             $is_pinned
         ) {
@@ -145,27 +178,59 @@ class PagesService
             // 既読情報を管理する reads テーブルから、このお知らせの既読情報を全て削除する
             $this->readsService->deleteAllReadsByPage($page);
 
-            $old_tags = $page->viewableTags()->orderBy('id')->get();
+            $old_tags = $page
+                ->viewableTags()
+                ->orderBy('id')
+                ->get();
 
-            // 検索時は大文字小文字の区別をしない
+            $old_documents = $page
+                ->documents()
+                ->orderBy('id')
+                ->get();
+
+            // タグ検索時は大文字小文字の区別をしない
             // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
-            $exist_tags = Tag::select('id', 'name')->whereIn('name', $viewable_tags)->orderBy('id')->get();
+            $exist_tags = Tag::select('id', 'name')
+                ->whereIn('name', $viewable_tags)
+                ->orderBy('id')
+                ->get();
             $page->viewableTags()->sync($exist_tags->pluck('id')->all());
 
-            // ログに残す
-            $map_function = function ($tag) {
+            // タグの変更をログに残す
+            $tags_map_function = function ($tag) {
                 return [
                     'id' => $tag->id,
                     'name' => $tag->name,
                 ];
             };
-
             $this->activityLogService->logOnlyAttributesChanged(
                 'page_viewable_tag',
                 $updated_by,
                 $page,
-                $old_tags->map($map_function)->toArray(),
-                $exist_tags->map($map_function)->toArray()
+                $old_tags->map($tags_map_function)->toArray(),
+                $exist_tags->map($tags_map_function)->toArray()
+            );
+
+            // 関連する配布資料を保存する
+            $exist_documents = Document::select('id')
+                ->whereIn('id', $documents)
+                ->orderBy('id')
+                ->get();
+            $page->documents()->sync($exist_documents->pluck('id')->all());
+
+            // 関連する配布資料の変更をログに残す
+            $documents_map_function = function ($document) {
+                return [
+                    'id' => $document->id,
+                    'name' => $document->name,
+                ];
+            };
+            $this->activityLogService->logOnlyAttributesChanged(
+                'page_document',
+                $updated_by,
+                $page,
+                $old_documents->map($documents_map_function)->toArray(),
+                $exist_documents->map($documents_map_function)->toArray()
             );
 
             return true;
@@ -189,13 +254,14 @@ class PagesService
     public function sendEmailsByPage(Page $page)
     {
         $page->refresh();
-        $users = User::verified()->byTags(
-            $page->viewableTags()->select('tags.id')->get()
-        )->get();
-        $this->sendEmailService->bulkEnqueue(
-            $page->title,
-            $page->body,
-            $users
-        );
+        $users = User::verified()
+            ->byTags(
+                $page
+                    ->viewableTags()
+                    ->select('tags.id')
+                    ->get()
+            )
+            ->get();
+        $this->sendEmailService->bulkEnqueue($page->title, $page->body, $users);
     }
 }

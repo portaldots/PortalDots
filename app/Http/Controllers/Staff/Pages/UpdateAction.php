@@ -35,6 +35,7 @@ class UpdateAction extends Controller
                 Auth::user(),
                 $values['notes'] ?? '',
                 $values['viewable_tags'] ?? [],
+                $values['documents'] ?? [],
                 isset($values['is_public']) && $values['is_public'] === '1',
                 isset($values['is_pinned']) && $values['is_pinned'] === '1'
             );
