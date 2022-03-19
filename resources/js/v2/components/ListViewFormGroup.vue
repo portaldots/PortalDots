@@ -4,15 +4,17 @@
     :class="{ 'is-invalid': $slots.invalid }"
     noBorder
   >
-    <component
-      :is="labelFor ? 'label' : 'div'"
-      v-bind="labelFor ? { for: labelFor } : {}"
-      class="listview-form-group__label"
-    >
-      <slot name="label" />
-    </component>
-    <div class="listview-form-group__description" v-if="$slots.description">
-      <slot name="description" />
+    <div class="listview-form-group__header">
+      <component
+        :is="labelFor ? 'label' : 'div'"
+        v-bind="labelFor ? { for: labelFor } : {}"
+        class="listview-form-group__label"
+      >
+        <slot name="label" />
+      </component>
+      <div class="listview-form-group__description" v-if="$slots.description">
+        <slot name="description" />
+      </div>
     </div>
     <div class="listview-form-group__body form-addon">
       <div class="form-addon__body" v-if="$slots.prepend">
@@ -63,15 +65,19 @@ export default {
   &.is-invalid {
     color: $color-danger;
   }
+  &__header {
+    margin: 0 0 $spacing-sm;
+  }
   &__label {
     display: block;
     font-weight: bold;
+    line-height: 1.4;
     margin: 0 0 $spacing-xs;
   }
   &__description {
     color: $color-muted;
     font-size: 0.9rem;
-    margin: 0 0 $spacing-sm;
+    line-height: 1.4;
   }
   &__body {
     margin: 0;

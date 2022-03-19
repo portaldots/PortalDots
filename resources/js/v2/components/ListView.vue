@@ -20,16 +20,17 @@ export default {}
 
 <style lang="scss" scoped>
 .listview {
-  padding: $spacing 0 $spacing-sm;
+  padding: $spacing-md 0 $spacing-sm;
   &:last-child {
     padding-bottom: $spacing-lg;
   }
   &-header {
-    padding: 0 0 $spacing-sm;
+    padding: $spacing-sm 0;
     width: 100%;
     &__title {
       font-size: $font-size-lg;
       font-weight: bold;
+      line-height: 1.4;
       margin: 0;
     }
     &__description {
