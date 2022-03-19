@@ -26,4 +26,32 @@
     <app-container data-turbolinks="false" class="markdown py-spacing-lg">
         @markdown($page->body)
     </app-container>
+    @if (count($page->documents) > 0)
+        <app-container>
+            <list-view>
+                <template v-slot:title>関連する配布資料</template>
+
+                @foreach ($page->documents as $document)
+                    <list-view-item href="{{ route('documents.show', ['document' => $document]) }}" newtab>
+                        <template v-slot:title>
+                            @if ($document->is_important)
+                                <i class="fas fa-exclamation-circle fa-fw text-danger"></i>
+                            @else
+                                <i class="far fa-file-alt fa-fw"></i>
+                            @endif
+                            {{ $document->name }}
+                        </template>
+                        <template v-slot:meta>
+                            @datetime($document->updated_at) 更新
+                            <br>
+                            {{ strtoupper($document->extension) }}ファイル
+                            •
+                            @filesize($document->size)
+                        </template>
+                        {{ $document->description }}
+                    </list-view-item>
+                @endforeach
+            </list-view>
+        </app-container>
+    @endif
 @endsection
