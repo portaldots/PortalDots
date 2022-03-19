@@ -1,5 +1,9 @@
 <template>
-  <div class="row" :style="{ '--row-columns': columns }">
+  <div
+    class="row"
+    :class="{ 'is-repeated-width': !gridTemplateColumns }"
+    :style="{ '--row-columns': columns, gridTemplateColumns }"
+  >
     <slot />
   </div>
 </template>
@@ -10,6 +14,10 @@ export default {
     columns: {
       type: Number,
       default: 1
+    },
+    gridTemplateColumns: {
+      type: String,
+      default: null
     }
   }
 }
@@ -19,7 +27,9 @@ export default {
 .row {
   display: grid;
   gap: $spacing;
-  grid-template-columns: repeat(var(--row-columns), minmax(0, 1fr));
+  &.is-repeated-width {
+    grid-template-columns: repeat(var(--row-columns), minmax(0, 1fr));
+  }
 
   @media screen and (max-width: $breakpoint-layout-row-single-column) {
     display: block;
