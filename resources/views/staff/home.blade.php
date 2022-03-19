@@ -3,6 +3,7 @@
 @section('title', 'スタッフモード')
 
 @section('content')
+    @include('includes.staff_home_tab_strip')
     @unless($hasSentEmail)
         <top-alert type="danger" container-medium keep-visible>
             <template v-slot:title>
@@ -13,9 +14,6 @@
     @endunless
     <app-container medium>
         <list-view>
-            <list-view-action-btn href="{{ route('home') }}">
-                一般モードへ
-            </list-view-action-btn>
             <list-view-action-btn href="{{ route('staff.about') }}">
                 PortalDots のアップデートの確認
             </list-view-action-btn>
@@ -120,7 +118,7 @@
                 </template>
             </list-view-item>
             <list-view-item
-                v-bind:href="{{ Auth::user()->can('staff.contacts.categories.read') ? "'" . route('staff.contacts.categories.index') . "'" : 'undefined' }}">
+                v-bind:href="{{ Auth::user()->can('staff.contacts.categories.read')? "'" . route('staff.contacts.categories.index') . "'": 'undefined' }}">
                 <template v-slot:title>
                     <i class="fas fa-at fa-lg text-muted fa-fw"></i>
                     <span
