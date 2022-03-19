@@ -262,6 +262,27 @@ class PagesService
                     ->get()
             )
             ->get();
-        $this->sendEmailService->bulkEnqueue($page->title, $page->body, $users);
+        $body = $page->body;
+
+        // 関連する配布資料の一覧を末尾に追加する
+        if ($page->documents->count() > 0) {
+            $documents_markdown_list = $page->documents()->get()->map(function ($document) {
+                $escaped_name = e($document->name);
+                $url = route('documents.show', ['document' => $document]);
+                $list_item = "- [{$escaped_name}]({$url})";
+                if (!empty($document->description)) {
+                    $list_item .= "\n   - {$document->description}";
+                }
+                return $list_item;
+            })->join("\n");
+            $body .= <<< EOL
+
+
+            ## 関連する配布資料
+            {$documents_markdown_list}
+            EOL;
+        }
+
+        $this->sendEmailService->bulkEnqueue($page->title, $body, $users);
     }
 }
