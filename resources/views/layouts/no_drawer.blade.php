@@ -58,7 +58,8 @@
         <portal-target name="portal-target"></portal-target>
         <app-nav-bar no-drawer @staffpage staff @endstaffpage>
             @section('navbar')
-                <a href="{{ route('home') }}" class="navbar-brand">
+            <a @staffpage href="{{ route('staff.index') }}" @else href="{{ route('home') }}" @endif
+                    class="navbar-brand">
                     {{ config('app.name', 'ホームへ戻る') }}
                 </a>
             @show
