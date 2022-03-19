@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\GridMakers;
 
+use App\Eloquents\Document;
 use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Page;
@@ -41,7 +42,7 @@ class PagesGridMaker implements GridMakable
             'notes',
             'created_at',
             'updated_at',
-        ])->with(['viewableTags']);
+        ])->with(['viewableTags', 'documents']);
     }
 
     /**
@@ -53,6 +54,7 @@ class PagesGridMaker implements GridMakable
             'id',
             'title',
             'viewableTags',
+            'documents',
             'body',
             'is_pinned',
             'is_public',
@@ -68,9 +70,14 @@ class PagesGridMaker implements GridMakable
     public function filterableKeys(): FilterableKeysDict
     {
         static $tags_choices = null;
+        static $documents_choices = null;
 
         if (empty($tags_choices)) {
             $tags_choices = Tag::all()->toArray();
+        }
+
+        if (empty($documents_choices)) {
+            $documents_choices = Document::all()->toArray();
         }
 
         return new FilterableKeysDict([
@@ -81,6 +88,13 @@ class PagesGridMaker implements GridMakable
                 'page_id',
                 'tag_id',
                 $tags_choices,
+                'name'
+            ),
+            'documents' => FilterableKey::belongsToMany(
+                'document_page',
+                'page_id',
+                'document_id',
+                $documents_choices,
                 'name'
             ),
             'body' => FilterableKey::string(),
