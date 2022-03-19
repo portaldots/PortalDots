@@ -58,6 +58,11 @@ class Document extends Model
         });
     }
 
+    public function pages()
+    {
+        return $this->belongsToMany(Page::class);
+    }
+
     /**
      * 公開されている配布資料に限定するクエリスコープ
      *

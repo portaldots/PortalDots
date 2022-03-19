@@ -97,6 +97,11 @@ class Page extends Model
         });
     }
 
+    public function documents()
+    {
+        return $this->belongsToMany(Document::class);
+    }
+
     public function viewableTags()
     {
         return $this->belongsToMany(Tag::class, 'page_viewable_tags')
