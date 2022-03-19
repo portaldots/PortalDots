@@ -282,7 +282,7 @@ class PagesService
                         e($document->name)
                     );
                     $url = route('documents.show', ['document' => $document]);
-                    $list_item = "- [{$escaped_name}]({$url})";
+                    $list_item = "- [**{$escaped_name}**]({$url})";
                     if (!empty($document->description)) {
                         $escaped_description = $this->formatTextService->escapeMarkdown(
                             e($document->description)
