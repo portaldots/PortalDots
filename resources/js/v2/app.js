@@ -14,6 +14,8 @@ import AppNavBarToggle from './components/AppNavBarToggle.vue'
 import CircleSelectorDropdown from './components/CircleSelectorDropdown.vue'
 import AppContainer from './components/AppContainer.vue'
 import AppBadge from './components/AppBadge.vue'
+import AppChip from './components/AppChip.vue'
+import AppChipsContainer from './components/AppChipsContainer.vue'
 import AppDropdown from './components/AppDropdown.vue'
 import AppDropdownItem from './components/AppDropdownItem.vue'
 import AppFixedFormFooter from './components/AppFixedFormFooter.vue'
@@ -73,6 +75,8 @@ export function mountV2App() {
         CircleSelectorDropdown,
         AppContainer,
         AppBadge,
+        AppChip,
+        AppChipsContainer,
         AppDropdown,
         AppDropdownItem,
         AppFixedFormFooter,

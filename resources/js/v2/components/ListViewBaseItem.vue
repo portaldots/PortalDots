@@ -55,6 +55,11 @@ export default {
 .listview-base-item {
   $listview-border: 1px solid $color-border;
 
+  --listview-base-item-padding-x: #{$spacing};
+  @media screen and (max-width: $breakpoint-container-padding-reduce) {
+    --listview-base-item-padding-x: #{$spacing-md};
+  }
+
   background-color: transparent;
   border: 0;
   color: $color-text;
@@ -62,13 +67,10 @@ export default {
   display: block;
   margin: 0;
   outline-offset: -3px;
-  padding: $spacing-s $spacing;
+  padding: $spacing-s var(--listview-base-item-padding-x);
   position: relative;
   transition: #{$transition-base-fast} background-color;
   width: 100%;
-  @media screen and (max-width: $breakpoint-container-padding-reduce) {
-    padding: $spacing-md;
-  }
   &:not(a):not(button) {
     cursor: auto;
   }
@@ -78,7 +80,7 @@ export default {
     content: '';
     display: block;
     height: 1px;
-    left: $spacing;
+    left: var(--listview-base-item-padding-x);
     position: absolute;
     right: 0;
   }
