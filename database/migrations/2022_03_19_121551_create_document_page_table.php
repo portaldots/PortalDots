@@ -28,6 +28,7 @@ class CreateDocumentPageTable extends Migration
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
+            $table->unique(['document_id', 'page_id']);
         });
     }
 
