@@ -6,7 +6,7 @@ color-scheme: dark;
 --color-primary-hover: {{ $uiThemeService->getCssPrimaryColor(0.8, true) }};
 --color-primary-inverse-hover: {{ $uiThemeService->getCssPrimaryColor(0.15, true) }};
 /* Other */
---color-text: rgb(255, 255, 255);
+--color-text: rgb(215, 215, 215);
 --color-danger: rgb(226, 118, 120);
 --color-danger-light: rgb(226, 118, 120, 0.2);
 --color-success: rgb(75, 189, 119);
