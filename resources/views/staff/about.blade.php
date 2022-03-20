@@ -45,9 +45,11 @@
                         @case('light')
                             <img src="{{ mix('/images/portalDotsLogo.svg') }}" class="logo" alt="PortalDots">
                         @break
+
                         @case('dark')
                             <img src="{{ mix('/images/portalDotsLogoDark.svg') }}" class="logo" alt="PortalDots">
                         @break
+
                         @default
                             <img src="{{ mix('/images/portalDotsLogo.svg') }}" class="logo is-light" alt="PortalDots">
                             <img src="{{ mix('/images/portalDotsLogoDark.svg') }}" class="logo is-dark" alt="PortalDots">
@@ -100,6 +102,7 @@
                                     <li>artisan ファイル</li>
                                     <li>app フォルダ</li>
                                     <li>bootstrap フォルダ</li>
+                                    <li>composer.lock ファイル</li>
                                     <li>config フォルダ</li>
                                     <li>database フォルダ</li>
                                     <li>resources フォルダ</li>
