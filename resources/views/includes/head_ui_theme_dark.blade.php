@@ -1,7 +1,7 @@
 /* Primary */
 color-scheme: dark;
 --color-primary: {{ $uiThemeService->getCssPrimaryColor(1, true) }};
---color-primary-light: {{ $uiThemeService->getCssPrimaryColor(0.2, true) }};
+--color-primary-light: {{ $uiThemeService->getCssPrimaryColor(0.225, true) }};
 --color-focus-primary: {{ $uiThemeService->getCssPrimaryColor(0.4, true) }};
 --color-primary-hover: {{ $uiThemeService->getCssPrimaryColor(0.8, true) }};
 --color-primary-inverse-hover: {{ $uiThemeService->getCssPrimaryColor(0.15, true) }};
