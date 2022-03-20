@@ -32,3 +32,5 @@ color-scheme: light;
 --color-top-alert-border: rgba(255, 255, 255, 0.16);
 --color-danger-hover: rgba(219, 60, 62, 0.8);
 --color-success-hover: rgba(27, 162, 78, 0.8);
+--color-emphasis-gray: var(--color-text);
+--color-fg-emphasis-gray: rgb(255, 255, 255);

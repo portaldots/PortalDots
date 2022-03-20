@@ -3,6 +3,8 @@ import Turbolinks from 'turbolinks'
 import Vue from 'vue'
 import GlobalEvents from 'vue-global-events'
 import PortalVue from 'portal-vue'
+import VTooltip from 'v-tooltip'
+
 import TurbolinksAdapter from './vue-turbolinks'
 
 import AppFooter from './components/AppFooter.vue'
@@ -52,6 +54,7 @@ export function mountV2App() {
 
   Vue.use(PortalVue)
   Vue.use(TurbolinksAdapter)
+  Vue.use(VTooltip, { defaultHtml: false, defaultDelay: 400 })
 
   Turbolinks.start()
 
