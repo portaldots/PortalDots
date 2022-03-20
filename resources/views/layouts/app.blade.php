@@ -85,6 +85,7 @@ $is_iframe = (bool) request()->get('iframe');
         <div class="content{{ $is_iframe ? ' is-no-navbar is-no-drawer' : '' }}">
             <div class="content__body">
                 @include('includes.top_circle_selector')
+                <app-toast danger>エラーがあります。以下をご確認ください</app-toast>
                 @if (Session::has('topAlert.title'))
                     <top-alert type="{{ session('topAlert.type', 'primary') }}"
                         {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}

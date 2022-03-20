@@ -13,6 +13,7 @@ import AppInfoBox from './components/AppInfoBox.vue'
 import AppNavBar from './components/AppNavBar.vue'
 import AppNavBarBack from './components/AppNavBarBack.vue'
 import AppNavBarToggle from './components/AppNavBarToggle.vue'
+import AppToast from './components/AppToast.vue'
 import CardLink from './components/CardLink.vue'
 import CircleSelectorDropdown from './components/CircleSelectorDropdown.vue'
 import AppContainer from './components/AppContainer.vue'
@@ -78,6 +79,7 @@ export function mountV2App() {
         AppNavBar,
         AppNavBarBack,
         AppNavBarToggle,
+        AppToast,
         CardLink,
         CircleSelectorDropdown,
         AppContainer,
