@@ -54,7 +54,7 @@ export function mountV2App() {
 
   Vue.use(PortalVue)
   Vue.use(TurbolinksAdapter)
-  Vue.use(VTooltip)
+  Vue.use(VTooltip, { defaultHtml: false, defaultDelay: 400 })
 
   Turbolinks.start()
 
