@@ -38,15 +38,14 @@ export default {
 
 <style lang="scss" scoped>
 .info-box {
-  align-items: center;
   border-radius: $border-radius;
   display: flex;
   padding: $spacing-md $spacing-s;
   &-icon {
-    align-items: center;
     display: flex;
-    flex: 0 0 1.75rem;
+    flex: 0 0 1.5rem;
     opacity: 0.75;
+    padding-top: 0.3rem;
   }
   &-content {
     flex: 1;
