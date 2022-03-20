@@ -54,7 +54,7 @@ class UpdateActionTest extends TestCase
         $this->mock(DotenvService::class, function ($mock) {
             // boolean の true ではなく、文字列の 'true' である点に注意
             $mock->shouldReceive('getValue')->once()->with('APP_NOT_INSTALLED', 'false')->andReturn('false');
-            $mock->shouldReceive('saveKeys')->once()->with(['PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE' => 6]);
+            $mock->shouldReceive('saveKeys')->once()->with(['PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE' => '6']);
         });
 
         $response = $this->actingAs($this->staff)
