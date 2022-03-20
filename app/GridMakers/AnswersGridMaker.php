@@ -6,7 +6,9 @@ namespace App\GridMakers;
 
 use App\Eloquents\Answer;
 use App\Eloquents\Form;
+use App\Eloquents\Place;
 use App\Eloquents\Question;
+use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use App\GridMakers\Concerns\UseEloquent;
 use App\GridMakers\Filter\FilterableKey;
@@ -91,12 +93,37 @@ class AnswersGridMaker implements GridMakable
      */
     public function filterableKeys(): FilterableKeysDict
     {
+        static $tags_choices = null;
+        static $places_choices = null;
+
+        if (empty($tags_choices)) {
+            $tags_choices = Tag::all()->toArray();
+        }
+
+        if (empty($places_choices)) {
+            $places_choices = Place::all()->toArray();
+        }
+
         $circles_type = FilterableKey::belongsTo('circles', new FilterableKeysDict([
             'id' => FilterableKey::number(),
             'name' => FilterableKey::string(),
             'name_yomi' => FilterableKey::string(),
             'group_name' => FilterableKey::string(),
             'group_name_yomi' => FilterableKey::string(),
+            'places' => FilterableKey::belongsToMany(
+                'booths',
+                'circle_id',
+                'place_id',
+                $places_choices,
+                'name'
+            ),
+            'tags' => FilterableKey::belongsToMany(
+                'circle_tag',
+                'circle_id',
+                'tag_id',
+                $tags_choices,
+                'name'
+            ),
             'submitted_at' => FilterableKey::datetime(),
             'status_set_at' => FilterableKey::datetime(),
             'notes' => FilterableKey::string(),
