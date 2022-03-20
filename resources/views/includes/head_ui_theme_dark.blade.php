@@ -8,11 +8,13 @@ color-scheme: dark;
 /* Other */
 --color-text: rgb(215, 215, 215);
 --color-danger: rgb(226, 118, 120);
---color-danger-light: rgb(226, 118, 120, 0.2);
+--color-danger-light: rgba(226, 118, 120, 0.2);
 --color-success: rgb(75, 189, 119);
+--color-success-light: rgba(75, 189, 119, 0.2);
 --color-muted: rgb(150, 150, 150);
 --color-muted-2: rgb(130, 130, 130);
 /* --color-muted-3: rgb(195, 207, 216); */
+--color-muted-light: rgba(150, 150, 150, 0.1);
 --color-border: rgba(255, 255, 255, 0.12);
 --color-bg-base: rgb(0, 0, 0);
 --color-bg-light: rgba(255, 255, 255, 0.075);

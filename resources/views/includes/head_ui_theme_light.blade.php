@@ -8,11 +8,13 @@ color-scheme: light;
 /* Other */
 --color-text: rgb(34, 41, 47);
 --color-danger: rgb(219, 60, 62);
---color-danger-light: rgb(219, 60, 62, 0.1);
+--color-danger-light: rgba(219, 60, 62, 0.1);
 --color-success: rgb(27, 162, 78);
+--color-success-light: rgb(27, 162, 78, 0.1);
 --color-muted: rgb(108, 117, 125);
 --color-muted-2: rgb(167, 182, 194);
 --color-muted-3: rgb(195, 207, 216);
+--color-muted-light: rgba(108, 117, 125, 0.1);
 --color-border: rgb(218, 224, 230);
 --color-bg-base: rgb(243, 244, 250);
 --color-bg-light: rgb(239, 239, 239);

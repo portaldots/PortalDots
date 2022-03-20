@@ -5,7 +5,6 @@
     :class="{
       'is-outline': outline,
       'is-primary': primary,
-      'is-primary-inverse': primaryInverse,
       'is-danger': danger,
       'is-success': success,
       'is-warning': warning,
@@ -31,10 +30,6 @@ export default {
       default: false
     },
     primary: {
-      type: Boolean,
-      default: false
-    },
-    primaryInverse: {
       type: Boolean,
       default: false
     },
@@ -72,11 +67,15 @@ export default {
 
 <style lang="scss" scoped>
 .badge {
-  border-radius: $border-radius;
-  display: inline-block;
+  align-items: center;
+  border-radius: $border-radius-sm;
+  display: inline-flex;
   font-size: 0.75em;
-  line-height: 1.75;
-  padding: 0 0.4em;
+  font-weight: 500;
+  height: 1.75em;
+  justify-content: center;
+  line-height: 1.2;
+  padding: 0 0.4rem;
   text-align: center;
   @each $state, $color in $semantic-colors {
     &.is-outline.is-#{$state} {
@@ -84,19 +83,13 @@ export default {
       color: $color;
     }
     &:not(.is-outline).is-#{$state} {
-      background: $color;
+      $bg-color: map-get($semantic-light-colors, $state);
+
+      background: $bg-color;
       // outlineバッジに比べ一回り小さく見えてしまわないように、
       // outlineバッジと同様のborderをつける
-      border: 1px solid $color;
-      color: $color-bg-surface;
+      color: $color;
     }
-  }
-  &.is-primary-inverse {
-    background: $color-bg-surface;
-    // outlineバッジに比べ一回り小さく見えてしまわないように、
-    // outlineバッジと同様のborderをつける
-    border: 1px solid $color-bg-surface;
-    color: $color-primary;
   }
   &.is-strong {
     font-weight: bolder;
