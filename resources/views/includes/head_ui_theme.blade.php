@@ -18,4 +18,8 @@
         }
     }
 
+    html {
+        accent-color: var(--color-primary);
+    }
+
 </style>
