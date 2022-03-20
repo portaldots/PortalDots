@@ -4,17 +4,17 @@
       <div class="side_window-header__title">
         <slot name="title" />
       </div>
-      <a
-        class="side_window-header__button"
+      <IconButton
+        title="新しいタブで開く"
         :href="popUpUrl"
         v-if="popUpUrl"
-        target="_blank"
+        newtab
       >
         <i class="fas fa-external-link-alt"></i>
-      </a>
-      <button class="side_window-header__button" @click="onClickClose">
+      </IconButton>
+      <IconButton title="閉じる" @click="onClickClose">
         <i class="fas fa-times"></i>
-      </button>
+      </IconButton>
     </div>
     <div class="side_window-body">
       <slot />
@@ -23,7 +23,10 @@
 </template>
 
 <script>
+import IconButton from './IconButton.vue'
+
 export default {
+  components: { IconButton },
   props: {
     isOpen: {
       type: Boolean,
@@ -60,35 +63,15 @@ export default {
   }
   &-header {
     align-items: center;
+    border-bottom: 1px solid $color-border;
     display: flex;
     height: 4rem;
-    position: relative;
+    padding: 0 $spacing;
+    padding-right: $spacing-sm;
     &__title {
       font-size: 1.1rem;
       font-weight: 600;
       margin-right: auto;
-      padding: 0 $spacing;
-    }
-    &__button {
-      align-items: center;
-      appearance: none;
-      background: transparent;
-      border: 0;
-      color: $color-muted;
-      cursor: pointer;
-      display: flex;
-      height: 100%;
-      justify-content: center;
-      padding: 0 $spacing;
-    }
-    &::after {
-      border-bottom: 1px solid $color-border;
-      bottom: 0;
-      content: '';
-      display: block;
-      left: $spacing;
-      position: absolute;
-      right: $spacing;
     }
   }
   &-body {
