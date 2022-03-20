@@ -35,11 +35,14 @@
     </app-header>
     <app-container medium>
         <list-view>
+            @if (!$circle->hasSubmitted())
+                <list-view-card>
+                    <app-info-box primary>
+                        <strong>企画情報の修正や、企画参加登録を提出することができるのは、企画責任者のみです。</strong>
+                    </app-info-box>
+                </list-view-card>
+            @endif
             <list-view-card>
-                @if (!$circle->hasSubmitted())
-                    <strong>企画情報の修正や、企画参加登録を提出することができるのは、企画責任者のみです。</strong>
-                    <hr>
-                @endif
                 @include('includes.circle_info')
             </list-view-card>
         </list-view>
