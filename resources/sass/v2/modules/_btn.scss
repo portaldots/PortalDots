@@ -80,7 +80,7 @@ body:not(.body-editor-v1) {
       @include btn(
         $color-text,
         $color-bg-surface,
-        $color-bg-base,
+        $color-bg-light,
         $color-border,
         $color-border
       );
