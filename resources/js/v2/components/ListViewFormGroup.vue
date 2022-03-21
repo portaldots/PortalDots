@@ -71,13 +71,11 @@ export default {
   &__label {
     display: block;
     font-weight: bold;
-    line-height: 1.4;
     margin: 0 0 $spacing-xs;
   }
   &__description {
     color: $color-muted;
     font-size: 0.9rem;
-    line-height: 1.4;
   }
   &__body {
     margin: 0;

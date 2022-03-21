@@ -45,7 +45,7 @@ export default {
     display: flex;
     flex: 0 0 1.5rem;
     opacity: 0.75;
-    padding-top: 0.3rem;
+    padding-top: 0.35rem;
   }
   &-content {
     flex: 1;
