@@ -19,7 +19,6 @@
                         @markdown($form->description)
                     </list-view-card>
                 </list-view>
-                <hr />
             @endisset
             <list-view>
                 <template v-slot:title>企画情報を入力</template>
