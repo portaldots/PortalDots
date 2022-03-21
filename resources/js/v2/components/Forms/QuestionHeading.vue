@@ -47,6 +47,7 @@ export default {
   }
   &__name {
     font-size: 1.5rem;
+    font-weight: $font-bold;
     line-height: 1.4;
     margin: 0;
     padding: 0 0 $spacing-sm;
