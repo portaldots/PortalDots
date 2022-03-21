@@ -272,11 +272,14 @@ class PagesService
             ->get();
         $body = $page->body;
 
+        $page->loadMissing(['documents' => function ($query) {
+            $query->public();
+        }]);
+
         // 関連する配布資料の一覧を末尾に追加する
         if ($page->documents->count() > 0) {
             $documents_markdown_list = $page
-                ->documents()
-                ->get()
+                ->documents
                 ->map(function ($document) {
                     $escaped_name = $this->formatTextService->escapeMarkdown(
                         e($document->name)

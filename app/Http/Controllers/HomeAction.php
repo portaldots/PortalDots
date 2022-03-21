@@ -38,16 +38,55 @@ class HomeAction extends Controller
 
         return view('home')
             ->with('circle_custom_form', CustomForm::getFormByType('circle'))
-            ->with('my_circles', Auth::check()
-                                    ? Auth::user()->circles()->get()
-                                    : collect([]))
+            ->with(
+                'my_circles',
+                Auth::check()
+                    ? Auth::user()
+                        ->circles()
+                        ->get()
+                    : collect([])
+            )
             ->with('circle', $circle)
-            ->with('pinned_pages', Page::byCircle($circle)->public()->pinned()->get())
-            ->with('pages', Page::byCircle($circle)->take(self::TAKE_COUNT)->with(['usersWhoRead' => function ($query) {
-                $query->where('user_id', Auth::id());
-            }])->public()->pinned(false)->get())
-            ->with('documents', Document::take(self::TAKE_COUNT)->public()->get())
-            ->with('forms', Form::byCircle($circle)->take(self::TAKE_COUNT)
-                ->public()->open()->withoutCustomForms()->closeOrder()->get());
+            ->with(
+                'pinned_pages',
+                Page::byCircle($circle)
+                    ->with([
+                        'documents' => function ($query) {
+                            $query->public();
+                        }
+                    ])
+                    ->public()
+                    ->pinned()
+                    ->get()
+            )
+            ->with(
+                'pages',
+                Page::byCircle($circle)
+                    ->take(self::TAKE_COUNT)
+                    ->with([
+                        'usersWhoRead' => function ($query) {
+                            $query->where('user_id', Auth::id());
+                        },
+                    ])
+                    ->public()
+                    ->pinned(false)
+                    ->get()
+            )
+            ->with(
+                'documents',
+                Document::take(self::TAKE_COUNT)
+                    ->public()
+                    ->get()
+            )
+            ->with(
+                'forms',
+                Form::byCircle($circle)
+                    ->take(self::TAKE_COUNT)
+                    ->public()
+                    ->open()
+                    ->withoutCustomForms()
+                    ->closeOrder()
+                    ->get()
+            );
     }
 }
