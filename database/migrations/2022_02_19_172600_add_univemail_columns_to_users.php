@@ -14,8 +14,8 @@ class AddUnivemailColumnsToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('univemail_local_part')->default('a')->after('email');
-            $table->string('univemail_domain_part')->default('a')->after('univemail_local_part');
+            $table->string('univemail_local_part')->default('')->after('email');
+            $table->string('univemail_domain_part')->default('')->after('univemail_local_part');
         });
     }
 
