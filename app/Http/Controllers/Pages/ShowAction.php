@@ -37,6 +37,10 @@ class ShowAction extends Controller
             $this->readsService->markAsRead($page, Auth::user());
         }
 
+        $page->loadMissing(['documents' => function ($query) {
+            $query->public();
+        }]);
+
         return view('pages.show')
             ->with('page', $page);
     }
