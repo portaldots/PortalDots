@@ -37,12 +37,12 @@ class ReleaseInfoService
     /**
      * この PortalDots のバージョン情報を配列で取得
      *
-     * @return Version
+     * @return Version|null
      */
-    public function getCurrentVersion(): Version
+    public function getCurrentVersion(): ?Version
     {
         if (ReleaseInfo::VERSION === '###VERSION_PLACEHOLDER###') {
-            return Version::parse('1.0.0');
+            return null;
         }
         return Version::parse(ReleaseInfo::VERSION);
     }
@@ -58,6 +58,10 @@ class ReleaseInfoService
     public function getReleaseOfLatestVersionWithinSameMajorVersion(): ?Release
     {
         $current_version_info = $this->getCurrentVersion();
+
+        if (empty($current_version_info)) {
+            return null;
+        }
 
         try {
             return $this->cache->remember(

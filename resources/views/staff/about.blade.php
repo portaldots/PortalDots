@@ -56,20 +56,28 @@
                     @endswitch
 
                 </h1>
-                <div>バージョン {{ $current_version_info->getFullVersion() }}</div>
-                @if (isset($latest_release) && !$current_version_info->equals($latest_release->getVersion()))
-                    <div class="text-success">
-                        <strong>
-                            <i class="fas fa-info-circle"></i>
-                            バージョン {{ $latest_release->getVersion()->getFullVersion() }} にアップデートできます。
-                        </strong>
-                    </div>
+                @if (!empty($current_version_info))
+                    <div>バージョン {{ $current_version_info->getFullVersion() }}</div>
+                    @if (isset($latest_release) && !$current_version_info->equals($latest_release->getVersion()))
+                        <div class="text-success">
+                            <strong>
+                                <i class="fas fa-info-circle"></i>
+                                バージョン {{ $latest_release->getVersion()->getFullVersion() }} にアップデートできます。
+                            </strong>
+                        </div>
+                    @else
+                        <div class="text-muted">
+                            <strong>
+                                <i class="far fa-check-circle"></i>
+                                お使いのバージョンは最新です。
+                            </strong>
+                        </div>
+                    @endif
                 @else
+                    <div><strong>Git リポジトリ版</strong></div>
                     <div class="text-muted">
-                        <strong>
-                            <i class="far fa-check-circle"></i>
-                            お使いのバージョンは最新です。
-                        </strong>
+                        <i class="fas fa-info-circle"></i>
+                        PortalDots 公式サイトで配布されている PortalDots へアップデートすることはできません。
                     </div>
                 @endif
             </list-view-card>
