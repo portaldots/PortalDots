@@ -50,6 +50,11 @@ class HomeAction extends Controller
             ->with(
                 'pinned_pages',
                 Page::byCircle($circle)
+                    ->with([
+                        'documents' => function ($query) {
+                            $query->public();
+                        }
+                    ])
                     ->public()
                     ->pinned()
                     ->get()
