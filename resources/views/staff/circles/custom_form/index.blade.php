@@ -103,5 +103,11 @@
                 <button type="submit" class="btn is-primary is-wide">保存</button>
             </div>
         </form>
+        <list-view>
+            <template v-slot:title>企画参加登録機能について</template>
+            <list-view-card class="markdown">
+                @include('includes.circles_custom_form_instructions')
+            </list-view-card>
+        </list-view>
     </app-container>
 @endsection
