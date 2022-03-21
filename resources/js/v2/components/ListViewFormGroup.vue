@@ -4,7 +4,10 @@
     :class="{ 'is-invalid': $slots.invalid }"
     noBorder
   >
-    <div class="listview-form-group__header">
+    <div
+      class="listview-form-group__header"
+      v-if="$slots.label || $slots.description"
+    >
       <component
         :is="labelFor ? 'label' : 'div'"
         v-bind="labelFor ? { for: labelFor } : {}"

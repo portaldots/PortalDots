@@ -83,10 +83,10 @@ textarea {
   }
   &-checkbox,
   &-radio {
-    $input-spacing: $spacing-md + $spacing-xs;
+    $input-spacing: $spacing;
     &__label {
       display: block;
-      margin: 0 0 $spacing-sm;
+      margin: 0 0 $spacing-md;
       padding: 0 0 0 #{$input-spacing};
       position: relative;
       &:last-child {
@@ -94,7 +94,7 @@ textarea {
       }
     }
     &__input {
-      margin: 0.4rem 0 0 #{-$input-spacing};
+      margin: 0.45rem 0 0 #{-$input-spacing};
       position: absolute;
     }
   }
