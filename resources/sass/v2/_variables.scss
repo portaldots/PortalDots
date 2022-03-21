@@ -10,6 +10,9 @@ $font-size: #{math.div(14, $base-font-size-px) + 'rem'};
 // ズームしてしまう
 $font-size-input: #{math.div(16, $base-font-size-px) + 'rem'};
 
+// Font Weight
+$font-bold: 600;
+
 // Color
 $color-text: var(--color-text);
 $color-primary: var(--color-primary);
