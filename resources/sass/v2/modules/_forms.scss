@@ -94,7 +94,7 @@ textarea {
       }
     }
     &__input {
-      margin: 0.45rem 0 0 #{-$input-spacing};
+      margin: #{($line-height-base - 1) / 2}rem 0 0 #{-$input-spacing};
       position: absolute;
     }
   }
