@@ -1874,10 +1874,10 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-blade-formatter@^1.21.3:
-  version "1.21.3"
-  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.21.3.tgz#44b2124f28b1b49716ee5943e401ed38adc32a3e"
-  integrity sha512-xddv5vHYwF2x2PVRvuTLIu4oy+nleFcM+7sROW6AEuCNOY6/CXt7DJvSIb58OUZHgZr1/Wt+fvfsvqH7JPXxug==
+blade-formatter@^1.21.5:
+  version "1.21.5"
+  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.21.5.tgz#c91cc9d19ccbecb42e9045768642cd614c7f1296"
+  integrity sha512-iUsbxPaQtj9RGwIM06IZdAoXUYK8W3oSqJX+boEozAhWsx6oOu3HfMBZuL5lJFzGbvNwFbpB0A1Tj4tloxLOLg==
   dependencies:
     "@prettier/plugin-php" "^0.18.0"
     "@shufo/tailwindcss-class-sorter" "^1.0.3"
@@ -1893,7 +1893,7 @@ blade-formatter@^1.21.3:
     lodash "^4.17.19"
     php-parser "3.0.3"
     prettier "^2.2.0"
-    vscode-oniguruma "1.6.1"
+    vscode-oniguruma "1.6.2"
     vscode-textmate "^6.0.0"
     xregexp "^5.0.1"
     yargs "^17.3.1"
@@ -8003,10 +8003,10 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
-vscode-oniguruma@1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/vscode-oniguruma/-/vscode-oniguruma-1.6.1.tgz#2bf4dfcfe3dd2e56eb549a3068c8ee39e6c30ce5"
-  integrity sha512-vc4WhSIaVpgJ0jJIejjYxPvURJavX6QG41vu0mGhqywMkQqulezEqEQ3cO3gc8GvcOpX6ycmKGqRoROEMBNXTQ==
+vscode-oniguruma@1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/vscode-oniguruma/-/vscode-oniguruma-1.6.2.tgz#aeb9771a2f1dbfc9083c8a7fdd9cccaa3f386607"
+  integrity sha512-KH8+KKov5eS/9WhofZR8M8dMHWN2gTxjMsG4jd04YhpbPR91fUj7rYQ2/XjeHCJWbg7X++ApRIU9NUwM2vTvLA==
 
 vscode-textmate@^6.0.0:
   version "6.0.0"
