@@ -1,24 +1,24 @@
 .error {
-    color: $color-muted;
-    margin: $spacing 0;
-    text-align: center;
-    &-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-    &-message {
-        margin: $spacing-sm 0;
-    }
-    &-contact {
-        margin: $spacing-sm 0;
-    }
-    &-button {
-        margin: $spacing-md;
-    }
-    &-twitter {
-        height: 800px;
-        margin: $spacing-md auto;
-        max-width: 400px;
-        width: 100%;
-    }
+  color: $color-muted;
+  margin: $spacing 0;
+  text-align: center;
+  &-title {
+    font-size: 1.5rem;
+    font-weight: $font-bold;
+  }
+  &-message {
+    margin: $spacing-sm 0;
+  }
+  &-contact {
+    margin: $spacing-sm 0;
+  }
+  &-button {
+    margin: $spacing-md;
+  }
+  &-twitter {
+    height: 800px;
+    margin: $spacing-md auto;
+    max-width: 400px;
+    width: 100%;
+  }
 }

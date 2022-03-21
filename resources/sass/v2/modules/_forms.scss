@@ -8,7 +8,7 @@ textarea {
   }
   &-label {
     display: block;
-    font-weight: bold;
+    font-weight: $font-bold;
     margin: 0 0 $spacing-xs;
   }
   &-control {

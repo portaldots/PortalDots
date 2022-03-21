@@ -70,7 +70,7 @@ export default {
   }
   &__label {
     display: block;
-    font-weight: bold;
+    font-weight: $font-bold;
     margin: 0 0 $spacing-xs;
   }
   &__description {
@@ -81,7 +81,7 @@ export default {
     margin: 0;
   }
   &__invalid-message {
-    font-weight: bold;
+    font-weight: $font-bold;
   }
 }
 </style>

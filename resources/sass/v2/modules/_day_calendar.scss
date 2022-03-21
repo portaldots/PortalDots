@@ -2,7 +2,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  font-weight: bold;
+  font-weight: $font-bold;
   &__month,
   &__date,
   &__day {

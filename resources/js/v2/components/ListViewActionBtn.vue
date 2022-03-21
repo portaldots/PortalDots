@@ -61,7 +61,7 @@ export default {
   align-items: center;
   color: $color-primary;
   display: flex;
-  font-weight: bold;
+  font-weight: $font-bold;
   justify-content: center;
   padding-bottom: $spacing-md;
   padding-top: $spacing-md;

@@ -181,7 +181,7 @@ export default {
     }
     &__type {
       border-bottom: 1px solid $color-border;
-      font-weight: bold;
+      font-weight: $font-bold;
       margin-bottom: 1rem;
       padding-bottom: 0.5rem;
     }

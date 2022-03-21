@@ -43,7 +43,7 @@ body {
       border-radius: 9999px;
       display: inline-block;
       font-size: 0.6rem;
-      font-weight: bold;
+      font-weight: $font-bold;
       padding: 0 $spacing-sm;
     }
     &__notifier {

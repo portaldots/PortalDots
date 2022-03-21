@@ -29,7 +29,7 @@ export default {}
     width: 100%;
     &__title {
       font-size: $font-size-lg;
-      font-weight: bold;
+      font-weight: $font-bold;
       margin: 0;
     }
     &__description {

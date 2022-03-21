@@ -41,7 +41,7 @@ export default {
     counter-increment: steps-list;
     display: flex;
     font-size: $circle-size * 0.6;
-    font-weight: bold;
+    font-weight: $font-bold;
     height: $circle-size;
     justify-content: center;
     left: 0;
@@ -53,7 +53,7 @@ export default {
     width: $circle-size;
   }
   &.is-active {
-    font-weight: bold;
+    font-weight: $font-bold;
     &::before {
       background: $color-primary;
       border: 1px solid $color-primary;

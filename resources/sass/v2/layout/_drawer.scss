@@ -52,7 +52,7 @@
 
     color: $color-text;
     display: block;
-    font-weight: bold;
+    font-weight: $font-bold;
     outline-offset: -3px;
     padding: $spacing;
     padding-top: #{$navbar-height + $spacing};
@@ -82,7 +82,7 @@
       }
       &.is-active {
         color: $color-primary;
-        font-weight: bold;
+        font-weight: $font-bold;
         position: relative;
         &::before {
           $bar-width: 4px;
@@ -116,7 +116,7 @@
 
     padding: $spacing;
     &__info {
-      font-weight: bold;
+      font-weight: $font-bold;
       margin: 0 0 $spacing-md;
       text-align: center;
     }

@@ -64,7 +64,7 @@ p {
 dt {
   color: $color-muted;
   font-size: 0.9rem;
-  font-weight: bold;
+  font-weight: $font-bold;
   margin: $spacing-lg 0 $spacing-xs;
   &:first-child {
     margin-top: 0;
@@ -97,5 +97,5 @@ b {
   // font-weight が bold となっている要素内で strong や b タグを使ってしまうと
   // Mac では極太フォントになってしまう。極太フォントにする必要はないので、
   // 普通の bold を指定している。
-  font-weight: bold;
+  font-weight: $font-bold;
 }

@@ -312,7 +312,7 @@ export default {
         cursor: pointer;
         display: block;
         font-size: 0.9rem;
-        font-weight: bold;
+        font-weight: $font-bold;
         padding: $spacing $spacing-md;
         text-align: left;
         white-space: nowrap;
