@@ -30,6 +30,7 @@ export default {}
     &__title {
       font-size: $font-size-lg;
       font-weight: $font-bold;
+      line-height: $line-height-heading;
       margin: 0;
     }
     &__description {
