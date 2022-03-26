@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\Utils\UIThemeService;
 use Illuminate\Cookie\Middleware\EncryptCookies as Middleware;
 
 class EncryptCookies extends Middleware
@@ -11,5 +12,7 @@ class EncryptCookies extends Middleware
      *
      * @var array<int, string>
      */
-    protected $except = [];
+    protected $except = [
+        UIThemeService::COOKIE_KEY
+    ];
 }
