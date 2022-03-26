@@ -21,6 +21,7 @@ import AppChip from './components/AppChip.vue'
 import AppChipsContainer from './components/AppChipsContainer.vue'
 import AppDropdown from './components/AppDropdown.vue'
 import AppDropdownItem from './components/AppDropdownItem.vue'
+import AppearanceSettings from './components/AppearanceSettings.vue'
 import AppFixedFormFooter from './components/AppFixedFormFooter.vue'
 import ListView from './components/ListView.vue'
 import ListViewCard from './components/ListViewCard.vue'
@@ -96,6 +97,7 @@ export function mountV2App() {
         AppChipsContainer,
         AppDropdown,
         AppDropdownItem,
+        AppearanceSettings,
         AppFixedFormFooter,
         ListView,
         ListViewCard,
