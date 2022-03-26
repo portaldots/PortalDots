@@ -38,6 +38,10 @@ Route::prefix('/documents')
         Route::get('/{document}', 'Documents\ShowAction')->name('show');
     });
 
+// 外観設定
+Route::get('/user/appearance', 'Users\EditAppearanceAction')->name('user.appearance');
+Route::patch('/user/appearance', 'Users\UpdateAppearanceAction');
+
 // 認証系
 Auth::routes([
     'register' => true,
@@ -77,8 +81,6 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/user/update', 'Users\UpdateInfoAction')->name('user.update');
     Route::get('/user/password', 'Users\ChangePasswordAction')->name('user.password');
     Route::post('/user/password', 'Users\PostChangePasswordAction');
-    Route::get('/user/appearance', 'Users\EditAppearanceAction')->name('user.appearance');
-    Route::patch('/user/appearance', 'Users\UpdateAppearanceAction');
     Route::get('/user/delete', 'Users\DeleteAction')->name('user.delete');
     Route::delete('/user', 'Users\DestroyAction')->name('user.destroy');
     // お問い合わせページ

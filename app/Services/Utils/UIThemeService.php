@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cookie;
 
 class UIThemeService
 {
-    private const COOKIE_KEY = 'ui_theme';
+    public const COOKIE_KEY = 'ui_theme';
 
     public const AVAILABLE_THEMES = [
         'system',
