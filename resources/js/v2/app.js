@@ -68,6 +68,16 @@ export function mountV2App() {
     /* eslint-enable */
   })
 
+  if (
+    window.navigator &&
+    window.navigator.userAgentData &&
+    window.navigator.userAgentData.platform &&
+    window.navigator.userAgentData.platform.toLowerCase &&
+    window.navigator.userAgentData.platform.toLowerCase() === 'android'
+  ) {
+    document.querySelector('html').classList.add('env-android')
+  }
+
   document.addEventListener('turbolinks:load', () => {
     new Vue({
       components: {

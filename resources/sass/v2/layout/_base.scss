@@ -1,8 +1,14 @@
 html {
+  --font-weight-bold: 600;
+
   font-size: $base-font-size;
 
   @media screen and (max-width: 350px) {
     font-size: #{($base-font-size-px * 0.8) + 'px'};
+  }
+  &.env-android {
+    // Pixel などの Android 端末は日本語フォントが font-weight: 600 に対応していない
+    --font-weight-bold: 700;
   }
 }
 

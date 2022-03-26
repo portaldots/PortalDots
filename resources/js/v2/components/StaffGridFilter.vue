@@ -351,7 +351,7 @@ export default {
     }
     &__name {
       display: flex;
-      font-weight: 600;
+      font-weight: $font-bold;
       justify-content: space-between;
       margin-bottom: $spacing-sm;
     }

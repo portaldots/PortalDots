@@ -70,7 +70,7 @@ export default {
     padding-right: $spacing-sm;
     &__title {
       font-size: 1.1rem;
-      font-weight: 600;
+      font-weight: $font-bold;
       margin-right: auto;
     }
   }

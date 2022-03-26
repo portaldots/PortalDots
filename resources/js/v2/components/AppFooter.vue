@@ -36,7 +36,7 @@ export default {}
   }
   &__link {
     color: $color-muted-2;
-    font-weight: 600;
+    font-weight: $font-bold;
     transition: linear 0.1s;
     &:hover,
     &:focus {
