@@ -74,7 +74,7 @@ export default {
   }
   &__title {
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: $font-bold;
     margin-top: $spacing-md;
   }
   &__description {

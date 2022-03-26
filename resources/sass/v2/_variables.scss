@@ -15,7 +15,7 @@ $font-size: #{math.div(14, $base-font-size-px) + 'rem'};
 $font-size-input: #{math.div(16, $base-font-size-px) + 'rem'};
 
 // Font Weight
-$font-bold: 600;
+$font-bold: var(--font-weight-bold);
 
 // Color
 $color-text: var(--color-text);
