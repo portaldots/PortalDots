@@ -76,7 +76,6 @@ export default {
     }
   },
   mounted() {
-    // Cookieにセットされているテーマをセット
     this.selectedTheme = this.defaultTheme || 'system'
   },
   methods: {
