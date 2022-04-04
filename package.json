@@ -95,7 +95,7 @@
         "postinstall-postinstall": "^2.1.0",
         "turbolinks": "^5.2.0",
         "v-tooltip": "^2.1.3",
-        "vue": "^2.6.14",
+        "vue": "^3.2.31",
         "vue-easymde": "^2.0.0",
         "vue-global-events": "^1.2.1",
         "vuedraggable": "^2.24.3",
