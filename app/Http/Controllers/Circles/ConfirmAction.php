@@ -42,6 +42,7 @@ class ConfirmAction extends Controller
 
         return view('circles.confirm')
             ->with('circle', $circle)
+            ->with('form', $form)
             ->with('questions', !empty($form) ? $form->questions()->get() : null)
             ->with('answer', $answer)
             ->with('answer_details', !empty($answer)
