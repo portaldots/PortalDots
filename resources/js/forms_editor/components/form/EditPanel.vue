@@ -54,6 +54,12 @@
         </small>
       </div>
     </label>
+    <label class="form-group row" v-if="show_table_questions">
+      <span class="col-sm-2 col-form-label">テーブル設問</span>
+      <div class="col-sm-10">
+        設問を追加するための Vue を作成する。{{ table_questions }}
+      </div>
+    </label>
     <label class="form-group row" v-if="label_number_min">
       <span class="col-sm-2 col-form-label">{{ label_number_min }}</span>
       <div class="col-sm-10">
@@ -156,6 +162,10 @@ export default {
       default: false
     },
     show_options: {
+      required: false,
+      default: false
+    },
+    show_table_questions: {
       required: false,
       default: false
     }
@@ -278,6 +288,18 @@ export default {
         this.$store.commit(`editor/${UPDATE_QUESTION}`, {
           id: this.question.id,
           key: 'allowed_types',
+          value: new_value
+        })
+      }
+    },
+    table_questions: {
+      get() {
+        return this.question.table
+      },
+      set(new_value) {
+        this.$store.commit(`editor/${UPDATE_QUESTION}`, {
+          id: this.question.id,
+          key: 'table',
           value: new_value
         })
       }
