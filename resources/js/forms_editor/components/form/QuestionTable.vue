@@ -14,15 +14,7 @@
         <p class="form-text text-muted mb-2">
           {{ description }}
         </p>
-        {{/*
-        <input
-          type="text"
-          class="form-control"
-          tabindex="-1"
-          placeholder="テーブル"
-        />
-        */}}
-        {{ table }}
+        <table-question-editor :table="question.table"></table-question-editor>
       </div>
     </template>
     <template v-slot:edit-panel>
@@ -40,6 +32,7 @@
 import FormItem from './FormItem.vue'
 import EditPanel from './EditPanel.vue'
 import { GET_QUESTION_BY_ID } from '../../store/editor'
+import TableQuestionEditor from './table/TableQuestionEditor.vue'
 
 export default {
   props: {
@@ -54,7 +47,8 @@ export default {
   },
   components: {
     FormItem,
-    EditPanel
+    EditPanel,
+    TableQuestionEditor
   },
   computed: {
     question() {
@@ -70,11 +64,6 @@ export default {
     },
     is_required() {
       return this.question.is_required
-    },
-    table() {
-      // TODO: デバッグ用の出力を削除する @hosakou
-      console.log(this.question)
-      return this.question.table
     }
   }
 }
