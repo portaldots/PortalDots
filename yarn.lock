@@ -4838,10 +4838,10 @@ linguist-languages@^7.5.1:
   resolved "https://registry.yarnpkg.com/linguist-languages/-/linguist-languages-7.14.0.tgz#62a6bdbe1ef80d0715d16c0bb8e953ee93c95dfc"
   integrity sha512-VqnUYHOSqRqAGnIl+7SCnFxK+sX0x7LXe5qn0TG6t9SViofQgN7272PLCFZ/lgkT7tAO5CA/2pCsZGlGvGhfWA==
 
-lint-staged@^12.4.0:
-  version "12.4.0"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-12.4.0.tgz#1fb8c73ac7a1c670b87bd2c1bf1e302c866e77af"
-  integrity sha512-3X7MR0h9b7qf4iXf/1n7RlVAx+EzpAZXoCEMhVSpaBlgKDfH2ewf+QUm7BddFyq29v4dgPP+8+uYpWuSWx035A==
+lint-staged@^12.4.1:
+  version "12.4.1"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-12.4.1.tgz#63fa27bfc8a33515f6902f63f6670864f1fb233c"
+  integrity sha512-PTXgzpflrQ+pODQTG116QNB+Q6uUTDg5B5HqGvNhoQSGt8Qy+MA/6zSnR8n38+sxP5TapzeQGTvoKni0KRS8Vg==
   dependencies:
     cli-truncate "^3.1.0"
     colorette "^2.0.16"
