@@ -57,7 +57,7 @@
     <div class="form-group row" v-if="show_table_questions">
       <span class="col-sm-2 col-form-label">テーブル設問</span>
       <div class="col-sm-10">
-        <table-edit-panel v-model="table" v-on:save="saveTable" />
+        <table-question-editor :questions="table" v-on:save="saveTable" />
       </div>
     </div>
     <label class="form-group row" v-if="label_number_min">
@@ -127,7 +127,7 @@ import {
   SAVE_QUESTION,
   DELETE_QUESTION
 } from '../../store/editor'
-import TableEditPanel from './table/TableEditPanel.vue'
+import TableQuestionEditor from './table/TableQuestionEditor.vue'
 
 export default {
   props: {
@@ -172,7 +172,7 @@ export default {
     }
   },
   components: {
-    TableEditPanel
+    TableQuestionEditor
   },
   data() {
     return {
@@ -302,10 +302,9 @@ export default {
     },
     table: {
       get() {
-        return this.question.table
+        return this.question.table || []
       },
       set(new_value) {
-        console.log('DEBUG #4 => ', this.question.table)
         this.$store.commit(`editor/${UPDATE_QUESTION}`, {
           id: this.question.id,
           key: 'table',

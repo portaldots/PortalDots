@@ -14,7 +14,7 @@
         <p class="form-text text-muted mb-2">
           {{ description }}
         </p>
-        <table-question-editor :table="question.table"></table-question-editor>
+        <table-questions :table="table"></table-questions>
       </div>
     </template>
     <template v-slot:edit-panel>
@@ -32,7 +32,7 @@
 import FormItem from './FormItem.vue'
 import EditPanel from './EditPanel.vue'
 import { GET_QUESTION_BY_ID } from '../../store/editor'
-import TableQuestionEditor from './table/TableQuestionEditor.vue'
+import TableQuestions from './table/TableQuestions.vue'
 
 export default {
   props: {
@@ -48,13 +48,16 @@ export default {
   components: {
     FormItem,
     EditPanel,
-    TableQuestionEditor
+    TableQuestions
   },
   computed: {
     question() {
       return this.$store.getters[`editor/${GET_QUESTION_BY_ID}`](
         this.question_id
       )
+    },
+    table() {
+      return this.question.table || []
     },
     name() {
       return this.question.name || '(無題の設問)'
