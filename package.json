@@ -52,7 +52,7 @@
         ]
     },
     "devDependencies": {
-        "blade-formatter": "^1.24.0",
+        "blade-formatter": "^1.25.3",
         "cross-env": "^7.0",
         "eslint": "^8.15.0",
         "eslint-config-airbnb-base": "^15.0.0",
