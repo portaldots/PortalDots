@@ -22,6 +22,7 @@
       :invalid="invalid"
       :value="value"
       :options="computedOptions"
+      :table-questions="tableQuestions"
       :numberMin="numberMin"
       :numberMax="numberMax"
       :allowedTypes="computedAllowedTypes"
@@ -44,6 +45,7 @@ import QuestionNumber from './QuestionNumber.vue'
 import QuestionSelect from './QuestionSelect.vue'
 import QuestionRadio from './QuestionRadio.vue'
 import QuestionCheckbox from './QuestionCheckbox.vue'
+import QuestionTable from './QuestionTable.vue'
 
 export default {
   components: {
@@ -55,7 +57,8 @@ export default {
     QuestionNumber,
     QuestionSelect,
     QuestionRadio,
-    QuestionCheckbox
+    QuestionCheckbox,
+    QuestionTable
   },
   props: {
     type: {
@@ -86,6 +89,9 @@ export default {
       type: [String, Array]
     },
     options: {
+      type: Array
+    },
+    tableQuestions: {
       type: Array
     },
     numberMin: {
