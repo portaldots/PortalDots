@@ -62,7 +62,7 @@
         "eslint-plugin-vue": "^8.7.1",
         "husky": "^7.0.4",
         "jquery": "^3.5",
-        "lint-staged": "^12.4.1",
+        "lint-staged": "^13.0.1",
         "lodash": "^4.17.21",
         "popper.js": "^1.12",
         "postcss": "^8.4",
