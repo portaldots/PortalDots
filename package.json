@@ -29,27 +29,7 @@
         "eslint-check": "eslint --ext js,vue ./resources",
         "stylelint-check": "stylelint ./resources/**/*.{vue,scss}",
         "phpunit": "cd docker_dev && docker-compose run web ./vendor/bin/phpunit",
-        "prepare": "husky install",
         "postinstall": "patch-package"
-    },
-    "lint-staged": {
-        "*.js": [
-            "eslint --fix"
-        ],
-        "*.vue": [
-            "eslint --fix",
-            "stylelint --fix"
-        ],
-        "*.scss": [
-            "stylelint --fix"
-        ],
-        "!({**/*mail*/**/*,**/*mail*}).blade.php": [
-            "shx sed -i 's/[ \t]*$//'"
-        ],
-        "*.php": [
-            "composer phpcbf",
-            "composer phpcs"
-        ]
     },
     "devDependencies": {
         "blade-formatter": "^1.25.3",
@@ -60,9 +40,7 @@
         "eslint-plugin-import": "^2.26.0",
         "eslint-plugin-prettier": "^4.0.0",
         "eslint-plugin-vue": "^8.7.1",
-        "husky": "^7.0.4",
         "jquery": "^3.5",
-        "lint-staged": "^12.4.1",
         "lodash": "^4.17.21",
         "popper.js": "^1.12",
         "postcss": "^8.4",
