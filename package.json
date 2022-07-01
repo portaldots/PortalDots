@@ -32,7 +32,7 @@
         "postinstall": "patch-package"
     },
     "devDependencies": {
-        "blade-formatter": "^1.26.10",
+        "blade-formatter": "^1.26.11",
         "cross-env": "^7.0",
         "eslint": "^8.18.0",
         "eslint-config-airbnb-base": "^15.0.0",
