@@ -79,7 +79,7 @@
         "stylelint-order": "^4.1.0",
         "stylelint-scss": "^3.21.0",
         "vue-loader": "^15.9.8",
-        "vue-template-compiler": "^2.7.0"
+        "vue-template-compiler": "^2.7.8"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.1.2",
@@ -94,7 +94,7 @@
         "portal-vue": "^2.1.7",
         "postinstall-postinstall": "^2.1.0",
         "turbolinks": "^5.2.0",
-        "vue": "^2.7.0",
+        "vue": "^2.7.8",
         "vue-easymde": "^2.0.0",
         "vue-global-events": "^1.2.1",
         "vuedraggable": "^2.24.3",
