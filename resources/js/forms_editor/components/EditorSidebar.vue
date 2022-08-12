@@ -72,6 +72,11 @@ export default {
           value: 'upload',
           icon: 'far fa-file',
           label: 'ファイルアップロード'
+        },
+        {
+          value: 'table',
+          icon: 'fas fa-table',
+          label: 'テーブル'
         }
       ]
     }

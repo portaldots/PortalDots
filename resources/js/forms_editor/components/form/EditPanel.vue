@@ -54,6 +54,12 @@
         </small>
       </div>
     </label>
+    <div class="form-group row" v-if="show_table_questions">
+      <span class="col-sm-2 col-form-label">テーブル設問</span>
+      <div class="col-sm-10">
+        <table-question-editor :questions="table" v-on:save="saveTable" />
+      </div>
+    </div>
     <label class="form-group row" v-if="label_number_min">
       <span class="col-sm-2 col-form-label">{{ label_number_min }}</span>
       <div class="col-sm-10">
@@ -121,6 +127,7 @@ import {
   SAVE_QUESTION,
   DELETE_QUESTION
 } from '../../store/editor'
+import TableQuestionEditor from './table/TableQuestionEditor.vue'
 
 export default {
   props: {
@@ -158,7 +165,14 @@ export default {
     show_options: {
       required: false,
       default: false
+    },
+    show_table_questions: {
+      required: false,
+      default: false
     }
+  },
+  components: {
+    TableQuestionEditor
   },
   data() {
     return {
@@ -192,6 +206,10 @@ export default {
     },
     onBlur() {
       this.deleteDuplication()
+      this.save()
+    },
+    saveTable(value) {
+      this.$set(this.question, 'table', value)
       this.save()
     }
   },
@@ -281,7 +299,25 @@ export default {
           value: new_value
         })
       }
+    },
+    table: {
+      get() {
+        return this.question.table || []
+      },
+      set(new_value) {
+        this.$store.commit(`editor/${UPDATE_QUESTION}`, {
+          id: this.question.id,
+          key: 'table',
+          value: new_value
+        })
+      }
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+div.form-group {
+  cursor: default;
+}
+</style>

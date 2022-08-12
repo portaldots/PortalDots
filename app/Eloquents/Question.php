@@ -41,6 +41,7 @@ class Question extends Model
         'number_max',
         'allowed_types',
         'options',
+        'table',
         'priority',
     ];
 
@@ -55,6 +56,7 @@ class Question extends Model
         'checkbox',
         'select',
         'upload',
+        'table',
     ];
 
     protected $fillable = [
@@ -66,6 +68,7 @@ class Question extends Model
         'number_max',
         'allowed_types',
         'options',
+        'table',
         'priority',
     ];
 
@@ -74,6 +77,7 @@ class Question extends Model
         'number_min' => 'int',
         'number_max' => 'int',
         'priority' => 'int',
+        'table' => 'json',
     ];
 
     protected static function boot()

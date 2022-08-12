@@ -25,6 +25,7 @@ class GetQuestionsAction extends Controller
                 'number_max' => $question->number_max,
                 'allowed_types' => $question->allowed_types,
                 'options' => $question->options,
+                'table' => $question->table,
                 'priority' => $question->priority,
                 'created_at' => $question->created_at,
                 'updated_at' => $question->updated_at,

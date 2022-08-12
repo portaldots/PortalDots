@@ -31,6 +31,9 @@
         type="{{ $question->type }}" v-bind:question-id="{{ $question->id }}"
         name="{{ $question->name }}" description="{{ $question->description }}"
         v-bind:options="{{ json_encode($question->optionsArray) }}"
+        @if ($question->type === 'table')
+            v-bind:table-questions="{{ json_encode($question->table) }}"
+        @endif
         v-bind:number-min="{{ $question->number_min ?? 'null' }}"
         v-bind:number-max="{{ $question->number_max ?? 'null' }}"
         v-bind:allowed-types="{{ json_encode($question->allowed_types_array) }}"
