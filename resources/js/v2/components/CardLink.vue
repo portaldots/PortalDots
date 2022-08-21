@@ -58,23 +58,27 @@ export default {
     background-color: $color-bg-light;
   }
   &__icon {
+    align-items: center;
+    background-color: $color-primary-light;
+    border-radius: $border-radius;
     color: $color-primary;
-    font-size: 2.25rem;
+    display: flex;
+    font-size: 1.75rem;
+    height: 3rem;
+    justify-content: center;
     line-height: 1;
-    opacity: 0.6;
+    width: 3rem;
   }
   &.is-disabled &__icon {
     color: $color-muted;
   }
   &__title {
     font-size: 1.1rem;
-    font-weight: 600;
-    line-height: 1.4;
+    font-weight: $font-bold;
     margin-top: $spacing-md;
   }
   &__description {
     color: $color-muted;
-    line-height: 1.4;
     margin-top: $spacing-sm;
   }
 }

@@ -3,6 +3,8 @@ import Turbolinks from 'turbolinks'
 import Vue from 'vue'
 import GlobalEvents from 'vue-global-events'
 import PortalVue from 'portal-vue'
+import VTooltip from 'v-tooltip'
+
 import TurbolinksAdapter from './vue-turbolinks'
 
 import AppFooter from './components/AppFooter.vue'
@@ -19,6 +21,7 @@ import AppChip from './components/AppChip.vue'
 import AppChipsContainer from './components/AppChipsContainer.vue'
 import AppDropdown from './components/AppDropdown.vue'
 import AppDropdownItem from './components/AppDropdownItem.vue'
+import AppearanceSettings from './components/AppearanceSettings.vue'
 import AppFixedFormFooter from './components/AppFixedFormFooter.vue'
 import ListView from './components/ListView.vue'
 import ListViewCard from './components/ListViewCard.vue'
@@ -52,6 +55,7 @@ export function mountV2App() {
 
   Vue.use(PortalVue)
   Vue.use(TurbolinksAdapter)
+  Vue.use(VTooltip, { defaultHtml: false, defaultDelay: 400 })
 
   Turbolinks.start()
 
@@ -64,6 +68,16 @@ export function mountV2App() {
     }
     /* eslint-enable */
   })
+
+  if (
+    window.navigator &&
+    window.navigator.userAgentData &&
+    window.navigator.userAgentData.platform &&
+    window.navigator.userAgentData.platform.toLowerCase &&
+    window.navigator.userAgentData.platform.toLowerCase() === 'android'
+  ) {
+    document.querySelector('html').classList.add('env-android')
+  }
 
   document.addEventListener('turbolinks:load', () => {
     new Vue({
@@ -83,6 +97,7 @@ export function mountV2App() {
         AppChipsContainer,
         AppDropdown,
         AppDropdownItem,
+        AppearanceSettings,
         AppFixedFormFooter,
         ListView,
         ListViewCard,

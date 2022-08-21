@@ -11,6 +11,7 @@ use App\Eloquents\AnswerDetail;
 use App\Http\Requests\Forms\AnswerRequestInterface;
 use App\Services\Utils\ActivityLogService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AnswerDetailsService
 {
@@ -88,31 +89,44 @@ class AnswerDetailsService
         $form->loadMissing('questions');
 
         $data = [];
-        foreach ($answer_details as $question_id => $detail) {
-            $question = $form->questions->firstWhere('id', $question_id);
-
-            if (is_array($detail)) {
-                foreach ($detail as $value) {
+        foreach ($form->questions as $question) {
+            if (isset($answer_details[$question->id])) {
+                if (is_array($answer_details[$question->id])) {
+                    foreach ($answer_details[$question->id] as $value) {
+                        $data[] = [
+                            'answer_id' => $answer->id,
+                            'question_id' => $question->id,
+                            'answer' => $value
+                        ];
+                    }
+                } elseif ($question->type === 'upload' && $answer_details[$question->id] === '__KEEP__') {
+                    // __KEEP__ の場合、アップロードされた値ではなく、現在の DB 上の値を
+                    // そのまま回答として保存する
                     $data[] = [
                         'answer_id' => $answer->id,
-                        'question_id' => $question_id,
-                        'answer' => $value
+                        'question_id' => $question->id,
+                        'answer' => $answer_details_on_db[$question->id]
+                    ];
+                } elseif ($question->type === 'upload') {
+                    if (isset($answer_details_on_db[$question->id])) {
+                        Storage::delete($answer_details_on_db[$question->id]);
+                    }
+                    $data[] = [
+                        'answer_id' => $answer->id,
+                        'question_id' => $question->id,
+                        'answer' => $answer_details[$question->id]
+                    ];
+                } else {
+                    $data[] = [
+                        'answer_id' => $answer->id,
+                        'question_id' => $question->id,
+                        'answer' => $answer_details[$question->id]
                     ];
                 }
-            } elseif ($question->type === 'upload' && $detail === '__KEEP__') {
-                // __KEEP__ の場合、アップロードされた値ではなく、現在の DB 上の値を
-                // そのまま回答として保存する
-                $data[] = [
-                    'answer_id' => $answer->id,
-                    'question_id' => $question_id,
-                    'answer' => $answer_details_on_db[$question_id]
-                ];
             } else {
-                $data[] = [
-                    'answer_id' => $answer->id,
-                    'question_id' => $question_id,
-                    'answer' => $detail
-                ];
+                if ($question->type === 'upload' && isset($answer_details_on_db[$question->id])) {
+                    Storage::delete($answer_details_on_db[$question->id]);
+                }
             }
         }
 

@@ -1,5 +1,9 @@
 @use "sass:math";
 
+// Line Height
+$line-height-base: 1.7;
+$line-height-heading: 1.4;
+
 // Font Size
 $base-font-size-px: 15;
 $base-font-size: #{$base-font-size-px + 'px'};
@@ -10,6 +14,9 @@ $font-size: #{math.div(14, $base-font-size-px) + 'rem'};
 // ズームしてしまう
 $font-size-input: #{math.div(16, $base-font-size-px) + 'rem'};
 
+// Font Weight
+$font-bold: var(--font-weight-bold);
+
 // Color
 $color-text: var(--color-text);
 $color-primary: var(--color-primary);
@@ -17,9 +24,11 @@ $color-primary-light: var(--color-primary-light);
 $color-danger: var(--color-danger);
 $color-danger-light: var(--color-danger-light);
 $color-success: var(--color-success);
+$color-success-light: var(--color-success-light);
 $color-muted: var(--color-muted);
 $color-muted-2: var(--color-muted-2);
 $color-muted-3: var(--color-muted-3);
+$color-muted-light: var(--color-muted-light);
 $color-border: var(--color-border);
 $color-bg-base: var(--color-bg-base);
 $color-bg-light: var(--color-bg-light);
@@ -35,6 +44,12 @@ $semantic-colors: (
   success: $color-success,
   muted: $color-muted,
 );
+$semantic-light-colors: (
+  primary: $color-primary-light,
+  danger: $color-danger-light,
+  success: $color-success-light,
+  muted: $color-muted-light,
+);
 
 $color-box-shadow: var(--color-box-shadow);
 $color-box-shadow-subdued: var(--color-box-shadow-subdued);
@@ -49,6 +64,8 @@ $color-primary-hover: var(--color-primary-hover);
 $color-primary-inverse-hover: var(--color-primary-inverse-hover);
 $color-danger-hover: var(--color-danger-hover);
 $color-success-hover: var(--color-success-hover);
+$color-emphasis-gray: var(--color-emphasis-gray);
+$color-fg-emphasis-gray: var(--color-fg-emphasis-gray);
 
 // Box Shadow
 $box-shadow-lv1: 0 0.2rem 0.4rem -0.3rem $color-box-shadow,
@@ -77,6 +94,7 @@ $drawer-width-narrow: 280px;
 $navbar-height: 5rem;
 $transition-base: 0.3s ease;
 $transition-base-fast: 0.15s ease;
+$border-radius-sm: 0.2rem;
 $border-radius: 0.45rem;
 $bottom-tabs-height: 4.5rem;
 $bottom-tabs-container-width: 600px;

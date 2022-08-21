@@ -39,7 +39,7 @@ export default {
   &__link {
     color: $color-primary;
     display: block;
-    font-weight: bold;
+    font-weight: $font-bold;
     padding: $spacing-md;
     width: 100%;
     &:hover,

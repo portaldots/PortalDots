@@ -34,7 +34,7 @@ export default {
     margin: 0 0 $spacing-md;
   }
   &__text {
-    font-weight: bold;
+    font-weight: $font-bold;
     margin: 0;
   }
   &__body {

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Pages;
 
+use App\Eloquents\Document;
 use App\Eloquents\Page;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -43,5 +44,37 @@ class ShowActionTest extends TestCase
             $response->assertForbidden();
             $response->assertDontSee($page_title);
         }
+    }
+
+    /**
+     * @test
+     */
+    public function お知らせに添付されている非公開の配布資料が一覧に表示されない()
+    {
+        /** @var Page */
+        $page = factory(Page::class)->create([
+            'is_public' => true,
+        ]);
+
+        /** @var Document */
+        $public_document = factory(Document::class)->create([
+            'name' => '公開されている配布資料',
+            'is_public' => true,
+        ]);
+
+        /** @var Document */
+        $private_document = factory(Document::class)->create([
+            'name' => '非公開の配布資料',
+            'is_public' => false,
+        ]);
+
+        $page->documents()->save($public_document);
+        $page->documents()->save($private_document);
+
+        $response = $this->get(route('pages.show', ['page' => $page]));
+
+        $response->assertOk();
+        $response->assertSee('公開されている配布資料');
+        $response->assertDontSee('非公開の配布資料');
     }
 }

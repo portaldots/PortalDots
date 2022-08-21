@@ -204,7 +204,7 @@ export default {
     }
     &__display-name {
       display: block;
-      font-weight: bold;
+      font-weight: $font-bold;
       margin-bottom: $spacing-xs;
     }
     &__sub-name {

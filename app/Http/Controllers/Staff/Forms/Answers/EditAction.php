@@ -25,7 +25,7 @@ class EditAction extends Controller
 
     public function __invoke(Form $form, Answer $answer)
     {
-        if ($form->id !== $answer->form_id) {
+        if ((int)$form->id !== (int)$answer->form_id) {
             abort(404);
             return;
         }

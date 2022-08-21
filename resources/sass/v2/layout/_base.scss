@@ -1,8 +1,14 @@
 html {
+  --font-weight-bold: 600;
+
   font-size: $base-font-size;
 
   @media screen and (max-width: 350px) {
     font-size: #{($base-font-size-px * 0.8) + 'px'};
+  }
+  &.env-android {
+    // Pixel などの Android 端末は日本語フォントが font-weight: 600 に対応していない
+    --font-weight-bold: 700;
   }
 }
 
@@ -15,7 +21,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
-  line-height: 1.7;
+  line-height: $line-height-base;
   &.is-in-iframe {
     background: transparent;
   }
@@ -49,17 +55,30 @@ p {
   margin: 0 0 1rem;
 }
 
-dt {
-  font-weight: bold;
-  margin: $spacing-md 0 0;
+dl,
+ul,
+ol,
+p {
   &:first-child {
-    margin: 0;
+    margin-top: 0;
+  }
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+dt {
+  color: $color-muted;
+  font-size: 0.9rem;
+  font-weight: $font-bold;
+  margin: $spacing-lg 0 $spacing-xs;
+  &:first-child {
+    margin-top: 0;
   }
 }
 
 dd {
   margin: 0;
-  margin: $spacing-sm 0 $spacing-md;
 }
 
 li {
@@ -84,5 +103,5 @@ b {
   // font-weight が bold となっている要素内で strong や b タグを使ってしまうと
   // Mac では極太フォントになってしまう。極太フォントにする必要はないので、
   // 普通の bold を指定している。
-  font-weight: bold;
+  font-weight: $font-bold;
 }

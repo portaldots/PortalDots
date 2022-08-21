@@ -43,7 +43,7 @@ jobs:
       - name: Prepare compile
         # vendor ディレクトリの除外には、最初にスラッシュをつけている。これにより resources フォルダ内にある vendor ディレクトリが除外されてしまうのを防いでいる
         run: |
-          rsync -av --update --delete --stats ./ ./dist/ --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='.github/' --exclude='/vendor/' --exclude='node_modules/' --exclude='.circleci/' --exclude='tests/' --exclude='.husky/' --exclude='phpunit.xml' --exclude='phpcs.xml' --exclude='.editorconfig' --exclude='.env.testing' --exclude='.eslintrc.js' --exclude='.gitattributes' --exclude='.gitignore' --exclude='.prettierrc' --exclude='.stylelintrc.js' >& /dev/null
+          rsync -av --update --delete --stats ./ ./dist/ --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='.github/' --exclude='/vendor/' --exclude='node_modules/' --exclude='.circleci/' --exclude='tests/' --exclude='phpunit.xml' --exclude='phpcs.xml' --exclude='.editorconfig' --exclude='.env.testing' --exclude='.eslintrc.js' --exclude='.gitattributes' --exclude='.gitignore' --exclude='.prettierrc' --exclude='.stylelintrc.js' >& /dev/null
       - name: Install PHP dependencies
         run: composer install --optimize-autoloader --no-dev
         working-directory: dist
@@ -60,7 +60,7 @@ jobs:
         run: VERSION=`echo "$GITHUB_REF" | sed -e 's/refs\/tags\/v//g'`; sed -i -e "s/###VERSION_PLACEHOLDER###/$VERSION/g" "$RELEASE_INFO_PATH";
         working-directory: dist
       - name: Build project
-        run: zip -9 -r ../PortalDots.zip . -x node_modules/\* composer.json composer.lock package.json yarn.lock webpack.mix.js patches/\*
+        run: zip -9 -r ../PortalDots.zip . -x node_modules/\* composer.json package.json yarn.lock webpack.mix.js patches/\*
         working-directory: dist
       - name: Create Release
         id: create_release

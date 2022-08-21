@@ -125,7 +125,7 @@ export default {
   }
   &__title {
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: $font-bold;
     margin: 0;
   }
   &__message {

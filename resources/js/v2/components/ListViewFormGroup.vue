@@ -4,7 +4,10 @@
     :class="{ 'is-invalid': $slots.invalid }"
     noBorder
   >
-    <div class="listview-form-group__header">
+    <div
+      class="listview-form-group__header"
+      v-if="$slots.label || $slots.description"
+    >
       <component
         :is="labelFor ? 'label' : 'div'"
         v-bind="labelFor ? { for: labelFor } : {}"
@@ -70,20 +73,18 @@ export default {
   }
   &__label {
     display: block;
-    font-weight: bold;
-    line-height: 1.4;
+    font-weight: $font-bold;
     margin: 0 0 $spacing-xs;
   }
   &__description {
     color: $color-muted;
     font-size: 0.9rem;
-    line-height: 1.4;
   }
   &__body {
     margin: 0;
   }
   &__invalid-message {
-    font-weight: bold;
+    font-weight: $font-bold;
   }
 }
 </style>

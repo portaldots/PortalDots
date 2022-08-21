@@ -45,29 +45,39 @@
                         @case('light')
                             <img src="{{ mix('/images/portalDotsLogo.svg') }}" class="logo" alt="PortalDots">
                         @break
+
                         @case('dark')
                             <img src="{{ mix('/images/portalDotsLogoDark.svg') }}" class="logo" alt="PortalDots">
                         @break
+
                         @default
                             <img src="{{ mix('/images/portalDotsLogo.svg') }}" class="logo is-light" alt="PortalDots">
                             <img src="{{ mix('/images/portalDotsLogoDark.svg') }}" class="logo is-dark" alt="PortalDots">
                     @endswitch
 
                 </h1>
-                <div>バージョン {{ $current_version_info->getFullVersion() }}</div>
-                @if (isset($latest_release) && !$current_version_info->equals($latest_release->getVersion()))
-                    <div class="text-success">
-                        <strong>
-                            <i class="fas fa-info-circle"></i>
-                            バージョン {{ $latest_release->getVersion()->getFullVersion() }} にアップデートできます。
-                        </strong>
-                    </div>
+                @if (!empty($current_version_info))
+                    <div>バージョン {{ $current_version_info->getFullVersion() }}</div>
+                    @if (isset($latest_release) && !$current_version_info->equals($latest_release->getVersion()))
+                        <div class="text-success">
+                            <strong>
+                                <i class="fas fa-info-circle"></i>
+                                バージョン {{ $latest_release->getVersion()->getFullVersion() }} にアップデートできます。
+                            </strong>
+                        </div>
+                    @else
+                        <div class="text-muted">
+                            <strong>
+                                <i class="far fa-check-circle"></i>
+                                お使いのバージョンは最新です。
+                            </strong>
+                        </div>
+                    @endif
                 @else
+                    <div><strong>Git リポジトリ版</strong></div>
                     <div class="text-muted">
-                        <strong>
-                            <i class="far fa-check-circle"></i>
-                            お使いのバージョンは最新です。
-                        </strong>
+                        <i class="fas fa-info-circle"></i>
+                        PortalDots 公式サイトで配布されている PortalDots へアップデートすることはできません。
                     </div>
                 @endif
             </list-view-card>
@@ -100,6 +110,7 @@
                                     <li>artisan ファイル</li>
                                     <li>app フォルダ</li>
                                     <li>bootstrap フォルダ</li>
+                                    <li>composer.lock ファイル</li>
                                     <li>config フォルダ</li>
                                     <li>database フォルダ</li>
                                     <li>resources フォルダ</li>

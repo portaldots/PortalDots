@@ -25,12 +25,12 @@ export default {}
     padding-bottom: $spacing-lg;
   }
   &-header {
-    padding: $spacing-sm 0;
+    padding: $spacing-md 0 $spacing-sm;
     width: 100%;
     &__title {
       font-size: $font-size-lg;
-      font-weight: bold;
-      line-height: 1.4;
+      font-weight: $font-bold;
+      line-height: $line-height-heading;
       margin: 0;
     }
     &__description {

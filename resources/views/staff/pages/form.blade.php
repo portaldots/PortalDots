@@ -2,6 +2,8 @@
 
 @section('title', empty($page) ? '新規作成 — お知らせ' : "{$page->title} — お知らせ")
 
+@section('top_alert_props', 'container-fluid')
+
 @section('navbar')
     <app-nav-bar-back href="{{ route('staff.pages.index') }}">
         お知らせ管理

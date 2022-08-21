@@ -15,6 +15,9 @@
             <list-view-card>
                 あなたは「{{ $circle->name }}」の学園祭係(副責任者)として招待されました。この招待を受け入れますか？
             </list-view-card>
+            <list-view-card>
+                @include('includes.circle_info')
+            </list-view-card>
         </list-view>
 
         <form action="{{ route('circles.users.store', ['circle' => $circle]) }}" method="post">

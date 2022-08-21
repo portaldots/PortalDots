@@ -55,6 +55,7 @@ export default {
   &__title {
     font-size: $font-size-xl;
     font-weight: normal;
+    line-height: $line-height-heading;
     margin: 0;
   }
   &__body {

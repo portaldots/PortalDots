@@ -101,7 +101,7 @@ export default {
       margin-right: $spacing;
     }
     &__name {
-      font-weight: bold;
+      font-weight: $font-bold;
       margin: 0 0 $spacing-sm;
     }
     &__group-name {
@@ -118,7 +118,7 @@ export default {
       padding-right: $spacing;
     }
     &__name {
-      font-weight: bold;
+      font-weight: $font-bold;
       margin: 0 0 $spacing-sm;
     }
     &__group-name {

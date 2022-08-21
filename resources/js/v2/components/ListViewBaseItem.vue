@@ -116,14 +116,14 @@ export default {
     color: $color-primary;
     display: flex;
     flex-direction: column;
-    font-weight: bold;
+    font-weight: $font-bold;
     justify-content: center;
     padding-bottom: $spacing;
     padding-top: $spacing;
   }
   &__title {
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: $font-bold;
     margin: 0;
   }
   &__meta {

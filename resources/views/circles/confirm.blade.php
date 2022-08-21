@@ -10,7 +10,8 @@
             <template v-slot:title>参加登録の提出</template>
             <list-view-card>
                 以下の情報で参加登録を提出します。<strong>参加登録の提出後は、登録内容の変更ができなくなります。</strong>
-                <hr>
+            </list-view-card>
+            <list-view-card>
                 @include('includes.circle_info')
             </list-view-card>
         </list-view>

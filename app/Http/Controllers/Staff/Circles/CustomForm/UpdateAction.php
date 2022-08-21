@@ -20,8 +20,10 @@ class UpdateAction extends Controller
      */
     private $dotenvService;
 
-    public function __construct(FormEditorService $formEditorService, DotenvService $dotenvService)
-    {
+    public function __construct(
+        FormEditorService $formEditorService,
+        DotenvService $dotenvService
+    ) {
         $this->formEditorService = $formEditorService;
         $this->dotenvService = $dotenvService;
     }
@@ -34,7 +36,11 @@ class UpdateAction extends Controller
         }
 
         $this->dotenvService->saveKeys([
-            'PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE' => (int)$request->users_number_to_submit_circle
+            'PORTAL_USERS_NUMBER_TO_SUBMIT_CIRCLE' => isset(
+                $request->users_number_to_submit_circle
+            )
+                ? (string) $request->users_number_to_submit_circle
+                : 1,
         ]);
 
         $this->formEditorService->updateForm($form->id, [

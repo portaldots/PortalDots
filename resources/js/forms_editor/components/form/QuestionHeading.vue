@@ -72,7 +72,7 @@ export default {
 
 .heading {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: $font-bold;
   line-height: 1.4;
   margin: 0;
   padding: 0 0 0.5rem;

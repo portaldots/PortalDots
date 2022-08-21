@@ -3,7 +3,7 @@
     :is="componentIs"
     :type="type"
     :href="href"
-    :title="title"
+    v-tooltip="title"
     :target="newtab ? '_blank' : undefined"
     :rel="newtab ? 'noopener noreferrer' : undefined"
     v-bind="disabledProps"

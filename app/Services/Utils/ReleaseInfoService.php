@@ -37,14 +37,14 @@ class ReleaseInfoService
     /**
      * この PortalDots のバージョン情報を配列で取得
      *
-     * @return Version
+     * @return Version|null
      */
-    public function getCurrentVersion(): Version
+    public function getCurrentVersion(): ?Version
     {
         if (ReleaseInfo::VERSION === '###VERSION_PLACEHOLDER###') {
-            return $this->version('1.0.0');
+            return null;
         }
-        return $this->version(ReleaseInfo::VERSION);
+        return Version::parse(ReleaseInfo::VERSION);
     }
 
     /**
@@ -59,6 +59,10 @@ class ReleaseInfoService
     {
         $current_version_info = $this->getCurrentVersion();
 
+        if (empty($current_version_info)) {
+            return null;
+        }
+
         try {
             return $this->cache->remember(
                 'getReleaseOfLatestVersionWithinSameMajorVersion/' . $current_version_info->getFullVersion(),
@@ -69,6 +73,10 @@ class ReleaseInfoService
                         $current_version_info->getMajor(),
                     );
                     $release = json_decode((string) $this->client->get($path)->getBody());
+
+                    if (!isset($release->version)) {
+                        return null;
+                    }
 
                     return new Release(
                         Version::parse($release->version),
@@ -83,19 +91,5 @@ class ReleaseInfoService
         } catch (ClientException $e) {
             return null;
         }
-    }
-
-    /**
-     * バージョン文字列からバージョン情報配列を取得
-     *
-     * @return Version|null
-     */
-    public function version(string $version_string): ?Version
-    {
-        preg_match('/(\d+)\.(\d+)\.(\d+)/', $version_string, $matches);
-        if (!isset($matches[1]) || !isset($matches[2]) || !isset($matches[3])) {
-            return null;
-        }
-        return new Version((int)$matches[1], (int)$matches[2], (int)$matches[3]);
     }
 }

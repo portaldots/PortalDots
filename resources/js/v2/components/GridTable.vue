@@ -7,7 +7,7 @@
       <div class="grid-controls">
         <button
           class="btn is-transparent is-no-border"
-          title="最初のページ"
+          v-tooltip="'最初のページ'"
           :disabled="loading || page === 1"
           @click="onClickFirst"
         >
@@ -15,7 +15,7 @@
         </button>
         <button
           class="btn is-transparent is-no-border"
-          title="前のページ"
+          v-tooltip="'前のページ'"
           :disabled="loading || page === 1"
           @click="onClickPrev"
         >
@@ -23,7 +23,7 @@
         </button>
         <button
           class="btn is-transparent is-no-border"
-          title="次のページ"
+          v-tooltip="'次のページ'"
           :disabled="loading || page === paginator.last_page"
           @click="onClickNext"
         >
@@ -31,7 +31,7 @@
         </button>
         <button
           class="btn is-transparent is-no-border"
-          title="最後のページ"
+          v-tooltip="'最後のページ'"
           :disabled="loading || page === paginator.last_page"
           @click="onClickLast"
         >
@@ -39,7 +39,7 @@
         </button>
         <button
           class="btn is-transparent is-no-border"
-          title="再読み込み"
+          v-tooltip="'再読み込み'"
           :disabled="loading"
           @click="onClickReload"
         >
@@ -312,7 +312,7 @@ export default {
         cursor: pointer;
         display: block;
         font-size: 0.9rem;
-        font-weight: bold;
+        font-weight: $font-bold;
         padding: $spacing $spacing-md;
         text-align: left;
         white-space: nowrap;
