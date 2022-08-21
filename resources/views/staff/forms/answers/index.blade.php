@@ -48,8 +48,7 @@
             </a>
         @endif
     </app-header>
-    <staff-grid
-        api-url="{{ route('staff.forms.answers.api', ['form' => $form]) }}"
+    <staff-grid api-url="{{ route('staff.forms.answers.api', ['form' => $form]) }}"
         v-bind:key-translations="{
             id: '回答ID',
             circle_id: '提出した企画',
@@ -58,6 +57,8 @@
             'circle_id.name_yomi': '企画名(よみ)',
             'circle_id.group_name': '企画を出店する団体の名称',
             'circle_id.group_name_yomi': '企画を出店する団体の名称(よみ)',
+            'circle_id.places': '使用場所',
+            'circle_id.tags': 'タグ',
             'circle_id.submitted_at': '参加登録提出日時',
             'circle_id.status_set_at': '登録受理状況設定日時',
             'circle_id.created_at': '作成日時',
@@ -65,13 +66,10 @@
             'circle_id.notes': 'スタッフ用メモ',
             created_at: '作成日時',
             updated_at: '更新日時',
-            @if (isset($form))
-                @foreach($form->questions as $question)
+            @if (isset($form)) @foreach ($form->questions as $question)
                     {{ App\GridMakers\AnswersGridMaker::FORM_QUESTIONS_KEY_PREFIX . $question->id }}: '{{ $question->name }}',
-                @endforeach
-            @endif
-        }"
-    >
+                @endforeach @endif
+        }">
         <template v-slot:toolbar>
             <a class="btn is-primary" href="{{ route('staff.forms.answers.create', ['form' => $form]) }}">
                 <i class="fas fa-plus fa-fw"></i>
@@ -107,7 +105,8 @@
             <template v-if="keyName === 'circle_id'">
                 {{-- 企画 --}}
                 <b><ruby>@{{ row[keyName].name }}<rt>@{{ row[keyName].name_yomi }}</rt></ruby></b> —
-                <ruby class="text-muted">@{{ row[keyName].group_name }}<rt>@{{ row[keyName].group_name_yomi }}</rt></ruby> (企画ID : @{{ row[keyName].id }})
+                <ruby class="text-muted">@{{ row[keyName].group_name }}<rt>@{{ row[keyName].group_name_yomi }}</rt></ruby> (企画ID :
+                @{{ row[keyName].id }})
             </template>
             <template v-else-if="keyName.includes('{{ App\GridMakers\AnswersGridMaker::FORM_QUESTIONS_KEY_PREFIX }}')">
                 {{-- フォームへの回答 --}}
@@ -115,7 +114,7 @@
                     <a v-bind:href="row[keyName].file_url" target="_blank" rel="noopener noreferrer">表示</a>
                 </template>
                 <template v-if="row[keyName] && row[keyName].join">
-                    @{{ row[keyName] . join(', ') }}
+                    @{{ row[keyName].join(', ') }}
                 </template>
             </template>
             <template v-else>
