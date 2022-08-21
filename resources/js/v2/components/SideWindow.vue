@@ -30,18 +30,18 @@ export default {
   props: {
     isOpen: {
       type: Boolean,
-      default: false
+      default: false,
     },
     popUpUrl: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   methods: {
     onClickClose(e) {
       this.$emit('clickClose', e)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -62,6 +62,7 @@ export default {
     width: 100%;
   }
   &-header {
+    flex-shrink: 0;
     align-items: center;
     border-bottom: 1px solid $color-border;
     display: flex;
@@ -78,7 +79,7 @@ export default {
     flex: 1;
     overflow: auto;
     overflow-x: hidden;
-    padding: 0 0 $spacing;
+    padding: 0;
     position: relative;
   }
 }

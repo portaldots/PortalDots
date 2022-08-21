@@ -196,36 +196,36 @@ import StaffGridFilterAddDropdown from './StaffGridFilterAddDropdown.vue'
 
 export default {
   components: {
-    StaffGridFilterAddDropdown
+    StaffGridFilterAddDropdown,
   },
   props: {
     filterableKeys: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     keyTranslations: {
       type: Object,
-      required: true
+      required: true,
     },
     defaultQueries: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     defaultMode: {
       type: String,
-      default: 'and'
+      default: 'and',
     },
     loading: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       queries: [],
       mode: 'and',
       // isDirty: 適用ボタンによってフィルタ設定が反映されていない場合trueになる
-      isDirty: false
+      isDirty: false,
     }
   },
   mounted() {
@@ -235,7 +235,7 @@ export default {
         .flatMap((item) => (item.sublist ? item.sublist : item))
         .find((q) => q.keyName === query.keyName),
       operator: query.operator,
-      value: query.value
+      value: query.value,
     }))
     this.mode = this.defaultMode
     this.$nextTick(() => {
@@ -251,7 +251,7 @@ export default {
           : 0
 
       const defaultValues = {
-        value: ''
+        value: '',
       }
 
       switch (item.type) {
@@ -281,7 +281,7 @@ export default {
         this.queries.map((query) => ({
           keyName: query.item.keyName,
           operator: query.operator,
-          value: query.value
+          value: query.value,
         })),
         this.mode
       )
@@ -292,18 +292,18 @@ export default {
       this.$nextTick(() => {
         this.isDirty = false
       })
-    }
+    },
   },
   watch: {
     queries: {
       handler() {
         this.isDirty = true
       },
-      deep: true
+      deep: true,
     },
     mode() {
       this.isDirty = true
-    }
+    },
   },
   computed: {
     itemsForFilterQuery() {
@@ -313,7 +313,7 @@ export default {
             keyName: key,
             type: this.filterableKeys[key].type,
             translation: this.keyTranslations[key],
-            menuLabel: this.keyTranslations[key]
+            menuLabel: this.keyTranslations[key],
           }
         }
 
@@ -331,19 +331,19 @@ export default {
               translation: `${this.keyTranslations[key]} › ${
                 this.keyTranslations[`${key}.${insideKey}`]
               }`,
-              menuLabel: this.keyTranslations[`${key}.${insideKey}`]
+              menuLabel: this.keyTranslations[`${key}.${insideKey}`],
             })
-          )
+          ),
         }
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .staff_grid_sort {
-  padding: 0 $spacing;
+  padding: 0 $spacing $spacing;
   &-list {
     &__item {
       border-bottom: 1px solid $color-border;
