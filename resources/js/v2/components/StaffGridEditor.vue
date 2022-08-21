@@ -17,12 +17,12 @@ export default {
   props: {
     editorUrl: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
-      isLoaded: false,
+      isLoaded: false
     }
   },
   methods: {
@@ -35,8 +35,8 @@ export default {
       }
 
       this.isLoaded = true
-    },
-  },
+    }
+  }
 }
 </script>
 

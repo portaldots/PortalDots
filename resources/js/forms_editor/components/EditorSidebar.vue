@@ -25,7 +25,7 @@ export default {
   methods: {
     async add_question(type) {
       await this.$store.dispatch(`editor/${ADD_QUESTION}`, type)
-    },
+    }
   },
   computed: {
     is_saving() {
@@ -36,46 +36,46 @@ export default {
         {
           value: 'heading',
           icon: 'fas fa-heading',
-          label: 'セクション見出し',
+          label: 'セクション見出し'
         },
         {
           value: 'text',
           icon: 'fas fa-grip-lines',
-          label: '一行入力',
+          label: '一行入力'
         },
         {
           value: 'number',
           icon: 'fas fa-dice',
-          label: '整数入力',
+          label: '整数入力'
         },
         {
           value: 'textarea',
           icon: 'fas fa-align-justify',
-          label: '複数行入力',
+          label: '複数行入力'
         },
         {
           value: 'radio',
           icon: 'far fa-dot-circle',
-          label: '単一選択(ラジオボタン)',
+          label: '単一選択(ラジオボタン)'
         },
         {
           value: 'select',
           icon: 'far fa-list-alt',
-          label: '単一選択(ドロップダウン)',
+          label: '単一選択(ドロップダウン)'
         },
         {
           value: 'checkbox',
           icon: 'far fa-check-square',
-          label: '複数選択(チェックボックス)',
+          label: '複数選択(チェックボックス)'
         },
         {
           value: 'upload',
           icon: 'far fa-file',
-          label: 'ファイルアップロード',
-        },
+          label: 'ファイルアップロード'
+        }
       ]
-    },
-  },
+    }
+  }
 }
 </script>
 

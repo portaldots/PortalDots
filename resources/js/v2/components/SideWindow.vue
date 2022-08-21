@@ -30,18 +30,18 @@ export default {
   props: {
     isOpen: {
       type: Boolean,
-      default: false,
+      default: false
     },
     popUpUrl: {
       type: String,
-      default: null,
-    },
+      default: null
+    }
   },
   methods: {
     onClickClose(e) {
       this.$emit('clickClose', e)
-    },
-  },
+    }
+  }
 }
 </script>
 
