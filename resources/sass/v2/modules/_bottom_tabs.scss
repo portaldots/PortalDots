@@ -1,7 +1,9 @@
 body {
-  padding-bottom: calc(env(safe-area-inset-bottom) + #{$bottom-tabs-height});
-  @media screen and (min-width: $breakpoint-bottom-tabs) {
-    padding-bottom: 0;
+  &:not(.is-in-iframe) {
+    padding-bottom: calc(env(safe-area-inset-bottom) + #{$bottom-tabs-height});
+    @media screen and (min-width: $breakpoint-bottom-tabs) {
+      padding-bottom: 0;
+    }
   }
 }
 
