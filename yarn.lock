@@ -1940,10 +1940,10 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-blade-formatter@^1.26.17:
-  version "1.26.17"
-  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.26.17.tgz#14d2fcca7052a5ab7e0ad3603562b62575e40cfc"
-  integrity sha512-sEP8JjDvlfg6QdLrWQ19RfpUf869xg8PgBGSV8r1FRuYTf93iWHKTqFqw8REdDAq6GdC3QKE6jURB5/3vZQVmQ==
+blade-formatter@^1.27.6:
+  version "1.27.6"
+  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.27.6.tgz#9b9ecc21051b6642a7bd607adba8b705336f9515"
+  integrity sha512-UyEarcaHQ5JQPm85aIi0OuiT/8r+Y4SkH3Ul9PIa4WwZXQVpclLFOTw8pLWoMqn3wqFUU6JyyEK1cuHk9AEVaQ==
   dependencies:
     "@prettier/plugin-php" "^0.18.0"
     "@shufo/tailwindcss-class-sorter" "^1.0.3"
@@ -1954,10 +1954,11 @@ blade-formatter@^1.26.17:
     detect-indent "^6.0.0"
     find-config "^1.0.0"
     glob "^8.0.1"
+    html-attribute-sorter "^0.4.2"
     ignore "^5.1.8"
     js-beautify "^1.14.0"
     lodash "^4.17.19"
-    php-parser "3.0.3"
+    php-parser "3.1.0"
     prettier "^2.2.0"
     vscode-oniguruma "1.6.2"
     vscode-textmate "^7.0.1"
@@ -4045,6 +4046,11 @@ hpack.js@^2.1.6:
     readable-stream "^2.0.1"
     wbuf "^1.1.0"
 
+html-attribute-sorter@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/html-attribute-sorter/-/html-attribute-sorter-0.4.2.tgz#803dfb2fb7c749cbf92fe52e7d3e331990072539"
+  integrity sha512-WjAaUWPuqXxddyQ5M4vqDHG8tcO+ajTnz03GNwmTsTyGdg9dJqoswwHyniK5ygitgXxqBYIE4T88/edWkl7wMQ==
+
 html-entities@^2.3.2:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-2.3.3.tgz#117d7626bece327fc8baace8868fa6f5ef856e46"
@@ -5730,10 +5736,10 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-php-parser@3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/php-parser/-/php-parser-3.0.3.tgz#287779ea8a273ec5cf926f28e5f38ffa4ad32d4a"
-  integrity sha512-WjbrtYrwmLY9hpoKoq1+mVqJhT0dEVDZRWSpNIw2MpTw3VM/K4C6e0WR4KlU6G/XROkV7tpH4NesV2dDiPxqaw==
+php-parser@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/php-parser/-/php-parser-3.1.0.tgz#5ca8e0bac9846e85233a26e3162fdfc4fb9a0a58"
+  integrity sha512-EwtoPSCqggAgTcPbV4YXsvUjYRQCZCxsQzxa7z8RX8rJ8bWAglMMi1tFNxdzwf5uNPFWFjHYhXA3REuWKzgMuw==
 
 php-parser@3.1.0-beta.5:
   version "3.1.0-beta.5"
