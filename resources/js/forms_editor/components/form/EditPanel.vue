@@ -55,7 +55,12 @@
       </div>
     </label>
     <div class="form-group row" v-if="show_table_questions">
-      <span class="col-sm-2 col-form-label">テーブル設問</span>
+      <div class="col-sm-2 col-form-label">
+        テーブル設問
+        <button class="btn btn-primary btn-sm" @click="addTableQuestion">
+          <i class="fas fa-plus"></i> 設問を追加
+        </button>
+      </div>
       <div class="col-sm-10">
         <table-question-editor :questions="table" v-on:save="saveTable" />
       </div>
@@ -122,6 +127,7 @@
 </template>
 
 <script>
+import { v4 as uuid } from 'uuid'
 import {
   UPDATE_QUESTION,
   SAVE_QUESTION,
@@ -207,6 +213,15 @@ export default {
     onBlur() {
       this.deleteDuplication()
       this.save()
+    },
+    addTableQuestion() {
+      this.table.push({
+        id: uuid(),
+        type: 'text',
+        name: '',
+        is_required: false
+      })
+      this.saveTable(this.table)
     },
     saveTable(value) {
       this.$set(this.question, 'table', value)
