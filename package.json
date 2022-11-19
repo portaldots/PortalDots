@@ -48,7 +48,7 @@
         "purifycss-webpack": "^0.7.0",
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.54.0",
-        "sass-loader": "^13.0.2",
+        "sass-loader": "^13.1.0",
         "sass-resources-loader": "^2.2.5",
         "shx": "^0.3.4",
         "stylelint": "^13.13.1",
