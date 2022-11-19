@@ -65,6 +65,7 @@ export default {
     align-items: center;
     border-bottom: 1px solid $color-border;
     display: flex;
+    flex-shrink: 0;
     height: 4rem;
     padding: 0 $spacing;
     padding-right: $spacing-sm;
@@ -78,7 +79,7 @@ export default {
     flex: 1;
     overflow: auto;
     overflow-x: hidden;
-    padding: 0 0 $spacing;
+    padding: 0;
     position: relative;
   }
 }

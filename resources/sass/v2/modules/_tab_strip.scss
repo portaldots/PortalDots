@@ -7,7 +7,7 @@
   padding: 0 $spacing;
   @media screen and (max-width: $breakpoint-listview-sm) {
     justify-content: flex-start;
-    overflow-x: scroll;
+    overflow-x: auto;
     padding: 0 $spacing-sm;
   }
   &-tab {

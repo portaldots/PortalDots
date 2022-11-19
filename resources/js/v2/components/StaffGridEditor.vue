@@ -42,8 +42,7 @@ export default {
 
 <style lang="scss" scoped>
 .staff_grid_editor {
-  inset: 0;
-  position: absolute;
+  height: 100%;
   &-loading {
     align-items: center;
     display: flex;
@@ -53,6 +52,7 @@ export default {
   }
   &-frame {
     border: 0;
+    display: block;
     height: 100%;
     width: 100%;
   }

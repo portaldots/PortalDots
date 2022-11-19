@@ -105,7 +105,7 @@ $editor-sidebar-padding: $spacing-md;
     flex: 1;
     -webkit-overflow-scrolling: touch;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   &__type {
     align-items: center;

@@ -343,7 +343,7 @@ export default {
 
 <style lang="scss" scoped>
 .staff_grid_sort {
-  padding: 0 $spacing;
+  padding: 0 $spacing $spacing;
   &-list {
     &__item {
       border-bottom: 1px solid $color-border;
