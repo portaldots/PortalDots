@@ -102,7 +102,7 @@ PortalDots 開発チーム（有志による個人開発チーム）
 ### PortalDots の開発に貢献(Contribution)する
 PortalDots では、新規機能・既存機能改良の提案、バグの報告や Pull Request を歓迎します。
 
-詳しくは [コントリビューションガイドライン](https://github.com/portal-dots/PortalDots/blob/3.x/CONTRIBUTING.md) をご覧ください。
+詳しくは [コントリビューションガイドライン](https://github.com/portal-dots/PortalDots/blob/4.x/CONTRIBUTING.md) をご覧ください。
 
 ### 開発環境セットアップ方法
 Git、PHP(7.4以上)、Node.js、Yarn、Docker がセットアップ済みである必要があります。
