@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace App\Services\Install;
 
-use Mail;
+use Symfony\Component\Mailer\Transport\TransportInterface;
+use Illuminate\Mail\Mailer;
 use App\Mail\Install\TestMailMailable;
-use Swift_SmtpTransport;
-use Swift_Mailer;
 
 class MailService extends AbstractService
 {
+    public function __construct(
+        public Mailer $mailer
+    ) {
+    }
+
     protected function getEnvKeys(): array
     {
         return [
@@ -48,12 +52,12 @@ class MailService extends AbstractService
     }
 
     public function sendTestMail(
-        Swift_SmtpTransport $transport,
+        TransportInterface $transport,
         string $from_address,
         string $from_name
     ) {
-        Mail::setSwiftMailer(new Swift_Mailer($transport));
-        Mail::to(config('portal.contact_email'))
+        $this->mailer->setSymfonyTransport($transport);
+        $this->mailer->to(config('portal.contact_email'))
             ->send(
                 (new TestMailMailable($from_address, $from_name))
                     ->subject('PortalDots テストメール')

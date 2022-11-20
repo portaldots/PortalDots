@@ -1,4 +1,4 @@
-FROM php:7.3.16-apache-buster
+FROM php:8.0-apache
 COPY ./php/php.ini /usr/local/etc/php/
 COPY ./php/cacert.pem /usr/local/etc/php/
 COPY ./apache/*.conf /etc/apache2/sites-enabled/

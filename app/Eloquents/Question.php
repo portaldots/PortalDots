@@ -5,6 +5,7 @@ namespace App\Eloquents;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
@@ -26,25 +27,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Question extends Model
 {
     use LogsActivity;
-
-    protected static $logName = 'question';
-
-    protected static $logAttributes = [
-        'id',
-        'form.id',
-        'form.name',
-        'name',
-        'description',
-        'type',
-        'is_required',
-        'number_min',
-        'number_max',
-        'allowed_types',
-        'options',
-        'priority',
-    ];
-
-    protected static $logOnlyDirty = true;
 
     public const QUESTION_TYPES = [
         'heading',
@@ -75,6 +57,27 @@ class Question extends Model
         'number_max' => 'int',
         'priority' => 'int',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('question')
+            ->logOnly([
+                'id',
+                'form.id',
+                'form.name',
+                'name',
+                'description',
+                'type',
+                'is_required',
+                'number_min',
+                'number_max',
+                'allowed_types',
+                'options',
+                'priority',
+            ])
+            ->logOnlyDirty();
+    }
 
     protected static function boot()
     {

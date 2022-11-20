@@ -3,6 +3,7 @@
 namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
@@ -17,17 +18,19 @@ class Answer extends Model
         'circle_id'
     ];
 
-    protected static $logName = 'answer';
-
-    protected static $logAttributes = [
-        'id',
-        'circle.id',
-        'circle.name',
-        'form.id',
-        'form.name',
-    ];
-
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('answer')
+            ->logOnly([
+                'id',
+                'circle.id',
+                'circle.name',
+                'form.id',
+                'form.name',
+            ])
+            ->logOnlyDirty();
+    }
 
     public function details()
     {

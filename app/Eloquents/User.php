@@ -10,6 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 use App\Eloquents\Circle;
 use App\Eloquents\CircleUser;
 use Illuminate\Validation\Rule;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
@@ -37,37 +38,6 @@ class User extends Authenticatable
     use HasRoles;
     use LogsActivity;
 
-    protected static $logName = 'user';
-
-    // 電話番号などの情報はログに残さない
-    protected static $logAttributes = [
-        'id',
-        'student_id',
-        'name_family',
-        'name_family_yomi',
-        'name_given',
-        'name_given_yomi',
-        'is_staff',
-        'is_admin',
-        'is_verified_by_staff',
-        'notes',
-    ];
-
-    protected static $ignoreChangedAttributes = [
-        'email',
-        'univemail_local_part',
-        'univemail_domain_part',
-        'tel',
-        'email_verified_at',
-        'univemail_verified_at',
-        'password',
-        'remember_token',
-        'last_accessed_at',
-        'updated_at',
-    ];
-
-    protected static $logOnlyDirty = true;
-
     /**
      * バリデーションルール
      */
@@ -90,6 +60,38 @@ class User extends Authenticatable
     public const TEL_RULES = ['required', 'string', 'max:255'];
     public const PASSWORD_RULES = ['required', 'string', 'min:8'];
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('user')
+            // 電話番号などの情報はログに残さない
+            ->logOnly([
+                'id',
+                'student_id',
+                'name_family',
+                'name_family_yomi',
+                'name_given',
+                'name_given_yomi',
+                'is_staff',
+                'is_admin',
+                'is_verified_by_staff',
+                'notes',
+            ])
+            ->dontLogIfAttributesChangedOnly([
+                'email',
+                'univemail_local_part',
+                'univemail_domain_part',
+                'tel',
+                'email_verified_at',
+                'univemail_verified_at',
+                'password',
+                'remember_token',
+                'last_accessed_at',
+                'updated_at',
+            ])
+            ->logOnlyDirty();
+    }
+
     /**
      * `_RULES` で終わる定数ではなくこの関数を使ってバリデーションルールを取得すること
      */
@@ -101,9 +103,9 @@ class User extends Authenticatable
             'name_yomi' => self::NAME_YOMI_RULES,
             'email' => self::EMAIL_RULES,
             'univemail_local_part' =>
-                config('portal.univemail_local_part') === 'student_id'
-                    ? ['required', 'string', 'same:student_id']
-                    : ['required', 'string'],
+            config('portal.univemail_local_part') === 'student_id'
+                ? ['required', 'string', 'same:student_id']
+                : ['required', 'string'],
             'univemail_domain_part' => [
                 'required',
                 Rule::in(config('portal.univemail_domain_part')),
@@ -394,29 +396,29 @@ class User extends Authenticatable
         }
         if (
             now()
-                ->subHour()
-                ->lte($last_accessed_at)
+            ->subHour()
+            ->lte($last_accessed_at)
         ) {
             return '1時間以内';
         }
         if (
             now()
-                ->subDay()
-                ->lte($last_accessed_at)
+            ->subDay()
+            ->lte($last_accessed_at)
         ) {
             return "{$last_accessed_at->diffInHours(now())}時間前";
         }
         if (
             now()
-                ->subMonth()
-                ->lte($last_accessed_at)
+            ->subMonth()
+            ->lte($last_accessed_at)
         ) {
             return "{$last_accessed_at->diffInDays(now())}日前";
         }
         if (
             now()
-                ->subYear()
-                ->lte($last_accessed_at)
+            ->subYear()
+            ->lte($last_accessed_at)
         ) {
             return "{$last_accessed_at->diffInMonths(now())}ヶ月前";
         }
