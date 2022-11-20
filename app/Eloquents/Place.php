@@ -3,22 +3,12 @@
 namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Place extends Model
 {
     use LogsActivity;
-
-    protected static $logName = 'place';
-
-    protected static $logAttributes = [
-        'id',
-        'name',
-        'type',
-        'notes',
-    ];
-
-    protected static $logOnlyDirty = true;
 
     protected $fillable = [
         'name',
@@ -29,6 +19,19 @@ class Place extends Model
     protected $casts = [
         'type' => 'int',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('place')
+            ->logOnly([
+                'id',
+                'name',
+                'type',
+                'notes',
+            ])
+            ->logOnlyDirty();
+    }
 
     public function circles()
     {

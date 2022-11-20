@@ -4,28 +4,31 @@ namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Contracts\Activity;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Circle extends Model
 {
     use LogsActivity;
 
-    protected static $logName = 'circle';
-
-    protected static $logAttributes = [
-        'id',
-        'name',
-        'name_yomi',
-        'group_name',
-        'group_name_yomi',
-        'submitted_at',
-        'status',
-        'status_reason',
-        'status_set_at',
-        'notes',
-    ];
-
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('circle')
+            ->logOnly([
+                'id',
+                'name',
+                'name_yomi',
+                'group_name',
+                'group_name_yomi',
+                'submitted_at',
+                'status',
+                'status_reason',
+                'status_set_at',
+                'notes',
+            ])
+            ->logOnlyDirty();
+    }
 
     public function tapActivity(Activity $activity, string $eventName)
     {

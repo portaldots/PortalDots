@@ -6,25 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Concerns\IsNewTrait;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Page extends Model
 {
     use IsNewTrait;
     use LogsActivity;
-
-    protected static $logName = 'page';
-
-    protected static $logAttributes = [
-        'id',
-        'title',
-        'body',
-        'is_pinned',
-        'is_public',
-        'notes',
-    ];
-
-    protected static $logOnlyDirty = true;
 
     protected $casts = [
         'is_pinned' => 'bool',
@@ -38,6 +26,21 @@ class Page extends Model
         'is_public',
         'notes',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('page')
+            ->logOnly([
+                'id',
+                'title',
+                'body',
+                'is_pinned',
+                'is_public',
+                'notes',
+            ])
+            ->logOnlyDirty();
+    }
 
     /**
      * データベースが MySQL の FULLTEXT INDEX に対応しているかどうかを調べる

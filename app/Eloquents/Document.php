@@ -5,28 +5,13 @@ namespace App\Eloquents;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Concerns\IsNewTrait;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Document extends Model
 {
     use IsNewTrait;
     use LogsActivity;
-
-    protected static $logName = 'document';
-
-    protected static $logAttributes = [
-        'id',
-        'name',
-        'description',
-        'path',
-        'size',
-        'extension',
-        'is_public',
-        'is_important',
-        'notes',
-    ];
-
-    protected static $logOnlyDirty = true;
 
     protected $casts = [
         'is_public' => 'bool',
@@ -43,6 +28,24 @@ class Document extends Model
         'is_important',
         'notes',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('document')
+            ->logOnly([
+                'id',
+                'name',
+                'description',
+                'path',
+                'size',
+                'extension',
+                'is_public',
+                'is_important',
+                'notes',
+            ])
+            ->logOnlyDirty();
+    }
 
     /**
      * モデルの「初期起動」メソッド
