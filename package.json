@@ -65,7 +65,7 @@
         "axios": "^1.1",
         "bootstrap": "^4.6.2",
         "color-convert": "^2.0.1",
-        "easymde": "^2.16.1",
+        "easymde": "^2.18.0",
         "laravel-mix": "^6.0.34",
         "marked": "^4.2.2",
         "patch-package": "^6.5.0",
