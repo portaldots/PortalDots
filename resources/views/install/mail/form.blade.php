@@ -23,11 +23,6 @@
                         <template v-slot:label>
                             {{ $labels[$key] }}
                         </template>
-                        <template v-slot:description>
-                            @if ($key === 'MAIL_HOST')
-                                メール配信の設定がエラーになる場合は、先頭に<code>ssl://</code>を入力してみてください。
-                            @endif
-                        </template>
                         <input id="{{ $key }}" type="text" class="form-control @error($key) is-invalid @enderror"
                             name="{{ $key }}"
                             value="{{ old($key, $key === 'MAIL_FROM_NAME' && empty($value) ? config('app.name') : $value) }}"
