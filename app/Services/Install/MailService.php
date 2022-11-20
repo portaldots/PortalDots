@@ -6,15 +6,11 @@ namespace App\Services\Install;
 
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Illuminate\Mail\Mailer;
+use Illuminate\Support\Facades\App;
 use App\Mail\Install\TestMailMailable;
 
 class MailService extends AbstractService
 {
-    public function __construct(
-        public Mailer $mailer
-    ) {
-    }
-
     protected function getEnvKeys(): array
     {
         return [
@@ -56,8 +52,10 @@ class MailService extends AbstractService
         string $from_address,
         string $from_name
     ) {
-        $this->mailer->setSymfonyTransport($transport);
-        $this->mailer->to(config('portal.contact_email'))
+        /** @var Illuminate\Mail\Mailer */
+        $mailer = App::make(Mailer::class);
+        $mailer->setSymfonyTransport($transport);
+        $mailer->to(config('portal.contact_email'))
             ->send(
                 (new TestMailMailable($from_address, $from_name))
                     ->subject('PortalDots テストメール')
