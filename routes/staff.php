@@ -183,6 +183,8 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::patch('/{place}', 'Staff\Places\UpdateAction')->name('update')->middleware(['can:staff.places.edit']);
                 Route::delete('/{place}', 'Staff\Places\DestroyAction')->name('destroy')->middleware(['can:staff.places.delete']);
                 Route::get('/export', 'Staff\Places\ExportAction')->name('export')->middleware(['can:staff.places.export']);
+                Route::get('/import', 'Staff\Places\Import\ShowAction')->name('import'); // 権限を設定する
+                Route::get('/import/template', 'Staff\Places\Import\TemplateDownloadAction')->name('import.template'); // 権限を設定する
             });
 
         // メール一斉送信
