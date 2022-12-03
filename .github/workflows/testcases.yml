@@ -30,8 +30,7 @@ name: CI
 on:
   push:
     branches:
-      - 3.x
-      - 4.x
+      - 5.x
   pull_request:
     types: [opened, reopened, synchronize]
 
@@ -77,7 +76,7 @@ jobs:
 
     strategy:
       matrix:
-        php-version: [7.3, 7.4]
+        php-version: [8.0, 8.1]
 
     services:
       mysql:
