@@ -30,12 +30,12 @@
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力(場所別企画一覧)
             </a>
-            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.places.import') }}"
+            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.places.import.index') }}"
                 rel="noopener noreferrer">
                 <i class="fas fa-file-import fa-fw"></i>
                 CSVからインポート
             </a>
-            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.places.import') }}"
+            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.places.import.index') }}"
                 rel="noopener noreferrer">
                 <i class="fas fa-file-import fa-fw"></i>
                 企画情報と紐付け
