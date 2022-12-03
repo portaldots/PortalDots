@@ -3,7 +3,6 @@
 namespace Tests\Feature\Http\Controllers\Forms\Answers;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Carbon\Carbon;
@@ -56,15 +55,15 @@ class StoreActionTest extends TestCase
         CarbonImmutable::setTestNowAndTimezone($today);
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->post(
-                        route('forms.answers.store', [
-                            'form' => $this->form,
-                        ]),
-                        [
-                            'circle_id' => $this->circle->id,
-                        ]
-                    );
+            ->actingAs($this->user)
+            ->post(
+                route('forms.answers.store', [
+                    'form' => $this->form,
+                ]),
+                [
+                    'circle_id' => $this->circle->id,
+                ]
+            );
 
         if ($is_answerable) {
             $this->assertDatabaseHas('answers', [
@@ -109,15 +108,15 @@ class StoreActionTest extends TestCase
         ]);
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->post(
-                        route('forms.answers.store', [
-                            'form' => $this->form->id,
-                        ]),
-                        [
-                            'circle_id' => $this->circle->id,
-                        ]
-                    );
+            ->actingAs($this->user)
+            ->post(
+                route('forms.answers.store', [
+                    'form' => $this->form->id,
+                ]),
+                [
+                    'circle_id' => $this->circle->id,
+                ]
+            );
 
         $this->assertDatabaseMissing('answers', [
             'form_id' => $this->form->id,
@@ -138,15 +137,15 @@ class StoreActionTest extends TestCase
         $privateForm = factory(Form::class)->states('private')->create();
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->post(
-                        route('forms.answers.store', [
-                            'form' => $privateForm,
-                        ]),
-                        [
-                            'circle_id' => $this->circle->id,
-                        ]
-                    );
+            ->actingAs($this->user)
+            ->post(
+                route('forms.answers.store', [
+                    'form' => $privateForm,
+                ]),
+                [
+                    'circle_id' => $this->circle->id,
+                ]
+            );
 
         $this->assertDatabaseMissing('answers', [
             'form_id' => $privateForm->id,
@@ -167,15 +166,15 @@ class StoreActionTest extends TestCase
         $anotherCircle = factory(Circle::class)->create();
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->post(
-                        route('forms.answers.store', [
-                            'form' => $this->form,
-                        ]),
-                        [
-                            'circle_id' => $anotherCircle->id,
-                        ]
-                    );
+            ->actingAs($this->user)
+            ->post(
+                route('forms.answers.store', [
+                    'form' => $this->form,
+                ]),
+                [
+                    'circle_id' => $anotherCircle->id,
+                ]
+            );
 
         $this->assertDatabaseMissing('answers', [
             'form_id' => $this->form->id,
@@ -197,15 +196,15 @@ class StoreActionTest extends TestCase
         $this->user->circles()->attach($rejectedCircle->id, ['is_leader' => true]);
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->post(
-                        route('forms.answers.store', [
-                            'form' => $this->form,
-                        ]),
-                        [
-                            'circle_id' => $rejectedCircle->id,
-                        ]
-                    );
+            ->actingAs($this->user)
+            ->post(
+                route('forms.answers.store', [
+                    'form' => $this->form,
+                ]),
+                [
+                    'circle_id' => $rejectedCircle->id,
+                ]
+            );
 
         $this->assertDatabaseMissing('answers', [
             'form_id' => $this->form->id,
@@ -239,15 +238,15 @@ class StoreActionTest extends TestCase
         $this->selectorService->setCircle($this->circle);
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->post(
-                        route('forms.answers.store', [
-                            'form' => $tagged_form,
-                        ]),
-                        [
-                            'circle_id' => $tagged_circle->id,
-                        ]
-                    );
+            ->actingAs($this->user)
+            ->post(
+                route('forms.answers.store', [
+                    'form' => $tagged_form,
+                ]),
+                [
+                    'circle_id' => $tagged_circle->id,
+                ]
+            );
 
         $this->assertDatabaseHas('answers', [
             'form_id' => $tagged_form->id,
@@ -283,15 +282,15 @@ class StoreActionTest extends TestCase
         $this->selectorService->setCircle($this->circle);
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->post(
-                        route('forms.answers.store', [
-                            'form' => $tagged_form,
-                        ]),
-                        [
-                            'circle_id' => $tagged_circle->id,
-                        ]
-                    );
+            ->actingAs($this->user)
+            ->post(
+                route('forms.answers.store', [
+                    'form' => $tagged_form,
+                ]),
+                [
+                    'circle_id' => $tagged_circle->id,
+                ]
+            );
 
         $this->assertDatabaseMissing('answers', [
             'form_id' => $tagged_form->id,
