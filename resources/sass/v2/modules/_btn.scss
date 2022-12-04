@@ -5,14 +5,15 @@
   $border-color,
   $hover-border-color: transparent
 ) {
-  @if ($background == transparent) {
+  @if $background == transparent {
     background: transparent;
   } @else {
     // rgba で $background が指定されている場合、ボタンの背面にある要素の
     // 背景色に干渉され、ボタンが意図しない色になってしまうことがある。
     // 白色のベースの上に $background を重ねて表示することで、
     // 背面要素の背景色に関わらずボタンが同じ色で表示されるようにしている。
-    background: linear-gradient(to top, $background, $background),
+    background:
+      linear-gradient(to top, $background, $background),
       $color-bg-surface;
   }
 
@@ -20,7 +21,8 @@
   color: $color;
   &:not([disabled]):hover,
   &:not(.disabled):hover {
-    background: linear-gradient(to top, $hover-background, $hover-background),
+    background:
+      linear-gradient(to top, $hover-background, $hover-background),
       $color-bg-surface;
     border-color: $hover-border-color;
   }

@@ -114,8 +114,10 @@ export default {
     border-radius: $border-radius;
     line-height: 1.6;
     padding: $spacing-sm $spacing-md;
-    transition: #{$transition-base-fast} background-color,
-      #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color;
+    transition:
+      #{$transition-base-fast} background-color,
+      #{$transition-base-fast} box-shadow,
+      #{$transition-base-fast} border-color;
   }
   &.ti-focus .ti-input {
     background: $color-form-control-focus;

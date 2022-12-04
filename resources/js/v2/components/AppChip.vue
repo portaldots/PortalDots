@@ -34,7 +34,7 @@ export default {
   background-color: $color-bg-surface;
   border: 1px solid $color-border;
   border-radius: $border-radius;
-  color: currentColor;
+  color: currentcolor;
   display: inline-block;
   display: inline-flex;
   font-weight: 500;

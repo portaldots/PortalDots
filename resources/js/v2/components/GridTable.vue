@@ -260,7 +260,7 @@ export default {
       }
       &::before {
         border-left: 1px solid $color-border;
-        content: '';
+        content: "";
         display: block;
         height: 1.5rem;
         left: 0;

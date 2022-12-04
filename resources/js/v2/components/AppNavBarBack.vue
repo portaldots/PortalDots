@@ -20,6 +20,7 @@ export default {
 .navbar-back {
   align-items: center;
   display: flex;
+
   // ↓ナビバーがもつpaddingを打ち消すネガティブマージン
   margin-left: -$spacing;
   padding: $spacing;

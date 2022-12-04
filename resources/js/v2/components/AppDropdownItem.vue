@@ -47,7 +47,7 @@ export default {
   padding: 0.75rem $spacing-md;
   text-align: left;
   width: 100%;
-  &:not(a):not(button) {
+  &:not(a, button) {
     cursor: auto;
   }
   &:hover,

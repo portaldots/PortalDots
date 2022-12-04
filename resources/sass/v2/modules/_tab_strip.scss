@@ -5,6 +5,7 @@
   justify-content: center;
   overflow: hidden;
   padding: 0 $spacing;
+
   @media screen and (max-width: $breakpoint-listview-sm) {
     justify-content: flex-start;
     overflow-x: auto;
@@ -15,6 +16,7 @@
     display: block;
     padding: $spacing $spacing $spacing-md;
     text-align: center;
+
     @media screen and (max-width: $breakpoint-listview-sm) {
       white-space: nowrap;
     }
@@ -34,7 +36,7 @@
         background: $color-primary;
         border-radius: $bar-width $bar-width 0 0;
         bottom: 0;
-        content: '';
+        content: "";
         display: block;
         height: $bar-width;
         left: 0;
