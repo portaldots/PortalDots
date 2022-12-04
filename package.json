@@ -32,7 +32,7 @@
         "postinstall": "patch-package"
     },
     "devDependencies": {
-        "@vue/compiler-sfc": "^3.1.0",
+        "@vue/compiler-sfc": "^3.2.45",
         "blade-formatter": "^1.32.0",
         "cross-env": "^7.0",
         "eslint": "^8.28.0",
@@ -73,7 +73,7 @@
         "portal-vue": "^3.0.0-beta.0",
         "postinstall-postinstall": "^2.1.0",
         "turbolinks": "^5.2.0",
-        "vue": "^3.1.0",
+        "vue": "^3.2.45",
         "vue-easymde": "^2.0.0",
         "vue-global-events": "^2.1.1",
         "vuedraggable": "^4.1.0",
