@@ -7,7 +7,9 @@ $heading-borders: true;
 @import "./wysiwyg";
 
 .markdown {
+  /* stylelint-disable scss/at-extend-no-missing-placeholder */
   @extend .wysiwyg;
+  /* stylelint-enable scss/at-extend-no-missing-placeholder */
   img {
     display: block;
     height: auto;

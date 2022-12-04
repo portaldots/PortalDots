@@ -19,5 +19,6 @@ module.exports = {
       },
     ],
     'selector-class-pattern': null,
+    'scss/operator-no-newline-after': null,
   },
 }

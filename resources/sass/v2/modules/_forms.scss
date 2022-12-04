@@ -33,7 +33,7 @@ textarea {
         // ライトモード用ドロップダウンアイコン
         background:
           right $spacing-md center / 1rem
-          url(../../../img/dropdownTriangle.svg) no-repeat,
+          url("../../../img/dropdownTriangle.svg") no-repeat,
           $color-form-control !important;
       }
 
@@ -41,7 +41,7 @@ textarea {
         // ダークテーマ用ドロップダウンアイコン
         background:
           right $spacing-md center / 1rem
-          url(../../../img/dropdownTriangleDark.svg) no-repeat,
+          url("../../../img/dropdownTriangleDark.svg") no-repeat,
           $color-form-control !important;
       }
 
@@ -50,7 +50,7 @@ textarea {
           // ダークテーマ用ドロップダウンアイコン
           background:
             right $spacing-md center / 1rem
-            url(../../../img/dropdownTriangleDark.svg) no-repeat,
+            url("../../../img/dropdownTriangleDark.svg") no-repeat,
             $color-form-control !important;
         }
       }
