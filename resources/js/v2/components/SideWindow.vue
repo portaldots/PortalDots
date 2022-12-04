@@ -57,6 +57,7 @@ export default {
   top: $navbar-height;
   width: $side-window-width;
   z-index: $z-index-side-window;
+
   @media screen and (max-width: $breakpoint-side-window-fluid) {
     left: 0;
     width: 100%;

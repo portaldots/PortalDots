@@ -187,7 +187,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('~easymde/dist/easymde.min.css');
+@import "~easymde/dist/easymde.min.css";
 
 .markdown-editor {
   width: 100%;
@@ -233,16 +233,16 @@ export default {
   }
   .editor-statusbar {
     .lines::before {
-      content: '';
+      content: "";
     }
     .lines::after {
-      content: '行';
+      content: "行";
     }
     .words::before {
-      content: '';
+      content: "";
     }
     .words {
-      content: '語';
+      content: "語";
     }
   }
   .show-title-label {

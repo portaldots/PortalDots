@@ -77,6 +77,7 @@ export default {
   line-height: 1.2;
   padding: 0 0.4rem;
   text-align: center;
+
   @each $state, $color in $semantic-colors {
     &.is-outline.is-#{$state} {
       border: 1px solid $color;
@@ -86,6 +87,7 @@ export default {
       $bg-color: map-get($semantic-light-colors, $state);
 
       background: $bg-color;
+
       // outlineバッジに比べ一回り小さく見えてしまわないように、
       // outlineバッジと同様のborderをつける
       color: $color;

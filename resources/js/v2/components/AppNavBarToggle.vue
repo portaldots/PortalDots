@@ -53,6 +53,7 @@ export default {
   cursor: pointer;
   display: none;
   height: 100%;
+
   // ↓ナビバーがもつpaddingを打ち消すネガティブマージン
   margin-left: -$spacing;
   padding: $spacing;

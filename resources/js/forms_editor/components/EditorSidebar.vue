@@ -120,7 +120,7 @@ $editor-sidebar-padding: $spacing-md;
     &::before {
       border-bottom: 1px solid $color-border;
       bottom: 0;
-      content: '';
+      content: "";
       display: block;
       left: $editor-sidebar-padding;
       position: absolute;

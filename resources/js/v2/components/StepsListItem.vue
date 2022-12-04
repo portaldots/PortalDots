@@ -27,7 +27,8 @@ export default {
     background: $color-bg-surface;
     display: inline-block;
     margin-left: -#{$spacing-md};
-    padding: $spacing-md $spacing-md $spacing-md #{$circle-size +
+    padding:
+      $spacing-md $spacing-md $spacing-md #{$circle-size +
       ($spacing-md * 1.75)};
     text-align: left;
   }
@@ -62,7 +63,7 @@ export default {
   }
   &:not(:last-child)::after {
     background: $color-primary;
-    content: '';
+    content: "";
     display: block;
     height: 2px;
     left: 50%;

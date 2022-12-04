@@ -56,6 +56,7 @@ export default {
   $listview-border: 1px solid $color-border;
 
   --listview-base-item-padding-x: #{$spacing};
+
   @media screen and (max-width: $breakpoint-container-padding-reduce) {
     --listview-base-item-padding-x: #{$spacing-md};
   }
@@ -77,7 +78,7 @@ export default {
   &::after {
     border-bottom: $listview-border;
     bottom: 0;
-    content: '';
+    content: "";
     display: block;
     height: 1px;
     left: var(--listview-base-item-padding-x);

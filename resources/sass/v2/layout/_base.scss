@@ -4,7 +4,7 @@ html {
   font-size: $base-font-size;
 
   @media screen and (max-width: 350px) {
-    font-size: #{($base-font-size-px * 0.8) + 'px'};
+    font-size: #{($base-font-size-px * 0.8) + "px"};
   }
   &.env-android {
     // Pixel などの Android 端末は日本語フォントが font-weight: 600 に対応していない
@@ -15,9 +15,19 @@ html {
 body {
   background: $color-bg-base;
   color: $color-text;
-  font-family: 'Segoe UI', Meiryo, system-ui, -apple-system, Roboto,
-    'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+  font-family:
+    "Segoe UI",
+    Meiryo,
+    system-ui,
+    -apple-system,
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
@@ -29,7 +39,7 @@ body {
 
 * {
   box-sizing: border-box;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
   &:focus {
     outline: $focus-outline;
   }

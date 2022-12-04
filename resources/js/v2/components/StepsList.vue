@@ -15,7 +15,7 @@
   position: relative;
   &::before {
     border-top: 1px solid $color-border;
-    content: '';
+    content: "";
     display: block;
     left: 0;
     position: absolute;

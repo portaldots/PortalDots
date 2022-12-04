@@ -22,29 +22,35 @@ textarea {
     line-height: 1.6;
     padding: $spacing-sm $spacing-md;
     position: relative;
-    transition: #{$transition-base-fast} background-color,
-      #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color;
+    transition:
+      #{$transition-base-fast} background-color,
+      #{$transition-base-fast} box-shadow,
+      #{$transition-base-fast} border-color;
     width: 100%;
+
     @at-root {
       select#{&} {
         // ライトモード用ドロップダウンアイコン
-        background: right $spacing-md center / 1rem
-            url(../../../img/dropdownTriangle.svg) no-repeat,
+        background:
+          right $spacing-md center / 1rem
+          url(../../../img/dropdownTriangle.svg) no-repeat,
           $color-form-control !important;
       }
 
       html.theme-dark select#{&} {
         // ダークテーマ用ドロップダウンアイコン
-        background: right $spacing-md center / 1rem
-            url(../../../img/dropdownTriangleDark.svg) no-repeat,
+        background:
+          right $spacing-md center / 1rem
+          url(../../../img/dropdownTriangleDark.svg) no-repeat,
           $color-form-control !important;
       }
 
       html.theme-system select#{&} {
         @media (prefers-color-scheme: dark) {
           // ダークテーマ用ドロップダウンアイコン
-          background: right $spacing-md center / 1rem
-              url(../../../img/dropdownTriangleDark.svg) no-repeat,
+          background:
+            right $spacing-md center / 1rem
+            url(../../../img/dropdownTriangleDark.svg) no-repeat,
             $color-form-control !important;
         }
       }
