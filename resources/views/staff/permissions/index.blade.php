@@ -6,16 +6,16 @@
 
 @section('content')
     <staff-grid api-url="{{ route('staff.permissions.api') }}" v-bind:key-translations="{
-                    id: 'ユーザーID',
-                    name: '名前',
-                    student_id: '{{ config('portal.student_id_name') }}',
-                    name_family: '姓',
-                    name_family_yomi: '姓(よみ)',
-                    name_given: '名',
-                    name_given_yomi: '名(よみ)',
-                    is_admin: '管理者',
-                    permissions: '割り当てられた権限',
-                }">
+                        id: 'ユーザーID',
+                        name: '名前',
+                        student_id: '{{ config('portal.student_id_name') }}',
+                        name_family: '姓',
+                        name_family_yomi: '姓(よみ)',
+                        name_given: '名',
+                        name_given_yomi: '名(よみ)',
+                        is_admin: '管理者',
+                        permissions: '割り当てられた権限',
+                    }">
         <template v-slot:activities="{ row }">
             <icon-button
                 v-bind:href="`{{ route('staff.permissions.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])"
@@ -32,8 +32,8 @@
                 <app-badge danger strong>管理者(全機能にアクセス可能)</app-badge>
             </template>
             <template v-else-if="keyName === 'permissions'">
-                <template v-for="permission in row[keyName]">
-                    <app-badge primary v-bind:key="permission.identifier"
+                <template v-for="permission in row[keyName]" v-bind:key="permission.identifier">
+                    <app-badge primary
                         v-bind:title="`${permission.display_name} — ${permission.description_html} (${permission.identifier})`">
                         @{{ permission.display_short_name }}
                     </app-badge>

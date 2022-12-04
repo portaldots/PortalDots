@@ -62,17 +62,17 @@ export default {
     ListView,
     ListViewCard,
     AppInfoBox,
-    ListViewFormGroup
+    ListViewFormGroup,
   },
   props: {
     defaultTheme: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
-      selectedTheme: ''
+      selectedTheme: '',
     }
   },
   mounted() {
@@ -87,16 +87,16 @@ export default {
         }
       })
       htmlElem.classList.add(`theme-${newTheme}`)
-    }
+    },
   },
   watch: {
     selectedTheme(newTheme) {
       this.changeThemeClassName(newTheme)
-    }
+    },
   },
-  destroyed() {
+  unmounted() {
     // HTMLタグのクラスをリセットする
     this.changeThemeClassName(this.defaultTheme)
-  }
+  },
 }
 </script>

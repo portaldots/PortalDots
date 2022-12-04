@@ -1,16 +1,13 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 
 import editor from './editor'
 import status from './status'
 
-Vue.use(Vuex)
-
-const store = new Vuex.Store({
+const store = createStore({
   modules: {
     editor,
-    status
-  }
+    status,
+  },
 })
 
 export default store

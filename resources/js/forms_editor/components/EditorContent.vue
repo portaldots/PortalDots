@@ -3,8 +3,8 @@
     <div class="editor-body">
       <form-header />
       <div
-        class="editor-content__permanent-questions-info"
         v-if="has_permanent_questions"
+        class="editor-content__permanent-questions-info"
       >
         このフォームには「{{ form_name }}」固有の設問が含まれます。
         <button
@@ -14,50 +14,49 @@
           <template v-if="is_permanent_questions_visible">
             固有の設問を非表示
           </template>
-          <template v-else>固有の設問を表示</template>
+          <template v-else> 固有の設問を表示 </template>
         </button>
       </div>
       <div v-if="has_permanent_questions && is_permanent_questions_visible">
         <component
-          v-for="question in permanent_questions"
           :is="question_component_name(question.type)"
-          :question_id="question.id"
+          v-for="question in permanent_questions"
           :key="question.id"
+          :question_id="question.id"
           :is_permanent="question.is_permanent || undefined"
           class="question question--permanent"
         />
       </div>
       <div
-        class="editor-content__no-question text-muted"
         v-if="questions.length === 0"
+        class="editor-content__no-question text-muted"
       >
         <p class="mb-4">
-          <i class="far fa-edit fa-3x"></i>
+          <i class="far fa-edit fa-3x" />
         </p>
         <p class="lead">右側の[設問を追加]から設問を追加しましょう</p>
         <p class="mb-0">
           このフォームには設問が1つもありません。[設問を追加]から設問を追加してください。
         </p>
       </div>
+      <!-- FIXME: 以下に tag="transition-group" を追加すると Unhandled Promise Rejection: TypeError: null is not an object (evaluating 'domElement.__draggable_context = context') が発生する -->
+      <!-- TODO: transition-group を利用する場合は :component-data="{ name: !drag ? 'flip-list' : 'no' }" も追加する -->
       <draggable
-        tag="div"
         v-model="questions"
-        :animation="200"
-        ghostClass="ghost"
         handle=".form-item__handle"
+        item-key="id"
+        ghost-class="ghost"
         @start="on_drag_start"
         @end="on_drag_end"
       >
-        <transition-group type="transition" :name="!drag ? 'flip-list' : 'no'">
+        <template #item="{ element }">
           <component
-            v-for="question in questions"
-            :is="question_component_name(question.type)"
-            :question_id="question.id"
-            :key="question.id"
-            :is_permanent="question.is_permanent || undefined"
+            :is="question_component_name(element.type)"
+            :question_id="element.id"
+            :is_permanent="element.is_permanent || undefined"
             class="question"
           />
-        </transition-group>
+        </template>
       </draggable>
     </div>
   </div>
@@ -88,11 +87,11 @@ export default {
     QuestionUpload,
     QuestionRadio,
     QuestionSelect,
-    QuestionCheckbox
+    QuestionCheckbox,
   },
   data() {
     return {
-      is_permanent_questions_visible: false
+      is_permanent_questions_visible: false,
     }
   },
   computed: {
@@ -117,8 +116,8 @@ export default {
       },
       set(new_value) {
         this.$store.dispatch(`editor/${UPDATE_QUESTIONS_ORDER}`, new_value)
-      }
-    }
+      },
+    },
   },
   methods: {
     question_component_name(question_type) {
@@ -134,8 +133,8 @@ export default {
     },
     on_drag_end() {
       this.$store.dispatch(`editor/${DRAG_END}`)
-    }
-  }
+    },
+  },
 }
 </script>
 

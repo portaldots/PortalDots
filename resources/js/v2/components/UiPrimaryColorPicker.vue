@@ -51,31 +51,31 @@ export default {
   props: {
     inputNameH: {
       type: String,
-      default: null
+      default: null,
     },
     inputNameS: {
       type: String,
-      default: null
+      default: null,
     },
     inputNameL: {
       type: String,
-      default: null
+      default: null,
     },
     defaultHslaValue: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       hexValue: '#000000',
-      waitForReset: false
+      waitForReset: false,
     }
   },
   mounted() {
     this.hexValue = this.convertHslaToHex(this.defaultHslaValue)
   },
-  destroyed() {
+  unmounted() {
     rootElement.style.removeProperty('--color-primary')
     rootElement.style.removeProperty('--color-focus-primary')
     rootElement.style.removeProperty('--color-primary-hover')
@@ -84,7 +84,7 @@ export default {
   computed: {
     hslValue() {
       return this.convertHexToHsl(this.hexValue)
-    }
+    },
   },
   methods: {
     convertHslaToHex(hsla) {
@@ -103,7 +103,7 @@ export default {
       this.$nextTick(() => {
         this.waitForReset = true
       })
-    }
+    },
   },
   watch: {
     hexValue(value) {
@@ -142,7 +142,7 @@ export default {
         '--color-primary-inverse-hover',
         `hsla(${h}, ${s}%, ${l}%, 0.15)`
       )
-    }
-  }
+    },
+  },
 }
 </script>

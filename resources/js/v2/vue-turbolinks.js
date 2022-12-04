@@ -28,7 +28,7 @@ function plugin(Vue) {
       }
     },
 
-    destroyed() {
+    unmounted() {
       // 以下のコメントアウト部分 : We only need to revert the html for the root component
       if (this == this.$root && this.$el) {
         // ページ移動時、レイアウトが崩れるのを防ぐため、コメントアウト
@@ -47,7 +47,7 @@ function plugin(Vue) {
         }
         /* eslint-enable */
       }
-    }
+    },
   })
 }
 

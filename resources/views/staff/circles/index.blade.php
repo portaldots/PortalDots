@@ -15,16 +15,14 @@
             企画参加登録を「{{ config('app.name') }}」上で受け付けることで、参加登録にかかる事務作業を時短することができます。
 
             <template v-slot:cta>
-                <a href="{{ route('staff.circles.custom_form.index') }}"
-                    class="btn is-primary-inverse is-no-border is-wide">
+                <a href="{{ route('staff.circles.custom_form.index') }}" class="btn is-primary-inverse is-no-border is-wide">
                     <strong>もっと詳しく</strong>
                 </a>
             </template>
         </top-alert>
     @endif
 
-    <staff-grid
-        api-url="{{ route('staff.circles.api') }}"
+    <staff-grid api-url="{{ route('staff.circles.api') }}"
         v-bind:key-translations="{
             id: '企画ID',
             name: '企画名',
@@ -33,11 +31,9 @@
             group_name_yomi: '企画を出店する団体の名称(よみ)',
             places: '使用場所',
             tags: 'タグ',
-            @if (isset($custom_form))
-                @foreach($custom_form->questions as $question)
+            @if (isset($custom_form)) @foreach ($custom_form->questions as $question)
                     {{ App\GridMakers\CirclesGridMaker::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $question->id }}: '{{ $question->name }}',
-                @endforeach
-            @endif
+                @endforeach @endif
             submitted_at: '参加登録提出日時',
             status: '登録受理状況',
             'status.rejected': '不受理',
@@ -63,8 +59,7 @@
             created_at: '作成日時',
             updated_at: '更新日時',
             notes: 'スタッフ用メモ',
-        }"
-    >
+        }">
         <template v-slot:toolbar>
             <a class="btn is-primary" href="{{ route('staff.circles.create') }}">
                 <i class="fas fa-plus fa-fw"></i>
@@ -100,13 +95,13 @@
         <template v-slot:activities="{ row, openEditorByUrl }">
             <form-with-confirm
                 v-bind:action="`{{ route('staff.circles.destroy', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])"
-                method="post" v-bind:confirm-message="`企画「${row['name']}」を削除しますか？
+                method="post"
+                v-bind:confirm-message="`企画「${row['name']}」を削除しますか？
 
 • 「${row['name']}」が送信した申請の回答はすべて削除されます。`">
                 @method('delete')
                 @csrf
-                <icon-button
-                    button
+                <icon-button button
                     v-on:click="() => openEditorByUrl(`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id']))"
                     title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
@@ -124,17 +119,17 @@
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'places'">
                 {{-- 使用場所 --}}
-                <template v-for="place in row[keyName]">
-                    <app-badge primary strong v-bind:key="place.id">
-                        @{{ place . name }}
+                <template v-for="place in row[keyName]" v-bind:key="place.id">
+                    <app-badge primary strong>
+                        @{{ place.name }}
                     </app-badge>&nbsp;
                 </template>
             </template>
             <template v-else-if="keyName === 'tags'">
                 {{-- タグ --}}
-                <template v-for="tag in row[keyName]">
-                    <app-badge primary strong v-bind:key="tag.id">
-                        @{{ tag . name }}
+                <template v-for="tag in row[keyName]" v-bind:key="tag.id">
+                    <app-badge primary strong>
+                        @{{ tag.name }}
                     </app-badge>&nbsp;
                 </template>
             </template>
@@ -145,7 +140,7 @@
                     <a v-bind:href="row[keyName].file_url" target="_blank" rel="noopener noreferrer">表示</a>
                 </template>
                 <template v-else-if="row[keyName] && row[keyName].join">
-                    @{{ row[keyName] . join(', ') }}
+                    @{{ row[keyName].join(', ') }}
                 </template>
             </template>
             <template v-else-if="keyName === 'status'">
@@ -156,9 +151,9 @@
             </template>
             <template v-else-if="keyName === 'status_set_by' && row[keyName]">
                 {{-- 登録受理状況設定ユーザー --}}
-                @{{ row[keyName] . name_family }} @{{ row[keyName] . name_given }}
-                (@{{ row[keyName] . student_id }} •
-                ID : @{{ row[keyName] . id }})
+                @{{ row[keyName].name_family }} @{{ row[keyName].name_given }}
+                (@{{ row[keyName].student_id }} •
+                ID : @{{ row[keyName].id }})
             </template>
             <template v-else-if="row[keyName] === true">
                 <strong>はい</strong>

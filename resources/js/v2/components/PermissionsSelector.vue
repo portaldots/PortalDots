@@ -1,16 +1,16 @@
 <template>
   <div>
-    <ListViewCard noBorder>
+    <ListViewCard no-border>
       <div class="pb-spacing-md">
-        <template v-for="badge in permissionBadges">
-          <AppBadge primary :key="badge">
+        <template v-for="badge in permissionBadges" :key="badge">
+          <AppBadge primary>
             {{ badge }}
           </AppBadge>
           {{ ' ' }}
         </template>
         <strong
-          class="text-danger"
           v-if="!permissions || permissions.length === 0"
+          class="text-danger"
         >
           利用可能な機能なし
         </strong>
@@ -19,25 +19,25 @@
         <SearchInput
           v-model="searchKeyword"
           placeholder="権限を検索…"
-          preventEnter
+          prevent-enter
         />
       </div>
     </ListViewCard>
     <ListViewBaseItem class="selector">
       <template v-if="inputName">
         <input
+          v-for="permission in permissions"
+          :key="permission"
           type="hidden"
           :name="`${inputName}[]`"
-          v-for="permission in permissions"
           :value="permission"
-          :key="permission"
         />
       </template>
       <div class="selector-inner">
         <table class="selector-table">
           <thead class="selector-table__head">
             <tr class="selector-table__head__row">
-              <th class="selector-table__head__cell"></th>
+              <th class="selector-table__head__cell" />
               <th class="selector-table__head__cell">権限名</th>
               <th class="selector-table__head__cell">説明</th>
             </tr>
@@ -50,10 +50,10 @@
             >
               <td class="selector-table__body__cell">
                 <input
-                  type="checkbox"
                   :id="`permission_${definedPermission.identifier}`"
-                  :value="definedPermission.identifier"
                   v-model="permissions"
+                  type="checkbox"
+                  :value="definedPermission.identifier"
                 />
               </td>
               <td class="selector-table__body__cell">
@@ -97,30 +97,27 @@ export default {
     ListViewCard,
     ListViewBaseItem,
     SearchInput,
-    AppBadge
+    AppBadge,
   },
   props: {
     inputName: {
       type: String,
-      default: null
+      default: null,
     },
     definedPermissions: {
       type: Object,
-      required: true
+      required: true,
     },
     defaultPermissions: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {
       permissions: [],
-      searchKeyword: ''
+      searchKeyword: '',
     }
-  },
-  mounted() {
-    this.permissions = this.defaultPermissions
   },
   computed: {
     permissionBadges() {
@@ -138,8 +135,11 @@ export default {
           permission.display_name.includes(keyword) ||
           permission.display_short_name.includes(keyword)
       )
-    }
-  }
+    },
+  },
+  mounted() {
+    this.permissions = this.defaultPermissions
+  },
 }
 </script>
 
