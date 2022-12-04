@@ -1409,15 +1409,6 @@
   dependencies:
     "@types/node" "*"
 
-"@vue/compat@^3.1.0":
-  version "3.2.45"
-  resolved "https://registry.yarnpkg.com/@vue/compat/-/compat-3.2.45.tgz#c3d0187eb40389103b444b7bf232b25b389ed224"
-  integrity sha512-TOGT42fEE1hA4Oz2PyCmURJkrXHbe6G+gI8gVOqsEy624oeexDHFrVsFTfzveaPxxqJHyE2+qjKaA1F4KX84aA==
-  dependencies:
-    "@babel/parser" "^7.16.4"
-    estree-walker "^2.0.2"
-    source-map "^0.6.1"
-
 "@vue/compiler-core@3.2.45":
   version "3.2.45"
   resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.2.45.tgz#d9311207d96f6ebd5f4660be129fb99f01ddb41b"

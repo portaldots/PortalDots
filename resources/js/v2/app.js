@@ -1,6 +1,6 @@
 import Turbolinks from 'turbolinks'
 
-import { createApp, configureCompat } from 'vue'
+import { createApp } from 'vue'
 import { GlobalEvents } from 'vue-global-events'
 import PortalVue from 'portal-vue'
 import FloatingVue from 'floating-vue'
@@ -49,13 +49,6 @@ import UiPrimaryColorPicker from './components/UiPrimaryColorPicker.vue'
 // Form Questions
 import QuestionItem from './components/Forms/QuestionItem.vue'
 import QuestionHeading from './components/Forms/QuestionHeading.vue'
-
-configureCompat({
-  ATTR_FALSE_VALUE: false,
-  RENDER_FUNCTION: false,
-  WATCH_ARRAY: false,
-  COMPONENT_V_MODEL: false,
-})
 
 export function mountV2App() {
   // iOS で CSS の hover を有効にするハック

@@ -24,9 +24,6 @@ mix
     devtool: 'inline-source-map',
     resolve: {
       modules: [path.resolve('./node_modules')],
-      alias: {
-        vue: '@vue/compat',
-      },
     },
   })
   .copyDirectory('resources/img', 'public/images')
@@ -39,11 +36,6 @@ mix
     version: 3,
     options: {
       compilerOptions: {
-        compatConfig: {
-          MODE: 3,
-          COMPONENT_V_MODEL: false,
-          RENDER_FUNCTION: false,
-        },
         whitespace: 'condense',
       },
     },
