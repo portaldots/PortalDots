@@ -1,61 +1,61 @@
 <template>
   <div class="grid">
     <template v-if="paginator">
-      <div class="grid-toolbar" v-if="$slots.toolbar">
+      <div class="grid-toolbar">
         <slot name="toolbar" />
       </div>
       <div class="grid-controls">
         <button
-          class="btn is-transparent is-no-border"
           v-tooltip="'最初のページ'"
+          class="btn is-transparent is-no-border"
           :disabled="loading || page === 1"
           @click="onClickFirst"
         >
-          <i class="fas fa-angle-double-left fa-fw"></i>
+          <i class="fas fa-angle-double-left fa-fw" />
         </button>
         <button
-          class="btn is-transparent is-no-border"
           v-tooltip="'前のページ'"
+          class="btn is-transparent is-no-border"
           :disabled="loading || page === 1"
           @click="onClickPrev"
         >
-          <i class="fas fa-chevron-left fa-fw"></i>
+          <i class="fas fa-chevron-left fa-fw" />
         </button>
         <button
-          class="btn is-transparent is-no-border"
           v-tooltip="'次のページ'"
+          class="btn is-transparent is-no-border"
           :disabled="loading || page === paginator.last_page"
           @click="onClickNext"
         >
-          <i class="fas fa-chevron-right fa-fw"></i>
+          <i class="fas fa-chevron-right fa-fw" />
         </button>
         <button
-          class="btn is-transparent is-no-border"
           v-tooltip="'最後のページ'"
+          class="btn is-transparent is-no-border"
           :disabled="loading || page === paginator.last_page"
           @click="onClickLast"
         >
-          <i class="fas fa-angle-double-right fa-fw"></i>
+          <i class="fas fa-angle-double-right fa-fw" />
         </button>
         <button
-          class="btn is-transparent is-no-border"
           v-tooltip="'再読み込み'"
+          class="btn is-transparent is-no-border"
           :disabled="loading"
           @click="onClickReload"
         >
-          <i class="fas fa-sync fa-fw"></i>
+          <i class="fas fa-sync fa-fw" />
         </button>
         <div class="grid-controls__section is-no-padding">
           <button
             class="btn is-transparent is-no-border"
             @click="onClickFilter"
           >
-            <i class="fas fa-filter fa-fw"></i>
+            <i class="fas fa-filter fa-fw" />
             絞り込み
             <i
-              class="fas fa-circle grid-controls__notifier"
               v-if="isFilterActive"
-            ></i>
+              class="fas fa-circle grid-controls__notifier"
+            />
           </button>
         </div>
         <div class="grid-controls__section is-no-padding">
@@ -65,14 +65,14 @@
           >
             <template #button="{ toggle, props }">
               <button
+                v-bind="props"
                 class="btn is-transparent is-no-border"
                 :disabled="loading"
                 @click="toggle"
-                v-bind="props"
               >
                 表示件数 :&nbsp;
                 {{ perPage }}&nbsp;
-                <i class="fas fa-caret-down"></i>
+                <i class="fas fa-caret-down" />
               </button>
             </template>
             <template #item="{ item }">
@@ -83,9 +83,9 @@
               >
                 {{ item }}
                 <i
-                  class="fas fa-check grid-controls__selector-item__icon"
                   v-if="perPage === item"
-                ></i>
+                  class="fas fa-check grid-controls__selector-item__icon"
+                />
               </AppDropdownItem>
             </template>
           </AppDropdown>
@@ -97,112 +97,113 @@
             }}件 (ページ{{ paginator.current_page }} /
             {{ paginator.last_page }})
           </template>
-          <template v-else>0件</template>
+          <template v-else> 0件 </template>
         </div>
-        <div class="grid-controls__section text-primary" v-if="loading">
-          <i class="fas fa-spinner fa-pulse"></i>
+        <div v-if="loading" class="grid-controls__section text-primary">
+          <i class="fas fa-spinner fa-pulse" />
         </div>
       </div>
       <div class="grid__table_wrap">
         <table class="grid-table">
           <thead class="grid-table__thead">
             <tr class="grid-table__tr">
-              <th class="grid-table__th"></th>
-              <th class="grid-table__th" v-for="keyName in keys" :key="keyName">
+              <th class="grid-table__th" />
+              <th v-for="keyName in keys" :key="keyName" class="grid-table__th">
                 <button
                   class="grid-table__th__button"
                   :disabled="!sortableKeys.includes(keyName)"
                   @click="(e) => onClickTh(keyName, e)"
                 >
-                  <slot name="th" :keyName="keyName" />
+                  <slot name="th" :key-name="keyName" />
                   <template v-if="orderBy === keyName">
                     <i
                       v-if="direction === 'asc'"
                       class="fas fa-fw fa-sort-up text-primary"
-                    ></i>
-                    <i v-else class="fas fa-fw fa-sort-down text-primary"></i>
+                    />
+                    <i v-else class="fas fa-fw fa-sort-down text-primary" />
                   </template>
                   <i
                     v-else-if="sortableKeys.includes(keyName)"
                     class="fas fa-fw fa-sort text-muted"
-                  ></i>
+                  />
                 </button>
               </th>
             </tr>
           </thead>
           <tbody class="grid-table__tbody">
             <tr
-              class="grid-table__tr is-in-tbody"
               v-for="row in paginator.data"
               :key="row.id"
+              class="grid-table__tr is-in-tbody"
             >
               <td class="grid-table__td">
                 <slot name="activities" :row="row" />
               </td>
               <td
-                class="grid-table__td"
                 v-for="keyName in keys"
                 :key="`${row.id}-${keyName}`"
+                class="grid-table__td"
               >
-                <slot name="td" :row="row" :keyName="keyName" />
+                <slot name="td" :row="row" :key-name="keyName" />
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </template>
-    <div class="grid-loading" v-else>
-      <i class="fas fa-spinner fa-pulse fa-2x text-primary"></i>
+    <div v-else class="grid-loading">
+      <i class="fas fa-spinner fa-pulse fa-2x text-primary" />
     </div>
   </div>
 </template>
 
 <script>
+import { Comment } from 'vue'
 import AppDropdown from './AppDropdown.vue'
 import AppDropdownItem from './AppDropdownItem.vue'
 
 export default {
   components: {
     AppDropdown,
-    AppDropdownItem
+    AppDropdownItem,
   },
   props: {
     keys: {
       type: Array,
-      required: true
+      required: true,
     },
     sortableKeys: {
       type: Array,
-      required: true
+      required: true,
     },
     orderBy: {
       type: String,
-      required: true
+      required: true,
     },
     direction: {
       type: String,
-      required: true
+      required: true,
     },
     paginator: {
       type: Object,
-      required: false
+      required: false,
     },
     page: {
       type: Number,
-      required: true
+      required: true,
     },
     perPage: {
       type: Number,
-      required: true
+      required: true,
     },
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isFilterActive: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     onClickFirst(e) {
@@ -228,8 +229,8 @@ export default {
     },
     onChangePerPage(perPage, e) {
       this.$emit('changePerPage', perPage, e)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -239,6 +240,9 @@ export default {
     display: flex;
     flex-wrap: wrap;
     padding: $spacing-md $spacing-sm;
+    &:not(:has(*)) {
+      display: none;
+    }
   }
   &-controls {
     align-items: center;

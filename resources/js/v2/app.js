@@ -1,9 +1,10 @@
 import Turbolinks from 'turbolinks'
 
-import Vue from 'vue'
-import GlobalEvents from 'vue-global-events'
+import { createApp, configureCompat } from 'vue'
+import { GlobalEvents } from 'vue-global-events'
 import PortalVue from 'portal-vue'
-import VTooltip from 'v-tooltip'
+import FloatingVue from 'floating-vue'
+import 'floating-vue/dist/style.css'
 
 import TurbolinksAdapter from './vue-turbolinks'
 
@@ -49,13 +50,16 @@ import UiPrimaryColorPicker from './components/UiPrimaryColorPicker.vue'
 import QuestionItem from './components/Forms/QuestionItem.vue'
 import QuestionHeading from './components/Forms/QuestionHeading.vue'
 
+configureCompat({
+  ATTR_FALSE_VALUE: false,
+  RENDER_FUNCTION: false,
+  WATCH_ARRAY: false,
+  COMPONENT_V_MODEL: false,
+})
+
 export function mountV2App() {
   // iOS で CSS の hover を有効にするハック
   document.body.addEventListener('touchstart', () => {}, { passive: true })
-
-  Vue.use(PortalVue)
-  Vue.use(TurbolinksAdapter)
-  Vue.use(VTooltip, { defaultHtml: false, defaultDelay: 400 })
 
   Turbolinks.start()
 
@@ -80,7 +84,7 @@ export function mountV2App() {
   }
 
   document.addEventListener('turbolinks:load', () => {
-    new Vue({
+    const app = createApp({
       components: {
         GlobalEvents,
         AppFooter,
@@ -121,18 +125,28 @@ export function mountV2App() {
         MarkdownEditor,
         SearchInput,
         PermissionsSelector,
-        UiPrimaryColorPicker
+        UiPrimaryColorPicker,
       },
       data() {
         return {
-          isDrawerOpen: false
+          isDrawerOpen: false,
         }
+      },
+      watch: {
+        isDrawerOpen(newVal) {
+          // アクセシビリティのため、適切な位置にフォーカスする
+          if (newVal) {
+            this.$refs.drawer.focus()
+          } else {
+            this.$refs.toggle.$el.focus()
+          }
+        },
       },
       mounted() {
         const loading = document.querySelector('#loading')
         loading.classList.add('is-done')
       },
-      // destroyed() {
+      // unmounted() {
       //   const loading = document.querySelector('#loading')
       //   loading.classList.remove('is-done')
       // },
@@ -149,18 +163,14 @@ export function mountV2App() {
           } else {
             window.alert('お使いのブラウザでは共有機能に対応していません')
           }
-        }
+        },
       },
-      watch: {
-        isDrawerOpen(newVal) {
-          // アクセシビリティのため、適切な位置にフォーカスする
-          if (newVal) {
-            this.$refs.drawer.focus()
-          } else {
-            this.$refs.toggle.$el.focus()
-          }
-        }
-      }
-    }).$mount('#v2-app')
+    })
+
+    app.use(PortalVue)
+    app.use(TurbolinksAdapter)
+    app.use(FloatingVue, { delay: 400 })
+
+    app.mount('#v2-app')
   })
 }

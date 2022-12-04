@@ -3,14 +3,14 @@
     v-slot="{
       isSideWindowOpen: isFilterSideWindowOpen,
       toggleSideWindow: toggleFilterSideWindow,
-      closeSideWindow: closeFilterSideWindow
+      closeSideWindow: closeFilterSideWindow,
     }"
   >
     <SideWindowContainer
       v-slot="{
         isSideWindowOpen: isEditorSideWindowOpen,
         openSideWindow: openEditorSideWindow,
-        closeSideWindow: closeEditorSideWindow
+        closeSideWindow: closeEditorSideWindow,
       }"
     >
       <div class="staff_grid">
@@ -105,8 +105,8 @@ import StaffGridEditor from './StaffGridEditor.vue'
 
 const axios = Axios.create({
   headers: {
-    'X-Requested-With': 'XMLHttpRequest'
-  }
+    'X-Requested-With': 'XMLHttpRequest',
+  },
 })
 
 export default {
@@ -115,17 +115,17 @@ export default {
     SideWindowContainer,
     SideWindow,
     StaffGridFilter,
-    StaffGridEditor
+    StaffGridEditor,
   },
   props: {
     apiUrl: {
       type: String,
-      required: true
+      required: true,
     },
     keyTranslations: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -141,7 +141,7 @@ export default {
       filterMode: 'and',
       needReload: false,
       loading: true,
-      sideWindowEditorUrl: ''
+      sideWindowEditorUrl: '',
     }
   },
   async mounted() {
@@ -149,7 +149,7 @@ export default {
     window.addEventListener('popstate', this.onPopState, false)
     await this.fetch()
   },
-  destroyed() {
+  unmounted() {
     this.needReload = true
   },
   methods: {
@@ -236,7 +236,7 @@ export default {
         // 現在がascだったらdescに、descだったらascに変える
         this.direction = {
           asc: 'desc',
-          desc: 'asc'
+          desc: 'asc',
         }[this.direction]
       } else {
         this.orderBy = keyName
@@ -285,13 +285,13 @@ export default {
           id: index,
           keyName: query.key_name,
           operator: query.operator === 'not+like' ? 'not like' : query.operator,
-          value: query.value
+          value: query.value,
         }))
       }
       if (queries.mode) {
         this.filterMode = queries.mode
       }
-    }
+    },
   },
   computed: {
     sideWindowEditorPopUpUrl() {
@@ -313,7 +313,7 @@ export default {
           this.filterQueries.map((query) => ({
             key_name: query.keyName,
             operator: query.operator,
-            value: query.value
+            value: query.value,
           }))
         )
         params.append('queries', stringQueries)
@@ -321,8 +321,8 @@ export default {
       }
 
       return params.toString()
-    }
-  }
+    },
+  },
 }
 </script>
 

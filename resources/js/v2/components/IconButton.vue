@@ -6,8 +6,9 @@
     v-tooltip="title"
     :target="newtab ? '_blank' : undefined"
     :rel="newtab ? 'noopener noreferrer' : undefined"
-    v-bind="disabledProps"
     class="icon-button"
+    :class="disabled && href ? 'is-disabled' : ''"
+    :disabled="disabled && !href"
     @click="handleClick"
   >
     <slot />
@@ -19,33 +20,33 @@ export default {
   props: {
     href: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     submit: {
       type: Boolean,
-      default: false
+      default: false,
     },
     button: {
       type: Boolean,
-      default: true
+      default: true,
     },
     title: {
       type: String,
-      required: true
+      required: true,
     },
     newtab: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     handleClick(e) {
       this.$emit('click', e)
-    }
+    },
   },
   computed: {
     componentIs() {
@@ -60,19 +61,7 @@ export default {
       }
       return undefined
     },
-    disabledProps() {
-      if (!this.disabled) return {}
-
-      if (this.href) {
-        return {
-          class: 'is-disabled'
-        }
-      }
-      return {
-        disabled: true
-      }
-    }
-  }
+  },
 }
 </script>
 

@@ -17,21 +17,36 @@ mix
   .options({
     hmrOptions: {
       host: 'localhost',
-      port: 8181
-    }
+      port: 8181,
+    },
   })
   .webpackConfig({
+    devtool: 'inline-source-map',
     resolve: {
-      modules: [path.resolve('./node_modules')]
-    }
+      modules: [path.resolve('./node_modules')],
+      alias: {
+        vue: '@vue/compat',
+      },
+    },
   })
   .copyDirectory('resources/img', 'public/images')
   .js('resources/js/app.js', 'public/js') // メインスクリプト
   .vue({
-    globalStyles: 'resources/sass/_variables.scss'
+    globalStyles: 'resources/sass/_variables.scss',
     // ↓スタイル適用順序に依存したCSSを書いているVueファイルが多く存在しており、
     //   場合によって表示が崩れてしまうことがあるため、一時的にコメントアウト
     // extractStyles: true,
+    version: 3,
+    options: {
+      compilerOptions: {
+        compatConfig: {
+          MODE: 3,
+          COMPONENT_V_MODEL: false,
+          RENDER_FUNCTION: false,
+        },
+        whitespace: 'condense',
+      },
+    },
   })
   .extract([
     'axios',
@@ -40,7 +55,7 @@ mix
     'turbolinks',
     'vue',
     'vue-global-events',
-    'vuex'
+    'vuex',
   ])
   .sass('resources/sass/bootstrap.scss', 'public/css') // Bootstrap
   .sass('resources/sass/fontawesome.scss', 'public/css') // Font Awesome

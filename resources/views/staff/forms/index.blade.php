@@ -5,20 +5,17 @@
 @section('top_alert_props', 'container-fluid')
 
 @section('content')
-    <staff-grid
-        api-url="{{ route('staff.forms.api') }}"
-        v-bind:key-translations="{
-            id: 'フォームID',
-            name: 'フォーム名',
-            is_public: '公開',
-            answerableTags: '回答可能なタグ',
-            description: 'フォームの説明',
-            open_at: '受付開始日時',
-            close_at: '受付終了日時',
-            created_at: '作成日時',
-            updated_at: '更新日時',
-        }"
-    >
+    <staff-grid api-url="{{ route('staff.forms.api') }}" v-bind:key-translations="{
+                id: 'フォームID',
+                name: 'フォーム名',
+                is_public: '公開',
+                answerableTags: '回答可能なタグ',
+                description: 'フォームの説明',
+                open_at: '受付開始日時',
+                close_at: '受付終了日時',
+                created_at: '作成日時',
+                updated_at: '更新日時',
+            }">
         <template v-slot:toolbar>
             <a class="btn is-primary" href="{{ route('staff.forms.create') }}">
                 <i class="fas fa-plus fa-fw"></i>
@@ -34,14 +31,14 @@
         <template v-slot:activities="{ row, openEditorByUrl }">
             <form-with-confirm
                 v-bind:action="`{{ route('staff.forms.copy', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
-                method="post" v-bind:confirm-message="`フォーム「${row['name']}」を複製しますか？
+                method="post"
+                v-bind:confirm-message="`フォーム「${row['name']}」を複製しますか？
 
 • 設問は全て複製されます
 • 「${row['name']}のコピー」という名前のフォームが作成されます
 • 「${row['name']}のコピー」は非公開です。後から必要に応じて設定を変更してください`">
                 @csrf
-                <icon-button
-                    button
+                <icon-button button
                     v-on:click="() => openEditorByUrl(`{{ route('staff.forms.edit', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id']))"
                     title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
@@ -59,9 +56,9 @@
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'answerableTags'">
                 {{-- 閲覧可能なタグ --}}
-                <template v-for="tag in row[keyName]">
-                    <app-badge primary strong v-bind:key="tag.id">
-                        @{{ tag . name }}
+                <template v-for="tag in row[keyName]" v-bind:key="tag.id">
+                    <app-badge primary strong>
+                        @{{ tag.name }}
                     </app-badge>&nbsp;
                 </template>
                 <span class="text-muted" v-if="row[keyName].length === 0">

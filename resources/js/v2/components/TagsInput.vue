@@ -27,42 +27,42 @@
 </template>
 
 <script>
-import VueTagsInput from '@johmun/vue-tags-input'
+import VueTagsInput from '@sipec/vue3-tags-input'
 
 export default {
   components: {
-    VueTagsInput
+    VueTagsInput,
   },
   props: {
     inputName: {
       type: String,
-      default: null
+      default: null,
     },
     defaultTags: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     autocompleteItems: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     addOnlyFromAutocomplete: {
       type: Boolean,
-      default: false
+      default: false,
     },
     placeholder: {
       type: String,
-      default: 'タグを追加'
+      default: 'タグを追加',
     },
     placeholderEmpty: {
       type: String,
-      required: false
-    }
+      required: false,
+    },
   },
   data() {
     return {
       inputTag: '',
-      tags: []
+      tags: [],
     }
   },
   mounted() {
@@ -79,7 +79,7 @@ export default {
           .map((t) => t.text.toLowerCase())
           .indexOf(tag.text.toLowerCase()) !== -1
       )
-    }
+    },
   },
   computed: {
     separators() {
@@ -90,8 +90,8 @@ export default {
       return this.autocompleteItems.filter(
         (i) => i.text.toLowerCase().indexOf(this.inputTag.toLowerCase()) !== -1
       )
-    }
-  }
+    },
+  },
 }
 </script>
 

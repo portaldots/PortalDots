@@ -7,10 +7,10 @@
   >
     <template #button="{ toggle, props }">
       <button
+        v-bind="props"
         type="button"
         class="btn is-secondary is-no-border is-block add_dropdown-btn"
         @click="toggle"
-        v-bind="props"
       >
         <span class="text-muted">
           <i class="fas fa-plus-circle fa-fw"></i>
@@ -37,19 +37,19 @@ import AppDropdownItem from './AppDropdownItem.vue'
 export default {
   components: {
     AppDropdown,
-    AppDropdownItem
+    AppDropdownItem,
   },
   props: {
     dropdownItems: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     onClickItem(item, e) {
       this.$emit('clickItem', item, e)
-    }
-  }
+    },
+  },
 }
 </script>
 
