@@ -161,7 +161,7 @@ export default {
 
 .editor-body {
   background: $color-bg-surface;
-  box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.07);
+  box-shadow: 0 0.1rem 0.1rem rgb(0 0 0 / 7%);
   margin: 0 auto;
   max-width: 960px;
   width: 100%;

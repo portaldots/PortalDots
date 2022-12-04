@@ -114,6 +114,7 @@ export default {
   }
   &__body {
     padding-right: $spacing;
+
     @media screen and (max-width: $breakpoint-top-alert-col) {
       padding: 0;
     }

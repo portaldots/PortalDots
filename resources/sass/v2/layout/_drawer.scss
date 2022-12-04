@@ -11,17 +11,19 @@
   &:focus {
     outline: 0;
   }
+
   @mixin divider($is-bottom: false) {
     position: relative;
     &::after {
       border-bottom: 1px solid $color-border;
-      content: '';
+      content: "";
       display: block;
       height: 1px;
       left: $spacing;
       position: absolute;
       right: $spacing;
-      @if ($is-bottom) {
+
+      @if $is-bottom {
         bottom: 0;
       } @else {
         top: 0;
@@ -40,6 +42,7 @@
   @media screen and (max-width: $breakpoint-drawer-narrow) {
     width: $drawer-width-narrow;
   }
+
   @media screen and (max-width: $breakpoint-drawer-hide) {
     transform: translateX(-100%);
     width: $drawer-width;
@@ -90,7 +93,7 @@
           background: $color-primary;
           border-radius: $bar-width 0 0 $bar-width;
           bottom: $spacing-sm;
-          content: '';
+          content: "";
           display: block;
           position: absolute;
           right: 0;

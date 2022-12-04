@@ -47,7 +47,7 @@ export default {
 <style lang="scss" scoped>
 .editor-error {
   align-items: center;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgb(0 0 0 / 25%);
   display: flex;
   height: 100vh;
   justify-content: center;

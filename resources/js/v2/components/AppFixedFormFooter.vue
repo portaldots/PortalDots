@@ -18,6 +18,6 @@ export default {}
   margin: $spacing-lg 0 0;
   padding: $spacing;
   position: sticky;
-  z-index: $z-index-fixed_form_footer;
+  z-index: $z-index-fixed-form-footer;
 }
 </style>

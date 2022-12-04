@@ -1,10 +1,10 @@
 .body-editor-v1 {
   // Variables
   /* stylelint-disable no-invalid-position-at-import-rule */
-  @import 'variables';
-  @import '~bootstrap/scss/functions';
-  @import '~bootstrap/scss/variables';
-  @import '~bootstrap/scss/mixins';
+  @import "variables";
+  @import "~bootstrap/scss/functions";
+  @import "~bootstrap/scss/variables";
+  @import "~bootstrap/scss/mixins";
   /* stylelint-enable no-invalid-position-at-import-rule */
 
   padding-top: $editor-header-height;

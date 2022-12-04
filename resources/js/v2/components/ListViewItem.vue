@@ -48,7 +48,7 @@ export default {
     &::before {
       background: $color-primary;
       bottom: 0;
-      content: '';
+      content: "";
       display: block;
       left: 0;
       position: absolute;

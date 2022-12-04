@@ -6,13 +6,14 @@ $line-height-heading: 1.4;
 
 // Font Size
 $base-font-size-px: 15;
-$base-font-size: #{$base-font-size-px + 'px'};
-$font-size-xl: #{math.div(24, $base-font-size-px) + 'rem'};
-$font-size-lg: #{math.div(20, $base-font-size-px) + 'rem'};
-$font-size: #{math.div(14, $base-font-size-px) + 'rem'};
+$base-font-size: #{$base-font-size-px + "px"};
+$font-size-xl: #{math.div(24, $base-font-size-px) + "rem"};
+$font-size-lg: #{math.div(20, $base-font-size-px) + "rem"};
+$font-size: #{math.div(14, $base-font-size-px) + "rem"};
+
 // inputのフォントサイズは16px以上にしないと、フォーカス時 iOS デバイスで
 // ズームしてしまう
-$font-size-input: #{math.div(16, $base-font-size-px) + 'rem'};
+$font-size-input: #{math.div(16, $base-font-size-px) + "rem"};
 
 // Font Weight
 $font-bold: var(--font-weight-bold);
@@ -50,7 +51,6 @@ $semantic-light-colors: (
   success: $color-success-light,
   muted: $color-muted-light,
 );
-
 $color-box-shadow: var(--color-box-shadow);
 $color-box-shadow-subdued: var(--color-box-shadow-subdued);
 $color-focus-primary: var(--color-focus-primary);
@@ -128,8 +128,8 @@ $z-index-drawer: 9990;
 $z-index-drawer-backdrop: 9989;
 $z-index-navbar: 9980;
 $z-index-side-window: 9970;
-$z-index-bottom_tabs: 9980;
-$z-index-fixed_form_footer: 9985;
+$z-index-bottom-tabs: 9980;
+$z-index-fixed-form-footer: 9985;
 $z-index-form-group-addon: 1;
 $z-index-form-group-control: 2; // フォームコントロールのフォーカス枠が、フォームアドオンより前面に表示されるようにする
 $z-index-form-search-icon: 3;

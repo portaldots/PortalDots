@@ -41,7 +41,7 @@ export default {
       border: 1px solid $color-muted;
       border-radius: $border-radius;
       color: $color-muted;
-      content: 'スタッフ';
+      content: "スタッフ";
       display: inline-block;
       font-size: 0.75em;
       line-height: 1.75;
@@ -56,12 +56,14 @@ export default {
   @media screen and (max-width: $breakpoint-drawer-narrow) {
     left: $drawer-width-narrow;
   }
+
   @media screen and (max-width: $breakpoint-drawer-hide) {
     left: 0;
     width: 100%;
   }
   &-brand {
     color: $color-text;
+
     // ↓ナビバーがもつpaddingを打ち消すネガティブマージン
     margin-left: -$spacing;
     padding: $spacing;

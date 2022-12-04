@@ -35,7 +35,7 @@ export default {
   background: $color-bg-surface;
   border-radius: $border-radius;
   box-shadow: $box-shadow-lv1;
-  color: currentColor;
+  color: currentcolor;
   display: block;
   height: 100%;
   text-decoration: none;

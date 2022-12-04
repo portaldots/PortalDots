@@ -11,7 +11,7 @@
       'is-muted': muted,
       'is-strong': strong,
       'is-small': small,
-      'is-pill': pill
+      'is-pill': pill,
     }"
   >
     <slot />
@@ -23,49 +23,51 @@ export default {
   props: {
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     outline: {
       type: Boolean,
-      default: false
+      default: false,
     },
     primary: {
       type: Boolean,
-      default: false
+      default: false,
     },
     danger: {
       type: Boolean,
-      default: false
+      default: false,
     },
     success: {
       type: Boolean,
-      default: false
+      default: false,
     },
     warning: {
       type: Boolean,
-      default: false
+      default: false,
     },
     muted: {
       type: Boolean,
-      default: false
+      default: false,
     },
     strong: {
       type: Boolean,
-      default: false
+      default: false,
     },
     small: {
       type: Boolean,
-      default: false
+      default: false,
     },
     pill: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
+@use "sass:map";
+
 .badge {
   align-items: center;
   border-radius: $border-radius-sm;
@@ -77,15 +79,17 @@ export default {
   line-height: 1.2;
   padding: 0 0.4rem;
   text-align: center;
+
   @each $state, $color in $semantic-colors {
     &.is-outline.is-#{$state} {
       border: 1px solid $color;
       color: $color;
     }
     &:not(.is-outline).is-#{$state} {
-      $bg-color: map-get($semantic-light-colors, $state);
+      $bg-color: map.get($semantic-light-colors, $state);
 
       background: $bg-color;
+
       // outlineバッジに比べ一回り小さく見えてしまわないように、
       // outlineバッジと同様のborderをつける
       color: $color;

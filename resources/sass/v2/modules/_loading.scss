@@ -22,11 +22,12 @@
 
     align-items: center;
     animation: loading 0.75s linear infinite;
-    background: linear-gradient(
-      to bottom right,
-      $color-primary,
-      $color-bg-surface 40%
-    );
+    background:
+      linear-gradient(
+        to bottom right,
+        $color-primary,
+        $color-bg-surface 40%
+      );
     border-radius: 50%;
     display: flex;
     height: $circle-size;
@@ -44,7 +45,7 @@
     &::after {
       background: $color-bg-surface;
       border-radius: 50%;
-      content: '';
+      content: "";
       display: block;
       height: calc(#{$circle-size} - 4px);
       width: calc(#{$circle-size} - 4px);

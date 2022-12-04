@@ -20,6 +20,7 @@
     color: $color-muted;
     font-size: 1rem;
   }
+
   @media screen and (max-width: $breakpoint-listview-sm) {
     &__month {
       font-size: 1rem;

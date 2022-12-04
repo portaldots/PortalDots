@@ -56,6 +56,7 @@ export default {
   $listview-border: 1px solid $color-border;
 
   --listview-base-item-padding-x: #{$spacing};
+
   @media screen and (max-width: $breakpoint-container-padding-reduce) {
     --listview-base-item-padding-x: #{$spacing-md};
   }
@@ -71,13 +72,13 @@ export default {
   position: relative;
   transition: #{$transition-base-fast} background-color;
   width: 100%;
-  &:not(a):not(button) {
+  &:not(a, button) {
     cursor: auto;
   }
   &::after {
     border-bottom: $listview-border;
     bottom: 0;
-    content: '';
+    content: "";
     display: block;
     height: 1px;
     left: var(--listview-base-item-padding-x);
@@ -105,9 +106,9 @@ export default {
     color: $color-text;
     text-decoration: none;
   }
-  &:not(a):not(button):hover,
-  &:not(a):not(button):active,
-  &:not(a):not(button):focus {
+  &:not(a, button):hover,
+  &:not(a, button):active,
+  &:not(a, button):focus {
     background: $color-bg-surface;
   }
   &.is-action-btn {

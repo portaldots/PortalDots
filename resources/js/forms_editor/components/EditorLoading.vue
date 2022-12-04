@@ -28,7 +28,7 @@
     margin-bottom: 1.5rem;
 
     @keyframes icon {
-      from {
+      0% {
         opacity: 0;
         transform: translateY(-10rem);
       }
@@ -36,7 +36,7 @@
         opacity: 0.75;
         transform: translateY(-1rem);
       }
-      to {
+      100% {
         opacity: 1;
         transform: translateY(0);
       }
@@ -48,14 +48,14 @@
     margin-bottom: 2rem;
 
     @keyframes title {
-      from {
+      0% {
         opacity: 0;
       }
       75% {
         opacity: 0;
         transform: translateY(2rem);
       }
-      to {
+      100% {
         opacity: 1;
         transform: translateY(0);
       }
@@ -65,13 +65,13 @@
     animation: loading-wrap 2s ease both;
 
     @keyframes loading-wrap {
-      from {
+      0% {
         opacity: 0;
       }
       75% {
         opacity: 0;
       }
-      to {
+      100% {
         opacity: 1;
         transform: translateY(0);
       }
