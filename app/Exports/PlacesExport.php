@@ -82,7 +82,9 @@ class PlacesExport implements FromCollection, WithHeadings, WithMapping
      */
     public function headings(): array
     {
-        $heading = ['場所ID', '場所名', 'タイプ', 'スタッフ用メモ'];
+        // インポート時ヘッダーを Key として扱うようにしているが
+        // 日本語などの文字が変換されないため英字でも記載しておく。
+        $heading = ['場所ID', '場所名（NAME）', 'タイプ（TYPE）', 'スタッフ用メモ（NOTES）'];
 
         if ($this->withCircle) {
             array_push(

@@ -22,7 +22,7 @@ class StoreAction extends Controller
             ]
         );
         $file = $request->file('importFile');
-        // dd($file, $file->path());
+
         (new PlacesImport)->import($file->path(), null, \Maatwebsite\Excel\Excel::CSV);
 
         return redirect()

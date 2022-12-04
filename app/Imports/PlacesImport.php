@@ -2,18 +2,19 @@
 
 namespace App\Imports;
 
-use App\Place;
+use App\Eloquents\Place;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Validators\Failure;
 use Throwable;
 
-class PlacesImport implements ToModel, WithValidation, WithHeadingRow, SkipsOnError
+class PlacesImport implements ToModel, WithValidation, SkipsOnError, SkipsOnFailure, WithHeadingRow
 {
-
     use Importable;
 
     /**
@@ -25,9 +26,9 @@ class PlacesImport implements ToModel, WithValidation, WithHeadingRow, SkipsOnEr
     {
         if (!isset($row[0])) {
             return new Place([
-                'name' => $row[1],
-                'type' => $this->getTypeValue($row[2]),
-                'notes' => $row[3],
+                'name' => $row['name'],
+                'type' => $this->getTypeValue($row['type']),
+                'notes' => $row['notes'],
             ]);
         }
         // else {
@@ -44,9 +45,23 @@ class PlacesImport implements ToModel, WithValidation, WithHeadingRow, SkipsOnEr
     public function rules(): array
     {
         return [
-            '場所名' => ['required', 'string'], // できれば Unique も
-            'タイプ' => ['required', Rule::in(["屋内", "屋外", "特殊場所"])],
-            'スタッフ用メモ' => ['nullable', 'string'],
+            'id' => ['nullable', 'numeric'], // ID
+            'name' => ['required', 'string', Rule::unique('places', 'name')], // Name // できれば Unique も
+            'type' => ['required', Rule::in(['屋内', '屋外', '特殊場所'])], // Type
+            'notes' => ['nullable', 'string'], // Note
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function customValidationAttributes(): array
+    {
+        return [
+            'id' => '場所ID',
+            'name' => '場所名',
+            'type' => 'タイプ',
+            'notes' => 'スタッフ用メモ'
         ];
     }
 
@@ -55,7 +70,16 @@ class PlacesImport implements ToModel, WithValidation, WithHeadingRow, SkipsOnEr
         dd($e);
     }
 
-    private function getTypeValue(string $type) {
+    /**
+     * @param Failure[] $failures
+     */
+    public function onFailure(Failure ...$failures)
+    {
+        dd($failures);
+    }
+
+    private function getTypeValue(string $type)
+    {
         if ($type === '屋内') {
             return 1;
         }
@@ -64,5 +88,4 @@ class PlacesImport implements ToModel, WithValidation, WithHeadingRow, SkipsOnEr
         }
         return 3;
     }
-
 }
