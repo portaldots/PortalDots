@@ -49,7 +49,7 @@ export default {
   appearance: none;
   background: 0;
   border: 0;
-  color: currentColor;
+  color: currentcolor;
   cursor: pointer;
   display: none;
   height: 100%;

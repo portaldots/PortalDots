@@ -122,12 +122,12 @@ export default {
       animation: saved 3s linear both;
 
       @keyframes saved {
-        from,
+        0%,
         90% {
           opacity: 1;
           visibility: visible;
         }
-        to {
+        100% {
           opacity: 0;
           visibility: hidden;
         }

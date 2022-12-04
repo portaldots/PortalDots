@@ -71,7 +71,7 @@ export default {
   position: relative;
   transition: #{$transition-base-fast} background-color;
   width: 100%;
-  &:not(a):not(button) {
+  &:not(a, button) {
     cursor: auto;
   }
   &::after {
@@ -105,9 +105,9 @@ export default {
     color: $color-text;
     text-decoration: none;
   }
-  &:not(a):not(button):hover,
-  &:not(a):not(button):active,
-  &:not(a):not(button):focus {
+  &:not(a, button):hover,
+  &:not(a, button):active,
+  &:not(a, button):focus {
     background: $color-bg-surface;
   }
   &.is-action-btn {

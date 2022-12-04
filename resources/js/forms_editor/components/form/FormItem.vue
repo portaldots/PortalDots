@@ -145,7 +145,7 @@ export default {
   &:hover:not(&--active) {
     z-index: 20;
   }
-  &:hover:not(&--drag):not(&--disable-edit),
+  &:hover:not(&--drag, &--disable-edit),
   &--active {
     border: 1px solid $color-primary;
     border-left-width: 5px;
