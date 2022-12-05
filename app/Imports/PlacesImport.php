@@ -4,39 +4,45 @@ namespace App\Imports;
 
 use App\Eloquents\Place;
 use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\WithUpsertColumns;
+use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Validators\Failure;
 use Throwable;
 
-class PlacesImport implements ToModel, WithValidation, SkipsOnError, SkipsOnFailure, WithHeadingRow
+HeadingRowFormatter::default('none');
+
+class PlacesImport implements
+    ToModel,
+    WithValidation,
+    SkipsOnError,
+    SkipsOnFailure,
+    WithHeadingRow,
+    WithUpserts,
+    WithUpsertColumns
 {
     use Importable;
 
     /**
+     * ID がセットされている場合は内容を更新する。
      * @param array $row
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function model(array $row)
     {
-        if (!isset($row[0])) {
-            return new Place([
-                'name' => $row['name'],
-                'type' => $this->getTypeValue($row['type']),
-                'notes' => $row['notes'],
-            ]);
-        }
-        // else {
-        //     $place = Place::find($row[0]);
-        //     $place->type = $row[2];
-        //     $place->notes = $row[3];
-        //     return $place;
-        // }
+        return new Place([
+            'id' => $row['場所ID'] ?? null,
+            'name' => $row['場所名'],
+            'type' => $this->getTypeValue($row['タイプ']),
+            'notes' => $row['スタッフ用メモ'],
+        ]);
     }
 
     /**
@@ -45,26 +51,16 @@ class PlacesImport implements ToModel, WithValidation, SkipsOnError, SkipsOnFail
     public function rules(): array
     {
         return [
-            'id' => ['nullable', 'numeric'], // ID
-            'name' => ['required', 'string', Rule::unique('places', 'name')], // Name // できれば Unique も
-            'type' => ['required', Rule::in(['屋内', '屋外', '特殊場所'])], // Type
-            'notes' => ['nullable', 'string'], // Note
+            '場所ID' => ['nullable', 'numeric'], // ID
+            '場所名' => ['required', 'string'], // Name // できれば Unique も
+            'タイプ' => ['required', Rule::in(['屋内', '屋外', '特殊場所'])], // Type
+            'スタッフ用メモ' => ['nullable', 'string'], // Note
         ];
     }
 
     /**
-     * @return array
+     * @param  Throwable  $e
      */
-    public function customValidationAttributes(): array
-    {
-        return [
-            'id' => '場所ID',
-            'name' => '場所名',
-            'type' => 'タイプ',
-            'notes' => 'スタッフ用メモ'
-        ];
-    }
-
     public function onError(Throwable $e)
     {
         dd($e);
@@ -76,6 +72,17 @@ class PlacesImport implements ToModel, WithValidation, SkipsOnError, SkipsOnFail
     public function onFailure(Failure ...$failures)
     {
         dd($failures);
+    }
+
+    public function uniqueBy()
+    {
+        return ['id' => '場所ID'];
+    }
+
+    // TODO: Upsert がうまくできないためもう少しドキュメントなどを見る
+    public function upsertColumns()
+    {
+        return ['name' => '場所名', 'type' => 'タイプ', 'notes' => 'スタッフ用メモ'];
     }
 
     private function getTypeValue(string $type)
