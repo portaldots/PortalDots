@@ -38,7 +38,7 @@ class PlacesImport implements
     public function model(array $row)
     {
         return new Place([
-            'id' => $row['場所ID'] ?? null,
+            'id' => $row['場所ID'],
             'name' => $row['場所名'],
             'type' => $this->getTypeValue($row['タイプ']),
             'notes' => $row['スタッフ用メモ'],
@@ -51,15 +51,15 @@ class PlacesImport implements
     public function rules(): array
     {
         return [
-            '場所ID' => ['nullable', 'numeric'], // ID
-            '場所名' => ['required', 'string'], // Name // できれば Unique も
-            'タイプ' => ['required', Rule::in(['屋内', '屋外', '特殊場所'])], // Type
-            'スタッフ用メモ' => ['nullable', 'string'], // Note
+            '場所ID' => ['nullable', 'numeric'],
+            '場所名' => ['required', 'string'], // できれば Unique も
+            'タイプ' => ['required', Rule::in(['屋内', '屋外', '特殊場所'])],
+            'スタッフ用メモ' => ['nullable', 'string'],
         ];
     }
 
     /**
-     * @param  Throwable  $e
+     * @param Throwable $e
      */
     public function onError(Throwable $e)
     {
