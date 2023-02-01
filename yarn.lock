@@ -1070,14 +1070,14 @@
     mem "^8.0.0"
     php-parser "^3.1.2"
 
-"@shufo/tailwindcss-class-sorter@^1.0.12":
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/@shufo/tailwindcss-class-sorter/-/tailwindcss-class-sorter-1.0.12.tgz#21ed70ef157ad23ae69f8ae462812e7b4d4e9cda"
-  integrity sha512-dGyIdWGAPG7sMbZb/Q/RgR60DpyxZ3772mQCy1hb72ILBFYcqpOzjGt7tsR5HrV8apo4IV1j/Ako17bkbnQewA==
+"@shufo/tailwindcss-class-sorter@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@shufo/tailwindcss-class-sorter/-/tailwindcss-class-sorter-2.0.0.tgz#38bba1a14dab970056314f6fcda0226ff533fb38"
+  integrity sha512-whoaxr/m3Bi+UBnlsWpmf38/yhDAg9zeLKpU5syBNC68d9QINL2IwCt1zw1JuKHHSAqxiFY3Km5iJcFiz16WxQ==
   dependencies:
     escalade "^3.1.1"
     object-hash "^3.0.0"
-    tailwindcss "^3.1.8"
+    tailwindcss "^3.2.4"
 
 "@sipec/vue3-tags-input@^3.0.4":
   version "3.0.4"
@@ -1955,13 +1955,13 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-blade-formatter@^1.32.2:
-  version "1.32.2"
-  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.32.2.tgz#bedf6cd9db13f0f2232c255464bfc8802ae78839"
-  integrity sha512-ec6JieX0IDbcwQmPQeoOFNHhflBO4p2SwzxIQYW0XuFIvs/C4J+Ko/Y+19c+EPVaCUKczKhk+TR/DguznFEdug==
+blade-formatter@^1.32.5:
+  version "1.32.5"
+  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.32.5.tgz#75c151852a17ce97d0b1571365a054ed08e427f9"
+  integrity sha512-JXYGG0hynmGO6VwcUyRMkt83AgCWrFNAE+tiR4j4gvM+S9bqF08v8FhtsPvn7IcmHceaJdZSLiMWgzGGYpG9sQ==
   dependencies:
     "@prettier/plugin-php" "^0.19.0"
-    "@shufo/tailwindcss-class-sorter" "^1.0.12"
+    "@shufo/tailwindcss-class-sorter" "^2.0.0"
     aigle "^1.14.1"
     ajv "^8.9.0"
     chalk "^4.1.0"
@@ -1973,7 +1973,7 @@ blade-formatter@^1.32.2:
     ignore "^5.1.8"
     js-beautify "^1.14.0"
     lodash "^4.17.19"
-    php-parser "3.1.2"
+    php-parser "3.1.3"
     prettier "^2.2.0"
     tailwindcss "^3.1.8"
     vscode-oniguruma "1.7.0"
@@ -5553,10 +5553,10 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-php-parser@3.1.2, php-parser@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/php-parser/-/php-parser-3.1.2.tgz#db704c584ea4085142fc5d3c33218b207d5f9a09"
-  integrity sha512-RRCMK/bCKYPLRhlpfMlVVVsaIesuW+X6UxRqWjm7dTAmTZk8PvD6hCmG/RVeDzse7iqYWJwLJeqEbaGLC+aHeQ==
+php-parser@3.1.3, php-parser@^3.1.2:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/php-parser/-/php-parser-3.1.3.tgz#7a2aac2eb88a5a6c5aa75e6170a256bee5a30e6b"
+  integrity sha512-hPvBmnRYPqWEtMfIFOlyjQv1q75UUtxt4U+YscKIQViGmEE2Xa4BuS1B1/cZdjy7MVcwtnr0WkEsr915LgRKOw==
 
 picocolors@^1.0.0:
   version "1.0.0"
@@ -7109,7 +7109,7 @@ table@^6.8.1:
     string-width "^4.2.3"
     strip-ansi "^6.0.1"
 
-tailwindcss@^3.1.8:
+tailwindcss@^3.1.8, tailwindcss@^3.2.4:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.2.4.tgz#afe3477e7a19f3ceafb48e4b083e292ce0dc0250"
   integrity sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==
