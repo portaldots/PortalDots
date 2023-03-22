@@ -1088,14 +1088,14 @@
     mem "^8.0.0"
     php-parser "^3.1.2"
 
-"@shufo/tailwindcss-class-sorter@^1.0.12":
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/@shufo/tailwindcss-class-sorter/-/tailwindcss-class-sorter-1.0.12.tgz#21ed70ef157ad23ae69f8ae462812e7b4d4e9cda"
-  integrity sha512-dGyIdWGAPG7sMbZb/Q/RgR60DpyxZ3772mQCy1hb72ILBFYcqpOzjGt7tsR5HrV8apo4IV1j/Ako17bkbnQewA==
+"@shufo/tailwindcss-class-sorter@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@shufo/tailwindcss-class-sorter/-/tailwindcss-class-sorter-2.0.0.tgz#38bba1a14dab970056314f6fcda0226ff533fb38"
+  integrity sha512-whoaxr/m3Bi+UBnlsWpmf38/yhDAg9zeLKpU5syBNC68d9QINL2IwCt1zw1JuKHHSAqxiFY3Km5iJcFiz16WxQ==
   dependencies:
     escalade "^3.1.1"
     object-hash "^3.0.0"
-    tailwindcss "^3.1.8"
+    tailwindcss "^3.2.4"
 
 "@stylelint/postcss-css-in-js@^0.37.2":
   version "0.37.2"
@@ -1946,13 +1946,13 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-blade-formatter@^1.32.0:
-  version "1.32.0"
-  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.32.0.tgz#1e75e12b2e83055289b1d3a0f4028b12f5f25dfa"
-  integrity sha512-ztWmzNyyPFdRCKDtb67mw8ELa0XBuSMEoEPc+JhmiJA6/HkYhJ/i+g0Qb4vj5fi8af+uHRAfxmYPRrQ8cgFijg==
+blade-formatter@^1.32.10:
+  version "1.32.10"
+  resolved "https://registry.yarnpkg.com/blade-formatter/-/blade-formatter-1.32.10.tgz#b989dc83e402c5ea818b1e79c95d19a6de1e94fc"
+  integrity sha512-ohdiKXwv1MCNYFTUZd0bBjgdPkEjXoWzQblC6D7iyIbusK0E56LvURT0uiwwiDZ30wK8fWlgxt7mNvWDUU2SLA==
   dependencies:
     "@prettier/plugin-php" "^0.19.0"
-    "@shufo/tailwindcss-class-sorter" "^1.0.12"
+    "@shufo/tailwindcss-class-sorter" "^2.0.0"
     aigle "^1.14.1"
     ajv "^8.9.0"
     chalk "^4.1.0"
@@ -1960,11 +1960,11 @@ blade-formatter@^1.32.0:
     detect-indent "^6.0.0"
     find-config "^1.0.0"
     glob "^8.0.1"
-    html-attribute-sorter "^0.4.2"
+    html-attribute-sorter "^0.4.3"
     ignore "^5.1.8"
     js-beautify "^1.14.0"
     lodash "^4.17.19"
-    php-parser "3.1.2"
+    php-parser "3.1.4"
     prettier "^2.2.0"
     tailwindcss "^3.1.8"
     vscode-oniguruma "1.7.0"
@@ -4054,10 +4054,10 @@ hpack.js@^2.1.6:
     readable-stream "^2.0.1"
     wbuf "^1.1.0"
 
-html-attribute-sorter@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/html-attribute-sorter/-/html-attribute-sorter-0.4.2.tgz#803dfb2fb7c749cbf92fe52e7d3e331990072539"
-  integrity sha512-WjAaUWPuqXxddyQ5M4vqDHG8tcO+ajTnz03GNwmTsTyGdg9dJqoswwHyniK5ygitgXxqBYIE4T88/edWkl7wMQ==
+html-attribute-sorter@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/html-attribute-sorter/-/html-attribute-sorter-0.4.3.tgz#7f1aa9c496c827101125a2714f82296319d6c061"
+  integrity sha512-HWSvaXJki44tg0uR1t+j5pRdUVpNiZcJaoB/PFhss/YoAw9cxUDLCpIBbLWQmKjBQfWk91P6LaRnredEyabrDw==
 
 html-entities@^2.3.2:
   version "2.3.3"
@@ -5755,10 +5755,10 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-php-parser@3.1.2, php-parser@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/php-parser/-/php-parser-3.1.2.tgz#db704c584ea4085142fc5d3c33218b207d5f9a09"
-  integrity sha512-RRCMK/bCKYPLRhlpfMlVVVsaIesuW+X6UxRqWjm7dTAmTZk8PvD6hCmG/RVeDzse7iqYWJwLJeqEbaGLC+aHeQ==
+php-parser@3.1.4, php-parser@^3.1.2:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/php-parser/-/php-parser-3.1.4.tgz#165a594bf9d7fb516b89d1ecf62a361083a482f8"
+  integrity sha512-WUEfH4FWsVItqgOknM67msDdcUAfgPJsHhPNl6EPXzWtX+PfdY282m4i8YIJ9ALUEhf+qGDajdmW+VYqSd7Deg==
 
 picocolors@^1.0.0:
   version "1.0.0"
@@ -6104,6 +6104,14 @@ postcss-selector-parser@^6.0.10, postcss-selector-parser@^6.0.2, postcss-selecto
     cssesc "^3.0.0"
     util-deprecate "^1.0.2"
 
+postcss-selector-parser@^6.0.11:
+  version "6.0.11"
+  resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-6.0.11.tgz#2e41dc39b7ad74046e1615185185cd0b17d0c8dc"
+  integrity sha512-zbARubNdogI9j7WY4nQJBiNqQf3sLS3wCP4WfOidu+p28LofJqDH1tcXypGrcmMHhDk2t9wGhCsYe/+szLTy1g==
+  dependencies:
+    cssesc "^3.0.0"
+    util-deprecate "^1.0.2"
+
 postcss-sorting@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/postcss-sorting/-/postcss-sorting-5.0.1.tgz#10d5d0059eea8334dacc820c0121864035bc3f11"
@@ -6146,7 +6154,16 @@ postcss@^7.0.14, postcss@^7.0.17, postcss@^7.0.2, postcss@^7.0.21, postcss@^7.0.
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
-postcss@^8.2.14, postcss@^8.2.15, postcss@^8.4, postcss@^8.4.14, postcss@^8.4.18:
+postcss@^8.0.9:
+  version "8.4.21"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.21.tgz#c639b719a57efc3187b13a1d765675485f4134f4"
+  integrity sha512-tP7u/Sn/dVxK2NnruI4H9BG+x+Wxz6oeZ1cJ8P6G/PZY0IKk4k/63TDsQf2kQq3+qoJeLm2kIBUNlZe3zgb4Zg==
+  dependencies:
+    nanoid "^3.3.4"
+    picocolors "^1.0.0"
+    source-map-js "^1.0.2"
+
+postcss@^8.2.14, postcss@^8.2.15, postcss@^8.4, postcss@^8.4.14:
   version "8.4.19"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.19.tgz#61178e2add236b17351897c8bcc0b4c8ecab56fc"
   integrity sha512-h+pbPsyhlYj6N2ozBmHhHrs9DzGmbaarbLvWipMRO7RLS+v4onj26MPFXA5OBYFxyqYhUJK456SwDcY9H2/zsA==
@@ -7364,10 +7381,10 @@ table@^6.6.0:
     string-width "^4.2.0"
     strip-ansi "^6.0.0"
 
-tailwindcss@^3.1.8:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.2.4.tgz#afe3477e7a19f3ceafb48e4b083e292ce0dc0250"
-  integrity sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==
+tailwindcss@^3.1.8, tailwindcss@^3.2.4:
+  version "3.2.7"
+  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.2.7.tgz#5936dd08c250b05180f0944500c01dce19188c07"
+  integrity sha512-B6DLqJzc21x7wntlH/GsZwEXTBttVSl1FtCzC8WP4oBc/NKef7kaax5jeihkkCEWc831/5NDJ9gRNDK6NEioQQ==
   dependencies:
     arg "^5.0.2"
     chokidar "^3.5.3"
@@ -7383,12 +7400,12 @@ tailwindcss@^3.1.8:
     normalize-path "^3.0.0"
     object-hash "^3.0.0"
     picocolors "^1.0.0"
-    postcss "^8.4.18"
+    postcss "^8.0.9"
     postcss-import "^14.1.0"
     postcss-js "^4.0.0"
     postcss-load-config "^3.1.4"
     postcss-nested "6.0.0"
-    postcss-selector-parser "^6.0.10"
+    postcss-selector-parser "^6.0.11"
     postcss-value-parser "^4.2.0"
     quick-lru "^5.1.1"
     resolve "^1.22.1"
