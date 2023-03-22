@@ -64,7 +64,7 @@
         "vue-loader": "^17.0.1"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^6.2.1",
+        "@fortawesome/fontawesome-free": "^6.3.0",
         "@sipec/vue3-tags-input": "^3.0.4",
         "axios": "^1.2",
         "bootstrap": "^4.6.2",
