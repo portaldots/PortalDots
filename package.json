@@ -69,7 +69,7 @@
         "laravel-mix": "^6.0.34",
         "marked": "^4.3.0",
         "patch-package": "^6.5.0",
-        "portal-vue": "^2.1.7",
+        "portal-vue": "^3.0.0",
         "postinstall-postinstall": "^2.1.0",
         "turbolinks": "^5.2.0",
         "v-tooltip": "^2.1.3",
