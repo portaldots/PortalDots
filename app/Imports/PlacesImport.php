@@ -3,6 +3,8 @@
 namespace App\Imports;
 
 use App\Eloquents\Place;
+use App\Http\Requests\Staff\Places\PlaceRequest;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -20,7 +22,6 @@ HeadingRowFormatter::default('none');
 
 class PlacesImport implements
     ToModel,
-    WithValidation,
     SkipsOnError,
     SkipsOnFailure,
     WithHeadingRow,
@@ -37,25 +38,33 @@ class PlacesImport implements
      */
     public function model(array $row)
     {
-        return new Place([
+        $rawData = [
             'id' => $row['場所ID'],
             'name' => $row['場所名'],
             'type' => $this->getTypeValue($row['タイプ']),
             'notes' => $row['スタッフ用メモ'],
-        ]);
-    }
-
-    /**
-     * @return array
-     */
-    public function rules(): array
-    {
-        return [
-            '場所ID' => ['nullable', 'numeric'],
-            '場所名' => ['required', 'string'], // できれば Unique も
-            'タイプ' => ['required', Rule::in(['屋内', '屋外', '特殊場所'])],
-            'スタッフ用メモ' => ['nullable', 'string'],
         ];
+
+        $validator = Validator::make($rawData, [
+            'id' => ['nullable', 'numeric', 'exists:places'],
+            'name' => ['required', 'string', Rule::unique('places')->ignore($rawData['id'])],
+            'type' => ['required', Rule::in([1, 2, 3])],
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        if (!empty($validator->errors()->messages())) dd($rawData, $validator->errors());
+
+        $validated = $validator->validated();
+
+        $place = new Place([
+            'name' => $validated['name'],
+            'type' => $validated['type'],
+            'notes' => $validated['notes'],
+        ]);
+
+        $place->id = $validated['id'];
+
+        return $place;
     }
 
     /**
@@ -76,14 +85,18 @@ class PlacesImport implements
 
     public function uniqueBy()
     {
-        return ['id' => '場所ID'];
+        return ['id'];
     }
 
-    // TODO: Upsert がうまくできないためもう少しドキュメントなどを見る
     public function upsertColumns()
     {
-        return ['name' => '場所名', 'type' => 'タイプ', 'notes' => 'スタッフ用メモ'];
+        return ['name', 'type', 'notes'];
     }
+
+    public function withHeadingRow() {
+
+    }
+
 
     private function getTypeValue(string $type)
     {
