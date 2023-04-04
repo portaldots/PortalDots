@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Setup PHP
-        run: sudo update-alternatives --set php /usr/bin/php7.3
+        run: sudo update-alternatives --set php /usr/bin/php7.4
       # Composer Cache
       # - name: Get Composer Cache Directory
       #   id: composer-cache
