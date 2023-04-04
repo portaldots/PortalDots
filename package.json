@@ -72,7 +72,7 @@
         "easymde": "^2.18.0",
         "floating-vue": "^2.0.0-beta.20",
         "laravel-mix": "^6.0.34",
-        "marked": "^4.2.12",
+        "marked": "^4.3.0",
         "patch-package": "^6.5.1",
         "portal-vue": "^3.0.0",
         "postinstall-postinstall": "^2.1.0",
