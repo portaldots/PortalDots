@@ -245,6 +245,15 @@ class PagesService
         });
     }
 
+    public function setPinStatusForPage(Page $page, bool $is_pinned)
+    {
+        return DB::transaction(function () use ($page, $is_pinned) {
+            $page->is_pinned = $is_pinned;
+            $page->timestamps = false;
+            return $page->save();
+        });
+    }
+
     public function removePage(Page $page)
     {
         return DB::transaction(function () use ($page) {
