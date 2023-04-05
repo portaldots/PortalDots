@@ -1,5 +1,11 @@
 <template>
-  <form :action="action" :method="method" @submit="onSubmit">
+  <form
+    :action="action"
+    :method="method"
+    @submit="onSubmit"
+    class="form-with-confirm"
+    :class="{ 'is-inline': inline }"
+  >
     <slot />
   </form>
 </template>
@@ -20,6 +26,10 @@ export default {
     confirmMessage: {
       type: String,
       required: true
+    },
+    inline: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -41,3 +51,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.form-with-confirm {
+  &.is-inline {
+    display: inline;
+  }
+}
+</style>

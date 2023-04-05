@@ -1,13 +1,13 @@
 <template>
   <component
     :is="componentIs"
+    v-tooltip="title"
     :type="type"
     :href="href"
-    v-tooltip="title"
     :target="newtab ? '_blank' : undefined"
     :rel="newtab ? 'noopener noreferrer' : undefined"
     class="icon-button"
-    :class="disabled && href ? 'is-disabled' : ''"
+    :class="{ 'is-active': active, 'is-disabled': disabled && href }"
     :disabled="disabled && !href"
     @click="handleClick"
   >
@@ -42,10 +42,9 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
-  methods: {
-    handleClick(e) {
-      this.$emit('click', e)
+    active: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -60,6 +59,11 @@ export default {
         return 'button'
       }
       return undefined
+    },
+  },
+  methods: {
+    handleClick(e) {
+      this.$emit('click', e)
     },
   },
 }
@@ -94,6 +98,10 @@ export default {
     cursor: not-allowed;
     opacity: 0.5;
     pointer-events: none;
+  }
+  &.is-active {
+    background-color: $color-primary-light;
+    color: $color-primary;
   }
 }
 </style>

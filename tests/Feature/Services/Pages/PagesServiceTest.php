@@ -69,6 +69,58 @@ class PagesServiceTest extends TestCase
     /**
      * @test
      */
+    public function setPinStatusForPage_お知らせを固定表示できる()
+    {
+        $page = $this->pagesService->createPage(
+            $this->content['title'],
+            $this->content['body'],
+            $this->staff,
+            '',
+            [],
+            [],
+            $this->content['is_public'],
+            0,
+        );
+
+        $this->pagesService->setPinStatusForPage($page, true);
+
+        $content_on_db = $this->content;
+        $content_on_db['body'] = $this->content['body'];
+        $content_on_db['is_pinned'] = true;
+
+        $this->assertSame(1, Page::count());
+        $this->assertDatabaseHas('pages', $content_on_db);
+    }
+
+    /**
+     * @test
+     */
+    public function setPinStatusForPage_お知らせを固定解除できる()
+    {
+        $page = $this->pagesService->createPage(
+            $this->content['title'],
+            $this->content['body'],
+            $this->staff,
+            '',
+            [],
+            [],
+            $this->content['is_public'],
+            1,
+        );
+
+        $this->pagesService->setPinStatusForPage($page, false);
+
+        $content_on_db = $this->content;
+        $content_on_db['body'] = $this->content['body'];
+        $content_on_db['is_pinned'] = false;
+
+        $this->assertSame(1, Page::count());
+        $this->assertDatabaseHas('pages', $content_on_db);
+    }
+
+    /**
+     * @test
+     */
     public function updatePage()
     {
         $this->assertSame(0, Page::count());

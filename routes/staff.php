@@ -55,6 +55,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{page}/edit', 'Staff\Pages\EditAction')->name('edit')->middleware(['can:staff.pages.edit']);
                 Route::patch('/{page}', 'Staff\Pages\UpdateAction')->name('update')->middleware(['can:staff.pages.edit']);
                 Route::delete('/{page}', 'Staff\Pages\DestroyAction')->name('destroy')->middleware(['can:staff.pages.delete']);
+                Route::patch('/{page}/pin', 'Staff\Pages\PatchPinAction')->name('pin')->middleware(['can:staff.pages.edit']);
                 Route::get('/export', 'Staff\Pages\ExportAction')->name('export')->middleware(['can:staff.pages.export']);
             });
 
@@ -113,8 +114,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/preview', 'Staff\Forms\PreviewAction')->name('preview')->middleware(['can:staff.forms.read']);
 
                 // フォームの複製
-                Route::post('/copy', 'Staff\Forms\CopyAction')->name('copy')->middleware(['can:staff.forms.duplicate']);
-                ;
+                Route::post('/copy', 'Staff\Forms\CopyAction')->name('copy')->middleware(['can:staff.forms.duplicate']);;
             });
 
         Route::prefix('/users')
