@@ -17,20 +17,20 @@ export default {
   props: {
     action: {
       type: String,
-      required: true,
+      required: true
     },
     method: {
       type: String,
-      required: true,
+      required: true
     },
     confirmMessage: {
       type: String,
-      required: true,
+      required: true
     },
     inline: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   methods: {
     onSubmit(evt) {
@@ -47,8 +47,8 @@ export default {
         // }
         // /* eslint-enable */
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
