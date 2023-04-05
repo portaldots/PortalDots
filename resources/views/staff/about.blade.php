@@ -17,21 +17,6 @@
             height: auto;
             margin: 0 auto;
         }
-
-        .logo.is-dark {
-            display: none;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .logo.is-light {
-                display: none;
-            }
-
-            .logo.is-dark {
-                display: block;
-            }
-        }
-
     </style>
 @endprepend
 
@@ -41,20 +26,15 @@
             <template v-slot:title>PortalDotsについて</template>
             <list-view-card class="text-center">
                 <h1 class="logo-wrapper">
-                    @switch($uiThemeService->getCurrentTheme())
-                        @case('light')
-                            <img src="{{ mix('/images/portalDotsLogo.svg') }}" class="logo" alt="PortalDots">
-                        @break
-
-                        @case('dark')
-                            <img src="{{ mix('/images/portalDotsLogoDark.svg') }}" class="logo" alt="PortalDots">
-                        @break
-
-                        @default
-                            <img src="{{ mix('/images/portalDotsLogo.svg') }}" class="logo is-light" alt="PortalDots">
-                            <img src="{{ mix('/images/portalDotsLogoDark.svg') }}" class="logo is-dark" alt="PortalDots">
-                    @endswitch
-
+                    <picture>
+                        @if ($uiThemeService->getCurrentTheme() === 'system')
+                            <source srcset="{{ mix('/images/portalDotsLogoLight.svg') }}"
+                                media="(prefers-color-scheme: light)">
+                            <source srcset="{{ mix('/images/portalDotsLogoDark.svg') }}" media="(prefers-color-scheme: dark)">
+                        @endif
+                        <img src="{{ $uiThemeService->getCurrentTheme() === 'dark' ? mix('/images/portalDotsLogoDark.svg') : mix('/images/portalDotsLogoLight.svg') }}"
+                            alt="PortalDots" class="logo" width="367" height="60">
+                    </picture>
                 </h1>
                 @if (!empty($current_version_info))
                     <div>バージョン {{ $current_version_info->getFullVersion() }}</div>
