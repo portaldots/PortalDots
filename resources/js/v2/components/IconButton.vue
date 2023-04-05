@@ -8,6 +8,7 @@
     :rel="newtab ? 'noopener noreferrer' : undefined"
     v-bind="disabledProps"
     class="icon-button"
+    :class="{ 'is-active': active }"
     @click="handleClick"
   >
     <slot />
@@ -19,33 +20,37 @@ export default {
   props: {
     href: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     submit: {
       type: Boolean,
-      default: false
+      default: false,
     },
     button: {
       type: Boolean,
-      default: true
+      default: true,
     },
     title: {
       type: String,
-      required: true
+      required: true,
     },
     newtab: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    active: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     handleClick(e) {
       this.$emit('click', e)
-    }
+    },
   },
   computed: {
     componentIs() {
@@ -65,14 +70,14 @@ export default {
 
       if (this.href) {
         return {
-          class: 'is-disabled'
+          class: 'is-disabled',
         }
       }
       return {
-        disabled: true
+        disabled: true,
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -105,6 +110,10 @@ export default {
     cursor: not-allowed;
     opacity: 0.5;
     pointer-events: none;
+  }
+  &.is-active {
+    background-color: $color-primary-light;
+    color: $color-primary;
   }
 }
 </style>
