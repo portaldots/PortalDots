@@ -1,5 +1,11 @@
 <template>
-  <form :action="action" :method="method" @submit="onSubmit">
+  <form
+    :action="action"
+    :method="method"
+    @submit="onSubmit"
+    class="form-with-confirm"
+    :class="{ 'is-inline': inline }"
+  >
     <slot />
   </form>
 </template>
@@ -11,16 +17,20 @@ export default {
   props: {
     action: {
       type: String,
-      required: true
+      required: true,
     },
     method: {
       type: String,
-      required: true
+      required: true,
     },
     confirmMessage: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
+    inline: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     onSubmit(evt) {
@@ -37,7 +47,15 @@ export default {
         // }
         // /* eslint-enable */
       }
-    }
-  }
+    },
+  },
 }
 </script>
+
+<style lang="scss" scoped>
+.form-with-confirm {
+  &.is-inline {
+    display: inline;
+  }
+}
+</style>
