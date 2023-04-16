@@ -2,7 +2,7 @@
     <picture>
         <source srcset="https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/resources/img/portalDotsLogoLight.svg" media="(prefers-color-scheme: light)">
         <source srcset="https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/resources/img/portalDotsLogoDark.svg" media="(prefers-color-scheme: dark)">
-        <img src="https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/resources/img/portalDotsLogoLight.svg" alt="PortalDots" class="logo" width="367" height="60">
+        <img src="https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/resources/img/portalDotsLogoLight.svg" alt="PortalDots" class="logo" width="245" height="40">
     </picture>
 </h1>
 
