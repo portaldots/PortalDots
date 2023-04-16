@@ -1,0 +1,55 @@
+on:
+  schedule:
+    - cron: '15 5,17 * * *'
+  workflow_dispatch:
+
+jobs:
+  upload:
+    name: Deploy nightly build to internal environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare compile
+        run: |
+          rsync -av --update --delete --stats ./ ./dist/ --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='.github/' --exclude='/vendor/' --exclude='node_modules/' --exclude='.circleci/' --exclude='tests/' --exclude='phpunit.xml' --exclude='phpcs.xml' --exclude='.editorconfig' --exclude='.env.testing' --exclude='.eslintrc.js' --exclude='.gitattributes' --exclude='.gitignore' --exclude='.prettierrc' --exclude='.stylelintrc.js' >& /dev/null
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        working-directory: dist
+      - name: Cache PHP dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Install PHP dependencies
+        run: composer install --optimize-autoloader --no-dev
+        working-directory: dist
+      - name: Install JS dependencies
+        run: yarn install --ignore-scripts && yarn patch-package
+        working-directory: dist
+      - name: Compile assets
+        run: yarn run production
+        working-directory: dist
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.INTERNAL_SERVER_SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.INTERNAL_SERVER_SSH_KNOWN_HOSTS }}
+      - name: Set maintainance mode
+        run: ssh ${{ secrets.INTERNAL_SERVER_SSH_HOST }} 'cd ${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}; php artisan down;'
+      - name: Upload
+        run: |
+          rsync -acrvz --progress --include='artisan' --include='app' --include='app/**' --include='bootstrap' --include='bootstrap/**' --include='config' --include='config/**' --include='database' --include='database/**' --include='resources' --include='resources/**' --include='routes' --include='routes/**' --include='vendor' --include='vendor/**' --include='public' --include='public/css' --include='public/css/**' --include='public/fonts' --include='public/fonts/**' --include='public/images' --include='public/images/**'  --include='public/js' --include='public/js/**' --include='public/index.php' --include='public/mix-manifest.json' --exclude='*' ./ ${{ secrets.INTERNAL_SERVER_SSH_HOST }}:${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}/
+        working-directory: dist
+      - name: Migration
+        run: ssh ${{ secrets.INTERNAL_SERVER_SSH_HOST }} 'cd ${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}; php artisan migrate --force'
+      - name: Recover from maintainance mode
+        run: ssh ${{ secrets.INTERNAL_SERVER_SSH_HOST }} 'cd ${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}; php artisan up;'
