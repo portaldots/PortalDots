@@ -14,7 +14,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Setup PHP
-        run: sudo update-alternatives --set php /usr/bin/php8.0
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Composer Cache
       # - name: Get Composer Cache Directory
       #   id: composer-cache
@@ -44,6 +48,16 @@ jobs:
         # vendor ディレクトリの除外には、最初にスラッシュをつけている。これにより resources フォルダ内にある vendor ディレクトリが除外されてしまうのを防いでいる
         run: |
           rsync -av --update --delete --stats ./ ./dist/ --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='.github/' --exclude='/vendor/' --exclude='node_modules/' --exclude='.circleci/' --exclude='tests/' --exclude='phpunit.xml' --exclude='phpcs.xml' --exclude='.editorconfig' --exclude='.env.testing' --exclude='.eslintrc.js' --exclude='.gitattributes' --exclude='.gitignore' --exclude='.prettierrc' --exclude='.stylelintrc.js' >& /dev/null
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        working-directory: dist
+      - name: Cache PHP dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
       - name: Install PHP dependencies
         run: composer install --optimize-autoloader --no-dev
         working-directory: dist
