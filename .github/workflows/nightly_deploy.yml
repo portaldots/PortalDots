@@ -3,6 +3,8 @@ on:
     - cron: '15 5,17 * * *'
   workflow_dispatch:
 
+name: Upload Internal Nightly Version
+
 jobs:
   upload:
     name: Deploy nightly build to internal environment
