@@ -19,18 +19,6 @@ jobs:
           php-version: '8.0'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Composer Cache
-      # - name: Get Composer Cache Directory
-      #   id: composer-cache
-      #   run: |
-      #     echo "::set-output name=dir::$(composer config cache-files-dir)"
-      # - name: Restore Composer Cache
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: ${{ steps.composer-cache.outputs.dir }}
-      #     key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-composer-
       # Yarn Cache
       # - name: Get yarn cache directory path
       #   id: yarn-cache-dir-path

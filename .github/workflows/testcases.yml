@@ -95,9 +95,11 @@ jobs:
           --health-retries=5
 
     steps:
-    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+    - uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-version }}
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@v2
     - name: Use Node.js (Yarnをインストールするため)
       uses: actions/setup-node@v2
@@ -111,21 +113,17 @@ jobs:
       with:
         node-version: 16.x
         cache: yarn
-      if: ${{ !env.ACT }}
     - run: yarn install
     - run: yarn dev
-    - name: Get Composer Cache Directory
+    - name: Get composer cache directory
       id: composer-cache
-      run: |
-        echo "::set-output name=dir::$(composer config cache-files-dir)"
-      if: ${{ !env.ACT }}
-    - uses: actions/cache@v2
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+    - name: Cache PHP dependencies
+      uses: actions/cache@v3
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-composer-
-      if: ${{ !env.ACT }}
+        restore-keys: ${{ runner.os }}-composer-
     - name: Install Dependencies (Composer)
       run: composer install --no-ansi --prefer-dist
     - name: Directory Permissions
