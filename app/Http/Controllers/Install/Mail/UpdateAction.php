@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Install\Mail;
 
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Exception;
 use Symfony\Component\Mailer\Transport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Install\MailRequest;
@@ -28,7 +28,7 @@ class UpdateAction extends Controller
 
             return redirect()
                 ->route('install.admin.create');
-        } catch (TransportExceptionInterface $e) {
+        } catch (Exception $e) {
             return redirect()
                 ->back()
                 ->withInput()
