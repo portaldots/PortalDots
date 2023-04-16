@@ -18,6 +18,10 @@ jobs:
           php-version: '8.0'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: yarn
       - name: Prepare compile
         run: |
           rsync -av --update --delete --stats ./ ./dist/ --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='.github/' --exclude='/vendor/' --exclude='node_modules/' --exclude='.circleci/' --exclude='tests/' --exclude='phpunit.xml' --exclude='phpcs.xml' --exclude='.editorconfig' --exclude='.env.testing' --exclude='.eslintrc.js' --exclude='.gitattributes' --exclude='.gitignore' --exclude='.prettierrc' --exclude='.stylelintrc.js' >& /dev/null
