@@ -36,6 +36,7 @@
 
 <script>
 export default {
+  emits: ['click'],
   methods: {
     onClick() {
       this.$emit('click')
