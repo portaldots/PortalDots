@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\GridMakers;
 
 use App\Eloquents\Answer;
+use App\Eloquents\AnswerDetail;
 use App\Eloquents\Form;
 use App\Eloquents\Question;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,6 +14,7 @@ use App\GridMakers\Filter\FilterableKey;
 use App\GridMakers\Filter\FilterableKeysDict;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\Utils\FormatTextService;
+use Illuminate\Database\Query\JoinClause;
 
 class AnswersGridMaker implements GridMakable
 {
@@ -55,12 +57,42 @@ class AnswersGridMaker implements GridMakable
      */
     protected function baseEloquentQuery(): Builder
     {
-        return Answer::select([
-            'id',
-            'circle_id',
-            'created_at',
-            'updated_at',
-        ])->with('details', 'details.question', 'circle')->where('form_id', $this->form->id);
+        // FIXME: 複数選択可能のチェックボックスの回答のうち、最初の1つしか取得できない。
+        $questionColumns = $this->form->questions->pluck('id')
+            ->map(function ($id) {
+                $idInt = intval($id);
+                if ($idInt === 0) {
+                    return null;
+                }
+                // SQLインジェクションに注意。$idInt は整数であることを期待している。
+                $prefix = self::FORM_QUESTIONS_KEY_PREFIX;
+                return "MAX(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END) AS '{$prefix}{$idInt}'";
+            })
+            ->filter(function ($column) {
+                return !is_null($column);
+            });
+
+        $answerDetailsSubQueryColumns = ['answer_id', ...$questionColumns];
+
+        $answerDetailsSubQuery = AnswerDetail::selectRaw(implode(', ', $answerDetailsSubQueryColumns))
+            ->groupBy('answer_id');
+
+        $query = Answer::with('circle')
+            ->leftJoinSub($answerDetailsSubQuery, 'pivot_answer_details', function (JoinClause $join) {
+                $join->on('answers.id', '=', 'pivot_answer_details.answer_id');
+            })
+            ->where('form_id', $this->form->id);
+
+        return $query;
+    }
+
+    private function getFormKeys(): array
+    {
+        return
+            isset($this->form) ?
+            $this->form->questions->map(function (Question $question) {
+                return self::FORM_QUESTIONS_KEY_PREFIX . $question->id;
+            })->all() : [];
     }
 
     /**
@@ -68,22 +100,15 @@ class AnswersGridMaker implements GridMakable
      */
     public function keys(): array
     {
-        // 現状 PortalDots は PHP7.3 以降をサポートすることにしているため、
-        // PHP 7.4 からサポートされるスプレッド演算子を使わず、array_merge を使っている
+        $form_keys = $this->getFormKeys();
 
-        $before_form_keys = [
+        return [
             'id',
             'circle_id',
             'created_at',
             'updated_at',
+            ...$form_keys,
         ];
-
-        $form_keys = isset($this->form) ?
-            $this->form->questions->map(function (Question $question) {
-                return self::FORM_QUESTIONS_KEY_PREFIX . $question->id;
-            })->all() : [];
-
-        return array_merge($before_form_keys, $form_keys);
     }
 
     /**
@@ -104,12 +129,22 @@ class AnswersGridMaker implements GridMakable
             'updated_at' => FilterableKey::datetime(),
         ]));
 
-        return new FilterableKeysDict([
-            'id' => FilterableKey::number(),
-            'circle_id' => $circles_type,
-            'created_at' => FilterableKey::datetime(),
-            'updated_at' => FilterableKey::datetime(),
-        ]);
+        $questionFilterableKeys = [];
+        foreach ($this->getFormKeys() as $formKey) {
+            $questionFilterableKeys[$formKey] = FilterableKey::string();
+        }
+
+        // 連想配列をスプレッド演算子で結合できるのは PHP 8.1 以降。
+        // PortalDots は PHP 8.0 以上をサポート対象とするため、スプレッド演算子を利用できない。
+        return new FilterableKeysDict(array_merge(
+            [
+                'id' => FilterableKey::number(),
+                'circle_id' => $circles_type,
+                'created_at' => FilterableKey::datetime(),
+                'updated_at' => FilterableKey::datetime(),
+            ],
+            $questionFilterableKeys
+        ));
     }
 
     /**
@@ -117,11 +152,14 @@ class AnswersGridMaker implements GridMakable
      */
     public function sortableKeys(): array
     {
+        $form_keys = $this->getFormKeys();
+
         return [
             'id',
             'circle_id',
             'created_at',
             'updated_at',
+            ...$form_keys,
         ];
     }
 
@@ -133,24 +171,21 @@ class AnswersGridMaker implements GridMakable
         $item = [];
 
         // フォームへの回答
-        if (isset($record->details) && is_iterable($record->details)) {
-            foreach ($record->details as $detail) {
-                if ($detail->question->type === 'upload') {
-                    $item[self::FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = [
-                        'file_url' => route('staff.forms.answers.uploads.show', [
-                            'form' => $this->form->id,
-                            'answer' => $record->id,
-                            'question' => $detail->question_id
-                        ])
-                    ];
-                } elseif (
-                    isset($item[self::FORM_QUESTIONS_KEY_PREFIX . $detail->question_id]) &&
-                    is_array($item[self::FORM_QUESTIONS_KEY_PREFIX . $detail->question_id])
-                ) {
-                    $item[self::FORM_QUESTIONS_KEY_PREFIX . $detail->question_id][] = $detail->answer;
-                } else {
-                    $item[self::FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = [$detail->answer];
-                }
+        foreach ($this->getFormKeys() as $formKey) {
+            $questionId = intval(str_replace(self::FORM_QUESTIONS_KEY_PREFIX, '', $formKey));
+            $question = $this->form->questions->firstWhere('id', $questionId);
+            $answerValue = $record->$formKey;
+
+            if ($question->type === 'upload') {
+                $item[$formKey] = !empty($answerValue) ? [
+                    'file_url' => route('staff.forms.answers.uploads.show', [
+                        'form' => $this->form->id,
+                        'answer' => $record->id,
+                        'question' => $questionId,
+                    ])
+                ] : [];
+            } else {
+                $item[$formKey] = [$answerValue];
             }
         }
 
