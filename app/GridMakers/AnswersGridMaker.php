@@ -31,6 +31,7 @@ class AnswersGridMaker implements GridMakable
     private $form;
 
     public const FORM_QUESTIONS_KEY_PREFIX = 'form_question_';
+    public const CHECKBOX_GROUP_CONCAT_SEPARATOR = "\n";
 
     public function __construct(FormatTextService $formatTextService)
     {
@@ -57,16 +58,30 @@ class AnswersGridMaker implements GridMakable
      */
     protected function baseEloquentQuery(): Builder
     {
-        // FIXME: 複数選択可能のチェックボックスの回答のうち、最初の1つしか取得できない。
-        $questionColumns = $this->form->questions->pluck('id')
-            ->map(function ($id) {
-                $idInt = intval($id);
-                if ($idInt === 0) {
+        $questionColumns = $this->form->questions
+            ->map(function (Question $question) {
+                $idInt = intval($question->id);
+                if ($idInt === 0 || !is_int($idInt)) {
                     return null;
                 }
                 // SQLインジェクションに注意。$idInt は整数であることを期待している。
-                $prefix = self::FORM_QUESTIONS_KEY_PREFIX;
-                return "MAX(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END) AS '{$prefix}{$idInt}'";
+                $columnAlias = self::FORM_QUESTIONS_KEY_PREFIX . $idInt;
+
+                switch ($question->type) {
+                    case 'heading':
+                        return null;
+                    case 'number':
+                        return "MAX(CAST(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END AS DECIMAL(10, 0))) AS '{$columnAlias}'";
+                    case 'text':
+                    case 'textarea':
+                    case 'radio':
+                    case 'select':
+                    case 'upload':
+                        return "MAX(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END) AS '{$columnAlias}'";
+                    case 'checkbox':
+                        $separator = self::CHECKBOX_GROUP_CONCAT_SEPARATOR;
+                        return "GROUP_CONCAT(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END SEPARATOR '{$separator}') AS '{$columnAlias}'";
+                }
             })
             ->filter(function ($column) {
                 return !is_null($column);
@@ -86,12 +101,17 @@ class AnswersGridMaker implements GridMakable
         return $query;
     }
 
-    private function getFormKeys(): array
+    private function getFormQuestionKey(Question $question): string
+    {
+        return self::FORM_QUESTIONS_KEY_PREFIX . $question->id;
+    }
+
+    private function getFormQuestionsKeys(): array
     {
         return
             isset($this->form) ?
             $this->form->questions->map(function (Question $question) {
-                return self::FORM_QUESTIONS_KEY_PREFIX . $question->id;
+                return $this->getFormQuestionKey($question);
             })->all() : [];
     }
 
@@ -100,7 +120,7 @@ class AnswersGridMaker implements GridMakable
      */
     public function keys(): array
     {
-        $form_keys = $this->getFormKeys();
+        $form_keys = $this->getFormQuestionsKeys();
 
         return [
             'id',
@@ -130,8 +150,25 @@ class AnswersGridMaker implements GridMakable
         ]));
 
         $questionFilterableKeys = [];
-        foreach ($this->getFormKeys() as $formKey) {
-            $questionFilterableKeys[$formKey] = FilterableKey::string();
+        foreach ($this->form->questions as $question) {
+            $questionKey = $this->getFormQuestionKey($question);
+            switch ($question->type) {
+                case 'heading':
+                case 'upload':
+                    break;
+                case 'number':
+                    $questionFilterableKeys[$questionKey] = FilterableKey::number();
+                    break;
+                case 'text':
+                case 'textarea':
+                case 'radio':
+                case 'checkbox':
+                case 'select':
+                    $questionFilterableKeys[$questionKey] = FilterableKey::string();
+                    break;
+                default:
+                    break;
+            }
         }
 
         // 連想配列をスプレッド演算子で結合できるのは PHP 8.1 以降。
@@ -152,7 +189,7 @@ class AnswersGridMaker implements GridMakable
      */
     public function sortableKeys(): array
     {
-        $form_keys = $this->getFormKeys();
+        $form_keys = $this->getFormQuestionsKeys();
 
         return [
             'id',
@@ -171,7 +208,7 @@ class AnswersGridMaker implements GridMakable
         $item = [];
 
         // フォームへの回答
-        foreach ($this->getFormKeys() as $formKey) {
+        foreach ($this->getFormQuestionsKeys() as $formKey) {
             $questionId = intval(str_replace(self::FORM_QUESTIONS_KEY_PREFIX, '', $formKey));
             $question = $this->form->questions->firstWhere('id', $questionId);
             $answerValue = $record->$formKey;
@@ -184,6 +221,8 @@ class AnswersGridMaker implements GridMakable
                         'question' => $questionId,
                     ])
                 ] : [];
+            } elseif ($question->type === 'checkbox') {
+                $item[$formKey] = isset($answerValue) ? explode(self::CHECKBOX_GROUP_CONCAT_SEPARATOR, $answerValue) : [];
             } else {
                 $item[$formKey] = [$answerValue];
             }
