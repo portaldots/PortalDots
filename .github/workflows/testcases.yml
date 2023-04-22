@@ -98,8 +98,9 @@ jobs:
     - uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-version }}
+        tools: cs2pr
       env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@v2
     - name: Use Node.js (Yarnをインストールするため)
       uses: actions/setup-node@v2
@@ -129,7 +130,7 @@ jobs:
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
     - name: phpcs
-      run: composer phpcs
+      run: composer phpcs-github-actions
     - name: マイグレーション
       run: php artisan migrate --env=testing --force
     - name: PHPUnitでテスト実行
