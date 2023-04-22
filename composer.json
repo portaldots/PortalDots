@@ -54,6 +54,9 @@
         "phpcs": [
             "phpcs --standard=phpcs.xml ./"
         ],
+        "phpcs-github-actions": [
+            "phpcs -q --report=checkstyle ./ | cs2pr"
+        ],
         "phpcbf": [
             "phpcbf --standard=phpcs.xml ./"
         ],
