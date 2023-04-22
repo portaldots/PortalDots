@@ -71,6 +71,7 @@ class AnswersGridMaker implements GridMakable
                     case 'heading':
                         return null;
                     case 'number':
+                        // phpcs:ignore
                         return "MAX(CAST(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END AS DECIMAL(10, 0))) AS '{$columnAlias}'";
                     case 'text':
                     case 'textarea':
@@ -80,6 +81,7 @@ class AnswersGridMaker implements GridMakable
                         return "MAX(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END) AS '{$columnAlias}'";
                     case 'checkbox':
                         $separator = self::CHECKBOX_GROUP_CONCAT_SEPARATOR;
+                        // phpcs:ignore
                         return "GROUP_CONCAT(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END SEPARATOR '{$separator}') AS '{$columnAlias}'";
                 }
             })
@@ -222,7 +224,9 @@ class AnswersGridMaker implements GridMakable
                     ])
                 ] : [];
             } elseif ($question->type === 'checkbox') {
-                $item[$formKey] = isset($answerValue) ? explode(self::CHECKBOX_GROUP_CONCAT_SEPARATOR, $answerValue) : [];
+                $item[$formKey] = isset($answerValue)
+                    ? explode(self::CHECKBOX_GROUP_CONCAT_SEPARATOR, $answerValue)
+                    : [];
             } else {
                 $item[$formKey] = [$answerValue];
             }
