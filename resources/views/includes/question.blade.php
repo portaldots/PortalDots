@@ -10,7 +10,7 @@
     <list-view-form-group>
         <template v-slot:label>{{ $question->name }}</template>
         <template v-slot:description>{{ $question->description }}</template>
-        <pre style="white-space: pre-wrap;">{{ $answer_details[$question->id] }}</pre>
+        <pre style="white-space: pre-wrap;">{{ $answer_details[$question->id] ?? '' }}</pre>
     </list-view-form-group>
 @else
     {{-- 【v-bind:question-id の値について】 --}}
@@ -19,27 +19,20 @@
 
     {{-- 【v-bind:value の値について】 --}}
     {{-- ファイルアップロード済の場合は、アップロードしたファイルにアクセスできるURLをvalueに設定 --}}
-    <question-item @if ($question->is_required)
-            required
-        @endif
-        @if ($question->type === 'upload' && !empty($answer) &&
-            !empty($answer_details[$question->id]))
+    <question-item @if ($question->is_required) required @endif
+        @if ($question->type === 'upload' && !empty($answer) && !empty($answer_details[$question->id]))
             value="{{ route($show_upload_route ?? 'forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question]) }}"
         @else
             v-bind:value="{{ json_encode(old('answers.' . $question->id, $answer_details[$question->id] ?? null)) }}"
         @endif
-        type="{{ $question->type }}" v-bind:question-id="{{ $question->id }}"
-        name="{{ $question->name }}" description="{{ $question->description }}"
-        v-bind:options="{{ json_encode($question->optionsArray) }}"
+        type="{{ $question->type }}" v-bind:question-id="{{ $question->id }}" name="{{ $question->name }}"
+        description="{{ $question->description }}" v-bind:options="{{ json_encode($question->optionsArray) }}"
         v-bind:number-min="{{ $question->number_min ?? 'null' }}"
         v-bind:number-max="{{ $question->number_max ?? 'null' }}"
         v-bind:allowed-types="{{ json_encode($question->allowed_types_array) }}"
         v-bind:disabled="{{ json_encode($is_disabled ?? false) }}"
-        @if ($question->type === 'upload' && empty($question->allowed_types))
-        invalid="この設問は、スタッフによる設定不備があるためファイルをアップロードできません。申し訳ございませんが {{ config('portal.admin_name') }} までお問い合わせください。"
-        @endif
-        @error('answers.'. $question->id)
+        @if ($question->type === 'upload' && empty($question->allowed_types)) invalid="この設問は、スタッフによる設定不備があるためファイルをアップロードできません。申し訳ございませんが {{ config('portal.admin_name') }} までお問い合わせください。" @endif
+        @error('answers.' . $question->id)
         invalid="{{ $message }}"
-        @enderror
-        ></question-item>
+        @enderror></question-item>
 @endif
