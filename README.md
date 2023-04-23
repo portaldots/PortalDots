@@ -141,14 +141,12 @@ $ yarn install
 # 開発環境を起動する
 $ yarn docker
 
-# Docker コンテナ内で必要な PHP パッケージをインストール
-$ yarn docker-bash
+# Docker コンテナ内で必要な PHP パッケージをインストールし、設定ファイルを作成
+$ yarn docker-shell
 $ composer install
-$ exit
-
-# 設定ファイルを作成
 $ cp .env.example .env
 $ php artisan key:generate
+$ exit
 
 # マイグレーション(データベースのセットアップ)
 $ yarn migrate
@@ -172,7 +170,7 @@ Node.js を最新バージョンにアップグレードした上で、再度 `y
 
 -   開発環境 : http://localhost
     -   初回アクセス時、データベースエラーが表示されることがありますが、数回再読み込みすることでエラーは解消するようです。もし解消しない場合、 `yarn docker-stop` コマンドを実行してから `yarn docker` コマンドを実行し、開発環境を再起動してください。
--   開発環境から送信されるメールの確認(MailHog) : http://localhost:8025
+-   開発環境から送信されるメールの確認(Mailpit) : http://localhost:8025
 -   phpMyAdmin : http://localhost:8080
     -   開発環境の DB に作成されるデータベース名は `db_portal_dev`
 
