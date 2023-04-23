@@ -105,7 +105,9 @@
                 @endif
                 @yield('content')
             </div>
-            @if (!$is_iframe)
+            @if (
+                !$is_iframe &&
+                    empty(trim($__env->yieldContent('no_footer')) /* ← no_footer という section がセットされていない場合 true */))
                 <app-footer>{{ config('app.name') }}</app-footer>
             @endif
         </div>

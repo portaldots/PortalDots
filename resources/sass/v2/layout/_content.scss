@@ -11,6 +11,17 @@
   }
   &__body {
     flex: 1;
+
+    &:has(> &__iframe) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__iframe {
+      border: none;
+      display: block;
+      flex: 1;
+    }
   }
 
   @media screen and (max-width: $breakpoint-drawer-narrow) {

@@ -1,12 +1,20 @@
-@extends('layouts.legacy')
+@extends('layouts.app')
 
-@section('editor', true)
+@section('no_footer', true)
 
-@section('title', 'フォームエディター - ' . config('app.name'))
+@section('title', "{$form->name} — フォームエディター")
+
+@section('navbar')
+    <app-nav-bar-back href="{{ route('staff.forms.index') }}">
+        申請管理
+    </app-nav-bar-back>
+@endsection
 
 @section('content')
-    <div class="d-none" id="forms-editor-config"
-        data-api-base-url='{{ json_encode(route('staff.forms.editor.api', [$form->id])) }}'>
-    </div>
-    <div id="forms-editor-container"></div>
+    @isset($form)
+        @include('includes.staff_answers_tab_strip', ['form_id' => $form->id])
+    @endisset
+    <iframe src="{{ route('staff.forms.editor.frame', ['form' => $form]) }}" class="content__body__iframe"
+        allowtransparency="true">
+    </iframe>
 @endsection

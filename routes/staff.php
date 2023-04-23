@@ -98,6 +98,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                     ->middleware(['can:staff.forms.edit'])
                     ->group(function () {
                         Route::get('/', 'Staff\Forms\Editor\IndexAction')->name('editor');
+                        Route::get('/frame', 'Staff\Forms\Editor\FrameAction')->name('editor.frame');
                         // ↓「editor.api」のroute定義は resources/views/staff/forms/editor.blade.php で利用しているので、消さないこと
                         Route::get('/api', 'Staff\Forms\Editor\APIAction')->name('editor.api');
                         Route::get('/api/get_form', 'Staff\Forms\Editor\GetFormAction');

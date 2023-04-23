@@ -10,8 +10,12 @@
 
 @section('content')
     <form method="post" action="{{ empty($form) ? route('staff.forms.store') : route('staff.forms.update', $form) }}">
-        @method(empty($form) ? 'post' : 'patch' )
+        @method(empty($form) ? 'post' : 'patch')
         @csrf
+
+        @isset($form)
+            @include('includes.staff_answers_tab_strip', ['form_id' => $form->id])
+        @endisset
 
         <app-header>
             @if (empty($form))
@@ -24,15 +28,6 @@
         </app-header>
 
         <app-container>
-            @isset($form)
-                <list-view>
-                    <list-view-action-btn href="{{ route('staff.forms.editor', ['form' => $form]) }}" icon-class="far fa-edit"
-                        newtab>
-                        フォームエディターを開く
-                    </list-view-action-btn>
-                </list-view>
-            @endisset
-
             <list-view>
                 <list-view-form-group label-for="name">
                     <template v-slot:label>
@@ -58,8 +53,8 @@
                         通常は「1」にします。1企画がこのフォームに対し複数の回答を作成できるようにするには、2以上の値を入力してください。
                     </template>
                     <input id="name" class="form-control @error('max_answers') is-invalid @enderror" type="number"
-                        name="max_answers" value="{{ old('max_answers', empty($form) ? 1 : $form->max_answers) }}" min="1"
-                        required>
+                        name="max_answers" value="{{ old('max_answers', empty($form) ? 1 : $form->max_answers) }}"
+                        min="1" required>
                     @if ($errors->has('max_answers'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('max_answers') as $message)
@@ -93,8 +88,7 @@
                     </template>
                     <input id="close_at" type="datetime-local" class="form-control @error('close_at') is-invalid @enderror"
                         name="close_at"
-                        value="{{ old('close_at', isset($form) ? $form->close_at->format('Y-m-d\TH:i') : '') }}"
-                        required>
+                        value="{{ old('close_at', isset($form) ? $form->close_at->format('Y-m-d\TH:i') : '') }}" required>
                     @error('close_at')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror
