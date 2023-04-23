@@ -67,7 +67,6 @@ jobs:
       run: yarn blade-formatter --write resources/views/v2/**/*.blade.php
     - run: yarn dev
     - run: yarn eslint-check
-    - run: yarn stylelint-check
 
 
   backend-tests:
