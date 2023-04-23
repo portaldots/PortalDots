@@ -53,7 +53,7 @@ jobs:
         run: ssh ${{ secrets.INTERNAL_SERVER_SSH_HOST }} 'cd ${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}; /usr/local/php80/bin/php artisan down;'
       - name: Upload
         run: |
-          rsync -acrvz --progress --include='artisan' --include='app' --include='app/**' --include='bootstrap' --include='bootstrap/**' --include='config' --include='config/**' --include='database' --include='database/**' --include='resources' --include='resources/**' --include='routes' --include='routes/**' --include='vendor' --include='vendor/**' --include='public' --include='public/css' --include='public/css/**' --include='public/fonts' --include='public/fonts/**' --include='public/images' --include='public/images/**'  --include='public/js' --include='public/js/**' --include='public/index.php' --include='public/mix-manifest.json' --exclude='*' ./ ${{ secrets.INTERNAL_SERVER_SSH_HOST }}:${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}
+          rsync -acrvz --progress --include='artisan' --include='app' --include='app/**' --include='bootstrap' --include='bootstrap/**' --include='config' --include='config/**' --include='database' --include='database/**' --include='resources' --include='resources/**' --include='routes' --include='routes/**' --include='vendor' --include='vendor/**' --include='public' --include='public/index.php' --include='public/build' --include='public/build/**' --exclude='*' ./ ${{ secrets.INTERNAL_SERVER_SSH_HOST }}:${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}
         working-directory: dist
       - name: Migration
         run: ssh ${{ secrets.INTERNAL_SERVER_SSH_HOST }} 'cd ${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}; /usr/local/php80/bin/php artisan migrate --force'

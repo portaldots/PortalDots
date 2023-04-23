@@ -97,10 +97,7 @@
                                     <li>resources フォルダ</li>
                                     <li>routes フォルダ</li>
                                     <li>vendor フォルダ</li>
-                                    <li>public フォルダ内の css フォルダ</li>
-                                    <li>public フォルダ内の fonts フォルダ</li>
-                                    <li>public フォルダ内の images フォルダ</li>
-                                    <li>public フォルダ内の js フォルダ</li>
+                                    <li>public フォルダ内の build フォルダ</li>
                                     <li>public フォルダ内の index.php ファイル</li>
                                     <li>public フォルダ内の mix-manifest.json ファイル</li>
                                 </ul>
