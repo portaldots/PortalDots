@@ -50,6 +50,7 @@ export default {
     inset: 0;
     justify-content: center;
     position: absolute;
+    background: $color-bg-surface;
   }
   &-frame {
     border: 0;

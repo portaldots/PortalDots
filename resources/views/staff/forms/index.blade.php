@@ -6,16 +6,16 @@
 
 @section('content')
     <staff-grid api-url="{{ route('staff.forms.api') }}" v-bind:key-translations="{
-                id: 'フォームID',
-                name: 'フォーム名',
-                is_public: '公開',
-                answerableTags: '回答可能なタグ',
-                description: 'フォームの説明',
-                open_at: '受付開始日時',
-                close_at: '受付終了日時',
-                created_at: '作成日時',
-                updated_at: '更新日時',
-            }">
+                        id: 'フォームID',
+                        name: 'フォーム名',
+                        is_public: '公開',
+                        answerableTags: '回答可能なタグ',
+                        description: 'フォームの説明',
+                        open_at: '受付開始日時',
+                        close_at: '受付終了日時',
+                        created_at: '作成日時',
+                        updated_at: '更新日時',
+                    }">
         <template v-slot:toolbar>
             <a class="btn is-primary" href="{{ route('staff.forms.create') }}">
                 <i class="fas fa-plus fa-fw"></i>
@@ -38,14 +38,9 @@
 • 「${row['name']}のコピー」という名前のフォームが作成されます
 • 「${row['name']}のコピー」は非公開です。後から必要に応じて設定を変更してください`">
                 @csrf
-                <icon-button button
-                    v-on:click="() => openEditorByUrl(`{{ route('staff.forms.edit', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id']))"
-                    title="編集">
-                    <i class="fas fa-pencil-alt fa-fw"></i>
-                </icon-button>
                 <icon-button
                     v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
-                    title="回答一覧">
+                    title="回答一覧・設定">
                     <i class="far fa-eye fa-fw"></i>
                 </icon-button>
                 <icon-button submit title="複製">

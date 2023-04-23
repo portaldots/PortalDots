@@ -11,6 +11,7 @@
 @endsection
 
 @section('content')
+    @include('includes.staff_answers_tab_strip', ['form_id' => $form->id])
     <app-header container-fluid>
         <template v-slot:title>
             {{ $form->name }}
@@ -40,16 +41,8 @@
             </p>
             @markdown($form->description)
         </div>
-        @if (!isset($form->customForm))
-            <hr />
-            <a class="btn is-primary" href="{{ route('staff.forms.edit', ['form' => $form]) }}" data-turbolinks="false">
-                <i class="fas fa-pencil-alt fa-fw"></i>
-                フォームを編集
-            </a>
-        @endif
     </app-header>
-    <staff-grid
-        api-url="{{ route('staff.forms.answers.api', ['form' => $form]) }}"
+    <staff-grid api-url="{{ route('staff.forms.answers.api', ['form' => $form]) }}"
         v-bind:key-translations="{
             id: '回答ID',
             circle_id: '提出した企画',
@@ -65,13 +58,10 @@
             'circle_id.notes': 'スタッフ用メモ',
             created_at: '作成日時',
             updated_at: '更新日時',
-            @if (isset($form))
-                @foreach($form->questions as $question)
+            @if (isset($form)) @foreach ($form->questions as $question)
                     {{ App\GridMakers\AnswersGridMaker::FORM_QUESTIONS_KEY_PREFIX . $question->id }}: '{{ $question->name }}',
-                @endforeach
-            @endif
-        }"
-    >
+                @endforeach @endif
+        }">
         <template v-slot:toolbar>
             <a class="btn is-primary" href="{{ route('staff.forms.answers.create', ['form' => $form]) }}">
                 <i class="fas fa-plus fa-fw"></i>
@@ -107,7 +97,8 @@
             <template v-if="keyName === 'circle_id'">
                 {{-- 企画 --}}
                 <b><ruby>@{{ row[keyName].name }}<rt>@{{ row[keyName].name_yomi }}</rt></ruby></b> —
-                <ruby class="text-muted">@{{ row[keyName].group_name }}<rt>@{{ row[keyName].group_name_yomi }}</rt></ruby> (企画ID : @{{ row[keyName].id }})
+                <ruby class="text-muted">@{{ row[keyName].group_name }}<rt>@{{ row[keyName].group_name_yomi }}</rt></ruby> (企画ID :
+                @{{ row[keyName].id }})
             </template>
             <template v-else-if="keyName.includes('{{ App\GridMakers\AnswersGridMaker::FORM_QUESTIONS_KEY_PREFIX }}')">
                 {{-- フォームへの回答 --}}
@@ -115,7 +106,7 @@
                     <a v-bind:href="row[keyName].file_url" target="_blank" rel="noopener noreferrer">表示</a>
                 </template>
                 <template v-if="row[keyName] && row[keyName].join">
-                    @{{ row[keyName] . join(', ') }}
+                    @{{ row[keyName].join(', ') }}
                 </template>
             </template>
             <template v-else>

@@ -11,6 +11,22 @@
   }
   &__body {
     flex: 1;
+
+    &:has(> &__content_iframe) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__content_iframe {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+
+      iframe {
+        border: none;
+        flex: 1;
+      }
+    }
   }
 
   @media screen and (max-width: $breakpoint-drawer-narrow) {
