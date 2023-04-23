@@ -168,13 +168,17 @@ class AnswersGridMaker implements GridMakable
         foreach ($keysExceptForms as $key) {
             switch ($key) {
                 case 'circle_id':
-                    $itemsExceptForms[$key] = $record->circle->only(['id', 'name', 'name_yomi', 'group_name', 'group_name_yomi']);
+                    $itemsExceptForms[$key] = $record->circle->only([
+                        'id', 'name', 'name_yomi', 'group_name', 'group_name_yomi'
+                    ]);
                     break;
                 case 'created_at':
-                    $itemsExceptForms[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
+                    $itemsExceptForms[$key] = !empty($record->created_at)
+                        ? $record->created_at->format('Y/m/d H:i:s') : null;
                     break;
                 case 'updated_at':
-                    $itemsExceptForms[$key] = !empty($record->updated_at) ? $record->updated_at->format('Y/m/d H:i:s') : null;
+                    $itemsExceptForms[$key] = !empty($record->updated_at)
+                        ? $record->updated_at->format('Y/m/d H:i:s') : null;
                     break;
                 default:
                     $itemsExceptForms[$key] = $record->$key;

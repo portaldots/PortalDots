@@ -250,13 +250,16 @@ class CirclesGridMaker implements GridMakable
                     $itemsExpectForms[$key] = $record->statusSetBy;
                     break;
                 case 'status_set_at':
-                    $itemsExpectForms[$key] = !empty($record->status_set_at) ? $record->status_set_at->format('Y/m/d H:i:s') : null;
+                    $itemsExpectForms[$key] = !empty($record->status_set_at)
+                        ? $record->status_set_at->format('Y/m/d H:i:s') : null;
                     break;
                 case 'created_at':
-                    $itemsExpectForms[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
+                    $itemsExpectForms[$key] = !empty($record->created_at)
+                        ? $record->created_at->format('Y/m/d H:i:s') : null;
                     break;
                 case 'updated_at':
-                    $itemsExpectForms[$key] = !empty($record->updated_at) ? $record->updated_at->format('Y/m/d H:i:s') : null;
+                    $itemsExpectForms[$key] = !empty($record->updated_at)
+                        ? $record->updated_at->format('Y/m/d H:i:s') : null;
                     break;
                 default:
                     $itemsExpectForms[$key] = $record->$key;

@@ -23,8 +23,12 @@ class AnswerDetailsHelper
      * @param string $checkboxGroupConcatSeparator
      * @return Builder
      */
-    public static function makeQueryWithAnswerDetails(Builder $query, Collection $questions, string $questionsKeyPrefix, string $checkboxGroupConcatSeparator): Builder
-    {
+    public static function makeQueryWithAnswerDetails(
+        Builder $query,
+        Collection $questions,
+        string $questionsKeyPrefix,
+        string $checkboxGroupConcatSeparator
+    ): Builder {
         $questionColumns = $questions
             ->map(function (Question $question) use ($questionsKeyPrefix, $checkboxGroupConcatSeparator) {
                 $idInt = intval($question->id);
