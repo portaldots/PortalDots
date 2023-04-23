@@ -50,6 +50,8 @@ import UiPrimaryColorPicker from "./components/UiPrimaryColorPicker.vue";
 import QuestionItem from "./components/Forms/QuestionItem.vue";
 import QuestionHeading from "./components/Forms/QuestionHeading.vue";
 
+import.meta.glob(["../../img/**"]);
+
 export function mountV2App() {
   // iOS で CSS の hover を有効にするハック
   document.body.addEventListener("touchstart", () => {}, { passive: true });

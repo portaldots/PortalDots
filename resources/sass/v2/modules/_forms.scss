@@ -33,14 +33,14 @@ textarea {
       select#{&} {
         // ライトモード用ドロップダウンアイコン
         background: right $spacing-md center / 1rem
-            url("../../../img/dropdownTriangle.svg") no-repeat,
+            url("@/img/dropdownTriangle.svg") no-repeat,
           $color-form-control !important;
       }
 
       html.theme-dark select#{&} {
         // ダークテーマ用ドロップダウンアイコン
         background: right $spacing-md center / 1rem
-            url("../../../img/dropdownTriangleDark.svg") no-repeat,
+            url("@/img/dropdownTriangleDark.svg") no-repeat,
           $color-form-control !important;
       }
 
@@ -48,7 +48,7 @@ textarea {
         @media (prefers-color-scheme: dark) {
           // ダークテーマ用ドロップダウンアイコン
           background: right $spacing-md center / 1rem
-              url("../../../img/dropdownTriangleDark.svg") no-repeat,
+              url("@/img/dropdownTriangleDark.svg") no-repeat,
             $color-form-control !important;
         }
       }
