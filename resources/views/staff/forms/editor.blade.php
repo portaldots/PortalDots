@@ -14,7 +14,5 @@
     @isset($form)
         @include('includes.staff_answers_tab_strip', ['form_id' => $form->id])
     @endisset
-    <iframe src="{{ route('staff.forms.editor.frame', ['form' => $form]) }}" class="content__body__iframe"
-        allowtransparency="true">
-    </iframe>
+    <content-iframe src="{{ route('staff.forms.editor.frame', ['form' => $form]) }}"></content-iframe>
 @endsection
