@@ -3,7 +3,7 @@
     class="info-box"
     :class="{
       'is-primary': primary,
-      'is-danger': danger
+      'is-danger': danger,
     }"
   >
     <div class="info-box-icon">
@@ -11,7 +11,7 @@
         class="fas"
         :class="{
           'fa-info-circle': primary,
-          'fa-exclamation-triangle': danger
+          'fa-exclamation-triangle': danger,
         }"
       ></i>
     </div>
@@ -26,14 +26,14 @@ export default {
   props: {
     primary: {
       type: Boolean,
-      default: false
+      default: false,
     },
     danger: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: false,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

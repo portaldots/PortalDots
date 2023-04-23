@@ -23,7 +23,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '',
+      default: "",
     },
     outline: {
       type: Boolean,
@@ -62,7 +62,7 @@ export default {
       default: false,
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -16,14 +16,14 @@ export default {
   props: {
     href: {
       type: String,
-      required: true
+      required: true,
     },
     target: {
       type: String,
-      default: ''
-    }
-  }
-}
+      default: "",
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

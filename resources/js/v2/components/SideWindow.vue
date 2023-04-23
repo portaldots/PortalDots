@@ -23,26 +23,27 @@
 </template>
 
 <script>
-import IconButton from './IconButton.vue'
+import IconButton from "./IconButton.vue";
 
 export default {
   components: { IconButton },
   props: {
     isOpen: {
       type: Boolean,
-      default: false
+      default: false,
     },
     popUpUrl: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
+  emits: ["clickClose"],
   methods: {
     onClickClose(e) {
-      this.$emit('clickClose', e)
-    }
-  }
-}
+      this.$emit("clickClose", e);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

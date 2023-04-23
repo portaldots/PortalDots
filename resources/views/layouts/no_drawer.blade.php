@@ -55,7 +55,6 @@
 <body>
     @include('includes.loading')
     <div class="app" id="v2-app">
-        <portal-target name="portal-target"></portal-target>
         <app-nav-bar no-drawer @staffpage staff @endstaffpage>
             @section('navbar')
             <a @staffpage href="{{ route('staff.index') }}" @else href="{{ route('home') }}" @endif
@@ -68,8 +67,7 @@
             <div class="content__body">
                 @include('includes.top_circle_selector')
                 @if (Session::has('topAlert.title'))
-                    <top-alert type="{{ session('topAlert.type', 'primary') }}"
-                        @yield('top_alert_props', 'container-medium' )
+                    <top-alert type="{{ session('topAlert.type', 'primary') }}" @yield('top_alert_props', 'container-medium')
                         {{ (bool) session('topAlert.keepVisible', false) ? 'keep-visible' : '' }}>
                         <template v-slot:title>
                             {{ session('topAlert.title') }}

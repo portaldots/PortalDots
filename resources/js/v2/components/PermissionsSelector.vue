@@ -6,7 +6,7 @@
           <AppBadge primary>
             {{ badge }}
           </AppBadge>
-          {{ ' ' }}
+          {{ " " }}
         </template>
         <strong
           v-if="!permissions || permissions.length === 0"
@@ -87,10 +87,10 @@
 </template>
 
 <script>
-import AppBadge from './AppBadge.vue'
-import ListViewBaseItem from './ListViewBaseItem.vue'
-import ListViewCard from './ListViewCard.vue'
-import SearchInput from './SearchInput.vue'
+import AppBadge from "./AppBadge.vue";
+import ListViewBaseItem from "./ListViewBaseItem.vue";
+import ListViewCard from "./ListViewCard.vue";
+import SearchInput from "./SearchInput.vue";
 
 export default {
   components: {
@@ -116,8 +116,8 @@ export default {
   data() {
     return {
       permissions: [],
-      searchKeyword: '',
-    }
+      searchKeyword: "",
+    };
   },
   computed: {
     permissionBadges() {
@@ -125,22 +125,22 @@ export default {
         .filter((permission) =>
           this.permissions.includes(permission.identifier)
         )
-        .map((permission) => permission.display_short_name)
+        .map((permission) => permission.display_short_name);
     },
     filteredPermissions() {
-      const keyword = this.searchKeyword.trim()
+      const keyword = this.searchKeyword.trim();
       return Object.values(this.definedPermissions).filter(
         (permission) =>
           permission.identifier.includes(keyword) ||
           permission.display_name.includes(keyword) ||
           permission.display_short_name.includes(keyword)
-      )
+      );
     },
   },
   mounted() {
-    this.permissions = this.defaultPermissions
+    this.permissions = this.defaultPermissions;
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

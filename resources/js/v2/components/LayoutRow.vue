@@ -3,11 +3,11 @@
     class="row"
     :class="[
       gridTemplateColumns ? 'is-customized' : 'is-repeated-width',
-      noResponsive ? 'is-no-responsive' : ''
+      noResponsive ? 'is-no-responsive' : '',
     ]"
     :style="{
       '--row-columns': columns,
-      '--row-grid-template-columns': gridTemplateColumns
+      '--row-grid-template-columns': gridTemplateColumns,
     }"
   >
     <slot />
@@ -19,18 +19,18 @@ export default {
   props: {
     columns: {
       type: Number,
-      default: 1
+      default: 1,
     },
     gridTemplateColumns: {
       type: String,
-      default: null
+      default: null,
     },
     noResponsive: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: false,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

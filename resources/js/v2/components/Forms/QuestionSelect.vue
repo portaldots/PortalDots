@@ -23,32 +23,32 @@ export default {
   props: {
     inputId: {
       type: String,
-      default: null
+      default: null,
     },
     inputName: {
       type: String,
-      default: null
+      default: null,
     },
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     invalid: {
       type: String,
-      default: null
+      default: null,
     },
     value: {
       type: String,
-      default: null
+      default: null,
     },
     options: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: false,
+    },
+  },
+};
 </script>

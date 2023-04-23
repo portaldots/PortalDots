@@ -24,32 +24,32 @@ export default {
   props: {
     inputId: {
       type: String,
-      default: null
+      default: null,
     },
     inputName: {
       type: String,
-      default: null
+      default: null,
     },
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     invalid: {
       type: String,
-      default: null
+      default: null,
     },
     value: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     options: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     computedRequired() {
@@ -57,10 +57,10 @@ export default {
       //
       // 選択肢が2つ以上の場合、1つ以上のチェックがついていれば良しとしたいため
       if (this.options.length === 1 && this.required) {
-        return true
+        return true;
       }
-      return false
-    }
-  }
-}
+      return false;
+    },
+  },
+};
 </script>

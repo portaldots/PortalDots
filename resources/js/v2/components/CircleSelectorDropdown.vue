@@ -40,40 +40,40 @@
 </template>
 
 <script>
-import AppContainer from './AppContainer.vue'
-import AppDropdown from './AppDropdown.vue'
-import AppDropdownItem from './AppDropdownItem.vue'
+import AppContainer from "./AppContainer.vue";
+import AppDropdown from "./AppDropdown.vue";
+import AppDropdownItem from "./AppDropdownItem.vue";
 
 export default {
   components: {
     AppContainer,
     AppDropdown,
-    AppDropdownItem
+    AppDropdownItem,
   },
   props: {
     name: {
       type: String,
-      default: 'top-circle-selector'
+      default: "top-circle-selector",
     },
     circles: {
       // {id: Number, name: String, group_name: String, href: String}
       type: Array,
-      required: true
+      required: true,
     },
     selectedCircleId: {
       type: Number,
-      required: true
+      required: true,
     },
     selectedCircleName: {
       type: String,
-      required: true
+      required: true,
     },
     selectedCircleGroupName: {
       type: String,
-      required: true
-    }
-  }
-}
+      required: true,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

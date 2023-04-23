@@ -16,31 +16,31 @@
 </template>
 
 <script>
-import AppContainer from './AppContainer.vue'
+import AppContainer from "./AppContainer.vue";
 
 export default {
   components: {
-    AppContainer
+    AppContainer,
   },
   props: {
     containerNarrow: {
       type: Boolean,
-      default: false
+      default: false,
     },
     containerMedium: {
       type: Boolean,
-      default: false
+      default: false,
     },
     containerFluid: {
       type: Boolean,
-      default: false
+      default: false,
     },
     textCenter: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: false,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -13,22 +13,22 @@ export default {
   props: {
     componentIs: {
       type: String,
-      default: 'div'
+      default: "div",
     },
     narrow: {
       type: Boolean,
-      default: false
+      default: false,
     },
     medium: {
       type: Boolean,
-      default: false
+      default: false,
     },
     fluid: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: false,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

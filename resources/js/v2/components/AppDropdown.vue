@@ -4,9 +4,7 @@
     <div class="dropdown-button" ref="button">
       <slot name="button" :toggle="toggle" :props="ariaButtonProps" />
     </div>
-    <portal to="portal-target">
-      <!-- portal タグの中の HTML は、app.blade.php と no_drawer.blade.php にある portal-target タグ内にレンダリングされる-->
-      <!-- ここでいう portal と PortalDots の portal は無関係 -->
+    <Teleport to="body">
       <div
         class="dropdown-menu"
         v-if="isOpen"
@@ -56,13 +54,13 @@
           <slot name="item" :item="item" />
         </div>
       </div>
-    </portal>
+    </Teleport>
   </div>
 </template>
 
 <script>
-import { GlobalEvents } from 'vue-global-events'
-import AppDropdownItem from './AppDropdownItem.vue'
+import { GlobalEvents } from "vue-global-events";
+import AppDropdownItem from "./AppDropdownItem.vue";
 
 export default {
   components: {
@@ -83,7 +81,7 @@ export default {
       submenuBottom: null,
       timeoutIdForSubmenu: null,
       isMouseoverSubmenu: false,
-    }
+    };
   },
   props: {
     items: {
@@ -103,62 +101,62 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('click', this.onClickOutside)
+    window.addEventListener("click", this.onClickOutside);
   },
   unmounted() {
-    window.removeEventListener('click', this.onClickOutside)
+    window.removeEventListener("click", this.onClickOutside);
   },
   methods: {
     async toggle() {
       if (this.isOpen) {
-        this.close()
+        this.close();
       } else {
-        await this.open()
+        await this.open();
       }
     },
     async open() {
-      this.isOpen = true
-      this.openingSubmenuIndex = null
+      this.isOpen = true;
+      this.openingSubmenuIndex = null;
 
-      window.document.body.style.overflowY = 'hidden'
+      window.document.body.style.overflowY = "hidden";
 
-      this.menuTop = null
-      this.menuLeft = null
-      this.menuBottom = null
-      this.menuRight = null
+      this.menuTop = null;
+      this.menuLeft = null;
+      this.menuBottom = null;
+      this.menuRight = null;
 
       // メニュー本体部分の DOM を取得するため、まずメニュー本体を DOM 上に描画する
-      await this.$nextTick()
+      await this.$nextTick();
 
-      const refButton = this.$refs.button
-      const refMenu = this.$refs.menu
+      const refButton = this.$refs.button;
+      const refMenu = this.$refs.menu;
 
       // fluid の場合、ボタンの幅にメニュー幅を揃える
       if (this.menuFluid) {
         this.menuRight =
-          window.innerWidth - refButton.getBoundingClientRect().right
+          window.innerWidth - refButton.getBoundingClientRect().right;
       }
 
       // とりあえずボタン下にメニューを表示
 
-      this.menuLeft = refButton.getBoundingClientRect().left
-      this.menuTop = refButton.getBoundingClientRect().bottom + 3
+      this.menuLeft = refButton.getBoundingClientRect().left;
+      this.menuTop = refButton.getBoundingClientRect().bottom + 3;
 
-      await this.$nextTick()
+      await this.$nextTick();
 
       // メニューが画面からはみ出してしまうようであれば、メニュー内でスクロールできるようにする
 
-      const space = 20 // 画面の端とメニューがくっつかないよう、space ぶんの余裕をもたせる
+      const space = 20; // 画面の端とメニューがくっつかないよう、space ぶんの余裕をもたせる
 
-      const normalMenuHeight = refMenu.getBoundingClientRect().height
+      const normalMenuHeight = refMenu.getBoundingClientRect().height;
 
       this.menuBottom = Math.max(
         space,
         window.innerHeight - refMenu.getBoundingClientRect().bottom
-      )
+      );
 
       const compressedMenuHeight =
-        window.innerHeight - this.menuBottom - this.menuTop
+        window.innerHeight - this.menuBottom - this.menuTop;
 
       if (
         this.menuBottom === space &&
@@ -166,67 +164,67 @@ export default {
       ) {
         // メニューの高さがギリギリになってしまう場合、メニューはボタンより上に表示する
         this.menuBottom =
-          window.innerHeight - refButton.getBoundingClientRect().top - 3
+          window.innerHeight - refButton.getBoundingClientRect().top - 3;
         this.menuTop = Math.max(
           space,
           window.innerHeight - this.menuBottom - normalMenuHeight
-        )
+        );
       }
     },
     close() {
-      window.document.body.style.overflowY = 'visible'
-      this.isOpen = false
+      window.document.body.style.overflowY = "visible";
+      this.isOpen = false;
     },
     onClickOutside(e) {
       if (this.isOpen && !this.$refs.container.contains(e.target)) {
-        this.close()
+        this.close();
       }
     },
     async openSubmenu(index) {
       if (this.timeoutIdForSubmenu) {
-        window.clearTimeout(this.timeoutIdForSubmenu)
-        this.timeoutIdForSubmenu = null
+        window.clearTimeout(this.timeoutIdForSubmenu);
+        this.timeoutIdForSubmenu = null;
       }
 
       if (this.openingSubmenuIndex === index) {
-        return
+        return;
       }
 
-      this.openingSubmenuIndex = index
+      this.openingSubmenuIndex = index;
 
-      const refParentItem = this.$refs.menuItems[index]
+      const refParentItem = this.$refs.menuItems[index];
 
-      this.submenuTop = refParentItem.getBoundingClientRect().top - 10
-      this.submenuLeft = refParentItem.getBoundingClientRect().right
-      this.submenuRight = null
-      this.submenuBottom = null
+      this.submenuTop = refParentItem.getBoundingClientRect().top - 10;
+      this.submenuLeft = refParentItem.getBoundingClientRect().right;
+      this.submenuRight = null;
+      this.submenuBottom = null;
 
-      await this.$nextTick()
+      await this.$nextTick();
 
-      const refSubmenu = this.$refs.submenu
+      const refSubmenu = this.$refs.submenu;
 
       // メニューが画面のX方向からはみ出してしまうようであれば、表示する向きを逆にする
       if (refSubmenu.getBoundingClientRect().right > window.innerWidth) {
-        this.submenuLeft = null
+        this.submenuLeft = null;
         this.submenuRight =
-          window.innerWidth - refParentItem.getBoundingClientRect().left
+          window.innerWidth - refParentItem.getBoundingClientRect().left;
       }
 
-      await this.$nextTick()
+      await this.$nextTick();
 
       // メニューが画面のY方向からはみ出してしまうようであれば、メニューの高さを調整する
 
-      const space = 20 // 画面の端とメニューがくっつかないよう、space ぶんの余裕をもたせる
+      const space = 20; // 画面の端とメニューがくっつかないよう、space ぶんの余裕をもたせる
 
-      const normalMenuHeight = refSubmenu.getBoundingClientRect().height
+      const normalMenuHeight = refSubmenu.getBoundingClientRect().height;
 
       this.submenuBottom = Math.max(
         space,
         window.innerHeight - refSubmenu.getBoundingClientRect().bottom
-      )
+      );
 
       const compressedMenuHeight =
-        window.innerHeight - this.submenuBottom - this.submenuTop
+        window.innerHeight - this.submenuBottom - this.submenuTop;
 
       if (
         this.submenuBottom === space &&
@@ -234,64 +232,66 @@ export default {
       ) {
         // メニューの高さがギリギリになってしまう場合、メニューは上方向に表示する
         this.submenuBottom =
-          window.innerHeight - refParentItem.getBoundingClientRect().bottom - 10
+          window.innerHeight -
+          refParentItem.getBoundingClientRect().bottom -
+          10;
         this.submenuTop = Math.max(
           space,
           window.innerHeight - this.submenuBottom - normalMenuHeight
-        )
+        );
       }
     },
     closeSubmenu() {
       if (this.timeoutIdForSubmenu) {
-        window.clearTimeout(this.timeoutIdForSubmenu)
-        this.timeoutIdForSubmenu = null
+        window.clearTimeout(this.timeoutIdForSubmenu);
+        this.timeoutIdForSubmenu = null;
       }
 
-      this.openingSubmenuIndex = null
+      this.openingSubmenuIndex = null;
     },
     onMouseoverItemToOpenSubmenu(index) {
       if (this.openingSubmenuIndex === index) {
-        return
+        return;
       }
 
       if (this.timeoutIdForSubmenu) {
-        window.clearTimeout(this.timeoutIdForSubmenu)
+        window.clearTimeout(this.timeoutIdForSubmenu);
       }
 
       this.timeoutIdForSubmenu = window.setTimeout(
         () => this.openSubmenu(index),
         300
-      )
+      );
     },
     onMouseoverSubmenu() {
       if (this.timeoutIdForSubmenu) {
-        window.clearTimeout(this.timeoutIdForSubmenu)
+        window.clearTimeout(this.timeoutIdForSubmenu);
       }
-      this.timeoutIdForSubmenu = null
+      this.timeoutIdForSubmenu = null;
     },
     onMouseoutItemToCloseSubmenu() {
       if (this.timeoutIdForSubmenu) {
-        window.clearTimeout(this.timeoutIdForSubmenu)
+        window.clearTimeout(this.timeoutIdForSubmenu);
       }
 
-      if (this.openingSubmenuIndex === null) return
+      if (this.openingSubmenuIndex === null) return;
 
       this.timeoutIdForSubmenu = window.setTimeout(
         () => this.closeSubmenu(),
         300
-      )
+      );
     },
   },
   computed: {
     ariaButtonProps() {
       return {
         id: `dropdown-button-${this.name}`,
-        'aria-haspopup': true,
-        'aria-expanded': this.isOpen,
-      }
+        "aria-haspopup": true,
+        "aria-expanded": this.isOpen,
+      };
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

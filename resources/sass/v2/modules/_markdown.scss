@@ -3,13 +3,10 @@ $line-height: 1.7;
 $margin: $spacing;
 $heading-borders: true;
 
-/* stylelint-disable-next-line no-invalid-position-at-import-rule */
 @import "./wysiwyg";
 
 .markdown {
-  /* stylelint-disable scss/at-extend-no-missing-placeholder */
   @extend .wysiwyg;
-  /* stylelint-enable scss/at-extend-no-missing-placeholder */
   img {
     display: block;
     height: auto;

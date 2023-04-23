@@ -55,59 +55,59 @@
 </template>
 
 <script>
-import { SAVE_STATUS_SAVING, SAVE_STATUS_SAVED } from '../store/status'
-import { SET_FORM_PUBLIC, SET_FORM_PRIVATE, SAVE_FORM } from '../store/editor'
+import { SAVE_STATUS_SAVING, SAVE_STATUS_SAVED } from "../store/status";
+import { SET_FORM_PUBLIC, SET_FORM_PRIVATE, SAVE_FORM } from "../store/editor";
 
 export default {
   computed: {
     save_status() {
-      return this.$store.state.status.save_status
+      return this.$store.state.status.save_status;
     },
     is_saving() {
-      return this.save_status === SAVE_STATUS_SAVING
+      return this.save_status === SAVE_STATUS_SAVING;
     },
     request_queued_count() {
-      return this.$store.state.status.request_queued_count
+      return this.$store.state.status.request_queued_count;
     },
     is_saved() {
-      return this.save_status === SAVE_STATUS_SAVED
+      return this.save_status === SAVE_STATUS_SAVED;
     },
     is_unexpected_error() {
-      return this.$store.state.status.is_unexpected_error
+      return this.$store.state.status.is_unexpected_error;
     },
     validation_error() {
-      return this.$store.state.status.validation_error
+      return this.$store.state.status.validation_error;
     },
     preview_url() {
-      const form_id = this.$store.state.editor.form.id
-      return `/staff/forms/${form_id}/preview`
+      const form_id = this.$store.state.editor.form.id;
+      return `/staff/forms/${form_id}/preview`;
     },
     is_public() {
-      return this.$store.state.editor.form.is_public
-    }
+      return this.$store.state.editor.form.is_public;
+    },
   },
   methods: {
     save() {
-      this.$store.dispatch(`editor/${SAVE_FORM}`)
+      this.$store.dispatch(`editor/${SAVE_FORM}`);
     },
     setPublic() {
       if (
         window.confirm(
-          '公開しますか？\n公開しても受付期間外の場合、団体は回答できません。'
+          "公開しますか？\n公開しても受付期間外の場合、団体は回答できません。"
         )
       ) {
-        this.$store.commit(`editor/${SET_FORM_PUBLIC}`)
-        this.save()
+        this.$store.commit(`editor/${SET_FORM_PUBLIC}`);
+        this.save();
       }
     },
     setPrivate() {
-      if (window.confirm('非公開にしますか？')) {
-        this.$store.commit(`editor/${SET_FORM_PRIVATE}`)
-        this.save()
+      if (window.confirm("非公開にしますか？")) {
+        this.$store.commit(`editor/${SET_FORM_PRIVATE}`);
+        this.save();
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

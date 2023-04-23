@@ -158,9 +158,9 @@
 </template>
 
 <script>
-import { Comment } from 'vue'
-import AppDropdown from './AppDropdown.vue'
-import AppDropdownItem from './AppDropdownItem.vue'
+import { Comment } from "vue";
+import AppDropdown from "./AppDropdown.vue";
+import AppDropdownItem from "./AppDropdownItem.vue";
 
 export default {
   components: {
@@ -205,33 +205,43 @@ export default {
       default: false,
     },
   },
+  emits: [
+    "clickFirst",
+    "clickPrev",
+    "clickNext",
+    "clickLast",
+    "clickReload",
+    "clickFilter",
+    "clickTh",
+    "changePerPage",
+  ],
   methods: {
     onClickFirst(e) {
-      this.$emit('clickFirst', e)
+      this.$emit("clickFirst", e);
     },
     onClickPrev(e) {
-      this.$emit('clickPrev', e)
+      this.$emit("clickPrev", e);
     },
     onClickNext(e) {
-      this.$emit('clickNext', e)
+      this.$emit("clickNext", e);
     },
     onClickLast(e) {
-      this.$emit('clickLast', e)
+      this.$emit("clickLast", e);
     },
     onClickReload(e) {
-      this.$emit('clickReload', e)
+      this.$emit("clickReload", e);
     },
     onClickFilter(e) {
-      this.$emit('clickFilter', e)
+      this.$emit("clickFilter", e);
     },
     onClickTh(keyName, e) {
-      this.$emit('clickTh', keyName, e)
+      this.$emit("clickTh", keyName, e);
     },
     onChangePerPage(perPage, e) {
-      this.$emit('changePerPage', perPage, e)
+      this.$emit("changePerPage", perPage, e);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

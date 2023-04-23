@@ -14,21 +14,21 @@
 export default {
   data() {
     return {
-      isOpen: false
-    }
+      isOpen: false,
+    };
   },
   methods: {
     toggle() {
-      this.isOpen = !this.isOpen
+      this.isOpen = !this.isOpen;
     },
     open() {
-      this.isOpen = true
+      this.isOpen = true;
     },
     close() {
-      this.isOpen = false
-    }
-  }
-}
+      this.isOpen = false;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

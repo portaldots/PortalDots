@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import AppDropdown from './AppDropdown.vue'
-import AppDropdownItem from './AppDropdownItem.vue'
+import AppDropdown from "./AppDropdown.vue";
+import AppDropdownItem from "./AppDropdownItem.vue";
 
 export default {
   components: {
@@ -45,12 +45,13 @@ export default {
       required: true,
     },
   },
+  emits: ["clickItem"],
   methods: {
     onClickItem(item, e) {
-      this.$emit('clickItem', item, e)
+      this.$emit("clickItem", item, e);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

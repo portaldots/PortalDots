@@ -15,19 +15,9 @@ html {
 body {
   background: $color-bg-base;
   color: $color-text;
-  font-family:
-    "Segoe UI",
-    Meiryo,
-    system-ui,
-    -apple-system,
-    Roboto,
-    "Helvetica Neue",
-    Arial,
-    sans-serif,
-    "Apple Color Emoji",
-    "Segoe UI Emoji",
-    "Segoe UI Symbol",
-    "Noto Color Emoji";
+  font-family: "Segoe UI", Meiryo, system-ui, -apple-system, Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;

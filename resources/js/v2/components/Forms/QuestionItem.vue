@@ -34,16 +34,16 @@
 </template>
 
 <script>
-import ListViewFormGroup from '../ListViewFormGroup.vue'
-import AppBadge from '../AppBadge.vue'
+import ListViewFormGroup from "../ListViewFormGroup.vue";
+import AppBadge from "../AppBadge.vue";
 
-import QuestionText from './QuestionText.vue'
-import QuestionTextarea from './QuestionTextarea.vue'
-import QuestionUpload from './QuestionUpload.vue'
-import QuestionNumber from './QuestionNumber.vue'
-import QuestionSelect from './QuestionSelect.vue'
-import QuestionRadio from './QuestionRadio.vue'
-import QuestionCheckbox from './QuestionCheckbox.vue'
+import QuestionText from "./QuestionText.vue";
+import QuestionTextarea from "./QuestionTextarea.vue";
+import QuestionUpload from "./QuestionUpload.vue";
+import QuestionNumber from "./QuestionNumber.vue";
+import QuestionSelect from "./QuestionSelect.vue";
+import QuestionRadio from "./QuestionRadio.vue";
+import QuestionCheckbox from "./QuestionCheckbox.vue";
 
 export default {
   components: {
@@ -55,140 +55,142 @@ export default {
     QuestionNumber,
     QuestionSelect,
     QuestionRadio,
-    QuestionCheckbox
+    QuestionCheckbox,
   },
   props: {
     type: {
       type: String,
-      required: true
+      required: true,
     },
     questionId: {
       type: Number,
-      required: true
+      required: true,
     },
     name: {
       type: String,
-      default: null
+      default: null,
     },
     description: {
       type: String,
-      default: null
+      default: null,
     },
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     invalid: {
       type: String,
-      default: null
+      default: null,
     },
     value: {
-      type: [String, Array]
+      type: [String, Array],
     },
     options: {
-      type: Array
+      type: Array,
     },
     numberMin: {
       type: Number,
-      default: null
+      default: null,
     },
     numberMax: {
       type: Number,
-      default: null
+      default: null,
     },
     allowedTypes: {
-      type: Array
+      type: Array,
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     componentIs() {
-      return `Question${this.type.charAt(0).toUpperCase() + this.type.slice(1)}`
+      return `Question${
+        this.type.charAt(0).toUpperCase() + this.type.slice(1)
+      }`;
     },
     inputId() {
-      if (['radio', 'checkbox'].indexOf(this.type) >= 0) {
-        return undefined
+      if (["radio", "checkbox"].indexOf(this.type) >= 0) {
+        return undefined;
       }
-      return `question-${this.questionId}`
+      return `question-${this.questionId}`;
     },
     inputName() {
-      if (this.type === 'checkbox') {
-        return `answers[${this.questionId}][]`
+      if (this.type === "checkbox") {
+        return `answers[${this.questionId}][]`;
       }
-      return `answers[${this.questionId}]`
+      return `answers[${this.questionId}]`;
     },
     computedOptions() {
-      if (['radio', 'select', 'checkbox'].indexOf(this.type) >= 0) {
-        return this.options
+      if (["radio", "select", "checkbox"].indexOf(this.type) >= 0) {
+        return this.options;
       }
-      return undefined
+      return undefined;
     },
     computedAllowedTypes() {
-      if (this.type === 'upload') {
-        return this.allowedTypes
+      if (this.type === "upload") {
+        return this.allowedTypes;
       }
-      return undefined
+      return undefined;
     },
     validationNotice() {
-      let text = ''
+      let text = "";
       switch (this.type) {
-        case 'text':
-        case 'textarea': {
+        case "text":
+        case "textarea": {
           if (this.numberMin !== null || this.numberMax !== null) {
             if (this.numberMin !== null) {
-              text += `${this.numberMin}文字以上`
+              text += `${this.numberMin}文字以上`;
             }
             if (this.numberMax !== null) {
-              text += `${this.numberMax}文字以下`
+              text += `${this.numberMax}文字以下`;
             }
-            text += 'で入力してください'
+            text += "で入力してください";
           }
-          break
+          break;
         }
-        case 'number': {
+        case "number": {
           if (this.numberMin !== null || this.numberMax !== null) {
             if (this.numberMin !== null) {
-              text += `${this.numberMin}以上`
+              text += `${this.numberMin}以上`;
             }
             if (this.numberMax !== null) {
-              text += `${this.numberMax}以下`
+              text += `${this.numberMax}以下`;
             }
-            text += 'の値を入力してください'
+            text += "の値を入力してください";
           }
-          break
+          break;
         }
-        case 'upload': {
+        case "upload": {
           if (this.numberMax !== null) {
-            text += `${this.numberMax}KB以下としてください。`
+            text += `${this.numberMax}KB以下としてください。`;
           }
           if (this.allowedTypes && this.allowedTypes.length > 0) {
-            text += `対応形式 : ${this.allowedTypes.join(', ')}`
+            text += `対応形式 : ${this.allowedTypes.join(", ")}`;
           }
-          break
+          break;
         }
-        case 'checkbox': {
+        case "checkbox": {
           if (this.numberMin !== null || this.numberMax !== null) {
             if (this.numberMin !== null) {
-              text += `${this.numberMin}個以上`
+              text += `${this.numberMin}個以上`;
             }
             if (this.numberMax !== null) {
-              text += `${this.numberMax}個以下`
+              text += `${this.numberMax}個以下`;
             }
-            text += 'の項目を選択してください'
+            text += "の項目を選択してください";
           }
-          break
+          break;
         }
         default: {
-          break
+          break;
         }
       }
-      return text
-    }
-  }
-}
+      return text;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

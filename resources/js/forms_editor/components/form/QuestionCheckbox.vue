@@ -40,43 +40,43 @@
 </template>
 
 <script>
-import FormItem from './FormItem.vue'
-import EditPanel from './EditPanel.vue'
-import { GET_QUESTION_BY_ID } from '../../store/editor'
+import FormItem from "./FormItem.vue";
+import EditPanel from "./EditPanel.vue";
+import { GET_QUESTION_BY_ID } from "../../store/editor";
 
 export default {
   props: {
     question_id: {
       required: true,
-      type: Number
-    }
+      type: Number,
+    },
   },
   components: {
     FormItem,
-    EditPanel
+    EditPanel,
   },
   computed: {
     question() {
       return this.$store.getters[`editor/${GET_QUESTION_BY_ID}`](
         this.question_id
-      )
+      );
     },
     name() {
-      return this.question.name || '(無題の複数選択(チェックボックス))'
+      return this.question.name || "(無題の複数選択(チェックボックス))";
     },
     description() {
-      return this.question.description
+      return this.question.description;
     },
     options() {
       if (this.question.options) {
-        const options = new Set(this.question.options.trim().split(/\r\n|\n/))
-        return Array.from(options)
+        const options = new Set(this.question.options.trim().split(/\r\n|\n/));
+        return Array.from(options);
       }
-      return null
+      return null;
     },
     is_required() {
-      return this.question.is_required
-    }
-  }
-}
+      return this.question.is_required;
+    },
+  },
+};
 </script>
