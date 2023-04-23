@@ -11,7 +11,6 @@ export default {};
 <style lang="scss">
 .fixed_form_footer {
   align-items: center;
-  /* backdrop-filter: blur(10px); */
   bottom: 0;
   display: flex;
   justify-content: center;
