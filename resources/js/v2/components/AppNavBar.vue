@@ -19,6 +19,22 @@ export default {
 };
 </script>
 
+<style lang="scss">
+.navbar-brand {
+  color: $color-text;
+
+  // ↓ナビバーがもつpaddingを打ち消すネガティブマージン
+  margin-left: -$spacing;
+  padding: $spacing;
+  &:hover,
+  &:active,
+  &:focus {
+    color: $color-text;
+    text-decoration: none;
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 .navbar {
   align-items: center;
@@ -60,19 +76,6 @@ export default {
   @media screen and (max-width: $breakpoint-drawer-hide) {
     left: 0;
     width: 100%;
-  }
-  &-brand {
-    color: $color-text;
-
-    // ↓ナビバーがもつpaddingを打ち消すネガティブマージン
-    margin-left: -$spacing;
-    padding: $spacing;
-    &:hover,
-    &:active,
-    &:focus {
-      color: $color-text;
-      text-decoration: none;
-    }
   }
 }
 </style>

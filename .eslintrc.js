@@ -3,28 +3,28 @@ module.exports = {
     browser: true,
     es6: true,
   },
-  extends: ['prettier', 'plugin:vue/vue3-recommended'],
+  extends: ["prettier", "plugin:vue/vue3-recommended"],
   globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
+    Atomics: "readonly",
+    SharedArrayBuffer: "readonly",
   },
   parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module',
+    ecmaVersion: "latest",
+    sourceType: "module",
   },
-  plugins: ['vue'],
+  plugins: ["vue"],
   rules: {
-    'no-param-reassign': [
-      'error',
+    "no-param-reassign": [
+      "error",
       {
         props: true,
-        ignorePropertyModificationsFor: ['state'],
+        ignorePropertyModificationsFor: ["state"],
       },
     ],
-    'no-unexpected-multiline': 'error',
-    'no-unreachable': 'error',
-    'import/prefer-default-export': 'off',
+    "no-unexpected-multiline": "error",
+    "no-unreachable": "error",
+    "import/prefer-default-export": "off",
     // TODO: 以下で warn にしているルールは、最終的には error にする
-    camelcase: 'warn',
+    camelcase: "warn",
   },
-}
+};

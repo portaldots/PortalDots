@@ -98,68 +98,68 @@ export default {
 
 <style lang="scss" scoped>
 .tags-input {
-  width: 100%;
+  width: 100% !important;
 }
 
 .vue-tags-input {
-  background-color: $color-bg-surface;
-  max-width: 100%;
+  background-color: $color-bg-surface !important;
+  max-width: 100% !important;
 }
 </style>
 
 <style lang="scss">
 .vue-tags-input {
   .ti-input {
-    background: $color-form-control;
-    border: 1px solid $color-border;
-    border-radius: $border-radius;
-    line-height: 1.6;
-    padding: $spacing-sm $spacing-md;
+    background: $color-form-control !important;
+    border: 1px solid $color-border !important;
+    border-radius: $border-radius !important;
+    line-height: 1.6 !important;
+    padding: $spacing-sm $spacing-md !important;
     transition: #{$transition-base-fast} background-color,
-      #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color;
+      #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color !important;
   }
   &.ti-focus .ti-input {
-    background: $color-form-control-focus;
-    border-color: $color-primary;
-    box-shadow: $box-shadow-focus;
+    background: $color-form-control-focus !important;
+    border-color: $color-primary !important;
+    box-shadow: $box-shadow-focus !important;
   }
   .ti-tag {
-    background: $color-primary;
-    border-radius: $border-radius;
-    color: $color-bg-surface;
+    background: $color-primary !important;
+    border-radius: $border-radius !important;
+    color: $color-bg-surface !important;
     &.ti-invalid,
     &.ti-deletion-mark {
       background: $color-danger !important;
     }
   }
   .ti-autocomplete {
-    background: $color-bg-surface-3;
-    border: none;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow-lv3;
-    padding: $border-radius 0;
+    background: $color-bg-surface-3 !important;
+    border: none !important;
+    border-radius: $border-radius !important;
+    box-shadow: $box-shadow-lv3 !important;
+    padding: $border-radius 0 !important;
   }
   .ti-item {
-    margin: 0;
-    padding: $spacing-xs $spacing-md;
+    margin: 0 !important;
+    padding: $spacing-xs $spacing-md !important;
     > div {
-      padding: 0;
+      padding: 0 !important;
     }
   }
   .ti-selected-item {
-    background: $color-primary;
-    color: $color-bg-surface-3;
+    background: $color-primary !important;
+    color: $color-bg-surface-3 !important;
   }
   .ti-new-tag-input-wrapper {
     &:first-child {
-      margin-left: 0;
-      padding-left: 0;
+      margin-left: 0 !important;
+      padding-left: 0 !important;
     }
   }
   .ti-new-tag-input {
-    background: transparent;
-    caret-color: $color-primary;
-    color: $color-text;
+    background: transparent !important;
+    caret-color: $color-primary !important;
+    color: $color-text !important;
   }
 }
 </style>

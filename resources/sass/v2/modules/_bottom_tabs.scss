@@ -1,3 +1,6 @@
+@use "@/sass/variables" as *;
+@use "@/sass/v2/utils/link" as *;
+
 body {
   &:not(.is-in-iframe) {
     padding-bottom: calc(env(safe-area-inset-bottom) + #{$bottom-tabs-height});

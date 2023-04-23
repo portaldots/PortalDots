@@ -1,3 +1,6 @@
+@use "sass:math";
+@use "@/sass/variables" as *;
+
 textarea {
   resize: vertical;
 }
@@ -30,14 +33,14 @@ textarea {
       select#{&} {
         // ライトモード用ドロップダウンアイコン
         background: right $spacing-md center / 1rem
-            url("../../../img/dropdownTriangle.svg") no-repeat,
+            url("@/img/dropdownTriangle.svg") no-repeat,
           $color-form-control !important;
       }
 
       html.theme-dark select#{&} {
         // ダークテーマ用ドロップダウンアイコン
         background: right $spacing-md center / 1rem
-            url("../../../img/dropdownTriangleDark.svg") no-repeat,
+            url("@/img/dropdownTriangleDark.svg") no-repeat,
           $color-form-control !important;
       }
 
@@ -45,7 +48,7 @@ textarea {
         @media (prefers-color-scheme: dark) {
           // ダークテーマ用ドロップダウンアイコン
           background: right $spacing-md center / 1rem
-              url("../../../img/dropdownTriangleDark.svg") no-repeat,
+              url("@/img/dropdownTriangleDark.svg") no-repeat,
             $color-form-control !important;
         }
       }
@@ -95,7 +98,7 @@ textarea {
       }
     }
     &__input {
-      margin: #{($line-height-base - 1) / 2}rem 0 0 #{-$input-spacing};
+      margin: #{math.div(($line-height-base - 1), 2)}rem 0 0 #{-$input-spacing};
       position: absolute;
     }
   }

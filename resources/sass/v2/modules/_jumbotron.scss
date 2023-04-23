@@ -1,3 +1,5 @@
+@use "@/sass/variables" as *;
+
 .jumbotron {
   background: $color-bg-surface;
   padding: $spacing-xl 0;

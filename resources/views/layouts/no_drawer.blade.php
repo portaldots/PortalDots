@@ -20,8 +20,7 @@
     @include('includes.head_ui_theme')
 
     @prepend('css')
-        <link href="{{ mix('css/fontawesome.css') }}" rel="stylesheet">
-        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+        @vite(['resources/sass/app.scss'])
     @endprepend
     @stack('css')
 
@@ -30,9 +29,7 @@
 
     <!-- Scripts -->
     @prepend('js')
-        <script src="{{ mix('js/manifest.js') }}" defer></script>
-        <script src="{{ mix('js/vendor.js') }}" defer></script>
-        <script src="{{ mix('js/app.js') }}" defer></script>
+        @vite(['resources/js/app.js'])
     @endprepend
     @if (config('app.debug'))
         @prepend('js')

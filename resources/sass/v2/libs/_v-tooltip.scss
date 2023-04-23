@@ -1,4 +1,5 @@
 // https://www.npmjs.com/package/v-tooltip#style-examples
+@use "@/sass/variables" as *;
 
 .v-popper--theme-tooltip {
   .v-popper__inner {

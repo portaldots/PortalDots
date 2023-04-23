@@ -13,7 +13,7 @@
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.2",
         "jackiedo/dotenv-editor": "^2.0",
-        "laravel/framework": "^9.0",
+        "laravel/framework": "^9.19.0",
         "laravel/legacy-factories": "^1.3",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",

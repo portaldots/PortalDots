@@ -28,11 +28,12 @@
                 <h1 class="logo-wrapper">
                     <picture>
                         @if ($uiThemeService->getCurrentTheme() === 'system')
-                            <source srcset="{{ mix('/images/portalDotsLogoLight.svg') }}"
+                            <source srcset="{{ Vite::asset('resources/img/portalDotsLogoLight.svg') }}"
                                 media="(prefers-color-scheme: light)">
-                            <source srcset="{{ mix('/images/portalDotsLogoDark.svg') }}" media="(prefers-color-scheme: dark)">
+                            <source srcset="{{ Vite::asset('resources/img/portalDotsLogoDark.svg') }}"
+                                media="(prefers-color-scheme: dark)">
                         @endif
-                        <img src="{{ $uiThemeService->getCurrentTheme() === 'dark' ? mix('/images/portalDotsLogoDark.svg') : mix('/images/portalDotsLogoLight.svg') }}"
+                        <img src="{{ $uiThemeService->getCurrentTheme() === 'dark' ? Vite::asset('resources/img/portalDotsLogoDark.svg') : Vite::asset('resources/img/portalDotsLogoLight.svg') }}"
                             alt="PortalDots" class="logo" width="367" height="60">
                     </picture>
                 </h1>
