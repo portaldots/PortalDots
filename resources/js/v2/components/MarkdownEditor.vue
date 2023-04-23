@@ -187,14 +187,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use "easymde/dist/easymde.min.css";
-
 .markdown-editor {
   width: 100%;
 }
 </style>
 
 <style lang="scss">
+@import "easymde/dist/easymde.min.css";
+
 .vue-easymde {
   .editor-toolbar {
     background: $color-bg-light;
