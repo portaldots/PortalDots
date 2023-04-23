@@ -61,7 +61,6 @@
 <body class="{{ $is_iframe ? 'is-in-iframe' : '' }}">
     @include('includes.loading')
     <div class="app" id="v2-app">
-        <portal-target name="portal-target"></portal-target>
         <global-events v-on:keyup.esc="closeDrawer"></global-events>
         <div class="drawer-backdrop" v-bind:class="{'is-open': isDrawerOpen}" v-on:click="closeDrawer"></div>
         @if (!$is_iframe)

@@ -4,9 +4,7 @@
     <div class="dropdown-button" ref="button">
       <slot name="button" :toggle="toggle" :props="ariaButtonProps" />
     </div>
-    <portal to="portal-target">
-      <!-- portal タグの中の HTML は、app.blade.php と no_drawer.blade.php にある portal-target タグ内にレンダリングされる-->
-      <!-- ここでいう portal と PortalDots の portal は無関係 -->
+    <Teleport to="body">
       <div
         class="dropdown-menu"
         v-if="isOpen"
@@ -56,7 +54,7 @@
           <slot name="item" :item="item" />
         </div>
       </div>
-    </portal>
+    </Teleport>
   </div>
 </template>
 

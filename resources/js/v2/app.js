@@ -2,7 +2,6 @@ import Turbolinks from 'turbolinks'
 
 import { createApp } from 'vue'
 import { GlobalEvents } from 'vue-global-events'
-import PortalVue from 'portal-vue'
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 
@@ -160,7 +159,6 @@ export function mountV2App() {
       },
     })
 
-    app.use(PortalVue)
     app.use(TurbolinksAdapter)
     app.use(FloatingVue, { delay: 400 })
 
