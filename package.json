@@ -22,7 +22,6 @@
         "dev": "vite",
         "build": "vite build",
         "eslint-check": "eslint --ext js,vue ./resources",
-        "phpunit": "cd docker_dev && docker-compose run web ./vendor/bin/phpunit",
         "postinstall": "patch-package"
     },
     "devDependencies": {
