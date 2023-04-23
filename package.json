@@ -13,7 +13,7 @@
     "homepage": "https://github.com/portal-dots/PortalDots#readme",
     "scripts": {
         "docker": "./vendor/bin/sail up -d",
-        "docker-bash": "./vendor/bin/sail shell",
+        "docker-shell": "./vendor/bin/sail shell",
         "docker-stop": "./vendor/bin/sail stop",
         "migrate": "./vendor/bin/sail artisan migrate",
         "migrate:status": "./vendor/bin/sail artisan migrate:status",

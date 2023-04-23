@@ -142,7 +142,7 @@ $ yarn install
 $ yarn docker
 
 # Docker コンテナ内で必要な PHP パッケージをインストールし、設定ファイルを作成
-$ yarn docker-bash
+$ yarn docker-shell
 $ composer install
 $ cp .env.example .env
 $ php artisan key:generate
