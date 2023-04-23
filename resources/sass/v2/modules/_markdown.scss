@@ -1,9 +1,10 @@
+@use "@/sass/variables" as *;
+@use "_wysiwyg.sass";
+
 $heading-borders: true;
 $line-height: 1.7;
 $margin: $spacing;
 $heading-borders: true;
-
-@import "./wysiwyg";
 
 .markdown {
   @extend .wysiwyg;

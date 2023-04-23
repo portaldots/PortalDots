@@ -57,18 +57,18 @@ $visited-links: false !default
 // Mixins
 =cell($font-size)
   font-size: #{$font-size}em
-  padding: (($margin / 2) / $font-size)
+  padding: calc(($margin / 2) / $font-size)
 
 =heading($font-size, $with-border: false, $top-space: false)
   font-size: #{$font-size}em
-  margin-bottom: ($margin / $font-size)
+  margin-bottom: calc($margin / $font-size)
   @if $top-space
-    margin-top: ($margin * 2 / $font-size)
+    margin-top: calc($margin * 2 / $font-size)
   @else
-    margin-top: ($margin / $font-size)
+    margin-top: calc($margin / $font-size)
   @if $heading-borders and $with-border
     border-bottom: 1px solid $border
-    padding-bottom: ($margin / $font-size)
+    padding-bottom: calc($margin / $font-size)
 
 // Styles
 .wysiwyg
@@ -217,7 +217,7 @@ $visited-links: false !default
   kbd,
   samp
     border-radius: 3px
-    line-height: $line-height / 0.9
+    line-height: calc($line-height / 0.9)
     padding: 0.1em 0.4em 0.2em
     vertical-align: baseline
     @if $custom-colors
@@ -239,7 +239,7 @@ $visited-links: false !default
       margin-bottom: 0
   figcaption
     font-size: 0.8em
-    margin-top: $margin / 1.6
+    margin-top: calc($margin / 1.6)
     @if $custom-colors
       color: $text-light
   // Table

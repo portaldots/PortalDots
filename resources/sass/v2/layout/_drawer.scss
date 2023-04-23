@@ -1,3 +1,5 @@
+@use "@/sass/variables" as *;
+
 .drawer {
   background: $color-bg-surface-2;
   border-right: 1px solid $color-border;

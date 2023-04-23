@@ -1,29 +1,28 @@
-@import "normalize";
-@import "variables";
+@use "normalize";
 
 // Libs
-@import "libs/v-tooltip";
+@use "libs/v-tooltip";
 
 // Utils
-@import "utils/text";
-@import "utils/screenreader";
-@import "utils/spacing";
-@import "utils/link";
+@use "utils/text";
+@use "utils/screenreader";
+@use "utils/spacing";
+@use "utils/link";
 
 // Layout
-@import "layout/base";
-@import "layout/main_wrapper";
-@import "layout/drawer";
-@import "layout/content";
-@import "layout/error";
+@use "layout/base";
+@use "layout/main_wrapper";
+@use "layout/drawer";
+@use "layout/content";
+@use "layout/error";
 
 // Modules
-@import "modules/jumbotron";
-@import "modules/forms";
-@import "modules/btn";
-@import "modules/loading";
-@import "modules/markdown";
-@import "modules/day_calendar";
-@import "modules/tab_strip";
-@import "modules/bottom_tabs";
-@import "modules/qrcode";
+@use "modules/jumbotron";
+@use "modules/forms";
+@use "modules/btn";
+@use "modules/loading";
+@use "modules/markdown";
+@use "modules/day_calendar";
+@use "modules/tab_strip";
+@use "modules/bottom_tabs";
+@use "modules/qrcode";

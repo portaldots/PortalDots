@@ -154,7 +154,7 @@ $ php artisan key:generate
 $ yarn migrate
 
 # フロントエンド開発サーバーの起動
-$ yarn hot
+$ yarn dev
 # → ブラウザで http://localhost にアクセスすると、PortalDots の開発環境が起動する
 # → フロントエンド開発サーバーを終了するには Ctrl + C を押す
 

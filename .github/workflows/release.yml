@@ -53,7 +53,7 @@ jobs:
         run: yarn install --ignore-scripts && yarn patch-package
         working-directory: dist
       - name: Compile assets
-        run: yarn run production
+        run: yarn run build
         working-directory: dist
       - name: Set Version in Release Info
         env:

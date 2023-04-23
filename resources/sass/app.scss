@@ -1,9 +1,11 @@
 /**
 *** v2 Styles
 **/
-@import "v2/app";
+@use "./v2/app";
 
 /**
 *** Forms Editor
 **/
-@import "forms_editor";
+@use "./forms_editor";
+
+@import "@fortawesome/fontawesome-free/css/all.css";

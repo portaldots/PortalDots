@@ -187,7 +187,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~easymde/dist/easymde.min.css";
+@use "easymde/dist/easymde.min.css";
 
 .markdown-editor {
   width: 100%;

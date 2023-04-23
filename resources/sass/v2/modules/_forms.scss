@@ -1,3 +1,6 @@
+@use "sass:math";
+@use "@/sass/variables" as *;
+
 textarea {
   resize: vertical;
 }
@@ -95,7 +98,7 @@ textarea {
       }
     }
     &__input {
-      margin: #{($line-height-base - 1) / 2}rem 0 0 #{-$input-spacing};
+      margin: #{math.div(($line-height-base - 1), 2)}rem 0 0 #{-$input-spacing};
       position: absolute;
     }
   }
