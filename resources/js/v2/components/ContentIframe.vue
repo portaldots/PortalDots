@@ -21,12 +21,7 @@ function handleLoad() {
     <div v-if="!isLoaded" class="content_iframe-loading">
       <i class="fas fa-spinner fa-pulse fa-2x text-primary" />
     </div>
-    <iframe
-      :src="props.src"
-      class="content__body__iframe"
-      allowtransparency="true"
-      @load="handleLoad"
-    />
+    <iframe :src="props.src" allowtransparency="true" @load="handleLoad" />
   </div>
 </template>
 
@@ -34,12 +29,14 @@ function handleLoad() {
 .content_iframe {
   height: 100%;
   position: relative;
+  background: $color-bg-base;
   &-loading {
     align-items: center;
     display: flex;
     inset: 0;
     justify-content: center;
     position: absolute;
+    background: $color-bg-base;
   }
   &-frame {
     border: 0;
