@@ -8,14 +8,16 @@ use App\Eloquents\Circle;
 use App\Eloquents\CustomForm;
 use App\Eloquents\Form;
 use App\Eloquents\Place;
-use App\Eloquents\Question;
 use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use App\GridMakers\Concerns\UseEloquent;
 use App\GridMakers\Filter\FilterableKey;
 use App\GridMakers\Filter\FilterableKeysDict;
+use App\GridMakers\Helpers\AnswerDetailsHelper;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\Utils\FormatTextService;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Facades\DB;
 
 class CirclesGridMaker implements GridMakable
 {
@@ -32,6 +34,7 @@ class CirclesGridMaker implements GridMakable
     private $custom_form;
 
     public const CUSTOM_FORM_QUESTIONS_KEY_PREFIX = 'custom_form_question_';
+    public const CHECKBOX_GROUP_CONCAT_SEPARATOR = "\n";
 
     public function __construct(FormatTextService $formatTextService)
     {
@@ -44,24 +47,44 @@ class CirclesGridMaker implements GridMakable
      */
     protected function baseEloquentQuery(): Builder
     {
-        return Circle::submitted()->select([
-            'id',
-            'name',
-            'name_yomi',
-            'group_name',
-            'group_name_yomi',
-            'submitted_at',
-            'status',
-            'status_set_at',
-            'status_set_by',
-            'notes',
-            'created_at',
-            'updated_at',
-        ])->with(['places', 'tags', 'statusSetBy', 'answers' => function ($query) {
-            if (isset($this->custom_form)) {
-                $query->with('details.question')->where('form_id', $this->custom_form->id);
-            }
-        }]);
+        $customFormSelectFields =
+            isset($this->custom_form) ? AnswerDetailsHelper::getFormQuestionsKeys(
+                $this->custom_form->questions,
+                self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX
+            ) : [];
+
+        /** @var Builder */
+        $query = Circle::submitted()->select([
+            DB::raw('`circles`.`id` AS id'),
+            DB::raw('`circles`.`name` AS name'),
+            DB::raw('`circles`.`name_yomi` AS name_yomi'),
+            DB::raw('`circles`.`group_name` AS group_name'),
+            DB::raw('`circles`.`group_name_yomi` AS group_name_yomi'),
+            DB::raw('`circles`.`submitted_at` AS submitted_at'),
+            DB::raw('`circles`.`status` AS status'),
+            DB::raw('`circles`.`status_set_at` AS status_set_at'),
+            DB::raw('`circles`.`status_set_by` AS status_set_by'),
+            DB::raw('`circles`.`notes` AS notes'),
+            DB::raw('`circles`.`created_at` AS created_at'),
+            DB::raw('`circles`.`updated_at` AS updated_at'),
+            ...$customFormSelectFields,
+        ])->with(['places', 'tags', 'statusSetBy']);
+
+        if (isset($this->custom_form)) {
+            $query = $query->leftJoin('answers', function (JoinClause $join) {
+                $join->on('circles.id', '=', 'answers.circle_id')
+                    ->where('answers.form_id', $this->custom_form->id);
+            });
+
+            $query = AnswerDetailsHelper::makeQueryWithAnswerDetails(
+                $query,
+                $this->custom_form->questions,
+                self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX,
+                self::CHECKBOX_GROUP_CONCAT_SEPARATOR
+            );
+        }
+
+        return $query;
     }
 
     /**
@@ -69,10 +92,12 @@ class CirclesGridMaker implements GridMakable
      */
     public function keys(): array
     {
-        // 現状 PortalDots は PHP7.3 以降をサポートすることにしているため、
-        // PHP 7.4 からサポートされるスプレッド演算子を使わず、array_merge を使っている
+        $customFormKeys = isset($this->custom_form) ? AnswerDetailsHelper::getFormQuestionsKeys(
+            $this->custom_form->questions,
+            self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX
+        ) : [];
 
-        $before_custom_form_keys = [
+        return [
             'id',
             'name',
             'name_yomi',
@@ -80,15 +105,7 @@ class CirclesGridMaker implements GridMakable
             'group_name_yomi',
             'places',
             'tags',
-        ];
-
-        $custom_form_keys = isset($this->custom_form) ?
-            $this->custom_form->questions()->where('type', '!=', 'heading')
-            ->get()->map(function (Question $question) {
-                return self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $question->id;
-            })->all() : [];
-
-        $after_custom_form_keys = [
+            ...$customFormKeys,
             'submitted_at',
             'status',
             'status_set_at',
@@ -97,8 +114,6 @@ class CirclesGridMaker implements GridMakable
             'created_at',
             'updated_at',
         ];
-
-        return array_merge($before_custom_form_keys, $custom_form_keys, $after_custom_form_keys);
     }
 
     /**
@@ -116,6 +131,12 @@ class CirclesGridMaker implements GridMakable
         if (empty($places_choices)) {
             $places_choices = Place::all()->toArray();
         }
+
+        $questionFilterableKeys = isset($this->custom_form)
+            ? AnswerDetailsHelper::makeFilterableKeysForAnswerDetails(
+                $this->custom_form->questions,
+                self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX
+            ) : [];
 
         $users_type = FilterableKey::belongsTo('users', new FilterableKeysDict([
             'id' => FilterableKey::number(),
@@ -135,35 +156,44 @@ class CirclesGridMaker implements GridMakable
             'updated_at' => FilterableKey::datetime(),
         ]));
 
-        return new FilterableKeysDict([
-            'id' => FilterableKey::number(),
-            'name' => FilterableKey::string(),
-            'name_yomi' => FilterableKey::string(),
-            'group_name' => FilterableKey::string(),
-            'group_name_yomi' => FilterableKey::string(),
-            'places' => FilterableKey::belongsToMany(
-                'booths',
-                'circle_id',
-                'place_id',
-                $places_choices,
-                'name'
-            ),
-            'tags' => FilterableKey::belongsToMany(
-                'circle_tag',
-                'circle_id',
-                'tag_id',
-                $tags_choices,
-                'name'
-            ),
-            'submitted_at' => FilterableKey::datetime(),
-            // 不受理、受理、確認中
-            'status' => FilterableKey::enum(['rejected', 'approved', 'NULL']),
-            'status_set_at' => FilterableKey::datetime(),
-            'status_set_by' => $users_type,
-            'notes' => FilterableKey::string(),
-            'created_at' => FilterableKey::datetime(),
-            'updated_at' => FilterableKey::datetime(),
-        ]);
+        // 連想配列をスプレッド演算子で結合できるのは PHP 8.1 以降。
+        // PortalDots は PHP 8.0 以上をサポート対象とするため、スプレッド演算子を利用できない。
+        return new FilterableKeysDict(
+            array_merge(
+                [
+                    'id' => FilterableKey::number(),
+                    'name' => FilterableKey::string(),
+                    'name_yomi' => FilterableKey::string(),
+                    'group_name' => FilterableKey::string(),
+                    'group_name_yomi' => FilterableKey::string(),
+                    'places' => FilterableKey::belongsToMany(
+                        'booths',
+                        'circle_id',
+                        'place_id',
+                        $places_choices,
+                        'name'
+                    ),
+                    'tags' => FilterableKey::belongsToMany(
+                        'circle_tag',
+                        'circle_id',
+                        'tag_id',
+                        $tags_choices,
+                        'name'
+                    ),
+                ],
+                $questionFilterableKeys,
+                [
+                    'submitted_at' => FilterableKey::datetime(),
+                    // 不受理、受理、確認中
+                    'status' => FilterableKey::enum(['rejected', 'approved', 'NULL']),
+                    'status_set_at' => FilterableKey::datetime(),
+                    'status_set_by' => $users_type,
+                    'notes' => FilterableKey::string(),
+                    'created_at' => FilterableKey::datetime(),
+                    'updated_at' => FilterableKey::datetime(),
+                ]
+            )
+        );
     }
 
     /**
@@ -171,12 +201,18 @@ class CirclesGridMaker implements GridMakable
      */
     public function sortableKeys(): array
     {
+        $formKeys = isset($this->custom_form) ? AnswerDetailsHelper::getFormQuestionsKeys(
+            $this->custom_form->questions,
+            self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX
+        ) : [];
+
         return [
             'id',
             'name',
             'name_yomi',
             'group_name',
             'group_name_yomi',
+            ...$formKeys,
             'submitted_at',
             'status',
             'status_set_at',
@@ -192,62 +228,42 @@ class CirclesGridMaker implements GridMakable
      */
     public function map($record): array
     {
-        $item = [];
-
         // カスタムフォームへの回答
-        if (isset($this->custom_form)) {
-            $answer = $record->answers->firstWhere('circle_id', $record->id);
-            if (isset($answer) && isset($answer->details) && is_iterable($answer->details)) {
-                foreach ($record->answers->where('circle_id', $record->id)->first()->details as $detail) {
-                    if ($detail->question->type === 'heading') {
-                        continue;
-                    }
-
-                    if ($detail->question->type === 'upload') {
-                        $item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = [
-                            'file_url' => route('staff.forms.answers.uploads.show', [
-                                'form' => $this->custom_form->id,
-                                'answer' => $answer->id,
-                                'question' => $detail->question_id
-                            ])
-                        ];
-                    } elseif (
-                        isset($item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id]) &&
-                        is_array($item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id])
-                    ) {
-                        $item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id][] = $detail->answer;
-                    } else {
-                        $item[self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $detail->question_id] = [$detail->answer];
-                    }
-                }
-            }
-        }
+        $itemsOfAnswerDetails = isset($this->custom_form) ? AnswerDetailsHelper::mapForAnswerDetails(
+            $record,
+            $this->custom_form->questions,
+            $this->custom_form,
+            self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX,
+            self::CHECKBOX_GROUP_CONCAT_SEPARATOR
+        ) : [];
 
         // カスタムフォームへの回答以外の項目
-        $keys_except_custom_forms = array_filter($this->keys(), function ($key) {
+        $itemsExpectForms = [];
+
+        $keysExceptCustomForms = array_filter($this->keys(), function ($key) {
             return strpos($key, self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX) !== 0;
         });
 
-        foreach ($keys_except_custom_forms as $key) {
+        foreach ($keysExceptCustomForms as $key) {
             switch ($key) {
                 case 'status_set_by':
-                    $item[$key] = $record->statusSetBy;
+                    $itemsExpectForms[$key] = $record->statusSetBy;
                     break;
                 case 'status_set_at':
-                    $item[$key] = !empty($record->status_set_at) ? $record->status_set_at->format('Y/m/d H:i:s') : null;
+                    $itemsExpectForms[$key] = !empty($record->status_set_at) ? $record->status_set_at->format('Y/m/d H:i:s') : null;
                     break;
                 case 'created_at':
-                    $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
+                    $itemsExpectForms[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
                     break;
                 case 'updated_at':
-                    $item[$key] = !empty($record->updated_at) ? $record->updated_at->format('Y/m/d H:i:s') : null;
+                    $itemsExpectForms[$key] = !empty($record->updated_at) ? $record->updated_at->format('Y/m/d H:i:s') : null;
                     break;
                 default:
-                    $item[$key] = $record->$key;
+                    $itemsExpectForms[$key] = $record->$key;
             }
         }
 
-        return $item;
+        return array_merge($itemsExpectForms, $itemsOfAnswerDetails);
     }
 
     protected function model(): Model
