@@ -11,7 +11,7 @@ export default {};
 <style lang="scss">
 .fixed_form_footer {
   align-items: center;
-  backdrop-filter: blur(10px) saturate(200%);
+  /* backdrop-filter: blur(10px); */
   bottom: 0;
   display: flex;
   justify-content: center;
@@ -19,5 +19,6 @@ export default {};
   padding: $spacing;
   position: sticky;
   z-index: $z-index-fixed-form-footer;
+  background: linear-gradient(to bottom, transparent, $color-bg-base 80%);
 }
 </style>
