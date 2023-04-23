@@ -47,6 +47,7 @@ export default {
       default: false,
     },
   },
+  emits: ['click'],
   computed: {
     componentIs() {
       return this.href ? 'a' : 'button'

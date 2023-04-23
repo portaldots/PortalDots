@@ -45,6 +45,7 @@ export default {
       required: true,
     },
   },
+  emits: ['clickItem'],
   methods: {
     onClickItem(item, e) {
       this.$emit('clickItem', item, e)

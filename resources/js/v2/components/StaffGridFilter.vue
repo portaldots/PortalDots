@@ -214,6 +214,7 @@ export default {
       default: false,
     },
   },
+  emits: ['clickApply'],
   data() {
     return {
       queries: [],

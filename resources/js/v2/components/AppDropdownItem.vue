@@ -16,9 +16,10 @@ export default {
   props: {
     componentIs: {
       type: String,
-      default: 'div'
-    }
+      default: 'div',
+    },
   },
+  emits: ['click', 'mouseover', 'mouseout'],
   methods: {
     onClick(e) {
       this.$emit('click', e)
@@ -28,8 +29,8 @@ export default {
     },
     onMouseout(e) {
       this.$emit('mouseout', e)
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -17,23 +17,24 @@ export default {
   props: {
     name: {
       type: String,
-      default: null
+      default: null,
     },
     value: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     placeholder: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     preventEnter: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
+  emits: ['input'],
   computed: {
     inputValue: {
       get() {
@@ -41,16 +42,16 @@ export default {
       },
       set(value) {
         this.$emit('input', value)
-      }
-    }
+      },
+    },
   },
   methods: {
     handleEnter(e) {
       if (this.preventEnter) {
         e.preventDefault()
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

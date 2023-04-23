@@ -205,6 +205,16 @@ export default {
       default: false,
     },
   },
+  emits: [
+    'clickFirst',
+    'clickPrev',
+    'clickNext',
+    'clickLast',
+    'clickReload',
+    'clickFilter',
+    'clickTh',
+    'changePerPage',
+  ],
   methods: {
     onClickFirst(e) {
       this.$emit('clickFirst', e)
@@ -260,7 +270,7 @@ export default {
       }
       &::before {
         border-left: 1px solid $color-border;
-        content: "";
+        content: '';
         display: block;
         height: 1.5rem;
         left: 0;

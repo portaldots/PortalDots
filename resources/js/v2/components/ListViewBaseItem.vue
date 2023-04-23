@@ -18,36 +18,37 @@ export default {
   props: {
     href: {
       type: String,
-      default: null
+      default: null,
     },
     newtab: {
       type: Boolean,
-      default: false
+      default: false,
     },
     noBorder: {
       type: Boolean,
-      default: false
+      default: false,
     },
     button: {
       type: Boolean,
-      default: false
+      default: false,
     },
     submit: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
+  emits: ['click'],
   computed: {
     componentIs() {
       if (this.button) return 'button'
       return this.href ? 'a' : 'div'
-    }
+    },
   },
   methods: {
     onClick(e) {
       this.$emit('click', e)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -78,7 +79,7 @@ export default {
   &::after {
     border-bottom: $listview-border;
     bottom: 0;
-    content: "";
+    content: '';
     display: block;
     height: 1px;
     left: var(--listview-base-item-padding-x);

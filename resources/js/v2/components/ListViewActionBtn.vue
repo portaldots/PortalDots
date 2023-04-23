@@ -20,39 +20,40 @@ import ListViewBaseItem from './ListViewBaseItem.vue'
 
 export default {
   components: {
-    ListViewBaseItem
+    ListViewBaseItem,
   },
   props: {
     href: {
       type: String,
-      default: null
+      default: null,
     },
     newtab: {
       type: Boolean,
-      default: false
+      default: false,
     },
     button: {
       type: Boolean,
-      default: false
+      default: false,
     },
     submit: {
       type: Boolean,
-      default: false
+      default: false,
     },
     danger: {
       type: Boolean,
-      default: false
+      default: false,
     },
     iconClass: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
+  emits: ['click'],
   methods: {
     onClick(e) {
       this.$emit('click', e)
-    }
-  }
+    },
+  },
 }
 </script>
 
