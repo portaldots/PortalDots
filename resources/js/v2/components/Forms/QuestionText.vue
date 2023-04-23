@@ -17,36 +17,36 @@ export default {
   props: {
     inputId: {
       type: String,
-      default: null
+      default: null,
     },
     inputName: {
       type: String,
-      default: null
+      default: null,
     },
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     invalid: {
       type: String,
-      default: null
+      default: null,
     },
     value: {
       type: String,
-      default: null
+      default: null,
     },
     numberMin: {
       type: Number,
-      default: null
+      default: null,
     },
     numberMax: {
       type: Number,
-      default: null
+      default: null,
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: false,
+    },
+  },
+};
 </script>

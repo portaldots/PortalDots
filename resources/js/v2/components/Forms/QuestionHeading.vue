@@ -10,19 +10,19 @@
 </template>
 
 <script>
-import ListViewBaseItem from '../ListViewBaseItem.vue'
+import ListViewBaseItem from "../ListViewBaseItem.vue";
 
 export default {
   components: {
-    ListViewBaseItem
+    ListViewBaseItem,
   },
   props: {
     name: {
       type: String,
-      default: null
-    }
-  }
-}
+      default: null,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

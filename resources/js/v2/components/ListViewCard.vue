@@ -5,17 +5,17 @@
 </template>
 
 <script>
-import ListViewBaseItem from './ListViewBaseItem.vue'
+import ListViewBaseItem from "./ListViewBaseItem.vue";
 
 export default {
   components: {
-    ListViewBaseItem
+    ListViewBaseItem,
   },
   props: {
     noBorder: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: false,
+    },
+  },
+};
 </script>

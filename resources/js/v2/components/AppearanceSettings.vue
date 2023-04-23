@@ -52,10 +52,10 @@
 </template>
 
 <script>
-import ListView from './ListView.vue'
-import ListViewCard from './ListViewCard.vue'
-import AppInfoBox from './AppInfoBox.vue'
-import ListViewFormGroup from './ListViewFormGroup.vue'
+import ListView from "./ListView.vue";
+import ListViewCard from "./ListViewCard.vue";
+import AppInfoBox from "./AppInfoBox.vue";
+import ListViewFormGroup from "./ListViewFormGroup.vue";
 
 export default {
   components: {
@@ -72,31 +72,31 @@ export default {
   },
   data() {
     return {
-      selectedTheme: '',
-    }
+      selectedTheme: "",
+    };
   },
   mounted() {
-    this.selectedTheme = this.defaultTheme || 'system'
+    this.selectedTheme = this.defaultTheme || "system";
   },
   methods: {
     changeThemeClassName(newTheme) {
-      const htmlElem = document.querySelector('html')
+      const htmlElem = document.querySelector("html");
       htmlElem.classList.forEach((className) => {
-        if (className.startsWith('theme-')) {
-          document.documentElement.classList.remove(className)
+        if (className.startsWith("theme-")) {
+          document.documentElement.classList.remove(className);
         }
-      })
-      htmlElem.classList.add(`theme-${newTheme}`)
+      });
+      htmlElem.classList.add(`theme-${newTheme}`);
     },
   },
   watch: {
     selectedTheme(newTheme) {
-      this.changeThemeClassName(newTheme)
+      this.changeThemeClassName(newTheme);
     },
   },
   unmounted() {
     // HTMLタグのクラスをリセットする
-    this.changeThemeClassName(this.defaultTheme)
+    this.changeThemeClassName(this.defaultTheme);
   },
-}
+};
 </script>

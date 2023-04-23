@@ -18,65 +18,65 @@
 </template>
 
 <script>
-import { ADD_QUESTION } from '../store/editor'
-import { SAVE_STATUS_SAVING } from '../store/status'
+import { ADD_QUESTION } from "../store/editor";
+import { SAVE_STATUS_SAVING } from "../store/status";
 
 export default {
   methods: {
     async add_question(type) {
-      await this.$store.dispatch(`editor/${ADD_QUESTION}`, type)
-    }
+      await this.$store.dispatch(`editor/${ADD_QUESTION}`, type);
+    },
   },
   computed: {
     is_saving() {
-      return this.$store.state.status.save_status === SAVE_STATUS_SAVING
+      return this.$store.state.status.save_status === SAVE_STATUS_SAVING;
     },
     types() {
       return [
         {
-          value: 'heading',
-          icon: 'fas fa-heading',
-          label: 'セクション見出し'
+          value: "heading",
+          icon: "fas fa-heading",
+          label: "セクション見出し",
         },
         {
-          value: 'text',
-          icon: 'fas fa-grip-lines',
-          label: '一行入力'
+          value: "text",
+          icon: "fas fa-grip-lines",
+          label: "一行入力",
         },
         {
-          value: 'number',
-          icon: 'fas fa-dice',
-          label: '整数入力'
+          value: "number",
+          icon: "fas fa-dice",
+          label: "整数入力",
         },
         {
-          value: 'textarea',
-          icon: 'fas fa-align-justify',
-          label: '複数行入力'
+          value: "textarea",
+          icon: "fas fa-align-justify",
+          label: "複数行入力",
         },
         {
-          value: 'radio',
-          icon: 'far fa-dot-circle',
-          label: '単一選択(ラジオボタン)'
+          value: "radio",
+          icon: "far fa-dot-circle",
+          label: "単一選択(ラジオボタン)",
         },
         {
-          value: 'select',
-          icon: 'far fa-list-alt',
-          label: '単一選択(ドロップダウン)'
+          value: "select",
+          icon: "far fa-list-alt",
+          label: "単一選択(ドロップダウン)",
         },
         {
-          value: 'checkbox',
-          icon: 'far fa-check-square',
-          label: '複数選択(チェックボックス)'
+          value: "checkbox",
+          icon: "far fa-check-square",
+          label: "複数選択(チェックボックス)",
         },
         {
-          value: 'upload',
-          icon: 'far fa-file',
-          label: 'ファイルアップロード'
-        }
-      ]
-    }
-  }
-}
+          value: "upload",
+          icon: "far fa-file",
+          label: "ファイルアップロード",
+        },
+      ];
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

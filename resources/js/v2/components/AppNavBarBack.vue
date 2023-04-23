@@ -10,10 +10,10 @@ export default {
   props: {
     href: {
       type: String,
-      required: true
-    }
-  }
-}
+      required: true,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

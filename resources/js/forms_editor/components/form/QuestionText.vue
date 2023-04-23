@@ -29,40 +29,40 @@
 </template>
 
 <script>
-import FormItem from './FormItem.vue'
-import EditPanel from './EditPanel.vue'
-import { GET_QUESTION_BY_ID } from '../../store/editor'
+import FormItem from "./FormItem.vue";
+import EditPanel from "./EditPanel.vue";
+import { GET_QUESTION_BY_ID } from "../../store/editor";
 
 export default {
   props: {
     question_id: {
       required: true,
-      type: [Number, String]
+      type: [Number, String],
     },
     is_permanent: {
       required: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   components: {
     FormItem,
-    EditPanel
+    EditPanel,
   },
   computed: {
     question() {
       return this.$store.getters[`editor/${GET_QUESTION_BY_ID}`](
         this.question_id
-      )
+      );
     },
     name() {
-      return this.question.name || '(無題の設問)'
+      return this.question.name || "(無題の設問)";
     },
     description() {
-      return this.question.description
+      return this.question.description;
     },
     is_required() {
-      return this.question.is_required
-    }
-  }
-}
+      return this.question.is_required;
+    },
+  },
+};
 </script>

@@ -63,18 +63,18 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
-import FormHeader from './form/FormHeader.vue'
-import QuestionText from './form/QuestionText.vue'
-import QuestionHeading from './form/QuestionHeading.vue'
-import QuestionTextarea from './form/QuestionTextarea.vue'
-import QuestionNumber from './form/QuestionNumber.vue'
-import QuestionUpload from './form/QuestionUpload.vue'
-import QuestionRadio from './form/QuestionRadio.vue'
-import QuestionSelect from './form/QuestionSelect.vue'
-import QuestionCheckbox from './form/QuestionCheckbox.vue'
-import { DRAG_START, DRAG_END, UPDATE_QUESTIONS_ORDER } from '../store/editor'
-import { SAVE_STATUS_SAVING } from '../store/status'
+import draggable from "vuedraggable";
+import FormHeader from "./form/FormHeader.vue";
+import QuestionText from "./form/QuestionText.vue";
+import QuestionHeading from "./form/QuestionHeading.vue";
+import QuestionTextarea from "./form/QuestionTextarea.vue";
+import QuestionNumber from "./form/QuestionNumber.vue";
+import QuestionUpload from "./form/QuestionUpload.vue";
+import QuestionRadio from "./form/QuestionRadio.vue";
+import QuestionSelect from "./form/QuestionSelect.vue";
+import QuestionCheckbox from "./form/QuestionCheckbox.vue";
+import { DRAG_START, DRAG_END, UPDATE_QUESTIONS_ORDER } from "../store/editor";
+import { SAVE_STATUS_SAVING } from "../store/status";
 
 export default {
   components: {
@@ -92,30 +92,30 @@ export default {
   data() {
     return {
       is_permanent_questions_visible: false,
-    }
+    };
   },
   computed: {
     is_saving() {
-      return this.$store.state.status.save_status === SAVE_STATUS_SAVING
+      return this.$store.state.status.save_status === SAVE_STATUS_SAVING;
     },
     drag() {
-      return this.$store.state.editor.drag
+      return this.$store.state.editor.drag;
     },
     permanent_questions() {
-      return this.$store.state.editor.permanent_questions
+      return this.$store.state.editor.permanent_questions;
     },
     has_permanent_questions() {
-      return this.$store.state.editor.permanent_questions.length > 0
+      return this.$store.state.editor.permanent_questions.length > 0;
     },
     form_name() {
-      return this.$store.state.editor.form.name
+      return this.$store.state.editor.form.name;
     },
     questions: {
       get() {
-        return this.$store.state.editor.questions
+        return this.$store.state.editor.questions;
       },
       set(new_value) {
-        this.$store.dispatch(`editor/${UPDATE_QUESTIONS_ORDER}`, new_value)
+        this.$store.dispatch(`editor/${UPDATE_QUESTIONS_ORDER}`, new_value);
       },
     },
   },
@@ -123,19 +123,20 @@ export default {
     question_component_name(question_type) {
       return `Question${question_type
         .charAt(0)
-        .toUpperCase()}${question_type.slice(1)}`
+        .toUpperCase()}${question_type.slice(1)}`;
     },
     toggle_permanent_questions() {
-      this.is_permanent_questions_visible = !this.is_permanent_questions_visible
+      this.is_permanent_questions_visible = !this
+        .is_permanent_questions_visible;
     },
     on_drag_start() {
-      this.$store.dispatch(`editor/${DRAG_START}`)
+      this.$store.dispatch(`editor/${DRAG_START}`);
     },
     on_drag_end() {
-      this.$store.dispatch(`editor/${DRAG_END}`)
+      this.$store.dispatch(`editor/${DRAG_END}`);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

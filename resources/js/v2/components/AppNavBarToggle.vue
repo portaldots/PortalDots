@@ -36,13 +36,13 @@
 
 <script>
 export default {
-  emits: ['click'],
+  emits: ["click"],
   methods: {
     onClick() {
-      this.$emit('click')
-    }
-  }
-}
+      this.$emit("click");
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

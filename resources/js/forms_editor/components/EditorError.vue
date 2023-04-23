@@ -21,27 +21,27 @@
 export default {
   methods: {
     reload() {
-      window.location.reload()
+      window.location.reload();
     },
     goback() {
-      window.history.back(-1)
-    }
+      window.history.back(-1);
+    },
   },
   props: {
     title: {
       type: String,
-      default: 'エラーが発生しました'
+      default: "エラーが発生しました",
     },
     message: {
       type: String,
-      default: '恐れ入りますが、ページを再読み込みしてください。'
+      default: "恐れ入りますが、ページを再読み込みしてください。",
     },
     back: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: false,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

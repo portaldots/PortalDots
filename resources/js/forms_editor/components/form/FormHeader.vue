@@ -42,58 +42,58 @@
 </template>
 
 <script>
-import { marked } from 'marked'
-import FormItem from './FormItem.vue'
-import { ITEM_HEADER, UPDATE_FORM, SAVE_FORM } from '../../store/editor'
+import { marked } from "marked";
+import FormItem from "./FormItem.vue";
+import { ITEM_HEADER, UPDATE_FORM, SAVE_FORM } from "../../store/editor";
 
 export default {
   components: {
-    FormItem
+    FormItem,
   },
   methods: {
     save() {
-      this.$store.dispatch(`editor/${SAVE_FORM}`)
-    }
+      this.$store.dispatch(`editor/${SAVE_FORM}`);
+    },
   },
   computed: {
     item_id() {
-      return ITEM_HEADER
+      return ITEM_HEADER;
     },
     custom_form() {
-      return this.$store.state.editor.form.custom_form
+      return this.$store.state.editor.form.custom_form;
     },
     name: {
       get() {
-        return this.$store.state.editor.form.name
+        return this.$store.state.editor.form.name;
       },
       set(new_value) {
         this.$store.commit(`editor/${UPDATE_FORM}`, {
-          key: 'name',
-          value: new_value
-        })
-      }
+          key: "name",
+          value: new_value,
+        });
+      },
     },
     description: {
       get() {
-        return this.$store.state.editor.form.description
+        return this.$store.state.editor.form.description;
       },
       set(new_value) {
         this.$store.commit(`editor/${UPDATE_FORM}`, {
-          key: 'description',
-          value: new_value
-        })
-      }
+          key: "description",
+          value: new_value,
+        });
+      },
     },
     computed_name() {
-      const { name } = this
-      return name || '(無題のフォーム)'
+      const { name } = this;
+      return name || "(無題のフォーム)";
     },
     description_html() {
-      const { description } = this
-      return marked(description || '')
-    }
-  }
-}
+      const { description } = this;
+      return marked(description || "");
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

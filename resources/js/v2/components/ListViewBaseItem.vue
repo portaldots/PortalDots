@@ -37,19 +37,19 @@ export default {
       default: false,
     },
   },
-  emits: ['click'],
+  emits: ["click"],
   computed: {
     componentIs() {
-      if (this.button) return 'button'
-      return this.href ? 'a' : 'div'
+      if (this.button) return "button";
+      return this.href ? "a" : "div";
     },
   },
   methods: {
     onClick(e) {
-      this.$emit('click', e)
+      this.$emit("click", e);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -79,7 +79,7 @@ export default {
   &::after {
     border-bottom: $listview-border;
     bottom: 0;
-    content: '';
+    content: "";
     display: block;
     height: 1px;
     left: var(--listview-base-item-padding-x);

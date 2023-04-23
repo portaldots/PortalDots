@@ -7,7 +7,7 @@
         type="text"
         :class="[
           'form-control',
-          $slots['invalid-student-id'] ? 'is-invalid' : ''
+          $slots['invalid-student-id'] ? 'is-invalid' : '',
         ]"
         :name="studentIdInputName"
         required
@@ -17,7 +17,7 @@
       <select
         :class="[
           'form-control',
-          $slots['invalid-student-id'] ? 'is-invalid' : ''
+          $slots['invalid-student-id'] ? 'is-invalid' : '',
         ]"
         :name="univemailDomainPartInputName"
         v-model="univemailDomainPart"
@@ -60,7 +60,7 @@
         type="text"
         :class="[
           'form-control',
-          $slots['invalid-univemail'] ? 'is-invalid' : ''
+          $slots['invalid-univemail'] ? 'is-invalid' : '',
         ]"
         :name="univemailLocalPartInputName"
         v-model="univemailLocalPart"
@@ -70,7 +70,7 @@
       <select
         :class="[
           'form-control',
-          $slots['invalid-univemail'] ? 'is-invalid' : ''
+          $slots['invalid-univemail'] ? 'is-invalid' : '',
         ]"
         :name="univemailDomainPartInputName"
         v-model="univemailDomainPart"
@@ -107,78 +107,80 @@
 </template>
 
 <script>
-import ListViewFormGroup from './ListViewFormGroup.vue'
+import ListViewFormGroup from "./ListViewFormGroup.vue";
 
 export default {
   components: {
-    ListViewFormGroup
+    ListViewFormGroup,
   },
   data() {
     return {
-      studentId: '',
-      univemailLocalPart: '',
-      univemailDomainPart: ''
-    }
+      studentId: "",
+      univemailLocalPart: "",
+      univemailDomainPart: "",
+    };
   },
   props: {
     allowedDomainParts: {
       type: Array,
-      required: true
+      required: true,
     },
     allowArbitraryLocalPart: {
       type: Boolean,
-      required: true
+      required: true,
     },
     studentIdInputName: {
       type: String,
-      required: true
+      required: true,
     },
     univemailLocalPartInputName: {
       type: String,
-      required: true
+      required: true,
     },
     univemailDomainPartInputName: {
       type: String,
-      required: true
+      required: true,
     },
     studentIdLabel: {
       type: String,
-      required: true
+      required: true,
     },
     univemailLabel: {
       type: String,
-      required: true
+      required: true,
     },
     defaultStudentIdValue: {
       type: String,
-      default: ''
+      default: "",
     },
     defaultUnivemailLocalPartValue: {
       type: String,
-      default: ''
+      default: "",
     },
     defaultUnivemailDomainPartValue: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
   },
   mounted() {
-    this.studentId = this.defaultStudentIdValue
-    this.univemailLocalPart = this.defaultUnivemailLocalPartValue
+    this.studentId = this.defaultStudentIdValue;
+    this.univemailLocalPart = this.defaultUnivemailLocalPartValue;
     this.univemailDomainPart =
-      this.defaultUnivemailDomainPartValue || this.allowedDomainParts[0]
+      this.defaultUnivemailDomainPartValue || this.allowedDomainParts[0];
   },
   computed: {
     appendSelectableDomainPartToStudentIdArea() {
-      return !this.allowArbitraryLocalPart && this.allowedDomainParts.length > 1
+      return (
+        !this.allowArbitraryLocalPart && this.allowedDomainParts.length > 1
+      );
     },
     appendFixedDomainPartToStudentIdArea() {
       return (
         !this.allowArbitraryLocalPart && this.allowedDomainParts.length === 1
-      )
-    }
-  }
-}
+      );
+    },
+  },
+};
 </script>
 
 <style></style>

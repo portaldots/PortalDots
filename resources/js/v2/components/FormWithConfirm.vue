@@ -17,27 +17,27 @@ export default {
   props: {
     action: {
       type: String,
-      required: true
+      required: true,
     },
     method: {
       type: String,
-      required: true
+      required: true,
     },
     confirmMessage: {
       type: String,
-      required: true
+      required: true,
     },
     inline: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     onSubmit(evt) {
-      const ans = window.confirm(this.confirmMessage)
+      const ans = window.confirm(this.confirmMessage);
       if (!ans) {
-        evt.stopPropagation()
-        evt.preventDefault()
+        evt.stopPropagation();
+        evt.preventDefault();
 
         // /* eslint-disable no-restricted-syntax */
         // const submits = document.querySelectorAll('button[type="submit"], input[type="submit"]')
@@ -47,9 +47,9 @@ export default {
         // }
         // /* eslint-enable */
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -9,14 +9,14 @@ export default {
   props: {
     noDrawer: {
       type: Boolean,
-      default: false
+      default: false,
     },
     staff: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: false,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

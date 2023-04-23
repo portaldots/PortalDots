@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ListViewBaseItem from './ListViewBaseItem.vue'
+import ListViewBaseItem from "./ListViewBaseItem.vue";
 
 export default {
   components: {
@@ -48,13 +48,13 @@ export default {
       default: null,
     },
   },
-  emits: ['click'],
+  emits: ["click"],
   methods: {
     onClick(e) {
-      this.$emit('click', e)
+      this.$emit("click", e);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

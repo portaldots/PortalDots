@@ -56,54 +56,54 @@
 export default {
   data() {
     return {
-      showInput: false
-    }
+      showInput: false,
+    };
   },
   methods: {
     deleteFile() {
-      this.showInput = true
+      this.showInput = true;
     },
     restoreFile() {
-      this.showInput = false
-    }
+      this.showInput = false;
+    },
   },
   props: {
     inputId: {
       type: String,
-      default: null
+      default: null,
     },
     inputName: {
       type: String,
-      default: null
+      default: null,
     },
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     invalid: {
       type: String,
-      default: null
+      default: null,
     },
     value: {
       type: String,
-      default: null
+      default: null,
     },
     allowedTypes: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     accept() {
       // .jpg,.pdf,.doc のような形式の文字列にする
-      return `.${this.allowedTypes.join(',.')}`
-    }
-  }
-}
+      return `.${this.allowedTypes.join(",.")}`;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

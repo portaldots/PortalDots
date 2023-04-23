@@ -18,27 +18,27 @@
 </template>
 
 <script>
-import ListViewBaseItem from './ListViewBaseItem.vue'
+import ListViewBaseItem from "./ListViewBaseItem.vue";
 
 export default {
   components: {
-    ListViewBaseItem
+    ListViewBaseItem,
   },
   props: {
     href: {
       type: String,
-      default: null
+      default: null,
     },
     newtab: {
       type: Boolean,
-      default: false
+      default: false,
     },
     unread: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: false,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

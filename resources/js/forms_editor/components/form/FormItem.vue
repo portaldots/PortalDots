@@ -4,7 +4,7 @@
     :class="{
       'form-item--active': is_edit_panel_open,
       'form-item--drag': drag,
-      'form-item--disable-edit': disable_edit
+      'form-item--disable-edit': disable_edit,
     }"
     :ref="`form_item_${item_id}`"
   >
@@ -36,81 +36,81 @@
 </template>
 
 <script>
-import { TOGGLE_OPEN_STATE } from '../../store/editor'
-import { SAVE_STATUS_SAVING } from '../../store/status'
+import { TOGGLE_OPEN_STATE } from "../../store/editor";
+import { SAVE_STATUS_SAVING } from "../../store/status";
 
 export default {
   props: {
     item_id: {
-      required: true
+      required: true,
     },
     type_label: {
       type: String,
-      required: true
+      required: true,
     },
     hide_handle: {
       required: false,
       type: Boolean,
-      default: false
+      default: false,
     },
     disable_edit: {
       required: false,
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     custom_form() {
-      return this.$store.state.editor.form.custom_form
+      return this.$store.state.editor.form.custom_form;
     },
     is_saving() {
-      return this.$store.state.status.save_status === SAVE_STATUS_SAVING
+      return this.$store.state.status.save_status === SAVE_STATUS_SAVING;
     },
     drag() {
-      return this.$store.state.editor.drag
+      return this.$store.state.editor.drag;
     },
     is_edit_panel_open() {
-      return this.$store.state.editor.open_item_id === this.item_id
-    }
+      return this.$store.state.editor.open_item_id === this.item_id;
+    },
   },
   watch: {
     is_edit_panel_open(value) {
       if (value) {
-        this.scroll_to_me()
+        this.scroll_to_me();
       }
-    }
+    },
   },
   created() {
     if (this.is_edit_panel_open) {
-      this.scroll_to_me()
+      this.scroll_to_me();
     }
   },
   methods: {
     toggle_open_state() {
       if (this.disable_edit) {
-        return
+        return;
       }
 
       this.$store.commit(`editor/${TOGGLE_OPEN_STATE}`, {
-        item_id: this.item_id
-      })
+        item_id: this.item_id,
+      });
     },
     scroll_to_me() {
       this.$nextTick(() => {
         const top =
           this.$refs[`form_item_${this.item_id}`].getBoundingClientRect().top +
           window.scrollY -
-          document.querySelector('.editor-header').getBoundingClientRect()
+          document.querySelector(".editor-header").getBoundingClientRect()
             .bottom -
-          16
+          16;
         window.scroll({
           top,
-          behavior: 'smooth'
-        })
-      })
-    }
-  }
-}
+          behavior: "smooth",
+        });
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss">

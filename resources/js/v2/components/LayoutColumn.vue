@@ -9,10 +9,10 @@ export default {
   props: {
     columnSpan: {
       type: Number,
-      default: 1
-    }
-  }
-}
+      default: 1,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

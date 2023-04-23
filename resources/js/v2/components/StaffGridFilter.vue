@@ -88,11 +88,11 @@
               class="form-control"
             >
               <option value="1">
-                {{ keyTranslations[`${query.item.keyName}.true`] || '空' }}
+                {{ keyTranslations[`${query.item.keyName}.true`] || "空" }}
               </option>
               <option value="0">
                 {{
-                  keyTranslations[`${query.item.keyName}.false`] || '空でない'
+                  keyTranslations[`${query.item.keyName}.false`] || "空でない"
                 }}
               </option>
             </select>
@@ -186,7 +186,7 @@
 </template>
 
 <script>
-import StaffGridFilterAddDropdown from './StaffGridFilterAddDropdown.vue'
+import StaffGridFilterAddDropdown from "./StaffGridFilterAddDropdown.vue";
 
 export default {
   components: {
@@ -207,36 +207,36 @@ export default {
     },
     defaultMode: {
       type: String,
-      default: 'and',
+      default: "and",
     },
     loading: {
       type: Boolean,
       default: false,
     },
   },
-  emits: ['clickApply'],
+  emits: ["clickApply"],
   data() {
     return {
       queries: [],
-      mode: 'and',
+      mode: "and",
       // isDirty: 適用ボタンによってフィルタ設定が反映されていない場合trueになる
       isDirty: false,
-    }
+    };
   },
   computed: {
     itemsForFilterQuery() {
       return Object.keys(this.filterableKeys).map((key) => {
-        if (this.filterableKeys[key].type !== 'belongsTo') {
+        if (this.filterableKeys[key].type !== "belongsTo") {
           return {
             keyName: key,
             type: this.filterableKeys[key].type,
             translation: this.keyTranslations[key],
             menuLabel: this.keyTranslations[key],
-          }
+          };
         }
 
-        if (typeof this.filterableKeys[key].keys !== 'object') {
-          return {}
+        if (typeof this.filterableKeys[key].keys !== "object") {
+          return {};
         }
 
         return {
@@ -252,19 +252,19 @@ export default {
               menuLabel: this.keyTranslations[`${key}.${insideKey}`],
             })
           ),
-        }
-      })
+        };
+      });
     },
   },
   watch: {
     queries: {
       handler() {
-        this.isDirty = true
+        this.isDirty = true;
       },
       deep: true,
     },
     mode() {
-      this.isDirty = true
+      this.isDirty = true;
     },
   },
   mounted() {
@@ -275,11 +275,11 @@ export default {
         .find((q) => q.keyName === query.keyName),
       operator: query.operator,
       value: query.value,
-    }))
-    this.mode = this.defaultMode
+    }));
+    this.mode = this.defaultMode;
     this.$nextTick(() => {
-      this.isDirty = false
-    })
+      this.isDirty = false;
+    });
   },
   methods: {
     addQuery(item) {
@@ -287,53 +287,53 @@ export default {
         this.queries[this.queries.length - 1] &&
         Number.isInteger(this.queries[this.queries.length - 1].id)
           ? this.queries[this.queries.length - 1].id + 1
-          : 0
+          : 0;
 
       const defaultValues = {
-        value: '',
-      }
+        value: "",
+      };
 
       switch (item.type) {
-        case 'string':
-          defaultValues.operator = 'like'
-          break
-        case 'bool':
-        case 'isNull':
-          defaultValues.operator = '='
-          defaultValues.value = '1'
-          break
+        case "string":
+          defaultValues.operator = "like";
+          break;
+        case "bool":
+        case "isNull":
+          defaultValues.operator = "=";
+          defaultValues.value = "1";
+          break;
         default:
-          defaultValues.operator = '='
-          break
+          defaultValues.operator = "=";
+          break;
       }
 
-      this.queries = [...this.queries, { id, item, ...defaultValues }]
+      this.queries = [...this.queries, { id, item, ...defaultValues }];
     },
     removeQuery(queryId) {
-      this.isDirty = true
-      this.queries = this.queries.filter((query) => query.id !== queryId)
+      this.isDirty = true;
+      this.queries = this.queries.filter((query) => query.id !== queryId);
     },
     onClickApply() {
-      this.isDirty = false
+      this.isDirty = false;
       this.$emit(
-        'clickApply',
+        "clickApply",
         this.queries.map((query) => ({
           keyName: query.item.keyName,
           operator: query.operator,
           value: query.value,
         })),
         this.mode
-      )
+      );
     },
     onClickClearAll() {
-      this.queries = []
-      this.onClickApply()
+      this.queries = [];
+      this.onClickApply();
       this.$nextTick(() => {
-        this.isDirty = false
-      })
+        this.isDirty = false;
+      });
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

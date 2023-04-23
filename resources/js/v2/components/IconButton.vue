@@ -47,27 +47,27 @@ export default {
       default: false,
     },
   },
-  emits: ['click'],
+  emits: ["click"],
   computed: {
     componentIs() {
-      return this.href ? 'a' : 'button'
+      return this.href ? "a" : "button";
     },
     type() {
       if (this.submit) {
-        return 'submit'
+        return "submit";
       }
       if (this.button) {
-        return 'button'
+        return "button";
       }
-      return undefined
+      return undefined;
     },
   },
   methods: {
     handleClick(e) {
-      this.$emit('click', e)
+      this.$emit("click", e);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

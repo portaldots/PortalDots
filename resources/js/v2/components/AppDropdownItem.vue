@@ -16,22 +16,22 @@ export default {
   props: {
     componentIs: {
       type: String,
-      default: 'div',
+      default: "div",
     },
   },
-  emits: ['click', 'mouseover', 'mouseout'],
+  emits: ["click", "mouseover", "mouseout"],
   methods: {
     onClick(e) {
-      this.$emit('click', e)
+      this.$emit("click", e);
     },
     onMouseover(e) {
-      this.$emit('mouseover', e)
+      this.$emit("mouseover", e);
     },
     onMouseout(e) {
-      this.$emit('mouseout', e)
+      this.$emit("mouseout", e);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

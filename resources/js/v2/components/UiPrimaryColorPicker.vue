@@ -43,9 +43,9 @@
 </style>
 
 <script>
-import convert from 'color-convert'
+import convert from "color-convert";
 
-const rootElement = document.documentElement
+const rootElement = document.documentElement;
 
 export default {
   props: {
@@ -68,81 +68,81 @@ export default {
   },
   data() {
     return {
-      hexValue: '#000000',
+      hexValue: "#000000",
       waitForReset: false,
-    }
+    };
   },
   mounted() {
-    this.hexValue = this.convertHslaToHex(this.defaultHslaValue)
+    this.hexValue = this.convertHslaToHex(this.defaultHslaValue);
   },
   unmounted() {
-    rootElement.style.removeProperty('--color-primary')
-    rootElement.style.removeProperty('--color-focus-primary')
-    rootElement.style.removeProperty('--color-primary-hover')
-    rootElement.style.removeProperty('--color-primary-inverse-hover')
+    rootElement.style.removeProperty("--color-primary");
+    rootElement.style.removeProperty("--color-focus-primary");
+    rootElement.style.removeProperty("--color-primary-hover");
+    rootElement.style.removeProperty("--color-primary-inverse-hover");
   },
   computed: {
     hslValue() {
-      return this.convertHexToHsl(this.hexValue)
+      return this.convertHexToHsl(this.hexValue);
     },
   },
   methods: {
     convertHslaToHex(hsla) {
       const hsl_array = hsla
-        .replace('hsla(', '')
-        .replace(')', '')
-        .split(',')
-        .map((value) => parseInt(value.trim(), 10))
-      return `#${convert.hsl.hex(hsl_array[0], hsl_array[1], hsl_array[2])}`
+        .replace("hsla(", "")
+        .replace(")", "")
+        .split(",")
+        .map((value) => parseInt(value.trim(), 10));
+      return `#${convert.hsl.hex(hsl_array[0], hsl_array[1], hsl_array[2])}`;
     },
     convertHexToHsl(hex) {
-      return convert.hex.hsl(hex.replace('#', ''))
+      return convert.hex.hsl(hex.replace("#", ""));
     },
     reset() {
-      this.hexValue = '#1a79f4'
+      this.hexValue = "#1a79f4";
       this.$nextTick(() => {
-        this.waitForReset = true
-      })
+        this.waitForReset = true;
+      });
     },
   },
   watch: {
     hexValue(value) {
-      this.waitForReset = false
-      const hsl = this.convertHexToHsl(value)
-      const h = hsl[0]
-      let s = hsl[1]
-      let l = hsl[2]
+      this.waitForReset = false;
+      const hsl = this.convertHexToHsl(value);
+      const h = hsl[0];
+      let s = hsl[1];
+      let l = hsl[2];
       const isDarkTheme =
-        rootElement.classList.contains('theme-dark') ||
-        (rootElement.classList.contains('theme-system') &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches)
+        rootElement.classList.contains("theme-dark") ||
+        (rootElement.classList.contains("theme-system") &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches);
 
       if (isDarkTheme) {
-        s = Math.max(s - 10, 0)
-        l = Math.min(l + 20, 100)
+        s = Math.max(s - 10, 0);
+        l = Math.min(l + 20, 100);
       }
 
       rootElement.style.setProperty(
-        '--color-primary',
+        "--color-primary",
         `hsla(${h}, ${s}%, ${l}%, 1)`
-      )
+      );
       rootElement.style.setProperty(
-        '--color-primary-light',
+        "--color-primary-light",
         `hsla(${h}, ${s}%, ${l}%, 0.1)`
-      )
+      );
       rootElement.style.setProperty(
-        '--color-focus-primary',
+        "--color-focus-primary",
         `hsla(${h}, ${s}%, ${l}%, 0.25)`
-      )
+      );
       rootElement.style.setProperty(
-        '--color-primary-hover',
+        "--color-primary-hover",
         `hsla(${h}, ${s}%, ${l}%, 0.8)`
-      )
+      );
       rootElement.style.setProperty(
-        '--color-primary-inverse-hover',
+        "--color-primary-inverse-hover",
         `hsla(${h}, ${s}%, ${l}%, 0.15)`
-      )
+      );
     },
   },
-}
+};
 </script>

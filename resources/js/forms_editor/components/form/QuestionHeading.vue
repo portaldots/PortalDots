@@ -23,37 +23,37 @@
 </template>
 
 <script>
-import { marked } from 'marked'
-import FormItem from './FormItem.vue'
-import EditPanel from './EditPanel.vue'
-import { GET_QUESTION_BY_ID } from '../../store/editor'
+import { marked } from "marked";
+import FormItem from "./FormItem.vue";
+import EditPanel from "./EditPanel.vue";
+import { GET_QUESTION_BY_ID } from "../../store/editor";
 
 export default {
   props: {
     question_id: {
       required: true,
-      type: Number
-    }
+      type: Number,
+    },
   },
   components: {
     FormItem,
-    EditPanel
+    EditPanel,
   },
   computed: {
     question() {
       return this.$store.getters[`editor/${GET_QUESTION_BY_ID}`](
         this.question_id
-      )
+      );
     },
     name() {
-      return this.question.name || '(無題のセクション見出し)'
+      return this.question.name || "(無題のセクション見出し)";
     },
     description_html() {
-      const { description } = this.question
-      return marked(description || '')
-    }
-  }
-}
+      const { description } = this.question;
+      return marked(description || "");
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

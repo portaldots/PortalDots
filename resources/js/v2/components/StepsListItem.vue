@@ -14,7 +14,7 @@ export default {
       default: false,
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -27,8 +27,7 @@ export default {
     background: $color-bg-surface;
     display: inline-block;
     margin-left: -#{$spacing-md};
-    padding:
-      $spacing-md $spacing-md $spacing-md #{$circle-size +
+    padding: $spacing-md $spacing-md $spacing-md #{$circle-size +
       ($spacing-md * 1.75)};
     text-align: left;
   }

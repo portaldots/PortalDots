@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import VueTagsInput from '@sipec/vue3-tags-input'
+import VueTagsInput from "@sipec/vue3-tags-input";
 
 export default {
   components: {
@@ -52,48 +52,48 @@ export default {
     },
     placeholder: {
       type: String,
-      default: 'タグを追加',
+      default: "タグを追加",
     },
     placeholderEmpty: {
       type: String,
       required: false,
     },
   },
-  emits: ['tags-changed'],
+  emits: ["tags-changed"],
   data() {
     return {
-      inputTag: '',
+      inputTag: "",
       tags: [],
-    }
+    };
   },
   mounted() {
-    this.tags = this.defaultTags
+    this.tags = this.defaultTags;
   },
   methods: {
     tagsChanged(newTags) {
-      this.tags = newTags
-      this.$emit('tags-changed', newTags)
+      this.tags = newTags;
+      this.$emit("tags-changed", newTags);
     },
     isDuplicate(tags, tag) {
       return (
         tags
           .map((t) => t.text.toLowerCase())
           .indexOf(tag.text.toLowerCase()) !== -1
-      )
+      );
     },
   },
   computed: {
     separators() {
       // eslint-disable-next-line no-irregular-whitespace
-      return [';', '、', ' ', '　']
+      return [";", "、", " ", "　"];
     },
     filteredItems() {
       return this.autocompleteItems.filter(
         (i) => i.text.toLowerCase().indexOf(this.inputTag.toLowerCase()) !== -1
-      )
+      );
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

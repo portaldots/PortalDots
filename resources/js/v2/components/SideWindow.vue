@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import IconButton from './IconButton.vue'
+import IconButton from "./IconButton.vue";
 
 export default {
   components: { IconButton },
@@ -37,13 +37,13 @@ export default {
       default: null,
     },
   },
-  emits: ['clickClose'],
+  emits: ["clickClose"],
   methods: {
     onClickClose(e) {
-      this.$emit('clickClose', e)
+      this.$emit("clickClose", e);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
