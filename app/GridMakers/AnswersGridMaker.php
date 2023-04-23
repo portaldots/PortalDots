@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace App\GridMakers;
 
 use App\Eloquents\Answer;
-use App\Eloquents\AnswerDetail;
 use App\Eloquents\Form;
-use App\Eloquents\Question;
 use Illuminate\Database\Eloquent\Builder;
 use App\GridMakers\Concerns\UseEloquent;
 use App\GridMakers\Filter\FilterableKey;
 use App\GridMakers\Filter\FilterableKeysDict;
+use App\GridMakers\Helpers\AnswerDetailsHelper;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\Utils\FormatTextService;
-use Illuminate\Database\Query\JoinClause;
 
 class AnswersGridMaker implements GridMakable
 {
@@ -58,63 +56,18 @@ class AnswersGridMaker implements GridMakable
      */
     protected function baseEloquentQuery(): Builder
     {
-        $questionColumns = $this->form->questions
-            ->map(function (Question $question) {
-                $idInt = intval($question->id);
-                if ($idInt === 0 || !is_int($idInt)) {
-                    return null;
-                }
-                // SQLインジェクションに注意。$idInt は整数であることを期待している。
-                $columnAlias = self::FORM_QUESTIONS_KEY_PREFIX . $idInt;
-
-                switch ($question->type) {
-                    case 'heading':
-                        return null;
-                    case 'number':
-                        // phpcs:ignore
-                        return "MAX(CAST(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END AS DECIMAL(10, 0))) AS '{$columnAlias}'";
-                    case 'text':
-                    case 'textarea':
-                    case 'radio':
-                    case 'select':
-                    case 'upload':
-                        return "MAX(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END) AS '{$columnAlias}'";
-                    case 'checkbox':
-                        $separator = self::CHECKBOX_GROUP_CONCAT_SEPARATOR;
-                        // phpcs:ignore
-                        return "GROUP_CONCAT(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END SEPARATOR '{$separator}') AS '{$columnAlias}'";
-                }
-            })
-            ->filter(function ($column) {
-                return !is_null($column);
-            });
-
-        $answerDetailsSubQueryColumns = ['answer_id', ...$questionColumns];
-
-        $answerDetailsSubQuery = AnswerDetail::selectRaw(implode(', ', $answerDetailsSubQueryColumns))
-            ->groupBy('answer_id');
-
-        $query = Answer::with('circle')
-            ->leftJoinSub($answerDetailsSubQuery, 'pivot_answer_details', function (JoinClause $join) {
-                $join->on('answers.id', '=', 'pivot_answer_details.answer_id');
-            })
+        $baseQuery = Answer::select($this->keys())
+            ->with('circle')
             ->where('form_id', $this->form->id);
 
+        $query = AnswerDetailsHelper::makeQueryWithAnswerDetails(
+            $baseQuery,
+            $this->form->questions,
+            self::FORM_QUESTIONS_KEY_PREFIX,
+            self::CHECKBOX_GROUP_CONCAT_SEPARATOR
+        );
+
         return $query;
-    }
-
-    private function getFormQuestionKey(Question $question): string
-    {
-        return self::FORM_QUESTIONS_KEY_PREFIX . $question->id;
-    }
-
-    private function getFormQuestionsKeys(): array
-    {
-        return
-            isset($this->form) ?
-            $this->form->questions->map(function (Question $question) {
-                return $this->getFormQuestionKey($question);
-            })->all() : [];
     }
 
     /**
@@ -122,7 +75,10 @@ class AnswersGridMaker implements GridMakable
      */
     public function keys(): array
     {
-        $form_keys = $this->getFormQuestionsKeys();
+        $form_keys = AnswerDetailsHelper::getFormQuestionsKeys(
+            $this->form->questions,
+            self::FORM_QUESTIONS_KEY_PREFIX
+        );
 
         return [
             'id',
@@ -151,27 +107,10 @@ class AnswersGridMaker implements GridMakable
             'updated_at' => FilterableKey::datetime(),
         ]));
 
-        $questionFilterableKeys = [];
-        foreach ($this->form->questions as $question) {
-            $questionKey = $this->getFormQuestionKey($question);
-            switch ($question->type) {
-                case 'heading':
-                case 'upload':
-                    break;
-                case 'number':
-                    $questionFilterableKeys[$questionKey] = FilterableKey::number();
-                    break;
-                case 'text':
-                case 'textarea':
-                case 'radio':
-                case 'checkbox':
-                case 'select':
-                    $questionFilterableKeys[$questionKey] = FilterableKey::string();
-                    break;
-                default:
-                    break;
-            }
-        }
+        $questionFilterableKeys = AnswerDetailsHelper::makeFilterableKeysForAnswerDetails(
+            $this->form->questions,
+            self::FORM_QUESTIONS_KEY_PREFIX
+        );
 
         // 連想配列をスプレッド演算子で結合できるのは PHP 8.1 以降。
         // PortalDots は PHP 8.0 以上をサポート対象とするため、スプレッド演算子を利用できない。
@@ -191,14 +130,17 @@ class AnswersGridMaker implements GridMakable
      */
     public function sortableKeys(): array
     {
-        $form_keys = $this->getFormQuestionsKeys();
+        $formKeys = AnswerDetailsHelper::getFormQuestionsKeys(
+            $this->form->questions,
+            self::FORM_QUESTIONS_KEY_PREFIX
+        );
 
         return [
             'id',
             'circle_id',
             'created_at',
             'updated_at',
-            ...$form_keys,
+            ...$formKeys,
         ];
     }
 
@@ -207,53 +149,43 @@ class AnswersGridMaker implements GridMakable
      */
     public function map($record): array
     {
-        $item = [];
-
         // フォームへの回答
-        foreach ($this->getFormQuestionsKeys() as $formKey) {
-            $questionId = intval(str_replace(self::FORM_QUESTIONS_KEY_PREFIX, '', $formKey));
-            $question = $this->form->questions->firstWhere('id', $questionId);
-            $answerValue = $record->$formKey;
-
-            if ($question->type === 'upload') {
-                $item[$formKey] = !empty($answerValue) ? [
-                    'file_url' => route('staff.forms.answers.uploads.show', [
-                        'form' => $this->form->id,
-                        'answer' => $record->id,
-                        'question' => $questionId,
-                    ])
-                ] : [];
-            } elseif ($question->type === 'checkbox') {
-                $item[$formKey] = isset($answerValue)
-                    ? explode(self::CHECKBOX_GROUP_CONCAT_SEPARATOR, $answerValue)
-                    : [];
-            } else {
-                $item[$formKey] = [$answerValue];
-            }
-        }
+        $itemsOfAnswerDetails = AnswerDetailsHelper::mapForAnswerDetails(
+            $record,
+            $this->form->questions,
+            $this->form,
+            self::FORM_QUESTIONS_KEY_PREFIX,
+            self::CHECKBOX_GROUP_CONCAT_SEPARATOR
+        );
 
         // カスタムフォームへの回答以外の項目
-        $keys_except_forms = array_filter($this->keys(), function ($key) {
+        $itemsExceptForms = [];
+
+        $keysExceptForms = array_filter($this->keys(), function ($key) {
             return strpos($key, self::FORM_QUESTIONS_KEY_PREFIX) !== 0;
         });
 
-        foreach ($keys_except_forms as $key) {
+        foreach ($keysExceptForms as $key) {
             switch ($key) {
                 case 'circle_id':
-                    $item[$key] = $record->circle->only(['id', 'name', 'name_yomi', 'group_name', 'group_name_yomi']);
+                    $itemsExceptForms[$key] = $record->circle->only([
+                        'id', 'name', 'name_yomi', 'group_name', 'group_name_yomi'
+                    ]);
                     break;
                 case 'created_at':
-                    $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
+                    $itemsExceptForms[$key] = !empty($record->created_at)
+                        ? $record->created_at->format('Y/m/d H:i:s') : null;
                     break;
                 case 'updated_at':
-                    $item[$key] = !empty($record->updated_at) ? $record->updated_at->format('Y/m/d H:i:s') : null;
+                    $itemsExceptForms[$key] = !empty($record->updated_at)
+                        ? $record->updated_at->format('Y/m/d H:i:s') : null;
                     break;
                 default:
-                    $item[$key] = $record->$key;
+                    $itemsExceptForms[$key] = $record->$key;
             }
         }
 
-        return $item;
+        return array_merge($itemsExceptForms, $itemsOfAnswerDetails);
     }
 
     protected function model(): Model
