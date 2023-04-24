@@ -1,8 +1,8 @@
 <template>
   <div class="listview-empty">
-    <i :class="`${iconClass} listview-empty__icon`"></i>
+    <i v-if="iconClass" :class="`${iconClass} listview-empty__icon`" />
     <p class="listview-empty__text">{{ text }}</p>
-    <div class="listview-empty__body" v-if="$slots.default">
+    <div v-if="$slots.default" class="listview-empty__body">
       <slot />
     </div>
   </div>
@@ -13,7 +13,8 @@ export default {
   props: {
     iconClass: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
     },
     text: {
       type: String,
