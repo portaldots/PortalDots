@@ -51,7 +51,7 @@ class UIThemeService
         $hsl = config('portal.primary_color_hsl');
 
         if (!isset($hsl[0]) && !isset($hsl[1]) && !isset($hsl[2])) {
-            $hsl = [214, 91, 53];
+            $hsl = [220, 90, 56];
         }
 
         if ($isDark) {

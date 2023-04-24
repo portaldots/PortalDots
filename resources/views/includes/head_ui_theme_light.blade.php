@@ -25,7 +25,7 @@ color-scheme: light;
 --color-form-control-readonly: rgb(255, 255, 255);
 --color-form-control-focus: rgb(255, 255, 255);
 --color-box-shadow: rgba(34, 41, 47, 0.5);
---color-box-shadow-subdued: rgba(34, 41, 47, 0.125);
+--color-box-shadow-subdued: rgba(34, 41, 47, 0.1);
 --color-focus-danger: rgba(219, 60, 62, 0.25);
 --color-pre-background: rgba(255, 255, 255, 0.25);
 --color-code-background: rgba(27, 162, 78, 0.1);

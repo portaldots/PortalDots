@@ -99,7 +99,7 @@ export default {
       return convert.hex.hsl(hex.replace("#", ""));
     },
     reset() {
-      this.hexValue = "#1a79f4";
+      this.hexValue = "#2a6ef4";
       this.$nextTick(() => {
         this.waitForReset = true;
       });
