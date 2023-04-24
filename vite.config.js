@@ -28,6 +28,9 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": "/resources",
+      // ブラウザー上でVueテンプレートをコンパイルする必要があるため、フルビルド版のVueを利用する。
+      // https://ja.vuejs.org/guide/scaling-up/tooling.html#project-scaffolding
+      vue: "vue/dist/vue.esm-bundler.js",
     },
   },
 });
