@@ -49,7 +49,14 @@
             </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">
-            <template v-if="keyName === 'answerableTags'">
+            <template v-if="keyName === 'name' || keyName === 'id'">
+                {{-- ID・フォーム名 --}}
+                <a
+                    v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])">
+                    @{{ row[keyName] }}
+                </a>
+            </template>
+            <template v-else-if="keyName === 'answerableTags'">
                 {{-- 閲覧可能なタグ --}}
                 <template v-for="tag in row[keyName]" v-bind:key="tag.id">
                     <app-badge primary strong>
