@@ -22,7 +22,7 @@
                 <template v-slot:title>フォームを新規作成</template>
             @endif
             @isset($form)
-                <template v-slot:title>フォームを編集</template>
+                <template v-slot:title>設定</template>
                 <div>フォームID : {{ $form->id }}</div>
             @endisset
         </app-header>
@@ -150,11 +150,7 @@
             </list-view>
 
             <app-fixed-form-footer>
-                @isset($form)
-                    <button type="submit" class="btn is-primary is-wide">保存</button>
-                @else
-                    <button type="submit" class="btn is-primary is-wide">次に、フォームエディターで設問を作成する</button>
-                @endisset
+                <button type="submit" class="btn is-primary is-wide">保存</button>
             </app-fixed-form-footer>
         </app-container>
     </form>
