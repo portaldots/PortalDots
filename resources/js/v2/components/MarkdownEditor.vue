@@ -5,9 +5,28 @@
       v-model="content"
       language="ja-JP"
       preview-theme="markdowneditor"
+      :preview="false"
       :toolbars="toolbars"
+      :footers="footers"
       :theme="colorScheme"
-    />
+      ref="editorRef"
+    >
+      <template #defToolbars>
+        <NormalToolbar title="プレビュー" @onClick="togglePreview">
+          <template #trigger>
+            <svg class="md-editor-icon" aria-hidden="true">
+              <use xlink:href="#md-editor-icon-preview"></use>
+            </svg>
+            プレビュー
+          </template>
+        </NormalToolbar>
+      </template>
+      <template #defFooters>
+        <span>
+          <a href="/staff/markdown-guide" target="_blank">Markdownガイド</a>
+        </span>
+      </template>
+    </md-editor>
     <input type="hidden" :name="inputName" v-if="inputName" :value="content" />
   </div>
 </template>
@@ -20,7 +39,30 @@ import JA_JP from "@vavt/md-editor-extension/dist/locale/jp-JP";
 MdEditor.config({
   editorConfig: {
     languageUserDefined: {
-      "ja-JP": JA_JP,
+      "ja-JP": {
+        ...JA_JP,
+        toolbarTips: {
+          ...JA_JP.toolbarTips,
+          title: "見出し",
+          revoke: "取り消す",
+          next: "やり直す",
+        },
+        linkModalTips: {
+          ...JA_JP.linkModalTips,
+          linkTitle: "リンクを追加",
+          imageTitle: "画像を追加",
+          descLabel: "表示文字列:",
+          descLabelPlaceHolder: "",
+          urlLabel: "リンク先:",
+          urlLabelPlaceHolder: "",
+          buttonOK: "OK",
+        },
+        footer: {
+          ...JA_JP.footer,
+          markdownTotal: "文字数",
+          scrollAuto: "自動スクロール",
+        },
+      },
     },
   },
 });
@@ -30,6 +72,7 @@ const isDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
 export default {
   components: {
     MdEditor,
+    NormalToolbar: MdEditor.NormalToolbar,
   },
   props: {
     inputName: {
@@ -64,9 +107,12 @@ export default {
         "-",
         "revoke",
         "next",
-        "=",
-        "preview",
+        "-",
+        0,
       ];
+    },
+    footers() {
+      return ["markdownTotal", "=", 0, "scrollSwitch"];
     },
   },
   mounted() {
@@ -90,6 +136,9 @@ export default {
         this.colorScheme = "light";
       }
     },
+    togglePreview() {
+      this.$refs.editorRef.togglePreview();
+    },
   },
 };
 </script>
@@ -105,5 +154,11 @@ export default {
 
 .markdowneditor-theme {
   @extend .markdown;
+}
+
+.md-editor-toolbar-wrapper .md-editor-toolbar-item {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
 }
 </style>
