@@ -100,7 +100,7 @@ export default {
 .markdown-editor {
   width: 100%;
   height: 50em;
-  max-height: 80svh;
+  max-height: 80svi;
 }
 
 .markdowneditor-theme {
