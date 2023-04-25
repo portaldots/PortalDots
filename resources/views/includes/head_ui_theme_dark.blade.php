@@ -16,15 +16,16 @@ color-scheme: dark;
 /* --color-muted-3: rgb(195, 207, 216); */
 --color-muted-light: rgba(150, 150, 150, 0.1);
 --color-border: rgba(255, 255, 255, 0.12);
---color-border-form-control: rgba(255, 255, 255, 0.25);
+--color-border-form-control: rgb(62, 63, 66);
 --color-bg-base: rgb(0, 0, 0);
 --color-bg-light: rgba(255, 255, 255, 0.075);
 --color-bg-surface: rgb(30, 30, 30);
 --color-bg-surface-2: rgb(46, 46, 46);
 --color-bg-surface-3: rgb(51, 51, 51);
 --color-bg-form-control: rgba(0, 0, 0, 1);
---color-bg-form-control-readonly: rgb(53, 53, 53);
+--color-bg-form-control-readonly: rgb(255, 255, 255, 0.055);
 --color-bg-form-control-focus: rgba(0, 0, 0, 0.2);
+--color-bg-form-addon: rgba(0, 0, 0, 0.3);
 --color-box-shadow: rgba(0, 0, 0, 1);
 --color-box-shadow-subdued: rgba(0, 0, 0, 1);
 --color-focus-danger: rgba(226, 118, 120, 0.4);

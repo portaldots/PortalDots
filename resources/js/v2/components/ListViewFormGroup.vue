@@ -95,8 +95,8 @@ export default {
   flex-wrap: wrap;
   &__body {
     align-items: center;
-    background-color: $color-bg-base;
-    border: 1px solid $color-border;
+    background-color: $color-bg-form-addon;
+    border: 1px solid $color-border-form-control;
     border-radius: $border-radius;
     color: $color-muted;
     display: flex;
@@ -114,11 +114,13 @@ export default {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
       margin-right: -1px;
+      border-right: 0;
     }
     &:last-child {
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
       margin-left: -1px;
+      border-left: 0;
     }
   }
   .form-control {
@@ -126,10 +128,18 @@ export default {
     &:not(:first-child) {
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
+      &:not(:focus),
+      &:read-only {
+        border-left: 0;
+      }
     }
     &:not(:last-child) {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
+      &:not(:focus),
+      &:read-only {
+        border-right: 0;
+      }
     }
   }
   .form-control ~ .form-control:not(:focus) {
