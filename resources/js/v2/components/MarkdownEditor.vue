@@ -1,27 +1,78 @@
 <template>
   <div data-turbolinks="false" class="markdown-editor">
-    <vue-easymde v-model="content" ref="markdownEditor" :configs="configs" />
-    <input
-      type="hidden"
-      :name="inputName"
-      :value="this.content"
-      v-if="inputName"
-    />
+    <md-editor
+      class="markdown-editor"
+      v-model="content"
+      language="ja-JP"
+      preview-theme="markdowneditor"
+      :preview="false"
+      :toolbars="toolbars"
+      :footers="footers"
+      :theme="colorScheme"
+      ref="editorRef"
+    >
+      <template #defToolbars>
+        <NormalToolbar title="プレビュー" @onClick="togglePreview">
+          <template #trigger>
+            <svg class="md-editor-icon" aria-hidden="true">
+              <use xlink:href="#md-editor-icon-preview"></use>
+            </svg>
+            プレビュー
+          </template>
+        </NormalToolbar>
+      </template>
+      <template #defFooters>
+        <span>
+          <a href="/staff/markdown-guide" target="_blank">Markdownガイド</a>
+        </span>
+      </template>
+    </md-editor>
+    <input type="hidden" :name="inputName" v-if="inputName" :value="content" />
   </div>
 </template>
 
 <script>
-import Easymde from "easymde";
-import VueEasymde from "vue-easymde";
+import MdEditor from "md-editor-v3";
+import "md-editor-v3/lib/style.css";
+import JA_JP from "@vavt/md-editor-extension/dist/locale/jp-JP";
+
+MdEditor.config({
+  editorConfig: {
+    languageUserDefined: {
+      "ja-JP": {
+        ...JA_JP,
+        toolbarTips: {
+          ...JA_JP.toolbarTips,
+          title: "見出し",
+          revoke: "取り消す",
+          next: "やり直す",
+        },
+        linkModalTips: {
+          ...JA_JP.linkModalTips,
+          linkTitle: "リンクを追加",
+          imageTitle: "画像を追加",
+          descLabel: "表示文字列:",
+          descLabelPlaceHolder: "",
+          urlLabel: "リンク先:",
+          urlLabelPlaceHolder: "",
+          buttonOK: "OK",
+        },
+        footer: {
+          ...JA_JP.footer,
+          markdownTotal: "文字数",
+          scrollAuto: "自動スクロール",
+        },
+      },
+    },
+  },
+});
+
+const isDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
 export default {
   components: {
-    VueEasymde,
-  },
-  data() {
-    return {
-      content: "",
-    };
+    MdEditor,
+    NormalToolbar: MdEditor.NormalToolbar,
   },
   props: {
     inputName: {
@@ -33,228 +84,81 @@ export default {
       default: "",
     },
   },
-  mounted() {
-    this.content = this.defaultValue;
-
-    const toolbarButtons = this.$refs.markdownEditor.$el.querySelectorAll(
-      ".editor-toolbar button"
-    );
-
-    /* eslint-disable no-restricted-syntax */
-    for (const button of toolbarButtons) {
-      const title = button.getAttribute("title");
-      button.dataset.label = title ? title.replace(/\s\(.*\)$/, "") : "";
-    }
-    /* eslint-enable */
+  data() {
+    return {
+      content: "",
+      colorScheme: "light",
+    };
   },
   computed: {
-    configs() {
-      return {
-        autoDownloadFontAwesome: false,
-        spellChecker: false,
-        indentWithTabs: false,
-        promptURLs: true,
-        tabSize: 4,
-        status: ["lines", "cursor"],
-        previewClass: "markdown",
-        sideBySideFullscreen: false,
-        maxHeight: "600px",
-        uploadImage: true,
-        imageUploadFunction(file, onSuccess, onError) {
-          if (!file) {
-            onError("画像ファイルが指定されていません。");
-            return;
-          }
+    toolbars() {
+      return [
+        "bold",
+        "italic",
+        "strikeThrough",
+        "title",
+        "-",
+        "quote",
+        "unorderedList",
+        "orderedList",
+        "-",
+        "link",
+        "table",
+        "-",
+        "revoke",
+        "next",
+        "-",
+        0,
+      ];
+    },
+    footers() {
+      return ["markdownTotal", "=", 0, "scrollSwitch"];
+    },
+  },
+  mounted() {
+    this.content = this.defaultValue;
+    this.handleChangeColorScheme();
+    isDarkQuery.addEventListener("change", this.handleChangeColorScheme);
+  },
+  unmounted() {
+    isDarkQuery.removeEventListener("change", this.handleChangeColorScheme);
+  },
+  methods: {
+    handleChangeColorScheme() {
+      const metaColorScheme = document.querySelector("meta[name=color-scheme]")
+        .content;
 
-          const reader = new FileReader();
-
-          reader.addEventListener(
-            "load",
-            () => {
-              onSuccess(reader.result);
-            },
-            false
-          );
-
-          reader.addEventListener(
-            "error",
-            () => {
-              onError("ファイルの読み込み時にエラーが発生しました。");
-            },
-            false
-          );
-
-          reader.readAsDataURL(file);
-        },
-        promptTexts: {
-          image: "画像のURLを入力してください。",
-          link: "リンク先のURLを入力してください。",
-        },
-        shortcuts: {
-          togglePreview: null,
-          toggleSideBySide: "Ctrl-P",
-          toggleFullScreen: null,
-        },
-        toolbar: [
-          {
-            name: "bold",
-            action: Easymde.toggleBold,
-            className: "fas fa-bold",
-            title: "太字",
-          },
-          {
-            name: "italic",
-            action: Easymde.toggleItalic,
-            className: "fas fa-italic",
-            title: "斜体",
-          },
-          {
-            name: "strikethrough",
-            action: Easymde.toggleStrikethrough,
-            className: "fas fa-strikethrough",
-            title: "取り消し線",
-          },
-          {
-            name: "heading",
-            action: Easymde.toggleHeadingSmaller,
-            className: "fas fa-heading show-title-label",
-            title: "見出し",
-          },
-          "|",
-          {
-            name: "quote",
-            action: Easymde.toggleBlockquote,
-            className: "fas fa-quote-left",
-            title: "引用",
-          },
-          {
-            name: "unordered-list",
-            action: Easymde.toggleUnorderedList,
-            className: "fas fa-list-ul",
-            title: "箇条書き",
-          },
-          {
-            name: "ordered-list",
-            action: Easymde.toggleOrderedList,
-            className: "fas fa-list-ol",
-            title: "番号付きリスト",
-          },
-          "|",
-          {
-            name: "link",
-            action: Easymde.drawLink,
-            className: "fas fa-link",
-            title: "リンク",
-          },
-          // TODO: 画像アップロード機能の実装
-          // {
-          //   name: "image",
-          //   action: Easymde.drawImage,
-          //   className: "far fa-image",
-          //   title: "画像",
-          // },
-          {
-            name: "table",
-            action: Easymde.drawTable,
-            className: "fas fa-table",
-            title: "表",
-          },
-          {
-            name: "horizontal-rule",
-            action: Easymde.drawHorizontalRule,
-            className: "fas fa-minus",
-            title: "水平線",
-          },
-          "|",
-          {
-            name: "preview",
-            action: Easymde.toggleSideBySide,
-            className: "far fa-eye no-disable show-title-label",
-            title: "プレビュー",
-          },
-          "|",
-          {
-            name: "guide",
-            action: "/staff/markdown-guide",
-            className: "far fa-question-circle show-title-label",
-            title: "Markdownガイド",
-          },
-        ],
-      };
+      if (metaColorScheme === "light" || metaColorScheme === "dark") {
+        this.colorScheme = metaColorScheme;
+      } else if (isDarkQuery.matches) {
+        this.colorScheme = "dark";
+      } else {
+        this.colorScheme = "light";
+      }
+    },
+    togglePreview() {
+      this.$refs.editorRef.togglePreview();
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@use "@/sass/v2/modules/_markdown";
+
 .markdown-editor {
   width: 100%;
+  height: 50em;
+  max-height: 80svi;
 }
-</style>
 
-<style lang="scss">
-@import "easymde/dist/easymde.min.css";
+.markdowneditor-theme {
+  @extend .markdown;
+}
 
-.vue-easymde {
-  .editor-toolbar {
-    background: $color-bg-light;
-    border-color: $color-border;
-    &.fullscreen {
-      top: $navbar-height;
-    }
-    button {
-      color: $color-muted;
-      &.active,
-      &:hover {
-        background: $color-bg-surface;
-        border-color: $color-border;
-      }
-    }
-    .separator {
-      border-color: $color-border;
-    }
-  }
-  .CodeMirror {
-    background: #fff;
-    border-color: $color-border;
-    color: #333;
-  }
-  .CodeMirror-fullscreen,
-  .editor-preview-side {
-    top: calc(#{$navbar-height} + 50px);
-  }
-  .editor-preview:not(.editor-preview-full) {
-    // エディタ下部に表示される謎の帯を非表示
-    display: none;
-  }
-  .editor-preview-side {
-    border-color: $color-border;
-    padding: $spacing-md;
-  }
-  .editor-statusbar {
-    .lines::before {
-      content: "";
-    }
-    .lines::after {
-      content: "行";
-    }
-    .words::before {
-      content: "";
-    }
-    .words {
-      content: "語";
-    }
-  }
-  .show-title-label {
-    align-items: center;
-    display: inline-flex;
-    padding: 0 $spacing-sm;
-    width: auto;
-    &::after {
-      content: attr(data-label);
-      font-size: 0.9rem;
-      margin-left: $spacing-xs;
-    }
-  }
+.md-editor-toolbar-wrapper .md-editor-toolbar-item {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
 }
 </style>
