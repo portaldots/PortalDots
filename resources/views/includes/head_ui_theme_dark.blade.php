@@ -22,7 +22,7 @@ color-scheme: dark;
 --color-bg-surface: rgb(30, 30, 30);
 --color-bg-surface-2: rgb(46, 46, 46);
 --color-bg-surface-3: rgb(51, 51, 51);
---color-bg-form-control: rgba(0, 0, 0, 1);
+--color-bg-form-control: rgba(0, 0, 0, 0.25);
 --color-bg-form-control-readonly: rgb(255, 255, 255, 0.055);
 --color-bg-form-control-focus: rgba(0, 0, 0, 0.2);
 --color-bg-form-addon: rgba(0, 0, 0, 0.3);
