@@ -31,14 +31,15 @@ $color-muted-2: var(--color-muted-2);
 $color-muted-3: var(--color-muted-3);
 $color-muted-light: var(--color-muted-light);
 $color-border: var(--color-border);
+$color-border-form-control: var(--color-border-form-control);
 $color-bg-base: var(--color-bg-base);
 $color-bg-light: var(--color-bg-light);
 $color-bg-surface: var(--color-bg-surface);
 $color-bg-surface-2: var(--color-bg-surface-2);
 $color-bg-surface-3: var(--color-bg-surface-3);
-$color-form-control: var(--color-form-control);
-$color-form-control-readonly: var(--color-form-control-readonly);
-$color-form-control-focus: var(--color-form-control-focus);
+$color-bg-form-control: var(--color-bg-form-control);
+$color-bg-form-control-readonly: var(--color-bg-form-control-readonly);
+$color-bg-form-control-focus: var(--color-bg-form-control-focus);
 $semantic-colors: (
   primary: $color-primary,
   danger: $color-danger,
@@ -76,7 +77,10 @@ $box-shadow-lv3: 0 0.6rem 1.2rem -0.3rem $color-box-shadow,
   0 0 0 1px $color-box-shadow-subdued;
 $box-shadow-lv4: 0 0.8rem 1.6rem -0.3rem $color-box-shadow,
   0 0 0 1px $color-box-shadow-subdued;
-$box-shadow-focus: 0 0 0 3px $color-focus-primary;
+$box-shadow-focus-primary: 0 0 0 1.5px $color-focus-primary,
+  inset 0 0 0 2px $color-bg-base;
+$box-shadow-focus-danger: 0 0 0 1.5px $color-focus-danger,
+  inset 0 0 0 2px $color-bg-base;
 
 // Spacing (WIP)
 $spacing-xl: 4rem;

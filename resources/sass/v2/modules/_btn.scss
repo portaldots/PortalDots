@@ -57,9 +57,11 @@ body:not(.body-editor-v1) {
       text-decoration: none;
     }
     &:focus {
-      box-shadow: 0 0 0 3px $color-focus-primary;
       outline: none;
       text-decoration: none;
+    }
+    &:focus-visible {
+      box-shadow: $box-shadow-focus-primary;
     }
     &.is-primary {
       @include btn(

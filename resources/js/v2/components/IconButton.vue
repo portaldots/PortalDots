@@ -91,7 +91,7 @@ export default {
     color: $color-primary;
   }
   &:focus {
-    box-shadow: $box-shadow-focus;
+    box-shadow: $box-shadow-focus-primary;
     outline: none;
   }
   &:disabled,

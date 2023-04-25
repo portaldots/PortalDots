@@ -16,8 +16,8 @@ textarea {
   }
   &-control {
     appearance: none;
-    background-color: $color-form-control;
-    border: 1px solid $color-border;
+    background-color: $color-bg-form-control;
+    border: 1px solid $color-border-form-control;
     border-radius: $border-radius;
     caret-color: $color-primary;
     color: $color-text;
@@ -34,14 +34,14 @@ textarea {
         // ライトモード用ドロップダウンアイコン
         background: right $spacing-md center / 1rem
             url("@/img/dropdownTriangle.svg") no-repeat,
-          $color-form-control !important;
+          $color-bg-form-control !important;
       }
 
       html.theme-dark select#{&} {
         // ダークテーマ用ドロップダウンアイコン
         background: right $spacing-md center / 1rem
             url("@/img/dropdownTriangleDark.svg") no-repeat,
-          $color-form-control !important;
+          $color-bg-form-control !important;
       }
 
       html.theme-system select#{&} {
@@ -49,7 +49,7 @@ textarea {
           // ダークテーマ用ドロップダウンアイコン
           background: right $spacing-md center / 1rem
               url("@/img/dropdownTriangleDark.svg") no-repeat,
-            $color-form-control !important;
+            $color-bg-form-control !important;
         }
       }
     }
@@ -59,7 +59,7 @@ textarea {
       opacity: 0.75;
     }
     &[readonly] {
-      background: $color-form-control-readonly;
+      background: $color-bg-form-control-readonly;
     }
     &.is-invalid {
       border-color: $color-danger;
@@ -76,13 +76,13 @@ textarea {
       z-index: $z-index-form-group-control;
     }
     &:not([readonly]):focus {
-      background: $color-form-control-focus;
+      background: $color-bg-form-control-focus;
       border-color: $color-primary;
-      box-shadow: 0 0 0 3px $color-focus-primary;
+      box-shadow: $box-shadow-focus-primary;
     }
     &.is-invalid:focus {
       border-color: $color-danger;
-      box-shadow: 0 0 0 3px $color-focus-danger;
+      box-shadow: $box-shadow-focus-danger;
     }
   }
   &-checkbox,

@@ -110,8 +110,8 @@ export default {
 <style lang="scss">
 .vue-tags-input {
   .ti-input {
-    background: $color-form-control !important;
-    border: 1px solid $color-border !important;
+    background: $color-bg-form-control !important;
+    border: 1px solid $color-border-form-control !important;
     border-radius: $border-radius !important;
     line-height: 1.6 !important;
     padding: $spacing-sm $spacing-md !important;
@@ -119,9 +119,9 @@ export default {
       #{$transition-base-fast} box-shadow, #{$transition-base-fast} border-color !important;
   }
   &.ti-focus .ti-input {
-    background: $color-form-control-focus !important;
+    background: $color-bg-form-control-focus !important;
     border-color: $color-primary !important;
-    box-shadow: $box-shadow-focus !important;
+    box-shadow: $box-shadow-focus-primary !important;
   }
   .ti-tag {
     background: $color-primary !important;
