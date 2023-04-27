@@ -12,7 +12,7 @@
     <form method="post"
         action="{{ empty($document) ? route('staff.documents.store') : route('staff.documents.update', $document) }}"
         enctype="multipart/form-data">
-        @method(empty($document) ? 'post' : 'patch' )
+        @method(empty($document) ? 'post' : 'patch')
         @csrf
 
         <app-header>
@@ -37,12 +37,12 @@
                     @isset($document)
                         <template v-slot:description>
                             <a href="{{ route('staff.documents.show', ['document' => $document]) }}" target="_blank"
-                                rel="noopener">アップロード済ファイルを表示</a> {{ strtoupper($document->extension) }}ファイル •
+                                rel="noopener noreferrer">アップロード済ファイルを表示</a> {{ strtoupper($document->extension) }}ファイル •
                             @filesize($document->size)
                         </template>
                     @endisset
-                    <input id="file" class="form-control @error('file') is-invalid @enderror" type="file" name="file"
-                        @empty($document) required @endempty>
+                    <input id="file" class="form-control @error('file') is-invalid @enderror" type="file"
+                        name="file" @empty($document) required @endempty>
                     @if ($errors->has('file'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('file') as $message)
@@ -56,8 +56,8 @@
                         配布資料名
                         <app-badge danger>必須</app-badge>
                     </template>
-                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text" name="name"
-                        value="{{ old('name', empty($document) ? '' : $document->name) }}" required>
+                    <input id="name" class="form-control @error('name') is-invalid @enderror" type="text"
+                        name="name" value="{{ old('name', empty($document) ? '' : $document->name) }}" required>
                     @if ($errors->has('name'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('name') as $message)
@@ -68,8 +68,7 @@
                 </list-view-form-group>
                 <list-view-form-group label-for="description">
                     <template v-slot:label>説明</template>
-                    <textarea id="description" class="form-control @error('description') is-invalid @enderror"
-                        name="description">{{ old('description', empty($document) ? '' : $document->description) }}</textarea>
+                    <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description">{{ old('description', empty($document) ? '' : $document->description) }}</textarea>
                     @if ($errors->has('description'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('description') as $message)
@@ -84,12 +83,14 @@
                     <template v-slot:label>公開設定</template>
                     <div class="form-radio">
                         <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="is_public" id="isPublicRadios1" value="1"
+                            <input class="form-radio__input" type="radio" name="is_public" id="isPublicRadios1"
+                                value="1"
                                 {{ (bool) old('is_public', isset($document) ? $document->is_public : true) === true ? 'checked' : '' }}>
                             <strong>公開</strong>
                         </label>
                         <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="is_public" id="isPublicRadios2" value="0"
+                            <input class="form-radio__input" type="radio" name="is_public" id="isPublicRadios2"
+                                value="0"
                                 {{ (bool) old('is_public', isset($document) ? $document->is_public : true) === false ? 'checked' : '' }}>
                             <strong>非公開</strong>
                         </label>
@@ -135,8 +136,7 @@
                 <list-view-form-group label-for="notes">
                     <template v-slot:label>スタッフ用メモ</template>
                     <template v-slot:description>ここに入力された内容はスタッフのみ閲覧できます。スタッフ内で共有したい事項を残しておくメモとしてご活用ください。</template>
-                    <textarea id="notes" class="form-control @error('notes') is-invalid @enderror" name="notes"
-                        rows="5">{{ old('notes', empty($document) ? '' : $document->notes) }}</textarea>
+                    <textarea id="notes" class="form-control @error('notes') is-invalid @enderror" name="notes" rows="5">{{ old('notes', empty($document) ? '' : $document->notes) }}</textarea>
                     @if ($errors->has('notes'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('notes') as $message)

@@ -77,7 +77,7 @@
         [ここをクリック](https://www.google.com)するとGoogleにアクセスします
         ```
 
-        <a href="https://www.google.com" rel="noreferrer">ここをクリック</a>するとGoogleにアクセスします
+        <a href="https://www.google.com" rel="noopener noreferrer">ここをクリック</a>するとGoogleにアクセスします
 
         # 引用
 

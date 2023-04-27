@@ -65,7 +65,7 @@
             <list-view-card>
                 PortalDots(ポータルドット)は、学園祭実行委員会と参加企画担当者との間のコミュニケーションを支援するウェブシステムです。お知らせメールの一斉送信や各種申請の受付をオンラインで簡単に行うことができます。
             </list-view-card>
-            <list-view-action-btn href="https://www.portaldots.com" target="_blank" rel="noopener">
+            <list-view-action-btn href="https://www.portaldots.com" target="_blank" rel="noopener noreferrer">
                 PortalDots 公式ウェブサイト
                 <i class="fas fa-external-link-alt fa-fw"></i>
             </list-view-action-btn>
@@ -103,7 +103,7 @@
                                 </ul>
                             </li>
                             <li>アップロード完了後、<a href="{{ url('/') }}" target="_blank"
-                                    rel="noopener">{{ config('app.name') }}</a>にアクセスし、正常に動作するか確認を行ってください。</li>
+                                    rel="noopener noreferrer">{{ config('app.name') }}</a>にアクセスし、正常に動作するか確認を行ってください。</li>
                         </ol>
                     </list-view-card>
                     <list-view-action-btn href="{{ $latest_release->getBrowserDownloadUrl() }}"

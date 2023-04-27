@@ -37,7 +37,7 @@
         アップロード済
       </strong>
       —
-      <a :href="value" target="_blank" rel="noopener">
+      <a :href="value" target="_blank" rel="noopener noreferrer">
         アップロード済ファイルを表示
       </a>
       <button

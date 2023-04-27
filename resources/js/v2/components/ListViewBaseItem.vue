@@ -5,7 +5,7 @@
     :class="{ 'is-no-border': noBorder }"
     v-bind="href ? { href } : {}"
     :target="newtab ? '_blank' : undefined"
-    :rel="newtab ? 'noopener' : undefined"
+    :rel="newtab ? 'noopener noreferrer' : undefined"
     :type="submit ? 'submit' : undefined"
     @click="onClick"
   >

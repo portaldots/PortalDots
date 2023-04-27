@@ -7,12 +7,12 @@
         href="https://www.portaldots.com"
         class="footer__link"
         target="_blank"
-        rel="noopener"
+        rel="noopener noreferrer"
         >PortalDots</a
       >
     </div>
     <div class="footer-line">
-      <a href="/support" class="footer__link" rel="noopener">推奨動作環境</a>
+      <a href="/support" class="footer__link">推奨動作環境</a>
     </div>
   </div>
 </template>
