@@ -31,7 +31,7 @@
 
     <!-- Scripts -->
     @prepend('js')
-        @vite(['resources/js/app.js'])
+        @vite(['resources/js/v2/app.js'])
     @endprepend
     @if (config('app.debug'))
         {{-- Laravel Debugbar か Turbolinks かは不明だが、jQuery.noConflict() --}}

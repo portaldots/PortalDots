@@ -52,120 +52,118 @@ import QuestionHeading from "./components/Forms/QuestionHeading.vue";
 
 import.meta.glob(["../../img/**"]);
 
-export function mountV2App() {
-  // iOS で CSS の hover を有効にするハック
-  document.body.addEventListener("touchstart", () => {}, { passive: true });
+// iOS で CSS の hover を有効にするハック
+document.body.addEventListener("touchstart", () => {}, { passive: true });
 
-  Turbolinks.start();
+Turbolinks.start();
 
-  // ページ移動時、ボタンやフォームコントロールを無効化する
-  window.addEventListener("beforeunload", () => {
-    const inputs = document.querySelectorAll("input, select, textarea, button");
-    /* eslint-disable no-restricted-syntax */
-    for (const input of inputs) {
-      input.disabled = "disabled";
-    }
-    /* eslint-enable */
-  });
-
-  if (
-    window.navigator &&
-    window.navigator.userAgentData &&
-    window.navigator.userAgentData.platform &&
-    window.navigator.userAgentData.platform.toLowerCase &&
-    window.navigator.userAgentData.platform.toLowerCase() === "android"
-  ) {
-    document.querySelector("html").classList.add("env-android");
+// ページ移動時、ボタンやフォームコントロールを無効化する
+window.addEventListener("beforeunload", () => {
+  const inputs = document.querySelectorAll("input, select, textarea, button");
+  /* eslint-disable no-restricted-syntax */
+  for (const input of inputs) {
+    input.disabled = "disabled";
   }
+  /* eslint-enable */
+});
 
-  document.addEventListener("turbolinks:load", () => {
-    const app = createApp({
-      components: {
-        GlobalEvents,
-        AppFooter,
-        AppHeader,
-        AppInfoBox,
-        AppNavBar,
-        AppNavBarBack,
-        AppNavBarToggle,
-        CardLink,
-        CircleSelectorDropdown,
-        ContentIframe,
-        AppContainer,
-        AppBadge,
-        AppChip,
-        AppChipsContainer,
-        AppDropdown,
-        AppDropdownItem,
-        AppearanceSettings,
-        AppFixedFormFooter,
-        ListView,
-        ListViewCard,
-        ListViewItem,
-        ListViewActionBtn,
-        ListViewEmpty,
-        ListViewFormGroup,
-        ListViewPagination,
-        ListViewStudentIdAndUnivemailInput,
-        TopAlert,
-        FormWithConfirm,
-        IconButton,
-        LayoutRow,
-        LayoutColumn,
-        QuestionItem,
-        QuestionHeading,
-        StaffGrid,
-        StepsList,
-        StepsListItem,
-        TagsInput,
-        MarkdownEditor,
-        SearchInput,
-        PermissionsSelector,
-        UiPrimaryColorPicker,
-      },
-      data() {
-        return {
-          isDrawerOpen: false,
-        };
-      },
-      watch: {
-        isDrawerOpen(newVal) {
-          // アクセシビリティのため、適切な位置にフォーカスする
-          if (newVal) {
-            this.$refs.drawer.focus();
-          } else {
-            this.$refs.toggle.$el.focus();
-          }
-        },
-      },
-      mounted() {
-        const loading = document.querySelector("#loading");
-        loading.classList.add("is-done");
-      },
-      // unmounted() {
-      //   const loading = document.querySelector('#loading')
-      //   loading.classList.remove('is-done')
-      // },
-      methods: {
-        toggleDrawer() {
-          this.isDrawerOpen = !this.isDrawerOpen;
-        },
-        closeDrawer() {
-          this.isDrawerOpen = false;
-        },
-        share(shareData) {
-          if (navigator.share) {
-            navigator.share(shareData);
-          } else {
-            window.alert("お使いのブラウザでは共有機能に対応していません");
-          }
-        },
-      },
-    });
-
-    app.use(TurbolinksAdapter);
-    app.use(FloatingVue, { delay: 400 });
-
-    app.mount("#v2-app");
-  });
+if (
+  window.navigator &&
+  window.navigator.userAgentData &&
+  window.navigator.userAgentData.platform &&
+  window.navigator.userAgentData.platform.toLowerCase &&
+  window.navigator.userAgentData.platform.toLowerCase() === "android"
+) {
+  document.querySelector("html").classList.add("env-android");
 }
+
+document.addEventListener("turbolinks:load", () => {
+  const app = createApp({
+    components: {
+      GlobalEvents,
+      AppFooter,
+      AppHeader,
+      AppInfoBox,
+      AppNavBar,
+      AppNavBarBack,
+      AppNavBarToggle,
+      CardLink,
+      CircleSelectorDropdown,
+      ContentIframe,
+      AppContainer,
+      AppBadge,
+      AppChip,
+      AppChipsContainer,
+      AppDropdown,
+      AppDropdownItem,
+      AppearanceSettings,
+      AppFixedFormFooter,
+      ListView,
+      ListViewCard,
+      ListViewItem,
+      ListViewActionBtn,
+      ListViewEmpty,
+      ListViewFormGroup,
+      ListViewPagination,
+      ListViewStudentIdAndUnivemailInput,
+      TopAlert,
+      FormWithConfirm,
+      IconButton,
+      LayoutRow,
+      LayoutColumn,
+      QuestionItem,
+      QuestionHeading,
+      StaffGrid,
+      StepsList,
+      StepsListItem,
+      TagsInput,
+      MarkdownEditor,
+      SearchInput,
+      PermissionsSelector,
+      UiPrimaryColorPicker,
+    },
+    data() {
+      return {
+        isDrawerOpen: false,
+      };
+    },
+    watch: {
+      isDrawerOpen(newVal) {
+        // アクセシビリティのため、適切な位置にフォーカスする
+        if (newVal) {
+          this.$refs.drawer.focus();
+        } else {
+          this.$refs.toggle.$el.focus();
+        }
+      },
+    },
+    mounted() {
+      const loading = document.querySelector("#loading");
+      loading.classList.add("is-done");
+    },
+    // unmounted() {
+    //   const loading = document.querySelector('#loading')
+    //   loading.classList.remove('is-done')
+    // },
+    methods: {
+      toggleDrawer() {
+        this.isDrawerOpen = !this.isDrawerOpen;
+      },
+      closeDrawer() {
+        this.isDrawerOpen = false;
+      },
+      share(shareData) {
+        if (navigator.share) {
+          navigator.share(shareData);
+        } else {
+          window.alert("お使いのブラウザでは共有機能に対応していません");
+        }
+      },
+    },
+  });
+
+  app.use(TurbolinksAdapter);
+  app.use(FloatingVue, { delay: 400 });
+
+  app.mount("#v2-app");
+});

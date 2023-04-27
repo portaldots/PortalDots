@@ -21,7 +21,6 @@
 
     <!-- Scripts -->
     @prepend('js')
-        @vite(['resources/js/app.js'])
     @endprepend
     @stack('js')
 

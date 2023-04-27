@@ -29,7 +29,7 @@
 
     <!-- Scripts -->
     @prepend('js')
-        @vite(['resources/js/app.js'])
+        @vite(['resources/js/v2/app.js'])
     @endprepend
     @if (config('app.debug'))
         @prepend('js')
