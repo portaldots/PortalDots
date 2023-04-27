@@ -68,7 +68,6 @@ class HomeActionTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('documents.index'));
 
-        $response->assertDontSee('ログインしていません');
         $response->assertDontSee('メール認証');
         $response->assertDontSee('確認メールを再送');
     }

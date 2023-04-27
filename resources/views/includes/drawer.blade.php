@@ -178,9 +178,6 @@
                 </button>
             </form>
         @else
-            <p class="drawer-user__info">
-                ログインしていません
-            </p>
             <a href="{{ route('login') }}" class="btn is-primary is-block">
                 <strong>ログイン</strong>
             </a>
