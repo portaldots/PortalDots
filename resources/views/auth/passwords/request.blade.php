@@ -12,9 +12,9 @@
             <list-view>
                 <template v-slot:title>パスワードの再設定</template>
                 <list-view-card>
-                    <p>まず、「{{ config('app.name') }}」にログインするために使用していた{{ config('portal.student_id_name') }}または連絡先メールアドレスを入力してください。
+                    <p>{{ config('app.name') }}へのログインに使用していた{{ config('portal.student_id_name') }}または連絡先メールアドレスを入力してください。
                     </p>
-                    <p>連絡先メールアドレスに対し、パスワード再設定に関するご案内を差し上げます。</p>
+                    <p>連絡先メールアドレスに対し、パスワード再設定のためのメールを送信します。</p>
                 </list-view-card>
                 <list-view-form-group label-for="login_id">
                     <template v-slot:label>{{ config('portal.student_id_name') }}または連絡先メールアドレス</template>
@@ -27,7 +27,7 @@
             </list-view>
         </app-container>
         <app-container class="text-center pt-spacing-md">
-            <button type="submit" class="btn is-primary is-wide">次へ</button>
+            <button type="submit" class="btn is-primary is-wide">再設定のためのメールを送信</button>
         </app-container>
     </form>
 @endsection
