@@ -21,6 +21,9 @@
         個人
       </label>
     </div>
+    <template #invalid v-if="$slots['invalid-is-individual']">
+      <slot name="invalid-is-individual" />
+    </template>
   </ListViewFormGroup>
   <template v-if="!isIndividual">
     <ListViewFormGroup :labelFor="props.groupNameInputName">
@@ -28,22 +31,34 @@
       <input
         :id="props.groupNameInputName"
         type="text"
-        class="form-control"
+        :class="[
+          'form-control',
+          $slots['invalid-group-name'] ? 'is-invalid' : '',
+        ]"
         :name="props.groupNameInputName"
         v-model="groupName"
         required
       />
+      <template #invalid v-if="$slots['invalid-group-name']">
+        <slot name="invalid-group-name" />
+      </template>
     </ListViewFormGroup>
     <ListViewFormGroup :labelFor="props.groupNameYomiInputName">
       <template #label>団体名(よみ)</template>
       <input
         :id="props.groupNameYomiInputName"
         type="text"
-        class="form-control"
+        :class="[
+          'form-control',
+          $slots['invalid-group-name-yomi'] ? 'is-invalid' : '',
+        ]"
         :name="props.groupNameYomiInputName"
         v-model="groupNameYomi"
         required
       />
+      <template #invalid v-if="$slots['invalid-group-name-yomi']">
+        <slot name="invalid-group-name-yomi" />
+      </template>
     </ListViewFormGroup>
     <QuestionHeading name="団体責任者の情報">
       このフォームは団体責任者が入力してください。団体責任者以外の方は入力不要です。

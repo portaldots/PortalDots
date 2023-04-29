@@ -17,6 +17,15 @@
                     v-bind:default-is-individual-value="{{ intval(old('is_individual', 0)) === 1 ? 'true' : 'false' }}"
                     default-group-name-value="{{ old('group_name') }}"
                     default-group-name-yomi-value="{{ old('group_name_yomi') }}">
+                    @error('is_individual')
+                        <template v-slot:invalid-is-individual>{{ $message }}</template>
+                    @enderror
+                    @error('group_name')
+                        <template v-slot:invalid-group-name>{{ $message }}</template>
+                    @enderror
+                    @error('group_name_yomi')
+                        <template v-slot:invalid-group-name-yomi>{{ $message }}</template>
+                    @enderror
                 </list-view-group-info-input-for-register>
                 @include('includes.user_register_form')
             </list-view>
