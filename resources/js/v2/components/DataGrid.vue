@@ -86,10 +86,7 @@
         :popUpUrl="sideWindowEditorPopUpUrl"
       >
         <template #title>編集</template>
-        <StaffGridEditor
-          :editorUrl="sideWindowEditorUrl"
-          @urlChanged="reload"
-        />
+        <DataGridEditor :editorUrl="sideWindowEditorUrl" @urlChanged="reload" />
       </SideWindow>
     </SideWindowContainer>
   </SideWindowContainer>
@@ -101,7 +98,7 @@ import GridTable from "./GridTable.vue";
 import SideWindowContainer from "./SideWindowContainer.vue";
 import SideWindow from "./SideWindow.vue";
 import StaffGridFilter from "./StaffGridFilter.vue";
-import StaffGridEditor from "./StaffGridEditor.vue";
+import DataGridEditor from "./DataGridEditor.vue";
 
 const axios = Axios.create({
   headers: {
@@ -115,7 +112,7 @@ export default {
     SideWindowContainer,
     SideWindow,
     StaffGridFilter,
-    StaffGridEditor,
+    DataGridEditor,
   },
   props: {
     apiUrl: {

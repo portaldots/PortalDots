@@ -1,11 +1,11 @@
 <template>
-  <div class="staff_grid_editor">
-    <div class="staff_grid_editor-loading" v-if="!isLoaded">
+  <div class="data_grid_editor">
+    <div class="data_grid_editor-loading" v-if="!isLoaded">
       <i class="fas fa-spinner fa-pulse fa-2x text-primary"></i>
     </div>
     <iframe
       :src="editorUrl"
-      class="staff_grid_editor-frame"
+      class="data_grid_editor-frame"
       allowtransparency="true"
       @load="handleLoad"
     ></iframe>
@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.staff_grid_editor {
+.data_grid_editor {
   height: 100%;
   &-loading {
     align-items: center;
