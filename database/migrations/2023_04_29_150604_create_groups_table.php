@@ -24,6 +24,7 @@ return new class extends Migration
         Schema::create('group_user', function (Blueprint $table) {
             $table->foreignId('group_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('role');     // owner | member
             $table->primary(['group_id', 'user_id']);
         });
 
