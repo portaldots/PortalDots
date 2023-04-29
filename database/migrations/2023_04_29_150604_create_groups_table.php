@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('name_yomi');
             $table->boolean('is_individual');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
 
