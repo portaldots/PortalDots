@@ -27,6 +27,9 @@
             id: '企画ID',
             name: '企画名',
             name_yomi: '企画名(よみ)',
+            is_individual: '登録者種別',
+            'is_individual.1': '個人',
+            'is_individual.0': '団体',
             group_id: '団体',
             'group_id.id': '団体ID',
             'group_id.name': '団体名',
@@ -118,10 +121,15 @@
             </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">
-            <template v-if="keyName === 'group_id' && row[keyName]">
+            <template v-if="keyName === 'is_individual'">
+                {{-- 登録者種別 --}}
+                <app-badge v-if="row[keyName]" muted strong>個人</app-badge>
+                <app-badge v-else primary strong>団体</app-badge>
+            </template>
+            <template v-else-if="keyName === 'group_id' && row[keyName]">
                 {{-- 団体 --}}
                 <template v-if="row[keyName].is_individual">
-                    個人
+                    -
                 </template>
                 <template v-else>
                     @{{ row[keyName].name }}

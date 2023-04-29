@@ -59,6 +59,7 @@ class CirclesGridMaker implements GridMakable
             DB::raw('`circles`.`id` AS id'),
             DB::raw('`circles`.`name` AS name'),
             DB::raw('`circles`.`name_yomi` AS name_yomi'),
+            DB::raw('`groups`.`is_individual` AS is_individual'),
             DB::raw('`circles`.`group_id` AS group_id'),
             DB::raw('`circles`.`submitted_at` AS submitted_at'),
             DB::raw('`circles`.`status` AS status'),
@@ -79,7 +80,9 @@ class CirclesGridMaker implements GridMakable
             'places',
             'tags',
             'statusSetBy'
-        ]);
+        ])->leftJoin('groups', function (JoinClause $join) {
+            $join->on('circles.group_id', '=', 'groups.id');
+        });
 
         if (isset($this->custom_form)) {
             $query = $query->leftJoin('answers', function (JoinClause $join) {
@@ -112,6 +115,7 @@ class CirclesGridMaker implements GridMakable
             'id',
             'name',
             'name_yomi',
+            'is_individual',
             'group_id',
             'users',
             'places',
@@ -184,6 +188,7 @@ class CirclesGridMaker implements GridMakable
                     'id' => FilterableKey::number(),
                     'name' => FilterableKey::string(),
                     'name_yomi' => FilterableKey::string(),
+                    'is_individual' => FilterableKey::enum([1, 0]),
                     'group_id' => $group_type,
                     'places' => FilterableKey::belongsToMany(
                         'booths',
@@ -228,6 +233,7 @@ class CirclesGridMaker implements GridMakable
         return [
             'id',
             'name',
+            'is_individual',
             'group_id',
             ...$formKeys,
             'submitted_at',
@@ -263,6 +269,9 @@ class CirclesGridMaker implements GridMakable
 
         foreach ($keysExceptCustomForms as $key) {
             switch ($key) {
+                case 'is_individual':
+                    $itemsExpectForms[$key] = (int)$record->is_individual === 1;
+                    break;
                 case 'group_id':
                     $itemsExpectForms[$key] = $record->group;
                     break;
