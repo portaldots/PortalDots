@@ -13,7 +13,7 @@
         closeSideWindow: closeEditorSideWindow,
       }"
     >
-      <div class="staff_grid">
+      <div class="data_grid">
         <GridTable
           :keys="keys"
           :sortableKeys="sortableKeys"
@@ -327,7 +327,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.staff_grid {
+.data_grid {
   background: $color-bg-surface;
 }
 </style>

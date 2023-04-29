@@ -5,17 +5,17 @@
 @section('top_alert_props', 'container-fluid')
 
 @section('content')
-    <staff-grid api-url="{{ route('staff.forms.api') }}" v-bind:key-translations="{
-                        id: 'フォームID',
-                        name: 'フォーム名',
-                        is_public: '公開',
-                        answerableTags: '回答可能なタグ',
-                        description: 'フォームの説明',
-                        open_at: '受付開始日時',
-                        close_at: '受付終了日時',
-                        created_at: '作成日時',
-                        updated_at: '更新日時',
-                    }">
+    <data-grid api-url="{{ route('staff.forms.api') }}" v-bind:key-translations="{
+                            id: 'フォームID',
+                            name: 'フォーム名',
+                            is_public: '公開',
+                            answerableTags: '回答可能なタグ',
+                            description: 'フォームの説明',
+                            open_at: '受付開始日時',
+                            close_at: '受付終了日時',
+                            created_at: '作成日時',
+                            updated_at: '更新日時',
+                        }">
         <template v-slot:toolbar>
             <a class="btn is-primary" href="{{ route('staff.forms.create') }}">
                 <i class="fas fa-plus fa-fw"></i>
@@ -77,5 +77,5 @@
                 @{{ row[keyName] }}
             </template>
         </template>
-    </staff-grid>
+    </data-grid>
 @endsection
