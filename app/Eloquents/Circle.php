@@ -17,10 +17,9 @@ class Circle extends Model
             ->useLogName('circle')
             ->logOnly([
                 'id',
+                'group_id',
                 'name',
                 'name_yomi',
-                'group_name',
-                'group_name_yomi',
                 'submitted_at',
                 'status',
                 'status_reason',

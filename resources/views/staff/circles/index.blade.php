@@ -27,8 +27,15 @@
             id: '企画ID',
             name: '企画名',
             name_yomi: '企画名(よみ)',
-            group_name: '企画を出店する団体の名称',
-            group_name_yomi: '企画を出店する団体の名称(よみ)',
+            group_id: '団体',
+            groups: '団体',
+            'groups.id': '団体ID',
+            'groups.name': '団体名',
+            'groups.name_yomi': '団体名(よみ)',
+            'groups.notes': 'スタッフ用メモ',
+            'groups.created_at': '作成日時',
+            'groups.updated_at': '更新日時',
+            users: '責任者',
             places: '使用場所',
             tags: 'タグ',
             @if (isset($custom_form)) @foreach ($custom_form->questions as $question)
@@ -106,18 +113,29 @@
                     title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>
-                <icon-button
-                    v-bind:href="`{{ route('staff.circles.email', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])"
-                    title="メール送信">
-                    <i class="far fa-envelope fa-fw"></i>
-                </icon-button>
                 <icon-button submit title="削除">
                     <i class="fas fa-trash fa-fw"></i>
                 </icon-button>
             </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">
-            <template v-if="keyName === 'places'">
+            <template v-if="keyName === 'group_id' && row[keyName]">
+                {{-- 団体 --}}
+                <template v-if="row[keyName].is_individual">
+                    個人
+                </template>
+                <template v-else>
+                    @{{ row[keyName].name }}
+                    (ID : @{{ row[keyName].id }})
+                </template>
+            </template>
+            <template v-else-if="keyName === 'users' && row[keyName]">
+                {{-- 責任者 --}}
+                @{{ row[keyName].name_family }} @{{ row[keyName].name_given }}
+                (@{{ row[keyName].student_id }} •
+                ID : @{{ row[keyName].id }})
+            </template>
+            <template v-else-if="keyName === 'places'">
                 {{-- 使用場所 --}}
                 <template v-for="place in row[keyName]" v-bind:key="place.id">
                     <app-badge primary strong>

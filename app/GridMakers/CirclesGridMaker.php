@@ -16,6 +16,7 @@ use App\GridMakers\Filter\FilterableKeysDict;
 use App\GridMakers\Helpers\AnswerDetailsHelper;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\Utils\FormatTextService;
+use Illuminate\Contracts\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 
@@ -58,8 +59,7 @@ class CirclesGridMaker implements GridMakable
             DB::raw('`circles`.`id` AS id'),
             DB::raw('`circles`.`name` AS name'),
             DB::raw('`circles`.`name_yomi` AS name_yomi'),
-            DB::raw('`circles`.`group_name` AS group_name'),
-            DB::raw('`circles`.`group_name_yomi` AS group_name_yomi'),
+            DB::raw('`circles`.`group_id` AS group_id'),
             DB::raw('`circles`.`submitted_at` AS submitted_at'),
             DB::raw('`circles`.`status` AS status'),
             DB::raw('`circles`.`status_set_at` AS status_set_at'),
@@ -68,7 +68,18 @@ class CirclesGridMaker implements GridMakable
             DB::raw('`circles`.`created_at` AS created_at'),
             DB::raw('`circles`.`updated_at` AS updated_at'),
             ...$customFormSelectFields,
-        ])->with(['places', 'tags', 'statusSetBy']);
+        ])->with([
+            'group',
+            'group.users' => function (EloquentBuilder $query) {
+                // 責任者の情報のみを取得する。
+                $query->select([
+                    'id', 'student_id', 'name_family', 'name_family_yomi', 'name_given', 'name_given_yomi'
+                ])->wherePivot('role', 'owner');
+            },
+            'places',
+            'tags',
+            'statusSetBy'
+        ]);
 
         if (isset($this->custom_form)) {
             $query = $query->leftJoin('answers', function (JoinClause $join) {
@@ -101,8 +112,8 @@ class CirclesGridMaker implements GridMakable
             'id',
             'name',
             'name_yomi',
-            'group_name',
-            'group_name_yomi',
+            'group_id',
+            'users',
             'places',
             'tags',
             ...$customFormKeys,
@@ -138,6 +149,15 @@ class CirclesGridMaker implements GridMakable
                 self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX
             ) : [];
 
+        $group_type = FilterableKey::belongsTo('groups', new FilterableKeysDict([
+            'id' => FilterableKey::number(),
+            'name' => FilterableKey::string(),
+            'name_yomi' => FilterableKey::string(),
+            'notes' => FilterableKey::string(),
+            'created_at' => FilterableKey::datetime(),
+            'updated_at' => FilterableKey::datetime(),
+        ]));
+
         $users_type = FilterableKey::belongsTo('users', new FilterableKeysDict([
             'id' => FilterableKey::number(),
             'student_id' => FilterableKey::string(),
@@ -164,8 +184,7 @@ class CirclesGridMaker implements GridMakable
                     'id' => FilterableKey::number(),
                     'name' => FilterableKey::string(),
                     'name_yomi' => FilterableKey::string(),
-                    'group_name' => FilterableKey::string(),
-                    'group_name_yomi' => FilterableKey::string(),
+                    'group_id' => $group_type,
                     'places' => FilterableKey::belongsToMany(
                         'booths',
                         'circle_id',
@@ -209,9 +228,7 @@ class CirclesGridMaker implements GridMakable
         return [
             'id',
             'name',
-            'name_yomi',
-            'group_name',
-            'group_name_yomi',
+            'group_id',
             ...$formKeys,
             'submitted_at',
             'status',
@@ -246,6 +263,12 @@ class CirclesGridMaker implements GridMakable
 
         foreach ($keysExceptCustomForms as $key) {
             switch ($key) {
+                case 'group_id':
+                    $itemsExpectForms[$key] = $record->group;
+                    break;
+                case 'users':
+                    $itemsExpectForms[$key] = $record->group->users[0] ?? null;
+                    break;
                 case 'status_set_by':
                     $itemsExpectForms[$key] = $record->statusSetBy;
                     break;
