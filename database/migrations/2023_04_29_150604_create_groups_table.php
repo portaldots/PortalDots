@@ -41,8 +41,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
         Schema::dropIfExists('group_user');
         Schema::dropIfExists('circle_group');
+        Schema::dropIfExists('groups');
     }
 };
