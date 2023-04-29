@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('name_yomi');
+            $table->string('name')->nullable();
+            $table->string('name_yomi')->nullable();
             $table->boolean('is_individual');
             $table->text('notes')->nullable();
             $table->timestamps();
