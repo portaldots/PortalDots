@@ -4,7 +4,7 @@
 
 @section('content')
     @include('includes.staff_home_tab_strip')
-    @unless($hasSentEmail)
+    @unless ($hasSentEmail)
         <top-alert type="danger" container-medium keep-visible>
             <template v-slot:title>
                 メールの一斉配信に失敗しました
@@ -38,6 +38,13 @@
                     'icon_class' => 'far fa-address-book fa-fw',
                     'title' => 'ユーザー情報管理',
                     'description' => config('app.name') . 'に登録しているユーザーの情報を管理します',
+                ],
+                [
+                    'can' => Auth::user()->can('staff.groups.read'),
+                    'href' => route('staff.groups.index'),
+                    'icon_class' => 'fas fa-users fa-fw',
+                    'title' => '団体管理',
+                    'description' => config('app.name') . 'に登録している団体の情報を管理します',
                 ],
                 [
                     'can' => Auth::user()->can('staff.circles.read'),

@@ -27,6 +27,13 @@
                     ユーザー情報管理
                 </a>
             @endcan
+            @can('staff.groups.read')
+                <a href="{{ route('staff.groups.index') }}"
+                    class="drawer-nav__link{{ Request::is('staff/groups*') ? ' is-active' : '' }}">
+                    <i class="fas fa-users drawer-nav__icon fa-fw"></i>
+                    団体管理
+                </a>
+            @endcan
             @can('staff.circles.read')
                 <a href="{{ route('staff.circles.index') }}"
                     class="drawer-nav__link{{ Request::is('staff/circles*') ? ' is-active' : '' }}">

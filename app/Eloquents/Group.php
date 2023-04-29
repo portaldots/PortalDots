@@ -5,7 +5,6 @@ namespace App\Eloquents;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Contracts\Activity;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -13,6 +12,13 @@ class Group extends Model
 {
     use HasFactory;
     use LogsActivity;
+
+    protected $fillable = [
+        'name',
+        'name_yomi',
+        'is_individual',
+        'notes'
+    ];
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -39,9 +45,22 @@ class Group extends Model
         ];
     }
 
+    /**
+     * 個人団体ではない通常の団体のみを取得するためのスコープ。
+     */
+    public function scopeNormal($query)
+    {
+        return $query->where('is_individual', false);
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class)->using(GroupUser::class)->withPivot('role');
+    }
+
+    public function owner()
+    {
+        return $this->users()->wherePivot('role', 'owner');
     }
 
     public function circles()

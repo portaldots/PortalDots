@@ -149,14 +149,27 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/create', 'Staff\Circles\CreateAction')->name('create')->middleware(['can:staff.circles.edit']);
                 Route::post('/', 'Staff\Circles\StoreAction')->name('store')->middleware(['can:staff.circles.edit']);
 
-                // 企画所属者宛のメール送信
-                Route::get('/{circle}/email', 'Staff\Circles\SendEmails\IndexAction')->name('email')->middleware(['can:staff.circles.send_email']);
-                Route::post('/{circle}/email', 'Staff\Circles\SendEmails\SendAction')->middleware(['can:staff.circles.send_email']);
-
                 // 企画情報エクスポート
                 Route::get('/export', 'Staff\Circles\ExportAction')->name('export')->middleware(['can:staff.circles.export']);
 
                 Route::delete('/{circle}', 'Staff\Circles\DestroyAction')->name('destroy')->middleware(['can:staff.circles.delete']);
+            });
+
+        Route::prefix('/groups')
+            ->name('groups.')
+            ->group(function () {
+                Route::get('/', 'Staff\Groups\IndexAction')->name('index')->middleware(['can:staff.groups.read']);
+                Route::get('/api', 'Staff\Groups\ApiAction')->name('api')->middleware(['can:staff.groups.read']);
+                Route::get('/create', 'Staff\Groups\CreateAction')->name('create')->middleware(['can:staff.groups.edit']);
+                Route::post('/', 'Staff\Groups\StoreAction')->name('store')->middleware(['can:staff.groups.edit']);
+                Route::get('/{group}/edit', 'Staff\Groups\EditAction')->name('edit')->middleware(['can:staff.groups.edit']);
+                Route::patch('/{group}', 'Staff\Groups\UpdateAction')->name('update')->middleware(['can:staff.groups.edit']);
+                Route::delete('/{group}', 'Staff\Groups\DestroyAction')->name('destroy')->middleware(['can:staff.groups.delete']);
+                Route::get('/export', 'Staff\Groups\ExportAction')->name('export')->middleware(['can:staff.groups.export']);
+
+                // 団体所属者宛のメール送信
+                Route::get('/{group}/email', 'Staff\Groups\SendEmails\IndexAction')->name('email')->middleware(['can:staff.groups.send_email']);
+                Route::post('/{group}/email', 'Staff\Groups\SendEmails\SendAction')->middleware(['can:staff.groups.send_email']);
             });
 
         Route::prefix('/tags')

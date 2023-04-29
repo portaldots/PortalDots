@@ -1,0 +1,130 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\GridMakers;
+
+use App\Eloquents\Group;
+use Illuminate\Database\Eloquent\Builder;
+use App\GridMakers\Concerns\UseEloquent;
+use App\GridMakers\Filter\FilterableKey;
+use App\GridMakers\Filter\FilterableKeysDict;
+use Illuminate\Database\Eloquent\Model;
+use App\Services\Utils\FormatTextService;
+use Illuminate\Contracts\Database\Eloquent\Builder as EloquentBuilder;
+
+class GroupsGridMaker implements GridMakable
+{
+    use UseEloquent;
+
+    /**
+     * @var FormatTextService
+     */
+    private $formatTextService;
+
+    public function __construct(FormatTextService $formatTextService)
+    {
+        $this->formatTextService = $formatTextService;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function baseEloquentQuery(): Builder
+    {
+        return Group::select([
+            'id',
+            'name',
+            'name_yomi',
+            'notes',
+            'created_at',
+            'updated_at'
+        ])
+            ->normal()
+            ->withCount(['users', 'circles']);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function keys(): array
+    {
+        return [
+            'id',
+            'name',
+            'name_yomi',
+            'users_count',
+            'circles_count',
+            'notes',
+            'created_at',
+            'updated_at',
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function filterableKeys(): FilterableKeysDict
+    {
+        return new FilterableKeysDict([
+            'id' => FilterableKey::number(),
+            'name' => FilterableKey::string(),
+            'name_yomi' => FilterableKey::string(),
+            'users_count' => FilterableKey::number(),
+            'circles_count' => FilterableKey::number(),
+            'notes' => FilterableKey::string(),
+            'created_at' => FilterableKey::datetime(),
+            'updated_at' => FilterableKey::datetime(),
+        ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function sortableKeys(): array
+    {
+        return [
+            'id',
+            'name',
+            'name_yomi',
+            'users_count',
+            'circles_count',
+            'notes',
+            'created_at',
+            'updated_at',
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function map($record): array
+    {
+        $owners = $record->users->filter(function ($user) {
+            return $user->pivot->role === "owner";
+        });
+
+        // Ownerは1団体につき1人のみ。
+        $owner = count($owners) > 0 ? $owners[0] : null;
+
+        $item = [];
+        foreach ($this->keys() as $key) {
+            switch ($key) {
+                case 'created_at':
+                    $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
+                    break;
+                case 'updated_at':
+                    $item[$key] = !empty($record->updated_at) ? $record->updated_at->format('Y/m/d H:i:s') : null;
+                    break;
+                default:
+                    $item[$key] = $record->$key;
+            }
+        }
+        return $item;
+    }
+
+    protected function model(): Model
+    {
+        return new Group();
+    }
+}
