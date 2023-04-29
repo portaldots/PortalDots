@@ -17,6 +17,7 @@
                 <template v-slot:title>管理者ユーザーの作成</template>
                 <template v-slot:description>「{{ config('app.name') }}」の全設定を変更することができる管理者ユーザーを作成します。</template>
 
+                <input type="hidden" name="is_individual" value="1">
                 @include('includes.user_register_form')
             </list-view>
 
