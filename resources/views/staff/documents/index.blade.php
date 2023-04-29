@@ -5,22 +5,19 @@
 @section('top_alert_props', 'container-fluid')
 
 @section('content')
-    <staff-grid
-        api-url="{{ route('staff.documents.api') }}"
-        v-bind:key-translations="{
-            id: '配布資料ID',
-            name: '配布資料名',
-            path: 'ファイル',
-            size: 'サイズ(バイト)',
-            extension: 'ファイル形式',
-            description: '説明',
-            is_public: '公開',
-            is_important: '重要',
-            created_at: '作成日時',
-            updated_at: '更新日時',
-            notes: 'スタッフ用メモ',
-        }"
-    >
+    <data-grid api-url="{{ route('staff.documents.api') }}" v-bind:key-translations="{
+                id: '配布資料ID',
+                name: '配布資料名',
+                path: 'ファイル',
+                size: 'サイズ(バイト)',
+                extension: 'ファイル形式',
+                description: '説明',
+                is_public: '公開',
+                is_important: '重要',
+                created_at: '作成日時',
+                updated_at: '更新日時',
+                notes: 'スタッフ用メモ',
+            }">
         <template v-slot:toolbar>
             <a class="btn is-primary" href="{{ route('staff.documents.create') }}">
                 <i class="fas fa-plus fa-fw"></i>
@@ -39,8 +36,7 @@
                 method="post" v-bind:confirm-message="`配布資料「${row['name']}」を削除しますか？`">
                 @method('delete')
                 @csrf
-                <icon-button
-                    button
+                <icon-button button
                     v-on:click="() => openEditorByUrl(`{{ route('staff.documents.edit', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id']))"
                     title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
@@ -66,5 +62,5 @@
                 @{{ row[keyName] }}
             </template>
         </template>
-    </staff-grid>
+    </data-grid>
 @endsection

@@ -13,8 +13,8 @@
         closeSideWindow: closeEditorSideWindow,
       }"
     >
-      <div class="staff_grid">
-        <GridTable
+      <div class="data_grid">
+        <DataGridTable
           :keys="keys"
           :sortableKeys="sortableKeys"
           :orderBy="orderBy"
@@ -64,14 +64,14 @@
           <template v-slot:td="{ row, keyName }">
             <slot name="td" :row="row" :keyName="keyName" />
           </template>
-        </GridTable>
+        </DataGridTable>
       </div>
       <SideWindow
         :isOpen="isFilterSideWindowOpen"
         @clickClose="toggleFilterSideWindow"
       >
         <template #title>絞り込み</template>
-        <StaffGridFilter
+        <DataGridFilter
           :filterableKeys="filterableKeys"
           :keyTranslations="keyTranslations"
           :defaultQueries="filterQueries"
@@ -86,10 +86,7 @@
         :popUpUrl="sideWindowEditorPopUpUrl"
       >
         <template #title>編集</template>
-        <StaffGridEditor
-          :editorUrl="sideWindowEditorUrl"
-          @urlChanged="reload"
-        />
+        <DataGridEditor :editorUrl="sideWindowEditorUrl" @urlChanged="reload" />
       </SideWindow>
     </SideWindowContainer>
   </SideWindowContainer>
@@ -97,11 +94,11 @@
 
 <script>
 import Axios from "axios";
-import GridTable from "./GridTable.vue";
+import DataGridTable from "./DataGridTable.vue";
 import SideWindowContainer from "./SideWindowContainer.vue";
 import SideWindow from "./SideWindow.vue";
-import StaffGridFilter from "./StaffGridFilter.vue";
-import StaffGridEditor from "./StaffGridEditor.vue";
+import DataGridFilter from "./DataGridFilter.vue";
+import DataGridEditor from "./DataGridEditor.vue";
 
 const axios = Axios.create({
   headers: {
@@ -111,11 +108,11 @@ const axios = Axios.create({
 
 export default {
   components: {
-    GridTable,
+    DataGridTable,
     SideWindowContainer,
     SideWindow,
-    StaffGridFilter,
-    StaffGridEditor,
+    DataGridFilter,
+    DataGridEditor,
   },
   props: {
     apiUrl: {
@@ -327,7 +324,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.staff_grid {
+.data_grid {
   background: $color-bg-surface;
 }
 </style>

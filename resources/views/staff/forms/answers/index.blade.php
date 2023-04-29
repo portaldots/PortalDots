@@ -42,7 +42,7 @@
             @markdown($form->description)
         </div>
     </app-header>
-    <staff-grid api-url="{{ route('staff.forms.answers.api', ['form' => $form]) }}"
+    <data-grid api-url="{{ route('staff.forms.answers.api', ['form' => $form]) }}"
         v-bind:key-translations="{
             id: '回答ID',
             circle_id: '提出した企画',
@@ -113,5 +113,5 @@
                 @{{ row[keyName] }}
             </template>
         </template>
-    </staff-grid>
+    </data-grid>
 @endsection

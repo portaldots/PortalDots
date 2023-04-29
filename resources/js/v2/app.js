@@ -37,7 +37,7 @@ import FormWithConfirm from "./components/FormWithConfirm.vue";
 import IconButton from "./components/IconButton.vue";
 import LayoutRow from "./components/LayoutRow.vue";
 import LayoutColumn from "./components/LayoutColumn.vue";
-import StaffGrid from "./components/StaffGrid.vue";
+import DataGrid from "./components/DataGrid.vue";
 import StepsList from "./components/StepsList.vue";
 import StepsListItem from "./components/StepsListItem.vue";
 import TagsInput from "./components/TagsInput.vue";
@@ -113,7 +113,7 @@ document.addEventListener("turbolinks:load", () => {
       LayoutColumn,
       QuestionItem,
       QuestionHeading,
-      StaffGrid,
+      DataGrid,
       StepsList,
       StepsListItem,
       TagsInput,

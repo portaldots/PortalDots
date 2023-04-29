@@ -22,7 +22,7 @@
         </top-alert>
     @endif
 
-    <staff-grid api-url="{{ route('staff.circles.api') }}"
+    <data-grid api-url="{{ route('staff.circles.api') }}"
         v-bind:key-translations="{
             id: '企画ID',
             name: '企画名',
@@ -165,5 +165,5 @@
                 @{{ row[keyName] }}
             </template>
         </template>
-    </staff-grid>
+    </data-grid>
 @endsection

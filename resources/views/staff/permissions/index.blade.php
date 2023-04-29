@@ -5,17 +5,17 @@
 @section('top_alert_props', 'container-fluid')
 
 @section('content')
-    <staff-grid api-url="{{ route('staff.permissions.api') }}" v-bind:key-translations="{
-                        id: 'ユーザーID',
-                        name: '名前',
-                        student_id: '{{ config('portal.student_id_name') }}',
-                        name_family: '姓',
-                        name_family_yomi: '姓(よみ)',
-                        name_given: '名',
-                        name_given_yomi: '名(よみ)',
-                        is_admin: '管理者',
-                        permissions: '割り当てられた権限',
-                    }">
+    <data-grid api-url="{{ route('staff.permissions.api') }}" v-bind:key-translations="{
+                            id: 'ユーザーID',
+                            name: '名前',
+                            student_id: '{{ config('portal.student_id_name') }}',
+                            name_family: '姓',
+                            name_family_yomi: '姓(よみ)',
+                            name_given: '名',
+                            name_given_yomi: '名(よみ)',
+                            is_admin: '管理者',
+                            permissions: '割り当てられた権限',
+                        }">
         <template v-slot:activities="{ row }">
             <icon-button
                 v-bind:href="`{{ route('staff.permissions.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])"
@@ -47,5 +47,5 @@
                 @{{ row[keyName] }}
             </template>
         </template>
-    </staff-grid>
+    </data-grid>
 @endsection

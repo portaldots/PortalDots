@@ -16,24 +16,20 @@
             <li>「アクティビティログ」機能に関するご意見などありましたら、 PortalDots 開発チームへお寄せください。</li>
         </ul>
     </app-header>
-    <staff-grid
-        api-url="{{ route('admin.activity_log.api') }}"
+    <data-grid api-url="{{ route('admin.activity_log.api') }}"
         v-bind:key-translations="{
             id: 'ログID',
             log_name: 'ログの対象',
             @foreach (App\GridMakers\ActivityLogGridMaker::getAllLogNames() as $log_name => $translation)
-                'log_name.{{ $log_name }}': '{{ $translation }}',
-            @endforeach
+                'log_name.{{ $log_name }}': '{{ $translation }}', @endforeach
             description: '種別',
             @foreach (App\GridMakers\ActivityLogGridMaker::getAllDescriptions() as $description => $translation)
-                'description.{{ $description }}': '{{ $translation }}',
-            @endforeach
+                'description.{{ $description }}': '{{ $translation }}', @endforeach
             subject_id: 'ログの対象でのID',
             causer_id: '実施者',
             properties: '実施された変更',
             created_at: '実施日時',
-        }"
-    >
+        }">
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'properties'">
                 {{-- 実施された変更 --}}
@@ -72,5 +68,5 @@
                 @{{ row[keyName] }}
             </template>
         </template>
-    </staff-grid>
+    </data-grid>
 @endsection
