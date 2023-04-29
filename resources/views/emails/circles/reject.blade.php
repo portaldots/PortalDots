@@ -1,6 +1,10 @@
 @component('mail::message')
 # 参加登録が受理されませんでした
-{{ $circle->group_name }} 様
+@if ($circle->group->is_individual)
+{{ $circle->group->users[0]->name_family }} {{ $circle->group->users[0]->name_given }} 様
+@else
+{{ $circle->group->name }} 様
+@endif
 
 「{{ $circle->name }}」の参加登録は受理されませんでした。
 
@@ -8,16 +12,20 @@
 @component('mail::panel')
 - 企画名 : {{ $circle->name }}
 - 企画名(よみ) : {{ $circle->name_yomi }}
-- 出店を企画する団体の名称 : {{ $circle->group_name }}
-- 出店を企画する団体の名称(よみ) : {{ $circle->group_name_yomi}}
+@if ($circle->group->is_individual)
+- 責任者: {{ $circle->group->users[0]->name }}({{ $circle->group->users[0]->student_id }})
+@else
+- 団体名 : {{ $circle->group->name }}
+- 団体名(よみ) : {{ $circle->group->name_yomi }}
 - メンバー
-@foreach ($circle->users as $user)
-@if($user->pivot->is_leader === true)
+@foreach ($circle->group->users as $user)
+@if($user->pivot->role === 'owner')
   - {{ $user->name }}({{ $user->student_id }}) (責任者)
 @else
   - {{ $user->name }}({{ $user->student_id }})
 @endif
 @endforeach
+@endif
 @endcomponent
 
 @isset($circle->status_reason)

@@ -59,6 +59,35 @@
             </list-view>
 
             <list-view>
+                <template v-slot:title>団体のメンバー</template>
+                <list-view-form-group label-for="owner">
+                    <template v-slot:label>責任者の{{ config('portal.student_id_name') }}</template>
+                    <input type="text" class="form-control @error('owner') is-invalid @enderror" id="owner"
+                        name="owner" value="{{ old('owner', empty($owner) ? '' : $owner->student_id) }}">
+                    @if ($errors->has('owner'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('owner') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
+                <list-view-form-group label-for="members">
+                    <template v-slot:label>学園祭係(副責任者)の{{ config('portal.student_id_name') }}</template>
+                    <template
+                        v-slot:description>{{ config('portal.student_id_name') }}を改行して入力することで複数の学園祭係を追加できます。{{ config('portal.users_number_to_submit_circle') - 1 }}人を下回っていても構いません。</template>
+                    <textarea id="members" class="form-control @error('members') is-invalid @enderror" name="members" rows="3">{{ old('members', empty($members) ? '' : $members) }}</textarea>
+                    @if ($errors->has('members'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('members') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
+            </list-view>
+
+            <list-view>
                 <list-view-form-group label-for="notes">
                     <template v-slot:label>スタッフ用メモ</template>
                     <template v-slot:description>ここに入力された内容はスタッフのみ閲覧できます。スタッフ内で共有したい事項を残しておくメモとしてご活用ください。</template>

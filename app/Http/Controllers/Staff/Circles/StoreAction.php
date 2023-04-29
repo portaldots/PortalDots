@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Staff\Circles;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Http\Requests\Staff\Circles\CircleRequest;
 use App\Services\Circles\CirclesService;
@@ -15,35 +13,18 @@ use Illuminate\Support\Facades\DB;
 class StoreAction extends Controller
 {
     /**
-     * @var User
-     */
-    private $user;
-
-    /**
      * @var CirclesService
      */
     private $circlesService;
 
-    public function __construct(User $user, CirclesService $circlesService)
+    public function __construct(CirclesService $circlesService)
     {
-        $this->user = $user;
         $this->circlesService = $circlesService;
     }
 
     public function __invoke(CircleRequest $request)
     {
         DB::beginTransaction();
-
-        $member_ids = str_replace(["\r\n", "\r", "\n"], "\n", $request->members);
-        $member_ids = explode("\n", $member_ids);
-        $member_ids = array_unique(array_filter($member_ids, "strlen"));
-
-        $leader = $this->user->firstByStudentId($request->leader);
-        if (!empty($leader)) {
-            $member_ids = array_diff($member_ids, [$leader->student_id]);
-        }
-
-        $members = $this->user->getByStudentIdIn($member_ids);
 
         $status = null;
         $status_set_at = null;
@@ -69,14 +50,6 @@ class StoreAction extends Controller
             'status_set_by' => $status_set_by,
             'notes' => $request->notes
         ]);
-        $circle->users()->detach();
-
-        if (!empty($leader)) {
-            $leader->circles()->attach($circle->id, ['is_leader' => true]);
-        }
-        foreach ($members as $member) {
-            $member->circles()->attach($circle->id, ['is_leader' => false]);
-        }
 
         // 場所の保存
         $this->circlesService->savePlaces($circle, $request->places ?? [], Auth::user());

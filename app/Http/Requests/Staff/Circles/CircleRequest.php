@@ -3,16 +3,10 @@
 namespace App\Http\Requests\Staff\Circles;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Eloquents\User;
 use App\Eloquents\Circle;
 
 class CircleRequest extends FormRequest
 {
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -35,8 +29,6 @@ class CircleRequest extends FormRequest
             'name_yomi' => Circle::NAME_YOMI_RULES,
             'status' => Circle::STATUS_RULES,
             'tags'    => ['nullable', 'array'],
-            'leader'    => ['nullable', 'exists:users,student_id'],
-            'members'   => ['nullable'],
         ];
     }
 
@@ -50,8 +42,6 @@ class CircleRequest extends FormRequest
         return [
             'name' => '企画名',
             'name_yomi' => '企画名(よみ)',
-            'leader' => '企画責任者',
-            'members' => '学園祭係(副責任者)',
             'status' => '参加登録受理',
         ];
     }
@@ -62,34 +52,6 @@ class CircleRequest extends FormRequest
             'name_yomi.regex' => 'ひらがなで入力してください',
             'group_name_yomi.regex' => 'ひらがなで入力してください',
             // ひらがなもカタカナも入力可能だが，説明が面倒なので，エラー上ではひらがなでの入力を促す
-            'leader.exists' => 'この' . config('portal.student_id_name') . 'は登録されていません',
         ];
-    }
-
-    public function withValidator($validator)
-    {
-        $unverified_student_ids = [];
-
-        $non_registered_member_ids = str_replace(["\r\n", "\r", "\n"], "\n", $this->members);
-        $non_registered_member_ids = explode("\n", $non_registered_member_ids);
-        $non_registered_member_ids = array_filter($non_registered_member_ids, "strlen");
-
-        $members = $this->user->getByStudentIdIn($non_registered_member_ids);
-
-        foreach ($members as $member) {
-            $non_registered_member_ids = array_diff($non_registered_member_ids, [$member->student_id]);
-            if (!$member->areBothEmailsVerified()) {
-                $unverified_student_ids[] = $member->student_id;
-            }
-        }
-        $validator->after(function ($validator) use ($non_registered_member_ids, $unverified_student_ids) {
-            if (!empty($non_registered_member_ids)) {
-                $validator->errors()->add('members', '未登録 : ' . implode(' ', $non_registered_member_ids));
-            }
-
-            if (!empty($unverified_student_ids)) {
-                $validator->errors()->add('members', 'メール未認証 : ' . implode(' ', $unverified_student_ids));
-            }
-        });
     }
 }

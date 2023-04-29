@@ -18,23 +18,9 @@ class EditAction extends Controller
             abort(404);
         }
 
-        $circle->load('users');
-
-        $member_ids = '';
-        $members = $circle->users->filter(function ($user) {
-            return !$user->pivot->is_leader;
-        });
-        foreach ($members as $member) {
-            $member_ids .= $member->student_id . "\r\n";
-        }
-
         return view('staff.circles.form')
             ->with('custom_form', CustomForm::getFormByType('circle'))
             ->with('circle', $circle)
-            ->with('leader', $circle->users->filter(function ($user) {
-                return $user->pivot->is_leader;
-            })->first())
-            ->with('members', $member_ids)
             ->with('default_places', $circle->places->map(function ($item) {
                 return ['text' => $item->name, 'value' => $item->id];
             })->toJson())
