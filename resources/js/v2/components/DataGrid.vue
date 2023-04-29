@@ -14,7 +14,7 @@
       }"
     >
       <div class="data_grid">
-        <GridTable
+        <DataGridTable
           :keys="keys"
           :sortableKeys="sortableKeys"
           :orderBy="orderBy"
@@ -64,7 +64,7 @@
           <template v-slot:td="{ row, keyName }">
             <slot name="td" :row="row" :keyName="keyName" />
           </template>
-        </GridTable>
+        </DataGridTable>
       </div>
       <SideWindow
         :isOpen="isFilterSideWindowOpen"
@@ -94,7 +94,7 @@
 
 <script>
 import Axios from "axios";
-import GridTable from "./GridTable.vue";
+import DataGridTable from "./DataGridTable.vue";
 import SideWindowContainer from "./SideWindowContainer.vue";
 import SideWindow from "./SideWindow.vue";
 import DataGridFilter from "./DataGridFilter.vue";
@@ -108,7 +108,7 @@ const axios = Axios.create({
 
 export default {
   components: {
-    GridTable,
+    DataGridTable,
     SideWindowContainer,
     SideWindow,
     DataGridFilter,
