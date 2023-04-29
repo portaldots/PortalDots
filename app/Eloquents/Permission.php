@@ -49,6 +49,42 @@ class Permission extends SpatiePermission
                     'ユーザー(閲覧)',
                     'ユーザーの閲覧が可能'
                 ),
+                'staff.groups' => new PermissionInfo(
+                    'staff.groups',
+                    'スタッフモード › 団体情報管理 › 全機能',
+                    '団体(全機能)',
+                    '団体情報管理の全機能を利用可能。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
+                ),
+                'staff.groups.read,edit,delete' => new PermissionInfo(
+                    'staff.groups.read,edit,delete',
+                    'スタッフモード › 団体情報管理 › 閲覧と編集、削除',
+                    '団体(削除)',
+                    '団体の閲覧と編集、作成、削除が可能'
+                ),
+                'staff.groups.read,edit' => new PermissionInfo(
+                    'staff.groups.read,edit',
+                    'スタッフモード › 団体情報管理 › 閲覧と編集',
+                    '団体(編集)',
+                    '団体の閲覧と編集、作成が可能'
+                ),
+                'staff.groups.read,send_email' => new PermissionInfo(
+                    'staff.groups.read,send_email',
+                    'スタッフモード › 団体情報管理 › 閲覧と「団体へメール送信」',
+                    '団体(メール送信)',
+                    '団体の閲覧、および「団体へメール送信」機能が利用可能'
+                ),
+                'staff.groups.read,export' => new PermissionInfo(
+                    'staff.groups.read,export',
+                    'スタッフモード › 団体情報管理 › 閲覧とCSVエクスポート',
+                    '団体(エクスポート)',
+                    '団体の閲覧とCSVエクスポートが可能'
+                ),
+                'staff.groups.read' => new PermissionInfo(
+                    'staff.groups.read',
+                    'スタッフモード › 団体情報管理 › 閲覧',
+                    '団体(閲覧)',
+                    '団体の閲覧が可能'
+                ),
                 'staff.circles' => new PermissionInfo(
                     'staff.circles',
                     'スタッフモード › 企画情報管理 › 全機能',
@@ -72,12 +108,6 @@ class Permission extends SpatiePermission
                     'スタッフモード › 企画情報管理 › 閲覧と編集',
                     '企画(編集)',
                     '企画の閲覧と編集、作成が可能'
-                ),
-                'staff.circles.read,send_email' => new PermissionInfo(
-                    'staff.circles.read,send_email',
-                    'スタッフモード › 企画情報管理 › 閲覧と「企画へメール送信」',
-                    '企画(メール送信)',
-                    '企画の閲覧、および「企画へメール送信」機能が利用可能'
                 ),
                 'staff.circles.read,export' => new PermissionInfo(
                     'staff.circles.read,export',
@@ -270,7 +300,7 @@ class Permission extends SpatiePermission
                     'スタッフモード › お問い合わせ管理 › 全機能',
                     'お問い合わせ(全機能)',
                     'お問い合わせ管理の全機能を利用可能。今後、受信したお問い合わせを管理する機能が実装された場合、' .
-                    'その機能の利用も可能になります。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
+                        'その機能の利用も可能になります。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
                 ),
                 'staff.contacts.categories.read,edit,delete' => new PermissionInfo(
                     'staff.contacts.categories.read,edit,delete',
