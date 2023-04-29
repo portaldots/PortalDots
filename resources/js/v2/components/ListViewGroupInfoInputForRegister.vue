@@ -4,19 +4,19 @@
     <div class="group-types">
       <label class="group-types__item">
         <input
-          v-model="isIndividual"
+          v-model="isIndividualFormValue"
           type="radio"
           :name="props.isIndividualInputName"
-          :value="false"
+          value="0"
         />
         団体
       </label>
       <label class="group-types__item">
         <input
-          v-model="isIndividual"
+          v-model="isIndividualFormValue"
           type="radio"
           :name="props.isIndividualInputName"
-          :value="true"
+          value="1"
         />
         個人
       </label>
@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import ListViewFormGroup from "./ListViewFormGroup.vue";
 import QuestionHeading from "./Forms/QuestionHeading.vue";
 
@@ -101,6 +101,11 @@ const props = defineProps({
 const isIndividual = ref(props.defaultIsIndividualValue);
 const groupName = ref(props.defaultGroupNameValue);
 const groupNameYomi = ref(props.defaultGroupNameYomiValue);
+
+const isIndividualFormValue = computed({
+  get: () => (isIndividual.value ? "1" : "0"),
+  set: (val) => (isIndividual.value = val === "1"),
+});
 </script>
 
 <style lang="scss" scoped>
