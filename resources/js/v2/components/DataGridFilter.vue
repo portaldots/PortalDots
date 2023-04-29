@@ -137,7 +137,7 @@
       </div>
     </div>
     <div class="data_grid_sort-dropdown">
-      <StaffGridFilterAddDropdown
+      <DataGridFilterAddDropdown
         :dropdown-items="itemsForFilterQuery"
         @clickItem="addQuery"
       />
@@ -186,11 +186,11 @@
 </template>
 
 <script>
-import StaffGridFilterAddDropdown from "./StaffGridFilterAddDropdown.vue";
+import DataGridFilterAddDropdown from "./DataGridFilterAddDropdown.vue";
 
 export default {
   components: {
-    StaffGridFilterAddDropdown,
+    DataGridFilterAddDropdown,
   },
   props: {
     filterableKeys: {
