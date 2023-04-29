@@ -71,7 +71,7 @@
         @clickClose="toggleFilterSideWindow"
       >
         <template #title>絞り込み</template>
-        <StaffGridFilter
+        <DataGridFilter
           :filterableKeys="filterableKeys"
           :keyTranslations="keyTranslations"
           :defaultQueries="filterQueries"
@@ -97,7 +97,7 @@ import Axios from "axios";
 import GridTable from "./GridTable.vue";
 import SideWindowContainer from "./SideWindowContainer.vue";
 import SideWindow from "./SideWindow.vue";
-import StaffGridFilter from "./StaffGridFilter.vue";
+import DataGridFilter from "./DataGridFilter.vue";
 import DataGridEditor from "./DataGridEditor.vue";
 
 const axios = Axios.create({
@@ -111,7 +111,7 @@ export default {
     GridTable,
     SideWindowContainer,
     SideWindow,
-    StaffGridFilter,
+    DataGridFilter,
     DataGridEditor,
   },
   props: {

@@ -1,23 +1,23 @@
 <template>
-  <form class="staff_grid_sort" @submit.prevent="onClickApply">
+  <form class="data_grid_sort" @submit.prevent="onClickApply">
     <template v-if="queries.length > 0">
-      <div class="staff_grid_sort-list">
+      <div class="data_grid_sort-list">
         <div
           v-for="query in queries"
           :key="query.id"
-          class="staff_grid_sort-list__item"
+          class="data_grid_sort-list__item"
         >
-          <div class="staff_grid_sort-list__name">
+          <div class="data_grid_sort-list__name">
             <span>{{ query.item.translation }}</span>
             <button
-              class="staff_grid_sort-list__remove"
+              class="data_grid_sort-list__remove"
               type="button"
               @click="() => removeQuery(query.id)"
             >
               <i class="far fa-times-circle" />
             </button>
           </div>
-          <div class="staff_grid_sort-list__inputs">
+          <div class="data_grid_sort-list__inputs">
             <template v-if="!['bool', 'isNull'].includes(query.item.type)">
               <input
                 v-if="query.item.type === 'string'"
@@ -126,8 +126,8 @@
         </div>
       </div>
     </template>
-    <div v-else class="staff_grid_sort-empty">
-      <i class="fas fa-filter fa-fw staff_grid_sort-empty__icon" />
+    <div v-else class="data_grid_sort-empty">
+      <i class="fas fa-filter fa-fw data_grid_sort-empty__icon" />
       <div>
         <strong>絞り込み未設定</strong><br />
         「絞り込み」機能を利用することで、特定の条件を満たすデータを検索できます。<br />
@@ -136,13 +136,13 @@
         />条件を追加」ボタンから条件を追加しましょう。
       </div>
     </div>
-    <div class="staff_grid_sort-dropdown">
+    <div class="data_grid_sort-dropdown">
       <StaffGridFilterAddDropdown
         :dropdown-items="itemsForFilterQuery"
         @clickItem="addQuery"
       />
     </div>
-    <div v-if="queries.length > 0" class="form-radio staff_grid_sort-mode">
+    <div v-if="queries.length > 0" class="form-radio data_grid_sort-mode">
       <label class="form-radio__label">
         <input
           v-model="mode"
@@ -164,7 +164,7 @@
         いずれかの条件を満たす
       </label>
     </div>
-    <div class="staff_grid_sort-actions">
+    <div class="data_grid_sort-actions">
       <button
         type="submit"
         class="btn is-primary is-block"
@@ -337,7 +337,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.staff_grid_sort {
+.data_grid_sort {
   padding: 0 $spacing $spacing;
   &-list {
     &__item {
