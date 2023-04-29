@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
   },
-  extends: ["prettier", "prettier/vue", "plugin:vue/vue3-recommended"],
+  extends: ["prettier", "plugin:vue/vue3-recommended"],
   globals: {
     Atomics: "readonly",
     SharedArrayBuffer: "readonly",
