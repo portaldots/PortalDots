@@ -88,15 +88,20 @@ class RegisterController extends Controller
     {
         DB::beginTransaction();
 
+        $validated = $request->validated();
+
         $user = $this->registerService->create(
-            student_id: $request->student_id,
-            name: $request->name,
-            name_yomi: $request->name_yomi,
-            email: $request->email,
-            univemail_local_part: $request->univemail_local_part,
-            univemail_domain_part: $request->univemail_domain_part,
-            tel: $request->tel,
-            plain_password: $request->password
+            student_id: $validated['student_id'],
+            is_individual: $validated['is_individual'],
+            group_name: $validated['group_name'],
+            group_name_yomi: $validated['group_name_yomi'],
+            name: $validated['name'],
+            name_yomi: $validated['name_yomi'],
+            email: $validated['email'],
+            univemail_local_part: $validated['univemail_local_part'],
+            univemail_domain_part: $validated['univemail_domain_part'],
+            tel: $validated['tel'],
+            plain_password: $validated['password']
         );
 
         event(new Registered($user));

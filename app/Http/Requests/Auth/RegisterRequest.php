@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Eloquents\Group;
 use App\Eloquents\User;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -34,16 +35,20 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = User::getValidationRules();
+        $groupRules = Group::getValidationRules((bool)$this->request->getBoolean('is_individual', true));
+        $userRules = User::getValidationRules();
         return [
-            'student_id' => array_merge($rules['student_id'], ['unique:users']),
-            'name' => $rules['name'],
-            'name_yomi' => $rules['name_yomi'],
-            'email' => array_merge($rules['email'], ['unique:users']),
-            'univemail_local_part' => $rules['univemail_local_part'],
-            'univemail_domain_part' => $rules['univemail_domain_part'],
-            'tel' => $rules['tel'],
-            'password' => array_merge($rules['password'], ['confirmed']),
+            'is_individual' => ['required', 'boolean'],
+            'group_name' => $groupRules['name'],
+            'group_name_yomi' => $groupRules['name_yomi'],
+            'student_id' => array_merge($userRules['student_id'], ['unique:users']),
+            'name' => $userRules['name'],
+            'name_yomi' => $userRules['name_yomi'],
+            'email' => array_merge($userRules['email'], ['unique:users']),
+            'univemail_local_part' => $userRules['univemail_local_part'],
+            'univemail_domain_part' => $userRules['univemail_domain_part'],
+            'tel' => $userRules['tel'],
+            'password' => array_merge($userRules['password'], ['confirmed']),
         ];
     }
 
@@ -55,6 +60,9 @@ class RegisterRequest extends FormRequest
     public function attributes()
     {
         return [
+            'is_individual' => '登録種別',
+            'group_name' => '団体名',
+            'group_name_yomi' => '団体名(よみ)',
             'student_id' => config('portal.student_id_name'),
             'name' => '名前',
             'name_yomi' => '名前(よみ)',
@@ -72,10 +80,12 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'student_id.unique' => '入力された' . config('portal.student_id_name') . 'はすでに登録されています',
-            'email.unique' => '入力されたメールアドレスはすでに登録されています',
-            'name.regex' => '姓と名の間にはスペースを入れてください',
-            'name_yomi.regex' => '姓と名の間にはスペースを入れてください。また、ひらがなで記入してください',
+            'is_individual.boolean' => '登録種別を選択してください。',
+            'group_name_yomi.regex' => 'ひらがなで記入してください。',
+            'student_id.unique' => '入力された' . config('portal.student_id_name') . 'はすでに登録されています。',
+            'email.unique' => '入力されたメールアドレスはすでに登録されています。',
+            'name.regex' => '姓と名の間にはスペースを入れてください。',
+            'name_yomi.regex' => '姓と名の間にはスペースを入れてください。また、ひらがなで記入してください。',
             // ひらがなもカタカナも入力可能だが，説明が面倒なので，エラー上ではひらがなでの記入を促す
         ];
     }

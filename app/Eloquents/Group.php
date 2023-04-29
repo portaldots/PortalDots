@@ -2,6 +2,7 @@
 
 namespace App\Eloquents;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Contracts\Activity;
@@ -30,8 +31,13 @@ class Group extends Model
     /**
      * バリデーションルール
      */
-    public const NAME_RULES = ['required', 'string', 'max:255'];
-    public const NAME_YOMI_RULES = ['required', 'string', 'max:255', 'regex:/^([ぁ-んァ-ヶー]+)$/u'];
+    public static function getValidationRules(bool $isIndividual)
+    {
+        return [
+            'name' => [Rule::excludeIf($isIndividual), 'required', 'string', 'max:255'],
+            'name_yomi' => [Rule::excludeIf($isIndividual), 'required', 'string', 'max:255', 'regex:/^([ぁ-んァ-ヶー]+)$/u'],
+        ];
+    }
 
     public function users()
     {
