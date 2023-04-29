@@ -26,6 +26,7 @@ import AppearanceSettings from "./components/AppearanceSettings.vue";
 import AppFixedFormFooter from "./components/AppFixedFormFooter.vue";
 import ListView from "./components/ListView.vue";
 import ListViewCard from "./components/ListViewCard.vue";
+import ListViewGroupInfoInputForRegister from "./components/ListViewGroupInfoInputForRegister.vue";
 import ListViewItem from "./components/ListViewItem.vue";
 import ListViewActionBtn from "./components/ListViewActionBtn.vue";
 import ListViewEmpty from "./components/ListViewEmpty.vue";
@@ -100,6 +101,7 @@ document.addEventListener("turbolinks:load", () => {
       AppFixedFormFooter,
       ListView,
       ListViewCard,
+      ListViewGroupInfoInputForRegister,
       ListViewItem,
       ListViewActionBtn,
       ListViewEmpty,
