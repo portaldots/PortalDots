@@ -28,6 +28,7 @@
       </template>
     </md-editor>
     <input type="hidden" :name="inputName" v-if="inputName" :value="content" />
+    <MarkdownEditorIcons v-if="shouldRenderIconSvg" />
   </div>
 </template>
 
@@ -35,6 +36,7 @@
 import MdEditor from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import JA_JP from "@vavt/md-editor-extension/dist/locale/jp-JP";
+import MarkdownEditorIcons from "./MarkdownEditorIcons.vue";
 
 MdEditor.config({
   editorConfig: {
@@ -60,7 +62,6 @@ MdEditor.config({
         footer: {
           ...JA_JP.footer,
           markdownTotal: "文字数",
-          scrollAuto: "自動スクロール",
         },
       },
     },
@@ -73,6 +74,7 @@ export default {
   components: {
     MdEditor,
     NormalToolbar: MdEditor.NormalToolbar,
+    MarkdownEditorIcons,
   },
   props: {
     inputName: {
@@ -88,6 +90,7 @@ export default {
     return {
       content: "",
       colorScheme: "light",
+      shouldRenderIconSvg: false,
     };
   },
   computed: {
@@ -112,13 +115,20 @@ export default {
       ];
     },
     footers() {
-      return ["markdownTotal", "=", 0, "scrollSwitch"];
+      return ["markdownTotal", "=", 0];
     },
   },
   mounted() {
     this.content = this.defaultValue;
     this.handleChangeColorScheme();
     isDarkQuery.addEventListener("change", this.handleChangeColorScheme);
+
+    this.$nextTick(() => {
+      // ツールバー用のアイコンが正常に表示されないことがある問題を解消
+      if (!document.querySelector('[id^="md-editor-icon-"]')) {
+        this.shouldRenderIconSvg = true;
+      }
+    });
   },
   unmounted() {
     isDarkQuery.removeEventListener("change", this.handleChangeColorScheme);
@@ -160,5 +170,6 @@ export default {
   display: inline-flex;
   align-items: center;
   font-size: 13px;
+  flex-shrink: 0;
 }
 </style>
