@@ -72,14 +72,37 @@ class RegisterService
                 'is_admin' => $is_admin
             ]);
 
-            $group = new Group();
-            $group->name = $is_individual ? null : $group_name;
-            $group->name_yomi = $is_individual ? null : $group_name_yomi;
-            $group->is_individual = $is_individual;
-            $group->save();
-            $group->users()->attach($user->id, ['role' => 'owner']);
+            // 登録種別に関わらず、「個人団体」は全員分作成する。
+            $this->makeGroupAndAttach(
+                user: $user,
+                is_individual: true,
+            );
+
+            if (!$is_individual) {
+                $this->makeGroupAndAttach(
+                    user: $user,
+                    is_individual: false,
+                    group_name: $group_name,
+                    group_name_yomi: $group_name_yomi
+                );
+            }
 
             return $user;
         });
+    }
+
+    private function makeGroupAndAttach(
+        User $user,
+        bool $is_individual,
+        ?string $group_name = null,
+        ?string $group_name_yomi = null
+    ): Group {
+        $group = new Group();
+        $group->name = $is_individual ? null : $group_name;
+        $group->name_yomi = $is_individual ? null : $group_name_yomi;
+        $group->is_individual = $is_individual;
+        $group->save();
+        $group->users()->attach($user->id, ['role' => 'owner']);
+        return $group;
     }
 }
