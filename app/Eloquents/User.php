@@ -166,6 +166,11 @@ class User extends Authenticatable
             ->withPivot('is_leader');
     }
 
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class)->using(GroupUser::class)->withPivot('role');
+    }
+
     /**
      * このユーザーが読んだお知らせ
      */

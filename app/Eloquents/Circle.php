@@ -51,8 +51,6 @@ class Circle extends Model
      */
     public const NAME_RULES = ['required', 'string', 'max:255'];
     public const NAME_YOMI_RULES = ['required', 'string', 'max:255', 'regex:/^([ぁ-んァ-ヶー]+)$/u'];
-    public const GROUP_NAME_RULES = ['required', 'string', 'max:255'];
-    public const GROUP_NAME_YOMI_RULES = ['required', 'string', 'max:255', 'regex:/^([ぁ-んァ-ヶー]+)$/u'];
     public const STATUS_RULES = ['required', 'in:pending,approved,rejected'];
 
     /**
@@ -66,10 +64,9 @@ class Circle extends Model
     public const STATUS_REJECTED = 'rejected';
 
     protected $fillable = [
+        'group_id',
         'name',
         'name_yomi',
-        'group_name',
-        'group_name_yomi',
         'invitation_token',
         'submitted_at',
         'status',
@@ -93,14 +90,9 @@ class Circle extends Model
         return $this->belongsToMany(Place::class, 'booths')->using(Booth::class);
     }
 
-    public function users()
+    public function group()
     {
-        return $this->belongsToMany(User::class)->using(CircleUser::class)->withPivot('is_leader');
-    }
-
-    public function leader()
-    {
-        return $this->users()->wherePivot('is_leader', true);
+        return $this->belongsTo(Group::class);
     }
 
     public function answers()
@@ -120,7 +112,7 @@ class Circle extends Model
      */
     public function canSubmit()
     {
-        return count($this->users) >= config('portal.users_number_to_submit_circle');
+        return count($this->group->users) >= config('portal.users_number_to_submit_circle');
     }
 
     /**
@@ -192,17 +184,6 @@ class Circle extends Model
     {
         // 半角カタカナ・全角カタカナを，全角ひらがなに変換する
         $this->attributes['name_yomi'] = mb_convert_kana($value, 'HVc');
-    }
-
-    /**
-     * 企画を出店する団体の名称(よみ)をひらがなにして保存する
-     *
-     * @param string $value
-     */
-    public function setGroupNameYomiAttribute($value)
-    {
-        // 半角カタカナ・全角カタカナを，全角ひらがなに変換する
-        $this->attributes['group_name_yomi'] = mb_convert_kana($value, 'HVc');
     }
 
     /**
