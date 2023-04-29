@@ -61,16 +61,16 @@ class StoreAction extends Controller
         }
 
         $user = $this->registerService->create(
-            $request->student_id,
-            $request->name,
-            $request->name_yomi,
-            $request->email,
-            $request->univemail_local_part,
-            $request->univemail_domain_part,
-            $request->tel,
-            $request->password,
-            true,
-            true
+            student_id: $request->student_id,
+            name: $request->name,
+            name_yomi: $request->name_yomi,
+            email: $request->email,
+            univemail_local_part: $request->univemail_local_part,
+            univemail_domain_part: $request->univemail_domain_part,
+            tel: $request->tel,
+            plain_password: $request->password,
+            is_staff: true,
+            is_admin: true
         );
 
         event(new Registered($user));
