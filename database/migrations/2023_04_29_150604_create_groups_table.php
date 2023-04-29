@@ -29,10 +29,10 @@ return new class extends Migration
             $table->primary(['group_id', 'user_id']);
         });
 
-        Schema::create('circle_group', function (Blueprint $table) {
-            $table->foreignId('circle_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('group_id')->constrained()->cascadeOnDelete();
-            $table->primary(['circle_id', 'group_id']);
+        Schema::table('circles', function (Blueprint $table) {
+            $table->dropColumn('group_name');
+            $table->dropColumn('group_name_yomi');
+            $table->foreignId('group_id')->after('id')->constrained()->cascadeOnDelete();
         });
     }
 
@@ -43,8 +43,13 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('circles', function (Blueprint $table) {
+            $table->dropForeign(['group_id']);
+            $table->dropColumn('group_id');
+            $table->string('group_name')->after('name_yomi');
+            $table->string('group_name_yomi')->after('group_name');
+        });
         Schema::dropIfExists('group_user');
-        Schema::dropIfExists('circle_group');
         Schema::dropIfExists('groups');
     }
 };
