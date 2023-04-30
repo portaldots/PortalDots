@@ -51,18 +51,33 @@
               name="activities"
               :row="row"
               :openEditorByUrl="
-                (url) =>
-                  openEditorByUrl(
+                (url, title = '') =>
+                  openEditorByUrl({
                     openEditorSideWindow,
                     url,
+                    title,
                     isEditorSideWindowOpen,
-                    closeFilterSideWindow
-                  )
+                    closeFilterSideWindow,
+                  })
               "
             />
           </template>
           <template v-slot:td="{ row, keyName }">
-            <slot name="td" :row="row" :keyName="keyName" />
+            <slot
+              name="td"
+              :row="row"
+              :keyName="keyName"
+              :openEditorByUrl="
+                (url, title = '') =>
+                  openEditorByUrl({
+                    openEditorSideWindow,
+                    url,
+                    title,
+                    isEditorSideWindowOpen,
+                    closeFilterSideWindow,
+                  })
+              "
+            />
           </template>
         </DataGridTable>
       </div>
@@ -85,7 +100,7 @@
         @clickClose="closeEditorSideWindow"
         :popUpUrl="sideWindowEditorPopUpUrl"
       >
-        <template #title>編集</template>
+        <template #title>{{ sideWindowEditorTitle }}</template>
         <DataGridEditor :editorUrl="sideWindowEditorUrl" @urlChanged="reload" />
       </SideWindow>
     </SideWindowContainer>
@@ -139,6 +154,7 @@ export default {
       needReload: false,
       loading: true,
       sideWindowEditorUrl: "",
+      sideWindowEditorTitle: "",
     };
   },
   async mounted() {
@@ -150,12 +166,13 @@ export default {
     this.needReload = true;
   },
   methods: {
-    openEditorByUrl(
+    openEditorByUrl({
       openEditorSideWindow,
       url,
+      title = "",
       isEditorSideWindowOpen,
-      closeFilterSideWindow
-    ) {
+      closeFilterSideWindow,
+    }) {
       if (!isEditorSideWindowOpen) {
         closeFilterSideWindow();
       }
@@ -165,6 +182,7 @@ export default {
       urlObject.searchParams.set("iframe", true);
       this.sideWindowEditorUrl = urlObject.href;
 
+      this.sideWindowEditorTitle = title ? title : "編集";
       openEditorSideWindow();
     },
     async onPopState() {
