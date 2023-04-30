@@ -26,6 +26,7 @@ body {
   line-height: $line-height-base;
   &.is-in-iframe {
     background: transparent;
+    --color-bg-surface: var(--color-bg-surface-2);
   }
 }
 
