@@ -50,12 +50,12 @@ export default {
 .side_window {
   background: $color-bg-surface;
   bottom: 0;
-  box-shadow: $box-shadow-lv1;
+  box-shadow: $box-shadow-lv4;
   display: flex;
   flex-direction: column;
   position: fixed;
   right: 0;
-  top: $navbar-height;
+  top: 0;
   width: $side-window-width;
   z-index: $z-index-side-window;
 
