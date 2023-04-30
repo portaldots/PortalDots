@@ -107,7 +107,7 @@ $listview-border: 1px solid $color-border;
 $container-padding-x: $spacing;
 $container-padding-y: 0;
 $container-padding-x-reduce: $spacing-md;
-$side-window-width: min(560px, 40vw);
+$side-window-width: min(640px, max(400px, 40vw));
 $focus-outline: 3px solid $color-focus-primary;
 $icon-button-size: 2.5rem;
 
