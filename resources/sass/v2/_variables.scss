@@ -107,7 +107,7 @@ $listview-border: 1px solid $color-border;
 $container-padding-x: $spacing;
 $container-padding-y: 0;
 $container-padding-x-reduce: $spacing-md;
-$side-window-width: 400px;
+$side-window-width: min(640px, max(400px, 40vw));
 $focus-outline: 3px solid $color-focus-primary;
 $icon-button-size: 2.5rem;
 
@@ -132,7 +132,7 @@ $z-index-dropdown-menu: 9996;
 $z-index-drawer: 9990;
 $z-index-drawer-backdrop: 9989;
 $z-index-navbar: 9980;
-$z-index-side-window: 9970;
+$z-index-side-window: 9985;
 $z-index-bottom-tabs: 9980;
 $z-index-fixed-form-footer: 9985;
 $z-index-form-group-addon: 1;
