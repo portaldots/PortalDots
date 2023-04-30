@@ -15,7 +15,7 @@ class GroupsExport implements FromCollection, WithHeadings, WithMapping
      */
     public function collection()
     {
-        return Group::with(['owners'])
+        return Group::with(['owners', 'members'])
             ->normal()
             ->get();
     }
@@ -34,6 +34,9 @@ class GroupsExport implements FromCollection, WithHeadings, WithMapping
             !empty($owner)
                 ? "{$owner->name}(ID:{$owner->id},{$owner->student_id})"
                 : '',
+            $group->members->map(function ($member) {
+                return "{$member->name}(ID:{$member->id},{$member->student_id})";
+            })->join(', '),
             $group->notes,
             $group->created_at,
             $group->updated_at,
@@ -47,6 +50,7 @@ class GroupsExport implements FromCollection, WithHeadings, WithMapping
             '団体名',
             '団体名(よみ)',
             '責任者',
+            '学園祭係(副責任者)',
             'スタッフ用メモ',
             '作成日時',
             '更新日時',
