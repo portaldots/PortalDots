@@ -15,9 +15,7 @@ class GroupsExport implements FromCollection, WithHeadings, WithMapping
      */
     public function collection()
     {
-        return Group::with(['users' => function (Builder $query) {
-            $query->wherePivot('role', 'owner');
-        }])
+        return Group::with(['owners'])
             ->normal()
             ->get();
     }
@@ -28,13 +26,7 @@ class GroupsExport implements FromCollection, WithHeadings, WithMapping
      */
     public function map($group): array
     {
-        $owners = $group->users->filter(function ($user) {
-            return $user->pivot->role === "owner";
-        });
-
-        // Ownerは1団体につき1人のみ。
-        $owner = count($owners) > 0 ? $owners[0] : null;
-
+        $owner = count($group->owners) > 0 ? $group->owners[0] : null;
         return [
             $group->id,
             $group->name,
