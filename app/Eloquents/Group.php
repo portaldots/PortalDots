@@ -58,7 +58,8 @@ class Group extends Model
         return $this->belongsToMany(User::class)->using(GroupUser::class)->withPivot('role');
     }
 
-    public function owner()
+    // オーナーは1団体につき1名のみだが、スコープを利用した取得結果は基本的に配列になるため複数形にしている
+    public function owners()
     {
         return $this->users()->wherePivot('role', 'owner');
     }
