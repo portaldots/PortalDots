@@ -40,6 +40,7 @@ class StoreAction extends Controller
                 'name' => $validated['name'],
                 'name_yomi' => $validated['name_yomi'],
                 'notes' => $validated['notes'],
+                'is_individual' => false,
             ]);
             $group->users()->detach();
 
