@@ -64,6 +64,11 @@ class Group extends Model
         return $this->users()->wherePivot('role', 'owner');
     }
 
+    public function members()
+    {
+        return $this->users()->wherePivot('role', 'member');
+    }
+
     public function circles()
     {
         return $this->hasMany(Circle::class);
