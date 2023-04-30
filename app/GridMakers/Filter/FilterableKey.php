@@ -17,6 +17,7 @@ class FilterableKey implements JsonSerializable
     public const TYPE_IS_NULL = 'isNull';
     public const TYPE_BELONGS_TO = 'belongsTo';
     public const TYPE_BELONGS_TO_MANY = 'belongsToMany';
+    public const TYPE_BELONGS_TO_MANY_WITHOUT_CHOICES = 'belongsToManyWithoutChoices';
     public const TYPE_ENUM = 'enum';
 
     public const TYPES = [
@@ -27,23 +28,17 @@ class FilterableKey implements JsonSerializable
         self::TYPE_IS_NULL,
         self::TYPE_BELONGS_TO,
         self::TYPE_BELONGS_TO_MANY,
+        self::TYPE_BELONGS_TO_MANY_WITHOUT_CHOICES,
         self::TYPE_ENUM,
     ];
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
-    /**
-     * @var FilterableKeyBelongsToOptions
-     */
-    private $belongsToOptions;
+    private ?FilterableKeyBelongsToOptions $belongsToOptions;
 
-    /**
-     * @var FilterableKeyBelongsToManyOptions
-     */
-    private $belongsToManyOptions;
+    private ?FilterableKeyBelongsToManyOptions $belongsToManyOptions;
+
+    private ?FilterableKeyBelongsToManyWithoutChoicesOptions $belongsToManyWithoutChoicesOptions;
 
     /**
      * @var array
@@ -58,22 +53,37 @@ class FilterableKey implements JsonSerializable
 
         $this->type = $type;
 
-        if ($type === self::TYPE_BELONGS_TO && !$options instanceof FilterableKeyBelongsToOptions) {
-            throw new InvalidArgumentException(FilterableKeyBelongsToOptions::class . 'オブジェクトが指定されていません。');
-        } else {
-            $this->belongsToOptions = $options;
+        if ($type === self::TYPE_BELONGS_TO) {
+            if ($options instanceof FilterableKeyBelongsToOptions) {
+                $this->belongsToOptions = $options;
+            } else {
+                throw new InvalidArgumentException(FilterableKeyBelongsToOptions::class . 'オブジェクトが指定されていません。');
+            }
         }
 
-        if ($type === self::TYPE_BELONGS_TO_MANY && !$options instanceof FilterableKeyBelongsToManyOptions) {
-            throw new InvalidArgumentException(FilterableKeyBelongsToManyOptions::class . 'オブジェクトが指定されていません。');
-        } else {
-            $this->belongsToManyOptions = $options;
+        if ($type === self::TYPE_BELONGS_TO_MANY) {
+            if ($options instanceof FilterableKeyBelongsToManyOptions) {
+                $this->belongsToManyOptions = $options;
+            } else {
+                throw new InvalidArgumentException(FilterableKeyBelongsToManyOptions::class . 'オブジェクトが指定されていません。');
+            }
         }
 
-        if ($type === self::TYPE_ENUM && (empty($options) || !is_array($options))) {
-            throw new InvalidArgumentException('配列が指定されていません。');
-        } else {
-            $this->enumChoices = $options;
+        if ($type === self::TYPE_BELONGS_TO_MANY_WITHOUT_CHOICES) {
+            if ($options instanceof FilterableKeyBelongsToManyWithoutChoicesOptions) {
+                $this->belongsToManyWithoutChoicesOptions = $options;
+            } else {
+                throw new InvalidArgumentException(FilterableKeyBelongsToManyWithoutChoicesOptions::class .
+                    'オブジェクトが指定されていません。');
+            }
+        }
+
+        if ($type === self::TYPE_ENUM) {
+            if (!empty($options) && is_array($options)) {
+                $this->enumChoices = $options;
+            } else {
+                throw new InvalidArgumentException('配列が指定されていません。');
+            }
         }
     }
 
@@ -159,6 +169,34 @@ class FilterableKey implements JsonSerializable
     }
 
     /**
+     * belongsToMany を使用している列。あらかじめ用意した選択肢ではなく、リレーション先の情報で検索できる。
+     *
+     * @param string $to リレーション先のテーブル名
+     * @param string $pivot belongsToManyに利用している中間テーブル名
+     * @param string $foreignPivotKey pivotテーブルにおける、自分側を表すidのカラム名
+     * @param string $relatedPivotKey pivotテーブルにおける、リレーション先を表すidのカラム名
+     * @param string $parentKey リレーション先の主キー
+     * @param FilterableKeysDict $parentKeys リレーション先テーブルにおけるフィルタ可能キー
+     */
+    public static function belongsToManyWithoutOptions(
+        string $to,
+        string $pivot,
+        string $foreignPivotKey,
+        string $relatedPivotKey,
+        string $parentKey,
+        FilterableKeysDict $parentKeys
+    ) {
+        return new self(self::TYPE_BELONGS_TO_MANY_WITHOUT_CHOICES, new FilterableKeyBelongsToManyWithoutChoicesOptions(
+            to: $to,
+            pivot: $pivot,
+            foreignPivotKey: $foreignPivotKey,
+            relatedPivotKey: $relatedPivotKey,
+            parentKey: $parentKey,
+            parentKeys: $parentKeys
+        ));
+    }
+
+    /**
      * circles.status の rejected / approved / NULL のような類の値。
      * 大文字の "NULL" という文字列をキーとした場合、is null クエリが発行される
      *
@@ -180,6 +218,8 @@ class FilterableKey implements JsonSerializable
                 return array_merge($base_array, $this->belongsToOptions->jsonSerialize());
             case self::TYPE_BELONGS_TO_MANY:
                 return array_merge($base_array, $this->belongsToManyOptions->jsonSerialize());
+            case self::TYPE_BELONGS_TO_MANY_WITHOUT_CHOICES:
+                return array_merge($base_array, $this->belongsToManyWithoutChoicesOptions->jsonSerialize());
             case self::TYPE_ENUM:
                 return array_merge($base_array, ['choices' => $this->enumChoices]);
             default:
@@ -203,6 +243,15 @@ class FilterableKey implements JsonSerializable
         }
 
         return $this->belongsToManyOptions;
+    }
+
+    public function getBelongsToManyWithoutChoicesOptions(): FilterableKeyBelongsToManyWithoutChoicesOptions
+    {
+        if ($this->type !== self::TYPE_BELONGS_TO_MANY_WITHOUT_CHOICES) {
+            throw new BadMethodCallException('type が belongsToManyWithoutChoices でないため、このメソッドを呼び出すことはできません。');
+        }
+
+        return $this->belongsToManyWithoutChoicesOptions;
     }
 
     public function getEnumChoices(): array

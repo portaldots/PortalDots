@@ -81,62 +81,109 @@ trait UseEloquent
                 $key_name = $filter_query->getMainKeyName();
                 $filterable_key = $filterable_keys->getByKey($key_name);
 
-                if ($filterable_key->getType() === FilterableKey::TYPE_BELONGS_TO_MANY) {
-                    $sub_query_function = function ($sub_query) use (
-                        $filterable_key,
-                        $filter_query
-                    ) {
-                        $options = $filterable_key->getBelongsToManyOptions();
-                        $pivot = $options->getPivot();
-                        $foreign_key = $options->getForeignKey();
+                switch ($filterable_key->getType()) {
+                    case FilterableKey::TYPE_BELONGS_TO_MANY:
+                        $sub_query_function = function ($sub_query) use (
+                            $filterable_key,
+                            $filter_query
+                        ) {
+                            $options = $filterable_key->getBelongsToManyOptions();
+                            $pivot = $options->getPivot();
+                            $foreign_key = $options->getForeignKey();
 
-                        $sub_query->from($pivot)
-                            ->select("{$pivot}.{$foreign_key}")
-                            ->where($options->getRelatedKey(), (int)$filter_query->getValue());
-                    };
+                            $sub_query->from($pivot)
+                                ->select("{$pivot}.{$foreign_key}")
+                                ->where($options->getRelatedKey(), (int)$filter_query->getValue());
+                        };
 
-                    $db_query->whereIn(
-                        $this->model()->getTable() . '.' . $this->model()->getKeyName(),
-                        $sub_query_function,
-                        $filter_mode
-                    );
-                } elseif ($filterable_key->getType() === FilterableKey::TYPE_BELONGS_TO) {
-                    $sub_query_function = function ($sub_query) use (
-                        $filterable_key,
-                        $filter_query,
-                        $filter_mode
-                    ) {
-                        $options = $filterable_key->getBelongsToOptions();
-                        $belongs_to = $options->getTo();
-
-                        $sub_query->from($belongs_to)
-                            ->select("{$belongs_to}.{$this->model()->getKeyName()}");
-
-                        $this->addToDbQuery(
-                            $sub_query,
-                            $options->getKeys()->getByKey($filter_query->getSubKeyName())->getType(),
-                            new FilterQueryItem(
-                                // ドット(.)より後ろの文字列のみ
-                                $filter_query->getSubKeyName(),
-                                $filter_query->getOperator(),
-                                $filter_query->getValue()
-                            ),
+                        $db_query->whereIn(
+                            $this->model()->getTable() . '.' . $this->model()->getKeyName(),
+                            $sub_query_function,
                             $filter_mode
                         );
-                    };
+                        break;
+                    case FilterableKey::TYPE_BELONGS_TO_MANY_WITHOUT_CHOICES:
+                        $sub_query_function = function ($pivot_sub_query) use (
+                            $filterable_key,
+                            $filter_query,
+                            $filter_mode,
+                        ) {
+                            $options = $filterable_key->getBelongsToManyWithoutChoicesOptions();
+                            $pivot = $options->getPivot();
+                            $foreign_key = $options->getForeignPivotKey();
 
-                    $db_query->whereIn(
-                        $this->model()->getTable() . '.' . $key_name,
-                        $sub_query_function,
-                        $filter_mode
-                    );
-                } else {
-                    $this->addToDbQuery(
-                        $db_query,
-                        $filterable_key->getType(),
-                        $filter_query,
-                        $filter_mode
-                    );
+                            $related_sub_query_function = function ($related_sub_query) use (
+                                $options,
+                                $filterable_key,
+                                $filter_query,
+                                $filter_mode
+                            ) {
+                                $to = $options->getTo();
+                                $parent_key = $options->getParentKey();
+                                $related_sub_query = $related_sub_query->from($to)
+                                    ->select("{$to}.{$parent_key}");
+
+                                $this->addToDbQuery(
+                                    $related_sub_query,
+                                    $filterable_key->getType(),
+                                    $filter_query,
+                                    $filter_mode
+                                );
+                            };
+
+                            $pivot_sub_query->from($pivot)
+                                ->select("{$pivot}.{$foreign_key}")
+                                ->whereIn(
+                                    $pivot . '.' . $options->getRelatedPivotKey(),
+                                    $related_sub_query_function
+                                );
+                        };
+
+                        $db_query->whereIn(
+                            $this->model()->getTable() . '.' . $this->model()->getKeyName(),
+                            $sub_query_function,
+                            $filter_mode
+                        );
+                        break;
+                    case FilterableKey::TYPE_BELONGS_TO:
+                        $sub_query_function = function ($sub_query) use (
+                            $filterable_key,
+                            $filter_query,
+                            $filter_mode
+                        ) {
+                            $options = $filterable_key->getBelongsToOptions();
+                            $belongs_to = $options->getTo();
+
+                            $sub_query->from($belongs_to)
+                                ->select("{$belongs_to}.{$this->model()->getKeyName()}");
+
+                            $this->addToDbQuery(
+                                $sub_query,
+                                $options->getKeys()->getByKey($filter_query->getSubKeyName())->getType(),
+                                new FilterQueryItem(
+                                    // ドット(.)より後ろの文字列のみ
+                                    $filter_query->getSubKeyName(),
+                                    $filter_query->getOperator(),
+                                    $filter_query->getValue()
+                                ),
+                                $filter_mode
+                            );
+                        };
+
+                        $db_query->whereIn(
+                            $this->model()->getTable() . '.' . $key_name,
+                            $sub_query_function,
+                            $filter_mode
+                        );
+                        break;
+                    default:
+                        $this->addToDbQuery(
+                            $db_query,
+                            $filterable_key->getType(),
+                            $filter_query,
+                            $filter_mode
+                        );
+                        break;
                 }
             }
         });
@@ -161,7 +208,7 @@ trait UseEloquent
                 if (!in_array($filter_query->getOperator(), ['=', '!=', '<', '>', '<=', '>='], true)) {
                     return;
                 }
-                $query_value_for_sql = (double)$filter_query->getValue();
+                $query_value_for_sql = (float)$filter_query->getValue();
                 break;
             case FilterableKey::TYPE_DATETIME:
                 if (!in_array($filter_query->getOperator(), ['=', '!=', '<', '>', '<=', '>='], true)) {

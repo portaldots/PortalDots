@@ -226,7 +226,10 @@ export default {
   computed: {
     itemsForFilterQuery() {
       return Object.keys(this.filterableKeys).map((key) => {
-        if (this.filterableKeys[key].type !== "belongsTo") {
+        if (
+          this.filterableKeys[key].type !== "belongsTo" &&
+          this.filterableKeys[key].type !== "belongsToManyWithoutChoices"
+        ) {
           return {
             keyName: key,
             type: this.filterableKeys[key].type,
