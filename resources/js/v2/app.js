@@ -46,6 +46,7 @@ import MarkdownEditor from "./components/MarkdownEditor.vue";
 import SearchInput from "./components/SearchInput.vue";
 import PermissionsSelector from "./components/PermissionsSelector.vue";
 import UiPrimaryColorPicker from "./components/UiPrimaryColorPicker.vue";
+import DataGridShortcutLink from "./components/DataGridShortcutLink.vue";
 
 // Form Questions
 import QuestionItem from "./components/Forms/QuestionItem.vue";
@@ -123,6 +124,7 @@ document.addEventListener("turbolinks:load", () => {
       SearchInput,
       PermissionsSelector,
       UiPrimaryColorPicker,
+      DataGridShortcutLink,
     },
     data() {
       return {
