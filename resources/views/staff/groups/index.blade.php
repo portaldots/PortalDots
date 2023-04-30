@@ -9,6 +9,8 @@
                                 id: '団体ID',
                                 name: '団体名',
                                 name_yomi: '団体名(よみ)',
+                                owner: '責任者',
+                                members: '学園祭係(副責任者)',
                                 users_count: 'メンバー数',
                                 circles_count: '企画数',
                                 users: 'メンバー',
@@ -68,8 +70,30 @@
                 </icon-button>
             </form-with-confirm>
         </template>
-        <template v-slot:td="{ row, keyName }">
-            @{{ row[keyName] }}
+        <template v-slot:td="{ row, keyName, openEditorByUrl }">
+            <template v-if="keyName === 'owner' && row[keyName]">
+                {{-- 責任者 --}}
+                <data-grid-shortcut-link
+                    v-bind:url="`{{ route('staff.users.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row[keyName].id)"
+                    v-bind:open-editor-by-url="openEditorByUrl" editor-title="ユーザーを編集">
+                    @{{ row[keyName].name_family }} @{{ row[keyName].name_given }}
+                    (@{{ row[keyName].student_id }} •
+                    ID : @{{ row[keyName].id }})
+                </data-grid-shortcut-link>
+            </template>
+            <template v-else-if="keyName === 'members' && row[keyName]">
+                {{-- 学園祭係(副責任者) --}}
+                <data-grid-shortcut-link v-for="member in row[keyName]" v-bind:key="member.id"
+                    v-bind:url="`{{ route('staff.users.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', member.id)"
+                    v-bind:open-editor-by-url="openEditorByUrl" editor-title="ユーザーを編集">
+                    @{{ member.name_family }} @{{ member.name_given }}
+                    (@{{ member.student_id }} •
+                    ID : @{{ member.id }})
+                </data-grid-shortcut-link>
+            </template>
+            <template v-else>
+                @{{ row[keyName] }}
+            </template>
         </template>
     </data-grid>
 @endsection

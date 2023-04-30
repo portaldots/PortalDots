@@ -120,7 +120,7 @@
                 </icon-button>
             </form-with-confirm>
         </template>
-        <template v-slot:td="{ row, keyName }">
+        <template v-slot:td="{ row, keyName, openEditorByUrl }">
             <template v-if="keyName === 'is_individual'">
                 {{-- 登録者種別 --}}
                 <app-badge v-if="row[keyName]" muted strong>個人</app-badge>
@@ -132,15 +132,23 @@
                     -
                 </template>
                 <template v-else>
-                    @{{ row[keyName].name }}
-                    (ID : @{{ row[keyName].id }})
+                    <data-grid-shortcut-link
+                        v-bind:url="`{{ route('staff.groups.edit', ['group' => '%%GROUP%%']) }}`.replace('%%GROUP%%', row[keyName].id)"
+                        v-bind:open-editor-by-url="openEditorByUrl" editor-title="団体を編集">
+                        @{{ row[keyName].name }}
+                        (ID : @{{ row[keyName].id }})
+                    </data-grid-shortcut-link>
                 </template>
             </template>
             <template v-else-if="keyName === 'users' && row[keyName]">
                 {{-- 責任者 --}}
-                @{{ row[keyName].name_family }} @{{ row[keyName].name_given }}
-                (@{{ row[keyName].student_id }} •
-                ID : @{{ row[keyName].id }})
+                <data-grid-shortcut-link
+                    v-bind:url="`{{ route('staff.users.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row[keyName].id)"
+                    v-bind:open-editor-by-url="openEditorByUrl" editor-title="ユーザーを編集">
+                    @{{ row[keyName].name_family }} @{{ row[keyName].name_given }}
+                    (@{{ row[keyName].student_id }} •
+                    ID : @{{ row[keyName].id }})
+                </data-grid-shortcut-link>
             </template>
             <template v-else-if="keyName === 'places'">
                 {{-- 使用場所 --}}
