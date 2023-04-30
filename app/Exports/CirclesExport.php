@@ -31,22 +31,24 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
-        return Circle::submitted()->with(['leader', 'users', 'places', 'tags', 'statusSetBy'])->get();
+        return Circle::submitted()->with([
+            'group', 'group.owners', 'group.members', 'places', 'tags', 'statusSetBy'
+        ])->get();
     }
 
     /**
-    * @param Circle $circle
-    */
+     * @param Circle $circle
+     */
     public function map($circle): array
     {
-        $leader = $circle->leader->first();
+        $owner = $circle->group->owners->first();
         $members = [];
 
-        foreach ($circle->users->where('pivot.is_leader', false) as $member) {
+        foreach ($circle->group->members as $member) {
             $members[] = "{$member->name}(ID:{$member->id},{$member->student_id})";
         }
 
@@ -75,12 +77,12 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
                 $status,
                 $circle->status_set_at,
                 $circle->statusSetBy
-                ? "{$circle->statusSetBy->name}(ID:{$circle->statusSetBy->id},{$circle->statusSetBy->student_id})"
-                : '',
+                    ? "{$circle->statusSetBy->name}(ID:{$circle->statusSetBy->id},{$circle->statusSetBy->student_id})"
+                    : '',
                 $circle->created_at,
                 $circle->updated_at,
                 $circle->notes,
-                $leader ? "{$leader->name}(ID:{$leader->id},{$leader->student_id})" : '',
+                $owner ? "{$owner->name}(ID:{$owner->id},{$owner->student_id})" : '',
                 implode(',', $members),
             ],
             isset($answer) ? $this->answersExport->getDetails($answer) : []
@@ -112,8 +114,8 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
                 '学園祭係',
             ],
             isset($this->customForm)
-            ? $this->customForm->questions->where('type', '!==', 'heading')->pluck('name')->toArray()
-            : [],
+                ? $this->customForm->questions->where('type', '!==', 'heading')->pluck('name')->toArray()
+                : [],
         );
     }
 }
