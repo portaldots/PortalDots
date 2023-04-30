@@ -1,6 +1,9 @@
 <template>
   <ListViewFormGroup>
     <template #label>登録種別</template>
+    <template #description>
+      個人を選択した場合でも、後から団体を作成できます
+    </template>
     <div class="group-types">
       <label class="group-types__item">
         <input
