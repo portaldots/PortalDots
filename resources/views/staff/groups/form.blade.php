@@ -26,6 +26,12 @@
 
         <app-container>
             <list-view>
+                <list-view-action-btn href="{{ route('staff.groups.email', ['group' => $group]) }}"
+                    icon-class="far fa-envelope" newtab>
+                    団体へメール送信
+                </list-view-action-btn>
+            </list-view>
+            <list-view>
                 <list-view-form-group label-for="name">
                     <template v-slot:label>
                         団体名
