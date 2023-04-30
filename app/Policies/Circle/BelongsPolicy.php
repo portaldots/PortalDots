@@ -22,7 +22,7 @@ class BelongsPolicy
 
     public function __invoke(User $user, Circle $circle)
     {
-        $result = $circle->users()->where('circle_user.user_id', $user->id)->first();
+        $result = $circle->group()->users()->where('group_user.user_id', $user->id)->first();
 
         return !empty($result);
     }
