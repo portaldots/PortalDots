@@ -11,7 +11,6 @@ use App\GridMakers\Filter\FilterableKey;
 use App\GridMakers\Filter\FilterableKeysDict;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\Utils\FormatTextService;
-use Illuminate\Contracts\Database\Eloquent\Builder as EloquentBuilder;
 
 class GroupsGridMaker implements GridMakable
 {
@@ -66,10 +65,36 @@ class GroupsGridMaker implements GridMakable
      */
     public function filterableKeys(): FilterableKeysDict
     {
+        $usersType = FilterableKey::belongsToManyWithoutOptions(
+            to: 'users',
+            pivot: 'group_user',
+            foreignPivotKey: 'group_id',
+            relatedPivotKey: 'user_id',
+            parentKey: 'id',
+            parentKeys: new FilterableKeysDict([
+                'id' => FilterableKey::number(),
+                'student_id' => FilterableKey::string(),
+                'name_family' => FilterableKey::string(),
+                'name_family_yomi' => FilterableKey::string(),
+                'name_given' => FilterableKey::string(),
+                'name_given_yomi' => FilterableKey::string(),
+                'email' => FilterableKey::string(),
+                'tel' => FilterableKey::string(),
+                'is_staff' => FilterableKey::bool(),
+                'is_admin' => FilterableKey::bool(),
+                'email_verified_at' => FilterableKey::isNull(),
+                'univemail_verified_at' => FilterableKey::isNull(),
+                'notes' => FilterableKey::string(),
+                'created_at' => FilterableKey::datetime(),
+                'updated_at' => FilterableKey::datetime(),
+            ])
+        );
+
         return new FilterableKeysDict([
             'id' => FilterableKey::number(),
             'name' => FilterableKey::string(),
             'name_yomi' => FilterableKey::string(),
+            'users' => $usersType,
             'users_count' => FilterableKey::number(),
             'circles_count' => FilterableKey::number(),
             'notes' => FilterableKey::string(),
