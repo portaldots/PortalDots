@@ -40,7 +40,8 @@ class GroupsGridMaker implements GridMakable
             'updated_at'
         ])
             ->normal()
-            ->withCount(['users', 'circles']);
+            ->with(['owners', 'members'])
+            ->withCount(['circles']);
     }
 
     /**
@@ -52,7 +53,8 @@ class GroupsGridMaker implements GridMakable
             'id',
             'name',
             'name_yomi',
-            'users_count',
+            'owner',
+            'members',
             'circles_count',
             'notes',
             'created_at',
@@ -112,7 +114,6 @@ class GroupsGridMaker implements GridMakable
             'id',
             'name',
             'name_yomi',
-            'users_count',
             'circles_count',
             'notes',
             'created_at',
@@ -125,16 +126,16 @@ class GroupsGridMaker implements GridMakable
      */
     public function map($record): array
     {
-        $owners = $record->users->filter(function ($user) {
-            return $user->pivot->role === "owner";
-        });
-
-        // Ownerは1団体につき1人のみ。
-        $owner = count($owners) > 0 ? $owners[0] : null;
-
+        $owner = count($record->owners) > 0 ? $record->owners[0] : null;
         $item = [];
         foreach ($this->keys() as $key) {
             switch ($key) {
+                case 'owner':
+                    $item[$key] = $owner;
+                    break;
+                case 'members':
+                    $item[$key] = $record->members;
+                    break;
                 case 'created_at':
                     $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
                     break;
