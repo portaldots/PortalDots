@@ -10,8 +10,8 @@ class FilterableKeyBelongsToManyOptionsTest extends TestCase
     public function instantiate()
     {
         return new FilterableKeyBelongsToManyOptions(
-            'circle_user',
-            'circle_id',
+            'group_user',
+            'group_id',
             'user_id',
             [
                 'id' => 1, 'name' => 'Aさん',
@@ -37,7 +37,7 @@ class FilterableKeyBelongsToManyOptionsTest extends TestCase
     public function getPivot()
     {
         $obj = $this->instantiate();
-        $this->assertEquals('circle_user', $obj->getPivot());
+        $this->assertEquals('group_user', $obj->getPivot());
     }
 
     /**
@@ -46,7 +46,7 @@ class FilterableKeyBelongsToManyOptionsTest extends TestCase
     public function getForeignKey()
     {
         $obj = $this->instantiate();
-        $this->assertEquals('circle_id', $obj->getForeignKey());
+        $this->assertEquals('group_id', $obj->getForeignKey());
     }
 
     /**
@@ -65,10 +65,10 @@ class FilterableKeyBelongsToManyOptionsTest extends TestCase
     {
         $obj = $this->instantiate();
         $this->assertEquals([
-                'id' => 1, 'name' => 'Aさん',
-                'id' => 2, 'name' => 'Bさん',
-                'id' => 3, 'name' => 'Cさん',
-            ], $obj->getChoices());
+            'id' => 1, 'name' => 'Aさん',
+            'id' => 2, 'name' => 'Bさん',
+            'id' => 3, 'name' => 'Cさん',
+        ], $obj->getChoices());
     }
 
     /**
@@ -87,8 +87,8 @@ class FilterableKeyBelongsToManyOptionsTest extends TestCase
     {
         $obj = $this->instantiate();
         $expected = json_encode([
-            'pivot' => 'circle_user',
-            'foreign_key' => 'circle_id',
+            'pivot' => 'group_user',
+            'foreign_key' => 'group_id',
             'related_key' => 'user_id',
             'choices' => [
                 'id' => 1, 'name' => 'Aさん',
