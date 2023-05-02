@@ -7,7 +7,6 @@ use App\Http\Requests\Circles\CircleRequest;
 use App\Services\Circles\CirclesService;
 use App\Services\Forms\AnswersService;
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -48,9 +47,10 @@ class UpdateAction extends Controller
                 $request->group_name_yomi
             );
 
-            $custom_form_answer = $circle->participationType->form->answer;
+            $participationFormAnswer =
+                $circle->participationType->form->answers[0] ?? null;
 
-            if (empty($custom_form_answer)) {
+            if (empty($participationFormAnswer)) {
                 $this->answersService->createAnswer(
                     $circle->participationType->form,
                     $circle,
@@ -59,7 +59,7 @@ class UpdateAction extends Controller
             } else {
                 $this->answersService->updateAnswer(
                     $circle->participationType->form,
-                    $custom_form_answer,
+                    $participationFormAnswer,
                     $request
                 );
             }

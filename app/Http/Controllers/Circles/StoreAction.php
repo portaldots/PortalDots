@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Circles\CircleRequest;
 use App\Services\Circles\CirclesService;
 use App\Services\Forms\AnswersService;
-use App\Eloquents\CustomForm;
+use App\Eloquents\ParticipationType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -34,17 +34,20 @@ class StoreAction extends Controller
 
         activity()->disableLogging();
 
-        $result = DB::transaction(function () use ($request) {
+        $participationType = ParticipationType::findOrFail($request->participation_type);
+
+        $result = DB::transaction(function () use ($request, $participationType) {
             $circle = $this->circlesService->create(
-                Auth::user(),
-                $request->name,
-                $request->name_yomi,
-                $request->group_name,
-                $request->group_name_yomi
+                participationType: $participationType,
+                leader: Auth::user(),
+                name: $request->name,
+                name_yomi: $request->name_yomi,
+                group_name: $request->group_name,
+                group_name_yomi: $request->group_name_yomi
             );
 
             $this->answersService->createAnswer(
-                CustomForm::getFormByType('circle'),
+                $participationType->form,
                 $circle,
                 $request
             );

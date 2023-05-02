@@ -9,7 +9,9 @@
         enctype="multipart/form-data">
         @csrf
 
-        @method(empty($circle) ? 'post' : 'patch' )
+        @method(empty($circle) ? 'post' : 'patch')
+
+        <input type="hidden" name="participation_type" value="{{ $participation_type->id }}">
 
         <app-container medium>
             @isset($form->description)
@@ -39,8 +41,8 @@
                         企画名
                         <app-badge danger>必須</app-badge>
                     </template>
-                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                        value="{{ old('name', isset($circle) ? $circle->name : '') }}" required>
+                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                        name="name" value="{{ old('name', isset($circle) ? $circle->name : '') }}" required>
                     @error('name')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror
@@ -51,8 +53,7 @@
                         <app-badge danger>必須</app-badge>
                     </template>
                     <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror"
-                        name="name_yomi" value="{{ old('name_yomi', isset($circle) ? $circle->name_yomi : '') }}"
-                        required>
+                        name="name_yomi" value="{{ old('name_yomi', isset($circle) ? $circle->name_yomi : '') }}" required>
                     @error('name_yomi')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror

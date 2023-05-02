@@ -19,6 +19,7 @@ class CreateAction extends Controller
         $participationType = ParticipationType::findOrFail($request->participation_type);
 
         return view('circles.form')
+            ->with('participation_type', $participationType)
             ->with('form', $participationType->form)
             ->with('questions', $participationType->form->questions()->get());
     }

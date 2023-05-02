@@ -24,14 +24,15 @@ class StoreAction extends Controller
             abort(404);
         }
 
-        $custom_form = CustomForm::getFormByType('circle');
+        $participationForm = $circle->participationType->form;
 
-        $can_join = isset($custom_form)
-            && $custom_form->is_public
-            && $custom_form->isOpen()
+        $canJoin = isset($participationForm)
+            && $participationForm->is_public
+            && $participationForm->isOpen()
             && !$circle->hasSubmitted();
 
-        if (!$can_join) {
+        // FIXME: 参加可能人数の上限に達している場合もエラーにしたい
+        if (!$canJoin) {
             abort(404);
         }
 
@@ -46,7 +47,7 @@ class StoreAction extends Controller
         activity()->enableLogging();
 
         return redirect()
-                ->route('circles.show', ['circle' => $circle])
-                ->with('topAlert.title', "「{$circle->name}」の学園祭係(副責任者)になりました");
+            ->route('circles.show', ['circle' => $circle])
+            ->with('topAlert.title', "「{$circle->name}」の学園祭係(副責任者)になりました");
     }
 }

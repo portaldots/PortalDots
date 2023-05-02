@@ -127,7 +127,7 @@ class Circle extends Model
      */
     public function canSubmit()
     {
-        return count($this->users) >= config('portal.users_number_to_submit_circle');
+        return count($this->users) >= $this->participationType->users_count_min;
     }
 
     /**

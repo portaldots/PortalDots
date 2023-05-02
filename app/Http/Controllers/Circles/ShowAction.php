@@ -33,7 +33,7 @@ class ShowAction extends Controller
         ) {
             $circle->load('users', 'places');
 
-            $answer = $circle->participationType->form->answer;
+            $answer = $circle->participationType->form->answers[0] ?? null;
 
             return view('circles.show')
                 ->with('circle', $circle)

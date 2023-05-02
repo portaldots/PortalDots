@@ -8,6 +8,7 @@ use App\Eloquents\Answer;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
+use App\Eloquents\ParticipationType;
 use App\Eloquents\Place;
 use App\Eloquents\Tag;
 use App\Mail\Circles\ApprovedMailable;
@@ -34,6 +35,7 @@ class CirclesService
     /**
      * 企画を作成する
      *
+     * @param ParticipationType $participationType 参加種別
      * @param User $leader 企画責任者
      * @param string $name 企画名
      * @param string $name_yomi 企画名(よみ)
@@ -41,10 +43,17 @@ class CirclesService
      * @param string $group_name_yomi 企画を出店する団体の名称(よみ)
      * @return Circle
      */
-    public function create(User $leader, string $name, string $name_yomi, string $group_name, string $group_name_yomi)
-    {
-        return DB::transaction(function () use ($leader, $name, $name_yomi, $group_name, $group_name_yomi) {
+    public function create(
+        ParticipationType $participationType,
+        User $leader,
+        string $name,
+        string $name_yomi,
+        string $group_name,
+        string $group_name_yomi
+    ) {
+        return DB::transaction(function () use ($participationType, $leader, $name, $name_yomi, $group_name, $group_name_yomi) {
             $circle = Circle::create([
+                'participation_type_id' => $participationType->id,
                 'name' => $name,
                 'name_yomi' => $name_yomi,
                 'group_name' => $group_name,
@@ -200,40 +209,40 @@ class CirclesService
         array $answerDetails = null
     ) {
         Mail::to($user)
-        ->send(
-            (new SubmitedMailable(
-                $circle,
-                $customForm,
-                $questions,
-                $answer,
-                $answerDetails
-            ))
-                ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
-                ->subject("【参加登録】「{$circle->name}」の参加登録を提出しました")
-        );
+            ->send(
+                (new SubmitedMailable(
+                    $circle,
+                    $customForm,
+                    $questions,
+                    $answer,
+                    $answerDetails
+                ))
+                    ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
+                    ->subject("【参加登録】「{$circle->name}」の参加登録を提出しました")
+            );
     }
 
     public function sendApprovedEmail(User $user, Circle $circle)
     {
         Mail::to($user)
-        ->send(
-            (new ApprovedMailable(
-                $circle,
-            ))
-                ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
-                ->subject("【受理】「{$circle->name}」の参加登録が受理されました")
-        );
+            ->send(
+                (new ApprovedMailable(
+                    $circle,
+                ))
+                    ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
+                    ->subject("【受理】「{$circle->name}」の参加登録が受理されました")
+            );
     }
 
     public function sendRejectedEmail(User $user, Circle $circle)
     {
         Mail::to($user)
-        ->send(
-            (new RejectedMailable(
-                $circle,
-            ))
-                ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
-                ->subject("【不受理】「{$circle->name}」の参加登録は受理されませんでした")
-        );
+            ->send(
+                (new RejectedMailable(
+                    $circle,
+                ))
+                    ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
+                    ->subject("【不受理】「{$circle->name}」の参加登録は受理されませんでした")
+            );
     }
 }

@@ -26,9 +26,10 @@ class EditAction extends Controller
             abort(403);
         }
 
-        $answer = $circle->participationType->form->answer;
+        $answer = $circle->participationType->form->answers[0] ?? null;
 
         return view('circles.form')
+            ->with('participation_type', $circle->participationType)
             ->with('circle', $circle)
             ->with('form', $circle->participationType->form)
             ->with('questions', $circle->participationType->form->questions)
