@@ -75,19 +75,6 @@
                 <i class="fas fa-plus fa-fw"></i>
                 新規企画
             </a>
-            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.circles.custom_form.index') }}">
-                <i class="fas fa-users-cog fa-fw"></i>
-                企画参加登録機能の設定
-                @if (empty($custom_form))
-                    <app-badge muted outline strong>未設定</app-badge>
-                @elseif(!$custom_form->is_public)
-                    <app-badge danger>非公開</app-badge>
-                @elseif(!$custom_form->isOpen())
-                    <app-badge muted>受付期間外</app-badge>
-                @else
-                    <app-badge primary strong>受付期間内</app-badge>
-                @endif
-            </a>
             <a class="btn is-primary-inverse is-no-border"
                 href="{{ isset($participation_type)
                     ? route('staff.circles.participation_types.export', ['participation_type' => $participation_type])
