@@ -21,7 +21,6 @@ return new class extends Migration
             $table->integer('users_count_max');
             $table->foreignId('form_id')
                 ->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('tag_id')->nullable()->constrained();
             $table->timestamps();
         });
     }
