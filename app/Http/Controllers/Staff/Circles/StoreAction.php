@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
-use App\Http\Requests\Staff\Circles\CircleRequest;
+use App\Http\Requests\Staff\Circles\CreateCircleRequest;
 use App\Services\Circles\CirclesService;
 use App\Services\Circles\Exceptions\DenyCreateTagsException;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +30,7 @@ class StoreAction extends Controller
         $this->circlesService = $circlesService;
     }
 
-    public function __invoke(CircleRequest $request)
+    public function __invoke(CreateCircleRequest $request)
     {
         DB::beginTransaction();
 
@@ -57,6 +57,7 @@ class StoreAction extends Controller
 
         // 保存処理
         $circle = Circle::create([
+            'participation_type_id' => $request->participation_type_id,
             'name'  => $request->name,
             'name_yomi'  => $request->name_yomi,
             'group_name'  => $request->group_name,
