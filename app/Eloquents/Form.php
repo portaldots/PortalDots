@@ -94,11 +94,11 @@ class Form extends Model
     }
 
     /**
-     * カスタムフォームは含めない
+     * 企画参加登録フォームは含めない
      */
-    public function scopeWithoutCustomForms($query)
+    public function scopeWithoutParticipationForms($query)
     {
-        return $query->doesntHave('customForm');
+        return $query->doesntHave('participationType');
     }
 
     /**
@@ -143,9 +143,9 @@ class Form extends Model
         return $this->hasMany(Answer::class);
     }
 
-    public function customForm()
+    public function participationType()
     {
-        return $this->hasOne(CustomForm::class);
+        return $this->hasOne(ParticipationType::class);
     }
 
     // TODO: 意味的に isAnswered という名前に変えたい
