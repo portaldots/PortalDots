@@ -31,7 +31,7 @@ class CreateCircleRequest extends FormRequest
     public function rules()
     {
         return [
-            'participation_type_id' => ['nullable', 'exists:participation_types,id'],
+            'participation_type_id' => ['required', 'exists:participation_types,id'],
             'name' => Circle::NAME_RULES,
             'name_yomi' => Circle::NAME_YOMI_RULES,
             'group_name' => Circle::GROUP_NAME_RULES,

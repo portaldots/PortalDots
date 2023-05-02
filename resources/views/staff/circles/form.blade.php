@@ -35,8 +35,8 @@
                     <select id="participation_type_id"
                         class="form-control @error('participation_type_id') is-invalid @enderror" name="participation_type_id"
                         value="{{ old('participation_type_id', empty($circle) ? '' : $circle->participation_type_id) }}"
-                        {{ empty($circle) ? '' : 'disabled' }}>
-                        <option value="">（指定しない）</option>
+                        {{ empty($circle) ? '' : 'disabled' }} required>
+                        <option disabled value="">選択してください</option>
                         @foreach ($participation_types as $participation_type)
                             <option value="{{ $participation_type->id }}">{{ $participation_type->name }}</option>
                         @endforeach
