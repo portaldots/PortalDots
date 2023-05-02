@@ -32,7 +32,7 @@
         <template v-slot:title>
             {{ $participation_type->name }}
         </template>
-        <div data-turbolinks="false" class="markdown">
+        <div>
             {{ $participation_type->description }}
         </div>
     </app-header>
