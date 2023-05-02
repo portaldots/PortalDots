@@ -56,10 +56,10 @@ class Permission extends SpatiePermission
                     '企画情報管理の全機能を利用可能。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
                 ),
                 'staff.circles.custom_form' => new PermissionInfo(
-                    'staff.circles.custom_form',
-                    'スタッフモード › 企画情報管理 › 企画参加登録の設定変更',
-                    '企画(企画参加登録)',
-                    '企画参加登録機能の設定が可能。ただし、企画参加登録フォームを編集したい場合、別途フォームの編集権限が必要です。'
+                    'staff.circles.participation_types',
+                    'スタッフモード › 企画情報管理 › 参加種別／企画参加登録の編集',
+                    '企画(参加種別)',
+                    '参加種別の編集が可能。ただし、企画参加登録フォームを編集したい場合、別途フォームの編集権限が必要です。'
                 ),
                 'staff.circles.read,edit,delete' => new PermissionInfo(
                     'staff.circles.read,edit,delete',
@@ -270,7 +270,7 @@ class Permission extends SpatiePermission
                     'スタッフモード › お問い合わせ管理 › 全機能',
                     'お問い合わせ(全機能)',
                     'お問い合わせ管理の全機能を利用可能。今後、受信したお問い合わせを管理する機能が実装された場合、' .
-                    'その機能の利用も可能になります。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
+                        'その機能の利用も可能になります。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
                 ),
                 'staff.contacts.categories.read,edit,delete' => new PermissionInfo(
                     'staff.contacts.categories.read,edit,delete',
