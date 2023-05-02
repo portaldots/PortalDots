@@ -42,8 +42,8 @@ class HomeAction extends Controller
                 'my_circles',
                 Auth::check()
                     ? Auth::user()
-                        ->circles()
-                        ->get()
+                    ->circles()
+                    ->get()
                     : collect([])
             )
             ->with('circle', $circle)
@@ -84,7 +84,7 @@ class HomeAction extends Controller
                     ->take(self::TAKE_COUNT)
                     ->public()
                     ->open()
-                    ->withoutCustomForms()
+                    ->withoutParticipationForms()
                     ->closeOrder()
                     ->get()
             );

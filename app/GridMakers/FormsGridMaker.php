@@ -41,7 +41,7 @@ class FormsGridMaker implements GridMakable
             'close_at',
             'created_at',
             'updated_at',
-        ])->with(['answerableTags'])->withoutCustomForms();
+        ])->with(['answerableTags'])->withoutParticipationForms();
     }
 
     /**

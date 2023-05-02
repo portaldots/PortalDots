@@ -26,7 +26,7 @@ class IndexAction extends Controller
     {
         $circle = $this->selectorService->getCircle();
 
-        $forms = Form::byCircle($circle)->public()->withoutCustomForms()->open()->closeOrder()->paginate(10);
+        $forms = Form::byCircle($circle)->public()->withoutParticipationForms()->open()->closeOrder()->paginate(10);
 
         if (empty($this->selectorService->getCircle())) {
             // TODO: もうちょっとまともなエラー表示にする
