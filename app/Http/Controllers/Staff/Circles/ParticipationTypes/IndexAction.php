@@ -12,7 +12,7 @@ class IndexAction extends Controller
     {
         $participationType->loadMissing(['form', 'form.questions']);
 
-        return view('staff.circles.index')
+        return view('staff.circles.data_grid')
             ->with('participation_type', $participationType)
             ->with('custom_form', CustomForm::getFormByType('circle'));
     }
