@@ -152,7 +152,7 @@
                 <list-view-form-group label-for="members">
                     <template v-slot:label>学園祭係(副責任者)の{{ config('portal.student_id_name') }}</template>
                     <template
-                        v-slot:description>{{ config('portal.student_id_name') }}を改行して入力することで複数の学園祭係を追加できます。{{ config('portal.users_number_to_submit_circle') - 1 }}人を下回っていても構いません。</template>
+                        v-slot:description>{{ config('portal.student_id_name') }}を改行して入力することで複数の学園祭係を追加できます。</template>
                     <textarea id="members" class="form-control @error('members') is-invalid @enderror" name="members" rows="3">{{ old('members', empty($members) ? '' : $members) }}</textarea>
                     @if ($errors->has('members'))
                         <template v-slot:invalid>
