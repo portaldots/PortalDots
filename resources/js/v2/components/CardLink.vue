@@ -6,7 +6,7 @@
     :class="{ 'is-disabled': !href }"
   >
     <div class="card-link-body">
-      <div class="card-link__icon">
+      <div class="card-link__icon" v-if="$slots.icon">
         <slot name="icon" />
       </div>
       <div class="card-link__title">
@@ -68,6 +68,7 @@ export default {
     justify-content: center;
     line-height: 1;
     width: 3rem;
+    margin-bottom: $spacing-md;
   }
   &.is-disabled &__icon {
     color: $color-muted;
@@ -75,7 +76,6 @@ export default {
   &__title {
     font-size: 1.1rem;
     font-weight: $font-bold;
-    margin-top: $spacing-md;
   }
   &__description {
     color: $color-muted;
