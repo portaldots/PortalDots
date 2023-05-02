@@ -145,9 +145,9 @@
                     @enderror
                 </list-view-form-group>
             </list-view>
-            <div class="text-center py-spacing-md">
+            <app-fixed-form-footer>
                 <button type="submit" class="btn is-primary is-wide">保存</button>
-            </div>
+            </app-fixed-form-footer>
         </form>
         <list-view>
             <template v-slot:title>企画参加登録機能について</template>
