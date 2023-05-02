@@ -55,7 +55,7 @@ class Permission extends SpatiePermission
                     '企画(全機能)',
                     '企画情報管理の全機能を利用可能。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
                 ),
-                'staff.circles.custom_form' => new PermissionInfo(
+                'staff.circles.participation_types' => new PermissionInfo(
                     'staff.circles.participation_types',
                     'スタッフモード › 企画情報管理 › 参加種別／企画参加登録の編集',
                     '企画(参加種別)',
