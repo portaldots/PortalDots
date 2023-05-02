@@ -2,6 +2,12 @@
 
 @section('title', '企画情報管理')
 
+@section('navbar')
+    <app-nav-bar-back href="{{ route('staff.circles.index') }}">
+        企画情報管理
+    </app-nav-bar-back>
+@endsection
+
 @section('top_alert_props', 'container-fluid')
 
 @section('content')
@@ -21,6 +27,15 @@
             </template>
         </top-alert>
     @endif
+
+    <app-header container-fluid>
+        <template v-slot:title>
+            {{ $participation_type->name }}
+        </template>
+        <div data-turbolinks="false" class="markdown">
+            {{ $participation_type->description }}
+        </div>
+    </app-header>
 
     <data-grid
         api-url="{{ isset($participation_type)
