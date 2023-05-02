@@ -137,6 +137,12 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             ->group(function () {
                 Route::get('/', 'Staff\Circles\IndexAction')->name('index')->middleware(['can:staff.circles.read']);
                 Route::get('/api', 'Staff\Circles\ApiAction')->name('api')->middleware(['can:staff.circles.read']);
+                Route::get('/export', 'Staff\Circles\ExportAction')->name('export')->middleware(['can:staff.circles.export']);
+
+                // 参加種別別企画一覧
+                Route::get('/participation_types/{participation_type}', 'Staff\Circles\ParticipationTypes\IndexAction')->name('participation_types.index')->middleware(['can:staff.circles.read']);
+                Route::get('/participation_types/{participation_type}/api', 'Staff\Circles\ParticipationTypes\ApiAction')->name('participation_types.api')->middleware(['can:staff.circles.read']);
+                Route::get('/participation_types/{participation_type}/export', 'Staff\Circles\ParticipationTypes\ExportAction')->name('participation_types.export')->middleware(['can:staff.circles.read']);
 
                 // 参加登録設定
                 Route::get('/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('custom_form.index')->middleware(['can:staff.circles.custom_form']);
@@ -152,9 +158,6 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 // 企画所属者宛のメール送信
                 Route::get('/{circle}/email', 'Staff\Circles\SendEmails\IndexAction')->name('email')->middleware(['can:staff.circles.send_email']);
                 Route::post('/{circle}/email', 'Staff\Circles\SendEmails\SendAction')->middleware(['can:staff.circles.send_email']);
-
-                // 企画情報エクスポート
-                Route::get('/export', 'Staff\Circles\ExportAction')->name('export')->middleware(['can:staff.circles.export']);
 
                 Route::delete('/{circle}', 'Staff\Circles\DestroyAction')->name('destroy')->middleware(['can:staff.circles.delete']);
             });

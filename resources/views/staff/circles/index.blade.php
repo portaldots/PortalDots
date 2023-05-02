@@ -22,17 +22,27 @@
         </top-alert>
     @endif
 
-    <data-grid api-url="{{ route('staff.circles.api') }}"
+    <data-grid
+        api-url="{{ isset($participation_type)
+            ? route('staff.circles.participation_types.api', ['participation_type' => $participation_type])
+            : route('staff.circles.api') }}"
         v-bind:key-translations="{
             id: '企画ID',
+            participation_type_id: '参加種別',
+            'participation_type_id.id': '参加種別ID',
+            'participation_type_id.name': '参加種別名',
+            'participation_type_id.users_count_min': 'メンバー最小人数',
+            'participation_type_id.users_count_max': 'メンバー最大人数',
+            'participation_type_id.created_at': '作成日時',
+            'participation_type_id.updated_at': '更新日時',
             name: '企画名',
             name_yomi: '企画名(よみ)',
             group_name: '企画を出店する団体の名称',
             group_name_yomi: '企画を出店する団体の名称(よみ)',
             places: '使用場所',
             tags: 'タグ',
-            @if (isset($custom_form)) @foreach ($custom_form->questions as $question)
-                    {{ App\GridMakers\CirclesGridMaker::CUSTOM_FORM_QUESTIONS_KEY_PREFIX . $question->id }}: '{{ $question->name }}',
+            @if (isset($participation_type)) @foreach ($participation_type->form->questions as $question)
+                    {{ App\GridMakers\CirclesGridMaker::PARTICIPATION_FORM_QUESTIONS_KEY_PREFIX . $question->id }}: '{{ $question->name }}',
                 @endforeach @endif
             submitted_at: '参加登録提出日時',
             status: '登録受理状況',
@@ -78,15 +88,18 @@
                     <app-badge primary strong>受付期間内</app-badge>
                 @endif
             </a>
-            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.circles.export') }}" target="_blank"
-                rel="noopener noreferrer">
+            <a class="btn is-primary-inverse is-no-border"
+                href="{{ isset($participation_type)
+                    ? route('staff.circles.participation_types.export', ['participation_type' => $participation_type])
+                    : route('staff.circles.export') }}"
+                target="_blank" rel="noopener noreferrer">
                 {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力
             </a>
-            @isset($custom_form)
+            @isset($participation_type->form)
                 <a class="btn is-primary-inverse is-no-border"
-                    href="{{ route('staff.forms.answers.uploads.index', ['form' => $custom_form]) }}">
+                    href="{{ route('staff.forms.answers.uploads.index', ['form' => $participation_type->form]) }}">
                     <i class="far fa-file-archive fa-fw"></i>
                     ファイルを一括ダウンロード
                 </a>
@@ -117,7 +130,11 @@
             </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">
-            <template v-if="keyName === 'places'">
+            <template v-if="keyName === 'participation_type_id' && row[keyName]">
+                {{-- 参加種別 --}}
+                @{{ row[keyName].name }}(ID:@{{ row[keyName].id }})
+            </template>
+            <template v-else-if="keyName === 'places'">
                 {{-- 使用場所 --}}
                 <template v-for="place in row[keyName]" v-bind:key="place.id">
                     <app-badge primary strong>
@@ -134,7 +151,7 @@
                 </template>
             </template>
             <template
-                v-else-if="keyName.includes('{{ App\GridMakers\CirclesGridMaker::CUSTOM_FORM_QUESTIONS_KEY_PREFIX }}')">
+                v-else-if="keyName.includes('{{ App\GridMakers\CirclesGridMaker::PARTICIPATION_FORM_QUESTIONS_KEY_PREFIX }}')">
                 {{-- カスタムフォームへの回答 --}}
                 <template v-if="row[keyName] && row[keyName].file_url">
                     <a v-bind:href="row[keyName].file_url" target="_blank" rel="noopener noreferrer">表示</a>
