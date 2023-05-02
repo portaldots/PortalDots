@@ -9,6 +9,7 @@
 @endsection
 
 @section('content')
+    @include('includes.staff_circles_tab_strip')
     <app-header>
         <template v-slot:title>参加種別を編集</template>
         <div>参加種別ID : {{ $participation_type->id }}</div>

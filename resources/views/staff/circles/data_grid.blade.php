@@ -28,6 +28,8 @@
         </top-alert>
     @endif
 
+    @include('includes.staff_circles_tab_strip')
+
     <app-header container-fluid>
         <template v-slot:title>
             {{ $participation_type->name }}
