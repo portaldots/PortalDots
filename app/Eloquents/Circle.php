@@ -17,6 +17,7 @@ class Circle extends Model
             ->useLogName('circle')
             ->logOnly([
                 'id',
+                'participation_type_id',
                 'name',
                 'name_yomi',
                 'group_name',
@@ -66,6 +67,7 @@ class Circle extends Model
     public const STATUS_REJECTED = 'rejected';
 
     protected $fillable = [
+        'participation_type_id',
         'name',
         'name_yomi',
         'group_name',
@@ -82,6 +84,11 @@ class Circle extends Model
     protected $dates = [
         'status_set_at',
     ];
+
+    public function participationType()
+    {
+        return $this->belongsTo(ParticipationType::class);
+    }
 
     public function tags()
     {
