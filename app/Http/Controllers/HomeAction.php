@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Eloquents\Page;
 use App\Eloquents\Document;
 use App\Eloquents\Form;
-use App\Eloquents\CustomForm;
+use App\Eloquents\ParticipationType;
 use App\Services\Circles\SelectorService;
 
 class HomeAction extends Controller
@@ -37,7 +37,7 @@ class HomeAction extends Controller
         }
 
         return view('home')
-            ->with('circle_custom_form', CustomForm::getFormByType('circle'))
+            ->with('participation_types', ParticipationType::all())
             ->with(
                 'my_circles',
                 Auth::check()
