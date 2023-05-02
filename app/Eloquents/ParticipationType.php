@@ -9,6 +9,14 @@ class ParticipationType extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'description',
+        'users_count_min',
+        'users_count_max',
+        'form_id',
+    ];
+
     public function form()
     {
         return $this->belongsTo(Form::class);
