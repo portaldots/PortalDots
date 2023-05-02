@@ -152,11 +152,6 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                         Route::get('/{participation_type}/export', 'Staff\Circles\ParticipationTypes\ExportAction')->name('export')->middleware(['can:staff.circles.read']);
                     });
 
-                // 参加登録設定
-                Route::get('/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('custom_form.index')->middleware(['can:staff.circles.participation_types']);
-                Route::post('/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('custom_form.store')->middleware(['can:staff.circles.participation_types']);
-                Route::patch('/custom_form', 'Staff\Circles\CustomForm\UpdateAction')->name('custom_form.update')->middleware(['can:staff.circles.participation_types']);
-
                 // 企画情報編集
                 Route::get('/{circle}/edit', 'Staff\Circles\EditAction')->name('edit')->middleware(['can:staff.circles.edit']);
                 Route::patch('/{circle}', 'Staff\Circles\UpdateAction')->name('update')->middleware(['can:staff.circles.edit']);
