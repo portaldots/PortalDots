@@ -33,16 +33,28 @@
             </a>
         </template>
         <template v-slot:activities="{ row }">
+            <icon-button
+                v-bind:href="`{{ route('staff.pages.edit', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])"
+                title="編集">
+                <i class="fas fa-pencil-alt fa-fw"></i>
+            </icon-button>
+            <form style="display: inline"
+                v-bind:action="`{{ route('staff.pages.pin', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])"
+                method="post">
+                @method('patch')
+                @csrf
+                {{-- 現在の is_pinned と反転させた値をフォームで送信する --}}
+                <input type="hidden" name="is_pinned" v-bind:value="row['is_pinned'] ? 0 : 1">
+                <icon-button v-bind:active="row['is_pinned']" submit
+                    v-bind:title="row['is_pinned'] ? '固定表示を解除する' : '固定表示する'">
+                    <i class="fas fa-thumbtack fa-fw"></i>
+                </icon-button>
+            </form>
             <form-with-confirm
                 v-bind:action="`{{ route('staff.pages.destroy', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])"
-                method="post" v-bind:confirm-message="`お知らせ「${row['title']}」を削除しますか？`">
+                method="post" v-bind:confirm-message="`お知らせ「${row['title']}」を削除しますか？`" inline>
                 @method('delete')
                 @csrf
-                <icon-button
-                    v-bind:href="`{{ route('staff.pages.edit', ['page' => '%%PAGE%%']) }}`.replace('%%PAGE%%', row['id'])"
-                    title="編集">
-                    <i class="fas fa-pencil-alt fa-fw"></i>
-                </icon-button>
                 <icon-button submit title="削除">
                     <i class="fas fa-trash fa-fw"></i>
                 </icon-button>

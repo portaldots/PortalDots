@@ -8,6 +8,7 @@
     :rel="newtab ? 'noopener noreferrer' : undefined"
     v-bind="disabledProps"
     class="icon-button"
+    :class="{ 'is-active': active }"
     @click="handleClick"
   >
     <slot />
@@ -38,6 +39,10 @@ export default {
       default: false
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    active: {
       type: Boolean,
       default: false
     }
@@ -105,6 +110,10 @@ export default {
     cursor: not-allowed;
     opacity: 0.5;
     pointer-events: none;
+  }
+  &.is-active {
+    background-color: $color-primary-light;
+    color: $color-primary;
   }
 }
 </style>

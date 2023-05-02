@@ -9,12 +9,12 @@ name: Upload Release Asset
 jobs:
   build:
     name: Upload Release Asset
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Setup PHP
-        run: sudo update-alternatives --set php /usr/bin/php7.3
+        run: sudo update-alternatives --set php /usr/bin/php7.4
       # Composer Cache
       # - name: Get Composer Cache Directory
       #   id: composer-cache
