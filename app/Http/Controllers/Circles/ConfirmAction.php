@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Circles;
 
-use Auth;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
 use App\Services\Forms\AnswerDetailsService;
+use Illuminate\Support\Facades\Auth;
 
 class ConfirmAction extends Controller
 {
@@ -37,13 +36,12 @@ class ConfirmAction extends Controller
 
         $circle->load('users');
 
-        $form = CustomForm::getFormByType('circle');
-        $answer = !empty($form) ? $circle->getCustomFormAnswer() : null;
+        $answer = $circle->participationType->form->answer;
 
         return view('circles.confirm')
             ->with('circle', $circle)
-            ->with('form', $form)
-            ->with('questions', !empty($form) ? $form->questions()->get() : null)
+            ->with('form', $circle->participationType->form)
+            ->with('questions', $circle->participationType->form->questions)
             ->with('answer', $answer)
             ->with('answer_details', !empty($answer)
                 ? $this->answerDetailsService->getAnswerDetailsByAnswer($answer) : []);

@@ -48,17 +48,17 @@ class UpdateAction extends Controller
                 $request->group_name_yomi
             );
 
-            $custom_form_answer = $circle->getCustomFormAnswer();
+            $custom_form_answer = $circle->participationType->form->answer;
 
             if (empty($custom_form_answer)) {
                 $this->answersService->createAnswer(
-                    CustomForm::getFormByType('circle'),
+                    $circle->participationType->form,
                     $circle,
                     $request
                 );
             } else {
                 $this->answersService->updateAnswer(
-                    CustomForm::getFormByType('circle'),
+                    $circle->participationType->form,
                     $custom_form_answer,
                     $request
                 );

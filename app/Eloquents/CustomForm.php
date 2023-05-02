@@ -16,66 +16,6 @@ class CustomForm extends Model
 
     private static $noCacheForm = false;
 
-    /**
-     * type カラムに入りうる文字列
-     *
-     * @return array
-     */
-    public static function getAllowedTypesDict()
-    {
-        // 将来的に翻訳関数をかませる可能性があるので、
-        // 定数ではなく関数とした
-        return [
-            'circle' => '企画参加登録',
-            'user' => 'ユーザー登録',
-        ];
-    }
-
-    /**
-     * カスタム対象のフォームに常設の設問
-     *
-     * @return array
-     */
-    public static function getPermanentQuestionsDict()
-    {
-        // 将来的に翻訳関数をかませる可能性があるので、
-        // 定数ではなく関数とした
-        $dict = [
-            'circle' => [
-                [
-                    'id' => 'circle.name',
-                    'name' => '企画名',
-                    'type' => 'text',
-                    'is_required' => true,
-                ],
-                [
-                    'id' => 'circle.name_yomi',
-                    'name' => '企画名(よみ)',
-                    'type' => 'text',
-                    'is_required' => true,
-                ],
-                [
-                    'id' => 'circle.group_name',
-                    'name' => '企画を出店する団体の名称',
-                    'type' => 'text',
-                    'is_required' => true,
-                ],
-                [
-                    'id' => 'circle.group_name_yomi',
-                    'name' => '企画を出店する団体の名称(よみ)',
-                    'type' => 'text',
-                    'is_required' => true,
-                ],
-            ]
-        ];
-
-        return array_map(function ($questions) {
-            return array_map(function ($question) {
-                return \array_merge($question, ['is_permanent' => true]);
-            }, $questions);
-        }, $dict);
-    }
-
     public function form()
     {
         return $this->belongsTo(Form::class);

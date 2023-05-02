@@ -46,20 +46,19 @@ class SubmitAction extends Controller
 
         $circle->load('users');
 
-        $form = CustomForm::getFormByType('circle');
-        $answer = !empty($form) ? $circle->getCustomFormAnswer() : null;
-        $questions = !empty($form) ? $form->questions()->get() : null;
+        $answer = $circle->participationType->form->answer;
+        $questions = $circle->participationType->form->questions;
         $answerDetails = !empty($answer)
             ? $this->answerDetailsService->getAnswerDetailsByAnswer($answer) : [];
 
         foreach ($circle->users as $user) {
             $this->circlesService->sendSubmitedEmail(
-                $user,
-                $circle,
-                $form,
-                $questions,
-                $answer,
-                $answerDetails
+                user: $user,
+                circle: $circle,
+                customForm: $circle->participationType->form,
+                questions: $questions,
+                answer: $answer,
+                answerDetails: $answerDetails
             );
         }
 

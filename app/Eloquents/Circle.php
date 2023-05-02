@@ -211,18 +211,4 @@ class Circle extends Model
         // 半角カタカナ・全角カタカナを，全角ひらがなに変換する
         $this->attributes['group_name_yomi'] = mb_convert_kana($value, 'HVc');
     }
-
-    /**
-     * 企画参加登録カスタムフォームへの回答を取得する
-     *
-     * @return Answer|null
-     */
-    public function getCustomFormAnswer()
-    {
-        $form = CustomForm::getFormByType('circle');
-        if (empty($form)) {
-            return null;
-        }
-        return $form->answers()->where('circle_id', $this->id)->first();
-    }
 }

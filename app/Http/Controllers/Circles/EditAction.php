@@ -26,12 +26,12 @@ class EditAction extends Controller
             abort(403);
         }
 
-        $form = CustomForm::getFormByType('circle');
-        $answer = $circle->getCustomFormAnswer();
+        $answer = $circle->participationType->form->answer;
+
         return view('circles.form')
             ->with('circle', $circle)
-            ->with('form', $form)
-            ->with('questions', $form->questions()->get())
+            ->with('form', $circle->participationType->form)
+            ->with('questions', $circle->participationType->form->questions)
             ->with('answer', $answer)
             ->with('answer_details', $this->answerDetailsService->getAnswerDetailsByAnswer($answer));
     }

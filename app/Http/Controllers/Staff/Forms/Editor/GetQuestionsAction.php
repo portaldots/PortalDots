@@ -31,11 +31,37 @@ class GetQuestionsAction extends Controller
             ];
         })->toArray();
 
-        $permanent_questions = [];
-        $custom_form = $form->customForm()->first();
-        $type = isset($custom_form) ? $custom_form->type : null;
-        if (isset($type)) {
-            $permanent_questions = CustomForm::getPermanentQuestionsDict()[$type];
+        if (isset($form->participationType)) {
+            $permanent_questions = [
+                [
+                    'id' => 'circle.name',
+                    'name' => '企画名',
+                    'type' => 'text',
+                    'is_required' => true,
+                    'is_permanent' => true,
+                ],
+                [
+                    'id' => 'circle.name_yomi',
+                    'name' => '企画名(よみ)',
+                    'type' => 'text',
+                    'is_required' => true,
+                    'is_permanent' => true,
+                ],
+                [
+                    'id' => 'circle.group_name',
+                    'name' => '企画を出店する団体の名称',
+                    'type' => 'text',
+                    'is_required' => true,
+                    'is_permanent' => true,
+                ],
+                [
+                    'id' => 'circle.group_name_yomi',
+                    'name' => '企画を出店する団体の名称(よみ)',
+                    'type' => 'text',
+                    'is_required' => true,
+                    'is_permanent' => true,
+                ],
+            ];
         }
 
         return \array_merge($permanent_questions, $questions_on_db);
