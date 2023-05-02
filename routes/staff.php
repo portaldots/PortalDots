@@ -139,15 +139,23 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/api', 'Staff\Circles\ApiAction')->name('api')->middleware(['can:staff.circles.read']);
                 Route::get('/export', 'Staff\Circles\ExportAction')->name('export')->middleware(['can:staff.circles.export']);
 
-                // 参加種別別企画一覧
-                Route::get('/participation_types/{participation_type}', 'Staff\Circles\ParticipationTypes\IndexAction')->name('participation_types.index')->middleware(['can:staff.circles.read']);
-                Route::get('/participation_types/{participation_type}/api', 'Staff\Circles\ParticipationTypes\ApiAction')->name('participation_types.api')->middleware(['can:staff.circles.read']);
-                Route::get('/participation_types/{participation_type}/export', 'Staff\Circles\ParticipationTypes\ExportAction')->name('participation_types.export')->middleware(['can:staff.circles.read']);
+                // 参加種別
+                Route::prefix('/participation_types')
+                    ->name('participation_types.')
+                    ->group(function () {
+                        Route::get('/create', 'Staff\Circles\ParticipationTypes\CreateAction')->name('create')->middleware(['can:staff.circles.participation_types']);
+                        Route::post('/', 'Staff\Circles\ParticipationTypes\StoreAction')->name('store')->middleware(['can:staff.circles.participation_types']);
+                        Route::get('/{participation_type}/edit', 'Staff\Circles\ParticipationTypes\EditAction')->name('edit')->middleware(['can:staff.circles.participation_types']);
+                        Route::patch('/{participation_type}', 'Staff\Circles\ParticipationTypes\UpdateAction')->name('update')->middleware(['can:staff.circles.participation_types']);
+                        Route::get('/{participation_type}', 'Staff\Circles\ParticipationTypes\IndexAction')->name('index')->middleware(['can:staff.circles.read']);
+                        Route::get('/{participation_type}/api', 'Staff\Circles\ParticipationTypes\ApiAction')->name('api')->middleware(['can:staff.circles.read']);
+                        Route::get('/{participation_type}/export', 'Staff\Circles\ParticipationTypes\ExportAction')->name('export')->middleware(['can:staff.circles.read']);
+                    });
 
                 // 参加登録設定
-                Route::get('/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('custom_form.index')->middleware(['can:staff.circles.custom_form']);
-                Route::post('/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('custom_form.store')->middleware(['can:staff.circles.custom_form']);
-                Route::patch('/custom_form', 'Staff\Circles\CustomForm\UpdateAction')->name('custom_form.update')->middleware(['can:staff.circles.custom_form']);
+                Route::get('/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('custom_form.index')->middleware(['can:staff.circles.participation_types']);
+                Route::post('/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('custom_form.store')->middleware(['can:staff.circles.participation_types']);
+                Route::patch('/custom_form', 'Staff\Circles\CustomForm\UpdateAction')->name('custom_form.update')->middleware(['can:staff.circles.participation_types']);
 
                 // 企画情報編集
                 Route::get('/{circle}/edit', 'Staff\Circles\EditAction')->name('edit')->middleware(['can:staff.circles.edit']);
