@@ -3,15 +3,11 @@
 namespace Tests\Feature\Http\Controllers\Circles;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\Http\Controllers\Circles\BaseTestCase;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
-use App\Eloquents\Form;
-use App\Eloquents\CustomForm;
-use Config;
 
 class SubmitActionTest extends BaseTestCase
 {
@@ -25,7 +21,9 @@ class SubmitActionTest extends BaseTestCase
         parent::setUp();
 
         $this->user = factory(User::class)->create();
-        $this->circle = factory(Circle::class)->states('notSubmitted')->create();
+        $this->circle = factory(Circle::class)->states('notSubmitted')->create([
+            'participation_type_id' => $this->participationType->id
+        ]);
 
         $this->user->circles()->attach($this->circle->id, ['is_leader' => true]);
 
@@ -117,9 +115,8 @@ class SubmitActionTest extends BaseTestCase
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
         CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
-        $form = CustomForm::getFormByType('circle');
-        $form->is_public = false;
-        $form->save();
+        $this->participationForm->is_public = false;
+        $this->participationForm->save();
 
         $response = $this
             ->actingAs($this->user)
@@ -143,7 +140,9 @@ class SubmitActionTest extends BaseTestCase
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
         CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
-        $anotherCircle = factory(Circle::class)->states('notSubmitted')->create();
+        $anotherCircle = factory(Circle::class)->states('notSubmitted')->create([[
+            'participation_type_id' => $this->participationType->id
+        ]]);
 
         $response = $this
             ->actingAs($this->user)

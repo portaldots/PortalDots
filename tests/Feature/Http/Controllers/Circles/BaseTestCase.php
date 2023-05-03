@@ -25,8 +25,8 @@ abstract class BaseTestCase extends TestCase
         ]);
         $this->participationType = ParticipationType::factory()->create([
             'form_id' => $this->participationForm->id,
-            'users_count_min' => 1,
-            'users_count_max' => 3,
+            'users_count_min' => 3,
+            'users_count_max' => 5,
         ]);
     }
 }
