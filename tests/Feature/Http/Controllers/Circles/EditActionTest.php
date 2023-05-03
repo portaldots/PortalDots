@@ -3,30 +3,29 @@
 namespace Tests\Feature\Http\Controllers\Circles;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\Http\Controllers\Circles\BaseTestCase;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
-use App\Eloquents\Form;
-use App\Eloquents\CustomForm;
 use App\Eloquents\Answer;
 
 class EditActionTest extends BaseTestCase
 {
     use RefreshDatabase;
 
-    private $user;
-    private $circle;
-    private $answer;
+    private ?User $user;
+    private ?Circle $circle;
+    private ?Answer $answer;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->user = factory(User::class)->create();
-        $this->circle = factory(Circle::class)->states('notSubmitted')->create();
+        $this->circle = factory(Circle::class)->states('notSubmitted')->create([
+            'participation_type_id' => $this->participationForm->id
+        ]);
         $this->answer = factory(Answer::class)->create([
             'form_id' => $this->participationForm->id,
             'circle_id' => $this->circle->id,
