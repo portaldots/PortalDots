@@ -18,12 +18,30 @@
                     </template>
                 </list-view-item>
             @endforeach
-            @if (Gate::allows('circle.create'))
-                <list-view-action-btn href="{{ route('circles.create') }}" icon-class="fas fa-plus">
-                    別の企画を参加登録する
-                </list-view-action-btn>
-            @endif
         </list-view>
+
+        @if (Gate::allows('circle.create'))
+            <list-view no-card-style>
+                <template v-slot:title>別の企画を参加登録する</template>
+                <layout-row grid-template-columns="repeat(auto-fill, minmax(240px, 1fr))">
+                    @foreach ($participation_types as $participation_type)
+                        <layout-column>
+                            <card-link href="{{ route('circles.create', ['participation_type' => $participation_type]) }}">
+                                <template v-slot:title>
+                                    {{ $participation_type->name }}
+                                </template>
+                                <template v-slot:description>
+                                    <p>{{ $participation_type->description }}</p>
+                                    <dl class="text-small">
+                                        @datetime($participation_type->form->close_at)まで受付
+                                    </dl>
+                                </template>
+                            </card-link>
+                        </layout-column>
+                    @endforeach
+                </layout-row>
+            </list-view>
+        @endif
 
         @if (Gate::allows('circle.create') && !$not_submitted_circles->isEmpty())
             <hr>

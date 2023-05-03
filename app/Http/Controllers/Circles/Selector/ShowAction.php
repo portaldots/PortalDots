@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Circles\SelectorService;
-use App\Eloquents\CustomForm;
+use App\Eloquents\ParticipationType;
 
 class ShowAction extends Controller
 {
@@ -38,6 +38,7 @@ class ShowAction extends Controller
             return view('circles.selector')
                 ->with('redirect_to', $redirect_to)
                 ->with('circles', $circles)
+                ->with('participation_types', ParticipationType::open()->public()->get())
                 ->with('not_submitted_circles', $not_submitted_circles)
                 ->with('error_message', session('error_message'));
         }
