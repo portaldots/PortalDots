@@ -21,7 +21,6 @@ class InviteAction extends Controller
             && $participationForm->isOpen()
             && !$circle->hasSubmitted();
 
-        // FIXME: 参加可能人数の上限に達している場合もエラーにしたい
         if (!$canJoin) {
             abort(404);
         }
