@@ -36,8 +36,10 @@ class ShowAction extends Controller
 
             return view('circles.show')
                 ->with('circle', $circle)
-                ->with('form', $circle->participationType->form)
-                ->with('questions', $circle->participationType->form->questions)
+                ->with('form', isset($circle->participationType) ? $circle->participationType->form : null)
+                ->with('questions', isset($circle->participationType)
+                    ? $circle->participationType->form->questions
+                    : null)
                 ->with('answer', $answer)
                 ->with('answer_details', !empty($answer)
                     ? $this->answerDetailsService->getAnswerDetailsByAnswer($answer) : []);

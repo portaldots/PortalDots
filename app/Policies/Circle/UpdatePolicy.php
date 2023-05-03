@@ -22,6 +22,10 @@ class UpdatePolicy
 
     public function __invoke(User $user, Circle $circle)
     {
+        if (empty($circle->participationType)) {
+            return false;
+        }
+
         $participationForm = $circle->participationType->form;
         return isset($participationForm)
             && $participationForm->is_public
