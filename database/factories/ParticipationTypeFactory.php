@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Eloquents\ParticipationType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ParticipationTypeFactory extends Factory
 {
+    protected $model = ParticipationType::class;
+
     /**
      * Define the model's default state.
      *

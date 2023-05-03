@@ -2,6 +2,7 @@
 
 namespace App\Eloquents;
 
+use Database\Factories\ParticipationTypeFactory;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,11 @@ class ParticipationType extends Model
 {
     use HasFactory;
     use LogsActivity;
+
+    protected static function newFactory()
+    {
+        return ParticipationTypeFactory::new();
+    }
 
     public function getActivitylogOptions(): LogOptions
     {
