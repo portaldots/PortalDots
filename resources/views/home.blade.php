@@ -153,9 +153,9 @@
                                 </template>
                                 <template v-slot:description>
                                     <p>{{ $participation_type->description }}</p>
-                                    <dl class="text-small">
+                                    <p class="text-small">
                                         @datetime($participation_type->form->close_at)まで受付
-                                    </dl>
+                                    </p>
                                 </template>
                             </card-link>
                         </layout-column>
