@@ -29,7 +29,7 @@ class DestroyActionTest extends BaseTestCase
         $this->user = factory(User::class)->create();
         $this->circle = factory(Circle::class)->states('notSubmitted')->create();
         $this->answer = factory(Answer::class)->create([
-            'form_id' => $this->form->id,
+            'form_id' => $this->participationForm->id,
             'circle_id' => $this->circle->id,
         ]);
 
@@ -55,13 +55,13 @@ class DestroyActionTest extends BaseTestCase
         ]);
 
         $response = $this
-                    ->actingAs($this->nonLeader)
-                    ->delete(
-                        route('circles.users.destroy', [
-                            'circle' => $this->circle,
-                            'user' => $this->nonLeader,
-                        ])
-                    );
+            ->actingAs($this->nonLeader)
+            ->delete(
+                route('circles.users.destroy', [
+                    'circle' => $this->circle,
+                    'user' => $this->nonLeader,
+                ])
+            );
 
         $this->assertDatabaseMissing('circle_user', [
             'circle_id' => $this->circle->id,
@@ -83,13 +83,13 @@ class DestroyActionTest extends BaseTestCase
         ]);
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->delete(
-                        route('circles.users.destroy', [
-                            'circle' => $this->circle,
-                            'user' => $this->nonLeader,
-                        ])
-                    );
+            ->actingAs($this->user)
+            ->delete(
+                route('circles.users.destroy', [
+                    'circle' => $this->circle,
+                    'user' => $this->nonLeader,
+                ])
+            );
 
         $this->assertDatabaseMissing('circle_user', [
             'circle_id' => $this->circle->id,
@@ -106,13 +106,13 @@ class DestroyActionTest extends BaseTestCase
     public function リーダーは自分自身を削除できない()
     {
         $response = $this
-                    ->actingAs($this->user)
-                    ->delete(
-                        route('circles.users.destroy', [
-                            'circle' => $this->circle,
-                            'user' => $this->user,
-                        ])
-                    );
+            ->actingAs($this->user)
+            ->delete(
+                route('circles.users.destroy', [
+                    'circle' => $this->circle,
+                    'user' => $this->user,
+                ])
+            );
 
         $this->assertDatabaseHas('circle_user', [
             'circle_id' => $this->circle->id,
@@ -132,13 +132,13 @@ class DestroyActionTest extends BaseTestCase
         $anotherUser = factory(User::class)->create();
 
         $response = $this
-                    ->actingAs($anotherUser)
-                    ->delete(
-                        route('circles.users.destroy', [
-                            'circle' => $this->circle,
-                            'user' => $this->nonLeader,
-                        ])
-                    );
+            ->actingAs($anotherUser)
+            ->delete(
+                route('circles.users.destroy', [
+                    'circle' => $this->circle,
+                    'user' => $this->nonLeader,
+                ])
+            );
 
         $this->assertDatabaseHas('circle_user', [
             'circle_id' => $this->circle->id,
@@ -157,13 +157,13 @@ class DestroyActionTest extends BaseTestCase
         $this->circle->save();
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->delete(
-                        route('circles.users.destroy', [
-                            'circle' => $this->circle,
-                            'user' => $this->nonLeader,
-                        ])
-                    );
+            ->actingAs($this->user)
+            ->delete(
+                route('circles.users.destroy', [
+                    'circle' => $this->circle,
+                    'user' => $this->nonLeader,
+                ])
+            );
 
         $this->assertDatabaseHas('circle_user', [
             'circle_id' => $this->circle->id,

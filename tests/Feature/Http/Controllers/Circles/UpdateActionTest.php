@@ -3,15 +3,11 @@
 namespace Tests\Feature\Http\Controllers\Circles;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\Http\Controllers\Circles\BaseTestCase;
-use Tests\TestCase;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
-use App\Eloquents\Form;
-use App\Eloquents\CustomForm;
 use App\Eloquents\Answer;
 
 class UpdateActionTest extends BaseTestCase
@@ -29,7 +25,7 @@ class UpdateActionTest extends BaseTestCase
         $this->user = factory(User::class)->create();
         $this->circle = factory(Circle::class)->states('notSubmitted')->create();
         $this->answer = factory(Answer::class)->create([
-            'form_id' => $this->form->id,
+            'form_id' => $this->participationForm->id,
             'circle_id' => $this->circle->id,
         ]);
 
@@ -58,13 +54,13 @@ class UpdateActionTest extends BaseTestCase
         ];
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->patch(
-                        route('circles.update', [
-                            'circle' => $this->circle,
-                        ]),
-                        $data
-                    );
+            ->actingAs($this->user)
+            ->patch(
+                route('circles.update', [
+                    'circle' => $this->circle,
+                ]),
+                $data
+            );
 
         $this->assertDatabaseHas('circles', $data);
 
@@ -88,13 +84,13 @@ class UpdateActionTest extends BaseTestCase
         ];
 
         $response = $this
-                    ->actingAs($member)
-                    ->patch(
-                        route('circles.update', [
-                            'circle' => $this->circle,
-                        ]),
-                        $data
-                    );
+            ->actingAs($member)
+            ->patch(
+                route('circles.update', [
+                    'circle' => $this->circle,
+                ]),
+                $data
+            );
 
         $this->assertDatabaseMissing('circles', $data);
 
@@ -116,13 +112,13 @@ class UpdateActionTest extends BaseTestCase
         ];
 
         $response = $this
-                    ->actingAs($anotherUser)
-                    ->patch(
-                        route('circles.update', [
-                            'circle' => $this->circle,
-                        ]),
-                        $data
-                    );
+            ->actingAs($anotherUser)
+            ->patch(
+                route('circles.update', [
+                    'circle' => $this->circle,
+                ]),
+                $data
+            );
 
         $this->assertDatabaseMissing('circles', $data);
 
@@ -145,13 +141,13 @@ class UpdateActionTest extends BaseTestCase
         ];
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->patch(
-                        route('circles.update', [
-                            'circle' => $this->circle,
-                        ]),
-                        $data
-                    );
+            ->actingAs($this->user)
+            ->patch(
+                route('circles.update', [
+                    'circle' => $this->circle,
+                ]),
+                $data
+            );
 
         $this->assertDatabaseMissing('circles', $data);
 
