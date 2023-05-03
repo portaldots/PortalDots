@@ -12,6 +12,9 @@
         <template v-slot:meta>
             学園祭係(副責任者)の招待が完了しました。ここをクリックして登録内容に不備がないかどうかを確認し、参加登録を提出しましょう。
         </template>
+        <p class="text-small">
+            @datetime($circle->participationType->form->close_at) までに提出してください
+        </p>
     </list-view-item>
 @elseif ($circle->isPending())
     <list-view-item href="{{ route('circles.show', ['circle' => $circle]) }}">
@@ -40,6 +43,9 @@
         <template v-slot:meta>
             参加登録を提出するには、ここをクリックして学園祭係(副責任者)を招待しましょう。
         </template>
+        <p class="text-small">
+            @datetime($circle->participationType->form->close_at) までに提出してください
+        </p>
     </list-view-item>
 @elseif ($circle->hasApproved())
     <list-view-item href="{{ route('circles.show', ['circle' => $circle]) }}">

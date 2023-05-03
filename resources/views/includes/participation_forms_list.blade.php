@@ -7,7 +7,7 @@
                 </template>
                 <template v-slot:description>
                     <p class="text-small text-primary">
-                        @datetime($participation_type->form->close_at)まで受付
+                        @datetime($participation_type->form->close_at) まで受付
                     </p>
                     <p>{{ $participation_type->description }}</p>
                 </template>
