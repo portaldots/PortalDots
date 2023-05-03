@@ -30,11 +30,11 @@ class StoreAction extends Controller
 
     public function __invoke(CircleRequest $request)
     {
-        $this->authorize('circle.create');
-
         activity()->disableLogging();
 
         $participationType = ParticipationType::findOrFail($request->participation_type);
+
+        $this->authorize('circle.create', $participationType);
 
         $result = DB::transaction(function () use ($request, $participationType) {
             $circle = $this->circlesService->create(
