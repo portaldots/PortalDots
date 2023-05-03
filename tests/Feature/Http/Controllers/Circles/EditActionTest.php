@@ -24,7 +24,7 @@ class EditActionTest extends BaseTestCase
 
         $this->user = factory(User::class)->create();
         $this->circle = factory(Circle::class)->states('notSubmitted')->create([
-            'participation_type_id' => $this->participationForm->id
+            'participation_type_id' => $this->participationType->id
         ]);
         $this->answer = factory(Answer::class)->create([
             'form_id' => $this->participationForm->id,

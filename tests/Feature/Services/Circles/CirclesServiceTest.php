@@ -71,7 +71,9 @@ class CirclesServiceTest extends TestCase
             $circle,
             $leader,
             $name,
+            $name_yomi,
             $group_name,
+            $group_name_yomi
         ] = $this->createCircle();
 
         $this->assertDatabaseHas('circles', [
@@ -97,7 +99,9 @@ class CirclesServiceTest extends TestCase
     {
         [
             $circle,
+            $leader,
             $name,
+            $name_yomi,
             $group_name,
             $group_name_yomi
         ] = $this->createCircle();
@@ -120,7 +124,14 @@ class CirclesServiceTest extends TestCase
      */
     public function regenerateInvitationToken()
     {
-        [$circle] = $this->createCircle();
+        [
+            $circle,
+            $leader,
+            $name,
+            $name_yomi,
+            $group_name,
+            $group_name_yomi
+        ] = $this->createCircle();
 
         $this->assertNotEmpty($circle->invitation_token);
 
@@ -138,7 +149,14 @@ class CirclesServiceTest extends TestCase
      */
     public function addMember()
     {
-        [$circle] = $this->createCircle();
+        [
+            $circle,
+            $leader,
+            $name,
+            $name_yomi,
+            $group_name,
+            $group_name_yomi
+        ] = $this->createCircle();
 
         $new_user = factory(User::class)->create();
 
@@ -156,7 +174,14 @@ class CirclesServiceTest extends TestCase
      */
     public function submit()
     {
-        [$circle] = $this->createCircle();
+        [
+            $circle,
+            $leader,
+            $name,
+            $name_yomi,
+            $group_name,
+            $group_name_yomi
+        ] = $this->createCircle();
 
         $this->assertEmpty($circle->submitted_at);
 
@@ -176,7 +201,14 @@ class CirclesServiceTest extends TestCase
             'name' => '登録済みタグ'
         ]);
 
-        [$circle] = $this->createCircle();
+        [
+            $circle,
+            $leader,
+            $name,
+            $name_yomi,
+            $group_name,
+            $group_name_yomi
+        ] = $this->createCircle();
 
         $this->circlesService->saveTags($circle, [
             '新しいタグ1',
@@ -212,7 +244,14 @@ class CirclesServiceTest extends TestCase
             'name' => '登録済みタグ'
         ]);
 
-        [$circle] = $this->createCircle();
+        [
+            $circle,
+            $leader,
+            $name,
+            $name_yomi,
+            $group_name,
+            $group_name_yomi
+        ] = $this->createCircle();
 
         $this->circlesService->saveTags($circle, [
             '新しいタグ1',
