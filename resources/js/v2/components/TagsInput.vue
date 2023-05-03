@@ -138,6 +138,7 @@ export default {
     border-radius: $border-radius !important;
     box-shadow: $box-shadow-lv3 !important;
     padding: $border-radius 0 !important;
+    z-index: $z-index-tags-input-autocomplete !important;
   }
   .ti-item {
     margin: 0 !important;
