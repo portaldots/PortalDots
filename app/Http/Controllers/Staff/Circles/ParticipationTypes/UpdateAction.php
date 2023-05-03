@@ -25,15 +25,6 @@ class UpdateAction extends Controller
             $participationType->update([
                 'name' => $validated['name'],
                 'description' => $validated['description'],
-                'users_count_min' => intval($validated['users_count_min']),
-                'users_count_max' => intval($validated['users_count_max']),
-            ]);
-
-            $this->formEditorService->updateForm($participationType->form->id, [
-                'open_at' => $validated['open_at'],
-                'close_at' => $validated['close_at'],
-                'is_public' => $validated['is_public'] ?? false,
-                'description' => $validated['form_description'],
             ]);
 
             return redirect()

@@ -143,11 +143,24 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::prefix('/participation_types')
                     ->name('participation_types.')
                     ->group(function () {
+                        // 参加種別の作成・編集
                         Route::get('/create', 'Staff\Circles\ParticipationTypes\CreateAction')->name('create')->middleware(['can:staff.circles.participation_types']);
                         Route::post('/', 'Staff\Circles\ParticipationTypes\StoreAction')->name('store')->middleware(['can:staff.circles.participation_types']);
                         Route::get('/{participation_type}/edit', 'Staff\Circles\ParticipationTypes\EditAction')->name('edit')->middleware(['can:staff.circles.participation_types']);
                         Route::patch('/{participation_type}', 'Staff\Circles\ParticipationTypes\UpdateAction')->name('update')->middleware(['can:staff.circles.participation_types']);
                         Route::delete('/{participation_type}', 'Staff\Circles\ParticipationTypes\DestroyAction')->name('destroy')->middleware(['can:staff.circles.participation_types']);
+
+                        // 参加登録フォームの設定
+                        Route::get(
+                            '/{participation_type}/form/edit',
+                            'Staff\Circles\ParticipationTypes\Form\EditAction'
+                        )->name('form.edit')->middleware(['can:staff.circles.participation_types']);
+                        Route::patch(
+                            '/{participation_type}/form',
+                            'Staff\Circles\ParticipationTypes\Form\UpdateAction'
+                        )->name('form.update')->middleware(['can:staff.circles.participation_types']);
+
+                        // 参加種別ごとの企画一覧
                         Route::get('/{participation_type}', 'Staff\Circles\ParticipationTypes\IndexAction')->name('index')->middleware(['can:staff.circles.read']);
                         Route::get('/{participation_type}/api', 'Staff\Circles\ParticipationTypes\ApiAction')->name('api')->middleware(['can:staff.circles.read']);
                         Route::get('/{participation_type}/export', 'Staff\Circles\ParticipationTypes\ExportAction')->name('export')->middleware(['can:staff.circles.read']);
