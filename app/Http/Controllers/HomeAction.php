@@ -33,7 +33,7 @@ class HomeAction extends Controller
         $circle = $this->selectorService->getCircle();
 
         if (isset($circle)) {
-            $circle->load('places');
+            $circle->loadMissing(['places', 'participationType']);
         }
 
         return view('home')
