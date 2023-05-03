@@ -106,8 +106,6 @@ class CirclesExportTest extends TestCase
 
         $this->place->circles()->attach($this->circle->id);
         $this->tag->circles()->attach($this->circle->id);
-
-        $this->circlesExport = App::make(CirclesExport::class, [$this->participationType]);
     }
 
     /**
@@ -115,6 +113,39 @@ class CirclesExportTest extends TestCase
      */
     public function map_企画情報のフォーマットが正常に行われる()
     {
+        $circlesExport = new CirclesExport();
+
+        $this->assertEquals(
+            [
+                $this->circle->id,
+                "体験企画(ID:{$this->participationType->id})",
+                '運河遊覧船',
+                'うんがゆうらんせん',
+                '造船同好会',
+                'ぞうせんどうこうかい',
+                '近くの川',
+                '特殊な企画',
+                $this->circle->submitted_at,
+                '受理',
+                $this->circle->status_set_at,
+                "企画 チェック(ID:{$this->staff->id},9999999)",
+                $this->circle->created_at,
+                $this->circle->updated_at,
+                '川の案内をするらしい',
+                "企画 偉い人(ID:{$this->user->id},0123ABC)",
+                "企画 運営(ID:{$this->member->id},7890XYZ),企画 手伝い(ID:{$this->anotherMember->id},123123)",
+            ],
+            $circlesExport->map($this->circle)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function map_参加種別を指定している場合はカスタムフォームの回答も出力される()
+    {
+        $circlesExport = new CirclesExport($this->participationType);
+
         $this->assertEquals(
             [
                 $this->circle->id,
@@ -136,15 +167,48 @@ class CirclesExportTest extends TestCase
                 "企画 運営(ID:{$this->member->id},7890XYZ),企画 手伝い(ID:{$this->anotherMember->id},123123)",
                 '作った船で川を渡ります',
             ],
-            $this->circlesExport->map($this->circle)
+            $circlesExport->map($this->circle)
         );
     }
 
     /**
      * @test
      */
-    public function headings_カスタムフォームからヘッダーが作成される()
+    public function headings_ヘッダーが作成される()
     {
+        $circlesExport = new CirclesExport();
+
+        $this->assertEquals(
+            [
+                '企画ID',
+                '参加種別',
+                '企画名',
+                '企画名（よみ）',
+                '企画を出店する団体の名称',
+                '企画を出店する団体の名称（よみ）',
+                '使用場所',
+                'タグ',
+                '参加登録提出日時',
+                '登録受理状況',
+                '登録受理状況設定日時',
+                '登録受理状況設定ユーザー',
+                '作成日時',
+                '更新日時',
+                'スタッフ用メモ',
+                '責任者',
+                '学園祭係',
+            ],
+            $circlesExport->headings()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function headings_参加種別を指定している場合はカスタムフォームの設問も出力される()
+    {
+        $circlesExport = new CirclesExport($this->participationType);
+
         $this->assertEquals(
             [
                 '企画ID',
@@ -166,7 +230,7 @@ class CirclesExportTest extends TestCase
                 '学園祭係',
                 'どんなことをしますか',
             ],
-            $this->circlesExport->headings()
+            $circlesExport->headings()
         );
     }
 }
