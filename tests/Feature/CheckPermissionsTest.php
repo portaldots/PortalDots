@@ -121,7 +121,7 @@ class CheckPermissionsTest extends TestCase
     {
         foreach ($this->getRouteNamePrefixesByPermissions() as $route_name_prefix => $permissions) {
             foreach ($permissions as $permission) {
-                if ($permission === 'staff.circles.custom_form' || $route_name_prefix === 'staff.forms.answers') {
+                if ($permission === 'staff.circles.participation_types' || $route_name_prefix === 'staff.forms.answers') {
                     // これらについてのテストの実装は保留
                     continue;
                 }
