@@ -127,7 +127,8 @@ class Circle extends Model
      */
     public function canSubmit()
     {
-        return count($this->users) >= $this->participationType->users_count_min;
+        return count($this->users) >= $this->participationType->users_count_min
+            && count($this->users) <= $this->participationType->users_count_max;
     }
 
     /**
