@@ -61,7 +61,10 @@ class UpdateActionTest extends BaseTestCase
                 route('circles.update', [
                     'circle' => $this->circle,
                 ]),
-                $data
+                array_merge(
+                    ['participation_type' => $this->participationType->id],
+                    $data
+                )
             );
 
         $this->assertDatabaseHas('circles', $data);
@@ -91,7 +94,10 @@ class UpdateActionTest extends BaseTestCase
                 route('circles.update', [
                     'circle' => $this->circle,
                 ]),
-                $data
+                array_merge(
+                    ['participation_type' => $this->participationType->id],
+                    $data
+                )
             );
 
         $this->assertDatabaseMissing('circles', $data);
@@ -119,7 +125,10 @@ class UpdateActionTest extends BaseTestCase
                 route('circles.update', [
                     'circle' => $this->circle,
                 ]),
-                $data
+                array_merge(
+                    ['participation_type' => $this->participationType->id],
+                    $data
+                )
             );
 
         $this->assertDatabaseMissing('circles', $data);
@@ -148,7 +157,10 @@ class UpdateActionTest extends BaseTestCase
                 route('circles.update', [
                     'circle' => $this->circle,
                 ]),
-                $data
+                array_merge(
+                    ['participation_type' => $this->participationType->id],
+                    $data
+                )
             );
 
         $this->assertDatabaseMissing('circles', $data);
