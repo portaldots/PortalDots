@@ -25,11 +25,13 @@
             <list-view>
                 <template v-slot:title>企画情報を入力</template>
                 <template v-slot:description>参加登録する企画の情報を入力してください。</template>
-                <list-view-card>
-                    <app-info-box primary>
-                        企画情報の入力は、企画責任者の方が行ってください。企画責任者以外の方は、企画情報の入力は不要です。企画責任者の方の指示に従ってください。
-                    </app-info-box>
-                </list-view-card>
+                @if ($participation_type->users_count_max > 1)
+                    <list-view-card>
+                        <app-info-box primary>
+                            企画情報の入力は、企画責任者の方が行ってください。企画責任者以外の方は、企画情報の入力は不要です。企画責任者の方の指示に従ってください。
+                        </app-info-box>
+                    </list-view-card>
+                @endif
                 <list-view-form-group label-for="leader">
                     <template v-slot:label>企画責任者</template>
                     <input type="text" id="leader" readonly
