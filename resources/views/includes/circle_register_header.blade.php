@@ -1,27 +1,35 @@
 @section('no_circle_selector', true)
 
 @php
-$step = 0;
-if (Route::currentRouteName() === 'circles.create' || Route::currentRouteName() === 'circles.edit') {
-$step = 1;
-} elseif (Route::currentRouteName() === 'circles.users.index') {
-$step = 2;
-} elseif (Route::currentRouteName() === 'circles.confirm') {
-$step = 3;
-}
+    $step = 0;
+    if (Route::currentRouteName() === 'circles.create' || Route::currentRouteName() === 'circles.edit') {
+        $step = 1;
+    } elseif (Route::currentRouteName() === 'circles.users.index') {
+        $step = 2;
+    } elseif (Route::currentRouteName() === 'circles.confirm') {
+        $step = 3;
+    }
+    $participation_type = empty($circle) ? $participation_type : $circle->participationType;
 @endphp
 
 <app-header container-medium>
     <template v-slot:title>
-        企画参加登録
+        {{ $participation_type->name }}
+        参加登録
         <small class="text-muted">(ステップ {{ $step }} / 3)</small>
     </template>
-    @isset ($circle)
+    <p>
+        {{ $participation_type->description }}
+    </p>
+    @isset($circle)
         <p class="text-muted">
             {{ $circle->name }}
 
             @php
-            $this_user = $circle->users()->wherePivot('user_id', Auth::id())->first();
+                $this_user = $circle
+                    ->users()
+                    ->wherePivot('user_id', Auth::id())
+                    ->first();
             @endphp
 
             @if (!empty($this_user) && $this_user->pivot->is_leader)
