@@ -31,7 +31,7 @@
                 <template v-slot:description>
                     <div class="text-muted">
                         <i class="fas fa-info-circle fa-fw"></i>
-                        以下の企画参加登録は提出されていません。提出期限(<strong>@datetime($circle_custom_form->close_at)</strong>)までに提出してください。
+                        以下の企画参加登録は提出されていません。提出期限までに提出してください。
                     </div>
                 </template>
                 @each('includes.circle_list_view_item_with_status', $not_submitted_circles, 'circle')

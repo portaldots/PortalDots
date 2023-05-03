@@ -23,7 +23,7 @@ class StoreAction extends Controller
 
     public function __invoke(Form $form, StoreAnswerRequest $request)
     {
-        if (isset($form->customForm)) {
+        if (isset($form->participationType)) {
             abort(404);
         }
 
@@ -42,9 +42,9 @@ class StoreAction extends Controller
         }
 
         return back()
-                ->with('topAlert.type', 'danger')
-                ->with('topAlert.title', '更新に失敗しました')
-                ->with('topAlert.body', '恐れ入りますが、もう一度お試しください')
-                ->withInput();
+            ->with('topAlert.type', 'danger')
+            ->with('topAlert.title', '更新に失敗しました')
+            ->with('topAlert.body', '恐れ入りますが、もう一度お試しください')
+            ->withInput();
     }
 }

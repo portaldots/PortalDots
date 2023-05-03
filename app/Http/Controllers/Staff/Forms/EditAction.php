@@ -10,8 +10,8 @@ class EditAction extends Controller
 {
     public function __invoke(Form $form)
     {
-        // カスタムフォームのフォーム情報は修正禁止
-        if (isset($form->customForm)) {
+        // 参加登録フォームのフォーム情報は修正禁止
+        if (isset($form->participationType)) {
             return abort(400);
         }
         return view('staff.forms.form')

@@ -21,7 +21,7 @@ class UpdateAction extends Controller
 
     public function __invoke(Form $form, Answer $answer, UpdateAnswerRequest $request)
     {
-        if (isset($form->customForm)) {
+        if (isset($form->participationType)) {
             abort(404);
         }
 

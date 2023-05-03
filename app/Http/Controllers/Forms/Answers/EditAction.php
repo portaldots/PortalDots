@@ -28,7 +28,7 @@ class EditAction extends Controller
 
     public function __invoke(Form $form, Answer $answer)
     {
-        if (! $form->is_public || (int)$form->id !== (int)$answer->form_id || isset($form->customForm)) {
+        if (!$form->is_public || (int)$form->id !== (int)$answer->form_id || isset($form->participationType)) {
             abort(404);
             return;
         }

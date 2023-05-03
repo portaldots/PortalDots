@@ -39,7 +39,6 @@ class ShowAction extends Controller
                 ->with('redirect_to', $redirect_to)
                 ->with('circles', $circles)
                 ->with('not_submitted_circles', $not_submitted_circles)
-                ->with('circle_custom_form', CustomForm::getFormByType('circle'))
                 ->with('error_message', session('error_message'));
         }
 

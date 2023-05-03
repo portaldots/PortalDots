@@ -55,7 +55,7 @@ class SubmitAction extends Controller
             $this->circlesService->sendSubmitedEmail(
                 user: $user,
                 circle: $circle,
-                customForm: $circle->participationType->form,
+                participationForm: $circle->participationType->form,
                 questions: $questions,
                 answer: $answer,
                 answerDetails: $answerDetails

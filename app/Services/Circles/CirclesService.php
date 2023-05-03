@@ -203,7 +203,7 @@ class CirclesService
     public function sendSubmitedEmail(
         User $user,
         Circle $circle,
-        Form $customForm = null,
+        Form $participationForm = null,
         Collection $questions = null,
         Answer $answer = null,
         array $answerDetails = null
@@ -212,7 +212,7 @@ class CirclesService
             ->send(
                 (new SubmitedMailable(
                     $circle,
-                    $customForm,
+                    $participationForm,
                     $questions,
                     $answer,
                     $answerDetails

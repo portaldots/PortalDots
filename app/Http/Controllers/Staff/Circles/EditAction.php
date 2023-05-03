@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Staff\Circles;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
 use App\Eloquents\ParticipationType;
 use App\Eloquents\Place;
 use App\Eloquents\Tag;

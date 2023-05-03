@@ -1,4 +1,4 @@
-@if (!isset($form->customForm))
+@if (!isset($form->participationType))
     <div class="tab_strip">
         <a href="{{ route('staff.forms.answers.index', ['form' => $form]) }}"
             class="tab_strip-tab{{ Route::currentRouteName() === 'staff.forms.answers.index' ? ' is-active' : '' }}">

@@ -23,7 +23,7 @@ class SubmitedMailable extends Mailable
     /**
      * @var Form
      */
-    public $custom_form;
+    public $participation_form;
 
     /**
      * @var Collection
@@ -44,7 +44,7 @@ class SubmitedMailable extends Mailable
      * Create a new message instance.
      *
      * @param Circle $circle
-     * @param Form|null $customForm
+     * @param Form|null $participationForm
      * @param Collection|null $questions
      * @param Answer|null $answer
      * @param array|null $answerDetails
@@ -52,13 +52,13 @@ class SubmitedMailable extends Mailable
      */
     public function __construct(
         Circle $circle,
-        Form $customForm = null,
+        Form $participationForm = null,
         Collection $questions = null,
         Answer $answer = null,
         array $answerDetails = null
     ) {
         $this->circle = $circle;
-        $this->custom_form = $customForm;
+        $this->participation_form = $participationForm;
         $this->questions = $questions;
         $this->answer = $answer;
         $this->answer_details = $answerDetails;
