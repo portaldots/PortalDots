@@ -10,6 +10,6 @@ class IndexAction extends Controller
     public function __invoke()
     {
         return view('staff.circles.index')
-            ->with('participation_types', ParticipationType::all());
+            ->with('participation_types', ParticipationType::with('form')->get());
     }
 }
