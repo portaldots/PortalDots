@@ -43,6 +43,7 @@ class HomeAction extends Controller
                 Auth::check()
                     ? Auth::user()
                     ->circles()
+                    ->with('participationType')
                     ->get()
                     : collect([])
             )

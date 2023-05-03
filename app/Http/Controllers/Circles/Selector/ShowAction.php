@@ -33,7 +33,8 @@ class ShowAction extends Controller
         if (isset($redirect_to)) {
             $user = Auth::user();
             $circles = $this->selectorService->getSelectableCirclesList($user);
-            $not_submitted_circles = $user->circles()->notSubmitted()->get();
+            $not_submitted_circles = $user
+                ->circles()->notSubmitted()->with('participationType')->get();
 
             return view('circles.selector')
                 ->with('redirect_to', $redirect_to)
