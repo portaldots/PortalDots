@@ -40,7 +40,9 @@
     @endisset
     <steps-list>
         <steps-list-item {{ $step === 1 ? 'active' : '' }}>企画情報</steps-list-item>
-        <steps-list-item {{ $step === 2 ? 'active' : '' }}>メンバー</steps-list-item>
+        @if ($participation_type->users_count_max > 1)
+            <steps-list-item {{ $step === 2 ? 'active' : '' }}>メンバー</steps-list-item>
+        @endif
         <steps-list-item {{ $step === 3 ? 'active' : '' }}>提出</steps-list-item>
     </steps-list>
 </app-header>

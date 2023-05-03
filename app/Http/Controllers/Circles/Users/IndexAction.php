@@ -19,6 +19,11 @@ class IndexAction extends Controller
             abort(403);
         }
 
+        if ($circle->participationType->users_count_max === 1) {
+            return redirect()
+                ->route('circles.confirm', ['circle' => $circle]);
+        }
+
         $circle->load('users');
 
         // 開発環境で http: が表示されないことがあるが、開発環境以外では
