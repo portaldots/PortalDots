@@ -107,7 +107,7 @@ class CirclesExportTest extends TestCase
         $this->place->circles()->attach($this->circle->id);
         $this->tag->circles()->attach($this->circle->id);
 
-        $this->circlesExport = App::make(CirclesExport::class);
+        $this->circlesExport = App::make(CirclesExport::class, [$this->participationType]);
     }
 
     /**

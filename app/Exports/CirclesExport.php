@@ -19,7 +19,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
 
     public function __construct(?ParticipationType $participationType = null)
     {
-        if (isset($participationType)) {
+        if (isset($participationType) && isset($participationType->form)) {
             $this->participationType = $participationType;
             $this->participationType->loadMissing(['form', 'form.questions', 'form.answers.details']);
             $this->answersExport = new AnswersExport($participationType->form);
