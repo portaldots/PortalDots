@@ -2,6 +2,7 @@
 
 namespace App\Eloquents;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
@@ -55,5 +56,19 @@ class ParticipationType extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function scopeOpen(Builder $query)
+    {
+        return $query->whereHas('form', function (Builder $query) {
+            $query->open();
+        });
+    }
+
+    public function scopePublic(Builder $query)
+    {
+        return $query->whereHas('form', function (Builder $query) {
+            $query->public();
+        });
     }
 }

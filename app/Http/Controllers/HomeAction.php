@@ -37,7 +37,7 @@ class HomeAction extends Controller
         }
 
         return view('home')
-            ->with('participation_types', ParticipationType::all())
+            ->with('participation_types', ParticipationType::open()->public()->get())
             ->with(
                 'my_circles',
                 Auth::check()
