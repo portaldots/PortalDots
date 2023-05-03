@@ -16,9 +16,12 @@ class EditAction extends Controller
 
         return view('staff.permissions.form')
             ->with('defined_permissions', $definedPermissions)
-            ->with('user_permission_names', $user->permissions->pluck('name')->filter(function ($name) use ($definedPermissions) {
-                return isset($definedPermissions[$name]);
-            })->values())
+            ->with(
+                'user_permission_names',
+                $user->permissions->pluck('name')->filter(function ($name) use ($definedPermissions) {
+                    return isset($definedPermissions[$name]);
+                })->values()
+            )
             ->with('user', $user);
     }
 }
