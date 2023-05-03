@@ -53,6 +53,32 @@
                         </template>
                     @endif
                 </list-view-form-group>
+                <list-view-form-group>
+                    <template v-slot:label>
+                        作成した企画に自動で追加するタグ
+                        <small class="text-muted">
+                            スペース区切りで複数入力可
+                        </small>
+                    </template>
+                    <template v-slot:description>
+                        この設定を保存した後に作成される企画にのみ、これらのタグが自動的に追加されます。
+                        @cannot('staff.tags.edit')
+                            <br>
+                            <i class="fas fa-info-circle fa-fw"></i>
+                            <b>企画タグの編集が許可されていないため、ここでは作成済みの企画タグのみを指定できます。企画タグを新しく作成したい場合は、{{ config('app.name') }}の管理者へお問い合わせください。</b>
+                        @endcannot
+                    </template>
+                    <tags-input input-name="tags" v-bind:default-tags="{{ $default_tags }}"
+                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}"
+                        {{ Auth::user()->can('staff.tags.edit') ? '' : 'add-only-from-autocomplete' }}></tags-input>
+                    @if ($errors->has('tags'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('tags') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
             </list-view>
             <app-fixed-form-footer>
                 <button type="submit" class="btn is-primary is-wide">保存</button>

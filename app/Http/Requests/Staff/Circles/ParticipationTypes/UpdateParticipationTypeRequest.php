@@ -26,6 +26,7 @@ class UpdateParticipationTypeRequest extends FormRequest
         return [
             'name' => ['required', 'string'],
             'description' => ['nullable', 'string'],
+            'tags' => ['nullable', 'array'],
         ];
     }
 
@@ -39,6 +40,7 @@ class UpdateParticipationTypeRequest extends FormRequest
         return [
             'name' => '参加種別名',
             'description' => '説明',
+            'tags' => '作成した企画に自動で追加するタグ',
         ];
     }
 }

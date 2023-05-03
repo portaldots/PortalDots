@@ -56,6 +56,7 @@ class BaseCircleRequest extends FormRequest
             'name_yomi' => '企画名(よみ)',
             'group_name' => '企画を出店する団体の名称',
             'group_name_yomi' => '企画を出店する団体の名称(よみ)',
+            'tags' => 'タグ',
             'leader' => '企画責任者',
             'members' => '学園祭係(副責任者)',
             'status' => '参加登録受理',
