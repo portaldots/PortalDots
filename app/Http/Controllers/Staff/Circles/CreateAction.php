@@ -16,6 +16,13 @@ class CreateAction extends Controller
             ? null
             : ParticipationType::find($request->participation_type);
 
+        $defaultTags = \json_encode([]);
+        if (!empty($defaultParticipationType)) {
+            $defaultTags = $defaultParticipationType->tags()->pluck('name')->map(function ($item) {
+                return ['text' => $item];
+            })->toJson();
+        }
+
         return view('staff.circles.form')
             ->with('participation_types', ParticipationType::all('id', 'name'))
             ->with('default_partipacion_type', $defaultParticipationType)
@@ -23,7 +30,7 @@ class CreateAction extends Controller
             ->with('places_autocomplete_items', Place::get()->map(function ($item) {
                 return ['text' => $item->name, 'value' => $item->id];
             })->toJson())
-            ->with('default_tags', \json_encode([]))
+            ->with('default_tags', $defaultTags)
             ->with('tags_autocomplete_items', Tag::get()->pluck('name')->map(function ($item) {
                 return ['text' => $item];
             })->toJson());

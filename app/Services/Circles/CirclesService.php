@@ -60,6 +60,8 @@ class CirclesService
 
             $circle->users()->save($leader, ['is_leader' => true]);
 
+            $circle->tags()->attach($participationType->tags()->pluck('id'));
+
             return $circle;
         });
     }
