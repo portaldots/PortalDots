@@ -29,7 +29,7 @@ class DestroyActionTest extends BaseTestCase
         $this->user = factory(User::class)->create();
         $this->circle = factory(Circle::class)->states('notSubmitted')->create();
         $this->answer = factory(Answer::class)->create([
-            'form_id' => $this->form->id,
+            'form_id' => $this->participationForm->id,
             'circle_id' => $this->circle->id,
         ]);
 

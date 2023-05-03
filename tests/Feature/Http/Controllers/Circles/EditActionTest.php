@@ -28,7 +28,7 @@ class EditActionTest extends BaseTestCase
         $this->user = factory(User::class)->create();
         $this->circle = factory(Circle::class)->states('notSubmitted')->create();
         $this->answer = factory(Answer::class)->create([
-            'form_id' => $this->form->id,
+            'form_id' => $this->participationForm->id,
             'circle_id' => $this->circle->id,
         ]);
 
@@ -47,12 +47,12 @@ class EditActionTest extends BaseTestCase
         $this->withoutExceptionHandling();
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->get(
-                        route('circles.edit', [
-                            'circle' => $this->circle,
-                        ])
-                    );
+            ->actingAs($this->user)
+            ->get(
+                route('circles.edit', [
+                    'circle' => $this->circle,
+                ])
+            );
 
         $response->assertStatus(200);
     }
@@ -66,12 +66,12 @@ class EditActionTest extends BaseTestCase
         $member->circles()->attach($this->circle->id, ['is_leader' => false]);
 
         $responce = $this
-                    ->actingAs($member)
-                    ->get(
-                        route('circles.edit', [
-                            'circle' => $this->circle,
-                        ])
-                    );
+            ->actingAs($member)
+            ->get(
+                route('circles.edit', [
+                    'circle' => $this->circle,
+                ])
+            );
 
         $responce->assertStatus(403);
     }
@@ -84,12 +84,12 @@ class EditActionTest extends BaseTestCase
         $anotherUser = factory(User::class)->create();
 
         $response = $this
-                    ->actingAs($anotherUser)
-                    ->get(
-                        route('circles.edit', [
-                            'circle' => $this->circle,
-                        ])
-                    );
+            ->actingAs($anotherUser)
+            ->get(
+                route('circles.edit', [
+                    'circle' => $this->circle,
+                ])
+            );
 
         $response->assertStatus(403);
     }
@@ -103,12 +103,12 @@ class EditActionTest extends BaseTestCase
         $this->circle->save();
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->get(
-                        route('circles.edit', [
-                            'circle' => $this->circle,
-                        ])
-                    );
+            ->actingAs($this->user)
+            ->get(
+                route('circles.edit', [
+                    'circle' => $this->circle,
+                ])
+            );
 
         $response->assertStatus(403);
     }
