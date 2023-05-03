@@ -155,6 +155,10 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                             '/{participation_type}/form/edit',
                             'Staff\Circles\ParticipationTypes\Form\EditAction'
                         )->name('form.edit')->middleware(['can:staff.circles.participation_types']);
+                        Route::get(
+                            '/{participation_type}/form/editor',
+                            'Staff\Circles\ParticipationTypes\Form\EditorAction'
+                        )->name('form.editor')->middleware(['can:staff.circles.participation_types']);
                         Route::patch(
                             '/{participation_type}/form',
                             'Staff\Circles\ParticipationTypes\Form\UpdateAction'

@@ -19,8 +19,9 @@
             <list-view>
                 <template v-slot:title>企画参加登録のカスタムフォーム</template>
                 <template v-slot:description>企画参加登録フォームに独自の設問やテキストを追加できます</template>
-                <list-view-action-btn href="{{ route('staff.forms.editor', ['form' => $participation_type->form]) }}"
-                    icon-class="far fa-edit" newtab>
+                <list-view-action-btn
+                    href="{{ route('staff.circles.participation_types.form.editor', ['participation_type' => $participation_type]) }}"
+                    icon-class="far fa-edit">
                     フォームエディターを開く
                 </list-view-action-btn>
             </list-view>
