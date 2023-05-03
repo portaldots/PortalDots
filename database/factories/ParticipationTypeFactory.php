@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Eloquents\Form;
 use App\Eloquents\ParticipationType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
