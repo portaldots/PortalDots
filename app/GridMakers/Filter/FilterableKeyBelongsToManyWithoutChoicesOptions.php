@@ -56,7 +56,7 @@ class FilterableKeyBelongsToManyWithoutChoicesOptions implements JsonSerializabl
         return $this->parentKeys;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return [
             'to' => $this->to,

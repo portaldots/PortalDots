@@ -72,7 +72,7 @@ class FilterableKeyBelongsToManyOptions implements JsonSerializable
         return $this->choices_name;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return [
             'pivot' => $this->pivot,

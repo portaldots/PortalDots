@@ -207,7 +207,7 @@ class FilterableKey implements JsonSerializable
         return new self(self::TYPE_ENUM, $choices);
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         $base_array = [
             'type' => $this->type
