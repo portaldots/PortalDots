@@ -101,7 +101,7 @@ class StoreAction extends Controller
         DB::commit();
 
         return redirect()
-            ->route('staff.circles.create')
+            ->back()
             ->with('topAlert.title', '企画情報を作成しました');
     }
 }

@@ -2,9 +2,20 @@
 
 @section('title', empty($circle) ? '新規作成 — 企画' : "{$circle->name} — 企画")
 
+@php
+    $participation_type = match (true) {
+        isset($circle) => $circle->participationType,
+        isset($default_partipacion_type) => $default_partipacion_type,
+        default => null,
+    };
+@endphp
+
 @section('navbar')
-    <app-nav-bar-back href="{{ route('staff.circles.index') }}">
-        企画情報管理
+    <app-nav-bar-back
+        href="{{ empty($participation_type)
+            ? route('staff.circles.index')
+            : route('staff.circles.participation_types.index', ['participation_type' => $participation_type]) }}">
+        {{ empty($participation_type) ? '企画情報管理' : $participation_type->name }}
     </app-nav-bar-back>
 @endsection
 
@@ -34,7 +45,7 @@
                     @endempty
                     <select id="participation_type_id"
                         class="form-control @error('participation_type_id') is-invalid @enderror" name="participation_type_id"
-                        value="{{ old('participation_type_id', empty($circle) ? '' : $circle->participation_type_id) }}"
+                        value="{{ old('participation_type_id', empty($participation_type) ? '' : $participation_type->id) }}"
                         {{ empty($circle) ? '' : 'disabled' }} required>
                         <option disabled value="">選択してください</option>
                         @foreach ($participation_types as $participation_type)

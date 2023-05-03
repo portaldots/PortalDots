@@ -71,7 +71,8 @@
             notes: 'スタッフ用メモ',
         }">
         <template v-slot:toolbar>
-            <a class="btn is-primary" href="{{ route('staff.circles.create') }}">
+            <a class="btn is-primary"
+                href="{{ route('staff.circles.create', ['participation_type' => $participation_type->id]) }}">
                 <i class="fas fa-plus fa-fw"></i>
                 新規企画
             </a>
