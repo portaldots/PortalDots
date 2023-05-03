@@ -70,22 +70,41 @@ p {
   }
 }
 
+dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: $spacing-lg;
+  row-gap: $spacing;
+
+  @media screen and (max-width: 640px) {
+    grid-template-columns: 1fr;
+    row-gap: 0;
+  }
+}
+
 dt {
   color: $color-muted;
-  font-size: 0.9rem;
-  font-weight: $font-bold;
-  margin: $spacing-lg 0 $spacing-xs;
-  &:first-child {
-    margin-top: 0;
-  }
+  grid-column: 1;
+  max-width: 200px;
+  font-weight: 500;
 }
 
 dd {
   margin: 0;
+  grid-column: 2;
+
+  @media screen and (max-width: 640px) {
+    grid-column: 1;
+    margin-bottom: $spacing-md;
+  }
 }
 
 li {
   margin: 0 0 $spacing-sm;
+}
+
+dd ul {
+  padding-left: $spacing;
 }
 
 code {
