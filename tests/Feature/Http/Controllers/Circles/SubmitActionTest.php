@@ -140,9 +140,9 @@ class SubmitActionTest extends BaseTestCase
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
         CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
-        $anotherCircle = factory(Circle::class)->states('notSubmitted')->create([[
+        $anotherCircle = factory(Circle::class)->states('notSubmitted')->create([
             'participation_type_id' => $this->participationType->id
-        ]]);
+        ]);
 
         $response = $this
             ->actingAs($this->user)
