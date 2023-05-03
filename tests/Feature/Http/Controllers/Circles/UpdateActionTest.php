@@ -23,7 +23,9 @@ class UpdateActionTest extends BaseTestCase
         parent::setUp();
 
         $this->user = factory(User::class)->create();
-        $this->circle = factory(Circle::class)->states('notSubmitted')->create();
+        $this->circle = factory(Circle::class)->states('notSubmitted')->create([
+            'participation_type_id' => $this->participationType->id
+        ]);
         $this->answer = factory(Answer::class)->create([
             'form_id' => $this->participationForm->id,
             'circle_id' => $this->circle->id,

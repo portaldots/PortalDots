@@ -73,7 +73,9 @@ class DestroyActionTest extends TestCase
             ->withSession(['staff_authorized' => true])
             ->delete(route('staff.circles.destroy', ['circle' => $this->circle]));
 
-        $responce->assertRedirect(route('staff.circles.index'));
+        $responce->assertRedirect(route('staff.circles.participation_types.index', [
+            'participation_type' => $this->circle->participationType
+        ]));
 
         $this->assertDatabaseMissing('answers', ['form_id' => $this->form->id, 'circle_id' => $this->circle->id]);
         $this->assertDatabaseMissing('circle_user', ['circle_id' => $this->circle->id]);

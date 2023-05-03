@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
+use App\Eloquents\Form;
+use App\Eloquents\ParticipationType;
 use App\Eloquents\Tag;
 use App\Services\Circles\CirclesService;
 use App\Mail\Circles\ApprovedMailable;
@@ -32,6 +34,11 @@ class CirclesServiceTest extends TestCase
 
     private function createCircle()
     {
+        $participationForm = factory(Form::class)->create();
+        $participationType = ParticipationType::factory()->create([
+            'form_id' => $participationForm->id
+        ]);
+
         $leader = factory(User::class)->create();
         $name = 'サンプル模擬店';
         $name_yomi = 'サンプルもぎてん';
@@ -40,11 +47,12 @@ class CirclesServiceTest extends TestCase
 
         return [
             $this->circlesService->create(
-                $leader,
-                $name,
-                $name_yomi,
-                $group_name,
-                $group_name_yomi
+                participationType: $participationType,
+                leader: $leader,
+                name: $name,
+                name_yomi: $name_yomi,
+                group_name: $group_name,
+                group_name_yomi: $group_name_yomi
             ),
             $leader,
             $name,
@@ -63,9 +71,7 @@ class CirclesServiceTest extends TestCase
             $circle,
             $leader,
             $name,
-            $name_yomi,
             $group_name,
-            $group_name_yomi
         ] = $this->createCircle();
 
         $this->assertDatabaseHas('circles', [
@@ -91,9 +97,7 @@ class CirclesServiceTest extends TestCase
     {
         [
             $circle,
-            $leader,
             $name,
-            $name_yomi,
             $group_name,
             $group_name_yomi
         ] = $this->createCircle();

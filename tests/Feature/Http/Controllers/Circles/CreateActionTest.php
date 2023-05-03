@@ -34,7 +34,7 @@ class CreateActionTest extends BaseTestCase
         $responce = $this
             ->actingAs($this->user)
             ->get(
-                route('circles.create')
+                route('circles.create', ['participation_type' => $this->participationType])
             );
 
         $responce->assertOk();
@@ -53,7 +53,7 @@ class CreateActionTest extends BaseTestCase
         $responce = $this
             ->actingAs($this->user)
             ->get(
-                route('circles.create')
+                route('circles.create', ['participation_type' => $this->participationType])
             );
 
         $responce->assertOk();

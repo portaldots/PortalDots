@@ -28,7 +28,7 @@ class SubmitActionTest extends BaseTestCase
         $this->user->circles()->attach($this->circle->id, ['is_leader' => true]);
 
         // 明示的に設定しない限り、企画には1人所属していれば参加登録を提出できるものとする
-        // Config::set('portal.users_number_to_submit_circle', 1);
+        $this->participationType->update(['users_count_min' => 1]);
     }
 
     /**
@@ -83,7 +83,7 @@ class SubmitActionTest extends BaseTestCase
     public function 企画メンバーが規定の人数に達していない場合はは参加登録の提出はできない()
     {
         // 規定の人数 = 2
-        // Config::set('portal.users_number_to_submit_circle', 2);
+        $this->participationType->update(['users_count_min' => 2]);
 
         // 受付期間内
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
