@@ -22,7 +22,7 @@ class CreatePolicy
     {
     }
 
-    public function __invoke(User $user, ?ParticipationType $participationType = null)
+    public function __invoke(?User $user, ?ParticipationType $participationType = null)
     {
         if (empty($participationType)) {
             return ParticipationType::public()->open()->count() > 0;
