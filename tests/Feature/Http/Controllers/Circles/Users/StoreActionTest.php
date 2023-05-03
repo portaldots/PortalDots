@@ -3,33 +3,32 @@
 namespace Tests\Feature\Http\Controllers\Circles\Users;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\Http\Controllers\Circles\BaseTestCase;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
-use App\Eloquents\Form;
-use App\Eloquents\CustomForm;
 use App\Eloquents\Answer;
 
 class StoreActionTest extends BaseTestCase
 {
     use RefreshDatabase;
 
-    private $user;
-    private $circle;
-    private $answer;
-    private $nonLeader;
+    private ?User $user;
+    private ?Circle $circle;
+    private ?Answer $answer;
+    private ?User $nonLeader;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->user = factory(User::class)->create();
-        $this->circle = factory(Circle::class)->states('notSubmitted')->create();
+        $this->circle = factory(Circle::class)->states('notSubmitted')->create([
+            'participation_type_id' => $this->participationType->id
+        ]);
         $this->answer = factory(Answer::class)->create([
-            'form_id' => $this->form->id,
+            'form_id' => $this->participationForm->id,
             'circle_id' => $this->circle->id,
         ]);
 
@@ -53,15 +52,15 @@ class StoreActionTest extends BaseTestCase
         ]);
 
         $response = $this
-                    ->actingAs($invitedUser)
-                    ->post(
-                        route('circles.users.store', [
-                            'circle' => $this->circle,
-                        ]),
-                        [
-                            'invitation_token' => $this->circle->invitation_token,
-                        ]
-                    );
+            ->actingAs($invitedUser)
+            ->post(
+                route('circles.users.store', [
+                    'circle' => $this->circle,
+                ]),
+                [
+                    'invitation_token' => $this->circle->invitation_token,
+                ]
+            );
 
         $this->assertDatabaseHas('circle_user', [
             'circle_id' => $this->circle->id,
@@ -81,15 +80,15 @@ class StoreActionTest extends BaseTestCase
         $invitedUser = factory(User::class)->create();
 
         $response = $this
-                    ->actingAs($invitedUser)
-                    ->post(
-                        route('circles.users.store', [
-                            'circle' => $this->circle,
-                        ]),
-                        [
-                            'invitation_token' => 'INVALID_WRONG_TOKEN',
-                        ]
-                    );
+            ->actingAs($invitedUser)
+            ->post(
+                route('circles.users.store', [
+                    'circle' => $this->circle,
+                ]),
+                [
+                    'invitation_token' => 'INVALID_WRONG_TOKEN',
+                ]
+            );
 
         $this->assertDatabaseMissing('circle_user', [
             'circle_id' => $this->circle->id,
@@ -110,15 +109,15 @@ class StoreActionTest extends BaseTestCase
         $invitedUser = factory(User::class)->create();
 
         $response = $this
-                    ->actingAs($invitedUser)
-                    ->post(
-                        route('circles.users.store', [
-                            'circle' => $this->circle,
-                        ]),
-                        [
-                            'invitation_token' => $this->circle->invitation_token,
-                        ]
-                    );
+            ->actingAs($invitedUser)
+            ->post(
+                route('circles.users.store', [
+                    'circle' => $this->circle,
+                ]),
+                [
+                    'invitation_token' => $this->circle->invitation_token,
+                ]
+            );
 
         $this->assertDatabaseMissing('circle_user', [
             'circle_id' => $this->circle->id,

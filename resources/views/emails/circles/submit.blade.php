@@ -23,7 +23,7 @@
 
 @if (!empty($questions))
 @foreach ($questions as $question)
-@include('emails.includes.question_email', ['form' => $custom_form])
+@include('emails.includes.question_email', ['form' => $participation_form])
 @endforeach
 @endif
 @endcomponent

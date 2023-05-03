@@ -10,7 +10,7 @@ class ShowAction extends Controller
 {
     public function __invoke(Form $form)
     {
-        if (isset($form->customForm)) {
+        if (isset($form->participationType)) {
             abort(404);
         }
 

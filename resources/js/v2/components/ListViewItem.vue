@@ -64,11 +64,13 @@ export default {
   &__meta {
     font-size: 1rem;
     margin: 0;
+    clear: both;
   }
   &__body {
     color: $color-muted;
     font-size: 1rem;
     margin: $spacing-xs 0 0;
+    clear: both;
   }
 }
 </style>

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Circles\Users;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
 use App\Services\Circles\CirclesService;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,14 +23,14 @@ class StoreAction extends Controller
             abort(404);
         }
 
-        $custom_form = CustomForm::getFormByType('circle');
+        $participationForm = $circle->participationType->form;
 
-        $can_join = isset($custom_form)
-            && $custom_form->is_public
-            && $custom_form->isOpen()
+        $canJoin = isset($participationForm)
+            && $participationForm->is_public
+            && $participationForm->isOpen()
             && !$circle->hasSubmitted();
 
-        if (!$can_join) {
+        if (!$canJoin) {
             abort(404);
         }
 
@@ -46,7 +45,7 @@ class StoreAction extends Controller
         activity()->enableLogging();
 
         return redirect()
-                ->route('circles.show', ['circle' => $circle])
-                ->with('topAlert.title', "「{$circle->name}」の学園祭係(副責任者)になりました");
+            ->route('circles.show', ['circle' => $circle])
+            ->with('topAlert.title', "「{$circle->name}」の学園祭係(副責任者)になりました");
     }
 }

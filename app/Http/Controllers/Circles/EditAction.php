@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Circles;
 
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
 use App\Services\Forms\AnswerDetailsService;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,12 +25,13 @@ class EditAction extends Controller
             abort(403);
         }
 
-        $form = CustomForm::getFormByType('circle');
-        $answer = $circle->getCustomFormAnswer();
+        $answer = $circle->getParticipationFormAnswer();
+
         return view('circles.form')
+            ->with('participation_type', $circle->participationType)
             ->with('circle', $circle)
-            ->with('form', $form)
-            ->with('questions', $form->questions()->get())
+            ->with('form', $circle->participationType->form)
+            ->with('questions', $circle->participationType->form->questions)
             ->with('answer', $answer)
             ->with('answer_details', $this->answerDetailsService->getAnswerDetailsByAnswer($answer));
     }

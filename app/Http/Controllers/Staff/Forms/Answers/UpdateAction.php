@@ -25,9 +25,9 @@ class UpdateAction extends Controller
         $answer->circle()->submitted()->firstOrFail();
 
         $this->answersService->updateAnswer($form, $answer, $request);
-        if ($form->is_public && empty($form->customForm)) {
+        if ($form->is_public && empty($form->participationType)) {
             // フォームが公開されている場合にのみ確認メールを送信する
-            // ただし、カスタムフォームである場合は送信しない
+            // ただし、参加登録フォームである場合は送信しない
             $this->answersService->sendAll($answer, Auth::user(), true);
         }
         return back()

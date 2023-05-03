@@ -28,7 +28,7 @@
         エラーが発生しました
       </span>
     </div>
-    <div class="editor-header__actions">
+    <div class="editor-header__actions" v-if="!custom_form">
       <a class="btn btn-link" :href="preview_url" target="_blank">プレビュー</a>
       <template v-if="is_public">
         <span class="badge badge-primary mr-2">公開</span>
@@ -84,6 +84,9 @@ export default {
     },
     is_public() {
       return this.$store.state.editor.form.is_public;
+    },
+    custom_form() {
+      return this.$store.state.editor.form.custom_form;
     },
   },
   methods: {

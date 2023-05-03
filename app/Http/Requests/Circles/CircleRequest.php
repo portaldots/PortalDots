@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests\Circles;
 
-use App;
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
+use App\Eloquents\ParticipationType;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Services\Forms\ValidationRulesService;
 use App\Http\Requests\Forms\AnswerRequestInterface;
+use Illuminate\Support\Facades\App;
 
 class CircleRequest extends FormRequest implements AnswerRequestInterface
 {
@@ -29,6 +29,7 @@ class CircleRequest extends FormRequest implements AnswerRequestInterface
     public function rules(ValidationRulesService $validationRulesService)
     {
         $rules = [
+            'participation_type' => ['required', 'integer', 'exists:participation_types,id'],
             'name' => Circle::NAME_RULES,
             'name_yomi' => Circle::NAME_YOMI_RULES,
             'group_name' => Circle::GROUP_NAME_RULES,
@@ -36,7 +37,7 @@ class CircleRequest extends FormRequest implements AnswerRequestInterface
         ];
 
         $custom_form_rules = $validationRulesService->getRulesFromForm(
-            CustomForm::getFormByType('circle'),
+            ParticipationType::findOrFail($this->participation_type)->form,
             $this
         );
 
@@ -51,6 +52,7 @@ class CircleRequest extends FormRequest implements AnswerRequestInterface
     public function attributes()
     {
         $attributes = [
+            'participation_type' => '参加種別',
             'name' => '企画名',
             'name_yomi' => '企画名(よみ)',
             'group_name' => '企画を出店する団体の名称',
@@ -59,7 +61,7 @@ class CircleRequest extends FormRequest implements AnswerRequestInterface
 
         $validationRulesService = App::make(ValidationRulesService::class);
         $custom_form_attributes = $validationRulesService->getAttributesFromForm(
-            CustomForm::getFormByType('circle')
+            ParticipationType::findOrFail($this->participation_type)->form
         )->toArray();
 
         return \array_merge($attributes, $custom_form_attributes);

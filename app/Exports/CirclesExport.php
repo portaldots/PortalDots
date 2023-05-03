@@ -3,44 +3,46 @@
 namespace App\Exports;
 
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
-use App\Eloquents\Form;
+use App\Eloquents\ParticipationType;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
 class CirclesExport implements FromCollection, WithHeadings, WithMapping
 {
-    /**
-     * @var Form
-     */
-    private $customForm;
+    private ?ParticipationType $participationType;
 
     /**
      * @var AnswersExport
      */
     private $answersExport;
 
-    public function __construct()
+    public function __construct(?ParticipationType $participationType = null)
     {
-        $this->customForm = CustomForm::getFormByType('circle');
-        if (isset($this->customForm)) {
-            $this->customForm->load(['questions', 'answers.details']);
-            $this->answersExport = new AnswersExport($this->customForm);
+        if (isset($participationType) && isset($participationType->form)) {
+            $this->participationType = $participationType;
+            $this->participationType->loadMissing(['form', 'form.questions', 'form.answers.details']);
+            $this->answersExport = new AnswersExport($participationType->form);
         }
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
-        return Circle::submitted()->with(['leader', 'users', 'places', 'tags', 'statusSetBy'])->get();
+        $query = Circle::submitted()->with(['participationType', 'leader', 'users', 'places', 'tags', 'statusSetBy']);
+
+        if (isset($this->participationType)) {
+            return $query->where('participation_type_id', $this->participationType->id)->get();
+        }
+
+        return $query->get();
     }
 
     /**
-    * @param Circle $circle
-    */
+     * @param Circle $circle
+     */
     public function map($circle): array
     {
         $leader = $circle->leader->first();
@@ -58,13 +60,16 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
             $status = '確認中';
         }
 
-        if (isset($this->customForm)) {
-            $answer = $this->customForm->answers->where('circle_id', $circle->id)->first();
+        if (isset($this->participationType)) {
+            $answer = $this->participationType->form->answers->where('circle_id', $circle->id)->first();
         }
 
         return array_merge(
             [
                 $circle->id,
+                isset($circle->participationType)
+                    ? "{$circle->participationType->name}(ID:{$circle->participationType->id})"
+                    : "",
                 $circle->name,
                 $circle->name_yomi,
                 $circle->group_name,
@@ -75,8 +80,8 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
                 $status,
                 $circle->status_set_at,
                 $circle->statusSetBy
-                ? "{$circle->statusSetBy->name}(ID:{$circle->statusSetBy->id},{$circle->statusSetBy->student_id})"
-                : '',
+                    ? "{$circle->statusSetBy->name}(ID:{$circle->statusSetBy->id},{$circle->statusSetBy->student_id})"
+                    : '',
                 $circle->created_at,
                 $circle->updated_at,
                 $circle->notes,
@@ -95,6 +100,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
         return array_merge(
             [
                 '企画ID',
+                '参加種別',
                 '企画名',
                 '企画名（よみ）',
                 '企画を出店する団体の名称',
@@ -111,9 +117,10 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
                 '責任者',
                 '学園祭係',
             ],
-            isset($this->customForm)
-            ? $this->customForm->questions->where('type', '!==', 'heading')->pluck('name')->toArray()
-            : [],
+            isset($this->participationType)
+                ? $this->participationType->form->questions
+                ->where('type', '!==', 'heading')->pluck('name')->toArray()
+                : [],
         );
     }
 }

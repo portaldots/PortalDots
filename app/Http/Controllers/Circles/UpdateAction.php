@@ -7,7 +7,6 @@ use App\Http\Requests\Circles\CircleRequest;
 use App\Services\Circles\CirclesService;
 use App\Services\Forms\AnswersService;
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -41,26 +40,26 @@ class UpdateAction extends Controller
 
         DB::transaction(function () use ($request, $circle) {
             $this->circlesService->update(
-                $circle,
-                $request->name,
-                $request->name_yomi,
-                $request->group_name,
-                $request->group_name_yomi
+                circle: $circle,
+                name: $request->name,
+                name_yomi: $request->name_yomi,
+                group_name: $request->group_name,
+                group_name_yomi: $request->group_name_yomi
             );
 
-            $custom_form_answer = $circle->getCustomFormAnswer();
+            $participationFormAnswer = $circle->getParticipationFormAnswer();
 
-            if (empty($custom_form_answer)) {
+            if (empty($participationFormAnswer)) {
                 $this->answersService->createAnswer(
-                    CustomForm::getFormByType('circle'),
-                    $circle,
-                    $request
+                    form: $circle->participationType->form,
+                    circle: $circle,
+                    request: $request
                 );
             } else {
                 $this->answersService->updateAnswer(
-                    CustomForm::getFormByType('circle'),
-                    $custom_form_answer,
-                    $request
+                    form: $circle->participationType->form,
+                    answer: $participationFormAnswer,
+                    request: $request
                 );
             }
         });

@@ -7,6 +7,7 @@ namespace App\GridMakers;
 use App\Eloquents\Permission;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\User;
+use App\Eloquents\ValueObjects\PermissionInfo;
 use App\GridMakers\Concerns\UseEloquent;
 use App\GridMakers\Filter\FilterableKey;
 use App\GridMakers\Filter\FilterableKeysDict;
@@ -101,7 +102,13 @@ class PermissionsGridMaker implements GridMakable
             switch ($key) {
                 case 'permissions':
                     $item[$key] = $record->permissions->map(function ($permission) {
-                        return Permission::getDefinedPermissions()[$permission->name];
+                        return Permission::getDefinedPermissions()[$permission->name]
+                            ?? new PermissionInfo(
+                                $permission->name,
+                                $permission->name,
+                                '（不明）',
+                                '（不明）'
+                            );
                     });
                     break;
                 default:

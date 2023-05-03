@@ -1,11 +1,12 @@
 <dl>
+    <dt>参加種別</dt>
+    <dd>{{ $circle->participationType->name }}</dd>
     @foreach ([
         'name' => '企画名',
         'name_yomi' => '企画名(よみ)',
         'group_name' => '企画を出店する団体の名称',
         'group_name_yomi' => '企画を出店する団体の名称(よみ)',
-    ]
-    as $field_name => $display_name)
+    ] as $field_name => $display_name)
         <dt>{{ $display_name }}
             @if (Auth::user()->isLeaderInCircle($circle) && Gate::allows('circle.update', $circle))
                 — <a href="{{ route('circles.edit', ['circle' => $circle]) }}">変更</a>
@@ -33,7 +34,7 @@
             @endforeach
         </ul>
     </dd>
-    @unless($circle->places->isEmpty())
+    @unless ($circle->places->isEmpty())
         <dt>
             使用場所
         </dt>

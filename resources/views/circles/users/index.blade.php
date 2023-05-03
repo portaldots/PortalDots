@@ -55,7 +55,7 @@
                             <app-badge muted>学園祭係(副責任者)</app-badge>
                         @endif
                     </template>
-                    @unless($user->pivot->is_leader)
+                    @unless ($user->pivot->is_leader)
                         <template v-slot:meta>
                             <form-with-confirm
                                 action="{{ route('circles.users.destroy', ['circle' => $circle, 'user' => $user]) }}"
@@ -77,13 +77,17 @@
                 <i class="fas fa-chevron-left"></i>
                 企画情報の編集
             </a>
-            @unless($circle->canSubmit())
+            @unless ($circle->canSubmit())
                 <span class="btn is-primary disabled">
                     確認画面へ
                     <i class="fas fa-chevron-right"></i>
                 </span>
                 <p class="text-danger pt-spacing-sm">
-                    企画参加登録を提出するには、あと{{ config('portal.users_number_to_submit_circle') - count($circle->users) }}人がメンバーになる必要があります。
+                    @if ($remaining = $circle->participationType->users_count_min - count($circle->users) > 0)
+                        企画参加登録を提出するには、あと{{ $remaining }}人がメンバーになる必要があります。
+                    @elseif ($extra = count($circle->users) - $circle->participationType->users_count_max > 0)
+                        企画参加登録を提出するには、メンバーを{{ $extra }}人減らす必要があります。
+                    @endif
                 </p>
             @else
                 <a href="{{ route('circles.confirm', ['circle' => $circle]) }}" class="btn is-primary">

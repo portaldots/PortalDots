@@ -23,8 +23,8 @@ class StoreAction extends Controller
 
     public function __invoke(Form $form, AnswerRequest $request)
     {
-        // カスタムフォームの作成は許可しない
-        if (isset($form->customForm)) {
+        // 参加登録フォームの作成は許可しない
+        if (isset($form->participationType)) {
             abort(404);
         }
 
@@ -42,9 +42,9 @@ class StoreAction extends Controller
         }
 
         return back()
-                ->with('topAlert.type', 'danger')
-                ->with('topAlert.title', '更新に失敗しました')
-                ->with('topAlert.body', '恐れ入りますが、もう一度お試しください')
-                ->withInput();
+            ->with('topAlert.type', 'danger')
+            ->with('topAlert.title', '更新に失敗しました')
+            ->with('topAlert.body', '恐れ入りますが、もう一度お試しください')
+            ->withInput();
     }
 }

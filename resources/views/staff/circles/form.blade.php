@@ -2,16 +2,27 @@
 
 @section('title', empty($circle) ? '新規作成 — 企画' : "{$circle->name} — 企画")
 
+@php
+    $participation_type = match (true) {
+        isset($circle) => $circle->participationType,
+        isset($default_partipacion_type) => $default_partipacion_type,
+        default => null,
+    };
+@endphp
+
 @section('navbar')
-    <app-nav-bar-back href="{{ route('staff.circles.index') }}">
-        企画情報管理
+    <app-nav-bar-back
+        href="{{ empty($participation_type)
+            ? route('staff.circles.index')
+            : route('staff.circles.participation_types.index', ['participation_type' => $participation_type]) }}">
+        {{ empty($participation_type) ? '企画情報管理' : $participation_type->name }}
     </app-nav-bar-back>
 @endsection
 
 @section('content')
     <form method="post"
         action="{{ empty($circle) ? route('staff.circles.store') : route('staff.circles.update', $circle) }}">
-        @method(empty($circle) ? 'post' : 'patch' )
+        @method(empty($circle) ? 'post' : 'patch')
         @csrf
 
         <app-header>
@@ -27,13 +38,34 @@
         <app-container>
             <list-view>
                 <template v-slot:title>企画基本情報</template>
+                <list-view-form-group label-for="participation_type_id">
+                    <template v-slot:label>参加種別</template>
+                    @empty($circle)
+                        <template v-slot:description>後から変更することはできません。</template>
+                    @endempty
+                    <select id="participation_type_id"
+                        class="form-control @error('participation_type_id') is-invalid @enderror" name="participation_type_id"
+                        value="{{ old('participation_type_id', empty($participation_type) ? '' : $participation_type->id) }}"
+                        {{ empty($circle) ? '' : 'disabled' }} required>
+                        <option disabled value="">選択してください</option>
+                        @foreach ($participation_types as $participation_type)
+                            <option value="{{ $participation_type->id }}">{{ $participation_type->name }}</option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('participation_type_id'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('participation_type_id') as $message)
+                                {{ $message }}
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
                 @foreach ([
             'name' => '企画名',
             'name_yomi' => '企画名(よみ)',
             'group_name' => '企画を出店する団体の名称',
             'group_name_yomi' => '企画を出店する団体の名称(よみ)',
-        ]
-        as $field_name => $display_name)
+        ] as $field_name => $display_name)
                     <list-view-form-group label-for="{{ $field_name }}">
                         <template v-slot:label>{{ $display_name }}</template>
                         <input id="{{ $field_name }}" class="form-control @error($field_name) is-invalid @enderror"
@@ -65,7 +97,7 @@
                         v-bind:autocomplete-items="{{ $places_autocomplete_items }}" add-only-from-autocomplete
                         placeholder="場所を追加"></tags-input>
                 </list-view-form-group>
-                @if (isset($custom_form))
+                @if (isset($circle->participationType->form))
                     <list-view-form-group>
                         <template v-slot:label>カスタムフォームへの回答</template>
                         @if (Auth::user()->cannot('staff.forms.answers.edit'))
@@ -76,13 +108,8 @@
                                     カスタムフォームへの回答を編集したい場合は、{{ config('app.name') }}の管理者へお問い合わせください。
                                 </b>
                             </div>
-                        @elseif (empty($circle))
-                            <div class="text-muted">
-                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
-                                カスタムフォーム回答の内容を編集するには、まず企画情報を保存してください
-                            </div>
                         @else
-                            <a href="{{ route('staff.forms.answers.create', ['form' => $custom_form, 'circle' => $circle]) }}"
+                            <a href="{{ route('staff.forms.answers.create', ['form' => $circle->participationType->form, 'circle' => $circle]) }}"
                                 class="btn is-primary" target="_blank">
                                 回答の内容を表示・編集
                             </a>
@@ -123,8 +150,8 @@
                 <template v-slot:title>企画のメンバー</template>
                 <list-view-form-group label-for="leader">
                     <template v-slot:label>責任者の{{ config('portal.student_id_name') }}</template>
-                    <input type="text" class="form-control @error('leader') is-invalid @enderror" id="leader" name="leader"
-                        value="{{ old('leader', empty($leader) ? '' : $leader->student_id) }}">
+                    <input type="text" class="form-control @error('leader') is-invalid @enderror" id="leader"
+                        name="leader" value="{{ old('leader', empty($leader) ? '' : $leader->student_id) }}">
                     @if ($errors->has('leader'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('leader') as $message)
@@ -136,9 +163,8 @@
                 <list-view-form-group label-for="members">
                     <template v-slot:label>学園祭係(副責任者)の{{ config('portal.student_id_name') }}</template>
                     <template
-                        v-slot:description>{{ config('portal.student_id_name') }}を改行して入力することで複数の学園祭係を追加できます。{{ config('portal.users_number_to_submit_circle') - 1 }}人を下回っていても構いません。</template>
-                    <textarea id="members" class="form-control @error('members') is-invalid @enderror" name="members"
-                        rows="3">{{ old('members', empty($members) ? '' : $members) }}</textarea>
+                        v-slot:description>{{ config('portal.student_id_name') }}を改行して入力することで複数の学園祭係を追加できます。</template>
+                    <textarea id="members" class="form-control @error('members') is-invalid @enderror" name="members" rows="3">{{ old('members', empty($members) ? '' : $members) }}</textarea>
                     @if ($errors->has('members'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('members') as $message)
@@ -154,19 +180,22 @@
                     <template v-slot:label>参加登録の受理設定</template>
                     <div class="form-radio">
                         <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="status" id="statusRadios1" value="pending"
+                            <input class="form-radio__input" type="radio" name="status" id="statusRadios1"
+                                value="pending"
                                 {{ old('status', isset($circle) ? $circle->status : null) === null ? 'checked' : '' }}>
                             <strong>確認中</strong><br>
                             <span class="text-muted">ユーザーには参加登録が確認中である旨が表示されます</span>
                         </label>
                         <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="status" id="statusRadios2" value="approved"
+                            <input class="form-radio__input" type="radio" name="status" id="statusRadios2"
+                                value="approved"
                                 {{ old('status', isset($circle) ? $circle->status : null) === 'approved' ? 'checked' : '' }}>
                             <strong>受理</strong><br>
                             <span class="text-muted">参加登録を受理します。当該企画は申請機能を利用できるようになります</span>
                         </label>
                         <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="status" id="statusRadios3" value="rejected"
+                            <input class="form-radio__input" type="radio" name="status" id="statusRadios3"
+                                value="rejected"
                                 {{ old('status', isset($circle) ? $circle->status : null) === 'rejected' ? 'checked' : '' }}>
                             <strong>不受理</strong><br>
                             <span class="text-muted">参加登録を不受理とします。ユーザーには参加登録が受理されなかった旨が表示されます</span>
@@ -205,8 +234,7 @@
                 <list-view-form-group label-for="notes">
                     <template v-slot:label>スタッフ用メモ</template>
                     <template v-slot:description>ここに入力された内容はスタッフのみ閲覧できます。スタッフ内で共有したい事項を残しておくメモとしてご活用ください。</template>
-                    <textarea id="notes" class="form-control @error('notes') is-invalid @enderror" name="notes"
-                        rows="5">{{ old('notes', empty($circle) ? '' : $circle->notes) }}</textarea>
+                    <textarea id="notes" class="form-control @error('notes') is-invalid @enderror" name="notes" rows="5">{{ old('notes', empty($circle) ? '' : $circle->notes) }}</textarea>
                     @if ($errors->has('notes'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('notes') as $message)

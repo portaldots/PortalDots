@@ -14,7 +14,7 @@
         enctype="multipart/form-data">
         @csrf
 
-        @method(empty($answer) ? 'post' : 'patch' )
+        @method(empty($answer) ? 'post' : 'patch')
 
         <input type="hidden" name="circle_id" value="{{ $circle->id }}">
 
@@ -35,7 +35,7 @@
                     <a href="{{ route('staff.forms.answers.create', ['form' => $form]) }}">変更</a>
                 </list-view-item>
                 <list-view-card>
-                    @if ($form->is_public && empty($form->customForm))
+                    @if ($form->is_public && empty($form->participationType))
                         <div class="text-danger">
                             <i class="fas fa-info-circle"></i>
                             スタッフとして回答します。この画面で回答を作成・編集すると、企画のメンバーには「スタッフによって回答が作成・編集された」という旨のメールが送信されます。
@@ -43,7 +43,7 @@
                     @else
                         <div class="text-muted">
                             <i class="fas fa-info-circle"></i>
-                            @if (isset($form->customForm))
+                            @if (isset($form->participationType))
                                 この画面で回答を作成・編集しても、その旨は企画のメンバーに通知されません。
                             @else
                                 非公開フォームのため、この画面で回答を作成・編集しても、その旨は企画のメンバーに通知されません。
@@ -64,7 +64,7 @@
                             <template v-slot:title>
                                 @datetime($_->created_at) に新規作成した回答 — 回答ID : {{ $_->id }}
                             </template>
-                            @unless($_->created_at->eq($_->updated_at))
+                            @unless ($_->created_at->eq($_->updated_at))
                                 <template v-slot:meta>回答の最終更新日時 : @datetime($_->updated_at)</template>
                             @endunless
                         </list-view-item>
@@ -83,7 +83,9 @@
                 @endisset
 
                 @foreach ($questions as $question)
-                    @include('includes.question', ['show_upload_route' => 'staff.forms.answers.uploads.show'])
+                    @include('includes.question', [
+                        'show_upload_route' => 'staff.forms.answers.uploads.show',
+                    ])
                 @endforeach
             </list-view>
 

@@ -137,11 +137,38 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             ->group(function () {
                 Route::get('/', 'Staff\Circles\IndexAction')->name('index')->middleware(['can:staff.circles.read']);
                 Route::get('/api', 'Staff\Circles\ApiAction')->name('api')->middleware(['can:staff.circles.read']);
+                Route::get('/export', 'Staff\Circles\ExportAction')->name('export')->middleware(['can:staff.circles.export']);
 
-                // 参加登録設定
-                Route::get('/custom_form', 'Staff\Circles\CustomForm\IndexAction')->name('custom_form.index')->middleware(['can:staff.circles.custom_form']);
-                Route::post('/custom_form', 'Staff\Circles\CustomForm\StoreAction')->name('custom_form.store')->middleware(['can:staff.circles.custom_form']);
-                Route::patch('/custom_form', 'Staff\Circles\CustomForm\UpdateAction')->name('custom_form.update')->middleware(['can:staff.circles.custom_form']);
+                // 参加種別
+                Route::prefix('/participation_types')
+                    ->name('participation_types.')
+                    ->group(function () {
+                        // 参加種別の作成・編集
+                        Route::get('/create', 'Staff\Circles\ParticipationTypes\CreateAction')->name('create')->middleware(['can:staff.circles.participation_types']);
+                        Route::post('/', 'Staff\Circles\ParticipationTypes\StoreAction')->name('store')->middleware(['can:staff.circles.participation_types']);
+                        Route::get('/{participation_type}/edit', 'Staff\Circles\ParticipationTypes\EditAction')->name('edit')->middleware(['can:staff.circles.participation_types']);
+                        Route::patch('/{participation_type}', 'Staff\Circles\ParticipationTypes\UpdateAction')->name('update')->middleware(['can:staff.circles.participation_types']);
+                        Route::delete('/{participation_type}', 'Staff\Circles\ParticipationTypes\DestroyAction')->name('destroy')->middleware(['can:staff.circles.participation_types']);
+
+                        // 参加登録フォームの設定
+                        Route::get(
+                            '/{participation_type}/form/edit',
+                            'Staff\Circles\ParticipationTypes\Form\EditAction'
+                        )->name('form.edit')->middleware(['can:staff.circles.participation_types']);
+                        Route::get(
+                            '/{participation_type}/form/editor',
+                            'Staff\Circles\ParticipationTypes\Form\EditorAction'
+                        )->name('form.editor')->middleware(['can:staff.circles.participation_types']);
+                        Route::patch(
+                            '/{participation_type}/form',
+                            'Staff\Circles\ParticipationTypes\Form\UpdateAction'
+                        )->name('form.update')->middleware(['can:staff.circles.participation_types']);
+
+                        // 参加種別ごとの企画一覧
+                        Route::get('/{participation_type}', 'Staff\Circles\ParticipationTypes\IndexAction')->name('index')->middleware(['can:staff.circles.read']);
+                        Route::get('/{participation_type}/api', 'Staff\Circles\ParticipationTypes\ApiAction')->name('api')->middleware(['can:staff.circles.read']);
+                        Route::get('/{participation_type}/export', 'Staff\Circles\ParticipationTypes\ExportAction')->name('export')->middleware(['can:staff.circles.read']);
+                    });
 
                 // 企画情報編集
                 Route::get('/{circle}/edit', 'Staff\Circles\EditAction')->name('edit')->middleware(['can:staff.circles.edit']);
@@ -152,9 +179,6 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 // 企画所属者宛のメール送信
                 Route::get('/{circle}/email', 'Staff\Circles\SendEmails\IndexAction')->name('email')->middleware(['can:staff.circles.send_email']);
                 Route::post('/{circle}/email', 'Staff\Circles\SendEmails\SendAction')->middleware(['can:staff.circles.send_email']);
-
-                // 企画情報エクスポート
-                Route::get('/export', 'Staff\Circles\ExportAction')->name('export')->middleware(['can:staff.circles.export']);
 
                 Route::delete('/{circle}', 'Staff\Circles\DestroyAction')->name('destroy')->middleware(['can:staff.circles.delete']);
             });

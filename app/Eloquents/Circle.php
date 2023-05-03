@@ -17,6 +17,7 @@ class Circle extends Model
             ->useLogName('circle')
             ->logOnly([
                 'id',
+                'participation_type_id',
                 'name',
                 'name_yomi',
                 'group_name',
@@ -66,6 +67,7 @@ class Circle extends Model
     public const STATUS_REJECTED = 'rejected';
 
     protected $fillable = [
+        'participation_type_id',
         'name',
         'name_yomi',
         'group_name',
@@ -82,6 +84,11 @@ class Circle extends Model
     protected $dates = [
         'status_set_at',
     ];
+
+    public function participationType()
+    {
+        return $this->belongsTo(ParticipationType::class);
+    }
 
     public function tags()
     {
@@ -120,7 +127,8 @@ class Circle extends Model
      */
     public function canSubmit()
     {
-        return count($this->users) >= config('portal.users_number_to_submit_circle');
+        return count($this->users) >= $this->participationType->users_count_min
+            && count($this->users) <= $this->participationType->users_count_max;
     }
 
     /**
@@ -205,17 +213,14 @@ class Circle extends Model
         $this->attributes['group_name_yomi'] = mb_convert_kana($value, 'HVc');
     }
 
-    /**
-     * 企画参加登録カスタムフォームへの回答を取得する
-     *
-     * @return Answer|null
-     */
-    public function getCustomFormAnswer()
+    public function getParticipationFormAnswer(): ?Answer
     {
-        $form = CustomForm::getFormByType('circle');
-        if (empty($form)) {
+        if (empty($this->participationType) && empty($this->participationType->form)) {
             return null;
         }
-        return $form->answers()->where('circle_id', $this->id)->first();
+
+        return Answer::where('form_id', $this->participationType->form->id)
+            ->where('circle_id', $this->id)
+            ->first();
     }
 }

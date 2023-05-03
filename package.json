@@ -15,6 +15,7 @@
         "docker": "./vendor/bin/sail up -d",
         "docker-shell": "./vendor/bin/sail shell",
         "docker-stop": "./vendor/bin/sail stop",
+        "sail-test": "./vendor/bin/sail test",
         "migrate": "./vendor/bin/sail artisan migrate",
         "migrate:status": "./vendor/bin/sail artisan migrate:status",
         "migrate:rollback": "./vendor/bin/sail artisan migrate:rollback",

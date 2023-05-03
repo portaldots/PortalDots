@@ -66,7 +66,7 @@ final class PermissionInfo implements JsonSerializable
         return $this->description_html;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return [
             'identifier' => $this->identifier,

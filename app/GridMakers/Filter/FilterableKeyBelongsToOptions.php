@@ -34,7 +34,7 @@ class FilterableKeyBelongsToOptions implements JsonSerializable
         return $this->keys;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return [
             'to' => $this->to,

@@ -79,7 +79,7 @@
                 <i class="far fa-file-archive fa-fw"></i>
                 ファイルを一括ダウンロード
             </a>
-            @if (!isset($form->customForm))
+            @if (empty($form->participationType))
                 <a class="btn is-primary-inverse is-no-border"
                     href="{{ route('staff.forms.not_answered', ['form' => $form]) }}">
                     未提出企画を表示

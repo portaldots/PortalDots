@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Eloquents\Page;
 use App\Eloquents\Document;
 use App\Eloquents\Form;
-use App\Eloquents\CustomForm;
+use App\Eloquents\ParticipationType;
 use App\Services\Circles\SelectorService;
 
 class HomeAction extends Controller
@@ -33,17 +33,18 @@ class HomeAction extends Controller
         $circle = $this->selectorService->getCircle();
 
         if (isset($circle)) {
-            $circle->load('places');
+            $circle->loadMissing(['places', 'participationType']);
         }
 
         return view('home')
-            ->with('circle_custom_form', CustomForm::getFormByType('circle'))
+            ->with('participation_types', ParticipationType::open()->public()->get())
             ->with(
                 'my_circles',
                 Auth::check()
                     ? Auth::user()
-                        ->circles()
-                        ->get()
+                    ->circles()
+                    ->with('participationType')
+                    ->get()
                     : collect([])
             )
             ->with('circle', $circle)
@@ -84,7 +85,7 @@ class HomeAction extends Controller
                     ->take(self::TAKE_COUNT)
                     ->public()
                     ->open()
-                    ->withoutCustomForms()
+                    ->withoutParticipationForms()
                     ->closeOrder()
                     ->get()
             );

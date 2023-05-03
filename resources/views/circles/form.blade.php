@@ -9,7 +9,9 @@
         enctype="multipart/form-data">
         @csrf
 
-        @method(empty($circle) ? 'post' : 'patch' )
+        @method(empty($circle) ? 'post' : 'patch')
+
+        <input type="hidden" name="participation_type" value="{{ $participation_type->id }}">
 
         <app-container medium>
             @isset($form->description)
@@ -23,11 +25,13 @@
             <list-view>
                 <template v-slot:title>企画情報を入力</template>
                 <template v-slot:description>参加登録する企画の情報を入力してください。</template>
-                <list-view-card>
-                    <app-info-box primary>
-                        企画情報の入力は、企画責任者の方が行ってください。企画責任者以外の方は、企画情報の入力は不要です。企画責任者の方の指示に従ってください。
-                    </app-info-box>
-                </list-view-card>
+                @if ($participation_type->users_count_max > 1)
+                    <list-view-card>
+                        <app-info-box primary>
+                            企画情報の入力は、企画責任者の方が行ってください。企画責任者以外の方は、企画情報の入力は不要です。企画責任者の方の指示に従ってください。
+                        </app-info-box>
+                    </list-view-card>
+                @endif
                 <list-view-form-group label-for="leader">
                     <template v-slot:label>企画責任者</template>
                     <input type="text" id="leader" readonly
@@ -39,8 +43,8 @@
                         企画名
                         <app-badge danger>必須</app-badge>
                     </template>
-                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                        value="{{ old('name', isset($circle) ? $circle->name : '') }}" required>
+                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                        name="name" value="{{ old('name', isset($circle) ? $circle->name : '') }}" required>
                     @error('name')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror
@@ -51,8 +55,7 @@
                         <app-badge danger>必須</app-badge>
                     </template>
                     <input id="name_yomi" type="text" class="form-control @error('name_yomi') is-invalid @enderror"
-                        name="name_yomi" value="{{ old('name_yomi', isset($circle) ? $circle->name_yomi : '') }}"
-                        required>
+                        name="name_yomi" value="{{ old('name_yomi', isset($circle) ? $circle->name_yomi : '') }}" required>
                     @error('name_yomi')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror

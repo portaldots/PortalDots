@@ -41,8 +41,8 @@
                     </list-view-card>
                 @else
                     <permissions-selector v-bind:defined-permissions="{{ json_encode($defined_permissions) }}"
-                        v-bind:default-permissions="{{ $user->permissions->pluck('name')->toJson() }}"
-                        input-name="permissions"></permissions-selector>
+                        v-bind:default-permissions="{{ $user_permission_names->toJson() }}" input-name="permissions">
+                    </permissions-selector>
                 @endif
             </list-view>
 

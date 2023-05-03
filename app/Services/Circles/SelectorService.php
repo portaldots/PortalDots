@@ -34,7 +34,8 @@ class SelectorService
     public function getSelectableCirclesList(User $user): Collection
     {
         if (empty($this->selectableCircles[$user->id])) {
-            $this->selectableCircles[$user->id] = $user->circles()->approved()->get();
+            $this->selectableCircles[$user->id] = $user
+                ->circles()->approved()->with('participationType')->get();
         }
         return $this->selectableCircles[$user->id];
     }
@@ -54,6 +55,7 @@ class SelectorService
                 'id' => $circle->id,
                 'name' => $circle->name,
                 'group_name' => $circle->group_name,
+                'participation_type_name' => $circle->participationType->name,
                 'href' => route('circles.selector.set', ['redirect_to' => $redirect_to, 'circle' => $circle]),
             ];
         })->toJson();

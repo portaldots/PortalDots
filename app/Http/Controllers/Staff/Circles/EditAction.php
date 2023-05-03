@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Staff\Circles;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
+use App\Eloquents\ParticipationType;
 use App\Eloquents\Place;
 use App\Eloquents\Tag;
 
@@ -29,7 +28,7 @@ class EditAction extends Controller
         }
 
         return view('staff.circles.form')
-            ->with('custom_form', CustomForm::getFormByType('circle'))
+            ->with('participation_types', ParticipationType::all('id', 'name'))
             ->with('circle', $circle)
             ->with('leader', $circle->users->filter(function ($user) {
                 return $user->pivot->is_leader;

@@ -6,12 +6,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
+use App\Eloquents\Form;
+use App\Eloquents\ParticipationType;
 use App\Eloquents\Tag;
 use App\Services\Circles\CirclesService;
 use App\Mail\Circles\ApprovedMailable;
 use App\Mail\Circles\RejectedMailable;
 use App\Mail\Circles\SubmitedMailable;
-use App\Services\Circles\Exceptions\DenyCreateTagsException;
+use App\Services\Tags\Exceptions\DenyCreateTagsException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 
@@ -32,6 +34,11 @@ class CirclesServiceTest extends TestCase
 
     private function createCircle()
     {
+        $participationForm = factory(Form::class)->create();
+        $participationType = ParticipationType::factory()->create([
+            'form_id' => $participationForm->id
+        ]);
+
         $leader = factory(User::class)->create();
         $name = 'サンプル模擬店';
         $name_yomi = 'サンプルもぎてん';
@@ -40,11 +47,12 @@ class CirclesServiceTest extends TestCase
 
         return [
             $this->circlesService->create(
-                $leader,
-                $name,
-                $name_yomi,
-                $group_name,
-                $group_name_yomi
+                participationType: $participationType,
+                leader: $leader,
+                name: $name,
+                name_yomi: $name_yomi,
+                group_name: $group_name,
+                group_name_yomi: $group_name_yomi
             ),
             $leader,
             $name,
@@ -116,7 +124,14 @@ class CirclesServiceTest extends TestCase
      */
     public function regenerateInvitationToken()
     {
-        [ $circle ] = $this->createCircle();
+        [
+            $circle,
+            $leader,
+            $name,
+            $name_yomi,
+            $group_name,
+            $group_name_yomi
+        ] = $this->createCircle();
 
         $this->assertNotEmpty($circle->invitation_token);
 
@@ -134,7 +149,14 @@ class CirclesServiceTest extends TestCase
      */
     public function addMember()
     {
-        [ $circle ] = $this->createCircle();
+        [
+            $circle,
+            $leader,
+            $name,
+            $name_yomi,
+            $group_name,
+            $group_name_yomi
+        ] = $this->createCircle();
 
         $new_user = factory(User::class)->create();
 
@@ -152,7 +174,14 @@ class CirclesServiceTest extends TestCase
      */
     public function submit()
     {
-        [ $circle ] = $this->createCircle();
+        [
+            $circle,
+            $leader,
+            $name,
+            $name_yomi,
+            $group_name,
+            $group_name_yomi
+        ] = $this->createCircle();
 
         $this->assertEmpty($circle->submitted_at);
 
@@ -172,7 +201,14 @@ class CirclesServiceTest extends TestCase
             'name' => '登録済みタグ'
         ]);
 
-        [ $circle ] = $this->createCircle();
+        [
+            $circle,
+            $leader,
+            $name,
+            $name_yomi,
+            $group_name,
+            $group_name_yomi
+        ] = $this->createCircle();
 
         $this->circlesService->saveTags($circle, [
             '新しいタグ1',
@@ -208,7 +244,14 @@ class CirclesServiceTest extends TestCase
             'name' => '登録済みタグ'
         ]);
 
-        [ $circle ] = $this->createCircle();
+        [
+            $circle,
+            $leader,
+            $name,
+            $name_yomi,
+            $group_name,
+            $group_name_yomi
+        ] = $this->createCircle();
 
         $this->circlesService->saveTags($circle, [
             '新しいタグ1',

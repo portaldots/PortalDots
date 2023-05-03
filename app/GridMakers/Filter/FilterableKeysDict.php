@@ -38,7 +38,7 @@ class FilterableKeysDict implements JsonSerializable
         return $this->dict[$key];
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->dict;
     }

@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 
-class CircleRequest extends FormRequest
+class BaseCircleRequest extends FormRequest
 {
     public function __construct(User $user)
     {
@@ -31,6 +31,7 @@ class CircleRequest extends FormRequest
     public function rules()
     {
         return [
+            'participation_type_id' => ['required', 'exists:participation_types,id'],
             'name' => Circle::NAME_RULES,
             'name_yomi' => Circle::NAME_YOMI_RULES,
             'group_name' => Circle::GROUP_NAME_RULES,
@@ -50,10 +51,12 @@ class CircleRequest extends FormRequest
     public function attributes()
     {
         return [
+            'participation_type_id' => '参加種別',
             'name' => '企画名',
             'name_yomi' => '企画名(よみ)',
             'group_name' => '企画を出店する団体の名称',
             'group_name_yomi' => '企画を出店する団体の名称(よみ)',
+            'tags' => 'タグ',
             'leader' => '企画責任者',
             'members' => '学園祭係(副責任者)',
             'status' => '参加登録受理',

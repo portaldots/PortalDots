@@ -4,18 +4,23 @@ namespace App\Http\Controllers\Circles;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Eloquents\CustomForm;
+use App\Eloquents\ParticipationType;
 
 class CreateAction extends Controller
 {
-    public function __invoke()
+    public function __invoke(Request $request)
     {
-        $this->authorize('circle.create');
+        if (empty($request->participation_type)) {
+            abort(404);
+        }
 
-        $form = CustomForm::getFormByType('circle');
+        $participationType = ParticipationType::findOrFail($request->participation_type);
+
+        $this->authorize('circle.create', $participationType);
 
         return view('circles.form')
-            ->with('form', $form)
-            ->with('questions', $form->questions()->get());
+            ->with('participation_type', $participationType)
+            ->with('form', $participationType->form)
+            ->with('questions', $participationType->form->questions()->get());
     }
 }
