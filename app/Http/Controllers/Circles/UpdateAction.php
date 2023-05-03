@@ -40,26 +40,26 @@ class UpdateAction extends Controller
 
         DB::transaction(function () use ($request, $circle) {
             $this->circlesService->update(
-                $circle,
-                $request->name,
-                $request->name_yomi,
-                $request->group_name,
-                $request->group_name_yomi
+                circle: $circle,
+                name: $request->name,
+                name_yomi: $request->name_yomi,
+                group_name: $request->group_name,
+                group_name_yomi: $request->group_name_yomi
             );
 
             $participationFormAnswer = $circle->getParticipationFormAnswer();
 
             if (empty($participationFormAnswer)) {
                 $this->answersService->createAnswer(
-                    $circle->participationType->form,
-                    $circle,
-                    $request
+                    form: $circle->participationType->form,
+                    circle: $circle,
+                    request: $request
                 );
             } else {
                 $this->answersService->updateAnswer(
-                    $circle->participationType->form,
-                    $participationFormAnswer,
-                    $request
+                    form: $circle->participationType->form,
+                    answer: $participationFormAnswer,
+                    request: $request
                 );
             }
         });
