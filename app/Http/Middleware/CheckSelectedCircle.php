@@ -44,6 +44,7 @@ class CheckSelectedCircle
 
         if (empty($this->selectorService->getCircle())) {
             if ($circles_count >= 2) {
+                $request->session()->reflash();
                 return redirect()
                     ->route('circles.selector.show', ['redirect_to' => Request::path()]);
             }
