@@ -1,6 +1,8 @@
 <dl>
-    <dt>参加種別</dt>
-    <dd>{{ $circle->participationType->name }}</dd>
+    @if (isset($circle->participationType))
+        <dt>参加種別</dt>
+        <dd>{{ $circle->participationType->name }}</dd>
+    @endif
     @foreach ([
         'name' => '企画名',
         'name_yomi' => '企画名(よみ)',
