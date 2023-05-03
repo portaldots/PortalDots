@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\Staff\Forms\Editor;
 
 use App\Eloquents\Form;
-use App\Eloquents\CustomForm;
-use App\Eloquents\Option;
 use App\Eloquents\Question;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class GetQuestionsAction extends Controller

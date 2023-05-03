@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Staff\Circles\ParticipationTypes;
 
-use App\Eloquents\CustomForm;
 use App\Eloquents\ParticipationType;
 use App\Http\Controllers\Controller;
 

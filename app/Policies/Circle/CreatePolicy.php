@@ -2,9 +2,7 @@
 
 namespace App\Policies\Circle;
 
-use App\Eloquents\Circle;
 use App\Eloquents\User;
-use App\Eloquents\CustomForm;
 use App\Eloquents\ParticipationType;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Gate;
