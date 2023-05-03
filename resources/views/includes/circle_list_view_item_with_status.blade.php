@@ -5,9 +5,11 @@
                 📮
                 ここをクリックして「{{ $circle->name }}」の参加登録を提出しましょう！
             </span>
+            <div class="pull-right">
+                <app-badge muted>{{ $circle->participationType->name }}</app-badge>
+            </div>
         </template>
         <template v-slot:meta>
-            <app-badge muted>{{ $circle->participationType->name }}</app-badge>
             学園祭係(副責任者)の招待が完了しました。ここをクリックして登録内容に不備がないかどうかを確認し、参加登録を提出しましょう。
         </template>
     </list-view-item>
@@ -16,9 +18,11 @@
         <template v-slot:title>
             💭
             「{{ $circle->name }}」の参加登録の内容を確認中です
+            <div class="pull-right">
+                <app-badge muted>{{ $circle->participationType->name }}</app-badge>
+            </div>
         </template>
         <template v-slot:meta>
-            <app-badge muted>{{ $circle->participationType->name }}</app-badge>
             ただいま参加登録の内容を確認しています。{{ config('portal.admin_name') }}より指示がある場合は従ってください。また、内容確認のためご連絡を差し上げる場合がございます。
         </template>
     </list-view-item>
@@ -29,9 +33,11 @@
                 📩
                 ここをクリックして「{{ $circle->name }}」の学園祭係(副責任者)を招待しましょう！
             </span>
+            <div class="pull-right">
+                <app-badge muted>{{ $circle->participationType->name }}</app-badge>
+            </div>
         </template>
         <template v-slot:meta>
-            <app-badge muted>{{ $circle->participationType->name }}</app-badge>
             参加登録を提出するには、ここをクリックして学園祭係(副責任者)を招待しましょう。
         </template>
     </list-view-item>
@@ -40,9 +46,9 @@
         <template v-slot:title>
             🎉
             「{{ $circle->name }}」の参加登録は受理されました
-        </template>
-        <template v-slot:meta>
-            <app-badge muted>{{ $circle->participationType->name }}</app-badge>
+            <div class="pull-right">
+                <app-badge muted>{{ $circle->participationType->name }}</app-badge>
+            </div>
         </template>
     </list-view-item>
 @elseif ($circle->hasRejected())
@@ -52,9 +58,11 @@
                 ⚠️
                 「{{ $circle->name }}」の参加登録は受理されませんでした
             </span>
+            <div class="pull-right">
+                <app-badge muted>{{ $circle->participationType->name }}</app-badge>
+            </div>
         </template>
         <template v-slot:meta>
-            <app-badge muted>{{ $circle->participationType->name }}</app-badge>
             @isset($circle->status_reason)
                 詳細はこちら
             @endisset
@@ -67,9 +75,9 @@
                 📄
                 ここをクリックすると「{{ $circle->name }}」の参加登録の内容を確認できます
             </span>
-        </template>
-        <template v-slot:meta>
-            <app-badge muted>{{ $circle->participationType->name }}</app-badge>
+            <div class="pull-right">
+                <app-badge muted>{{ $circle->participationType->name }}</app-badge>
+            </div>
         </template>
     </list-view-item>
 @endif
