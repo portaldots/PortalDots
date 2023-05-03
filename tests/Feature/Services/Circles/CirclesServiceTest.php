@@ -11,7 +11,7 @@ use App\Services\Circles\CirclesService;
 use App\Mail\Circles\ApprovedMailable;
 use App\Mail\Circles\RejectedMailable;
 use App\Mail\Circles\SubmitedMailable;
-use App\Services\Circles\Exceptions\DenyCreateTagsException;
+use App\Services\Tags\Exceptions\DenyCreateTagsException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 
@@ -116,7 +116,7 @@ class CirclesServiceTest extends TestCase
      */
     public function regenerateInvitationToken()
     {
-        [ $circle ] = $this->createCircle();
+        [$circle] = $this->createCircle();
 
         $this->assertNotEmpty($circle->invitation_token);
 
@@ -134,7 +134,7 @@ class CirclesServiceTest extends TestCase
      */
     public function addMember()
     {
-        [ $circle ] = $this->createCircle();
+        [$circle] = $this->createCircle();
 
         $new_user = factory(User::class)->create();
 
@@ -152,7 +152,7 @@ class CirclesServiceTest extends TestCase
      */
     public function submit()
     {
-        [ $circle ] = $this->createCircle();
+        [$circle] = $this->createCircle();
 
         $this->assertEmpty($circle->submitted_at);
 
@@ -172,7 +172,7 @@ class CirclesServiceTest extends TestCase
             'name' => '登録済みタグ'
         ]);
 
-        [ $circle ] = $this->createCircle();
+        [$circle] = $this->createCircle();
 
         $this->circlesService->saveTags($circle, [
             '新しいタグ1',
@@ -208,7 +208,7 @@ class CirclesServiceTest extends TestCase
             'name' => '登録済みタグ'
         ]);
 
-        [ $circle ] = $this->createCircle();
+        [$circle] = $this->createCircle();
 
         $this->circlesService->saveTags($circle, [
             '新しいタグ1',

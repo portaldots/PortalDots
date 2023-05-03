@@ -15,6 +15,7 @@ use App\Mail\Circles\ApprovedMailable;
 use App\Mail\Circles\RejectedMailable;
 use App\Mail\Circles\SubmitedMailable;
 use App\Services\Circles\Exceptions\DenyCreateTagsException;
+use App\Services\Tags\TagsService;
 use App\Services\Utils\ActivityLogService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -22,14 +23,10 @@ use Illuminate\Support\Facades\Mail;
 
 class CirclesService
 {
-    /**
-     * @var ActivityLogService
-     */
-    private $activityLogService;
-
-    public function __construct(ActivityLogService $activityLogService)
-    {
-        $this->activityLogService = $activityLogService;
+    public function __construct(
+        private ActivityLogService $activityLogService,
+        private TagsService $tagsService
+    ) {
     }
 
     /**
@@ -163,22 +160,7 @@ class CirclesService
         DB::transaction(function () use ($circle, $tags, $allow_create, $caused_by) {
             $old_tags = $circle->tags;
 
-            // 検索時は大文字小文字の区別をしない
-            // ($tags と $exist_tags の間で大文字小文字が異なる場合、$exist_tags の表記を優先するため)
-            $exist_tags = Tag::whereIn('name', $tags)->get();
-
-            $diff = array_udiff($tags, $exist_tags->pluck('name')->all(), 'strcasecmp');
-
-            foreach ($diff as $insert) {
-                if (!$allow_create) {
-                    throw new DenyCreateTagsException('企画タグの作成は許可されていません');
-                }
-
-                Tag::create(['name' => $insert]);
-            }
-
-            // $tags 配列の順番で保存するため、もう一度 DB からタグ一覧を取得する
-            $tags_on_db = Tag::whereIn('name', $tags)->get();
+            $tags_on_db = $this->tagsService->getOrCreateTags($tags, $allow_create);
 
             $circle->tags()->sync($tags_on_db->pluck('id')->all());
 

@@ -8,7 +8,7 @@ use App\Eloquents\User;
 use App\Http\Requests\Staff\Circles\UpdateCircleRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Circles\CirclesService;
-use App\Services\Circles\Exceptions\DenyCreateTagsException;
+use App\Services\Tags\Exceptions\DenyCreateTagsException;
 use Illuminate\Support\Facades\DB;
 
 class UpdateAction extends Controller
