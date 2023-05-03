@@ -35,6 +35,13 @@ class ParticipationType extends Model
         'form_id',
     ];
 
+    protected $appends = ['form_name'];
+
+    public function getFormNameAttribute(): string
+    {
+        return '企画参加登録';
+    }
+
     public function form()
     {
         return $this->belongsTo(Form::class);
