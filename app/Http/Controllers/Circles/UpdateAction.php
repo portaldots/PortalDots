@@ -47,8 +47,7 @@ class UpdateAction extends Controller
                 $request->group_name_yomi
             );
 
-            $participationFormAnswer =
-                $circle->participationType->form->answers[0] ?? null;
+            $participationFormAnswer = $circle->getParticipationFormAnswer();
 
             if (empty($participationFormAnswer)) {
                 $this->answersService->createAnswer(

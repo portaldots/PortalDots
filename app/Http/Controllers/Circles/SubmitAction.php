@@ -46,7 +46,7 @@ class SubmitAction extends Controller
 
         $circle->load('users');
 
-        $answer = $circle->participationType->form->answers[0] ?? null;
+        $answer = $circle->getParticipationFormAnswer();
         $questions = $circle->participationType->form->questions;
         $answerDetails = !empty($answer)
             ? $this->answerDetailsService->getAnswerDetailsByAnswer($answer) : [];

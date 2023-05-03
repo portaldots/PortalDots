@@ -36,7 +36,7 @@ class ConfirmAction extends Controller
 
         $circle->load('users');
 
-        $answer = $circle->participationType->form->answers[0] ?? null;
+        $answer = $circle->getParticipationFormAnswer();
 
         return view('circles.confirm')
             ->with('circle', $circle)
