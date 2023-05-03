@@ -57,9 +57,9 @@ class Permission extends SpatiePermission
                 ),
                 'staff.circles.participation_types' => new PermissionInfo(
                     'staff.circles.participation_types',
-                    'スタッフモード › 企画情報管理 › 参加種別／企画参加登録の編集',
+                    'スタッフモード › 企画情報管理 › 参加種別／企画参加登録の編集、削除',
                     '企画(参加種別)',
-                    '参加種別の編集が可能。ただし、企画参加登録フォームを編集したい場合、別途フォームの編集権限が必要です。'
+                    '参加種別の作成と編集、削除が可能。ただし、企画参加登録フォームを編集したい場合、フォームの編集権限が別に必要です。'
                 ),
                 'staff.circles.read,edit,delete' => new PermissionInfo(
                     'staff.circles.read,edit,delete',
