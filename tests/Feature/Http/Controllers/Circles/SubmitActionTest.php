@@ -30,7 +30,7 @@ class SubmitActionTest extends BaseTestCase
         $this->user->circles()->attach($this->circle->id, ['is_leader' => true]);
 
         // 明示的に設定しない限り、企画には1人所属していれば参加登録を提出できるものとする
-        Config::set('portal.users_number_to_submit_circle', 1);
+        // Config::set('portal.users_number_to_submit_circle', 1);
     }
 
     /**
@@ -45,12 +45,12 @@ class SubmitActionTest extends BaseTestCase
         CarbonImmutable::setTestNowAndTimezone($today);
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->post(
-                        route('circles.submit', [
-                            'circle' => $this->circle,
-                        ])
-                    );
+            ->actingAs($this->user)
+            ->post(
+                route('circles.submit', [
+                    'circle' => $this->circle,
+                ])
+            );
 
         $this->circle->refresh();
 
@@ -85,7 +85,7 @@ class SubmitActionTest extends BaseTestCase
     public function 企画メンバーが規定の人数に達していない場合はは参加登録の提出はできない()
     {
         // 規定の人数 = 2
-        Config::set('portal.users_number_to_submit_circle', 2);
+        // Config::set('portal.users_number_to_submit_circle', 2);
 
         // 受付期間内
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
@@ -93,12 +93,12 @@ class SubmitActionTest extends BaseTestCase
 
         // 企画には1名しか所属していない状態で参加登録を提出しようとする
         $response = $this
-                    ->actingAs($this->user)
-                    ->post(
-                        route('circles.submit', [
-                            'circle' => $this->circle,
-                        ])
-                    );
+            ->actingAs($this->user)
+            ->post(
+                route('circles.submit', [
+                    'circle' => $this->circle,
+                ])
+            );
 
         $this->circle->refresh();
         $this->assertNull($this->circle->submitted_at);
@@ -122,12 +122,12 @@ class SubmitActionTest extends BaseTestCase
         $form->save();
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->post(
-                        route('circles.submit', [
-                            'circle' => $this->circle,
-                        ])
-                    );
+            ->actingAs($this->user)
+            ->post(
+                route('circles.submit', [
+                    'circle' => $this->circle,
+                ])
+            );
 
         $this->circle->refresh();
         $this->assertNull($this->circle->submitted_at);
@@ -146,12 +146,12 @@ class SubmitActionTest extends BaseTestCase
         $anotherCircle = factory(Circle::class)->states('notSubmitted')->create();
 
         $response = $this
-                    ->actingAs($this->user)
-                    ->post(
-                        route('circles.submit', [
-                            'circle' => $anotherCircle,
-                        ])
-                    );
+            ->actingAs($this->user)
+            ->post(
+                route('circles.submit', [
+                    'circle' => $anotherCircle,
+                ])
+            );
 
         $anotherCircle->refresh();
         $this->assertNull($anotherCircle->submitted_at);
@@ -172,12 +172,12 @@ class SubmitActionTest extends BaseTestCase
         CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
         $responce = $this
-                    ->actingAs($member)
-                    ->post(
-                        route('circles.submit', [
-                            'circle' => $this->circle,
-                        ])
-                    );
+            ->actingAs($member)
+            ->post(
+                route('circles.submit', [
+                    'circle' => $this->circle,
+                ])
+            );
 
         $this->circle->refresh();
         $this->assertNull($this->circle->submitted_at);

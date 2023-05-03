@@ -83,7 +83,11 @@
                     <i class="fas fa-chevron-right"></i>
                 </span>
                 <p class="text-danger pt-spacing-sm">
-                    企画参加登録を提出するには、あと{{ $circle->participationType->users_count_min - count($circle->users) }}人がメンバーになる必要があります。
+                    @if ($remaining = $circle->participationType->users_count_min - count($circle->users) > 0)
+                        企画参加登録を提出するには、あと{{ $remaining }}人がメンバーになる必要があります。
+                    @elseif ($extra = count($circle->users) - $circle->participationType->users_count_max > 0)
+                        企画参加登録を提出するには、メンバーを{{ $extra }}人減らす必要があります。
+                    @endif
                 </p>
             @else
                 <a href="{{ route('circles.confirm', ['circle' => $circle]) }}" class="btn is-primary">
