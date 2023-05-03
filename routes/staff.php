@@ -147,6 +147,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                         Route::post('/', 'Staff\Circles\ParticipationTypes\StoreAction')->name('store')->middleware(['can:staff.circles.participation_types']);
                         Route::get('/{participation_type}/edit', 'Staff\Circles\ParticipationTypes\EditAction')->name('edit')->middleware(['can:staff.circles.participation_types']);
                         Route::patch('/{participation_type}', 'Staff\Circles\ParticipationTypes\UpdateAction')->name('update')->middleware(['can:staff.circles.participation_types']);
+                        Route::delete('/{participation_type}', 'Staff\Circles\ParticipationTypes\DestroyAction')->name('destroy')->middleware(['can:staff.circles.participation_types']);
                         Route::get('/{participation_type}', 'Staff\Circles\ParticipationTypes\IndexAction')->name('index')->middleware(['can:staff.circles.read']);
                         Route::get('/{participation_type}/api', 'Staff\Circles\ParticipationTypes\ApiAction')->name('api')->middleware(['can:staff.circles.read']);
                         Route::get('/{participation_type}/export', 'Staff\Circles\ParticipationTypes\ExportAction')->name('export')->middleware(['can:staff.circles.read']);
