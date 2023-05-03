@@ -14,17 +14,19 @@ class StoreActionTest extends BaseTestCase
 {
     use RefreshDatabase;
 
-    private $user;
-    private $circle;
-    private $answer;
-    private $nonLeader;
+    private ?User $user;
+    private ?Circle $circle;
+    private ?Answer $answer;
+    private ?User $nonLeader;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->user = factory(User::class)->create();
-        $this->circle = factory(Circle::class)->states('notSubmitted')->create();
+        $this->circle = factory(Circle::class)->states('notSubmitted')->create([
+            'participation_type_id' => $this->participationType->id
+        ]);
         $this->answer = factory(Answer::class)->create([
             'form_id' => $this->participationForm->id,
             'circle_id' => $this->circle->id,
