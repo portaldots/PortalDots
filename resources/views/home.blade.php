@@ -160,8 +160,10 @@
                 <template v-slot:title>企画情報</template>
                 <list-view-card>
                     <dl>
-                        <dt>参加種別</dt>
-                        <dd>{{ $circle->participationType->name }}</dd>
+                        @if (isset($circle->participationType))
+                            <dt>参加種別</dt>
+                            <dd>{{ $circle->participationType->name }}</dd>
+                        @endif
                         <dt>企画名</dt>
                         <dd>{{ $circle->name }}（{{ $circle->name_yomi }}）</dd>
                         <dt>企画を出店する団体の名称</dt>
