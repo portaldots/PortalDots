@@ -48,7 +48,14 @@ class CirclesService
         string $group_name,
         string $group_name_yomi
     ) {
-        return DB::transaction(function () use ($participationType, $leader, $name, $name_yomi, $group_name, $group_name_yomi) {
+        return DB::transaction(function () use (
+            $participationType,
+            $leader,
+            $name,
+            $name_yomi,
+            $group_name,
+            $group_name_yomi
+        ) {
             $circle = Circle::create([
                 'participation_type_id' => $participationType->id,
                 'name' => $name,
