@@ -16,7 +16,10 @@ class Permission extends SpatiePermission
 
     public function getDisplayNameAttribute(): string
     {
-        return $this->getDefinedPermissions()[$this->name]->getDisplayName();
+        if (isset($this->getDefinedPermissions()[$this->name])) {
+            return $this->getDefinedPermissions()[$this->name]->getDisplayName();
+        }
+        return $this->name;
     }
 
     public static function getDefinedPermissions()
