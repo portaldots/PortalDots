@@ -5,6 +5,10 @@
 @section('content')
     <app-container>
         <list-view>
+            <template v-slot:title>参加種別</template>
+            <template v-slot:description>
+                <a href="{{ route('staff.circles.all') }}">すべての企画を表示</a>
+            </template>
             @if (empty($participation_types) || count($participation_types) === 0)
                 <list-view-card>
                     <list-view-empty text="まずは参加種別を作成しましょう" icon-class="fas fa-star">

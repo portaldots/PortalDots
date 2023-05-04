@@ -136,6 +136,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
             ->name('circles.')
             ->group(function () {
                 Route::get('/', 'Staff\Circles\IndexAction')->name('index')->middleware(['can:staff.circles.read']);
+                Route::get('/all', 'Staff\Circles\AllAction')->name('all')->middleware(['can:staff.circles.read']);
                 Route::get('/api', 'Staff\Circles\ApiAction')->name('api')->middleware(['can:staff.circles.read']);
                 Route::get('/export', 'Staff\Circles\ExportAction')->name('export')->middleware(['can:staff.circles.export']);
 

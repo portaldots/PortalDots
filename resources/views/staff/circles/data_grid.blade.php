@@ -11,16 +11,18 @@
 @section('top_alert_props', 'container-fluid')
 
 @section('content')
-    @include('includes.staff_circles_tab_strip')
+    @isset($participation_type)
+        @include('includes.staff_circles_tab_strip')
 
-    <app-header container-fluid>
-        <template v-slot:title>
-            {{ $participation_type->name }}
-        </template>
-        <div>
-            {{ $participation_type->description }}
-        </div>
-    </app-header>
+        <app-header container-fluid>
+            <template v-slot:title>
+                {{ $participation_type->name }}
+            </template>
+            <div>
+                {{ $participation_type->description }}
+            </div>
+        </app-header>
+    @endisset
 
     <data-grid
         api-url="{{ isset($participation_type)
@@ -72,7 +74,7 @@
         }">
         <template v-slot:toolbar>
             <a class="btn is-primary"
-                href="{{ route('staff.circles.create', ['participation_type' => $participation_type->id]) }}">
+                href="{{ route('staff.circles.create', ['participation_type' => isset($participation_type) ? $participation_type->id : null]) }}">
                 <i class="fas fa-plus fa-fw"></i>
                 新規企画
             </a>
