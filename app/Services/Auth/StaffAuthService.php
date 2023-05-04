@@ -44,7 +44,7 @@ final class StaffAuthService
      */
     private function setVerifyCode(User $user)
     {
-        $verify_code = (string)random_int(1000000, 9999999);
+        $verify_code = (string)random_int(100000, 999999);
         session([
             self::SESSION_KEY_USER_ID => $user->id,
             self::SESSION_KEY_VERIFY_CODE_HASH => Hash::make($verify_code),
