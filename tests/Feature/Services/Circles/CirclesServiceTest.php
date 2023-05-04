@@ -21,10 +21,9 @@ class CirclesServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @var CirclesService
-     */
-    private $circlesService;
+    private const PARTICIPATION_TYPE_TAGS_COUNT = 12;
+
+    private ?CirclesService $circlesService;
 
     public function setUp(): void
     {
@@ -38,6 +37,8 @@ class CirclesServiceTest extends TestCase
         $participationType = ParticipationType::factory()->create([
             'form_id' => $participationForm->id
         ]);
+        $tags = factory(Tag::class, self::PARTICIPATION_TYPE_TAGS_COUNT)->create();
+        $participationType->tags()->attach($tags->pluck('id'));
 
         $leader = factory(User::class)->create();
         $name = 'サンプル模擬店';
@@ -88,6 +89,9 @@ class CirclesServiceTest extends TestCase
             'user_id' => $leader->id,
             'is_leader' => 1,
         ]);
+
+        // 参加種別に紐づくタグが、自動的に企画に紐づく
+        $this->assertDatabaseCount('circle_tag', self::PARTICIPATION_TYPE_TAGS_COUNT);
 
         $this->assertNotEmpty($circle->invitation_token);
     }
