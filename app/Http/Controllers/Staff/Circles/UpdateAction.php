@@ -67,6 +67,12 @@ class UpdateAction extends Controller
             $status_set_by = Auth::id();
         }
 
+        // 参加種別が未設定の企画に限り、参加種別の設定ができる
+        if (empty($circle->participation_type_id)) {
+            $circle->participation_type_id = $request->participation_type_id;
+            $circle->save();
+        }
+
         // 保存処理
         $circle->update([
             'name'  => $request->name,

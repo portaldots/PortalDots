@@ -40,13 +40,14 @@
                 <template v-slot:title>企画基本情報</template>
                 <list-view-form-group label-for="participation_type_id">
                     <template v-slot:label>参加種別</template>
-                    @empty($circle)
+                    @if (empty($circle) || empty($circle->participation_type_id))
                         <template v-slot:description>後から変更することはできません。</template>
-                    @endempty
+                    @endif
                     <select id="participation_type_id"
                         class="form-control @error('participation_type_id') is-invalid @enderror" name="participation_type_id"
                         value="{{ old('participation_type_id', empty($participation_type) ? '' : $participation_type->id) }}"
-                        {{ empty($circle) ? '' : 'disabled' }} required>
+                        {{ empty($circle) || empty($circle->participation_type_id) ? '' : 'disabled' }}
+                        {{ empty($circle) ? 'required' : '' }}>
                         <option disabled value="">選択してください</option>
                         @foreach ($participation_types as $participation_type)
                             <option value="{{ $participation_type->id }}">{{ $participation_type->name }}</option>

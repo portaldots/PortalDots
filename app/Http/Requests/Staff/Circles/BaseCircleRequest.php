@@ -66,6 +66,7 @@ class BaseCircleRequest extends FormRequest
     public function messages()
     {
         return [
+            'participation_type_id.exists' => '参加種別を選択してください',
             'name_yomi.regex' => 'ひらがなで入力してください',
             'group_name_yomi.regex' => 'ひらがなで入力してください',
             // ひらがなもカタカナも入力可能だが，説明が面倒なので，エラー上ではひらがなでの入力を促す
