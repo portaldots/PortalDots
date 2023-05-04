@@ -8,8 +8,8 @@ use App\Services\Utils\DotenvService;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
-use App\Eloquents\CustomForm;
 use App\Eloquents\Page;
+use App\Eloquents\ParticipationType;
 
 class HomeActionTest extends TestCase
 {
@@ -115,21 +115,18 @@ class HomeActionTest extends TestCase
     /**
      * @test
      */
-    public function カスタムフォームは一覧に表示されない()
+    public function 参加登録フォームは一覧に表示されない()
     {
-        $customFormName = 'this is custom form';
-        $normalFormName = 'this is normal form';
+        $participationFormName = 'this is a registration for participation form';
+        $normalFormName = 'this is a normal form';
 
-        // カスタムフォームを作成
-        $form = factory(Form::class)->create([
-            'name' => $customFormName
+        // 参加登録フォームを作成
+        $participationForm = factory(Form::class)->create([
+            'name' => $participationFormName
         ]);
-        $customForm = factory(CustomForm::class)->create([
-            'type' => 'circle',
-            'form_id' => $form->id,
+        ParticipationType::factory()->create([
+            'form_id' => $participationForm->id
         ]);
-
-        CustomForm::noCacheForm();
 
         // カスタムフォームではない通常のフォームも作成
         factory(Form::class)->create([
@@ -141,7 +138,7 @@ class HomeActionTest extends TestCase
         $user->circles()->attach($circle, ['is_leader' => true]);
         $response = $this->actingAs($user)->get(route('home'));
 
-        $response->assertDontSee($customFormName);
+        $response->assertDontSee($participationFormName);
         $response->assertSee($normalFormName);
     }
 }

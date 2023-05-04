@@ -10,7 +10,10 @@
         <template #button="{ toggle, props }">
           <button class="selector-button" @click="toggle" v-bind="props">
             <div class="selector-button__content">
-              <div class="selector-button__name">{{ selectedCircleName }}</div>
+              <div class="selector-button__name">
+                {{ selectedCircleName }}
+                <AppBadge muted>{{ selectedParticipationTypeName }}</AppBadge>
+              </div>
               <div class="selector-button__group-name">
                 {{ selectedCircleGroupName }}
               </div>
@@ -25,7 +28,10 @@
             :href="item.href"
           >
             <div class="selector-item__body">
-              <div class="selector-item__name">{{ item.name }}</div>
+              <div class="selector-item__name">
+                {{ item.name }}
+                <AppBadge muted>{{ item.participation_type_name }}</AppBadge>
+              </div>
               <div class="selector-item__group-name">{{ item.group_name }}</div>
             </div>
             <i
@@ -40,6 +46,7 @@
 </template>
 
 <script>
+import AppBadge from "./AppBadge.vue";
 import AppContainer from "./AppContainer.vue";
 import AppDropdown from "./AppDropdown.vue";
 import AppDropdownItem from "./AppDropdownItem.vue";
@@ -49,6 +56,7 @@ export default {
     AppContainer,
     AppDropdown,
     AppDropdownItem,
+    AppBadge,
   },
   props: {
     name: {
@@ -69,6 +77,10 @@ export default {
       required: true,
     },
     selectedCircleGroupName: {
+      type: String,
+      required: true,
+    },
+    selectedParticipationTypeName: {
       type: String,
       required: true,
     },

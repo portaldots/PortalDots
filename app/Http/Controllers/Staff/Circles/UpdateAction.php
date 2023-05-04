@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Staff\Circles;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
 use App\Eloquents\User;
-use App\Http\Requests\Staff\Circles\CircleRequest;
+use App\Http\Requests\Staff\Circles\UpdateCircleRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Circles\CirclesService;
-use App\Services\Circles\Exceptions\DenyCreateTagsException;
+use App\Services\Tags\Exceptions\DenyCreateTagsException;
 use Illuminate\Support\Facades\DB;
 
 class UpdateAction extends Controller
@@ -30,7 +29,7 @@ class UpdateAction extends Controller
         $this->circlesService = $circlesService;
     }
 
-    public function __invoke(Circle $circle, CircleRequest $request)
+    public function __invoke(Circle $circle, UpdateCircleRequest $request)
     {
         if (!$circle->hasSubmitted()) {
             // 参加登録が未提出の企画の情報は閲覧・編集できない

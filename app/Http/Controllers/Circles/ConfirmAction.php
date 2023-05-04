@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Circles;
 
-use Auth;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
 use App\Services\Forms\AnswerDetailsService;
+use Illuminate\Support\Facades\Auth;
 
 class ConfirmAction extends Controller
 {
@@ -32,18 +31,17 @@ class ConfirmAction extends Controller
             return redirect()
                 ->route('circles.users.index', ['circle' => $circle])
                 ->with('topAlert.type', 'danger')
-                ->with('topAlert.title', '参加登録に必要な人数が揃っていないため、参加登録の提出はまだできません');
+                ->with('topAlert.title', '参加登録に必要な人数が揃っていないか最大人数を超過しているため、参加登録の提出はまだできません。');
         }
 
         $circle->load('users');
 
-        $form = CustomForm::getFormByType('circle');
-        $answer = !empty($form) ? $circle->getCustomFormAnswer() : null;
+        $answer = $circle->getParticipationFormAnswer();
 
         return view('circles.confirm')
             ->with('circle', $circle)
-            ->with('form', $form)
-            ->with('questions', !empty($form) ? $form->questions()->get() : null)
+            ->with('form', $circle->participationType->form)
+            ->with('questions', $circle->participationType->form->questions)
             ->with('answer', $answer)
             ->with('answer_details', !empty($answer)
                 ? $this->answerDetailsService->getAnswerDetailsByAnswer($answer) : []);

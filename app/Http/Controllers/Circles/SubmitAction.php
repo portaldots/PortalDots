@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Circles;
 
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
 use App\Services\Circles\CirclesService;
 use App\Services\Forms\AnswerDetailsService;
 use Illuminate\Support\Facades\Auth;
@@ -39,27 +38,26 @@ class SubmitAction extends Controller
             return redirect()
                 ->route('circles.users.index', ['circle' => $circle])
                 ->with('topAlert.type', 'danger')
-                ->with('topAlert.title', '参加登録に必要な人数が揃っていないため、参加登録の提出はまだできません');
+                ->with('topAlert.title', '参加登録に必要な人数が揃っていないか最大人数を超過しているため、参加登録の提出はまだできません。');
         }
 
         $this->circlesService->submit($circle);
 
         $circle->load('users');
 
-        $form = CustomForm::getFormByType('circle');
-        $answer = !empty($form) ? $circle->getCustomFormAnswer() : null;
-        $questions = !empty($form) ? $form->questions()->get() : null;
+        $answer = $circle->getParticipationFormAnswer();
+        $questions = $circle->participationType->form->questions;
         $answerDetails = !empty($answer)
             ? $this->answerDetailsService->getAnswerDetailsByAnswer($answer) : [];
 
         foreach ($circle->users as $user) {
             $this->circlesService->sendSubmitedEmail(
-                $user,
-                $circle,
-                $form,
-                $questions,
-                $answer,
-                $answerDetails
+                user: $user,
+                circle: $circle,
+                participationForm: $circle->participationType->form,
+                questions: $questions,
+                answer: $answer,
+                answerDetails: $answerDetails
             );
         }
 

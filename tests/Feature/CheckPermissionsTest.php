@@ -34,7 +34,7 @@ class CheckPermissionsTest extends TestCase
             'staff.users.read,edit',
             'staff.users.read',
             'staff.circles',
-            'staff.circles.custom_form',
+            'staff.circles.participation_types',
             'staff.circles.read,edit,delete',
             'staff.circles.read,edit',
             'staff.circles.read,send_email',
@@ -110,7 +110,7 @@ class CheckPermissionsTest extends TestCase
         $this->assertCount(
             0,
             $diff,
-            'PermissionモデルのgetDefinedPermissionsに新しい権限を作成した場合、 CheckPermissionsTest を修正する必要があります'
+            'PermissionモデルのgetDefinedPermissionsに新しい権限を作成した場合、 CheckPermissionsTest を修正する必要があります。'
         );
     }
 
@@ -121,7 +121,10 @@ class CheckPermissionsTest extends TestCase
     {
         foreach ($this->getRouteNamePrefixesByPermissions() as $route_name_prefix => $permissions) {
             foreach ($permissions as $permission) {
-                if ($permission === 'staff.circles.custom_form' || $route_name_prefix === 'staff.forms.answers') {
+                if (
+                    $permission === 'staff.circles.participation_types'
+                    || $route_name_prefix === 'staff.forms.answers'
+                ) {
                     // これらについてのテストの実装は保留
                     continue;
                 }
@@ -158,8 +161,8 @@ class CheckPermissionsTest extends TestCase
                     403,
                     $response->getStatusCode(),
                     "権限がない場合は " . $route_name_prefix .
-                    " にアクセスできないようにする必要があります。権限 : " .
-                    $permission
+                        " にアクセスできないようにする必要があります。権限 : " .
+                        $permission
                 );
             }
         }

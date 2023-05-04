@@ -33,7 +33,7 @@ class CreateAction extends Controller
 
     public function __invoke(Form $form)
     {
-        if (! $form->is_public || isset($form->customForm)) {
+        if (!$form->is_public || isset($form->participationType)) {
             abort(404);
         }
 

@@ -65,6 +65,8 @@ class ActivityLogGridMaker implements GridMakable
             'page' => 'お知らせ',
             'page_viewable_tag' => 'お知らせを閲覧可能なユーザー(タグ)',
             'page_document' => 'お知らせに関連する配布資料',
+            'participation_type' => '参加種別',
+            'participation_type_tag' => '参加種別とタグの紐付け',
             'place' => '場所',
             'question' => 'フォームの設問',
             'tag' => 'タグ',

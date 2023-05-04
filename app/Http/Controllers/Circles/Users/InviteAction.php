@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Circles\Users;
 
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
 use Illuminate\Support\Facades\Auth;
 
 class InviteAction extends Controller
@@ -15,14 +14,14 @@ class InviteAction extends Controller
             abort(404);
         }
 
-        $custom_form = CustomForm::getFormByType('circle');
+        $participationForm = $circle->participationType->form;
 
-        $can_join = isset($custom_form)
-            && $custom_form->is_public
-            && $custom_form->isOpen()
+        $canJoin = isset($participationForm)
+            && $participationForm->is_public
+            && $participationForm->isOpen()
             && !$circle->hasSubmitted();
 
-        if (!$can_join) {
+        if (!$canJoin) {
             abort(404);
         }
 

@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\GridMakers;
 
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
-use App\Eloquents\Form;
+use App\Eloquents\ParticipationType;
 use App\Eloquents\Place;
 use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,23 +22,26 @@ class CirclesGridMaker implements GridMakable
 {
     use UseEloquent;
 
-    /**
-     * @var FormatTextService
-     */
-    private $formatTextService;
+    private FormatTextService $formatTextService;
 
-    /**
-     * @var Form
-     */
-    private $custom_form;
+    private ?ParticipationType $participationType = null;
 
-    public const CUSTOM_FORM_QUESTIONS_KEY_PREFIX = 'custom_form_question_';
+    public const PARTICIPATION_FORM_QUESTIONS_KEY_PREFIX = 'participation_form_question_';
     public const CHECKBOX_GROUP_CONCAT_SEPARATOR = "\n";
 
     public function __construct(FormatTextService $formatTextService)
     {
         $this->formatTextService = $formatTextService;
-        $this->custom_form = CustomForm::getFormByType('circle');
+    }
+
+    /**
+     * 企画一覧を表示する参加種別をセット
+     */
+    public function withParticipationType(ParticipationType $participationType): self
+    {
+        $this->participationType = $participationType;
+        $this->participationType->loadMissing(['form', 'form.questions']);
+        return $this;
     }
 
     /**
@@ -47,15 +49,16 @@ class CirclesGridMaker implements GridMakable
      */
     protected function baseEloquentQuery(): Builder
     {
-        $customFormSelectFields =
-            isset($this->custom_form) ? AnswerDetailsHelper::getFormQuestionsKeys(
-                $this->custom_form->questions,
-                self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX
+        $participationFormSelectFields =
+            isset($this->participationType) ? AnswerDetailsHelper::getFormQuestionsKeys(
+                $this->participationType->form->questions,
+                self::PARTICIPATION_FORM_QUESTIONS_KEY_PREFIX
             ) : [];
 
         /** @var Builder */
         $query = Circle::submitted()->select([
             DB::raw('`circles`.`id` AS id'),
+            DB::raw('`circles`.`participation_type_id` AS participation_type_id'),
             DB::raw('`circles`.`name` AS name'),
             DB::raw('`circles`.`name_yomi` AS name_yomi'),
             DB::raw('`circles`.`group_name` AS group_name'),
@@ -67,19 +70,21 @@ class CirclesGridMaker implements GridMakable
             DB::raw('`circles`.`notes` AS notes'),
             DB::raw('`circles`.`created_at` AS created_at'),
             DB::raw('`circles`.`updated_at` AS updated_at'),
-            ...$customFormSelectFields,
-        ])->with(['places', 'tags', 'statusSetBy']);
+            ...$participationFormSelectFields,
+        ])->with(['places', 'tags', 'statusSetBy', 'participationType']);
 
-        if (isset($this->custom_form)) {
+        if (isset($this->participationType)) {
+            $query = $query->where('participation_type_id', $this->participationType->id);
+
             $query = $query->leftJoin('answers', function (JoinClause $join) {
                 $join->on('circles.id', '=', 'answers.circle_id')
-                    ->where('answers.form_id', $this->custom_form->id);
+                    ->where('answers.form_id', $this->participationType->form_id);
             });
 
             $query = AnswerDetailsHelper::makeQueryWithAnswerDetails(
                 $query,
-                $this->custom_form->questions,
-                self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX,
+                $this->participationType->form->questions,
+                self::PARTICIPATION_FORM_QUESTIONS_KEY_PREFIX,
                 self::CHECKBOX_GROUP_CONCAT_SEPARATOR
             );
         }
@@ -92,20 +97,21 @@ class CirclesGridMaker implements GridMakable
      */
     public function keys(): array
     {
-        $customFormKeys = isset($this->custom_form) ? AnswerDetailsHelper::getFormQuestionsKeys(
-            $this->custom_form->questions,
-            self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX
+        $participationFormKeys = isset($this->participationType) ? AnswerDetailsHelper::getFormQuestionsKeys(
+            $this->participationType->form->questions,
+            self::PARTICIPATION_FORM_QUESTIONS_KEY_PREFIX
         ) : [];
 
         return [
             'id',
+            'participation_type_id',
             'name',
             'name_yomi',
             'group_name',
             'group_name_yomi',
             'places',
             'tags',
-            ...$customFormKeys,
+            ...$participationFormKeys,
             'submitted_at',
             'status',
             'status_set_at',
@@ -132,11 +138,20 @@ class CirclesGridMaker implements GridMakable
             $places_choices = Place::all()->toArray();
         }
 
-        $questionFilterableKeys = isset($this->custom_form)
+        $questionFilterableKeys = isset($this->participationType)
             ? AnswerDetailsHelper::makeFilterableKeysForAnswerDetails(
-                $this->custom_form->questions,
-                self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX
+                $this->participationType->form->questions,
+                self::PARTICIPATION_FORM_QUESTIONS_KEY_PREFIX
             ) : [];
+
+        $participation_types_type = FilterableKey::belongsTo('participation_types', new FilterableKeysDict([
+            'id' => FilterableKey::number(),
+            'name' => FilterableKey::string(),
+            'users_count_min' => FilterableKey::number(),
+            'users_count_max' => FilterableKey::number(),
+            'created_at' => FilterableKey::datetime(),
+            'updated_at' => FilterableKey::datetime(),
+        ]));
 
         $users_type = FilterableKey::belongsTo('users', new FilterableKeysDict([
             'id' => FilterableKey::number(),
@@ -162,6 +177,7 @@ class CirclesGridMaker implements GridMakable
             array_merge(
                 [
                     'id' => FilterableKey::number(),
+                    'participation_type_id' => $participation_types_type,
                     'name' => FilterableKey::string(),
                     'name_yomi' => FilterableKey::string(),
                     'group_name' => FilterableKey::string(),
@@ -201,13 +217,14 @@ class CirclesGridMaker implements GridMakable
      */
     public function sortableKeys(): array
     {
-        $formKeys = isset($this->custom_form) ? AnswerDetailsHelper::getFormQuestionsKeys(
-            $this->custom_form->questions,
-            self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX
+        $formKeys = isset($this->participationType) ? AnswerDetailsHelper::getFormQuestionsKeys(
+            $this->participationType->form->questions,
+            self::PARTICIPATION_FORM_QUESTIONS_KEY_PREFIX
         ) : [];
 
         return [
             'id',
+            'participation_type_id',
             'name',
             'name_yomi',
             'group_name',
@@ -229,23 +246,26 @@ class CirclesGridMaker implements GridMakable
     public function map($record): array
     {
         // カスタムフォームへの回答
-        $itemsOfAnswerDetails = isset($this->custom_form) ? AnswerDetailsHelper::mapForAnswerDetails(
+        $itemsOfAnswerDetails = isset($this->participationType) ? AnswerDetailsHelper::mapForAnswerDetails(
             $record,
-            $this->custom_form->questions,
-            $this->custom_form,
-            self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX,
+            $this->participationType->form->questions,
+            $this->participationType->form,
+            self::PARTICIPATION_FORM_QUESTIONS_KEY_PREFIX,
             self::CHECKBOX_GROUP_CONCAT_SEPARATOR
         ) : [];
 
         // カスタムフォームへの回答以外の項目
         $itemsExpectForms = [];
 
-        $keysExceptCustomForms = array_filter($this->keys(), function ($key) {
-            return strpos($key, self::CUSTOM_FORM_QUESTIONS_KEY_PREFIX) !== 0;
+        $keysExceptParticipationForms = array_filter($this->keys(), function ($key) {
+            return strpos($key, self::PARTICIPATION_FORM_QUESTIONS_KEY_PREFIX) !== 0;
         });
 
-        foreach ($keysExceptCustomForms as $key) {
+        foreach ($keysExceptParticipationForms as $key) {
             switch ($key) {
+                case 'participation_type_id':
+                    $itemsExpectForms[$key] = $record->participationType;
+                    break;
                 case 'status_set_by':
                     $itemsExpectForms[$key] = $record->statusSetBy;
                     break;

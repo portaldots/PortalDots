@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Circles;
 
 use App\Eloquents\Circle;
-use App\Eloquents\CustomForm;
 use App\Http\Controllers\Controller;
 use App\Services\Forms\AnswerDetailsService;
 use Carbon\CarbonImmutable;
@@ -33,13 +32,14 @@ class ShowAction extends Controller
         ) {
             $circle->load('users', 'places');
 
-            $form = CustomForm::getFormByType('circle');
-            $answer = !empty($form) ? $circle->getCustomFormAnswer() : null;
+            $answer = $circle->getParticipationFormAnswer();
 
             return view('circles.show')
                 ->with('circle', $circle)
-                ->with('form', $form)
-                ->with('questions', !empty($form) ? $form->questions()->get() : null)
+                ->with('form', isset($circle->participationType) ? $circle->participationType->form : null)
+                ->with('questions', isset($circle->participationType)
+                    ? $circle->participationType->form->questions
+                    : null)
                 ->with('answer', $answer)
                 ->with('answer_details', !empty($answer)
                     ? $this->answerDetailsService->getAnswerDetailsByAnswer($answer) : []);

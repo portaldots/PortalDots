@@ -8,14 +8,23 @@
         <slot name="description" />
       </div>
     </div>
-    <div class="listview-body">
+    <div
+      class="listview-body"
+      :class="{ 'is-no-card-style': props.noCardStyle }"
+    >
       <slot />
     </div>
   </div>
 </template>
 
-<script>
-export default {};
+<script setup>
+const props = defineProps({
+  /** スロット部分においてカード風のスタイルを適用しない */
+  noCardStyle: {
+    type: Boolean,
+    default: false,
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -37,7 +46,7 @@ export default {};
       margin: $spacing-xxs 0 0;
     }
   }
-  &-body {
+  &-body:not(.is-no-card-style) {
     background: $color-bg-surface;
     border-radius: $border-radius;
     box-shadow: $box-shadow-lv1;

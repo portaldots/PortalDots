@@ -10,11 +10,11 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 class FormsExport implements FromCollection, WithHeadings, WithMapping
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
-        return Form::withoutCustomForms()
+        return Form::withoutParticipationForms()
             ->with(['answerableTags'])
             ->get();
     }

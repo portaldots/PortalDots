@@ -32,10 +32,17 @@
         <form action="{{ route('circles.submit', ['circle' => $circle]) }}" method="post">
             @csrf
             <div class="text-center pt-spacing-sm pb-spacing">
-                <a class="btn is-secondary" href="{{ route('circles.users.index', ['circle' => $circle]) }}">
-                    <i class="fas fa-chevron-left"></i>
-                    「メンバーを招待」へもどる
-                </a>
+                @if ($circle->participationType->users_count_max > 1)
+                    <a class="btn is-secondary" href="{{ route('circles.users.index', ['circle' => $circle]) }}">
+                        <i class="fas fa-chevron-left"></i>
+                        「メンバーを招待」へもどる
+                    </a>
+                @else
+                    <a class="btn is-secondary" href="{{ route('circles.edit', ['circle' => $circle]) }}">
+                        <i class="fas fa-chevron-left"></i>
+                        企画情報の編集
+                    </a>
+                @endif
                 <button type="submit" class="btn is-primary">
                     <strong>参加登録を提出</strong>
                 </button>

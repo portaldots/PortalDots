@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Staff\Circles;
+namespace App\Http\Requests\Staff\Circles\ParticipationTypes;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CustomFormRequest extends FormRequest
+class ParticipationFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,12 @@ class CustomFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'users_number_to_submit_circle' => ['required', 'integer', 'min:1'],
+            'users_count_min' => ['required', 'integer', 'min:1'],
+            'users_count_max' => ['required', 'integer', 'min:1', 'gte:users_count_min'],
             'open_at' => ['required', 'date'],
             'close_at' => ['required', 'date', 'after:open_at'],
             'is_public' => ['boolean'],
-            'description' => ['nullable', 'string'],
+            'form_description' => ['nullable', 'string'],
         ];
     }
 
@@ -40,7 +41,8 @@ class CustomFormRequest extends FormRequest
     public function attributes()
     {
         return [
-            'users_number_to_submit_circle' => '企画参加登録を提出するために必要な企画担当者の最低人数',
+            'users_count_min' => '最低人数',
+            'users_count_max' => '最大人数',
             'open_at' => '受付開始日時',
             'close_at' => '受付終了日時',
             'is_public' => '参加登録画面の公開設定',

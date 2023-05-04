@@ -10,7 +10,7 @@ use Carbon\CarbonImmutable;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
-use App\Eloquents\CustomForm;
+use App\Eloquents\ParticipationType;
 use App\Eloquents\Tag;
 use App\Services\Circles\SelectorService;
 
@@ -97,21 +97,24 @@ class StoreActionTest extends TestCase
     /**
      * @test
      */
-    public function カスタムフォームとして登録されているフォームには回答できない()
+    public function 参加登録フォームとして登録されているフォームには回答できない()
     {
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
         CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
 
-        $customForm = factory(CustomForm::class)->create([
+        $participationForm = factory(Form::class)->create([
             'type' => 'circle',
-            'form_id' => $this->form->id,
+        ]);
+
+        ParticipationType::factory()->create([
+            'form_id' => $participationForm->id,
         ]);
 
         $response = $this
             ->actingAs($this->user)
             ->post(
                 route('forms.answers.store', [
-                    'form' => $this->form->id,
+                    'form' => $participationForm->id,
                 ]),
                 [
                     'circle_id' => $this->circle->id,
@@ -119,7 +122,7 @@ class StoreActionTest extends TestCase
             );
 
         $this->assertDatabaseMissing('answers', [
-            'form_id' => $this->form->id,
+            'form_id' => $participationForm->id,
             'circle_id' => $this->circle->id,
         ]);
 

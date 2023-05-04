@@ -3,10 +3,14 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Eloquents\Circle;
+use App\Eloquents\ParticipationType;
 use Faker\Generator as Faker;
 
 $factory->define(Circle::class, function (Faker $faker) {
     return [
+        'participation_type_id' => function () {
+            return ParticipationType::factory()->create()->id;
+        },
         'name' => $faker->name,
         'name_yomi' => $faker->kanaName,
         'group_name' => $faker->name,

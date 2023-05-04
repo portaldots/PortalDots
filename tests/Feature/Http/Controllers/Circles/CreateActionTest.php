@@ -6,8 +6,6 @@ use App\Eloquents\User;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class CreateActionTest extends BaseTestCase
 {
@@ -30,14 +28,14 @@ class CreateActionTest extends BaseTestCase
      */
     public function 説明が設定されているときは説明を表示する()
     {
-        $this->form->description = '注意事項';
-        $this->form->save();
+        $this->participationForm->description = '注意事項';
+        $this->participationForm->save();
 
         $responce = $this
-                    ->actingAs($this->user)
-                    ->get(
-                        route('circles.create')
-                    );
+            ->actingAs($this->user)
+            ->get(
+                route('circles.create', ['participation_type' => $this->participationType])
+            );
 
         $responce->assertOk();
         $responce->assertSee('必ずお読みください');
@@ -49,14 +47,14 @@ class CreateActionTest extends BaseTestCase
      */
     public function 説明が設定されていないときは説明を表示しない()
     {
-        $this->form->description = null;
-        $this->form->save();
+        $this->participationForm->description = null;
+        $this->participationForm->save();
 
         $responce = $this
-                    ->actingAs($this->user)
-                    ->get(
-                        route('circles.create')
-                    );
+            ->actingAs($this->user)
+            ->get(
+                route('circles.create', ['participation_type' => $this->participationType])
+            );
 
         $responce->assertOk();
         $responce->assertDontSee('必ずお読みください');

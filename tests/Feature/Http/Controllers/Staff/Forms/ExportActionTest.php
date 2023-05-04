@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Forms;
 
-use App\Eloquents\CustomForm;
 use App\Eloquents\Form;
+use App\Eloquents\ParticipationType;
 use App\Eloquents\Permission;
 use App\Eloquents\User;
 use App\Exports\FormsExport;
@@ -17,25 +17,10 @@ class ExportActionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @var User
-     */
-    private $staff;
-
-    /**
-     * @var Form
-     */
-    private $form;
-
-    /**
-     * @var Form
-     */
-    private $anotherForm;
-
-    /**
-     * @var CustomForm
-     */
-    private $customForm;
+    private ?User $staff;
+    private ?Form $form;
+    private ?Form $anotherForm;
+    private ?Form $participationForm;
 
     public function setUp(): void
     {
@@ -53,7 +38,11 @@ class ExportActionTest extends TestCase
             'name' => 'パンフレット掲載内容',
         ]);
 
-        $this->customForm = factory(CustomForm::class)->create();
+        $this->participationForm = factory(Form::class)->create();
+
+        ParticipationType::factory()->create([
+            'form_id' => $this->participationForm->id
+        ]);
     }
 
     /**
@@ -75,7 +64,7 @@ class ExportActionTest extends TestCase
         Excel::assertDownloaded("申請一覧_{$now}.csv", function (FormsExport $export) {
             return $export->collection()->contains('name', '場所登録申請')
                 && $export->collection()->contains('name', 'パンフレット掲載内容')
-                && !$export->collection()->contains('name', $this->customForm->form->name);
+                && !$export->collection()->contains('name', $this->participationForm->name);
         });
     }
 

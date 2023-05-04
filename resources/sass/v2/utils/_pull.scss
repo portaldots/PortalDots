@@ -1,0 +1,15 @@
+@use "@/sass/variables" as *;
+
+.pull {
+  &-left {
+    float: left;
+  }
+
+  &-right {
+    float: right;
+  }
+
+  &-clear {
+    clear: both;
+  }
+}

@@ -23,8 +23,8 @@ class UpdateFormAction extends Controller
     {
         $form = $request->form;
 
-        // カスタムフォームのフォーム情報は修正禁止
-        if (isset(Form::findOrFail($form['id'])->customForm)) {
+        // 参加登録フォームのフォーム情報は修正禁止
+        if (isset(Form::findOrFail($form['id'])->participationType)) {
             return abort(400);
         }
 

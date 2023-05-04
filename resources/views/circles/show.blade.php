@@ -22,9 +22,8 @@
             @endif
         </span>
         @if (!Auth::user()->isLeaderInCircle($circle) && Gate::allows('circle.update', $circle))
-            <form-with-confirm
-                action="{{ route('circles.users.destroy', ['circle' => $circle, 'user' => Auth::user()]) }}" method="post"
-                confirm-message="本当にこの企画を抜けますか？">
+            <form-with-confirm action="{{ route('circles.users.destroy', ['circle' => $circle, 'user' => Auth::user()]) }}"
+                method="post" confirm-message="本当にこの企画を抜けますか？">
                 @method('delete')
                 @csrf
                 <button type="submit" class="btn is-danger is-sm" style="display:inline-block;">
@@ -54,7 +53,7 @@
                 </list-view-card>
             </list-view>
         @endif
-        @if (count($questions) > 0)
+        @if (!empty($questions) && count($questions) > 0)
             <list-view>
                 @if (Auth::user()->isLeaderInCircle($circle) && Gate::allows('circle.update', $circle))
                     <list-view-card>

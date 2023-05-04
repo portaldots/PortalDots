@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Circles;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use App\Eloquents\Circle;
 
 class DestroyAction extends Controller
