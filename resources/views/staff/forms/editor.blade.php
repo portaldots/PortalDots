@@ -4,6 +4,10 @@
 
 @section('title', "{$form->name} — フォームエディター")
 
+@push('body-class')
+    has-content-iframe
+@endpush
+
 @section('navbar')
     <app-nav-bar-back href="{{ route('staff.forms.index') }}">
         申請管理

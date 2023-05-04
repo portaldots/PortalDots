@@ -3,7 +3,7 @@
 .content {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding: $navbar-height 0 0 $drawer-width;
   &.is-no-drawer {
     padding-left: 0;
@@ -14,7 +14,7 @@
   &__body {
     flex: 1;
 
-    &:has(> &__content_iframe) {
+    body.has-content-iframe & {
       display: flex;
       flex-direction: column;
     }

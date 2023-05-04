@@ -4,6 +4,10 @@
 
 @section('title', "{$participation_type->name} — 参加種別")
 
+@push('body-class')
+    has-content-iframe
+@endpush
+
 @section('navbar')
     <app-nav-bar-back
         href="{{ route('staff.circles.participation_types.form.edit', [

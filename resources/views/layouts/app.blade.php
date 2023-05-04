@@ -55,7 +55,7 @@
     <meta name="format-detection" content="telephone=no">
 </head>
 
-<body class="{{ $is_iframe ? 'is-in-iframe' : '' }}">
+<body class="{{ $is_iframe ? 'is-in-iframe' : '' }} @stack('body-class')">
     @include('includes.loading')
     <div class="app" id="v2-app">
         <global-events v-on:keyup.esc="closeDrawer"></global-events>
