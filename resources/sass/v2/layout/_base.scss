@@ -87,6 +87,11 @@ dt {
   grid-column: 1;
   max-width: 200px;
   font-weight: 500;
+
+  @media screen and (max-width: 640px) {
+    max-width: 100%;
+    margin-bottom: $spacing-xs;
+  }
 }
 
 dd {
@@ -95,7 +100,10 @@ dd {
 
   @media screen and (max-width: 640px) {
     grid-column: 1;
-    margin-bottom: $spacing-md;
+
+    &:not(:last-child) {
+      margin-bottom: $spacing-lg;
+    }
   }
 }
 
