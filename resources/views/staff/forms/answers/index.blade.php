@@ -90,6 +90,18 @@
                 title="編集">
                 <i class="fas fa-pencil-alt fa-fw"></i>
             </icon-button>
+            <form-with-confirm
+                v-bind:action="`{{ route('staff.forms.answers.destroy', ['form' => $form, 'answer' => '%%ANSWER%%']) }}`.replace('%%ANSWER%%', row['id'])"
+                method="post"
+                v-bind:confirm-message="`この回答を削除しますか？
+
+• 回答が削除されたという通知は${row['circle_id'].group_name}には送信されません。`" inline>
+                @method('delete')
+                @csrf
+                <icon-button submit title="削除">
+                    <i class="fas fa-trash fa-fw"></i>
+                </icon-button>
+            </form-with-confirm>
         </template>
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'circle_id'">

@@ -226,6 +226,12 @@ class Permission extends SpatiePermission
                     '申請(全機能)',
                     '申請管理の全機能を利用可能。セキュリティのため、この権限を割り当てるユーザーは最小限にしてください。'
                 ),
+                'staff.forms.read,edit,delete' => new PermissionInfo(
+                    'staff.forms.read,edit,delete',
+                    'スタッフモード › 申請管理 › フォームの閲覧と編集、削除',
+                    '申請(フォームの削除)',
+                    'フォームの閲覧と編集、作成、削除が可能'
+                ),
                 'staff.forms.read,edit,duplicate' => new PermissionInfo(
                     'staff.forms.read,edit,duplicate',
                     'スタッフモード › 申請管理 › フォームの閲覧と編集、複製',
@@ -249,6 +255,12 @@ class Permission extends SpatiePermission
                     'スタッフモード › 申請管理 › フォームの閲覧',
                     '申請(フォームの閲覧)',
                     'フォームの閲覧が可能。ただし、回答の閲覧はできません。'
+                ),
+                'staff.forms.answers.read,edit,delete' => new PermissionInfo(
+                    'staff.forms.answers.read,edit,delete',
+                    'スタッフモード › 申請管理 › 回答の閲覧と編集、削除',
+                    '申請(回答の削除)',
+                    '回答の閲覧と編集、作成、削除が可能'
                 ),
                 'staff.forms.answers.read,edit' => new PermissionInfo(
                     'staff.forms.answers.read,edit',
