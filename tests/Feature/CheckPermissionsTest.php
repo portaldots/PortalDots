@@ -67,6 +67,7 @@ class CheckPermissionsTest extends TestCase
             'staff.forms.read,edit',
             'staff.forms.read,export',
             'staff.forms.read',
+            'staff.forms.answers.read,edit,delete',
             'staff.forms.answers.read,edit',
             'staff.forms.answers.read,export',
             'staff.forms.answers.read',
