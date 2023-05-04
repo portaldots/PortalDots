@@ -90,8 +90,8 @@ class CirclesServiceTest extends TestCase
             'is_leader' => 1,
         ]);
 
-        // 参加種別に紐づくタグが、自動的に企画に紐づく
-        $this->assertDatabaseCount('circle_tag', self::PARTICIPATION_TYPE_TAGS_COUNT);
+        // 参加種別に紐づくタグは、企画を作成したタイミングでは企画に紐づかない
+        $this->assertDatabaseCount('circle_tag', 0);
 
         $this->assertNotEmpty($circle->invitation_token);
     }
@@ -193,6 +193,9 @@ class CirclesServiceTest extends TestCase
 
         $circle->refresh();
         $this->assertNotEmpty($circle->submitted_at);
+
+        // 参加種別に紐づくタグが、自動的に企画に紐づく
+        $this->assertDatabaseCount('circle_tag', self::PARTICIPATION_TYPE_TAGS_COUNT);
     }
 
     /**
