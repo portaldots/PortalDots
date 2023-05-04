@@ -28,6 +28,7 @@ class GetQuestionsAction extends Controller
             ];
         })->toArray();
 
+        $permanent_questions = [];
         if (isset($form->participationType)) {
             $permanent_questions = [
                 [
