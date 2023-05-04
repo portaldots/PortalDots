@@ -24,8 +24,7 @@ class PostResetStartAction extends Controller
         $this->resetPasswordService->handleResetStart($request->login_id);
 
         return redirect()->route('password.request')
-            ->with('topAlert.title', '受信メールをご確認ください')
-            ->with('topAlert.body', 'パスワード再設定に関するご案内を連絡先メールアドレス宛に送信しました。今から 5 分以内に再設定を完了してください。
-                もし届かない場合、もう一度お試しください。');
+            ->with('topAlert.title', 'メールを確認してください')
+            ->with('topAlert.body', '今から5分以内に再設定してください。もし届かない場合はもう一度お試しください。');
     }
 }

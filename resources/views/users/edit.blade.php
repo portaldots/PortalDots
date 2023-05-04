@@ -55,9 +55,9 @@
                     <template v-slot:description>
                         {{ !$circles->isEmpty() ? '企画に所属しているため修正できません' : '姓と名の間にはスペースを入れてください' }}
                     </template>
-                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                        value="{{ old('name', $user->name) }}" {{ !$circles->isEmpty() ? 'readonly' : '' }} required
-                        autocomplete="name">
+                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                        name="name" value="{{ old('name', $user->name) }}" {{ !$circles->isEmpty() ? 'readonly' : '' }}
+                        required autocomplete="name">
                     @error('name')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror
@@ -77,18 +77,18 @@
                 <list-view-form-group label-for="email">
                     <template v-slot:label>連絡先メールアドレス</template>
                     <template v-slot:description>
-                        連絡先メールアドレスとして{{ config('portal.univemail_name') }}もご利用になれます
+                        連絡先メールアドレスとして{{ config('portal.univemail_name') }}も利用できます
                     </template>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                        value="{{ old('email', $user->email) }}" required autocomplete="email">
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                        name="email" value="{{ old('email', $user->email) }}" required autocomplete="email">
                     @error('email')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="tel">
                     <template v-slot:label>連絡先電話番号</template>
-                    <input id="tel" type="tel" class="form-control @error('tel') is-invalid @enderror" name="tel"
-                        value="{{ old('tel', $user->tel) }}" required>
+                    <input id="tel" type="tel" class="form-control @error('tel') is-invalid @enderror"
+                        name="tel" value="{{ old('tel', $user->tel) }}" required>
                     @error('tel')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror

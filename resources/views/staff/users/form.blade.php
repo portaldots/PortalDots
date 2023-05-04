@@ -11,7 +11,7 @@
 @section('content')
     <form method="post" action="{{ empty($user) ? route('staff.users.store') : route('staff.users.update', $user) }}"
         enctype="multipart/form-data">
-        @method(empty($user) ? 'post' : 'patch' )
+        @method(empty($user) ? 'post' : 'patch')
         @csrf
 
         <app-header>
@@ -49,8 +49,8 @@
                     <template v-slot:description>
                         姓と名の間にはスペースを入れてください
                     </template>
-                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                        value="{{ old('name', $user->name) }}" required autocomplete="name">
+                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                        name="name" value="{{ old('name', $user->name) }}" required autocomplete="name">
                     @error('name')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror
@@ -69,18 +69,18 @@
                 <list-view-form-group label-for="email">
                     <template v-slot:label>連絡先メールアドレス</template>
                     <template v-slot:description>
-                        連絡先メールアドレスとして{{ config('portal.univemail_name') }}もご利用になれます
+                        連絡先メールアドレスとして{{ config('portal.univemail_name') }}も利用できます
                     </template>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                        value="{{ old('email', $user->email) }}" required autocomplete="email">
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                        name="email" value="{{ old('email', $user->email) }}" required autocomplete="email">
                     @error('email')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group label-for="tel">
                     <template v-slot:label>連絡先電話番号</template>
-                    <input id="tel" type="tel" class="form-control @error('tel') is-invalid @enderror" name="tel"
-                        value="{{ old('tel', $user->tel) }}" required>
+                    <input id="tel" type="tel" class="form-control @error('tel') is-invalid @enderror"
+                        name="tel" value="{{ old('tel', $user->tel) }}" required>
                     @error('tel')
                         <template v-slot:invalid>{{ $message }}</template>
                     @enderror
@@ -105,7 +105,8 @@
                             <span class="text-muted">スタッフモードにアクセスできません。</span>
                         </label>
                         <label class="form-radio__label">
-                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios2" value="staff"
+                            <input class="form-radio__input" type="radio" name="user_type" id="userTypeRadios2"
+                                value="staff"
                                 {{ old('user_type', $user->is_staff && !$user->is_admin ? 'staff' : '') === 'staff' ? 'checked' : '' }}
                                 {{ (!Auth::user()->is_admin && $user->is_admin) || Auth::id() === $user->id ? 'disabled' : '' }}>
                             <strong>スタッフ</strong><br />
@@ -155,8 +156,7 @@
                 <list-view-form-group label-for="notes">
                     <template v-slot:label>スタッフ用メモ</template>
                     <template v-slot:description>ここに入力された内容はスタッフのみ閲覧できます。スタッフ内で共有したい事項を残しておくメモとしてご活用ください。</template>
-                    <textarea id="notes" class="form-control @error('notes') is-invalid @enderror" name="notes"
-                        rows="5">{{ old('notes', empty($user) ? '' : $user->notes) }}</textarea>
+                    <textarea id="notes" class="form-control @error('notes') is-invalid @enderror" name="notes" rows="5">{{ old('notes', empty($user) ? '' : $user->notes) }}</textarea>
                     @if ($errors->has('notes'))
                         <template v-slot:invalid>
                             @foreach ($errors->get('notes') as $message)

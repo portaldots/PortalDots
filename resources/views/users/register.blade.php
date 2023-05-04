@@ -10,8 +10,6 @@
         <app-container medium>
             <list-view>
                 <template v-slot:title>ユーザー登録</template>
-                <template v-slot:description>「{{ config('app.name') }}」にユーザー登録します。</template>
-
                 @include('includes.user_register_form')
             </list-view>
 
