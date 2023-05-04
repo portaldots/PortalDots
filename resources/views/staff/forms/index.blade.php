@@ -27,6 +27,11 @@
             </a>
         </template>
         <template v-slot:activities="{ row, openEditorByUrl }">
+            <icon-button
+                v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
+                title="回答一覧・設定">
+                <i class="far fa-eye fa-fw"></i>
+            </icon-button>
             <form-with-confirm
                 v-bind:action="`{{ route('staff.forms.copy', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
                 method="post"
@@ -34,15 +39,22 @@
 
 • 設問は全て複製されます
 • 「${row['name']}のコピー」という名前のフォームが作成されます
-• 「${row['name']}のコピー」は非公開です。後から必要に応じて設定を変更してください`">
+• 「${row['name']}のコピー」は非公開です。後から必要に応じて設定を変更してください`"
+                inline>
                 @csrf
-                <icon-button
-                    v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
-                    title="回答一覧・設定">
-                    <i class="far fa-eye fa-fw"></i>
-                </icon-button>
                 <icon-button submit title="複製">
                     <i class="far fa-copy fa-fw"></i>
+                </icon-button>
+            </form-with-confirm>
+            <form-with-confirm
+                v-bind:action="`{{ route('staff.forms.destroy', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
+                method="post" v-bind:confirm-message="`フォーム「${row['name']}」を削除しますか？
+
+• 設問、回答は全て削除されます`" inline>
+                @method('delete')
+                @csrf
+                <icon-button submit title="削除">
+                    <i class="fas fa-trash fa-fw"></i>
                 </icon-button>
             </form-with-confirm>
         </template>
