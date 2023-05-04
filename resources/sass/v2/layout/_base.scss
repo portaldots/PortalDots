@@ -33,7 +33,7 @@ body {
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
-  &:focus {
+  &:focus-visible {
     outline: $focus-outline;
   }
 }

@@ -109,7 +109,7 @@
       margin-right: $spacing-sm;
       opacity: 0.5;
     }
-    &__link:focus &__icon {
+    &__link:focus-visible &__icon {
       outline: $focus-outline;
     }
     &__badge {
