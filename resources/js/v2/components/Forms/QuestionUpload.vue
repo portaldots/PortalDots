@@ -1,12 +1,12 @@
 <template>
   <!--
-    TODO: value に応じて、ファイル削除ボタンなどを表示するようにしたい
-    というか、ファイルピッカーでファイルを選択したら、即座にファイル送信
-    しちゃって、削除ボタン押したら即座に削除、とかでも良いかも
-    （ファイルを選択するとすぐにサーバーにアップロードされます、的な
-    注釈とか必要かも）
+    TODO: value に応じて、ファイル削除ボタンなどを表示するようにしたい。
+    もしくは、ファイルピッカーでファイルを選択したら、即座にファイル送信
+    し、削除ボタン押したら即座に削除、のような形でも良いかもしれない。
+    （ファイルを選択するとすぐにサーバーにアップロードされます、のような
+    注釈が必要かも）
   -->
-  <div>
+  <div class="question-upload">
     <template v-if="!value || showInput">
       <input
         type="file"
@@ -107,6 +107,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.question-upload {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .uploaded-notice {
   color: $color-muted;
   margin: $spacing-xs 0 0;
