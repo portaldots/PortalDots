@@ -16,9 +16,7 @@
                 <i class="fas fa-plus fa-fw"></i>
                 新規タグ
             </a>
-            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.tags.export') }}" target="_blank"
-                rel="noopener noreferrer">
-                {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
+            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.tags.export') }}" download>
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力(タグ別企画一覧)
             </a>

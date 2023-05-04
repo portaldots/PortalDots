@@ -68,9 +68,7 @@
                 新規回答
             </a>
             <a class="btn is-primary-inverse is-no-border"
-                href="{{ route('staff.forms.answers.export', ['form' => $form]) }}" target="_blank"
-                rel="noopener noreferrer">
-                {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
+                href="{{ route('staff.forms.answers.export', ['form' => $form]) }}" download>
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力
             </a>

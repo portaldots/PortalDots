@@ -82,8 +82,7 @@
                 href="{{ isset($participation_type)
                     ? route('staff.circles.participation_types.export', ['participation_type' => $participation_type])
                     : route('staff.circles.export') }}"
-                target="_blank" rel="noopener noreferrer">
-                {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
+                download>
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力
             </a>

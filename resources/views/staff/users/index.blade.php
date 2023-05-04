@@ -29,9 +29,7 @@
                     updated_at: '更新日時',
                 }">
         <template v-slot:toolbar>
-            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.users.export') }}" target="_blank"
-                rel="noopener noreferrer">
-                {{-- 新しいタブで開かないと、他のボタンが disabled になってしまう --}}
+            <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.users.export') }}" download>
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力
             </a>
