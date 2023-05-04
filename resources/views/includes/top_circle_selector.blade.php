@@ -12,7 +12,7 @@
             v-bind:selected-circle-id="{{ $selectorService->getCircle()->id }}"
             selected-circle-name="{{ $selectorService->getCircle()->name }}"
             selected-circle-group-name="{{ $selectorService->getCircle()->group_name }}"
-            selected-participation-type-name="{{ $selectorService->getCircle()->participationType->name }}">
+            selected-participation-type-name="{{ $selectorService->getCircle()->participationType->name ?? '' }}">
         </circle-selector-dropdown>
     @endif
 @endauth

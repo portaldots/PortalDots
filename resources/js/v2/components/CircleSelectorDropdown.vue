@@ -12,7 +12,9 @@
             <div class="selector-button__content">
               <div class="selector-button__name">
                 {{ selectedCircleName }}
-                <AppBadge muted>{{ selectedParticipationTypeName }}</AppBadge>
+                <AppBadge muted v-if="selectedParticipationTypeName">{{
+                  selectedParticipationTypeName
+                }}</AppBadge>
               </div>
               <div class="selector-button__group-name">
                 {{ selectedCircleGroupName }}
@@ -30,7 +32,9 @@
             <div class="selector-item__body">
               <div class="selector-item__name">
                 {{ item.name }}
-                <AppBadge muted>{{ item.participation_type_name }}</AppBadge>
+                <AppBadge muted v-if="item.participation_type_name">
+                  {{ item.participation_type_name }}
+                </AppBadge>
               </div>
               <div class="selector-item__group-name">{{ item.group_name }}</div>
             </div>
@@ -82,7 +86,8 @@ export default {
     },
     selectedParticipationTypeName: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
     },
   },
 };
