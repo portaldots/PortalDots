@@ -125,7 +125,7 @@ export default {
   }
   .form-control {
     flex: 1 1 0%;
-    &:not(:first-child) {
+    &:not(:is([type="file"], [type="color"])):not(:first-child) {
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
       &:not(:focus),
@@ -133,7 +133,7 @@ export default {
         border-left: 0;
       }
     }
-    &:not(:last-child) {
+    &:not(:is([type="file"], [type="color"])):not(:last-child) {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
       &:not(:focus),
