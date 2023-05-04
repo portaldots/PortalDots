@@ -9,6 +9,7 @@
       :toolbars="toolbars"
       :footers="footers"
       :theme="colorScheme"
+      no-iconfont
       ref="editorRef"
     >
       <template #defToolbars>
