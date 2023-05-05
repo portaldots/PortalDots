@@ -13,6 +13,7 @@ import AppInfoBox from "./components/AppInfoBox.vue";
 import AppNavBar from "./components/AppNavBar.vue";
 import AppNavBarBack from "./components/AppNavBarBack.vue";
 import AppNavBarToggle from "./components/AppNavBarToggle.vue";
+import AppTabs from "./components/AppTabs.vue";
 import CardLink from "./components/CardLink.vue";
 import CircleSelectorDropdown from "./components/CircleSelectorDropdown.vue";
 import ContentIframe from "./components/ContentIframe.vue";
@@ -88,6 +89,7 @@ document.addEventListener("turbolinks:load", () => {
       AppNavBar,
       AppNavBarBack,
       AppNavBarToggle,
+      AppTabs,
       CardLink,
       CircleSelectorDropdown,
       ContentIframe,
