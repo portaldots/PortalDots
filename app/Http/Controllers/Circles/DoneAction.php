@@ -24,7 +24,6 @@ class DoneAction extends Controller
 
         return view('circles.done')
             ->with('circle', $circle)
-            ->with('confirmationMessage', $confirmationMessage)
-            ->with('questions', $circle->participationType->form->questions);
+            ->with('confirmationMessage', $confirmationMessage);
     }
 }
