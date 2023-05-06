@@ -22,7 +22,12 @@
     font-weight: bold;
     position: sticky;
     top: $app-navbar-height;
-    background-color: $color-bg-light;
+    background-image: linear-gradient(
+      to bottom,
+      $color-bg-light,
+      $color-bg-light
+    );
+    background-color: $color-bg-base;
     border-radius: $border-radius;
     z-index: 2;
   }
