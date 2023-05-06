@@ -15,7 +15,7 @@
                 <div data-turbolinks="false" class="markdown">
                     @markdown($confirmationMessage)
                 </div>
-                <p class="text-center">
+                <p class="pt-spacing text-center">
                     <a href="{{ route('home') }}" class="btn is-primary">
                         ホームへ戻る
                     </a>
