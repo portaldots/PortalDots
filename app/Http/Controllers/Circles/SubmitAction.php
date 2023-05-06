@@ -62,7 +62,7 @@ class SubmitAction extends Controller
         }
 
         return redirect()
-            ->route('home')
-            ->with('topAlert.title', '企画参加登録を提出しました！');
+            ->route('circles.done', ['circle' => $circle])
+            ->with('done', true);
     }
 }
