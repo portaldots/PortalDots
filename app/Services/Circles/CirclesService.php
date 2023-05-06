@@ -13,7 +13,7 @@ use App\Eloquents\Place;
 use App\Eloquents\Tag;
 use App\Mail\Circles\ApprovedMailable;
 use App\Mail\Circles\RejectedMailable;
-use App\Mail\Circles\SubmitedMailable;
+use App\Mail\Circles\SubmittedMailable;
 use App\Services\Circles\Exceptions\DenyCreateTagsException;
 use App\Services\Tags\TagsService;
 use App\Services\Utils\ActivityLogService;
@@ -205,7 +205,7 @@ class CirclesService
     ) {
         Mail::to($user)
             ->send(
-                (new SubmitedMailable(
+                (new SubmittedMailable(
                     $circle,
                     $participationForm,
                     $questions,

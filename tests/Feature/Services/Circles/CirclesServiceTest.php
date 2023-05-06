@@ -12,7 +12,7 @@ use App\Eloquents\Tag;
 use App\Services\Circles\CirclesService;
 use App\Mail\Circles\ApprovedMailable;
 use App\Mail\Circles\RejectedMailable;
-use App\Mail\Circles\SubmitedMailable;
+use App\Mail\Circles\SubmittedMailable;
 use App\Services\Tags\Exceptions\DenyCreateTagsException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
@@ -280,7 +280,7 @@ class CirclesServiceTest extends TestCase
         Mail::fake();
         $this->circlesService->sendSubmitedEmail($leader, $circle);
 
-        Mail::assertSent(SubmitedMailable::class, function ($mail) use ($leader) {
+        Mail::assertSent(SubmittedMailable::class, function ($mail) use ($leader) {
             return $mail->hasTo($leader->email);
         });
     }
