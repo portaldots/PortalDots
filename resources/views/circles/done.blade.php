@@ -8,6 +8,7 @@
     <app-container medium>
         <list-view>
             <template v-slot:title>参加登録を提出しました！</template>
+            <template v-slot:description>企画ID: {{ $circle->id }}</template>
             <list-view-card>
                 <p class="text-center text-success text-xl">
                     <i class="fas fa-check-circle"></i>
