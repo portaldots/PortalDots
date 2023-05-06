@@ -84,7 +84,7 @@
                 </list-view>
             @endif
 
-            @if (isset($answer) && isset($form->confirmation_message))
+            @if (isset($answer) && isset($form->confirmation_message) && $form->confirmation_message !== '')
                 <list-view>
                     <list-view-card data-turbolinks="false" class="markdown">
                         @markdown($form->confirmation_message)
