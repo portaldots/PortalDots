@@ -32,6 +32,7 @@ class UpdateAction extends Controller
                 'close_at' => $validated['close_at'],
                 'is_public' => $validated['is_public'] ?? false,
                 'description' => $validated['form_description'],
+                'confirmation_message' => $validated['form_confirmation_message'],
             ]);
 
             return redirect()

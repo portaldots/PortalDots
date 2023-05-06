@@ -100,23 +100,50 @@
                     @enderror
                 </list-view-form-group>
             </list-view>
-            <list-view>
-                <list-view-form-group>
-                    <template v-slot:label>
-                        参加登録前に表示する内容&nbsp;
-                        <app-badge outline muted>Markdown</app-badge>
-                    </template>
-                    <template v-slot:description>
-                        参加登録のページにここで設定した内容を表示できます。規約の表示などにご利用ください。
-                    </template>
-                    <markdown-editor input-name="form_description"
-                        default-value="{{ old('form_description', $participation_type->form->description) }}">
-                    </markdown-editor>
-                    @error('form_description')
-                        <template v-slot:invalid>{{ $message }}</template>
-                    @enderror
-                </list-view-form-group>
-            </list-view>
+            <app-accordion>
+                <template v-slot:summary>
+                    参加登録前に表示する内容
+                </template>
+                <list-view>
+                    <list-view-form-group>
+                        <template v-slot:label>
+                            参加登録前に表示する内容&nbsp;
+                            <app-badge outline muted>Markdown</app-badge>
+                        </template>
+                        <template v-slot:description>
+                            参加登録のページにここで設定した内容を表示できます。規約の表示などにご利用ください。
+                        </template>
+                        <markdown-editor input-name="form_description"
+                            default-value="{{ old('form_description', $participation_type->form->description) }}">
+                        </markdown-editor>
+                        @error('form_description')
+                            <template v-slot:invalid>{{ $message }}</template>
+                        @enderror
+                    </list-view-form-group>
+                </list-view>
+            </app-accordion>
+            <app-accordion>
+                <template v-slot:summary>
+                    参加登録の提出後に表示する内容
+                </template>
+                <list-view>
+                    <list-view-form-group>
+                        <template v-slot:label>
+                            参加登録の提出後に表示する内容&nbsp;
+                            <app-badge outline muted>Markdown</app-badge>
+                        </template>
+                        <template v-slot:description>
+                            参加登録を完了した方に向けて表示するメッセージを設定できます。この内容は、参加登録の提出ユーザーに自動で送信されるメールにも表示されます。
+                        </template>
+                        <markdown-editor input-name="form_confirmation_message"
+                            default-value="{{ old('form_confirmation_message', $participation_type->form->confirmation_message) }}">
+                        </markdown-editor>
+                        @error('form_confirmation_message')
+                            <template v-slot:invalid>{{ $message }}</template>
+                        @enderror
+                    </list-view-form-group>
+                </list-view>
+            </app-accordion>
             <app-fixed-form-footer>
                 <button type="submit" class="btn is-primary is-wide">保存</button>
             </app-fixed-form-footer>

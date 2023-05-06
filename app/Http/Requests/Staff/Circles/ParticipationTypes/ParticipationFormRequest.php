@@ -30,6 +30,7 @@ class ParticipationFormRequest extends FormRequest
             'close_at' => ['required', 'date', 'after:open_at'],
             'is_public' => ['boolean'],
             'form_description' => ['nullable', 'string'],
+            'form_confirmation_message' => ['nullable', 'string'],
         ];
     }
 
@@ -46,7 +47,8 @@ class ParticipationFormRequest extends FormRequest
             'open_at' => '受付開始日時',
             'close_at' => '受付終了日時',
             'is_public' => '参加登録画面の公開設定',
-            'description' => '参加登録前に表示する内容',
+            'form_description' => '参加登録前に表示する内容',
+            'form_confirmation_message' => '参加登録の提出後に表示する内容',
         ];
     }
 }
