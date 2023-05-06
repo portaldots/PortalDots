@@ -6,6 +6,8 @@
 申請「{{ $form->name }}」を承りました。
 @endif
 
+{!! preg_replace("/\r\n|\r|\n/", "  \n", $form->confirmation_message ?? "") !!}
+
 @component('mail::panel')
 - 回答ID : {{ $answer->id }}
 - 企画名 : {{ $circle->name }}

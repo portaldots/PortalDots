@@ -1,11 +1,7 @@
 @component('mail::message')
 # 企画参加登録を提出しました
-{{ $circle->group_name }} 様
+{!! preg_replace("/\r\n|\r|\n/", "  \n", $participation_form->confirmation_message ?? "") !!}
 
-以下の内容で企画参加登録を提出しました
-
-{{ config('portal.admin_name') }}より指示がある場合は従ってください。
-また、内容確認のためご連絡を差し上げる場合がございます。
 @component('mail::panel')
 - 企画名 : {{ $circle->name }}
 - 企画名(よみ) : {{ $circle->name_yomi }}

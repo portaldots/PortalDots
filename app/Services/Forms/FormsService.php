@@ -28,6 +28,7 @@ class FormsService
      *
      * @param string $name フォーム名
      * @param string $description フォームの説明
+     * @param string $confirmationMessage フォーム回答者に表示するメッセージ
      * @param Carbon $open_at フォームの受付開始日
      * @param Carbon $close_at フォームの受付終了日
      * @param int $max_answers 企画毎に回答可能とする回答数
@@ -38,6 +39,7 @@ class FormsService
     public function createForm(
         string $name,
         string $description,
+        string $confirmationMessage,
         Carbon $open_at,
         Carbon $close_at,
         User $created_by,
@@ -48,6 +50,7 @@ class FormsService
         return DB::transaction(function () use (
             $name,
             $description,
+            $confirmationMessage,
             $open_at,
             $close_at,
             $created_by,
@@ -58,6 +61,7 @@ class FormsService
             $form = Form::create([
                 'name' => $name,
                 'description' => $description,
+                'confirmation_message' => $confirmationMessage,
                 'open_at' => $open_at,
                 'close_at' => $close_at,
                 'max_answers' => $max_answers,
@@ -94,6 +98,7 @@ class FormsService
      *
      * @param Form $form 更新するフォーム
      * @param string $description フォームの説明
+     * @param string $confirmationMessage フォーム回答者に表示するメッセージ
      * @param Carbon $open_at フォームの受付開始日
      * @param Carbon $close_at フォームの受付終了日
      * @param User $created_by 作成者
@@ -106,6 +111,7 @@ class FormsService
         Form $form,
         string $name,
         string $description,
+        string $confirmationMessage,
         Carbon $open_at,
         Carbon $close_at,
         User $created_by,
@@ -117,6 +123,7 @@ class FormsService
             $form,
             $name,
             $description,
+            $confirmationMessage,
             $open_at,
             $close_at,
             $created_by,
@@ -127,6 +134,7 @@ class FormsService
             $form->update([
                 'name' => $name,
                 'description' => $description,
+                'confirmation_message' => $confirmationMessage,
                 'open_at' => $open_at,
                 'close_at' => $close_at,
                 'max_answers' => $max_answers,

@@ -26,6 +26,7 @@ class FormRequest extends BaseRequest
         return [
             'name' => ['required', 'string'],
             'description' => ['nullable', 'string'],
+            'confirmation_message' => ['nullable', 'string'],
             'open_at' => ['required', 'date'],
             'close_at' => ['required', 'date', 'after:open_at'],
             'max_answers' => ['required', 'integer', 'min:1'],
@@ -44,6 +45,7 @@ class FormRequest extends BaseRequest
         return [
             'name' => 'フォーム名',
             'description' => 'フォームの説明',
+            'confirmation_message' => '回答後に表示する内容',
             'open_at' => '受付開始日時',
             'close_at' => '受付終了日時',
             'max_answers' => '企画毎に回答可能とする回答数',

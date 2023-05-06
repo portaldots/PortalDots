@@ -7,12 +7,14 @@ import "floating-vue/dist/style.css";
 
 import TurbolinksAdapter from "./vue-turbolinks";
 
+import AppAccordion from "./components/AppAccordion.vue";
 import AppFooter from "./components/AppFooter.vue";
 import AppHeader from "./components/AppHeader.vue";
 import AppInfoBox from "./components/AppInfoBox.vue";
 import AppNavBar from "./components/AppNavBar.vue";
 import AppNavBarBack from "./components/AppNavBarBack.vue";
 import AppNavBarToggle from "./components/AppNavBarToggle.vue";
+import AppTabs from "./components/AppTabs.vue";
 import CardLink from "./components/CardLink.vue";
 import CircleSelectorDropdown from "./components/CircleSelectorDropdown.vue";
 import ContentIframe from "./components/ContentIframe.vue";
@@ -82,12 +84,14 @@ document.addEventListener("turbolinks:load", () => {
   const app = createApp({
     components: {
       GlobalEvents,
+      AppAccordion,
       AppFooter,
       AppHeader,
       AppInfoBox,
       AppNavBar,
       AppNavBarBack,
       AppNavBarToggle,
+      AppTabs,
       CardLink,
       CircleSelectorDropdown,
       ContentIframe,

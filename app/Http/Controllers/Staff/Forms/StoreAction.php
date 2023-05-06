@@ -32,6 +32,7 @@ class StoreAction extends Controller
             $form = $this->formsService->createForm(
                 $values['name'],
                 $values['description'] ?? '',
+                $values['confirmation_message'] ?? '',
                 new Carbon($values['open_at']),
                 new Carbon($values['close_at']),
                 Auth::user(),

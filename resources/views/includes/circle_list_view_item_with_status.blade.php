@@ -28,7 +28,7 @@
                 </div>
             </template>
             <template v-slot:meta>
-                ただいま参加登録の内容を確認しています。{{ config('portal.admin_name') }}より指示がある場合は従ってください。また、内容確認のためご連絡を差し上げる場合がございます。
+                @summary($circle->participationType->form->confirmation_message ?? '')
             </template>
         </list-view-item>
     @elseif (!$circle->hasSubmitted() && !$circle->canSubmit() && Auth::user()->isLeaderInCircle($circle))

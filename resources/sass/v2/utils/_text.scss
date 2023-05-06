@@ -30,4 +30,10 @@
   &-small {
     font-size: 0.9em;
   }
+  &-lg {
+    font-size: $font-size-lg;
+  }
+  &-xl {
+    font-size: $font-size-xl;
+  }
 }

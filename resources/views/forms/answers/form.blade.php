@@ -22,7 +22,7 @@
         enctype="multipart/form-data">
         @csrf
 
-        @method(empty($answer) ? 'post' : 'patch' )
+        @method(empty($answer) ? 'post' : 'patch')
 
         <input type="hidden" name="circle_id" value="{{ $circle->id }}">
 
@@ -53,8 +53,10 @@
             <list-view>
                 <list-view-form-group>
                     <template v-slot:label>申請企画名</template>
-                    <input type="text" readonly value="{{ $circle->name }}({{ $circle->group_name }})" class="form-control">
-                    @if (empty($answer) && Auth::user()->circles()->approved()->count() > 1)
+                    <input type="text" readonly value="{{ $circle->name }}({{ $circle->group_name }})"
+                        class="form-control">
+                    @if (empty($answer) &&
+                            Auth::user()->circles()->approved()->count() > 1)
                         <template v-slot:append>
                             <a href="{{ route('circles.selector.show', ['redirect_to' => Request::path()]) }}">変更</a>
                         </template>
@@ -74,11 +76,19 @@
                             <template v-slot:title>
                                 @datetime($_->created_at) に新規作成した回答 — 回答ID : {{ $_->id }}
                             </template>
-                            @unless($_->created_at->eq($_->updated_at))
+                            @unless ($_->created_at->eq($_->updated_at))
                                 <template v-slot:meta>回答の最終更新日時 : @datetime($_->updated_at)</template>
                             @endunless
                         </list-view-item>
                     @endforeach
+                </list-view>
+            @endif
+
+            @if (isset($answer) && isset($form->confirmation_message) && $form->confirmation_message !== '')
+                <list-view>
+                    <list-view-card data-turbolinks="false" class="markdown">
+                        @markdown($form->confirmation_message)
+                    </list-view-card>
                 </list-view>
             @endif
 
@@ -100,8 +110,12 @@
                 @endisset
 
                 @foreach ($questions as $question)
-                    @include('includes.question', ['is_disabled' => !$form->isOpen() || (empty($answer) && $form->max_answers
-                <= count($answers))]) @endforeach </list-view>
+                    @include('includes.question', [
+                        'is_disabled' =>
+                            !$form->isOpen() || (empty($answer) && $form->max_answers <= count($answers)),
+                    ])
+                @endforeach
+            </list-view>
 
             <div class="text-center pt-spacing-md pb-spacing">
                 <button type="submit" class="btn is-primary is-wide"

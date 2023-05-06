@@ -15,8 +15,14 @@ class StoreAction extends Controller
         return DB::transaction(function () use ($request) {
             $validated = $request->validated();
 
+            $adminName = config('portal.admin_name');
+            $confirmationMessage = <<< EOT
+            {$adminName}より指示がある場合は従ってください。また、内容確認のためご連絡を差し上げる場合があります。
+            EOT;
+
             $form = Form::create([
                 'name' => '企画参加登録',
+                'confirmation_message' => $confirmationMessage,
                 'open_at' => now(),
                 'close_at' => now()->addMonth(),
                 'is_public' => false,

@@ -29,6 +29,7 @@ class Form extends Model
     protected $fillable = [
         'name',
         'description',
+        'confirmation_message',
         'open_at',
         'close_at',
         'type',

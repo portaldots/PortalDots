@@ -131,23 +131,52 @@
                         </template>
                     @endif
                 </list-view-form-group>
-                <list-view-form-group>
-                    <template v-slot:label>
-                        フォームの説明&nbsp;
-                        <app-badge outline muted>Markdown</app-badge>
-                    </template>
-                    <markdown-editor input-name="description"
-                        default-value="{{ old('description', empty($form) ? '' : $form->description) }}">
-                    </markdown-editor>
-                    @if ($errors->has('description'))
-                        <template v-slot:invalid>
-                            @foreach ($errors->get('description') as $message)
-                                {{ $message }}
-                            @endforeach
-                        </template>
-                    @endif
-                </list-view-form-group>
             </list-view>
+            <app-accordion>
+                <template v-slot:summary>
+                    フォームの説明
+                </template>
+                <list-view>
+                    <list-view-form-group>
+                        <template v-slot:label>
+                            フォームの説明&nbsp;
+                            <app-badge outline muted>Markdown</app-badge>
+                        </template>
+                        <markdown-editor input-name="description"
+                            default-value="{{ old('description', empty($form) ? '' : $form->description) }}">
+                        </markdown-editor>
+                        @if ($errors->has('description'))
+                            <template v-slot:invalid>
+                                @foreach ($errors->get('description') as $message)
+                                    {{ $message }}
+                                @endforeach
+                            </template>
+                        @endif
+                    </list-view-form-group>
+                </list-view>
+            </app-accordion>
+            <app-accordion>
+                <template v-slot:summary>
+                    回答後に表示する内容
+                </template>
+                <list-view>
+                    <list-view-form-group>
+                        <template v-slot:label>
+                            回答後に表示する内容&nbsp;
+                            <app-badge outline muted>Markdown</app-badge>
+                        </template>
+                        <template v-slot:description>
+                            フォームに回答した方に向けて表示するメッセージを設定できます。この内容は、回答したユーザーに自動で送信されるメールにも表示されます。
+                        </template>
+                        <markdown-editor input-name="confirmation_message"
+                            default-value="{{ old('confirmation_message', empty($form) ? '' : $form->confirmation_message) }}">
+                        </markdown-editor>
+                        @error('confirmation_message')
+                            <template v-slot:invalid>{{ $message }}</template>
+                        @enderror
+                    </list-view-form-group>
+                </list-view>
+            </app-accordion>
 
             <app-fixed-form-footer>
                 <button type="submit" class="btn is-primary is-wide">保存</button>

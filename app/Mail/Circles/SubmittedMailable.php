@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SubmitedMailable extends Mailable
+class SubmittedMailable extends Mailable
 {
     use Queueable;
     use SerializesModels;

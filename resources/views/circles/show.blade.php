@@ -33,6 +33,13 @@
         @endif
     </app-header>
     <app-container medium>
+        @if ($circle->hasSubmitted() && $circle->participationType->form->confirmation_message)
+            <list-view>
+                <list-view-card data-turbolinks="false" class="markdown">
+                    @markdown($circle->participationType->form->confirmation_message)
+                </list-view-card>
+            </list-view>
+        @endif
         <list-view>
             @if (!$circle->hasSubmitted())
                 <list-view-card>

@@ -13,7 +13,7 @@ use App\Eloquents\Place;
 use App\Eloquents\Tag;
 use App\Mail\Circles\ApprovedMailable;
 use App\Mail\Circles\RejectedMailable;
-use App\Mail\Circles\SubmitedMailable;
+use App\Mail\Circles\SubmittedMailable;
 use App\Services\Circles\Exceptions\DenyCreateTagsException;
 use App\Services\Tags\TagsService;
 use App\Services\Utils\ActivityLogService;
@@ -205,12 +205,12 @@ class CirclesService
     ) {
         Mail::to($user)
             ->send(
-                (new SubmitedMailable(
-                    $circle,
-                    $participationForm,
-                    $questions,
-                    $answer,
-                    $answerDetails
+                (new SubmittedMailable(
+                    circle: $circle,
+                    participationForm: $participationForm,
+                    questions: $questions,
+                    answer: $answer,
+                    answerDetails: $answerDetails
                 ))
                     ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
                     ->subject("【参加登録】「{$circle->name}」の参加登録を提出しました")
