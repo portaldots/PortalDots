@@ -7,6 +7,7 @@ import "floating-vue/dist/style.css";
 
 import TurbolinksAdapter from "./vue-turbolinks";
 
+import AppAccordion from "./components/AppAccordion.vue";
 import AppFooter from "./components/AppFooter.vue";
 import AppHeader from "./components/AppHeader.vue";
 import AppInfoBox from "./components/AppInfoBox.vue";
@@ -83,6 +84,7 @@ document.addEventListener("turbolinks:load", () => {
   const app = createApp({
     components: {
       GlobalEvents,
+      AppAccordion,
       AppFooter,
       AppHeader,
       AppInfoBox,
