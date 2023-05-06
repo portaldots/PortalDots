@@ -17,7 +17,7 @@ class StoreAction extends Controller
 
             $adminName = config('portal.admin_name');
             $confirmationMessage = <<< EOT
-            ただいま参加登録の内容を確認しています。{$adminName}より指示がある場合は従ってください。また、内容確認のためご連絡を差し上げる場合があります。
+            {$adminName}より指示がある場合は従ってください。また、内容確認のためご連絡を差し上げる場合があります。
             EOT;
 
             $form = Form::create([
