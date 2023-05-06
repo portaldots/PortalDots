@@ -54,10 +54,10 @@ class SubmitActionTest extends BaseTestCase
 
         if ($is_answerable) {
             $this->assertNotNull($this->circle->submitted_at);
-            // トップページへリダイレクトする
+            // 完了画面へリダイレクトする
             $response->assertStatus(302);
-            $response->assertSessionHas('topAlert.title');
-            $response->assertRedirect(route('home'));
+            $response->assertSessionHas('done');
+            $response->assertRedirect(route('circles.done', ['circle' => $this->circle]));
         } else {
             $this->assertNull($this->circle->submitted_at);
             $response->assertStatus(403);
