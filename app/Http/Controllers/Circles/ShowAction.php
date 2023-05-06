@@ -30,7 +30,7 @@ class ShowAction extends Controller
             !$circle->hasSubmitted()
             || (session()->has('user_reauthorized_at') && $reauthorized_at->addHours(2)->gte(now()))
         ) {
-            $circle->load('users', 'places');
+            $circle->load('users', 'places', 'participationType', 'participationType.form');
 
             $answer = $circle->getParticipationFormAnswer();
 
