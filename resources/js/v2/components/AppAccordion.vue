@@ -3,7 +3,9 @@
     <summary class="accordion-summary">
       <slot name="summary" />
     </summary>
-    <slot />
+    <div class="accordion-content">
+      <slot />
+    </div>
   </details>
 </template>
 
@@ -15,10 +17,19 @@
   border-radius: $border-radius;
   border: 1px solid $color-border;
   background-color: $color-bg-light;
-  padding: 0 $spacing-md;
   &-summary {
-    padding: $spacing-md 0;
+    padding: $spacing-md;
     font-weight: bold;
+    position: sticky;
+    top: $app-navbar-height;
+    background-color: $color-bg-light;
+    border-radius: $border-radius;
+    z-index: 2;
+  }
+  &-content {
+    padding: 0 $spacing-md;
+    position: relative;
+    z-index: 1;
   }
 }
 </style>
