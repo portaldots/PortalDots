@@ -206,11 +206,11 @@ class CirclesService
         Mail::to($user)
             ->send(
                 (new SubmittedMailable(
-                    $circle,
-                    $participationForm,
-                    $questions,
-                    $answer,
-                    $answerDetails
+                    circle: $circle,
+                    participationForm: $participationForm,
+                    questions: $questions,
+                    answer: $answer,
+                    answerDetails: $answerDetails
                 ))
                     ->replyTo(config('portal.contact_email'), config('portal.admin_name'))
                     ->subject("【参加登録】「{$circle->name}」の参加登録を提出しました")
