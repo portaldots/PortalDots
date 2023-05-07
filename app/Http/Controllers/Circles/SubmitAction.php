@@ -42,14 +42,16 @@ class SubmitAction extends Controller
                 ->route('circles.confirm', ['circle' => $circle])
                 ->with('topAlert.type', 'danger')
                 ->with('topAlert.title', 'もう一度参加登録を提出してください。')
-                ->with('topAlert.body', '参加登録の内容が編集されたため、参加登録を提出できませんでした。');
+                ->with('topAlert.body', '参加登録の内容が編集されたため、参加登録を提出できませんでした。')
+                ->with('topAlert.keepVisible', true);
         }
 
         if (!$circle->canSubmit()) {
             return redirect()
                 ->route('circles.users.index', ['circle' => $circle])
                 ->with('topAlert.type', 'danger')
-                ->with('topAlert.title', '参加登録に必要な人数が揃っていないか最大人数を超過しているため、参加登録の提出はまだできません。');
+                ->with('topAlert.title', '参加登録に必要な人数が揃っていないか最大人数を超過しているため、参加登録の提出はまだできません。')
+                ->with('topAlert.keepVisible', true);
         }
 
         $this->circlesService->submit($circle);
