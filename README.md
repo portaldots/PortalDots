@@ -20,7 +20,7 @@
     </a>
 </p>
 
-![PortalDots](https://user-images.githubusercontent.com/6687653/83792485-142e1d00-a6d6-11ea-94a6-7fb3f712252a.png)
+![PortalDots、最強の学園祭ウェブシステム。参加登録の受付、フォームの作成、お知らせの配信、すべて完結。](https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/docs/readme/eyecatch.png)
 
 ## PortalDots とは
 
