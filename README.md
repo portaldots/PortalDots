@@ -1,16 +1,16 @@
 <h1>
     <picture>
-        <source srcset="https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/resources/img/portalDotsLogoLight.svg" media="(prefers-color-scheme: light)">
-        <source srcset="https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/resources/img/portalDotsLogoDark.svg" media="(prefers-color-scheme: dark)">
-        <img src="https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/resources/img/portalDotsLogoLight.svg" alt="PortalDots" class="logo" width="245" height="40">
+        <source srcset="https://raw.githubusercontent.com/portaldots/PortalDots/5.x/resources/img/portalDotsLogoLight.svg" media="(prefers-color-scheme: light)">
+        <source srcset="https://raw.githubusercontent.com/portaldots/PortalDots/5.x/resources/img/portalDotsLogoDark.svg" media="(prefers-color-scheme: dark)">
+        <img src="https://raw.githubusercontent.com/portaldots/PortalDots/5.x/resources/img/portalDotsLogoLight.svg" alt="PortalDots" class="logo" width="245" height="40">
     </picture>
 </h1>
 
 学園祭実行委員会と参加企画との間のコミュニケーションを支援するオープンソースウェブシステム。
 
 <p>
-    <a href="https://codecov.io/gh/portal-dots/PortalDots">
-        <img src="https://codecov.io/gh/portal-dots/PortalDots/branch/5.x/graph/badge.svg" />
+    <a href="https://codecov.io/gh/portaldots/PortalDots">
+        <img src="https://codecov.io/gh/portaldots/PortalDots/branch/5.x/graph/badge.svg" />
     </a>
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" />
@@ -20,36 +20,36 @@
     </a>
 </p>
 
-![PortalDots、最強の学園祭ウェブシステム。参加登録の受付、フォームの作成、お知らせの配信、すべて完結。](https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/docs/readme/eyecatch.png)
+![PortalDots、最強の学園祭ウェブシステム。参加登録の受付、フォームの作成、お知らせの配信、すべて完結。](https://raw.githubusercontent.com/portaldots/PortalDots/5.x/docs/readme/eyecatch.png)
 
 ## PortalDots とは
 
 PortalDots(ポータルドット)は、 **学園祭実行委員会と参加企画担当者との間のコミュニケーションを支援するウェブシステム** です。お知らせメールの一斉送信や各種申請の受付をオンラインで簡単に行うことができます。
 
-開発は **東京理科大の学園祭実行委員経験者が主導するボランティア** の開発チームによって行っています。また、オープンソース([MIT License](https://github.com/portal-dots/PortalDots/blob/5.x/LICENSE))としており、無料・再配布自由としています。PortalDots は **どなたでも開発に参加いただけます** 。
+開発は **東京理科大の学園祭実行委員経験者が主導するボランティア** の開発チームによって行っています。また、オープンソース([MIT License](https://github.com/portaldots/PortalDots/blob/5.x/LICENSE))としており、無料・再配布自由としています。PortalDots は **どなたでも開発に参加いただけます** 。
 
 -   **[最新バージョンをダウンロード](https://releases.portaldots.com/downloads/latest.zip?major_version=4)**
 -   [PortalDots 公式ウェブサイト](https://www.portaldots.com)
 
 ## スクリーンショット
 
-![PortalDotsスクリーンショット](https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/docs/readme/main_screenshot.png)
+![PortalDotsスクリーンショット](https://raw.githubusercontent.com/portaldots/PortalDots/5.x/docs/readme/main_screenshot.png)
 
 ### ホーム画面
 
-![ホーム](https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/docs/readme/screenshot_home.png)
+![ホーム](https://raw.githubusercontent.com/portaldots/PortalDots/5.x/docs/readme/screenshot_home.png)
 
 ### フォームエディター
 
-![フォームエディター](https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/docs/readme/screenshot_form_editor.png)
+![フォームエディター](https://raw.githubusercontent.com/portaldots/PortalDots/5.x/docs/readme/screenshot_form_editor.png)
 
 ### 企画参加登録の受付画面
 
-![企画参加登録](https://raw.githubusercontent.com/portal-dots/PortalDots/5.x/docs/readme/screenshot_circle_register.png)
+![企画参加登録](https://raw.githubusercontent.com/portaldots/PortalDots/5.x/docs/readme/screenshot_circle_register.png)
 
 ## セットアップ方法
 
-※ 「ロリポップ！レンタルサーバー」や「コアサーバー」で PortalDots を利用する方法は [PortalDots マニュアル](https://www.portaldots.com/docs/setup/) に掲載しています。
+※ 「ロリポップ！レンタルサーバー」や「コアサーバー」で PortalDots を利用する方法は [PortalDots マニュアル](https://docs.portaldots.com/setup/install) に掲載しています。
 
 ※ もしご不明な点がありましたら、 [PortalDots 公式 LINE アカウント](https://lin.ee/aeee9s9) または **portal-dots at hrgrweb dot com** (at と dot はそれぞれ `@` と `.` に置き換える)にてサポートいたします。お気軽にご連絡ください。
 
@@ -122,7 +122,7 @@ PortalDots 開発チーム（有志による個人開発チーム）
 
 PortalDots では、新規機能・既存機能改良の提案、バグの報告や Pull Request を歓迎します。
 
-詳しくは [コントリビューションガイドライン](https://github.com/portal-dots/PortalDots/blob/5.x/CONTRIBUTING.md) をご覧ください。
+詳しくは [コントリビューションガイドライン](https://github.com/portaldots/PortalDots/blob/5.x/CONTRIBUTING.md) をご覧ください。
 
 ### 開発環境セットアップ方法
 
@@ -131,7 +131,7 @@ Git、PHP(8.0 以上)、Node.js、Yarn、Docker がセットアップ済みで�
 セットアップが完了した後、以下のコマンドを順番に実行してください。
 
 ```bash
-$ git clone git@github.com:portal-dots/PortalDots.git
+$ git clone git@github.com:portaldots/PortalDots.git
 $ cd PortalDots/
 
 # 必要な Node.js パッケージをインストール
@@ -190,6 +190,6 @@ Node.js を最新バージョンにアップグレードした上で、再度 `y
 
 ## ライセンス
 
-[MIT License](https://github.com/portal-dots/PortalDots/blob/5.x/LICENSE)
+[MIT License](https://github.com/portaldots/PortalDots/blob/5.x/LICENSE)
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fportal-dots%2FPortalDots.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fportal-dots%2FPortalDots?ref=badge_large)
