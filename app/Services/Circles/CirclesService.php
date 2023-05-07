@@ -115,7 +115,7 @@ class CirclesService
 
         // 参加種別に紐づくタグは、企画の作成時（create）ではなく提出時（submit）に企画へ紐づける。
         // これにより、参加登録の作成開始時点のタグ設定ではなく、提出時のタグ設定が適用される。
-        $circle->tags()->attach(ParticipationType::find($circle->participation_type_id)
+        $circle->tags()->syncWithoutDetaching(ParticipationType::find($circle->participation_type_id)
             ->tags()->pluck('id'));
 
         return $circle->save();
