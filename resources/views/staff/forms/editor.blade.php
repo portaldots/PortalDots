@@ -5,7 +5,7 @@
 @section('title', "{$form->name} — フォームエディター")
 
 @push('body-class')
-    has-content-iframe
+    has-content-fill
 @endpush
 
 @section('navbar')

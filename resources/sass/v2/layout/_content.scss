@@ -14,12 +14,12 @@
   &__body {
     flex: 1;
 
-    body.has-content-iframe & {
+    body.has-content-fill & {
       display: flex;
       flex-direction: column;
     }
 
-    &__content_iframe {
+    &__content_fill {
       display: flex;
       flex-direction: column;
       flex: 1;

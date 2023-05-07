@@ -2,7 +2,7 @@
 @use "@/sass/v2/utils/link" as *;
 
 body {
-  &:not(.is-in-iframe) {
+  &:not(.is-in-iframe, .has-content-fill) {
     padding-bottom: calc(env(safe-area-inset-bottom) + #{$bottom-tabs-height});
 
     @media screen and (min-width: $breakpoint-bottom-tabs) {

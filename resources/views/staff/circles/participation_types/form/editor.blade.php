@@ -5,7 +5,7 @@
 @section('title', "{$participation_type->name} — 参加種別")
 
 @push('body-class')
-    has-content-iframe
+    has-content-fill
 @endpush
 
 @section('navbar')
