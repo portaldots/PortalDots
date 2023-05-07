@@ -135,7 +135,7 @@ jobs:
     - name: PHPUnitでテスト実行
       run: vendor/bin/phpunit --coverage-clover=coverage.xml
     - name: コードカバレッジを送信
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
       with:
         files: ./coverage.xml
         verbose: true
