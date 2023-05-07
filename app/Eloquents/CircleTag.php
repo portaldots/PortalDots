@@ -9,6 +9,13 @@ class CircleTag extends Pivot
 {
     public $incrementing = true;
 
+    /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['circle'];
+
     public function circle()
     {
         return $this->belongsTo(Circle::class);
