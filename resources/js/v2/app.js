@@ -36,6 +36,7 @@ import ListViewPagination from "./components/ListViewPagination.vue";
 import ListViewStudentIdAndUnivemailInput from "./components/ListViewStudentIdAndUnivemailInput.vue";
 import TopAlert from "./components/TopAlert.vue";
 import FormWithConfirm from "./components/FormWithConfirm.vue";
+import HomeHeader from "./components/HomeHeader.vue";
 import IconButton from "./components/IconButton.vue";
 import LayoutRow from "./components/LayoutRow.vue";
 import LayoutColumn from "./components/LayoutColumn.vue";
@@ -113,6 +114,7 @@ document.addEventListener("turbolinks:load", () => {
       ListViewStudentIdAndUnivemailInput,
       TopAlert,
       FormWithConfirm,
+      HomeHeader,
       IconButton,
       LayoutRow,
       LayoutColumn,

@@ -1,6 +1,8 @@
 <?php
 
 return [
+    // ポータルの説明
+    'description' => env('PORTAL_DESCRIPTION', ''),
     // ポータル管理者の組織名
     // ポータルを管理している実行委員会名などを指定します。
     'admin_name' => env('PORTAL_ADMIN_NAME'),

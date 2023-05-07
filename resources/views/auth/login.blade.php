@@ -1,16 +1,19 @@
 @extends('layouts.no_drawer')
 
+@section('no_footer', true)
+
 @section('title', 'ログイン')
+
+@push('body-class')
+    has-content-fill
+@endpush
 
 @section('content')
     <div class="jumbotron">
         <app-container narrow>
             <h1 class="jumbotron__title">
-                {{ config('app.name') }}
+                ログイン
             </h1>
-            <p class="jumbotron__lead">
-                {{ config('portal.admin_name') }}
-            </p>
             <form method="post" action="{{ route('login') }}">
                 @csrf
 
@@ -23,8 +26,7 @@
                 @endif
 
                 <div class="form-group">
-                    <label for="login_id"
-                        class="sr-only">{{ config('portal.student_id_name') }}または連絡先メールアドレス</label>
+                    <label for="login_id" class="sr-only">{{ config('portal.student_id_name') }}または連絡先メールアドレス</label>
                     <input id="login_id" type="text" class="form-control" name="login_id" value="{{ old('login_id') }}"
                         required autocomplete="username" autofocus
                         placeholder="{{ config('portal.student_id_name') }}または連絡先メールアドレス">

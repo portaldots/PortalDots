@@ -1,13 +1,18 @@
 @extends('layouts.no_drawer')
 
 @section('no_circle_selector', true)
+@section('no_footer', true)
 
 @section('title', 'ログアウト')
+
+@push('body-class')
+    has-content-fill
+@endpush
 
 @section('content')
     <div class="jumbotron">
         <app-container narrow>
-            <h1 class="jumbotron__title pb-spacing-lg">
+            <h1 class="jumbotron__title">
                 ログアウトしますか？
             </h1>
             <form method="post" action="{{ route('logout') }}">

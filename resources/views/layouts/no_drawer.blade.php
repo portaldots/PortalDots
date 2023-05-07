@@ -1,5 +1,9 @@
 @inject('uiThemeService', 'App\Services\Utils\UIThemeService')
 
+@php
+    $is_iframe = (bool) request()->get('iframe');
+@endphp
+
 <!DOCTYPE html>
 <html lang="ja" class="theme-{{ $uiThemeService->getCurrentTheme() }}">
 
@@ -49,7 +53,7 @@
     <meta name="format-detection" content="telephone=no">
 </head>
 
-<body>
+<body class="{{ $is_iframe ? 'is-in-iframe' : '' }} @stack('body-class')">
     @include('includes.loading')
     <div class="app" id="v2-app">
         <app-nav-bar no-drawer @staffpage staff @endstaffpage>
@@ -84,9 +88,11 @@
                 @endif
                 @yield('content')
             </div>
-            <app-footer>
-                {{ config('app.name') }}
-            </app-footer>
+            @if (
+                !$is_iframe &&
+                    empty(trim($__env->yieldContent('no_footer')) /* ← no_footer という section がセットされていない場合 true */))
+                <app-footer>{{ config('app.name') }}</app-footer>
+            @endif
         </div>
     </div>
 

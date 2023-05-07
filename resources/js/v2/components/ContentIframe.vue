@@ -17,7 +17,7 @@ function handleLoad() {
 </script>
 
 <template>
-  <div class="content_iframe content__body__content_iframe">
+  <div class="content_iframe content__body__content_fill">
     <div v-if="!isLoaded" class="content_iframe-loading">
       <i class="fas fa-spinner fa-pulse fa-2x text-primary" />
     </div>

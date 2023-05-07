@@ -12,6 +12,7 @@ class PortalService extends AbstractService
     {
         return [
             'APP_NAME',
+            'PORTAL_DESCRIPTION',
             'APP_URL',
             'APP_FORCE_HTTPS',
             'PORTAL_ADMIN_NAME',
@@ -30,6 +31,7 @@ class PortalService extends AbstractService
     {
         return [
             'APP_NAME' => ['required'],
+            'PORTAL_DESCRIPTION' => ['nullable', 'string'],
             'APP_URL' => ['required'],
             'APP_FORCE_HTTPS' => ['nullable', 'boolean'],
             'PORTAL_ADMIN_NAME' => ['required'],
@@ -45,6 +47,7 @@ class PortalService extends AbstractService
     {
         return [
             'APP_NAME' => 'ポータルの名前',
+            'PORTAL_DESCRIPTION' => 'ポータルの説明',
             'APP_URL' => 'ポータルのURL',
             'APP_FORCE_HTTPS' => 'https接続を強制する',
             'PORTAL_ADMIN_NAME' => '実行委員会の名称',

@@ -32,16 +32,12 @@ class HomeActionTest extends TestCase
     /**
      * @test
      */
-    public function 未ログイン状態でログインフォームが表示される()
+    public function 未ログイン状態でログイン画面への導線が表示される()
     {
         $response = $this->get(route('home'));
         $response->assertStatus(200);
 
-        $response->assertSee('または連絡先メールアドレス');
-        $response->assertSee('パスワード');
-        $response->assertSee('ログインしたままにする');
-        $response->assertSee('ログイン');
-        $response->assertSee('ユーザー登録');
+        $response->assertSee('home-header');
     }
 
     /**

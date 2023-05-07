@@ -46,6 +46,7 @@
                                     'APP_NAME' => 'ポータルの名前',
                                     'APP_URL' => 'ポータルのURL',
                                     'PORTAL_ADMIN_NAME' => '実行委員会の名称',
+                                    'PORTAL_DESCRIPTION' => 'ポータルの説明',
                                     'PORTAL_CONTACT_EMAIL' => '実行委員会のメールアドレス',
                                     'PORTAL_STUDENT_ID_NAME' => '個人ごとに割り振られる番号(学籍番号)の呼び方',
                                     'PORTAL_UNIVEMAIL_NAME' => '学校発行メールアドレスの呼び方',
@@ -58,11 +59,15 @@
                                     'APP_NAME' => '例 : 野田祭ウェブシステム',
                                     'APP_URL' => '不必要に変更するとポータルにアクセスできなくなる可能性があります',
                                     'PORTAL_ADMIN_NAME' => '',
+                                    'PORTAL_DESCRIPTION' => '',
                                     'PORTAL_CONTACT_EMAIL' => 'ユーザーからの問い合わせはこのメールアドレスに届きます',
-                                    'PORTAL_STUDENT_ID_NAME' => '例 : 学籍番号、学生番号、学生証番号、学生教職員番号など ・ 個人ごとに割り振られる番号の呼び方を指定します',
+                                    'PORTAL_STUDENT_ID_NAME' =>
+                                        '例 : 学籍番号、学生番号、学生証番号、学生教職員番号など ・ 個人ごとに割り振られる番号の呼び方を指定します',
                                     'PORTAL_UNIVEMAIL_NAME' => '例 : 学生用メールアドレス、全学メールアドレス、大学のメールアドレスなど',
-                                    'PORTAL_UNIVEMAIL_DOMAIN_PART' => '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります。ユーザーごとにドメインが異なる場合、縦棒(|)で区切って複数のドメインを指定できます。',
-                                    'PORTAL_UNIVEMAIL_LOCAL_PART' => '学校発行メールアドレスにおいて、アットマーク(@)より前の文字列が下記のうちのどちらに当てはまるかを指定します',
+                                    'PORTAL_UNIVEMAIL_DOMAIN_PART' =>
+                                        '例 : ed.tus.ac.jp ・ ユーザーがポータルにユーザー登録するには、アットマーク(@)以降がこの文字列となっているメールアドレスをユーザーが所有している必要があります。ユーザーごとにドメインが異なる場合、縦棒(|)で区切って複数のドメインを指定できます。',
+                                    'PORTAL_UNIVEMAIL_LOCAL_PART' =>
+                                        '学校発行メールアドレスにおいて、アットマーク(@)より前の文字列が下記のうちのどちらに当てはまるかを指定します',
                                 ][$key] }}
                             </template>
                             @if ($key === 'PORTAL_UNIVEMAIL_LOCAL_PART')
@@ -86,7 +91,7 @@
                                 <input id="{{ $key }}" type="text"
                                     class="form-control @error($key) is-invalid @enderror" name="{{ $key }}"
                                     value="{{ old($key, $key === 'APP_URL' && empty($value) ? $suggested_app_url : $value) }}"
-                                    required>
+                                    {{ $key !== 'PORTAL_DESCRIPTION' ? 'required' : '' }}>
                             @endif
                             @error($key)
                                 <template v-slot:invalid>{{ $message }}</template>
