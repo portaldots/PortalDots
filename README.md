@@ -39,6 +39,10 @@ PortalDots(ポータルドット)は、 **学園祭実行委員会と参加企�
 
 ![ホーム](https://raw.githubusercontent.com/portaldots/PortalDots/5.x/docs/readme/screenshot_home.png)
 
+### スタッフモード
+
+![スタッフモード](https://raw.githubusercontent.com/portaldots/PortalDots/5.x/docs/readme/screenshot_staff_mode.png)
+
 ### フォームエディター
 
 ![フォームエディター](https://raw.githubusercontent.com/portaldots/PortalDots/5.x/docs/readme/screenshot_form_editor.png)
