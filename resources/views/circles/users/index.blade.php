@@ -42,7 +42,8 @@
 
         <list-view>
             <template v-slot:title>メンバー一覧</template>
-            <template v-slot:description>「{{ $circle->name }}」に所属するメンバーのリスト</template>
+            <template v-slot:description>「{{ $circle->name }}」に所属するメンバーのリスト — <a
+                    href="{{ URL::full() }}">再読み込み</a></template>
 
             @foreach ($circle->users as $user)
                 <list-view-item>

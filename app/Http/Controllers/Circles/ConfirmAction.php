@@ -40,6 +40,7 @@ class ConfirmAction extends Controller
 
         return view('circles.confirm')
             ->with('circle', $circle)
+            ->with('last_updated_timestamp', $circle->updated_at->timestamp)
             ->with('form', $circle->participationType->form)
             ->with('questions', $circle->participationType->form->questions)
             ->with('answer', $answer)

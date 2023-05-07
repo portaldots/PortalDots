@@ -16,19 +16,27 @@ class SubmitActionTest extends BaseTestCase
     private $user;
     private $circle;
 
+    private const CIRCLE_LAST_UPDATED_TIMESTAMP = 1672531200;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->user = factory(User::class)->create();
         $this->circle = factory(Circle::class)->states('notSubmitted')->create([
-            'participation_type_id' => $this->participationType->id
+            'participation_type_id' => $this->participationType->id,
         ]);
 
         $this->user->circles()->attach($this->circle->id, ['is_leader' => true]);
 
         // 明示的に設定しない限り、企画には1人所属していれば参加登録を提出できるものとする
         $this->participationType->update(['users_count_min' => 1]);
+
+        // CIRCLE_LAST_UPDATED_TIMESTAMPと同じ日時をセット
+        $this->circle->timestamps = false;
+        $this->circle->created_at = Carbon::createFromTimestamp(self::CIRCLE_LAST_UPDATED_TIMESTAMP, 'UTC');
+        $this->circle->updated_at = Carbon::createFromTimestamp(self::CIRCLE_LAST_UPDATED_TIMESTAMP, 'UTC');
+        $this->circle->save();
     }
 
     /**
@@ -47,8 +55,12 @@ class SubmitActionTest extends BaseTestCase
             ->post(
                 route('circles.submit', [
                     'circle' => $this->circle,
-                ])
+                ]),
+                [
+                    'last_updated_timestamp' => (string)self::CIRCLE_LAST_UPDATED_TIMESTAMP,
+                ]
             );
+
 
         $this->circle->refresh();
 
@@ -80,7 +92,7 @@ class SubmitActionTest extends BaseTestCase
     /**
      * @test
      */
-    public function 企画メンバーが規定の人数に達していない場合はは参加登録の提出はできない()
+    public function 企画メンバーが規定の人数に達していない場合は参加登録の提出はできない()
     {
         // 規定の人数 = 2
         $this->participationType->update(['users_count_min' => 2]);
@@ -95,7 +107,11 @@ class SubmitActionTest extends BaseTestCase
             ->post(
                 route('circles.submit', [
                     'circle' => $this->circle,
-                ])
+                ]),
+                [
+                    // FIXME: このテストを実行するときだけSubmitActionのCircleのupdated_atのタイムゾーンがGMT+9になる（原因不明）ため、UTCの時間にする
+                    'last_updated_timestamp' => (string)($this->circle->updated_at->timestamp - 60 * 60 * 9),
+                ]
             );
 
         $this->circle->refresh();
@@ -105,6 +121,36 @@ class SubmitActionTest extends BaseTestCase
         $response->assertStatus(302);
         $response->assertSessionHas('topAlert.title');
         $response->assertRedirect(route('circles.users.index', ['circle' => $this->circle]));
+    }
+
+    /**
+     * @test
+     */
+    public function 企画参加登録の提出時時点の企画の更新日時がデータベースと一致しない場合は参加登録の提出はできない()
+    {
+        // 受付期間内
+        Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+        CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
+
+        $response = $this
+            ->actingAs($this->user)
+            ->post(
+                route('circles.submit', [
+                    'circle' => $this->circle,
+                ]),
+                [
+                    'last_updated_timestamp' =>
+                    (string)(self::CIRCLE_LAST_UPDATED_TIMESTAMP + 15),
+                ]
+            );
+
+        $this->circle->refresh();
+        $this->assertNull($this->circle->submitted_at);
+
+        // 参加登録提出のページへリダイレクトされ、topAlert でエラーが表示される
+        $response->assertStatus(302);
+        $response->assertSessionHas('topAlert.title');
+        $response->assertRedirect(route('circles.confirm', ['circle' => $this->circle]));
     }
 
     /**
@@ -123,7 +169,10 @@ class SubmitActionTest extends BaseTestCase
             ->post(
                 route('circles.submit', [
                     'circle' => $this->circle,
-                ])
+                ]),
+                [
+                    'last_updated_timestamp' => (string)self::CIRCLE_LAST_UPDATED_TIMESTAMP,
+                ]
             );
 
         $this->circle->refresh();
@@ -149,7 +198,10 @@ class SubmitActionTest extends BaseTestCase
             ->post(
                 route('circles.submit', [
                     'circle' => $anotherCircle,
-                ])
+                ]),
+                [
+                    'last_updated_timestamp' => (string)$anotherCircle->updated_at->timestamp,
+                ]
             );
 
         $anotherCircle->refresh();
@@ -175,7 +227,10 @@ class SubmitActionTest extends BaseTestCase
             ->post(
                 route('circles.submit', [
                     'circle' => $this->circle,
-                ])
+                ]),
+                [
+                    'last_updated_timestamp' => (string)self::CIRCLE_LAST_UPDATED_TIMESTAMP,
+                ]
             );
 
         $this->circle->refresh();

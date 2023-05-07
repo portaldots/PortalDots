@@ -49,6 +49,8 @@ class UpdateAction extends Controller
 
             $participationFormAnswer = $circle->getParticipationFormAnswer();
 
+            $circle->touch();
+
             if (empty($participationFormAnswer)) {
                 $this->answersService->createAnswer(
                     form: $circle->participationType->form,
