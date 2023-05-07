@@ -31,6 +31,9 @@
 
         <form action="{{ route('circles.submit', ['circle' => $circle]) }}" method="post">
             @csrf
+
+            <input type="hidden" name="last_updated_timestamp" value="{{ $last_updated_timestamp }}">
+
             <div class="text-center pt-spacing-sm pb-spacing">
                 @if ($circle->participationType->users_count_max > 1)
                     <a class="btn is-secondary" href="{{ route('circles.users.index', ['circle' => $circle]) }}">

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Circles;
 
 use App\Http\Controllers\Controller;
 use App\Eloquents\Circle;
+use App\Http\Requests\Circles\SubmitRequest;
 use App\Services\Circles\CirclesService;
 use App\Services\Forms\AnswerDetailsService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class SubmitAction extends Controller
@@ -26,12 +28,21 @@ class SubmitAction extends Controller
         $this->answerDetailsService = $answerDetailsService;
     }
 
-    public function __invoke(Circle $circle)
+    public function __invoke(SubmitRequest $request, Circle $circle)
     {
         $this->authorize('circle.update', $circle);
 
         if (!Auth::user()->isLeaderInCircle($circle)) {
             abort(403);
+        }
+
+        $formLastUpdatedAt = Carbon::createFromTimestamp($request->validated()['last_updated_timestamp']);
+        if ($formLastUpdatedAt->notEqualTo($circle->updated_at)) {
+            return redirect()
+                ->route('circles.confirm', ['circle' => $circle])
+                ->with('topAlert.type', 'danger')
+                ->with('topAlert.title', 'もう一度参加登録を提出してください。')
+                ->with('topAlert.body', '参加登録の内容が編集されたため、参加登録を提出できませんでした。');
         }
 
         if (!$circle->canSubmit()) {
