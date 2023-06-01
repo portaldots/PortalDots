@@ -36,7 +36,7 @@
         "eslint-plugin-import": "^2.27.5",
         "eslint-plugin-prettier": "^4.2.1",
         "eslint-plugin-vue": "^9.11.0",
-        "jquery": "^3.6",
+        "jquery": "^3.7",
         "laravel-vite-plugin": "^0.7.4",
         "lodash": "^4.17.21",
         "popper.js": "^1.12",
