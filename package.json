@@ -49,7 +49,7 @@
         "sass-loader": "^13.2.2",
         "sass-resources-loader": "^2.2.5",
         "shx": "^0.3.4",
-        "vite": "^4.3.4",
+        "vite": "^4.4.8",
         "vue-loader": "^17.1.0"
     },
     "dependencies": {
