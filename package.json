@@ -61,7 +61,7 @@
         "bootstrap": "^4.6.2",
         "color-convert": "^2.0.1",
         "floating-vue": "^2.0.0-beta.20",
-        "marked": "^4.3.0",
+        "marked": "^6.0.0",
         "md-editor-v3": "^3.0.0",
         "patch-package": "^7.0.0",
         "postinstall-postinstall": "^2.1.0",
