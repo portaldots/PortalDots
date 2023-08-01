@@ -67,7 +67,7 @@
         "color-convert": "^2.0.1",
         "easymde": "^2.18.0",
         "laravel-mix": "^6.0.34",
-        "marked": "^4.3.0",
+        "marked": "^6.0.0",
         "patch-package": "^7.0.0",
         "portal-vue": "^2.1.7",
         "postinstall-postinstall": "^2.1.0",
