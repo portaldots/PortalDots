@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/local/php8.0/bin/php PortalDotsのフォルダ/artisan schedule:run
+/usr/local/bin/php8.0 PortalDotsのフォルダ/artisan schedule:run
