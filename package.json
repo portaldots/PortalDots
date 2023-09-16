@@ -67,7 +67,7 @@
         "postinstall-postinstall": "^2.1.0",
         "turbolinks": "^5.2.0",
         "vue": "^3.3.4",
-        "vue-global-events": "^2.1.1",
+        "vue-global-events": "^3.0.0",
         "vuedraggable": "^4.1.0",
         "vuex": "^4.1.0"
     }
