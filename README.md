@@ -28,7 +28,7 @@ PortalDots(ポータルドット)は、 **学園祭実行委員会と参加企�
 
 開発は **東京理科大の学園祭実行委員経験者が主導するボランティア** の開発チームによって行っています。また、オープンソース([MIT License](https://github.com/portaldots/PortalDots/blob/5.x/LICENSE))としており、無料・再配布自由としています。PortalDots は **どなたでも開発に参加いただけます** 。
 
--   **[最新バージョンをダウンロード](https://releases.portaldots.com/downloads/latest.zip?major_version=4)**
+-   **[最新バージョンをダウンロード](https://releases.portaldots.com/downloads/latest.zip?major_version=5)**
 -   [PortalDots 公式ウェブサイト](https://www.portaldots.com)
 
 ## スクリーンショット
@@ -58,7 +58,7 @@ PortalDots(ポータルドット)は、 **学園祭実行委員会と参加企�
 ※ もしご不明な点がありましたら、 [PortalDots 公式 LINE アカウント](https://lin.ee/aeee9s9) または **portal-dots at hrgrweb dot com** (at と dot はそれぞれ `@` と `.` に置き換える)にてサポートいたします。お気軽にご連絡ください。
 
 1. PHP(8.0 以上)、MySQL(5.7 以上) が利用できるサーバーを用意します。 [ロリポップ！レンタルサーバー](https://lolipop.jp/) ライトプラン、[コアサーバー](https://www.coreserver.jp/) CORE-X、[さくらのレンタルサーバ](https://www.sakura.ne.jp/) スタンダードプランでの動作を確認しています。
-1. PortalDots をダウンロードします。 **[ここをクリックすると最新バージョンをダウンロードできます](https://releases.portaldots.com/downloads/latest.zip?major_version=4)**
+1. PortalDots をダウンロードします。 **[ここをクリックすると最新バージョンをダウンロードできます](https://releases.portaldots.com/downloads/latest.zip?major_version=5)**
 1. 展開した ZIP ファイルの中身をサーバーにアップロードします。
     - **注意 (macOS を利用の場合)** — ZIP ファイルを展開した後、Finder 上でキーボードの<kbd>command</kbd> + <kbd>shift</kbd> + <kbd>.(ピリオド)</kbd>キーを押すと、不可視ファイル(半透明のファイル)が表示されます。サーバー上には、 **この不可視ファイルも含めてアップロードしてください** 。
 1. アップロードした先のページをブラウザで開きます。インストール画面が表示されるので、指示に従ってください。
