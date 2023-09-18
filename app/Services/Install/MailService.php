@@ -47,17 +47,13 @@ class MailService extends AbstractService
         ];
     }
 
-    public function sendTestMail(
-        TransportInterface $transport,
-        string $from_address,
-        string $from_name
-    ) {
+    public function sendTestMail()
+    {
         /** @var Illuminate\Mail\Mailer */
         $mailer = App::make(Mailer::class);
-        $mailer->setSymfonyTransport($transport);
         $mailer->to(config('portal.contact_email'))
             ->send(
-                (new TestMailMailable($from_address, $from_name))
+                (new TestMailMailable(config('mail.from.address'), config('mail.from.name')))
                     ->subject('PortalDots テストメール')
             );
     }
