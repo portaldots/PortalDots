@@ -11,20 +11,11 @@ class Place extends Model
 
     protected static $logName = 'place';
 
-    protected static $logAttributes = [
-        'id',
-        'name',
-        'type',
-        'notes',
-    ];
+    protected static $logAttributes = ['id', 'name', 'type', 'notes'];
 
     protected static $logOnlyDirty = true;
 
-    protected $fillable = [
-        'name',
-        'type',
-        'notes',
-    ];
+    protected $fillable = ['name', 'type', 'notes'];
 
     protected $casts = [
         'type' => 'int',
@@ -32,6 +23,19 @@ class Place extends Model
 
     public function circles()
     {
-        return $this->belongsToMany(Circle::class, 'booths')->using(Booth::class);
+        return $this->belongsToMany(Circle::class, 'booths')->using(
+            Booth::class
+        );
+    }
+
+    public function getTypeName()
+    {
+        if ($this->type === 1) {
+            return '屋内';
+        }
+        if ($this->type === 2) {
+            return '屋外';
+        }
+        return '特殊場所';
     }
 }
