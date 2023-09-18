@@ -38,6 +38,7 @@ import TopAlert from "./components/TopAlert.vue";
 import FormWithConfirm from "./components/FormWithConfirm.vue";
 import HomeHeader from "./components/HomeHeader.vue";
 import IconButton from "./components/IconButton.vue";
+import InstallMailSettingsForm from "./components/InstallMailSettingsForm.vue";
 import LayoutRow from "./components/LayoutRow.vue";
 import LayoutColumn from "./components/LayoutColumn.vue";
 import DataGrid from "./components/DataGrid.vue";
@@ -116,6 +117,7 @@ document.addEventListener("turbolinks:load", () => {
       FormWithConfirm,
       HomeHeader,
       IconButton,
+      InstallMailSettingsForm,
       LayoutRow,
       LayoutColumn,
       QuestionItem,

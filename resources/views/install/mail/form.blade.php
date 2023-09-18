@@ -9,11 +9,8 @@
 @section('content')
     @include('includes.install_header')
 
-    <form method="post" action="{{ route('install.mail.update') }}">
-        @csrf
-
-        @method('patch')
-
+    <install-mail-settings-form csrf-token="{{ csrf_token() }}" update-settings-path="{{ route('install.mail.update') }}"
+        send-test-path="{{ route('install.mail.send_test') }}" next-screen-path="{{ route('install.admin.create') }}">
         <app-container medium>
             <list-view>
                 <template v-slot:title>メール配信の設定</template>
@@ -49,5 +46,5 @@
                 </p>
             </div>
         </app-container>
-    </form>
+    </install-mail-settings-form>
 @endsection

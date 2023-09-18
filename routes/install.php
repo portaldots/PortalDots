@@ -12,6 +12,7 @@ Route::prefix('/install')
         Route::patch('/database', 'Install\Database\UpdateAction')->name('database.update');
         Route::get('/mail', 'Install\Mail\EditAction')->name('mail.edit');
         Route::patch('/mail', 'Install\Mail\UpdateAction')->name('mail.update');
+        Route::post('/mail/send_test', 'Install\Mail\SendTestAction')->name('mail.send_test');
         Route::get('/admin', 'Install\Admin\CreateAction')->name('admin.create');
         Route::post('/admin', 'Install\Admin\StoreAction')->name('admin.store');
     });
