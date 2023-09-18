@@ -9,11 +9,8 @@
 @section('content')
     @include('includes.install_header')
 
-    <form method="post" id="install-mail-form" data-update-settings-path="{{ route('install.mail.update') }}"
-        data-send-test-path="{{ route('install.mail.send_test') }}"
-        data-next-screen-path="{{ route('install.admin.create') }}"
-        onsubmit="event.preventDefault();handleSubmitInstallMailForm();">
-        @csrf
+    <install-mail-settings-form csrf-token="{{ csrf_token() }}" update-settings-path="{{ route('install.mail.update') }}"
+        send-test-path="{{ route('install.mail.send_test') }}" next-screen-path="{{ route('install.admin.create') }}">
         <app-container medium>
             <list-view>
                 <template v-slot:title>メール配信の設定</template>
@@ -49,63 +46,5 @@
                 </p>
             </div>
         </app-container>
-    </form>
+    </install-mail-settings-form>
 @endsection
-
-@push('js')
-    <script>
-        function handleSubmitInstallMailForm() {
-            const form = document.getElementById('install-mail-form');
-            const updateSettingsPath = form.dataset.updateSettingsPath;
-            const sendTestPath = form.dataset.sendTestPath;
-            const nextScreenPath = form.dataset.nextScreenPath;
-
-            const formData = new FormData(form);
-
-            (async () => {
-                try {
-                    const response = await fetch(updateSettingsPath, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(Object.fromEntries(formData.entries())),
-                    });
-
-                    if (!response.ok) {
-                        throw response;
-                    }
-
-                    const data = await response.json();
-
-                    // 1秒まつ
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-
-                    const testResponse = await fetch(sendTestPath, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            _token: formData.get('_token'),
-                        })
-                    });
-
-                    if (!testResponse.ok) {
-                        throw testResponse;
-                    }
-
-                    window.location.href = nextScreenPath;
-                } catch (error) {
-                    alert(`エラーが発生しました。： ${(await error.json()).message}`);
-
-                    // ページ内のフォームを有効化
-                    const formElements = form.elements;
-                    for (let i = 0; i < formElements.length; i++) {
-                        formElements[i].disabled = false;
-                    }
-                }
-            })();
-        }
-    </script>
-@endpush
