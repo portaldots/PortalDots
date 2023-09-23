@@ -711,15 +711,15 @@
   resolved "https://registry.yarnpkg.com/@types/mdurl/-/mdurl-1.0.2.tgz#e2ce9d83a613bacf284c7be7d491945e39e1f8e9"
   integrity sha512-eC4U9MlIcu2q0KQmXszyn5Akca/0jrQmwDRgpAMJai7qBWq4amIQhZyNau4VYGtCeALvW1/NtjzJJ567aZxfKA==
 
-"@vavt/markdown-theme@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@vavt/markdown-theme/-/markdown-theme-3.0.0.tgz#ce7433428f65ee3397fde6abe5bc14ad70520b07"
-  integrity sha512-Vp/q1woesYOodIyQFUIeDflwrnXdRtLljbQa5tm3IUI75RDNB3K1R9NU/aPUhafkITQvnwl7U2uOXnXd2JJRBA==
-
 "@vavt/md-editor-extension@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@vavt/md-editor-extension/-/md-editor-extension-3.0.0.tgz#23b71c5e46addc312942bc02d2aca8ad0a159942"
   integrity sha512-ysM/shZo8x5ESPRSK65tqI3UaNE+r/EWlG69TxvNjhE+BnlNeSq2vPw121KCzq09vX0rRnOijN6hiQ3wi9JIMQ==
+
+"@vavt/util@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@vavt/util/-/util-1.3.0.tgz#1d3263239ba664ad81561efef9d7ecce8c39d1c9"
+  integrity sha512-Zy3f4Okt0/ddg0TIYoRafDTX4+JwPZgux9XcyP1EmidiHIhO8Q5Nq7uu/vFzGWZcbHe3WWJJzkXaNUor6rmiag==
 
 "@vitejs/plugin-vue@^4.3.4":
   version "4.3.4"
@@ -2651,11 +2651,6 @@ map-age-cleaner@^0.1.3:
   dependencies:
     p-defer "^1.0.0"
 
-markdown-it-codetabs@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/markdown-it-codetabs/-/markdown-it-codetabs-1.2.0.tgz#e1c2626dee5e726d76c2739c425ebfd4443d2f1e"
-  integrity sha512-kF0ec56hKmBZ4xMSFm1pIOuRT37iInD8uvTq+uaWpVKnja6mAg6gkGMLaeLeBiRx4fAMJmrWy417WPf8GgNWxg==
-
 markdown-it-image-figures@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/markdown-it-image-figures/-/markdown-it-image-figures-2.1.1.tgz#fd32a2d0cec60ed8c3916d74fea70d5f9b56e4c7"
@@ -2682,23 +2677,23 @@ marked@^7.0.5:
   resolved "https://registry.yarnpkg.com/marked/-/marked-7.0.5.tgz#8a9e4e3afb93b58fe9ee7608e67cc154eb15d508"
   integrity sha512-lwNAFTfXgqpt/XvK17a/8wY9/q6fcSPZT1aP6QW0u74VwaJF/Z9KbRcX23sWE4tODM+AolJNcUtErTkgOeFP/Q==
 
-md-editor-v3@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/md-editor-v3/-/md-editor-v3-3.0.0.tgz#a3e860cbabae2cfa58fb70f43861cdaddafda9fd"
-  integrity sha512-/O3XIWnof3cneqvZwTmTW00KjHFuBImY13ou3cShbBZBesXVswbUGs1NOMq0bSfbJJOHDp2G636d3GnwqRl30w==
+md-editor-v3@^4.6.1:
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/md-editor-v3/-/md-editor-v3-4.6.1.tgz#c7d0084a5f60cf1c64b7b97e611406f08e06c45a"
+  integrity sha512-jHW2y7JafmMA+bZHmGPwpryqQqevbI5fhRX9THQ/N+fCWMesb/gi5beewIvGG6AW6csRt9XgXBGZY8BGc8CewQ==
   dependencies:
     "@codemirror/lang-markdown" "^6.1.1"
     "@codemirror/language-data" "^6.3.0"
     "@types/markdown-it" "^12.2.3"
-    "@vavt/markdown-theme" "^3.0.0"
+    "@vavt/util" "^1.3.0"
     codemirror "^6.0.1"
     copy-to-clipboard "^3.3.3"
     lru-cache "^8.0.4"
     markdown-it "^13.0.1"
-    markdown-it-codetabs "^1.2.0"
     markdown-it-image-figures "^2.1.1"
     markdown-it-task-lists "^2.1.1"
     medium-zoom "^1.0.8"
+    punycode "^2.3.0"
 
 mdurl@^1.0.1:
   version "1.0.1"
@@ -3244,10 +3239,10 @@ pseudomap@^1.0.2:
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
   integrity sha1-8FKijacOYYkX7wqKw0wa5aaChrM=
 
-punycode@^2.1.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
-  integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
+punycode@^2.1.0, punycode@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.0.tgz#f67fa67c94da8f4d0cfff981aee4118064199b8f"
+  integrity sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==
 
 purify-css@^1.2.5:
   version "1.2.5"

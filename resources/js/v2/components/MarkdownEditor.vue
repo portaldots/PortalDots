@@ -34,12 +34,12 @@
 </template>
 
 <script>
-import MdEditor from "md-editor-v3";
+import { MdEditor, NormalToolbar, config } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import JA_JP from "@vavt/md-editor-extension/dist/locale/jp-JP";
 import MarkdownEditorIcons from "./MarkdownEditorIcons.vue";
 
-MdEditor.config({
+config({
   editorConfig: {
     languageUserDefined: {
       "ja-JP": {
@@ -74,7 +74,7 @@ const isDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
 export default {
   components: {
     MdEditor,
-    NormalToolbar: MdEditor.NormalToolbar,
+    NormalToolbar,
     MarkdownEditorIcons,
   },
   props: {
