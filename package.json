@@ -66,7 +66,7 @@
         "patch-package": "^8.0.0",
         "postinstall-postinstall": "^2.1.0",
         "turbolinks": "^5.2.0",
-        "vue": "^3.3.4",
+        "vue": "^3.3.9",
         "vue-global-events": "^3.0.0",
         "vuedraggable": "^4.1.0",
         "vuex": "^4.1.0"
