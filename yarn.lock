@@ -3991,10 +3991,10 @@ vue-eslint-parser@^9.3.1:
     lodash "^4.17.21"
     semver "^7.3.6"
 
-vue-global-events@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/vue-global-events/-/vue-global-events-3.0.0.tgz#6f522ad33557f7aa1935ebe09f16a58bd5798f24"
-  integrity sha512-1SEZicDI9KgtfveHTUJ7dkFdU4hRPdaoei3HVZD+M9t1dPdDaJiD2SCeiiHdL0gz/Cz6g2+JoWVu1YlucEMxUg==
+vue-global-events@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/vue-global-events/-/vue-global-events-3.0.1.tgz#e04b8cfd9b9803441fe18e0ee23c58f2881150d3"
+  integrity sha512-9S7S3bG0XDBnpm2DJSSjpx6xIX/YIleycpnvmRRYSdiMltnzRfJQ8uVB3QX5eCLkmiv/Udg9UjO2wwpTO5LDvQ==
   dependencies:
     pkg-types "^1.0.3"
 
