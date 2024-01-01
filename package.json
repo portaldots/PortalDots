@@ -57,7 +57,7 @@
         "@headlessui/vue": "^1.7.16",
         "@sipec/vue3-tags-input": "^3.0.4",
         "@vavt/md-editor-extension": "^3.0.0",
-        "axios": "^1.4",
+        "axios": "^1.6",
         "bootstrap": "^4.6.2",
         "color-convert": "^2.0.1",
         "floating-vue": "^2.0.0-beta.24",
