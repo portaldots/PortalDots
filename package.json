@@ -27,7 +27,7 @@
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^4.3.4",
-        "@vue/compiler-sfc": "^3.2.45",
+        "@vue/compiler-sfc": "^3.4.3",
         "blade-formatter": "^1.38.6",
         "cross-env": "^7.0",
         "eslint": "^8.49.0",
