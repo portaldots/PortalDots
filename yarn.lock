@@ -2762,10 +2762,10 @@ marked@^7.0.5:
   resolved "https://registry.yarnpkg.com/marked/-/marked-7.0.5.tgz#8a9e4e3afb93b58fe9ee7608e67cc154eb15d508"
   integrity sha512-lwNAFTfXgqpt/XvK17a/8wY9/q6fcSPZT1aP6QW0u74VwaJF/Z9KbRcX23sWE4tODM+AolJNcUtErTkgOeFP/Q==
 
-md-editor-v3@^4.9.0:
-  version "4.9.0"
-  resolved "https://registry.yarnpkg.com/md-editor-v3/-/md-editor-v3-4.9.0.tgz#2e3f5e791f8afb1579e4b5f66aaf18e905c2b537"
-  integrity sha512-c5Woj8FGDO/odWnAn/ZNOYGlMKoSrXmLqDedxfX7ictaN5ixQCv2brUeAXVzi3fHP91xzxTqFqqJvnnJO+fYfw==
+md-editor-v3@^4.10.0:
+  version "4.10.0"
+  resolved "https://registry.yarnpkg.com/md-editor-v3/-/md-editor-v3-4.10.0.tgz#f9e98bf45cf1812eda6c35b6dcc5c32e784d31f7"
+  integrity sha512-Sz9tAd6RZbc4l7Ys//GvGFX9mklk8bmQwfjbpbgMNX/4U8DkTeXpQlO8oSNzRGWE9QgZjt4ZTdxjljAIbYLdgQ==
   dependencies:
     "@codemirror/lang-markdown" "^6.1.1"
     "@codemirror/language-data" "^6.3.0"
