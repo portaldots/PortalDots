@@ -465,10 +465,12 @@
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-6.5.1.tgz#55cc8410abf1003b726324661ce5b0d1c10de258"
   integrity sha512-CNy5vSwN3fsUStPRLX7fUYojyuzoEMSXPl7zSLJ8TgtRfjv24LOnOWKT2zYwaHZCJGkdyRnTmstR0P+Ah503Gw==
 
-"@headlessui/vue@^1.7.16":
-  version "1.7.16"
-  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.16.tgz#bdc9d32d329248910325539b99e6abfce0c69f89"
-  integrity sha512-nKT+nf/q6x198SsyK54mSszaQl/z+QxtASmgMEJtpxSX2Q0OPJX0upS/9daDyiECpeAsvjkoOrm2O/6PyBQ+Qg==
+"@headlessui/vue@^1.7.17":
+  version "1.7.17"
+  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.17.tgz#153a17432a0fa4b58ac55e16e0c883b66bec5f83"
+  integrity sha512-hmJChv8HzKorxd9F70RGnECAwZfkvmmwOqreuKLWY/19d5qbWnSdw+DNbuA/Uo6X5rb4U5B3NrT+qBKPmjhRqw==
+  dependencies:
+    "@tanstack/vue-virtual" "^3.0.0-beta.60"
 
 "@humanwhocodes/config-array@^0.11.11":
   version "0.11.11"
@@ -687,6 +689,18 @@
   integrity sha512-zE4OiFkWvlvvGT3FZQ9hRrvJW935VPW0fe4K03SxM5Q/UQZMqph763UHXTuyK1orWNQMTbDx9tKPLIMZTiDXLA==
   dependencies:
     vue "^3.0.0-beta.1"
+
+"@tanstack/virtual-core@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.0.0.tgz#637bee36f0cabf96a1d436887c90f138a7e9378b"
+  integrity sha512-SYXOBTjJb05rXa2vl55TTwO40A6wKu0R5i1qQwhJYNDIqaIGF7D0HsLw+pJAyi2OvntlEIVusx3xtbbgSUi6zg==
+
+"@tanstack/vue-virtual@^3.0.0-beta.60":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@tanstack/vue-virtual/-/vue-virtual-3.0.2.tgz#8f78b0ce20f8429b4529ca6bc2a89c6ab5547963"
+  integrity sha512-1iFpX+yZswHuf4wrA6GU9yJ/YzQ/8SacABwqghwCkcwrkZbOPLlRSdOAqZ1WQ50SftmfhZpaiZl2KmpV7cgfMQ==
+  dependencies:
+    "@tanstack/virtual-core" "3.0.0"
 
 "@types/json5@^0.0.29":
   version "0.0.29"
