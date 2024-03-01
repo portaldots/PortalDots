@@ -716,10 +716,10 @@
   resolved "https://registry.yarnpkg.com/@vavt/md-editor-extension/-/md-editor-extension-3.0.0.tgz#23b71c5e46addc312942bc02d2aca8ad0a159942"
   integrity sha512-ysM/shZo8x5ESPRSK65tqI3UaNE+r/EWlG69TxvNjhE+BnlNeSq2vPw121KCzq09vX0rRnOijN6hiQ3wi9JIMQ==
 
-"@vavt/util@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@vavt/util/-/util-1.3.0.tgz#1d3263239ba664ad81561efef9d7ecce8c39d1c9"
-  integrity sha512-Zy3f4Okt0/ddg0TIYoRafDTX4+JwPZgux9XcyP1EmidiHIhO8Q5Nq7uu/vFzGWZcbHe3WWJJzkXaNUor6rmiag==
+"@vavt/util@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@vavt/util/-/util-1.4.1.tgz#41569e172a8821b5a3fb89074f0fae60961827d0"
+  integrity sha512-EhYyvt5w+GE6IO1JzDFZLmJOXQmWHnx3OBvA3YY/ZB1kWqHlhJTpL4x7TuANTzK7q1Y6G/okk4eFpLVWxvEBVA==
 
 "@vitejs/plugin-vue@^4.6.2":
   version "4.6.2"
@@ -1241,6 +1241,11 @@ commander@^10.0.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-10.0.1.tgz#881ee46b4f77d1c1dccc5823433aa39b022cbe06"
   integrity sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==
 
+commander@^2.20.3:
+  version "2.20.3"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
+  integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
+
 commander@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-4.1.1.tgz#9fd602bd936294e9e9ef46a3f4d6964044b18068"
@@ -1342,6 +1347,11 @@ cssesc@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
+
+cssfilter@0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/cssfilter/-/cssfilter-0.0.10.tgz#c6d2672632a2e5c83e013e6864a42ce8defd20ae"
+  integrity sha512-FAaLDaplstoRsDR8XGYH51znUN0UY7nMc6Z9/fvE8EXGwvJE9hu7W2vHwx1+bd6gCYnln9nLbzxFTrcO9YQDZw==
 
 csstype@^3.1.2:
   version "3.1.3"
@@ -2746,6 +2756,13 @@ markdown-it-task-lists@^2.1.1:
   resolved "https://registry.yarnpkg.com/markdown-it-task-lists/-/markdown-it-task-lists-2.1.1.tgz#f68f4d2ac2bad5a2c373ba93081a1a6848417088"
   integrity sha512-TxFAc76Jnhb2OUu+n3yz9RMu4CwGfaT788br6HhEDlvWfdeJcLUsxk1Hgw2yJio0OXsxv7pyIPmvECY7bMbluA==
 
+markdown-it-xss@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/markdown-it-xss/-/markdown-it-xss-1.0.2.tgz#b4daacca642d5a70be0fc6c76ad36e3401422631"
+  integrity sha512-D52im1+e394EckqhK0AuyqxQ/WCuo09wJWInuCh6j1O2d6LqImJOu36lA6KZqImhWJeYIQnGeryaH3wXcro5MQ==
+  dependencies:
+    xss "^1.0.6"
+
 markdown-it@^13.0.1:
   version "13.0.1"
   resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-13.0.1.tgz#c6ecc431cacf1a5da531423fc6a42807814af430"
@@ -2762,21 +2779,22 @@ marked@^7.0.5:
   resolved "https://registry.yarnpkg.com/marked/-/marked-7.0.5.tgz#8a9e4e3afb93b58fe9ee7608e67cc154eb15d508"
   integrity sha512-lwNAFTfXgqpt/XvK17a/8wY9/q6fcSPZT1aP6QW0u74VwaJF/Z9KbRcX23sWE4tODM+AolJNcUtErTkgOeFP/Q==
 
-md-editor-v3@^4.10.0:
-  version "4.10.0"
-  resolved "https://registry.yarnpkg.com/md-editor-v3/-/md-editor-v3-4.10.0.tgz#f9e98bf45cf1812eda6c35b6dcc5c32e784d31f7"
-  integrity sha512-Sz9tAd6RZbc4l7Ys//GvGFX9mklk8bmQwfjbpbgMNX/4U8DkTeXpQlO8oSNzRGWE9QgZjt4ZTdxjljAIbYLdgQ==
+md-editor-v3@^4.11.3:
+  version "4.11.3"
+  resolved "https://registry.yarnpkg.com/md-editor-v3/-/md-editor-v3-4.11.3.tgz#9b3eb708725a758d78c4ac01c410a56d426a61c8"
+  integrity sha512-PmmKMpM5LX0DDj0a4s4LlfYznjNTJwDEl1MS9snLq8oyk8cHPJypOgs4T2VMPw5YcMneojHsbOm8ikEpNN06xQ==
   dependencies:
     "@codemirror/lang-markdown" "^6.1.1"
     "@codemirror/language-data" "^6.3.0"
     "@types/markdown-it" "^12.2.3"
-    "@vavt/util" "^1.3.0"
+    "@vavt/util" "^1.4.1"
     codemirror "^6.0.1"
     copy-to-clipboard "^3.3.3"
     lru-cache "^8.0.4"
     markdown-it "^13.0.1"
     markdown-it-image-figures "^2.1.1"
     markdown-it-task-lists "^2.1.1"
+    markdown-it-xss "^1.0.2"
     medium-zoom "^1.0.8"
     punycode "^2.3.0"
 
@@ -4304,6 +4322,14 @@ xregexp@^5.0.1:
   integrity sha512-JPNfN40YMNSDxZrahMrmtNH1QqPJp0/qNeEJM2nnOlhcBdfCCjekPYFV2OnwKxwvpEYglH1RBotbpRRaEuCG8Q==
   dependencies:
     "@babel/runtime-corejs3" "^7.12.1"
+
+xss@^1.0.6:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/xss/-/xss-1.0.14.tgz#4f3efbde75ad0d82e9921cc3c95e6590dd336694"
+  integrity sha512-og7TEJhXvn1a7kzZGQ7ETjdQVS2UfZyTlsEdDOqvQF7GoxNfY+0YLCzBy1kPdsDDx4QuNAonQPddpsn6Xl/7sw==
+  dependencies:
+    commander "^2.20.3"
+    cssfilter "0.0.10"
 
 y18n@^3.2.1:
   version "3.2.2"
