@@ -9,9 +9,19 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 class PlacesExport implements FromCollection, WithHeadings, WithMapping
 {
+    private $withCircle;
+
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @param boolean $withCircle 企画情報も出力するかどうか
+     */
+    public function __construct(bool $withCircle = true)
+    {
+        $this->withCircle = $withCircle;
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return Place::with('circles')->get();
@@ -23,6 +33,15 @@ class PlacesExport implements FromCollection, WithHeadings, WithMapping
      */
     public function map($place): array
     {
+        if (!$this->withCircle) {
+            return [
+                $place->id,
+                $place->name,
+                $place->getTypeName(),
+                $place->notes,
+            ];
+        }
+
         $firstCircle = $place->circles->shift();
         $circles = [];
 
@@ -40,20 +59,12 @@ class PlacesExport implements FromCollection, WithHeadings, WithMapping
             ];
         }
 
-        if ($place->type === 1) {
-            $type = '屋内';
-        } elseif ($place->type === 2) {
-            $type = '屋外';
-        } else {
-            $type = '特殊場所';
-        }
-
         return array_merge(
             [
                 [
                     $place->id,
                     $place->name,
-                    $type,
+                    $place->getTypeName(),
                     $place->notes,
                     $firstCircle->id ?? null,
                     $firstCircle->name ?? null,
@@ -62,7 +73,7 @@ class PlacesExport implements FromCollection, WithHeadings, WithMapping
                     $firstCircle->group_name_yomi ?? null,
                 ],
             ],
-            $circles,
+            $circles
         );
     }
 
@@ -71,16 +82,18 @@ class PlacesExport implements FromCollection, WithHeadings, WithMapping
      */
     public function headings(): array
     {
-        return [
-            '場所ID',
-            '場所名',
-            'タイプ',
-            'スタッフ用メモ',
-            '企画ID',
-            '企画名',
-            '企画名（よみ）',
-            '企画を出店する団体の名称',
-            '企画を出店する団体の名称（よみ）',
-        ];
+        $heading = ['場所ID', '場所名', 'タイプ', 'スタッフ用メモ'];
+
+        if ($this->withCircle) {
+            array_push(
+                $heading,
+                '企画ID',
+                '企画名',
+                '企画名（よみ）',
+                '企画を出店する団体の名称',
+                '企画を出店する団体の名称（よみ）'
+            );
+        }
+        return $heading;
     }
 }
