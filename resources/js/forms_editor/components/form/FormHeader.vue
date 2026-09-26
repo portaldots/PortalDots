@@ -11,7 +11,7 @@
       <div v-if="!custom_form" v-html="description_html" />
     </template>
     <template v-slot:edit-panel>
-      <div class="form-group row">
+      <div class="row mb-3">
         <label for="inputTitle" class="col-sm-2 col-form-label">タイトル</label>
         <div class="col-sm-10">
           <input
@@ -23,7 +23,7 @@
           />
         </div>
       </div>
-      <div class="form-group row">
+      <div class="row mb-3">
         <label for="inputDescription" class="col-sm-2 col-form-label">
           説明
         </label>

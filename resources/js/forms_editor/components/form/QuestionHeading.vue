@@ -5,7 +5,7 @@
     class="form-item"
   >
     <template v-slot:content>
-      <div class="form-group mb-0">
+      <div class="mb-0">
         <h2 class="heading">{{ name }}</h2>
         <div v-html="description_html" />
       </div>
