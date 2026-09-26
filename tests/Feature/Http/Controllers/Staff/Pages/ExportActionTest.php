@@ -37,9 +37,7 @@ class ExportActionTest extends TestCase
         $this->pages = factory(Page::class, 2)->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function お知らせをCSVでダウンロードできる()
     {
         Permission::create(['name' => 'staff.pages.export']);
@@ -59,9 +57,7 @@ class ExportActionTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合はCSVをダウンロードできない()
     {
         $this->actingAs($this->staff)

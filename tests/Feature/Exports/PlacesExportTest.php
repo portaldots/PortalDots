@@ -61,9 +61,7 @@ class PlacesExportTest extends TestCase
         $this->place->circles()->attach($this->anotherCircle->id);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function map_ブース情報のフォーマットが正常に行われる()
     {
         $this->assertEquals(

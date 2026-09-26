@@ -21,9 +21,7 @@ class PagesGridMakerTest extends TestCase
         $this->pagesGridMaker = App::make(PagesGridMaker::class);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function map()
     {
         $page = factory(Page::class)->make([

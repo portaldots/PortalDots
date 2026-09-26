@@ -11,9 +11,7 @@ class HomeActionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function インストール済の場合はアクセスできない()
     {
         $this->mock(DotenvService::class, function ($mock) {
@@ -25,9 +23,7 @@ class HomeActionTest extends TestCase
         $response->assertStatus(404);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 未インストール状態の場合はアクセスできる()
     {
         $this->mock(DotenvService::class, function ($mock) {

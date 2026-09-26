@@ -47,9 +47,7 @@ class DocumentsExportTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function map_配布資料の情報のフォーマットが正常に行われる()
     {
         $this->assertEquals(

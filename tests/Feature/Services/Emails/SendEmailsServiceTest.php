@@ -24,6 +24,7 @@ class SendEmailsServiceTest extends TestCase
     {
         $email = factory(Email::class)->create();
         Log::spy();
+        $mailManager = Mail::getFacadeRoot();
         $pendingMail = Mockery::mock();
         $pendingMail->shouldReceive('send')->once()->andThrow(new RuntimeException('SMTP failure'));
         Mail::shouldReceive('to')->once()->andReturn($pendingMail);
@@ -40,6 +41,7 @@ class SendEmailsServiceTest extends TestCase
             'exception_class' => RuntimeException::class,
         ]);
 
+        Mail::swap($mailManager);
         Mail::fake();
         SendEmailService::runJob();
 

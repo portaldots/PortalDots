@@ -36,9 +36,7 @@ class DestroyActionTest extends TestCase
         $this->read = factory(Read::class, 5)->create(['page_id' => $this->page->id]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function お知らせを削除できる()
     {
         Permission::create(['name' => 'staff.pages.delete']);
@@ -85,9 +83,7 @@ class DestroyActionTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合はお知らせを削除できない()
     {
         $this->actingAs($this->staff)

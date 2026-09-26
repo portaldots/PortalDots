@@ -52,9 +52,7 @@ class PagesExportTest extends TestCase
         $this->page->viewableTags()->attach($this->tag->id);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function map_お知らせのフォーマットが正常に行われる()
     {
         $this->assertEquals(

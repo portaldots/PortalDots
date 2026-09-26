@@ -10,9 +10,7 @@ class LoginControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function ログインフォームが表示される()
     {
         $response = $this->get(route('login'));

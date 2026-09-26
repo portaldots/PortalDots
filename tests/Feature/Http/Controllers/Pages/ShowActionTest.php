@@ -11,7 +11,7 @@ class ShowActionTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function 非公開と固定表示のお知らせは表示できない_provider()
+    public static function 非公開と固定表示のお知らせは表示できない_provider()
     {
         return [
             '公開・非固定' => [true, false, true],
@@ -21,10 +21,8 @@ class ShowActionTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider 非公開と固定表示のお知らせは表示できない_provider
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider("非公開と固定表示のお知らせは表示できない_provider")]
     public function 非公開と固定表示のお知らせは表示できない(bool $is_public, bool $is_pinned, bool $can_see)
     {
         $page_title = 'これはお知らせのタイトルです';
@@ -46,9 +44,7 @@ class ShowActionTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function お知らせに添付されている非公開の配布資料が一覧に表示されない()
     {
         /** @var Page */

@@ -59,9 +59,7 @@ class ShowActionTest extends TestCase
         $this->staff = factory(User::class)->states('staff')->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function ダウンロードできる()
     {
         Permission::create(['name' => 'staff.forms.answers.read']);
@@ -78,9 +76,7 @@ class ShowActionTest extends TestCase
         $response->assertOk();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合はダウンロードできない()
     {
         $response = $this->actingAs($this->staff)
@@ -94,9 +90,7 @@ class ShowActionTest extends TestCase
         $response->assertForbidden();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function スタッフ以外はダウンロードできない()
     {
         $response = $this->actingAs(factory(User::class)->create())

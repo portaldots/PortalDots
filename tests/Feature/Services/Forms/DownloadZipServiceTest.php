@@ -99,9 +99,7 @@ class DownloadZipServiceTest extends TestCase
         Mockery::close();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function makeZip_アップロードされたファイルが全てZIPファイルに含まれるか()
     {
         $this->mock(ZipArchive::class, function ($mock) {
@@ -163,9 +161,7 @@ class DownloadZipServiceTest extends TestCase
         ));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function makeZip_ZipArchiveがエラーの時に適切な例外が発生する()
     {
         $this->expectException(ZipArchiveNotSupportedException::class);
@@ -185,9 +181,7 @@ class DownloadZipServiceTest extends TestCase
         App::make(DownloadZipService::class)->makeZip($this->form, $uploaded_file_paths);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function makeZip_第二引数が空の時に適切な例外が発生する()
     {
         $this->expectException(NoDownloadFileExistException::class);

@@ -42,9 +42,7 @@ class PostActionTest extends TestCase
         $this->ContactCategory = factory(ContactCategory::class)->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function ContactsServiceのcreateが呼び出される()
     {
         $this->mock(ContactsService::class, function ($mock) {

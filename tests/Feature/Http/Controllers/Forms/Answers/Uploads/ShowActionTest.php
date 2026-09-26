@@ -10,9 +10,7 @@ class ShowActionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 自分が所属していない企画によるアップロードファイルはダウンロードできない()
     {
         $response = $this->get('/');

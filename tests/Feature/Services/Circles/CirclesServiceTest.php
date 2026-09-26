@@ -63,9 +63,7 @@ class CirclesServiceTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function create()
     {
         [
@@ -96,9 +94,7 @@ class CirclesServiceTest extends TestCase
         $this->assertNotEmpty($circle->invitation_token);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function update()
     {
         [
@@ -123,9 +119,7 @@ class CirclesServiceTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function regenerateInvitationToken()
     {
         [
@@ -148,9 +142,7 @@ class CirclesServiceTest extends TestCase
         $this->assertNotSame($old_token, $circle->invitation_token);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function addMember()
     {
         [
@@ -173,9 +165,7 @@ class CirclesServiceTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function submit()
     {
         [
@@ -198,9 +188,7 @@ class CirclesServiceTest extends TestCase
         $this->assertDatabaseCount('circle_tag', self::PARTICIPATION_TYPE_TAGS_COUNT);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function saveTags()
     {
         // 予め tag テーブルに登録されているタグ
@@ -239,9 +227,7 @@ class CirclesServiceTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function saveTags_タグの新規作成が許可されていない場合は例外が発生する()
     {
         $this->expectException(DenyCreateTagsException::class);
@@ -267,9 +253,7 @@ class CirclesServiceTest extends TestCase
         ], false, factory(User::class)->create());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function sendSubmitedEmail()
     {
         $leader = factory(User::class)->create();
@@ -285,9 +269,7 @@ class CirclesServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function sendApprovedEmail()
     {
         $leader = factory(User::class)->create();
@@ -303,9 +285,7 @@ class CirclesServiceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function sendRejectedEmail()
     {
         $leader = factory(User::class)->create();

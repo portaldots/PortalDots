@@ -16,9 +16,7 @@ use Tests\TestCase;
 
 class GridResponderTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function response_setGridMakerされていない場合は例外発生()
     {
         $this->expectException(GridMakerNotSetException::class);
@@ -29,9 +27,7 @@ class GridResponderTest extends TestCase
         $obj->response();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function response_setRequestされていない場合は例外発生()
     {
         $this->expectException(RequestNotSetException::class);
@@ -42,9 +38,7 @@ class GridResponderTest extends TestCase
         $obj->response();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function response()
     {
         $request = new Request([

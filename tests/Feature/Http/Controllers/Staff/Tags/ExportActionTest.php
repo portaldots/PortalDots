@@ -36,9 +36,7 @@ class ExportActionTest extends TestCase
         $this->tags = factory(Tag::class, 2)->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 企画タグのCSVがダウンロードできる()
     {
         Permission::create(['name' => 'staff.tags.export']);
@@ -58,9 +56,7 @@ class ExportActionTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合はCSVをダウンロードできない()
     {
         $this->actingAs($this->staff)

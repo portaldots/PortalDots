@@ -22,45 +22,35 @@ class FilterableKeyBelongsToManyOptionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function constructor()
     {
         $obj = $this->instantiate();
         $this->assertInstanceOf(FilterableKeyBelongsToManyOptions::class, $obj);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getPivot()
     {
         $obj = $this->instantiate();
         $this->assertEquals('circle_user', $obj->getPivot());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getForeignKey()
     {
         $obj = $this->instantiate();
         $this->assertEquals('circle_id', $obj->getForeignKey());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getRelatedKey()
     {
         $obj = $this->instantiate();
         $this->assertEquals('user_id', $obj->getRelatedKey());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getChoices()
     {
         $obj = $this->instantiate();
@@ -71,18 +61,14 @@ class FilterableKeyBelongsToManyOptionsTest extends TestCase
             ], $obj->getChoices());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getChoicesName()
     {
         $obj = $this->instantiate();
         $this->assertEquals('name', $obj->getChoicesName());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function jsonSerialize()
     {
         $obj = $this->instantiate();

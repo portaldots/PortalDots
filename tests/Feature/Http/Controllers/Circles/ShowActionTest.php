@@ -50,9 +50,7 @@ class ShowActionTest extends BaseTestCase
         CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 提出済み企画の場合で未認証ユーザーには認証ページを表示する()
     {
         $response = $this->actingAs($this->user)
@@ -70,9 +68,7 @@ class ShowActionTest extends BaseTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 未提出の企画の場合は認証画面を表示しない()
     {
         $response = $this->actingAs($this->user)
@@ -85,9 +81,7 @@ class ShowActionTest extends BaseTestCase
         $response->assertOk();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function メンバーは企画の詳細を表示できる()
     {
         $response = $this
@@ -102,9 +96,7 @@ class ShowActionTest extends BaseTestCase
         $response->assertOk();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 未提出の場合副責任者は削除ボタンが表示される()
     {
         $response = $this
@@ -119,9 +111,7 @@ class ShowActionTest extends BaseTestCase
         $response->assertSee('この企画から抜ける');
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 提出済の場合副責任者は削除ボタンが表示されない()
     {
         $this->circle->submitted_at = now();
@@ -140,9 +130,7 @@ class ShowActionTest extends BaseTestCase
         $response->assertDontSee('この企画から抜ける');
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 責任者には削除ボタンを表示しない()
     {
         $response = $this
@@ -157,9 +145,7 @@ class ShowActionTest extends BaseTestCase
         $response->assertDontSee('この企画から抜ける');
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 部外者は企画詳細を表示できない()
     {
         $anotherUser = factory(User::class)->create();
@@ -176,9 +162,7 @@ class ShowActionTest extends BaseTestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 使用場所が表示される()
     {
         $place = factory(Place::class)->create();
@@ -197,9 +181,7 @@ class ShowActionTest extends BaseTestCase
         $response->assertSee($place->name);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 場所が登録されていないときは使用場所を表示しない()
     {
         $response = $this

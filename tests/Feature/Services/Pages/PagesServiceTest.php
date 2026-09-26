@@ -43,9 +43,7 @@ class PagesServiceTest extends TestCase
         $this->staff = factory(User::class)->states('staff')->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function createPage_お知らせを保存する()
     {
         $this->assertSame(0, Page::count());
@@ -66,9 +64,7 @@ class PagesServiceTest extends TestCase
         $this->assertDatabaseHas('pages', $content_on_db);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function setPinStatusForPage_お知らせを固定表示できる()
     {
         $page = $this->pagesService->createPage(
@@ -92,9 +88,7 @@ class PagesServiceTest extends TestCase
         $this->assertDatabaseHas('pages', $content_on_db);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function setPinStatusForPage_お知らせを固定解除できる()
     {
         $page = $this->pagesService->createPage(
@@ -118,9 +112,7 @@ class PagesServiceTest extends TestCase
         $this->assertDatabaseHas('pages', $content_on_db);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function updatePage()
     {
         $this->assertSame(0, Page::count());
@@ -157,9 +149,7 @@ class PagesServiceTest extends TestCase
         $this->assertDatabaseHas('pages', $content_on_db);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function sendEmailsByPage_全ユーザーに対し一斉送信予約する()
     {
         $this->assertSame(0, Page::count());
@@ -185,9 +175,7 @@ class PagesServiceTest extends TestCase
         $this->assertSame(User::count(), Email::count());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function createPage_お知らせを保存する際にアクセス可能な企画タグを指定する()
     {
         $tags_count = 4;
@@ -229,9 +217,7 @@ class PagesServiceTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function createPage_未作成のタグを指定した場合は無視される()
     {
         $tag = factory(Tag::class)->create();

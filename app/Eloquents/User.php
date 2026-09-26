@@ -404,21 +404,21 @@ class User extends Authenticatable
             ->subDay()
             ->lte($last_accessed_at)
         ) {
-            return "{$last_accessed_at->diffInHours(now())}時間前";
+            return sprintf('%d時間前', (int) $last_accessed_at->diffInHours(now(), true));
         }
         if (
             now()
             ->subMonth()
             ->lte($last_accessed_at)
         ) {
-            return "{$last_accessed_at->diffInDays(now())}日前";
+            return sprintf('%d日前', (int) $last_accessed_at->diffInDays(now(), true));
         }
         if (
             now()
             ->subYear()
             ->lte($last_accessed_at)
         ) {
-            return "{$last_accessed_at->diffInMonths(now())}ヶ月前";
+            return sprintf('%dヶ月前', (int) $last_accessed_at->diffInMonths(now(), true));
         }
         return '1年以上前';
     }

@@ -31,9 +31,7 @@ class CopyActionTest extends TestCase
         $this->staff = factory(User::class)->states('staff')->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function FormsServiceのcopyFormが呼び出される()
     {
         Permission::create(['name' => 'staff.forms.duplicate']);
@@ -52,9 +50,7 @@ class CopyActionTest extends TestCase
         $response->assertRedirect(route('staff.forms.index'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合はフォームを複製できない()
     {
         $response = $this->actingAs($this->staff)

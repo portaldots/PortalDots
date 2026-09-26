@@ -23,9 +23,7 @@ class CreateActionTest extends BaseTestCase
         CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 説明が設定されているときは説明を表示する()
     {
         $this->participationForm->description = '注意事項';
@@ -42,9 +40,7 @@ class CreateActionTest extends BaseTestCase
         $responce->assertSee('注意事項');
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 説明が設定されていないときは説明を表示しない()
     {
         $this->participationForm->description = null;

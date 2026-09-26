@@ -23,9 +23,7 @@ class CreateActionTest extends TestCase
         $this->staff = factory(User::class)->states('staff')->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 企画の新規作成フォームが表示される()
     {
         Permission::create(['name' => 'staff.circles.edit']);
@@ -40,9 +38,7 @@ class CreateActionTest extends TestCase
         $responce->assertOk();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合は企画の新規作成フォームが表示されない()
     {
         $responce = $this->actingAs($this->staff)

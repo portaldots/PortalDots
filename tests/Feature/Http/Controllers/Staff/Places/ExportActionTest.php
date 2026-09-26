@@ -48,9 +48,7 @@ class ExportActionTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function ブース情報がCSVでダウンロードできる()
     {
         Permission::create(['name' => 'staff.places.export']);
@@ -70,9 +68,7 @@ class ExportActionTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合はCSVをダウンロードできない()
     {
         $this->actingAs($this->staff)

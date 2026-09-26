@@ -65,9 +65,7 @@ class EditActionTest extends BaseTestCase
         CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 責任者は企画の情報を表示できる()
     {
         $this->withoutExceptionHandling();
@@ -84,9 +82,7 @@ class EditActionTest extends BaseTestCase
         $response->assertSee(json_encode('これが回答です'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 副責任者は企画の情報を表示できない()
     {
         $member = factory(User::class)->create();
@@ -103,9 +99,7 @@ class EditActionTest extends BaseTestCase
         $responce->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 部外者は企画の情報を表示できない()
     {
         $anotherUser = factory(User::class)->create();
@@ -121,9 +115,7 @@ class EditActionTest extends BaseTestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 提出済みの企画の情報は表示できない()
     {
         $this->circle->submitted_at = now();

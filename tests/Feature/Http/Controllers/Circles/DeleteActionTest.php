@@ -46,9 +46,7 @@ class DeleteActionTest extends BaseTestCase
         $this->anotherUser = factory(User::class)->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 参加登録未提出であればアクセスできる()
     {
         $response = $this->actingAs($this->user)
@@ -61,9 +59,7 @@ class DeleteActionTest extends BaseTestCase
         $response->assertStatus(200);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function リーダー以外のメンバーはアクセスできない()
     {
         $response = $this->actingAs($this->nonLeader)
@@ -76,9 +72,7 @@ class DeleteActionTest extends BaseTestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 部外者はアクセスできない()
     {
         $response = $this->actingAs($this->anotherUser)
@@ -91,9 +85,7 @@ class DeleteActionTest extends BaseTestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 提出済みの企画は削除できない()
     {
         $this->circle->submitted_at = now();

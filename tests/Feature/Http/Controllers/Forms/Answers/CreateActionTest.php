@@ -43,10 +43,8 @@ class CreateActionTest extends TestCase
         $this->selectorService = App::make(SelectorService::class);
     }
 
-    /**
-     * @test
-     * @dataProvider 受付期間中かどうかに応じて表示が切り替わる_provider
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider("受付期間中かどうかに応じて表示が切り替わる_provider")]
     public function 受付期間中かどうかに応じて表示が切り替わる(
         CarbonImmutable $today,
         bool $is_answerable
@@ -73,7 +71,7 @@ class CreateActionTest extends TestCase
         }
     }
 
-    public function 受付期間中かどうかに応じて表示が切り替わる_provider()
+    public static function 受付期間中かどうかに応じて表示が切り替わる_provider()
     {
         return [
             '受付開始はまだまだ先' => [new CarbonImmutable('2019-12-25 23:42:22'), false],
@@ -86,9 +84,7 @@ class CreateActionTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 非公開のフォームにはアクセスできない()
     {
         $privateForm = factory(Form::class)->states('private')->create();
@@ -106,9 +102,7 @@ class CreateActionTest extends TestCase
         $response->assertStatus(404);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 回答可能なタグを持つ企画に所属している場合フォームにアクセスできる()
     {
         $tag = factory(Tag::class)->create();
@@ -134,9 +128,7 @@ class CreateActionTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 回答可能なタグを持つ企画に所属していない場合フォームにアクセスできない()
     {
         $tag = factory(Tag::class)->create();

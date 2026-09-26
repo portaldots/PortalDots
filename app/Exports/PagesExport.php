@@ -12,7 +12,7 @@ class PagesExport implements FromCollection, WithHeadings, WithMapping
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function collection(): \Illuminate\Support\Enumerable
     {
         return Page::with(['viewableTags'])->orderBy('id')->get();
     }
