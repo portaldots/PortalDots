@@ -25,9 +25,7 @@ class DemoModeTest extends TestCase
         $this->demoMode = App::make(DemoMode::class);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function handle_デモモードではない場合はGET以外のリクエストも許可する()
     {
         /** @var User */
@@ -44,9 +42,7 @@ class DemoModeTest extends TestCase
         $this->assertSame('handled!', $response);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function handle_デモモードの場合はGET以外のリクエストを拒否()
     {
         Config::set('portal.enable_demo_mode', true);
@@ -61,7 +57,7 @@ class DemoModeTest extends TestCase
         $response = $this->demoMode->handle($request, function () {
         });
 
-        $testResponse = $this->createTestResponse($response);
+        $testResponse = $this->createTestResponse($response, $request);
 
         $testResponse->assertRedirect();
     }

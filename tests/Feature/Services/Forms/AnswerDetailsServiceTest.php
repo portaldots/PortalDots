@@ -41,9 +41,7 @@ class AnswerDetailsServiceTest extends TestCase
         $this->circle->users()->save($this->user);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function updateAnswerDetails_ファイルの更新した時に古いファイルが削除される()
     {
         $form = factory(Form::class)->create();
@@ -75,9 +73,7 @@ class AnswerDetailsServiceTest extends TestCase
         Storage::disk('local')->assertMissing($old_file);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function updateAnswerDetails_ファイルの削除した時に古いファイルが削除される()
     {
         $form = factory(Form::class)->create();
@@ -106,9 +102,7 @@ class AnswerDetailsServiceTest extends TestCase
         Storage::disk('local')->assertMissing($file);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function updateAnswerDetails_ファイルの更新をしていない時はアップロードされたファイルを削除しない()
     {
         $form = factory(Form::class)->create();

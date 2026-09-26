@@ -29,7 +29,7 @@ class CirclesExport implements FromCollection, WithHeadings, WithMapping
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function collection()
+    public function collection(): \Illuminate\Support\Enumerable
     {
         $query = Circle::submitted()->with(['participationType', 'leader', 'users', 'places', 'tags', 'statusSetBy']);
 

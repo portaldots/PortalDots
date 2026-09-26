@@ -21,6 +21,7 @@ class EditAction extends Controller
     public function __invoke()
     {
         return view('admin.portal.form')
-            ->with('portal', $this->portalService->getInfo());
+            ->with('portal', $this->portalService->getInfo())
+            ->with('suggested_app_url', url('/'));
     }
 }

@@ -32,9 +32,7 @@ class StoreActionTest extends TestCase
         $this->document = factory(Document::class)->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function お知らせを作成できる()
     {
         Permission::create(['name' => 'staff.pages.edit']);
@@ -71,9 +69,7 @@ class StoreActionTest extends TestCase
         $response->assertRedirect(route('staff.pages.create'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合はお知らせを作成できない()
     {
         $response = $this->actingAs($this->staff)
@@ -92,9 +88,7 @@ class StoreActionTest extends TestCase
         $response->assertForbidden();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function タイトルと本文が未入力だとエラーが発生する()
     {
         Permission::create(['name' => 'staff.pages.edit']);
@@ -109,9 +103,7 @@ class StoreActionTest extends TestCase
         $response->assertSessionHasErrors(['title', 'body']);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 一斉配信予約ができる()
     {
         Permission::create(['name' => 'staff.pages.edit']);

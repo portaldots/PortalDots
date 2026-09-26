@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use App\Services\Circles\SelectorService;
 use App\Services\Pages\ReadsService;
+use App\Services\Utils\Utf8DotenvEditor;
+use Jackiedo\DotenvEditor\DotenvEditor;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(DotenvEditor::class, Utf8DotenvEditor::class);
     }
 
     /**

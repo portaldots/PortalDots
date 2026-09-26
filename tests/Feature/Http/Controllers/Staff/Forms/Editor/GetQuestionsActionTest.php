@@ -32,9 +32,7 @@ class GetQuestionsActionTest extends TestCase
         $this->staff = factory(User::class)->states('staff')->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function priority順の設問一覧が出力される()
     {
         Permission::create(['name' => 'staff.forms.edit']);
@@ -53,9 +51,7 @@ class GetQuestionsActionTest extends TestCase
         $this->assertSame($this->questions[1]->name, $response[0]['name']);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 参加登録フォームの場合は参加登録フォーム固有の設問も出力される()
     {
         Permission::create(['name' => 'staff.forms.edit']);

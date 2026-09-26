@@ -36,9 +36,7 @@ class UsersExportTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function map_ユーザー情報のフォーマットが正常に行われる()
     {
         $this->assertEquals(

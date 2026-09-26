@@ -13,9 +13,7 @@ class IndexActionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function スタッフ認証メールが送信される()
     {
         Notification::fake();
@@ -31,9 +29,7 @@ class IndexActionTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function デモモードの場合はスタッフモードホームへリダイレクトされる()
     {
         Config::set('portal.enable_demo_mode', true);

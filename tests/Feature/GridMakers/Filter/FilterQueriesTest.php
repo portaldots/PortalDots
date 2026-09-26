@@ -9,9 +9,7 @@ use Tests\TestCase;
 
 class FilterQueriesTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function constructor_正常()
     {
         $queries = [
@@ -24,9 +22,7 @@ class FilterQueriesTest extends TestCase
         $this->assertInstanceOf(FilterQueries::class, $obj);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function constructor_引数配列に違うオブジェクトが入っていたら例外が発生する()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -40,9 +36,7 @@ class FilterQueriesTest extends TestCase
         new FilterQueries($queries);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function fromArray()
     {
         $obj = FilterQueries::fromArray([
@@ -78,9 +72,7 @@ class FilterQueriesTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function fromJson()
     {
         $obj = FilterQueries::fromJson(json_encode([

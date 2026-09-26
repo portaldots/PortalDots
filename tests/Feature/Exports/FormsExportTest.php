@@ -53,9 +53,7 @@ class FormsExportTest extends TestCase
         $this->form->answerableTags()->attach($this->tag->id);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function map_フォーム情報のフォーマットが正常に行われる()
     {
         $this->assertEquals(

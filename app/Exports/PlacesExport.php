@@ -12,7 +12,7 @@ class PlacesExport implements FromCollection, WithHeadings, WithMapping
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function collection(): \Illuminate\Support\Enumerable
     {
         return Place::with('circles')->get();
     }

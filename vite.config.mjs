@@ -27,6 +27,7 @@ export default defineConfig({
     }),
   ],
   resolve: {
+    dedupe: ["@codemirror/state"],
     alias: {
       "@": "/resources",
       // ブラウザー上でVueテンプレートをコンパイルする必要があるため、フルビルド版のVueを利用する。

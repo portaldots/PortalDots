@@ -61,9 +61,7 @@ class DestroyActionTest extends TestCase
         $this->circle->tags()->attach($this->tag->id);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 企画を削除すると関連する情報も削除される()
     {
         Permission::create(['name' => 'staff.circles.delete']);
@@ -83,9 +81,7 @@ class DestroyActionTest extends TestCase
         $this->assertDatabaseMissing('booths', ['circle_id' => $this->circle->id]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合は企画を削除できない()
     {
         $responce = $this->actingAs($this->staff)

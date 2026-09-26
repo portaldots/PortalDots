@@ -21,27 +21,21 @@ class FilterableKeyBelongsToOptionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function constructor()
     {
         $obj = $this->instantiate();
         $this->assertInstanceOf(FilterableKeyBelongsToOptions::class, $obj);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getTo()
     {
         $obj = $this->instantiate();
         $this->assertEquals('users', $obj->getTo());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getKeys()
     {
         $obj = $this->instantiate();
@@ -55,9 +49,7 @@ class FilterableKeyBelongsToOptionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function jsonSerialize()
     {
         $obj = $this->instantiate();

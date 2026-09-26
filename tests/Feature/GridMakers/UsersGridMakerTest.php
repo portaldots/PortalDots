@@ -25,9 +25,7 @@ class UsersGridMakerTest extends TestCase
         CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-08 00:00:00'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function map()
     {
         $user = factory(User::class)->make([
@@ -43,7 +41,7 @@ class UsersGridMakerTest extends TestCase
         $this->assertSame('2020/02/02 02:02:02', $result['updated_at']);
     }
 
-    public function formatLastAccessedAt_provider()
+    public static function formatLastAccessedAt_provider()
     {
         return [
             [new CarbonImmutable('2020-02-07 23:23:23'), '1時間以内'],
@@ -53,10 +51,8 @@ class UsersGridMakerTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider formatLastAccessedAt_provider
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider("formatLastAccessedAt_provider")]
     public function formatLastAccessedAt(CarbonImmutable $last_accessed_at, string $expected)
     {
         $user = factory(User::class)->make([

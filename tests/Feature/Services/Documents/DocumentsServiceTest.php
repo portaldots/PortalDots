@@ -31,9 +31,7 @@ class DocumentsServiceTest extends TestCase
         $this->staff = factory(User::class)->state('staff')->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function createDocument()
     {
         Storage::fake('local');
@@ -64,9 +62,7 @@ class DocumentsServiceTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function updateDocument_ファイルはアップデートせずに更新できる()
     {
         $document = $this->documentsService->createDocument(
@@ -97,9 +93,7 @@ class DocumentsServiceTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function updateDocument_ファイルのアップデートができる()
     {
         Storage::fake('local');
@@ -136,9 +130,7 @@ class DocumentsServiceTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function deleteDocument_ファイルの削除ができる()
     {
         Storage::fake('local');

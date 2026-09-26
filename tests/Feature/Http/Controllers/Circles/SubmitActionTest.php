@@ -39,10 +39,8 @@ class SubmitActionTest extends BaseTestCase
         $this->circle->save();
     }
 
-    /**
-     * @test
-     * @dataProvider 受付期間中かどうかに応じてリクエストを許可する_provider
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider("受付期間中かどうかに応じてリクエストを許可する_provider")]
     public function 受付期間中かどうかに応じてリクエストを許可する(
         CarbonImmutable $today,
         bool $is_answerable
@@ -76,7 +74,7 @@ class SubmitActionTest extends BaseTestCase
         }
     }
 
-    public function 受付期間中かどうかに応じてリクエストを許可する_provider()
+    public static function 受付期間中かどうかに応じてリクエストを許可する_provider()
     {
         return [
             '受付開始はまだまだ先' => [new CarbonImmutable('2019-12-25 23:42:22'), false],
@@ -89,9 +87,7 @@ class SubmitActionTest extends BaseTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 企画メンバーが規定の人数に達していない場合は参加登録の提出はできない()
     {
         // 規定の人数 = 2
@@ -123,9 +119,7 @@ class SubmitActionTest extends BaseTestCase
         $response->assertRedirect(route('circles.users.index', ['circle' => $this->circle]));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 企画参加登録の提出時時点の企画の更新日時がデータベースと一致しない場合は参加登録の提出はできない()
     {
         // 受付期間内
@@ -153,9 +147,7 @@ class SubmitActionTest extends BaseTestCase
         $response->assertRedirect(route('circles.confirm', ['circle' => $this->circle]));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 参加登録機能が非公開のときは提出できない()
     {
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
@@ -181,9 +173,7 @@ class SubmitActionTest extends BaseTestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 他企画に成り済ました回答はできない()
     {
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
@@ -210,9 +200,7 @@ class SubmitActionTest extends BaseTestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 副責任者は企画を提出できない()
     {
         $member = factory(User::class)->create();

@@ -18,12 +18,12 @@
             <form method="post" action="{{ route('logout') }}">
                 @csrf
 
-                <div class="form-group">
+                <div class="mb-3">
                     <button class="btn is-primary is-block" type="submit">
                         ログアウト
                     </button>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <a href="javascript:history.back()" class="btn is-secondary is-block">
                         キャンセル
                     </a>

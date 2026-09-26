@@ -6,6 +6,8 @@ namespace App\Services\Emails;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 use App\Eloquents\User;
 use App\Eloquents\Email;
 use App\Mail\Emails\SendEmailServiceMailable;
@@ -52,9 +54,16 @@ class SendEmailService
         foreach ($emails as $email) {
             $now = now();
 
-            // ロック処理
-            $email->locked_at = $now;
-            $email->save();
+            // 取得後に別のジョブが処理したメールを送信しないよう、条件付きでロックする。
+            $claimed = Email::whereKey($email->id)
+                ->whereNull('locked_at')
+                ->whereNull('sent_at')
+                ->where('count_failed', '<', self::NUM_RETRY_PER_EMAIL_ADDRESS)
+                ->update(['locked_at' => $now]);
+            if ($claimed === 0) {
+                continue;
+            }
+            $email->refresh();
 
             try {
                 self::sendEmail(
@@ -68,12 +77,17 @@ class SendEmailService
                 $email->sent_at = $now;
                 $email->locked_at = null;
                 $email->save();
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 // 送信失敗したので失敗カウントを1つ追加
                 ++$email->count_failed;
                 ++$count_failed_now;
 
-                // TODO: エラーの内容をログに残せたら良さそう
+                // メール本文、宛先や認証情報を含み得る例外メッセージは記録しない。
+                Log::warning('メールの送信に失敗しました。', [
+                    'email_id' => $email->id,
+                    'attempt' => $email->count_failed,
+                    'exception_class' => get_class($e),
+                ]);
 
                 // ロック解除
                 $email->locked_at = null;
@@ -82,12 +96,12 @@ class SendEmailService
                 // エラーになった場合、次回CRONが起動した時に送信再試行する
             }
 
-            // 現在実行中の runJob で、失敗回数が self::NUM_RETRY_PER_JOB 回を超えたら
+            // 現在実行中の runJob で、失敗回数が self::NUM_RETRY_PER_JOB 回に達したら
             // サーバー側の設定ミスなどが考えられるので、処理を中止する
-            if ($count_failed_now > self::NUM_RETRY_PER_JOB) {
-                // TODO: 管理者にメールするなりログに書き込むなりする...
-
-                // とりあえず強制終了
+            if ($count_failed_now >= self::NUM_RETRY_PER_JOB) {
+                Log::error('メール送信の失敗回数が上限に達したため、今回の処理を中断しました。', [
+                    'failed_count' => $count_failed_now,
+                ]);
                 break;
             }
 
@@ -121,14 +135,9 @@ class SendEmailService
      */
     public static function isServiceOperational()
     {
-        $emails = Email::whereNull('sent_at')
-                    ->where('count_failed', '===', 0)
+        return !Email::whereNull('sent_at')
+                    ->where('count_failed', '=', 0)
                     ->where('created_at', '<', now()->subDay())
-                    ->get();
-
-        if ($emails->isEmpty()) {
-            return true;
-        }
-        return false;
+                    ->exists();
     }
 }

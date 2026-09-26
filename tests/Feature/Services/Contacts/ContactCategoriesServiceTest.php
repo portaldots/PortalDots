@@ -33,9 +33,7 @@ class ContactCategoriesServiceTest extends TestCase
         $this->contactCategory = factory(ContactCategory::class)->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function send_ContactCategoryへメール送信ができる()
     {
         Mail::fake();

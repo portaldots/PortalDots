@@ -43,9 +43,7 @@ class ExportActionTest extends TestCase
         $this->user->circles()->attach($this->circle->id, ['is_leader' => true]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 企画情報をCSVでダウンロードできる()
     {
         Permission::create(['name' => 'staff.circles.export']);
@@ -64,9 +62,7 @@ class ExportActionTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合はCSVをダウンロードできない()
     {
         $this->actingAs($this->staff)

@@ -1,10 +1,10 @@
 <template>
   <form-item :item_id="question_id" type_label="ファイルアップロード">
     <template v-slot:content>
-      <div class="form-group mb-0">
+      <div class="mb-0">
         <label class="mb-1">
           {{ name }}
-          <span class="badge badge-danger" v-if="is_required">必須</span>
+          <span class="badge text-bg-danger" v-if="is_required">必須</span>
         </label>
         <p class="form-text text-muted mb-2">
           {{ description }}
@@ -14,7 +14,7 @@
         </template>
         <template v-else>
           <p>
-            <i class="fa fa-exclamation-triangle mr-1"></i>
+            <i class="fa fa-exclamation-triangle me-1"></i>
             <b
               >ファイルアップロードを受け付けるには「許可される拡張子」を1つ以上指定してください</b
             >

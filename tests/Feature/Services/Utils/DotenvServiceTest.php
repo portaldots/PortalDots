@@ -12,9 +12,7 @@ use Jackiedo\DotenvEditor\Exceptions\KeyNotFoundException;
 
 class DotenvServiceTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getValue_値が存在すれば取得できる()
     {
         $this->mock(DotenvEditor::class, function ($mock) {
@@ -26,9 +24,7 @@ class DotenvServiceTest extends TestCase
         $this->assertSame('exampleValue', $dotenvService->getValue('EXAMPLE_KEY'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getValue_値が存在しなければデフォルト値を返す()
     {
         $this->mock(DotenvEditor::class, function ($mock) {
@@ -43,9 +39,7 @@ class DotenvServiceTest extends TestCase
         $this->assertSame('defaultValue', $dotenvService->getValue('EXAMPLE_KEY', 'defaultValue'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getValue_値が存在せずデフォルト値も未設定の場合はnullを返す()
     {
         $this->mock(DotenvEditor::class, function ($mock) {
@@ -57,9 +51,7 @@ class DotenvServiceTest extends TestCase
         $this->assertSame(null, $dotenvService->getValue('EXAMPLE_KEY'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function saveKeys()
     {
         $this->mock(DotenvEditor::class, function ($mock) {

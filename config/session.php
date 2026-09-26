@@ -50,6 +50,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Session Serialization
+    |--------------------------------------------------------------------------
+    |
+    | Keep PHP serialization during this upgrade so existing sessions remain
+    | readable. Changing to JSON would invalidate every active session.
+    |
+    */
+
+    'serialization' => 'php',
+
+    /*
+    |--------------------------------------------------------------------------
     | Session File Location
     |--------------------------------------------------------------------------
     |

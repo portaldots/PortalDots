@@ -5,32 +5,36 @@ on:
 
 name: Upload Internal Nightly Version
 
+permissions:
+  contents: read
+
 jobs:
   upload:
     name: Deploy nightly build to internal environment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'
+          php-version: '8.3'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v7
         with:
-          node-version: '16'
-          cache: yarn
+          node-version: '22'
+      - name: Install Yarn
+        run: npm install -g yarn@1.22.22
       - name: Prepare compile
         run: |
-          rsync -av --update --delete --stats ./ ./dist/ --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='.github/' --exclude='/vendor/' --exclude='node_modules/' --exclude='.circleci/' --exclude='tests/' --exclude='phpunit.xml' --exclude='phpcs.xml' --exclude='.editorconfig' --exclude='.env.testing' --exclude='.eslintrc.js' --exclude='.gitattributes' --exclude='.gitignore' --exclude='.prettierrc' >& /dev/null
+          rsync -av --update --delete --stats ./ ./dist/ --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='.github/' --exclude='/vendor/' --exclude='node_modules/' --exclude='.circleci/' --exclude='tests/' --exclude='phpunit.xml' --exclude='phpcs.xml' --exclude='.editorconfig' --exclude='.env.testing' --exclude='eslint.config.js' --exclude='.gitattributes' --exclude='.gitignore' --exclude='.prettierrc' >& /dev/null
       - name: Get composer cache directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
         working-directory: dist
       - name: Cache PHP dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -39,7 +43,7 @@ jobs:
         run: composer install --optimize-autoloader --no-dev
         working-directory: dist
       - name: Install JS dependencies
-        run: yarn install --ignore-scripts && yarn patch-package
+        run: yarn install --frozen-lockfile
         working-directory: dist
       - name: Compile assets
         run: yarn run build
@@ -49,13 +53,15 @@ jobs:
         with:
           key: ${{ secrets.INTERNAL_SERVER_SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.INTERNAL_SERVER_SSH_KNOWN_HOSTS }}
+      - name: Check remote PHP runtime
+        run: ssh ${{ secrets.INTERNAL_SERVER_SSH_HOST }} /usr/local/php83/bin/php --version
       - name: Set maintainance mode
-        run: ssh ${{ secrets.INTERNAL_SERVER_SSH_HOST }} 'cd ${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}; /usr/local/php80/bin/php artisan down;'
+        run: ssh ${{ secrets.INTERNAL_SERVER_SSH_HOST }} 'cd ${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}; /usr/local/php83/bin/php artisan down;'
       - name: Upload
         run: |
           rsync -acrvz --progress --include='artisan' --include='app' --include='app/**' --include='bootstrap' --include='bootstrap/**' --include='config' --include='config/**' --include='database' --include='database/**' --include='resources' --include='resources/**' --include='routes' --include='routes/**' --include='vendor' --include='vendor/**' --include='public' --include='public/index.php' --include='public/build' --include='public/build/**' --exclude='*' ./ ${{ secrets.INTERNAL_SERVER_SSH_HOST }}:${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}
         working-directory: dist
       - name: Migration
-        run: ssh ${{ secrets.INTERNAL_SERVER_SSH_HOST }} 'cd ${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}; /usr/local/php80/bin/php artisan migrate --force'
+        run: ssh ${{ secrets.INTERNAL_SERVER_SSH_HOST }} 'cd ${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}; /usr/local/php83/bin/php artisan migrate --force'
       - name: Recover from maintainance mode
-        run: ssh ${{ secrets.INTERNAL_SERVER_SSH_HOST }} 'cd ${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}; /usr/local/php80/bin/php artisan up;'
+        run: ssh ${{ secrets.INTERNAL_SERVER_SSH_HOST }} 'cd ${{ secrets.INTERNAL_SERVER_PATH_NIGHTLY }}; /usr/local/php83/bin/php artisan up;'

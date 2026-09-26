@@ -38,10 +38,8 @@ class EditActionTest extends TestCase
         $this->user->circles()->attach($this->circle->id, ['is_leader' => true]);
     }
 
-    /**
-     * @test
-     * @dataProvider 受付期間中かどうかに応じて表示が切り替わる_provider
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider("受付期間中かどうかに応じて表示が切り替わる_provider")]
     public function 受付期間中かどうかに応じて表示が切り替わる(
         CarbonImmutable $today,
         bool $is_answerable
@@ -67,7 +65,7 @@ class EditActionTest extends TestCase
         }
     }
 
-    public function 受付期間中かどうかに応じて表示が切り替わる_provider()
+    public static function 受付期間中かどうかに応じて表示が切り替わる_provider()
     {
         return [
             '受付開始はまだまだ先' => [new CarbonImmutable('2019-12-25 23:42:22'), false],
@@ -80,9 +78,7 @@ class EditActionTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 自分が所属していない企画の回答にはアクセスできない()
     {
         $anotherUser = factory(User::class)->create();
@@ -101,9 +97,7 @@ class EditActionTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 非公開のフォームにはアクセスできない()
     {
         $privateForm = factory(Form::class)->states('private')->create();

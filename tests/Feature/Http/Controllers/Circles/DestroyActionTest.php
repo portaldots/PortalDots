@@ -46,9 +46,7 @@ class DestroyActionTest extends BaseTestCase
         $this->anotherUser = factory(User::class)->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 参加登録未提出の企画を削除できる()
     {
         $this->assertDatabaseHas('circles', [
@@ -100,9 +98,7 @@ class DestroyActionTest extends BaseTestCase
         $response->assertRedirect(route('home'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function リーダー以外のメンバーは企画を削除できない()
     {
         $response = $this->actingAs($this->nonLeader)
@@ -129,9 +125,7 @@ class DestroyActionTest extends BaseTestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 部外者は企画を削除できない()
     {
         $response = $this->actingAs($this->anotherUser)
@@ -158,9 +152,7 @@ class DestroyActionTest extends BaseTestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 提出済みの企画は削除できない()
     {
         $this->circle->submitted_at = now();

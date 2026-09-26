@@ -19,6 +19,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Serializable Classes
+    |--------------------------------------------------------------------------
+    |
+    | Object unserialization is disabled unless the application explicitly
+    | lists the classes that may be restored from cached payloads.
+    |
+    */
+
+    'serializable_classes' => [
+        App\Services\Utils\ValueObjects\Release::class,
+        App\Services\Utils\ValueObjects\Version::class,
+        Carbon\CarbonImmutable::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Cache Stores
     |--------------------------------------------------------------------------
     |

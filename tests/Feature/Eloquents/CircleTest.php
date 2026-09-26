@@ -15,9 +15,7 @@ class CircleTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getParticipationFormAnswer()
     {
         // 準備

@@ -102,9 +102,7 @@ class CheckPermissionsTest extends TestCase
         }, []);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function permissionsに全ての権限が含まれているか()
     {
         $defined_permissions = array_keys(Permission::getDefinedPermissions());
@@ -116,9 +114,7 @@ class CheckPermissionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限があれば各機能のトップページにアクセスできる()
     {
         foreach ($this->getRouteNamePrefixesByPermissions() as $route_name_prefix => $permissions) {
@@ -144,9 +140,7 @@ class CheckPermissionsTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がなければ各機能のトップページにアクセスできない()
     {
         foreach ($this->getRouteNamePrefixesByPermissions() as $route_name_prefix => $permissions) {

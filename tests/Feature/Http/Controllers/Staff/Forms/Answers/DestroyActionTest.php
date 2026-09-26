@@ -49,9 +49,7 @@ class DestroyActionTest extends TestCase
         $this->staff = factory(User::class)->states('staff')->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 回答を削除できる()
     {
         Permission::create(['name' => 'staff.forms.answers.delete']);
@@ -74,9 +72,7 @@ class DestroyActionTest extends TestCase
         $this->assertDatabaseCount('answer_details', 2);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合はフォームを削除できない()
     {
         $response = $this->actingAs($this->staff)

@@ -33,9 +33,7 @@ class DestroyActionTest extends TestCase
         $this->document = factory(Document::class)->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function DocumentsServiceのdeleteDocumentが呼び出される()
     {
         Permission::create(['name' => 'staff.documents.delete']);
@@ -57,9 +55,7 @@ class DestroyActionTest extends TestCase
         $response->assertRedirect(route('staff.documents.index'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合は配布資料を削除できない()
     {
         $response = $this->actingAs($this->staff)

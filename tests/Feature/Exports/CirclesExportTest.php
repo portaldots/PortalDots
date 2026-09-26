@@ -108,9 +108,7 @@ class CirclesExportTest extends TestCase
         $this->tag->circles()->attach($this->circle->id);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function map_企画情報のフォーマットが正常に行われる()
     {
         $circlesExport = new CirclesExport();
@@ -139,9 +137,7 @@ class CirclesExportTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function map_参加種別を指定している場合はカスタムフォームの回答も出力される()
     {
         $circlesExport = new CirclesExport($this->participationType);
@@ -171,9 +167,7 @@ class CirclesExportTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function headings_ヘッダーが作成される()
     {
         $circlesExport = new CirclesExport();
@@ -202,9 +196,7 @@ class CirclesExportTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function headings_参加種別を指定している場合はカスタムフォームの設問も出力される()
     {
         $circlesExport = new CirclesExport($this->participationType);

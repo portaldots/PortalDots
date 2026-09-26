@@ -15,9 +15,7 @@ class HomeActionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 未インストール状態の場合はインストーラが表示される()
     {
         $this->mock(DotenvService::class, function ($mock) {
@@ -29,9 +27,7 @@ class HomeActionTest extends TestCase
         $response->assertRedirect(route('install.index'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 未ログイン状態でログイン画面への導線が表示される()
     {
         $response = $this->get(route('home'));
@@ -40,9 +36,7 @@ class HomeActionTest extends TestCase
         $response->assertSee('home-header');
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function メール認証が未完了の時アラートが表示される()
     {
         $user = factory(User::class)->states('not_verified')->create();
@@ -55,9 +49,7 @@ class HomeActionTest extends TestCase
         $response->assertSee($user->univemail);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function メール認証完了済の場合はアラートを表示しない()
     {
         $user = factory(User::class)->create();
@@ -68,9 +60,7 @@ class HomeActionTest extends TestCase
         $response->assertDontSee('確認メールを再送');
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 非公開のお知らせは一覧に表示されない()
     {
         // 固定されたお知らせ
@@ -108,9 +98,7 @@ class HomeActionTest extends TestCase
         $response->assertSee($publicPageTitle);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 参加登録フォームは一覧に表示されない()
     {
         $participationFormName = 'this is a registration for participation form';

@@ -25,20 +25,20 @@
                     </div>
                 @endif
 
-                <div class="form-group">
-                    <label for="login_id" class="sr-only">{{ config('portal.student_id_name') }}または連絡先メールアドレス</label>
+                <div class="mb-3">
+                    <label for="login_id" class="visually-hidden">{{ config('portal.student_id_name') }}または連絡先メールアドレス</label>
                     <input id="login_id" type="text" class="form-control" name="login_id" value="{{ old('login_id') }}"
                         required autocomplete="username" autofocus
                         placeholder="{{ config('portal.student_id_name') }}または連絡先メールアドレス">
                 </div>
 
-                <div class="form-group">
-                    <label for="password" class="sr-only">パスワード</label>
+                <div class="mb-3">
+                    <label for="password" class="visually-hidden">パスワード</label>
                     <input id="password" type="password" class="form-control" name="password" required
                         autocomplete="current-password" placeholder="パスワード">
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <div class="form-checkbox">
                         <label class="form-checkbox__label">
                             <input class="form-checkbox__input" type="checkbox" name="remember" id="remember"
@@ -54,7 +54,7 @@
                     </a>
                 </p>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <button type="submit" class="btn is-primary is-block">
                         <strong>ログイン</strong>
                     </button>
