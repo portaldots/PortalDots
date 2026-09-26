@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Email::class, function (Faker $faker) {
     return [
-        'subject' => $faker->text,
+        'subject' => $faker->text(191),
         'body' => $faker->text,
         'email_to' => $faker->email,
         'email_to_name' => $faker->name,
