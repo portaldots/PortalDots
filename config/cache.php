@@ -27,7 +27,11 @@ return [
     |
     */
 
-    'serializable_classes' => false,
+    'serializable_classes' => [
+        App\Services\Utils\ValueObjects\Release::class,
+        App\Services\Utils\ValueObjects\Version::class,
+        Carbon\CarbonImmutable::class,
+    ],
 
     /*
     |--------------------------------------------------------------------------
