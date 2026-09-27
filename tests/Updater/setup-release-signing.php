@@ -107,21 +107,47 @@ try {
         || countSecretInput($secretWrites, 'UPDATER_RENEWAL_SIGNING_KEY', hash('sha256', $renewalSecret)) !== 2) {
         throw new RuntimeException('Private keys were not sent only through expected secret stdin streams.');
     }
+    writeState($statePath, ['protected' => false, 'existing_secret' => false, 'wide_policy' => false,
+        'bad_bypass' => false, 'excluded' => false]);
+    file_put_contents($logPath, '');
+    $shellKeys = $root . '/shell keys';
+    $shellCheck = runSetup($repository, $shellKeys, $environment, [], true);
+    if ($shellCheck['status'] !== 2 || file_exists($shellKeys) || hasMutation(readLog($logPath))) {
+        throw new RuntimeException('Shell dry run failed or mutated state: ' . $shellCheck['stderr']);
+    }
+    $shellApply = runSetup($repository, $shellKeys, $environment, ['--apply'], true);
+    if ($shellApply['status'] !== 0 || !is_file($shellKeys . '/release.key')) {
+        throw new RuntimeException('Shell one-command setup failed: ' . $shellApply['stderr']);
+    }
+    writeState($statePath, ['protected' => true, 'existing_secret' => true, 'wide_policy' => false,
+        'bad_bypass' => false, 'excluded' => false]);
+    $savedKey = file_get_contents($shellKeys . '/release.key');
+    $shellRepeat = runSetup($repository, $shellKeys, $environment, ['--apply'], true);
+    if ($shellRepeat['status'] === 0 || file_get_contents($shellKeys . '/release.key') !== $savedKey) {
+        throw new RuntimeException('Repeated shell setup replaced existing keys or secrets.');
+    }
     fwrite(STDOUT, "release signing setup remained fail-closed and kept secrets off argv/output\n");
 } finally {
     removeTree($root);
 }
 
 /** @param list<string> $extra @return array{status: int, stdout: string, stderr: string} */
-function runSetup(string $repository, string $keyDir, array $environment, array $extra = []): array
-{
-    $command = array_merge([PHP_BINARY, $repository . '/updater/tools/setup-release-signing.php',
+function runSetup(
+    string $repository,
+    string $keyDir,
+    array $environment,
+    array $extra = [],
+    bool $shell = false
+): array {
+    $entry = $shell ? ['sh', $repository . '/updater/tools/setup-release-signing.sh']
+        : [PHP_BINARY, $repository . '/updater/tools/setup-release-signing.php'];
+    $command = array_merge($entry, [
         '--repo', 'portaldots/PortalDots', '--key-dir', $keyDir], $extra);
     $process = proc_open($command, [
         0 => ['file', '/dev/null', 'r'],
         1 => ['pipe', 'w'],
         2 => ['pipe', 'w'],
-    ], $pipes, $repository, array_merge($_ENV, $environment));
+    ], $pipes, $shell ? sys_get_temp_dir() : $repository, array_merge($_ENV, $environment));
     if (!is_resource($process)) {
         throw new RuntimeException('Cannot start setup helper.');
     }

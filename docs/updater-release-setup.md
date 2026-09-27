@@ -2,41 +2,31 @@
 
 ## 初回設定
 
-この設定は、リポジトリ管理権限を持つ端末から1回だけ行います。秘密鍵の保存先には、Git checkoutの外側にあるバックアップ対象ディレクトリを指定します。
+この設定は、PHP 8.3以上（sodium拡張）、Git、ログイン済みのGitHub CLI（`gh`）がある、リポジトリ管理権限を持つ端末から1回だけ行います。
+
+確認だけ行う場合：
 
 ```console
-php updater/tools/setup-release-signing.php \
-  --repo portaldots/PortalDots \
-  --key-dir "$HOME/.portaldots-release-keys"
+sh updater/tools/setup-release-signing.sh
 ```
 
-既定動作は読み取り専用です。GitHubのタグruleset、`release-signing` Environment、`release-renewal` Environmentを確認し、不足している保護を表示します。GitHubの設定や鍵ファイルは変更しません。
-
-表示内容を確認後、鍵を生成します。
+初回設定をまとめて実行する場合：
 
 ```console
-php updater/tools/setup-release-signing.php \
-  --repo portaldots/PortalDots \
-  --key-dir "$HOME/.portaldots-release-keys" \
-  --generate
+sh updater/tools/setup-release-signing.sh --apply
 ```
 
-鍵をGitHubへ登録し、保護設定を作成する場合だけ `--apply` を付けます。
+鍵を `$HOME/.portaldots-release-keys` に生成し、GitHubの保護設定と鍵登録を行います。既存の鍵は再生成しません。途中で失敗した場合も鍵を削除せず、表示された原因を確認してください。
 
-```console
-php updater/tools/setup-release-signing.php \
-  --repo portaldots/PortalDots \
-  --key-dir "$HOME/.portaldots-release-keys" \
-  --apply
-```
+対象リポジトリと鍵の保存先は `--repo OWNER/REPO --key-dir PATH` で変更できます。鍵の保存先はGit checkoutの外側を指定し、親ディレクトリをあらかじめ作成してください。確認だけの実行は鍵ファイルやGitHub設定を変更しません。
 
 `--apply` は次の順に処理します。
 
 1. `v*` タグの作成・更新・削除を管理者へ制限するrulesetを作成する
 2. `release-signing` を `v*` タグだけ、`release-renewal` をGitHubから取得した既定ブランチだけに制限する
 3. 保護設定を再取得して確認する
-4. root署名鍵を `release-signing` のみに、renewal署名鍵を両Environmentへ標準入力で登録する
-5. 2つの公開鍵をRepository Variablesへ登録する
+4. 2つの公開鍵をRepository Variablesへ登録する
+5. root署名鍵を `release-signing` のみに、renewal署名鍵を両Environmentへ標準入力で登録する
 
 秘密鍵はコマンド引数、標準出力、Git、Release assetへ出力しません。既存secretや値の異なる公開鍵variableがある場合は上書きせず停止します。既存Environmentのrequired reviewerなども変更しません。鍵のバックアップはアクセスを制限し、リポジトリとは別に保管してください。
 
