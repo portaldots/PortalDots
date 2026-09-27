@@ -252,6 +252,10 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{document}/edit', 'Staff\Documents\EditAction')->name('edit')->middleware(['can:staff.documents.edit']);
                 Route::patch('/{document}', 'Staff\Documents\UpdateAction')->name('update')->middleware(['can:staff.documents.edit']);
                 Route::get('/{document}', 'Staff\Documents\ShowAction')->name('show')->middleware(['can:staff.documents.read']);
+                Route::get('/{document}/versions/{version:version}', 'Staff\Documents\VersionsShowAction')
+                    ->name('versions.show')
+                    ->middleware(['can:staff.documents.read'])
+                    ->scopeBindings();
                 Route::delete('/{document}', 'Staff\Documents\DestroyAction')->name('destroy')->middleware(['can:staff.documents.delete']);
             });
 

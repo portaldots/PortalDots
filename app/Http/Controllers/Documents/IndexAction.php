@@ -22,7 +22,9 @@ class IndexAction extends Controller
 
     public function __invoke()
     {
-        $documents = Document::visibleTo(Auth::user(), $this->selectorService->getCircle())->paginate(10);
+        $documents = Document::visibleTo(Auth::user(), $this->selectorService->getCircle())
+            ->with('versions')
+            ->paginate(10);
 
         if ($documents->currentPage() > $documents->lastPage()) {
             return redirect($documents->url($documents->lastPage()));

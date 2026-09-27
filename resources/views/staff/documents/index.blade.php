@@ -11,6 +11,7 @@
                 path: 'ファイル',
                 size: 'サイズ(バイト)',
                 extension: 'ファイル形式',
+                version: '版',
                 description: '説明',
                 is_public: '公開',
                 is_important: '重要',
