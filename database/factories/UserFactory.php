@@ -1,9 +1,11 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+
 use App\Eloquents\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +33,7 @@ $factory->define(User::class, function (Faker $faker) {
         'univemail_verified_at' => now(),
         'signed_up_at' => now(),
         'last_accessed_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'password' => Hash::make('password'),
         'remember_token' => Str::random(10),
     ];
 });

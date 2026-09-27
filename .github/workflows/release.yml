@@ -6,42 +6,38 @@ on:
 
 name: Upload Release Asset
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'
+          php-version: '8.3'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Yarn Cache
-      # - name: Get yarn cache directory path
-      #   id: yarn-cache-dir-path
-      #   run: echo "::set-output name=dir::$(yarn cache dir)"
-      # - name: Restore Yarn Cache
-      #   uses: actions/cache@v1
-      #   id: yarn-cache
-      #   with:
-      #     path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-      #     key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-yarn-
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Install Yarn
+        run: npm install -g yarn@1.22.22
       # Compile and Release
       - name: Prepare compile
         # vendor ディレクトリの除外には、最初にスラッシュをつけている。これにより resources フォルダ内にある vendor ディレクトリが除外されてしまうのを防いでいる
         run: |
-          rsync -av --update --delete --stats ./ ./dist/ --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='.github/' --exclude='/vendor/' --exclude='node_modules/' --exclude='.circleci/' --exclude='tests/' --exclude='phpunit.xml' --exclude='phpcs.xml' --exclude='.editorconfig' --exclude='.env.testing' --exclude='.eslintrc.js' --exclude='.gitattributes' --exclude='.gitignore' --exclude='.prettierrc' >& /dev/null
+          rsync -av --update --delete --stats ./ ./dist/ --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='.github/' --exclude='/vendor/' --exclude='node_modules/' --exclude='.circleci/' --exclude='tests/' --exclude='phpunit.xml' --exclude='phpcs.xml' --exclude='.editorconfig' --exclude='.env.testing' --exclude='eslint.config.js' --exclude='.gitattributes' --exclude='.gitignore' --exclude='.prettierrc' >& /dev/null
       - name: Get composer cache directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
         working-directory: dist
       - name: Cache PHP dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -50,7 +46,7 @@ jobs:
         run: composer install --optimize-autoloader --no-dev
         working-directory: dist
       - name: Install JS dependencies
-        run: yarn install --ignore-scripts && yarn patch-package
+        run: yarn install --frozen-lockfile
         working-directory: dist
       - name: Compile assets
         run: yarn run build
@@ -62,25 +58,10 @@ jobs:
         run: VERSION=`echo "$GITHUB_REF" | sed -e 's/refs\/tags\/v//g'`; sed -i -e "s/###VERSION_PLACEHOLDER###/$VERSION/g" "$RELEASE_INFO_PATH";
         working-directory: dist
       - name: Build project
-        run: zip -9 -r ../PortalDots.zip . -x node_modules/\* composer.json package.json yarn.lock vite.config.js patches/\*
+        run: zip -9 -r ../PortalDots.zip . -x node_modules/\* composer.json package.json yarn.lock vite.config.mjs patches/\*
         working-directory: dist
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Create draft release and upload archive
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: true
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./PortalDots.zip
-          asset_name: PortalDots.zip
-          asset_content_type: application/zip
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create "$RELEASE_TAG" PortalDots.zip --draft --title "$RELEASE_TAG" --notes ""

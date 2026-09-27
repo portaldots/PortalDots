@@ -12,7 +12,7 @@ class VersionTest extends TestCase
         parent::setUp();
     }
 
-    public function versionProvider()
+    public static function versionProvider()
     {
         return [
             ['1.0.0', new Version(1, 0, 0)],
@@ -28,10 +28,8 @@ class VersionTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider versionProvider
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider("versionProvider")]
     public function parse(string $input, ?Version $expected)
     {
         if ($expected === null) {

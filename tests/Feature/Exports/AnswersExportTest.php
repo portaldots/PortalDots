@@ -139,9 +139,7 @@ class AnswersExportTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function map_回答のフォーマットが正常に行われる()
     {
         $this->assertEquals(
@@ -160,9 +158,7 @@ class AnswersExportTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function headings_設問からヘッダーが作成される()
     {
         $this->assertEquals(

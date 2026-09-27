@@ -81,8 +81,8 @@ class Circle extends Model
         'notes',
     ];
 
-    protected $dates = [
-        'status_set_at',
+    protected $casts = [
+        'status_set_at' => 'datetime',
     ];
 
     public function participationType()

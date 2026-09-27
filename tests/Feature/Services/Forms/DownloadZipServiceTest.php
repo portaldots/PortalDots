@@ -63,7 +63,7 @@ class DownloadZipServiceTest extends TestCase
         $zip->close();
     }
 
-    /** @dataProvider invalidPaths */
+    #[\PHPUnit\Framework\Attributes\DataProvider('invalidPaths')]
     public function test_rejects_invalid_paths(array $paths)
     {
         Storage::put('private.txt', 'private content');
@@ -100,7 +100,7 @@ class DownloadZipServiceTest extends TestCase
         $this->app->make(DownloadZipService::class)->makeZip($this->form, ['answer_details/first.txt']);
     }
 
-    /** @dataProvider writeFailures */
+    #[\PHPUnit\Framework\Attributes\DataProvider('writeFailures')]
     public function test_removes_incomplete_archives_after_a_write_failure(bool $addResult, bool $closeResult)
     {
         $archivePath = null;

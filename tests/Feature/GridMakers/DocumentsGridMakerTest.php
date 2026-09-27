@@ -21,9 +21,7 @@ class DocumentsGridMakerTest extends TestCase
         $this->documentsGridMaker = App::make(DocumentsGridMaker::class);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function map()
     {
         $document = factory(Document::class)->make([

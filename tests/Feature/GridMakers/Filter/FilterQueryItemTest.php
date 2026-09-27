@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class FilterQueryItemTest extends TestCase
 {
-    public function operatorsProvider()
+    public static function operatorsProvider()
     {
         return [
             ['=', '='],
@@ -26,20 +26,17 @@ class FilterQueryItemTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider operatorsProvider
-     */
-    public function constructor_正常(string $operator)
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider("operatorsProvider")]
+    public function constructor_正常(string $operator, string $expectedOperator)
     {
         $obj = new FilterQueryItem('this_is_key.sub', $operator, 'hogehoge');
 
         $this->assertInstanceOf(FilterQueryItem::class, $obj);
+        $this->assertSame($expectedOperator, $obj->getOperator());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function constructor_必要な引数が空の場合は例外が発生する()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -47,9 +44,7 @@ class FilterQueryItemTest extends TestCase
         new FilterQueryItem('', '', 'hogehoge');
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function constructor_存在しない演算子が指定されたら例外が発生する()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -57,9 +52,7 @@ class FilterQueryItemTest extends TestCase
         new FilterQueryItem('this_is_key.sub', '<>', 'hogehoge');
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getFullKeyName()
     {
         $obj = new FilterQueryItem('this_is_key.sub', '=', 'hogehoge');
@@ -67,9 +60,7 @@ class FilterQueryItemTest extends TestCase
         $this->assertEquals('this_is_key.sub', $obj->getFullKeyName());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getMainKeyName()
     {
         $obj = new FilterQueryItem('this_is_key.sub', '=', 'hogehoge');
@@ -77,9 +68,7 @@ class FilterQueryItemTest extends TestCase
         $this->assertEquals('this_is_key', $obj->getMainKeyName());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getSubKeyName()
     {
         $obj = new FilterQueryItem('this_is_key.sub', '=', 'hogehoge');
@@ -87,10 +76,8 @@ class FilterQueryItemTest extends TestCase
         $this->assertEquals('sub', $obj->getSubKeyName());
     }
 
-    /**
-     * @test
-     * @dataProvider operatorsProvider
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider("operatorsProvider")]
     public function getOperator(string $input, string $output)
     {
         $obj = new FilterQueryItem('this_is_key.sub', $input, 'hogehoge');
@@ -98,9 +85,7 @@ class FilterQueryItemTest extends TestCase
         $this->assertEquals($output, $obj->getOperator());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function getValue()
     {
         $obj = new FilterQueryItem('this_is_key.sub', '=', 'hogehoge');

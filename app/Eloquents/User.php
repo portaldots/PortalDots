@@ -146,17 +146,15 @@ class User extends Authenticatable
      */
     protected $hidden = ['password', 'remember_token'];
 
-    protected $dates = [
-        'email_verified_at',
-        'univemail_verified_at',
-        'signed_up_at',
-        'last_accessed_at',
-    ];
-
     protected $casts = [
+        'password' => 'hashed',
         'is_staff' => 'bool',
         'is_admin' => 'bool',
         'is_verified_by_staff' => 'bool',
+        'email_verified_at' => 'datetime',
+        'univemail_verified_at' => 'datetime',
+        'signed_up_at' => 'datetime',
+        'last_accessed_at' => 'datetime',
     ];
 
     public function circles()
@@ -406,21 +404,21 @@ class User extends Authenticatable
             ->subDay()
             ->lte($last_accessed_at)
         ) {
-            return "{$last_accessed_at->diffInHours(now())}時間前";
+            return sprintf('%d時間前', (int) $last_accessed_at->diffInHours(now(), true));
         }
         if (
             now()
             ->subMonth()
             ->lte($last_accessed_at)
         ) {
-            return "{$last_accessed_at->diffInDays(now())}日前";
+            return sprintf('%d日前', (int) $last_accessed_at->diffInDays(now(), true));
         }
         if (
             now()
             ->subYear()
             ->lte($last_accessed_at)
         ) {
-            return "{$last_accessed_at->diffInMonths(now())}ヶ月前";
+            return sprintf('%dヶ月前', (int) $last_accessed_at->diffInMonths(now(), true));
         }
         return '1年以上前';
     }

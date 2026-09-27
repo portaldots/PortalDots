@@ -25,9 +25,7 @@ class UpdateActionTest extends TestCase
         $this->staff = factory(User::class)->states('staff')->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function DocumentsServiceのupdateDocumentが呼び出される()
     {
         Permission::create(['name' => 'staff.documents.edit']);
@@ -65,9 +63,7 @@ class UpdateActionTest extends TestCase
         $response->assertRedirect(route('staff.documents.edit', ['document' => $document]));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合は配布資料を更新できない()
     {
         $document = factory(Document::class)->create();

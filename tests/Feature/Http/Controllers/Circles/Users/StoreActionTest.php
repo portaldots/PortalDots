@@ -39,9 +39,7 @@ class StoreActionTest extends BaseTestCase
         CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 正しいトークンであれば招待を受け入れることができる()
     {
         $invitedUser = factory(User::class)->create();
@@ -72,9 +70,7 @@ class StoreActionTest extends BaseTestCase
         $response->assertRedirect(route('circles.show', ['circle' => $this->circle]));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 間違ったトークンでは企画のメンバーになれない()
     {
         $invitedUser = factory(User::class)->create();
@@ -98,9 +94,7 @@ class StoreActionTest extends BaseTestCase
         $response->assertStatus(404);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 提出済みの企画の招待は受け入れることができない()
     {
         $this->circle->submitted_at = now();

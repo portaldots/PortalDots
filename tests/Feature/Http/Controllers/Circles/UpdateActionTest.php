@@ -38,9 +38,7 @@ class UpdateActionTest extends BaseTestCase
         CarbonImmutable::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 責任者は企画の情報を更新できる()
     {
         $this->assertDatabaseHas('circles', [
@@ -73,9 +71,7 @@ class UpdateActionTest extends BaseTestCase
         $response->assertRedirect(route('circles.users.index', ['circle' => $this->circle]));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 副責任者は企画の情報を更新できない()
     {
         $member = factory(User::class)->create();
@@ -105,9 +101,7 @@ class UpdateActionTest extends BaseTestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 部外者は企画の情報を更新できない()
     {
         $anotherUser = factory(User::class)->create();
@@ -136,9 +130,7 @@ class UpdateActionTest extends BaseTestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 提出済みの企画の情報は更新できない()
     {
         $this->circle->submitted_at = now();

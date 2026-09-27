@@ -81,7 +81,7 @@ abstract class UploadTestCase extends TestCase
         $this->getUpload()->assertNotFound();
     }
 
-    /** @dataProvider nonUploadTypes */
+    #[\PHPUnit\Framework\Attributes\DataProvider('nonUploadTypes')]
     public function test_rejects_non_upload_questions(string $type)
     {
         $this->question->type = $type;
@@ -111,7 +111,7 @@ abstract class UploadTestCase extends TestCase
         $this->getUpload()->assertNotFound();
     }
 
-    /** @dataProvider invalidPaths */
+    #[\PHPUnit\Framework\Attributes\DataProvider('invalidPaths')]
     public function test_rejects_paths_outside_the_upload_directory(string $path)
     {
         Storage::put('private.txt', 'private content');

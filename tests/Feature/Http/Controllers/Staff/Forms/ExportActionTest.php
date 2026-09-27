@@ -45,9 +45,7 @@ class ExportActionTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function フォーム情報がCSVでダウンロードできる()
     {
         Permission::create(['name' => 'staff.forms.export']);
@@ -68,9 +66,7 @@ class ExportActionTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合はCSVをダウンロードできない()
     {
         $this->actingAs($this->staff)

@@ -21,7 +21,7 @@ class FormatTextServiceTest extends TestCase
         $this->formatTextService = App::make(FormatTextService::class);
     }
 
-    public function filesizeProvider()
+    public static function filesizeProvider()
     {
         return [
             [1000, '0.98KB'],
@@ -30,16 +30,14 @@ class FormatTextServiceTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider filesizeProvider
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider("filesizeProvider")]
     public function filesize($arg, $result)
     {
         $this->assertSame($result, $this->formatTextService->filesize($arg));
     }
 
-    public function escapeMarkdownProvider()
+    public static function escapeMarkdownProvider()
     {
         return [
             ['Hello, *World*!', 'Hello, \\*World\\*\!'],
@@ -58,10 +56,8 @@ class FormatTextServiceTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider escapeMarkdownProvider
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider("escapeMarkdownProvider")]
     public function escapeMarkdown($arg, $result)
     {
         $this->assertSame($result, $this->formatTextService->escapeMarkdown($arg));

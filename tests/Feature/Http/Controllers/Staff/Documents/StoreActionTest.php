@@ -27,9 +27,7 @@ class StoreActionTest extends TestCase
         $this->staff = factory(User::class)->states('staff')->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function DocumentsServiceのcreateDocumentが呼び出される()
     {
         Permission::create(['name' => 'staff.documents.edit']);
@@ -73,9 +71,7 @@ class StoreActionTest extends TestCase
         $response->assertRedirect(route('staff.documents.create'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合は配布資料を保存できない()
     {
         $filesize = 1;  // 単位 : KiB

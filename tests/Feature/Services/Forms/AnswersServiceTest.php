@@ -31,9 +31,7 @@ class AnswersServiceTest extends TestCase
         $this->answersSerivce = App::make(AnswersService::class);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function sendAll()
     {
         /** @var Collection */

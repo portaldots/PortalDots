@@ -10,9 +10,7 @@ class IndexActionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 非公開と固定表示のお知らせは一覧に表示されない()
     {
         // 固定されたお知らせ

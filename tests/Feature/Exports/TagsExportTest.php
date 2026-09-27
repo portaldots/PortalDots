@@ -61,9 +61,7 @@ class TagsExportTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function map_タグ情報のフォーマットが正常に行われる()
     {
         $this->assertEquals(

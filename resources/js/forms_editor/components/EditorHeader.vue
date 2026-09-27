@@ -31,7 +31,7 @@
     <div class="editor-header__actions" v-if="!custom_form">
       <a class="btn btn-link" :href="preview_url" target="_blank">プレビュー</a>
       <template v-if="is_public">
-        <span class="badge badge-primary mr-2">公開</span>
+        <span class="badge text-bg-primary me-2">公開</span>
         <button
           class="btn btn-danger"
           :disabled="is_saving"
@@ -41,7 +41,7 @@
         </button>
       </template>
       <template v-else>
-        <span class="badge badge-danger mr-2">非公開</span>
+        <span class="badge text-bg-danger me-2">非公開</span>
         <button
           class="btn btn-primary"
           :disabled="is_saving"

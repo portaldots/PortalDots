@@ -43,10 +43,8 @@ class StoreActionTest extends TestCase
         $this->selectorService = App::make(SelectorService::class);
     }
 
-    /**
-     * @test
-     * @dataProvider 受付期間中かどうかに応じてリクエストを許可する_provider
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider("受付期間中かどうかに応じてリクエストを許可する_provider")]
     public function 受付期間中かどうかに応じてリクエストを許可する(
         CarbonImmutable $today,
         bool $is_answerable
@@ -81,7 +79,7 @@ class StoreActionTest extends TestCase
         }
     }
 
-    public function 受付期間中かどうかに応じてリクエストを許可する_provider()
+    public static function 受付期間中かどうかに応じてリクエストを許可する_provider()
     {
         return [
             '受付開始はまだまだ先' => [new CarbonImmutable('2019-12-25 23:42:22'), false],
@@ -94,9 +92,7 @@ class StoreActionTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 参加登録フォームとして登録されているフォームには回答できない()
     {
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
@@ -129,9 +125,7 @@ class StoreActionTest extends TestCase
         $response->assertStatus(404);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 非公開のフォームには回答できない()
     {
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
@@ -158,9 +152,7 @@ class StoreActionTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 他企画に成り済ました回答はできない()
     {
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
@@ -187,9 +179,7 @@ class StoreActionTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 参加登録が不受理となった企画は回答できない()
     {
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
@@ -217,9 +207,7 @@ class StoreActionTest extends TestCase
         $response->assertStatus(404);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 回答可能なタグを持つ企画に所属している場合回答できる()
     {
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));
@@ -259,9 +247,7 @@ class StoreActionTest extends TestCase
         $response->assertStatus(302);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 回答可能なタグを持つ企画に所属していない場合回答できない()
     {
         Carbon::setTestNowAndTimezone(new CarbonImmutable('2020-02-16 02:25:15'));

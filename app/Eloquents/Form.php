@@ -37,13 +37,11 @@ class Form extends Model
         'is_public',
     ];
 
-    protected $dates = [
-        'open_at', 'close_at',
-    ];
-
     protected $casts = [
         'max_answers' => 'int',
         'is_public' => 'bool',
+        'open_at' => 'datetime',
+        'close_at' => 'datetime',
     ];
 
     public function getActivitylogOptions(): LogOptions

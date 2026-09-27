@@ -1,12 +1,11 @@
-version: '3'
 services:
     laravel.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.0
+            context: ./vendor/laravel/sail/runtimes/8.3
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: sail-8.0/app
+        image: sail-8.3/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -52,11 +51,11 @@ services:
     phpmyadmin:
         image: phpmyadmin
         environment:
-            PMA_HOST: 'mysql'
+            PMA_HOST: mysql
             PMA_USER: '${DB_USERNAME}'
             PMA_PASSWORD: '${DB_PASSWORD}'
         ports:
-            - 8080:80
+            - '8080:80'
         networks:
             - sail
     mailpit:

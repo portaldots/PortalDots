@@ -13,7 +13,7 @@
                 <list-view-item
                     href="{{ route('circles.selector.set', ['redirect_to' => $redirect_to, 'circle' => $circle]) }}">
                     <template v-slot:title>
-                        <i class="fa fa-users mr-2" area-hidden="true"></i>
+                        <i class="fa fa-users me-2" area-hidden="true"></i>
                         {{ $circle->name }}
                     </template>
                 </list-view-item>

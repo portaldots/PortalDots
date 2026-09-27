@@ -23,7 +23,7 @@ class AnswersExport implements FromCollection, WithHeadings, WithMapping
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function collection(): \Illuminate\Support\Enumerable
     {
         return $this->form->load('questions')->answers()->with(['circle', 'details'])->get();
     }

@@ -35,9 +35,7 @@ class ExportActionTest extends TestCase
         $this->user = factory(User::class)->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function ユーザー情報をCSVでダウンロードできる()
     {
         Permission::create(['name' => 'staff.users.export']);
@@ -56,9 +54,7 @@ class ExportActionTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がない場合はCSVをダウンロードできない()
     {
         $this->actingAs($this->staff)

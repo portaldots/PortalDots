@@ -19,18 +19,14 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        App\Eloquents\Page::class => App\Policies\PagePolicy::class,
+        \App\Eloquents\Page::class => \App\Policies\PagePolicy::class,
     ];
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        $this->registerPolicies();
-
         // 管理者で、メール認証やスタッフ認証が済んでいる場合、
         // auth()->user->can() や @can() などで true を返すようにする
         Gate::after(function (User $user) {

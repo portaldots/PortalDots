@@ -25,9 +25,7 @@ class ReadsServiceTest extends TestCase
         $this->readsService = App::make(ReadsService::class);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function markAsRead()
     {
         /** @var Page */
@@ -49,9 +47,7 @@ class ReadsServiceTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function deleteAllReadsByPage()
     {
         /** @var Illuminate\Database\Eloquent\Collection */

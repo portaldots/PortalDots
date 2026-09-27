@@ -33,9 +33,7 @@ class EditActionTest extends TestCase
         $this->user->circles()->attach($this->circle->id, ['is_leader' => true]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 参加登録が未完了の企画情報は編集できない()
     {
         Permission::create(['name' => 'staff.circles.edit']);

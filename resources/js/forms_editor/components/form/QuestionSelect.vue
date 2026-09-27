@@ -1,16 +1,16 @@
 <template>
   <form-item :item_id="question_id" type_label="単一選択(ドロップダウン)">
     <template v-slot:content>
-      <div class="form-group mb-0">
+      <div class="mb-0">
         <p class="mb-2">
           {{ name }}
-          <span class="badge badge-danger" v-if="is_required">必須</span>
+          <span class="badge text-bg-danger" v-if="is_required">必須</span>
         </p>
         <p class="form-text text-muted mb-2">
           {{ description }}
         </p>
         <template v-if="options">
-          <select class="custom-select" tabindex="-1">
+          <select class="form-select" tabindex="-1">
             <option>単一選択(ドロップダウン)</option>
           </select>
           <ul class="list-group">
@@ -26,7 +26,7 @@
         <template v-else>
           <div class="empty-option">
             <p class="empty-option-text">
-              <i class="fa fa-exclamation-triangle mr-1"></i>
+              <i class="fa fa-exclamation-triangle me-1"></i>
               <b>選択肢がありません。</b>
             </p>
             <p class="empty-option-text">選択肢を1つ以上入力してください。</p>

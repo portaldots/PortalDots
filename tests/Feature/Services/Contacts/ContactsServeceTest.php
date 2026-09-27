@@ -65,9 +65,7 @@ class ContactsServeceTest extends TestCase
         $this->contactsService->create($this->circle, $this->leader, "こんにちは。\nこれはてすとです。", $this->contactCategory);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function send_お問い合わせが企画のメンバーに送信できる()
     {
         $this->create();
@@ -81,9 +79,7 @@ class ContactsServeceTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function sendToStaff_スタッフ用控えが送信できる()
     {
         $this->create();

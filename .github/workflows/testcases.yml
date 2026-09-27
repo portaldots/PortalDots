@@ -31,8 +31,12 @@ on:
   push:
     branches:
       - 5.x
+      - 6.x
   pull_request:
     types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
 
 env:
   DB_HOST: 127.0.0.1
@@ -47,24 +51,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v7
     - name: Use Node.js (Yarnをインストールするため)
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v7
       with:
-        node-version: 16.x
+        node-version: '22'
     - name: Install Yarn
-      run: npm install -g yarn
+      run: npm install -g yarn@1.22.22
     # https://github.com/actions/setup-node/issues/182#issuecomment-966885975
     - name: Use Node.js (Yarnパッケージのキャッシュを有効化するため)
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v7
       with:
-        node-version: 16.x
+        node-version: '22'
         cache: yarn
       if: ${{ !env.ACT }}
     - name: Install Dependencies
-      run: yarn install
-    - name: Bladeファイルのフォーマット
-      run: yarn blade-formatter --write resources/views/v2/**/*.blade.php
+      run: yarn install --frozen-lockfile
     - run: yarn build
     - run: yarn eslint-check
 
@@ -75,11 +77,11 @@ jobs:
 
     strategy:
       matrix:
-        php-version: [8.0, 8.1, 8.2]
+        php-version: ['8.3', '8.4', '8.5']
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.4
         ports:
           - "3306:3306"
         env:
@@ -100,26 +102,26 @@ jobs:
         tools: cs2pr
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v7
     - name: Use Node.js (Yarnをインストールするため)
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v7
       with:
-        node-version: 16.x
+        node-version: '22'
     - name: Install Yarn
-      run: npm install -g yarn
+      run: npm install -g yarn@1.22.22
     # https://github.com/actions/setup-node/issues/182#issuecomment-966885975
     - name: Use Node.js (Yarnパッケージのキャッシュを有効化するため)
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v7
       with:
-        node-version: 16.x
+        node-version: '22'
         cache: yarn
-    - run: yarn install
+    - run: yarn install --frozen-lockfile
     - run: yarn build
     - name: Get composer cache directory
       id: composer-cache
       run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
     - name: Cache PHP dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v6
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -135,7 +137,7 @@ jobs:
     - name: PHPUnitでテスト実行
       run: vendor/bin/phpunit --coverage-clover=coverage.xml
     - name: コードカバレッジを送信
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v7
       with:
         files: ./coverage.xml
         verbose: true

@@ -35,9 +35,7 @@ class ShowActionTest extends TestCase
         $this->user = factory(User::class)->create();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function ダウンロードできる()
     {
         $response = $this->actingAs($this->user)
@@ -48,9 +46,7 @@ class ShowActionTest extends TestCase
         $response->assertOk();
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 非公開の場合はダウンロードできない()
     {
         $this->document->is_public = false;

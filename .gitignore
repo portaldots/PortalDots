@@ -18,6 +18,7 @@ coverage.xml
 
 # From Laravel
 #-------------------------
+/.phpunit.cache
 /node_modules
 /public/build
 /public/hot

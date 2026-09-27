@@ -1,20 +1,26 @@
 <template>
   <div class="edit-panel">
-    <div class="form-group row" v-if="show_required_switch">
+    <div class="row mb-3" v-if="show_required_switch">
       <span class="col-sm-2 col-form-label">回答必須か</span>
       <div class="col-sm-10">
-        <label class="custom-control custom-switch">
+        <div class="form-check form-switch">
           <input
             type="checkbox"
-            class="custom-control-input"
+            :id="`question-${question.id}-required`"
+            class="form-check-input"
             v-model="is_required"
             :disabled="is_deleting"
           />
-          <span class="custom-control-label">この設問への回答は必須</span>
-        </label>
+          <label
+            class="form-check-label"
+            :for="`question-${question.id}-required`"
+          >
+            この設問への回答は必須
+          </label>
+        </div>
       </div>
     </div>
-    <label class="form-group row" v-if="label_name">
+    <label class="row mb-3" v-if="label_name">
       <span class="col-sm-2 col-form-label">{{ label_name }}</span>
       <div class="col-sm-10">
         <input
@@ -26,7 +32,7 @@
         />
       </div>
     </label>
-    <label class="form-group row" v-if="label_description">
+    <label class="row mb-3" v-if="label_description">
       <span class="col-sm-2 col-form-label">{{ label_description }}</span>
       <div class="col-sm-10">
         <textarea
@@ -38,7 +44,7 @@
         />
       </div>
     </label>
-    <label class="form-group row" v-if="show_options">
+    <label class="row mb-3" v-if="show_options">
       <span class="col-sm-2 col-form-label">選択肢</span>
       <div class="col-sm-10">
         <textarea
@@ -54,7 +60,7 @@
         </small>
       </div>
     </label>
-    <label class="form-group row" v-if="label_number_min">
+    <label class="row mb-3" v-if="label_number_min">
       <span class="col-sm-2 col-form-label">{{ label_number_min }}</span>
       <div class="col-sm-10">
         <input
@@ -67,7 +73,7 @@
         />
       </div>
     </label>
-    <label class="form-group row" v-if="label_number_max">
+    <label class="row mb-3" v-if="label_number_max">
       <span class="col-sm-2 col-form-label">{{ label_number_max }}</span>
       <div class="col-sm-10">
         <input
@@ -83,7 +89,7 @@
         </small>
       </div>
     </label>
-    <label class="form-group row" v-if="show_allowed_types">
+    <label class="row mb-3" v-if="show_allowed_types">
       <span class="col-sm-2 col-form-label">
         許可される拡張子(<code>|</code>区切りで指定)
       </span>
@@ -102,7 +108,7 @@
       </div>
     </label>
     <div class="row mb-2">
-      <div class="offset-sm-2 col-sm-10 text-right">
+      <div class="offset-sm-2 col-sm-10 text-end">
         <button
           class="btn btn-link text-danger p-0"
           @click="deleteQuestion"

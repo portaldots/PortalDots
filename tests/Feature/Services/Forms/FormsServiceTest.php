@@ -28,9 +28,7 @@ class FormsServiceTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function copyForm_申請の複製ができる()
     {
         $form = $this->formsService->copyForm($this->form);
