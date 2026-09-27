@@ -9,8 +9,8 @@ use RuntimeException;
 final class Engine
 {
     private const STEPS = [
-        'fetch_manifest', 'download_package', 'inspect_package', 'extract_package', 'preflight',
-        'enter_maintenance', 'wait_for_drain', 'backup_database', 'backup_files', 'apply_files',
+        'fetch_manifest', 'download_package', 'inspect_package', 'extract_package', 'verify_installation',
+        'preflight', 'enter_maintenance', 'wait_for_drain', 'backup_database', 'backup_files', 'apply_files',
         'migrate_database', 'health_check', 'finalize',
     ];
 
@@ -151,9 +151,16 @@ final class Engine
                     microtime(true) + 4.0,
                 );
 
+            case 'verify_installation':
+                $installed = $this->files->installedManifest($state['from_version']);
+                return $this->files->verifyInstallationStep(
+                    $installed,
+                    $state['install_check'],
+                    microtime(true) + 4.0,
+                );
+
             case 'preflight':
                 $installed = $this->files->installedManifest($state['from_version']);
-                $this->files->verifyInstallation($installed);
                 $files = $this->store->readJobData($state['id'], 'files.json')['files'];
                 $plan = $this->files->plan(
                     $installed,
@@ -389,7 +396,17 @@ final class Engine
                 $restore['step'] = 'verify';
                 return false;
             case 'verify':
-                $this->files->verifyInstallation($this->store->readJobData($state['id'], 'old-manifest.json'));
+                $oldManifest = $this->store->readJobData($state['id'], 'old-manifest.json');
+                if (!$this->files->verifyInstallationStep(
+                    $oldManifest,
+                    $restore['install_check'],
+                    microtime(true) + 4.0,
+                )) {
+                    return false;
+                }
+                $restore['step'] = 'health';
+                return false;
+            case 'health':
                 $this->health->check($state['from_version']);
                 $restore['step'] = 'reopen';
                 return false;
@@ -430,6 +447,7 @@ final class Engine
             'proof_cleanup' => [],
             'files' => [],
             'database' => [],
+            'install_check' => [],
             'attempts' => 0,
         ];
         return $state;

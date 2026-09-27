@@ -406,6 +406,52 @@ $tests['file apply restores changed, deleted, and added files'] = static functio
     }
 };
 
+$tests['verify installation step resumes across expired deadlines and still detects tampering'] = static function (): void {
+    $root = fixtureRoot();
+    try {
+        mkdir($root . '/app/nested', 0700, true);
+        mkdir($root . '/config', 0700, true);
+        $paths = ['app/a.php', 'app/b.php', 'app/nested/c.php', 'config/d.php'];
+        $files = [];
+        foreach ($paths as $path) {
+            file_put_contents($root . '/' . $path, 'content-of-' . $path);
+            $files[] = ['path' => $path, 'sha256' => hash_file('sha256', $root . '/' . $path),
+                'size' => filesize($root . '/' . $path), 'mode' => 0644];
+        }
+        $manifest = ['schema' => 1, 'version' => '6.0.0', 'sequence' => 1, 'files' => $files];
+        $config = new Config($root, $root . '/storage/app/updater/private', 'https://example.test/manifest',
+            ['example.test'], $root . '/missing.pub');
+        $backup = new FileBackup($config);
+
+        // 期限切れの締切を渡し続けても1回の呼び出しにつき1ファイルまたは1ディレクトリだけ
+        // 処理して、context を state.json 相当のJSON往復越しに再開できることを確認する。
+        $runStepwise = static function (array $manifest) use ($backup): int {
+            $context = [];
+            $calls = 0;
+            $expiredDeadline = microtime(true) - 1.0;
+            while (!$backup->verifyInstallationStep($manifest, $context, $expiredDeadline)) {
+                $calls++;
+                if ($calls > 1000) {
+                    throw new RuntimeException('Verification did not converge across chunked calls.');
+                }
+                $context = json_decode(CanonicalJson::encode($context), true, 16, JSON_THROW_ON_ERROR);
+            }
+            return $calls;
+        };
+
+        assertTrue($runStepwise($manifest) >= count($paths));
+
+        file_put_contents($root . '/app/b.php', 'tampered-content');
+        expectFailure(static fn () => $runStepwise($manifest));
+        file_put_contents($root . '/app/b.php', 'content-of-app/b.php');
+
+        file_put_contents($root . '/config/extra.php', 'unmanaged-addition');
+        expectFailure(static fn () => $runStepwise($manifest));
+    } finally {
+        removeTree($root);
+    }
+};
+
 if (getenv('UPDATER_MYSQL_DSN')) {
     $tests['mysql snapshot proves and restores binary null utf8 fk auto increment and no-pk rows'] = static function (): void {
         $root = fixtureRoot();

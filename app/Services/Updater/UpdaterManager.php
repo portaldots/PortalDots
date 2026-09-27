@@ -36,8 +36,10 @@ final class UpdaterManager
         try {
             $version = VersionReader::current(base_path());
             $files = new FileBackup($this->config);
-            $installed = $files->installedManifest($version);
-            $files->verifyInstallation($installed);
+            // 完全なファイル整合性検証は verify_installation ステップ（メンテナンス突入前）で行う。
+            // ここでは管理画面を開くたびに数万件のハッシュ検証を走らせないよう、
+            // 一覧ファイルの存在とバージョン一致だけを確認する。
+            $files->installedManifest($version);
             $keys = (new TrustedKeyStore($this->config, $this->store))->all(1);
             return [
                 'enabled' => $keys !== [],

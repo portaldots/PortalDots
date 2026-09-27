@@ -29,33 +29,113 @@ final class FileBackup
 
     /**
      * Verify every officially distributed file before maintenance.
+     * 数万件のファイルを一括で検証するため PHP の max_execution_time を超えうる。
+     * verifyInstallationStep() を完了まで回すだけの薄いラッパーとして、テストや
+     * 一括検証が必要な残り少数の呼び出し元向けに残す。
      *
      * @param array<string, mixed> $manifest
      */
     public function verifyInstallation(array $manifest): void
     {
+        $context = [];
+        while (!$this->verifyInstallationStep($manifest, $context, PHP_FLOAT_MAX)) {
+        }
+    }
+
+    /**
+     * verifyInstallation() を複数リクエストへ分割し、共有ホストの
+     * max_execution_time=30 を1回のステップ実行で超えないようにする。
+     * $context には位相（hash → walk）と再開に必要な最小限の索引・キューだけを
+     * 保持し、数万件規模のファイル一覧やパス集合そのものは載せない。
+     *
+     * @param array<string, mixed> $manifest
+     * @param array<string, mixed> $context
+     */
+    public function verifyInstallationStep(array $manifest, array &$context, float $deadline): bool
+    {
+        if (!isset($context['phase'])) {
+            // 重複パスの検出はメモリ上の一覧を1回舐めるだけで済むため、
+            // ディスクI/Oを伴うハッシュ検証の前に一度だけ行う。
+            $this->assertNoDuplicateManifestPaths($manifest['files']);
+            $context['phase'] = 'hash';
+            $context['index'] = 0;
+        }
+        if ($context['phase'] === 'hash') {
+            $files = $manifest['files'];
+            $count = count($files);
+            while ($context['index'] < $count) {
+                $this->verifyManifestFile($files[$context['index']]);
+                $context['index']++;
+                if ($context['index'] < $count && microtime(true) >= $deadline) {
+                    return false;
+                }
+            }
+            $context['phase'] = 'walk';
+            $context['queue'] = [''];
+            unset($context['index']);
+        }
+        if ($context['phase'] === 'walk') {
+            // 索引集合は数万件規模になりうるため context には保存せず、
+            // 一覧（メモリ上、I/Oなし）から毎リクエスト作り直す。
+            $expectedLowercase = $this->expectedLowercaseManifestPaths($manifest['files']);
+            while ($context['queue'] !== []) {
+                $directory = array_shift($context['queue']);
+                foreach ($this->verifyManagedDirectory($directory, $expectedLowercase) as $child) {
+                    $context['queue'][] = $child;
+                }
+                if ($context['queue'] !== [] && microtime(true) >= $deadline) {
+                    return false;
+                }
+            }
+            $context['phase'] = 'done';
+        }
+        return true;
+    }
+
+    /** @param mixed $file */
+    private function verifyManifestFile($file): void
+    {
+        if (!is_array($file) || !is_string($file['path'] ?? null)
+            || !preg_match('/^[a-f0-9]{64}$/', (string) ($file['sha256'] ?? ''))) {
+            throw new RuntimeException('公式配布ファイル一覧が不正です。');
+        }
+        $path = ZipPackage::normalizePath($file['path']);
+        $absolute = $this->config->basePath . '/' . $path;
+        $this->assertSafePath($this->config->basePath, $path);
+        if (!is_file($absolute) || is_link($absolute)) {
+            throw new RuntimeException("公式配布ファイルが欠損またはリンク化されています: {$path}");
+        }
+        $actual = hash_file('sha256', $absolute);
+        if (!is_string($actual) || !hash_equals($file['sha256'], $actual)) {
+            throw new RuntimeException("公式配布ファイルが変更されています: {$path}");
+        }
+    }
+
+    /** @param list<mixed> $files */
+    private function assertNoDuplicateManifestPaths(array $files): void
+    {
         $seen = [];
-        foreach ($manifest['files'] as $file) {
+        foreach ($files as $file) {
             if (!is_array($file) || !is_string($file['path'] ?? null)
                 || !preg_match('/^[a-f0-9]{64}$/', (string) ($file['sha256'] ?? ''))) {
                 throw new RuntimeException('公式配布ファイル一覧が不正です。');
             }
-            $path = ZipPackage::normalizePath($file['path']);
-            if (isset($seen[strtolower($path)])) {
+            $lower = strtolower(ZipPackage::normalizePath($file['path']));
+            if (isset($seen[$lower])) {
                 throw new RuntimeException('公式配布ファイル一覧に重複があります。');
             }
-            $seen[strtolower($path)] = true;
-            $absolute = $this->config->basePath . '/' . $path;
-            $this->assertSafePath($this->config->basePath, $path);
-            if (!is_file($absolute) || is_link($absolute)) {
-                throw new RuntimeException("公式配布ファイルが欠損またはリンク化されています: {$path}");
-            }
-            $actual = hash_file('sha256', $absolute);
-            if (!is_string($actual) || !hash_equals($file['sha256'], $actual)) {
-                throw new RuntimeException("公式配布ファイルが変更されています: {$path}");
-            }
+            $seen[$lower] = true;
         }
-        $this->rejectUnknownManagedFiles($seen);
+    }
+
+    /** @param list<mixed> $files @return array<string, bool> */
+    private function expectedLowercaseManifestPaths(array $files): array
+    {
+        $expected = [];
+        foreach ($files as $file) {
+            $expected[strtolower(ZipPackage::normalizePath((string) $file['path']))] = true;
+        }
+        return $expected;
     }
 
     /**
@@ -356,37 +436,51 @@ final class FileBackup
         }
     }
 
-    /** @param array<string, bool> $expectedLowercase */
-    private function rejectUnknownManagedFiles(array $expectedLowercase): void
+    /**
+     * ディレクトリ1つ分だけ scandir して未管理ファイルを拒否し、見つかった
+     * サブディレクトリの相対パスを返す。呼び出し側がキューに積んで
+     * リクエストをまたいで走査を再開できるようにするため、再帰はしない。
+     *
+     * @param array<string, bool> $expectedLowercase
+     * @return list<string>
+     */
+    private function verifyManagedDirectory(string $relativeDirectory, array $expectedLowercase): array
     {
-        $walk = function (string $directory, string $prefix = '') use (&$walk, $expectedLowercase): void {
-            $entries = scandir($directory);
-            if ($entries === false) {
-                throw new RuntimeException('配布ファイルの追加改変を確認できません。');
+        $directory = $relativeDirectory === ''
+            ? $this->config->basePath
+            : $this->config->basePath . '/' . $relativeDirectory;
+        $entries = scandir($directory);
+        if ($entries === false) {
+            throw new RuntimeException('配布ファイルの追加改変を確認できません。');
+        }
+        $children = [];
+        foreach ($entries as $entry) {
+            if ($entry === '.' || $entry === '..') {
+                continue;
             }
-            foreach ($entries as $entry) {
-                if ($entry === '.' || $entry === '..') {
-                    continue;
-                }
-                $relative = $prefix === '' ? $entry : $prefix . '/' . $entry;
-                if ($relative === '.portaldots-manifest.json' || $relative === '.env'
-                    || $relative === 'storage' || str_starts_with($relative, 'storage/')
-                    || $relative === 'bootstrap/cache' || str_starts_with($relative, 'bootstrap/cache/')
-                    || $relative === 'public/storage' || str_starts_with($relative, 'public/storage/')
-                    || $relative === 'public/uploads' || str_starts_with($relative, 'public/uploads/')) {
-                    continue;
-                }
-                $absolute = $directory . '/' . $entry;
-                if (is_link($absolute)) {
-                    throw new RuntimeException("管理領域のシンボリックリンクを拒否しました: {$relative}");
-                }
-                if (is_dir($absolute)) {
-                    $walk($absolute, $relative);
-                } elseif (is_file($absolute) && !isset($expectedLowercase[strtolower($relative)])) {
-                    throw new RuntimeException("公式配布にない追加ファイルがあります: {$relative}");
-                }
+            $relative = $relativeDirectory === '' ? $entry : $relativeDirectory . '/' . $entry;
+            if ($this->isSkippedManagedPath($relative)) {
+                continue;
             }
-        };
-        $walk($this->config->basePath);
+            $absolute = $directory . '/' . $entry;
+            if (is_link($absolute)) {
+                throw new RuntimeException("管理領域のシンボリックリンクを拒否しました: {$relative}");
+            }
+            if (is_dir($absolute)) {
+                $children[] = $relative;
+            } elseif (is_file($absolute) && !isset($expectedLowercase[strtolower($relative)])) {
+                throw new RuntimeException("公式配布にない追加ファイルがあります: {$relative}");
+            }
+        }
+        return $children;
+    }
+
+    private function isSkippedManagedPath(string $relative): bool
+    {
+        return $relative === '.portaldots-manifest.json' || $relative === '.env'
+            || $relative === 'storage' || str_starts_with($relative, 'storage/')
+            || $relative === 'bootstrap/cache' || str_starts_with($relative, 'bootstrap/cache/')
+            || $relative === 'public/storage' || str_starts_with($relative, 'public/storage/')
+            || $relative === 'public/uploads' || str_starts_with($relative, 'public/uploads/');
     }
 }

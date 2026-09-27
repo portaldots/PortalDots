@@ -113,7 +113,7 @@ final class RecoveryApplication
             $phase === 'restoring' => 4,
             $phase === 'completed', $phase === 'rolled_back' => 5,
             in_array($current, ['fetch_manifest', 'download_package'], true) => 0,
-            in_array($current, ['inspect_package', 'extract_package', 'preflight',
+            in_array($current, ['inspect_package', 'extract_package', 'verify_installation', 'preflight',
                 'enter_maintenance', 'wait_for_drain'], true) => 1,
             in_array($current, ['backup_database', 'backup_files'], true) => 2,
             in_array($current, ['apply_files', 'migrate_database', 'health_check', 'finalize'], true) => 3,

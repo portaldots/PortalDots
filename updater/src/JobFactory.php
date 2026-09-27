@@ -47,6 +47,7 @@ final class JobFactory
             'artifact' => [],
             'download' => [],
             'extract' => [],
+            'install_check' => [],
             'database_backup' => [],
             'file_backup' => [],
             'file_apply' => [],
