@@ -25,6 +25,12 @@
                 <i class="fas fa-file-csv fa-fw"></i>
                 CSVで出力(場所別企画一覧)
             </a>
+            @can('staff.places.import')
+                <a class="btn is-primary-inverse is-no-border" href="{{ route('staff.places.import.index') }}">
+                    <i class="fas fa-file-import fa-fw"></i>
+                    CSVからインポート
+                </a>
+            @endcan
         </template>
         <template v-slot:activities="{ row, openEditorByUrl }">
             <form-with-confirm
