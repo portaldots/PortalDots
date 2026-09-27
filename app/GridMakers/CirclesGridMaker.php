@@ -80,6 +80,7 @@ class CirclesGridMaker implements GridMakable
                 $join->on('circles.id', '=', 'answers.circle_id')
                     ->where('answers.form_id', $this->participationType->form_id);
             });
+            $query->addSelect(DB::raw('`answers`.`id` AS participation_form_answer_id'));
 
             $query = AnswerDetailsHelper::makeQueryWithAnswerDetails(
                 $query,
@@ -251,7 +252,8 @@ class CirclesGridMaker implements GridMakable
             $this->participationType->form->questions,
             $this->participationType->form,
             self::PARTICIPATION_FORM_QUESTIONS_KEY_PREFIX,
-            self::CHECKBOX_GROUP_CONCAT_SEPARATOR
+            self::CHECKBOX_GROUP_CONCAT_SEPARATOR,
+            'participation_form_answer_id'
         ) : [];
 
         // カスタムフォームへの回答以外の項目
