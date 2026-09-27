@@ -136,16 +136,16 @@ class ValidationRulesService
             }
             foreach ($rows as $rowId => $row) {
                 if (!is_string($rowId) || !Str::isUuid($rowId)) {
-                    $fail('表形式設問の行IDにはUUIDを指定してください。');
+                    $fail('繰り返し入力の回答IDにはUUIDを指定してください。');
                     continue;
                 }
                 if (!is_array($row)) {
-                    $fail("行 {$rowId} は列ごとの回答を含む配列で指定してください。");
+                    $fail("回答 {$rowId} は項目ごとの値を含む配列で指定してください。");
                     continue;
                 }
                 foreach (array_keys($row) as $columnId) {
                     if (!isset($columnsById[$columnId])) {
-                        $fail("行 {$rowId} に定義されていない列 {$columnId} が含まれています。");
+                        $fail("回答 {$rowId} に定義されていない項目 {$columnId} が含まれています。");
                     }
                 }
             }

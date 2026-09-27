@@ -76,7 +76,7 @@ export default {
         {
           value: "table",
           icon: "fas fa-table",
-          label: "表形式入力",
+          label: "繰り返し入力",
         },
       ];
     },
