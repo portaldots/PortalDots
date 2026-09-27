@@ -31,8 +31,9 @@ final class ReleaseCandidateSelector
             }
             $tag = (string) ($release['tag_name'] ?? '');
             $version = str_starts_with($tag, 'v') ? substr($tag, 1) : '';
-            if (!$this->isStable($version) || explode('.', $version, 2)[0] !== $major
-                || version_compare($version, $targetVersion, '>=')) {
+            $candidateMajor = explode('.', $version, 2)[0];
+            if (!$this->isStable($version) || version_compare($version, $targetVersion, '>=')
+                || ($candidateMajor !== $major && (int) $candidateMajor < Config::CROSS_MAJOR_MINIMUM_MAJOR)) {
                 continue;
             }
             $assets = $release['assets'];

@@ -58,7 +58,7 @@ try {
     if ($statuses !== [0, 1]) {
         throw new RuntimeException('Concurrent same-sequence leases were not serialized safely.');
     }
-    $highest = (new ManifestHighwater(config($root)))->read();
+    $highest = (new ManifestHighwater(config($root)))->read(6);
     if (!in_array($highest['lease_digest'], [str_repeat('b', 64), str_repeat('c', 64)], true)) {
         throw new RuntimeException('Winning lease was not persisted.');
     }

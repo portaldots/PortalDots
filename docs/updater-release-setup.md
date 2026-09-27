@@ -38,7 +38,7 @@ sh updater/tools/setup-release-signing.sh --apply
 2. `Build, verify, sign, and upload release assets` workflowの全テスト完了を確認する
 3. workflowが作成したDraft Releaseの成果物と結果を確認し、Releaseを公開する
 
-workflowは公開済みReleaseを全ページ取得し、同一メジャーの正式版から、root署名済みの更新metadataとfull ZIPを持つ版を自動選択します。候補全件について更新成功、強制終了後の復元、full ZIPの署名済みSHA-256とサイズを検証した同一成果物だけを署名します。該当metadataが1件も存在しない最初のリリースは、ブラウザ更新元を持たないbootstrap releaseになります。metadataが存在するのに取得、形式、署名、asset対応のいずれかが不正な場合はリリースを停止します。
+workflowは公開済みReleaseを全ページ取得し、同一メジャーの正式版、またはメジャーバージョン6以上の正式版（`Config::CROSS_MAJOR_MINIMUM_MAJOR`）から、root署名済みの更新metadataとfull ZIPを持つ版を自動選択します。候補全件について更新成功、強制終了後の復元、full ZIPの署名済みSHA-256とサイズを検証した同一成果物だけを署名します。該当metadataが1件も存在しない最初のリリースは、ブラウザ更新元を持たないbootstrap releaseになります。metadataが存在するのに取得、形式、署名、asset対応のいずれかが不正な場合はリリースを停止します。
 
 schema 2のroot metadataは、更新ZIP、full ZIP、更新元、migration、renewal公開鍵を固定します。`Renew updater freshness metadata` workflowはrenewal秘密鍵だけを使い、公開済み各メジャーの最新正式版に対して期限leaseだけを更新します。ZIP、root署名、更新元、migrationは変更できません。旧schema 1 metadataは従来のroot期限内だけruntimeが受理し、自動更新元の候補にはなりません。
 

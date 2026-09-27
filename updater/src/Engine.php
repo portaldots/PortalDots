@@ -99,18 +99,8 @@ final class Engine
         $signed = $state['manifest']['signed'] ?? [];
         switch ($state['current_step']) {
             case 'fetch_manifest':
-                $envelope = (new UpdateDiscovery($this->config, $this->downloader))
-                    ->discover($state['from_version']);
-                $highest = $this->highwater->read();
-                $verified = $this->verifier->verify(
-                    $envelope,
-                    $state['from_version'],
-                    (int) ($highest['sequence'] ?? 0),
-                    isset($highest['digest']) ? (string) $highest['digest'] : null,
-                    (int) ($highest['lease_sequence'] ?? 0),
-                    isset($highest['lease_digest']) ? (string) $highest['lease_digest'] : null,
-                );
-                $this->highwater->observe($verified);
+                $verified = (new UpdateSelector($this->config, $this->downloader, $this->verifier, $this->highwater))
+                    ->select($state['from_version']);
                 $this->keys->applyRotation($verified['signed'], $verified['signing_key_id']);
                 // signed.files は数万件になりうるため state.json には載せず files.json へ分離する。
                 $this->store->writeJobData($state['id'], 'files.json', ['files' => $verified['signed']['files']]);

@@ -12,8 +12,22 @@ final class ManifestHighwater
     {
     }
 
-    /** @return array<string, mixed> */
-    public function read(): array
+    /** @return array<string, mixed> 対象メジャーバージョンの記録。無ければ空配列。 */
+    public function read(int $major): array
+    {
+        return $this->readAll()[(string) $major] ?? [];
+    }
+
+    /**
+     * 保存内容をメジャーバージョンごとの記録に読み替える。
+     * リリースworkflowの実行番号をそのままsequenceに使うため、旧メジャーのパッチが後から出ると
+     * 新メジャーより高いsequenceを持ちうる。単一のグローバル最高値で比較すると、新メジャーへの更新が
+     * 一時的なPHP・MySQL要件不足でメジャー内フォールバックへ切り替わった後、要件を満たしても
+     * 「過去の更新マニフェスト」として弾かれてしまうため、メジャーごとに最高値を分離して保持する。
+     *
+     * @return array<string, array<string, mixed>> メジャーバージョン文字列をキーとする記録
+     */
+    private function readAll(): array
     {
         $path = $this->config->privatePath . '/highest-manifest.json';
         if (!is_file($path)) {
@@ -23,19 +37,46 @@ final class ManifestHighwater
         $value = is_string($contents)
             ? json_decode($contents, true, 32, JSON_THROW_ON_ERROR)
             : null;
-        if (!is_array($value) || !is_int($value['sequence'] ?? null) || $value['sequence'] < 1
-            || !is_string($value['digest'] ?? null)
-            || !preg_match('/^[a-f0-9]{64}$/', $value['digest'])) {
+        if (!is_array($value)) {
             throw new RuntimeException('保存された更新連番が破損しています。');
         }
-        if (array_key_exists('lease_sequence', $value)
-            && ($value['lease_sequence'] !== null && (!is_int($value['lease_sequence'])
-                || $value['lease_sequence'] < 1
-                || !is_string($value['lease_digest'] ?? null)
-                || !preg_match('/^[a-f0-9]{64}$/', $value['lease_digest'])))) {
+        if (array_key_exists('majors', $value)) {
+            if (!is_array($value['majors'])) {
+                throw new RuntimeException('保存された更新連番が破損しています。');
+            }
+            foreach ($value['majors'] as $major => $record) {
+                // JSONオブジェクトのキーが数字だけの文字列だと、json_decode(...,true)が
+                // 連想配列のキーを自動的にintへ変換するため、文字列型であることは要求しない。
+                if (!preg_match('/^(0|[1-9]\d*)$/', (string) $major)) {
+                    throw new RuntimeException('保存された更新連番が破損しています。');
+                }
+                $this->assertValidRecord($record);
+            }
+            return $value['majors'];
+        }
+        // メジャー別に分かれていない旧形式は、その記録のtarget_versionが属するメジャーの
+        // 記録として読み替える。
+        $this->assertValidRecord($value);
+        $major = explode('.', (string) $value['target_version'], 2)[0];
+        return [$major => $value];
+    }
+
+    /** @param mixed $record */
+    private function assertValidRecord($record): void
+    {
+        if (!is_array($record) || !is_int($record['sequence'] ?? null) || $record['sequence'] < 1
+            || !is_string($record['digest'] ?? null)
+            || !preg_match('/^[a-f0-9]{64}$/', $record['digest'])
+            || !is_string($record['target_version'] ?? null)) {
+            throw new RuntimeException('保存された更新連番が破損しています。');
+        }
+        if (array_key_exists('lease_sequence', $record)
+            && ($record['lease_sequence'] !== null && (!is_int($record['lease_sequence'])
+                || $record['lease_sequence'] < 1
+                || !is_string($record['lease_digest'] ?? null)
+                || !preg_match('/^[a-f0-9]{64}$/', $record['lease_digest'])))) {
             throw new RuntimeException('保存された更新情報の連番が破損しています。');
         }
-        return $value;
     }
 
     /** @param array<string, mixed> $verified */
@@ -49,15 +90,18 @@ final class ManifestHighwater
             throw new RuntimeException('更新連番の確認を開始できません。');
         }
         try {
-            $highest = $this->read();
-            $this->assertNotRolledBack($verified, $highest);
-            $this->write([
+            $majors = $this->readAll();
+            $target = (string) $verified['signed']['target_version'];
+            $major = explode('.', $target, 2)[0];
+            $this->assertNotRolledBack($verified, $majors[$major] ?? []);
+            $majors[$major] = [
                 'sequence' => $verified['signed']['sequence'],
                 'digest' => $verified['root_digest'],
                 'lease_sequence' => $verified['lease_sequence'],
                 'lease_digest' => $verified['lease_digest'],
-                'target_version' => $verified['signed']['target_version'],
-            ]);
+                'target_version' => $target,
+            ];
+            $this->write(['majors' => $majors]);
         } finally {
             flock($lock, LOCK_UN);
             fclose($lock);

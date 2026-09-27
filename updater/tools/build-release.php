@@ -6,6 +6,7 @@ declare(strict_types=1);
 require dirname(__DIR__) . '/bootstrap.php';
 
 use PortalDots\Updater\CanonicalJson;
+use PortalDots\Updater\Config;
 use PortalDots\Updater\ZipPackage;
 
 if ($argc !== 8) {
@@ -192,8 +193,10 @@ function discoverFromVersions(string $candidatesPath, string $major, string $tar
     foreach ($candidates as $candidate) {
         $version = is_array($candidate) ? ($candidate['version'] ?? null) : null;
         $full = is_array($candidate) ? ($candidate['full_artifact'] ?? null) : null;
+        $candidateMajor = is_string($version) ? explode('.', $version, 2)[0] : null;
         if (!is_string($version) || !is_array($full)
-            || !preg_match('/^' . preg_quote($major, '/') . '\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/', $version)
+            || !preg_match('/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/', $version)
+            || ($candidateMajor !== $major && (int) $candidateMajor < Config::CROSS_MAJOR_MINIMUM_MAJOR)
             || version_compare($version, $target, '>=')
             || !preg_match('/^[a-f0-9]{64}$/', (string) ($full['sha256'] ?? ''))
             || !is_int($full['size'] ?? null) || $full['size'] < 1) {

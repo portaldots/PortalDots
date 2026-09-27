@@ -130,7 +130,9 @@ final class ManifestVerifier
         if (version_compare($target, $currentVersion, '<=')) {
             throw new RuntimeException('ダウングレードまたは同一版の再適用はできません。');
         }
-        if (explode('.', $target, 2)[0] !== explode('.', $currentVersion, 2)[0]) {
+        $currentMajor = explode('.', $currentVersion, 2)[0];
+        if (explode('.', $target, 2)[0] !== $currentMajor
+            && (int) $currentMajor < Config::CROSS_MAJOR_MINIMUM_MAJOR) {
             throw new RuntimeException('異なるメジャーバージョンへは更新できません。');
         }
         if (!is_array($signed['from_versions']) || !in_array($currentVersion, $signed['from_versions'], true)) {

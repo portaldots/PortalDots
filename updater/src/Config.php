@@ -8,6 +8,9 @@ final class Config
 {
     public const RUNTIME_VERSION = 2;
 
+    /** このメジャーバージョン以上のインストールだけが、より新しいメジャーバージョンへ更新できる。 */
+    public const CROSS_MAJOR_MINIMUM_MAJOR = 6;
+
     /** @param list<string> $downloadHosts */
     public function __construct(
         public readonly string $basePath,

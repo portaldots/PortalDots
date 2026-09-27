@@ -55,4 +55,12 @@ final class DatabaseConnection
             throw new RuntimeException('更新用DB接続を確立できません。', 0, $exception);
         }
     }
+
+    public static function assertMinimumVersion(PDO $pdo, string $minimumMysql): void
+    {
+        $mysqlVersion = (string) $pdo->query('SELECT VERSION()')->fetchColumn();
+        if (stripos($mysqlVersion, 'mariadb') !== false || version_compare($mysqlVersion, $minimumMysql, '<')) {
+            throw new RuntimeException('この更新版が要求するMySQLバージョンを満たしていません。');
+        }
+    }
 }

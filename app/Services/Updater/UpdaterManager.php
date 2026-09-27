@@ -14,7 +14,7 @@ use PortalDots\Updater\ManifestHighwater;
 use PortalDots\Updater\ManifestVerifier;
 use PortalDots\Updater\StateStore;
 use PortalDots\Updater\TrustedKeyStore;
-use PortalDots\Updater\UpdateDiscovery;
+use PortalDots\Updater\UpdateSelector;
 use PortalDots\Updater\VersionReader;
 use RuntimeException;
 
@@ -64,19 +64,8 @@ final class UpdaterManager
         $keys = new TrustedKeyStore($this->config, $this->store);
         $verifier = new ManifestVerifier($this->config, $keys);
         $downloader = new Downloader($this->config, $verifier);
-        $envelope = (new UpdateDiscovery($this->config, $downloader))->discover($current);
         $highwater = new ManifestHighwater($this->config);
-        $highest = $highwater->read();
-        $verified = $verifier->verify(
-            $envelope,
-            $current,
-            (int) ($highest['sequence'] ?? 0),
-            isset($highest['digest']) ? (string) $highest['digest'] : null,
-            (int) ($highest['lease_sequence'] ?? 0),
-            isset($highest['lease_digest']) ? (string) $highest['lease_digest'] : null,
-        );
-        $highwater->observe($verified);
-        return $verified;
+        return (new UpdateSelector($this->config, $downloader, $verifier, $highwater))->select($current);
     }
 
     /** @return array{job_id: string, recovery_code: string, target_version: string} */

@@ -50,11 +50,7 @@ final class Preflight
         }
 
         $pdo = DatabaseConnection::open($this->config);
-        $mysqlVersion = (string) $pdo->query('SELECT VERSION()')->fetchColumn();
-        if (stripos($mysqlVersion, 'mariadb') !== false
-            || version_compare($mysqlVersion, (string) $signed['minimum_mysql'], '<')) {
-            throw new RuntimeException('この更新版が要求するMySQLバージョンを満たしていません。');
-        }
+        DatabaseConnection::assertMinimumVersion($pdo, (string) $signed['minimum_mysql']);
         (new DatabaseBackup($this->config))->diagnose();
         $databaseBytes = (int) $pdo->query(
             'SELECT COALESCE(SUM(DATA_LENGTH + INDEX_LENGTH), 0) FROM information_schema.TABLES '

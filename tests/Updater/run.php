@@ -8,6 +8,7 @@ require dirname(__DIR__, 2) . '/updater/bootstrap.php';
 use PortalDots\Updater\CanonicalJson;
 use PortalDots\Updater\Config;
 use PortalDots\Updater\DatabaseBackup;
+use PortalDots\Updater\Downloader;
 use PortalDots\Updater\FileBackup;
 use PortalDots\Updater\ManifestVerifier;
 use PortalDots\Updater\ManifestHighwater;
@@ -15,7 +16,9 @@ use PortalDots\Updater\RecoveryAuth;
 use PortalDots\Updater\ReleaseCandidateSelector;
 use PortalDots\Updater\StateStore;
 use PortalDots\Updater\TrustedKeyStore;
+use PortalDots\Updater\UpdateDiscovery;
 use PortalDots\Updater\UpdateGate;
+use PortalDots\Updater\UpdateSelector;
 use PortalDots\Updater\ZipPackage;
 
 $tests = [];
@@ -62,6 +65,70 @@ $tests['signed manifest rejects tampering and replay'] = static function (): voi
     } finally {
         removeTree($root);
     }
+};
+
+$tests['cross-major browser updates require the current major to reach the minimum boundary'] = static function (): void {
+    $root = fixtureRoot();
+    try {
+        mkdir($root . '/updater/keys', 0700, true);
+        mkdir($root . '/storage/app/updater/private', 0700, true);
+        $keys = sodium_crypto_sign_keypair();
+        $public = sodium_crypto_sign_publickey($keys);
+        $secret = sodium_crypto_sign_secretkey($keys);
+        file_put_contents($root . '/updater/keys/release.pub', base64_encode($public));
+        $config = new Config($root, $root . '/storage/app/updater/private', 'https://example.test/manifest',
+            ['example.test'], $root . '/updater/keys/release.pub');
+        $verifier = new ManifestVerifier($config, new TrustedKeyStore($config, new StateStore($config)));
+
+        // 5.x はメジャー境界(Config::CROSS_MAJOR_MINIMUM_MAJOR = 6)未満なので、
+        // メジャーを跨ぐ更新は拒否される。
+        $blocked = signedFixture();
+        $blocked['target_version'] = '6.0.0';
+        $blocked['from_versions'] = ['5.9.0'];
+        expectFailure(static fn () => $verifier->verify(
+            signRootEnvelope($blocked, $public, $secret),
+            '5.9.0',
+        ));
+
+        // 6.x は境界以上なので、より新しいメジャーへ更新できる。
+        $allowed = signedFixture();
+        $allowed['target_version'] = '7.0.0';
+        $allowed['from_versions'] = ['6.5.0'];
+        $verified = $verifier->verify(signRootEnvelope($allowed, $public, $secret), '6.5.0');
+        assertSame('7.0.0', $verified['signed']['target_version']);
+    } finally {
+        removeTree($root);
+    }
+};
+
+$tests['update discovery orders newest overall then newest of the current major'] = static function (): void {
+    $release = static fn (string $tag): array => [
+        'tag_name' => $tag,
+        'draft' => false,
+        'prerelease' => false,
+        'assets' => [['name' => 'PortalDots-update-manifest.json',
+            'browser_download_url' => 'https://example.test/' . $tag . '.json']],
+    ];
+
+    // 6.x のインストールはメジャーを跨げるので、全体最新版(8.0.0)と、
+    // それとは別のメジャー内最新版(6.3.0)の2件が順番に返る。
+    $response = [$release('v6.1.0'), $release('v6.3.0'), $release('v7.0.0'), $release('v8.0.0'), $release('v5.9.0')];
+    assertSame([
+        'https://example.test/v8.0.0.json',
+        'https://example.test/v6.3.0.json',
+    ], UpdateDiscovery::selectCandidateUrls($response, '6.0.0'));
+
+    // 全体最新版がすでに現在のメジャー内であれば、候補は1件だけになる。
+    assertSame(
+        ['https://example.test/v6.3.0.json'],
+        UpdateDiscovery::selectCandidateUrls([$release('v6.1.0'), $release('v6.3.0')], '6.0.0'),
+    );
+
+    // 5.x はメジャー境界未満なので、他メジャーの正式版は候補に入らない。
+    expectFailure(static fn () => UpdateDiscovery::selectCandidateUrls(
+        [$release('v6.0.0')],
+        '5.9.0',
+    ));
 };
 
 $tests['freshness lease binds immutable release metadata and enforces independent replay protection'] = static function (): void {
@@ -152,7 +219,41 @@ $tests['manifest highwater scopes lease sequence to one root and rejects damaged
         $highwater->observe($new);
         expectFailure(static fn () => $highwater->observe($old));
         file_put_contents($config->privatePath . '/highest-manifest.json', "{}\n");
-        expectFailure(static fn () => $highwater->read());
+        expectFailure(static fn () => $highwater->read(6));
+    } finally {
+        removeTree($root);
+    }
+};
+
+$tests['manifest highwater keys rollback protection per target major'] = static function (): void {
+    $root = fixtureRoot();
+    try {
+        mkdir($root . '/private', 0700, true);
+        $config = new Config($root, $root . '/private', 'https://example.test/manifest', ['example.test'],
+            $root . '/missing.pub');
+        $highwater = new ManifestHighwater($config);
+
+        // リリースworkflowの実行番号がsequenceなので、旧メジャー(6)の後発パッチが
+        // 新メジャー(7)より高いsequenceを持つことがある。メジャーごとに最高値を
+        // 分けて保持しないと、後で7.0.0のsequenceが小さいというだけで
+        // 「過去の更新マニフェスト」として誤って拒否されてしまう。
+        $major7 = highwaterFixture(100, str_repeat('a', 64), null, null, '7.0.0');
+        $highwater->observe($major7);
+        $major6 = highwaterFixture(101, str_repeat('b', 64), null, null, '6.3.1');
+        $highwater->observe($major6);
+
+        assertSame(100, $highwater->read(7)['sequence']);
+        assertSame(101, $highwater->read(6)['sequence']);
+
+        // メジャー7のsequenceは101より小さいが、メジャー7自身の記録(100)に対しては
+        // 巻き戻しではないので観測できる。
+        $retryMajor7 = highwaterFixture(100, str_repeat('a', 64), null, null, '7.0.0');
+        $highwater->observe($retryMajor7);
+
+        // 一方でメジャー6の中では、同メジャーの過去のsequenceは引き続き拒否される。
+        expectFailure(static fn () => $highwater->observe(
+            highwaterFixture(99, str_repeat('c', 64), null, null, '6.4.0'),
+        ));
     } finally {
         removeTree($root);
     }
@@ -192,6 +293,46 @@ $tests['release candidates bootstrap only when no updater metadata exists'] = st
     $missingUrl['assets'][0]['browser_download_url'] = null;
     expectFailure(static fn () => $selector->select([$missingUrl], '6.1.0', base64_encode($rootPublic),
         static fn (): array => $manifest));
+};
+
+$tests['release candidate selection includes major 6+ sources across majors but excludes 5.x'] = static function (): void {
+    $rootKeys = sodium_crypto_sign_keypair();
+    $rootPublic = sodium_crypto_sign_publickey($rootKeys);
+    $rootSecret = sodium_crypto_sign_secretkey($rootKeys);
+    $renewalKeys = sodium_crypto_sign_keypair();
+    $renewalPublic = sodium_crypto_sign_publickey($renewalKeys);
+
+    $crossMajorSigned = signedFixtureV2($renewalPublic);
+    $crossMajorSigned['target_version'] = '6.5.0';
+    $crossMajorSigned['artifact']['url'] = 'https://github.com/portaldots/PortalDots/releases/download/v6.5.0/PortalDots-update-2.zip';
+    $crossMajorSigned['full_artifact']['url'] = 'https://github.com/portaldots/PortalDots/releases/download/v6.5.0/PortalDots.zip';
+    $crossMajorManifest = signRootEnvelope($crossMajorSigned, $rootPublic, $rootSecret);
+    $crossMajorManifestUrl = 'https://github.com/portaldots/PortalDots/releases/download/v6.5.0/PortalDots-update-manifest.json';
+    $crossMajorRelease = releaseFixture('v6.5.0', $crossMajorManifestUrl, $crossMajorSigned);
+
+    $legacySigned = signedFixtureV2($renewalPublic);
+    $legacySigned['target_version'] = '5.9.0';
+    $legacySigned['artifact']['url'] = 'https://github.com/portaldots/PortalDots/releases/download/v5.9.0/PortalDots-update-2.zip';
+    $legacySigned['full_artifact']['url'] = 'https://github.com/portaldots/PortalDots/releases/download/v5.9.0/PortalDots.zip';
+    $legacyManifestUrl = 'https://github.com/portaldots/PortalDots/releases/download/v5.9.0/PortalDots-update-manifest.json';
+    $legacyRelease = releaseFixture('v5.9.0', $legacyManifestUrl, $legacySigned);
+
+    $selector = new ReleaseCandidateSelector();
+    // メジャー6の更新元は、更新先(メジャー7)とメジャーが異なっても
+    // Config::CROSS_MAJOR_MINIMUM_MAJOR以上なので候補に含まれる。
+    // メジャー5の更新元は境界未満なので候補から除外される（fetchはされない）。
+    $selected = $selector->select(
+        [$crossMajorRelease, $legacyRelease],
+        '7.0.0',
+        base64_encode($rootPublic),
+        static function (string $url) use ($crossMajorManifestUrl, $crossMajorManifest): array {
+            if ($url !== $crossMajorManifestUrl) {
+                throw new RuntimeException('major 5.x candidate must not be fetched for a major 7 target');
+            }
+            return $crossMajorManifest;
+        },
+    );
+    assertSame(['6.5.0'], array_column($selected, 'version'));
 };
 
 $tests['zip rejects traversal and extracts exact bytes'] = static function (): void {
@@ -521,6 +662,84 @@ if (getenv('UPDATER_MYSQL_DSN')) {
             removeTree($root);
         }
     };
+
+    $tests['update selector falls back to the current major and highwater stays independent per major'] =
+        static function (): void {
+            $root = fixtureRoot();
+            try {
+                mkdir($root . '/updater/keys', 0700, true);
+                mkdir($root . '/storage/app/updater/private', 0700, true);
+                $dsn = parseDsn((string) getenv('UPDATER_MYSQL_DSN'));
+                file_put_contents($root . '/.env', implode("\n", [
+                    'DB_CONNECTION=mysql',
+                    'DB_HOST=' . $dsn['host'],
+                    'DB_PORT=' . $dsn['port'],
+                    'DB_DATABASE=' . $dsn['dbname'],
+                    'DB_USERNAME=' . (string) getenv('UPDATER_MYSQL_USER'),
+                    'DB_PASSWORD=' . (string) getenv('UPDATER_MYSQL_PASSWORD'),
+                ]) . "\n");
+                $keys = sodium_crypto_sign_keypair();
+                $public = sodium_crypto_sign_publickey($keys);
+                $secret = sodium_crypto_sign_secretkey($keys);
+                file_put_contents($root . '/updater/keys/release.pub', base64_encode($public));
+                $config = new Config($root, $root . '/storage/app/updater/private',
+                    'https://example.test/manifest', ['example.test'], $root . '/updater/keys/release.pub');
+                $store = new StateStore($config);
+                $verifier = new ManifestVerifier($config, new TrustedKeyStore($config, $store));
+                $downloader = new Downloader($config, $verifier);
+                $highwater = new ManifestHighwater($config);
+                $selector = new UpdateSelector($config, $downloader, $verifier, $highwater);
+
+                // 全体最新版(メジャー7、sequence 100)はMySQL要件を満たせず、現在のメジャー内
+                // 最新版(メジャー6、sequence 101)へフォールバックする。
+                $rejected = signedFixture();
+                $rejected['sequence'] = 100;
+                $rejected['target_version'] = '7.0.0';
+                $rejected['from_versions'] = ['6.5.0'];
+                $rejected['minimum_mysql'] = '99.0.0';
+                $fallback = signedFixture();
+                $fallback['sequence'] = 101;
+                $fallback['target_version'] = '6.6.0';
+                $fallback['from_versions'] = ['6.5.0'];
+                $verified = $selector->selectFrom([
+                    signRootEnvelope($rejected, $public, $secret),
+                    signRootEnvelope($fallback, $public, $secret),
+                ], '6.5.0');
+                assertSame('6.6.0', $verified['signed']['target_version']);
+
+                // メジャー6のsequence(101)はメジャー7のsequence(100)より高いが、
+                // メジャー7の記録はメジャー6のフォールバック観測の影響を受けない。MySQL要件を
+                // 満たすようになった同じメジャー7候補(sequence 100)は、単一のグローバル最高値
+                // だったなら「過去の更新マニフェスト」として拒否されるが、メジャーごとに
+                // 保持しているので受理される。
+                $recovered = signedFixture();
+                $recovered['sequence'] = 100;
+                $recovered['target_version'] = '7.0.0';
+                $recovered['from_versions'] = ['6.5.0'];
+                $recoveredVerified = $selector->selectFrom(
+                    [signRootEnvelope($recovered, $public, $secret)],
+                    '6.5.0',
+                );
+                assertSame('7.0.0', $recoveredVerified['signed']['target_version']);
+
+                // 全候補が失敗した場合は、最も新しい(先頭の)候補の例外が伝播する。
+                $stillRejected = signedFixture();
+                $stillRejected['sequence'] = 102;
+                $stillRejected['target_version'] = '7.0.1';
+                $stillRejected['from_versions'] = ['6.5.0'];
+                $stillRejected['minimum_mysql'] = '99.0.0';
+                $alsoRejected = signedFixture();
+                $alsoRejected['sequence'] = 102;
+                $alsoRejected['target_version'] = '6.6.1';
+                $alsoRejected['from_versions'] = ['9.9.9'];
+                expectFailure(static fn () => $selector->selectFrom([
+                    signRootEnvelope($stillRejected, $public, $secret),
+                    signRootEnvelope($alsoRejected, $public, $secret),
+                ], '6.5.0'));
+            } finally {
+                removeTree($root);
+            }
+        };
 }
 
 $failed = 0;
@@ -640,10 +859,19 @@ function signLease(
 }
 
 /** @return array<string, mixed> */
-function highwaterFixture(int $sequence, string $digest, int $leaseSequence, string $leaseDigest): array
-{
+function highwaterFixture(
+    int $sequence,
+    string $digest,
+    ?int $leaseSequence = null,
+    ?string $leaseDigest = null,
+    string $targetVersion = '6.0.0',
+): array {
+    if ($leaseSequence === null) {
+        $leaseSequence = $sequence * 100;
+        $leaseDigest ??= str_repeat('e', 64);
+    }
     return [
-        'signed' => ['sequence' => $sequence, 'target_version' => '6.0.' . $sequence],
+        'signed' => ['sequence' => $sequence, 'target_version' => $targetVersion],
         'root_digest' => $digest,
         'lease_sequence' => $leaseSequence,
         'lease_digest' => $leaseDigest,
