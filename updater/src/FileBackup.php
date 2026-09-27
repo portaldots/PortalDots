@@ -59,18 +59,31 @@ final class FileBackup
     }
 
     /**
+     * $installed/$incoming（それぞれ数万件になりうる）は old-manifest.json / new-manifest.json として
+     * ジョブディレクトリに一度だけ書き出す。戻り値の計画はパス一覧と、実際に触れるパスだけの
+     * ハッシュ・パーミッションのマップに絞ってあり、state.json や後続ステップのメモリを圧迫しない。
+     *
      * @param array<string, mixed> $installed
      * @param list<array{path: string, sha256: string, size: int}> $incoming
      * @return array<string, mixed>
      */
-    public function plan(array $installed, array $incoming, string $targetVersion, int $sequence): array
-    {
+    public function plan(
+        array $installed,
+        array $incoming,
+        string $targetVersion,
+        int $sequence,
+        StateStore $store,
+        string $jobId,
+    ): array {
         $old = array_column($installed['files'], null, 'path');
         $new = array_column($incoming, null, 'path');
         $backup = [];
         $apply = [];
         $delete = [];
         $removeOnRestore = [];
+        $oldHashes = [];
+        $newHashes = [];
+        $newModes = [];
         foreach ($new as $path => $file) {
             if (!isset($old[$path])) {
                 $absolute = $this->config->basePath . '/' . $path;
@@ -80,15 +93,21 @@ final class FileBackup
                 $this->assertSafePath($this->config->basePath, $path, true);
                 $apply[] = $path;
                 $removeOnRestore[] = $path;
+                $newHashes[$path] = (string) $file['sha256'];
+                $newModes[$path] = (int) $file['mode'];
             } elseif (!hash_equals((string) $old[$path]['sha256'], (string) $file['sha256'])) {
                 $backup[] = $path;
                 $apply[] = $path;
+                $oldHashes[$path] = (string) $old[$path]['sha256'];
+                $newHashes[$path] = (string) $file['sha256'];
+                $newModes[$path] = (int) $file['mode'];
             }
         }
         foreach ($old as $path => $file) {
             if (!isset($new[$path]) && !ZipPackage::isProtectedPath($path)) {
                 $backup[] = $path;
                 $delete[] = $path;
+                $oldHashes[$path] = (string) $file['sha256'];
             }
         }
         $protected = array_values(array_filter(
@@ -97,6 +116,13 @@ final class FileBackup
         ));
         $resultFiles = array_values(array_merge($incoming, $protected));
         usort($resultFiles, static fn (array $a, array $b): int => strcmp($a['path'], $b['path']));
+        $store->writeJobData($jobId, 'old-manifest.json', $installed);
+        $store->writeJobData($jobId, 'new-manifest.json', [
+            'schema' => 1,
+            'version' => $targetVersion,
+            'sequence' => $sequence,
+            'files' => $resultFiles,
+        ]);
         return [
             'backup' => array_values(array_unique($backup)),
             'apply' => $apply,
@@ -106,13 +132,9 @@ final class FileBackup
                 $modes[$path] = fileperms($this->config->basePath . '/' . $path) & 0777;
                 return $modes;
             }, []),
-            'old_manifest' => $installed,
-            'new_manifest' => [
-                'schema' => 1,
-                'version' => $targetVersion,
-                'sequence' => $sequence,
-                'files' => $resultFiles,
-            ],
+            'old_hashes' => $oldHashes,
+            'new_hashes' => $newHashes,
+            'new_modes' => $newModes,
         ];
     }
 
@@ -141,7 +163,7 @@ final class FileBackup
             }
             @chmod($destination, 0600);
         }
-        $expected = array_column($plan['old_manifest']['files'], null, 'path')[$path]['sha256'];
+        $expected = $plan['old_hashes'][$path];
         $actual = hash_file('sha256', $destination);
         if (!is_string($actual) || !hash_equals((string) $expected, $actual)) {
             throw new RuntimeException("ファイルバックアップを検証できません: {$path}");
@@ -151,7 +173,7 @@ final class FileBackup
     }
 
     /** @param array<string, mixed> $plan @param array<string, mixed> $context */
-    public function applyStep(array $plan, array &$context, string $stagingPath): bool
+    public function applyStep(array $plan, array &$context, string $stagingPath, string $jobPath): bool
     {
         $operations = [];
         foreach ($plan['apply'] as $path) {
@@ -170,10 +192,10 @@ final class FileBackup
         if ($operation['action'] === 'apply') {
             $source = $stagingPath . '/' . $operation['path'];
             $this->assertSafePath($stagingPath, $operation['path']);
-            $incoming = array_column($plan['new_manifest']['files'], null, 'path')[$operation['path']] ?? null;
+            $expectedHash = $plan['new_hashes'][$operation['path']] ?? null;
             $sourceHash = hash_file('sha256', $source);
-            if (!is_array($incoming) || !is_string($sourceHash)
-                || !hash_equals((string) $incoming['sha256'], $sourceHash)) {
+            if (!is_string($expectedHash) || !is_string($sourceHash)
+                || !hash_equals($expectedHash, $sourceHash)) {
                 throw new RuntimeException("適用直前の更新ファイル検証に失敗しました: {$operation['path']}");
             }
             $this->assertSafePath($this->config->basePath, $operation['path'], true);
@@ -184,7 +206,9 @@ final class FileBackup
             $temporary = $target . '.pdu-new';
             @unlink($temporary);
             $this->copyDurably($source, $temporary);
-            $mode = is_file($target) ? (fileperms($target) & 0777) : (int) ($incoming['mode'] ?? 0644);
+            $mode = is_file($target)
+                ? (fileperms($target) & 0777)
+                : (int) ($plan['new_modes'][$operation['path']] ?? 0644);
             @chmod($temporary, $mode);
             if (!rename($temporary, $target)) {
                 @unlink($temporary);
@@ -205,7 +229,7 @@ final class FileBackup
                 throw new RuntimeException("旧ファイルを削除できません: {$operation['path']}");
             }
         } else {
-            $this->writeManifest($target, $plan['new_manifest']);
+            $this->copyManifestFile($jobPath . '/new-manifest.json', $target);
         }
         $context['index'] = $index + 1;
         return $context['index'] >= count($operations);
@@ -241,7 +265,7 @@ final class FileBackup
             $source = $jobPath . '/files/' . $operation['path'];
             $this->assertSafePath($jobPath . '/files', $operation['path']);
             $this->assertSafePath($this->config->basePath, $operation['path'], true);
-            $expected = array_column($plan['old_manifest']['files'], null, 'path')[$operation['path']]['sha256'];
+            $expected = $plan['old_hashes'][$operation['path']];
             $hash = is_file($source) ? hash_file('sha256', $source) : false;
             if (!is_string($hash) || !hash_equals((string) $expected, $hash)) {
                 throw new RuntimeException("復元元ファイルが破損しています: {$operation['path']}");
@@ -264,33 +288,26 @@ final class FileBackup
                 throw new RuntimeException("復元ファイルのOPcacheを無効化できません: {$operation['path']}");
             }
         } else {
-            $this->writeManifest($target, $plan['old_manifest']);
+            $this->copyManifestFile($jobPath . '/old-manifest.json', $target);
         }
         $context['index'] = $index + 1;
         return $context['index'] >= count($operations);
     }
 
-    /** @param array<string, mixed> $manifest */
-    private function writeManifest(string $target, array $manifest): void
+    /**
+     * 数万件規模になりうる配布ファイル一覧を都度 CanonicalJson で再エンコードせず、
+     * preflight で一度だけ書き出したジョブデータファイルをそのまま配置先へコピーする。
+     */
+    private function copyManifestFile(string $source, string $target): void
     {
         $temporary = $target . '.pdu-new';
         @unlink($temporary);
-        $handle = fopen($temporary, 'xb');
-        $contents = CanonicalJson::encode($manifest) . "\n";
-        if ($handle === false || fwrite($handle, $contents) !== strlen($contents)
-            || !fflush($handle) || (function_exists('fsync') && !fsync($handle))) {
-            if (is_resource($handle)) {
-                fclose($handle);
-            }
-            @unlink($temporary);
-            throw new RuntimeException('公式配布ファイル一覧を書き込めません。');
-        }
-        fclose($handle);
-        @chmod($temporary, 0644);
+        $this->copyDurably($source, $temporary);
         if (!rename($temporary, $target)) {
             @unlink($temporary);
             throw new RuntimeException('公式配布ファイル一覧を確定できません。');
         }
+        @chmod($target, 0644);
     }
 
     private function copyDurably(string $source, string $destination): void

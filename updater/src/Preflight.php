@@ -12,8 +12,12 @@ final class Preflight
     {
     }
 
-    /** @param array<string, mixed> $signed @param array<string, mixed> $filePlan */
-    public function run(array $signed, array $filePlan): void
+    /**
+     * @param array<string, mixed> $signed
+     * @param list<array{path: string, size: int}> $files
+     * @param array<string, mixed> $filePlan
+     */
+    public function run(array $signed, array $files, array $filePlan): void
     {
         foreach (['curl', 'json', 'pdo_mysql', 'sodium', 'zip'] as $extension) {
             if (!extension_loaded($extension)) {
@@ -62,7 +66,7 @@ final class Preflight
             $fileBytes += is_int($size) ? $size : 0;
         }
         $required = ((int) $signed['artifact']['size'] * 2)
-            + array_sum(array_column($signed['files'], 'size')) + ($databaseBytes * 3) + ($fileBytes * 2) + 67_108_864;
+            + array_sum(array_column($files, 'size')) + ($databaseBytes * 3) + ($fileBytes * 2) + 67_108_864;
         $available = disk_free_space($this->config->privatePath);
         if (!is_float($available) && !is_int($available)) {
             throw new RuntimeException('空き容量を確認できません。');

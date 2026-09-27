@@ -80,6 +80,31 @@ final class StateStore
         return $suffix === '' ? $path : $path . '/' . ltrim($suffix, '/');
     }
 
+    /**
+     * state.json に載せない大きな一度書きデータをジョブディレクトリ内の別ファイルに保存する。
+     *
+     * @param array<string, mixed> $value
+     */
+    public function writeJobData(string $id, string $name, array $value): void
+    {
+        $this->assertJobDataName($name);
+        $this->writeJson($this->jobPath($id, $name), $value, false);
+    }
+
+    /** @return array<string, mixed> */
+    public function readJobData(string $id, string $name): array
+    {
+        $this->assertJobDataName($name);
+        return $this->readJson($this->jobPath($id, $name), true);
+    }
+
+    private function assertJobDataName(string $name): void
+    {
+        if (!preg_match('/^[a-z-]+\.json$/', $name)) {
+            throw new RuntimeException('更新ジョブデータ名が不正です。');
+        }
+    }
+
     /** @return resource */
     public function lock(string $id)
     {
@@ -142,7 +167,10 @@ final class StateStore
     private function writeJson(string $path, array $value, bool $replace): void
     {
         $temporary = $path . '.tmp.' . bin2hex(random_bytes(6));
-        $contents = CanonicalJson::encode($value) . "\n";
+        // state.json やジョブデータは署名・ハッシュ対象ではないため、CanonicalJson の
+        // 再帰的なコピーとksortを避けて素の json_encode で書き出す（メモリ削減）。
+        $contents = json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+            | JSON_PRESERVE_ZERO_FRACTION | JSON_THROW_ON_ERROR) . "\n";
         $handle = fopen($temporary, 'xb');
         if ($handle === false || ($replace && !flock($handle, LOCK_EX))) {
             throw new RuntimeException('更新状態を書き込めません。');

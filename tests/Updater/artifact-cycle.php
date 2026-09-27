@@ -8,6 +8,7 @@ require dirname(__DIR__, 2) . '/updater/bootstrap.php';
 use PortalDots\Updater\CanonicalJson;
 use PortalDots\Updater\Config;
 use PortalDots\Updater\FileBackup;
+use PortalDots\Updater\StateStore;
 use PortalDots\Updater\ZipPackage;
 
 if ($argc !== 2 && $argc !== 3) {
@@ -50,16 +51,18 @@ try {
     ]];
     $oldManifest = ['schema' => 1, 'version' => '0.0.1', 'sequence' => 0, 'files' => $oldFiles];
     file_put_contents($root . '/.portaldots-manifest.json', CanonicalJson::encode($oldManifest));
+    $store = new StateStore($config);
     $files = new FileBackup($config);
     $files->verifyInstallation($oldManifest);
-    $plan = $files->plan($oldManifest, $signed['files'], $signed['target_version'], $signed['sequence']);
-    $job = $root . '/storage/app/updater/private/job';
+    $jobId = str_repeat('a', 32);
+    $job = $store->jobPath($jobId);
     mkdir($job, 0700, true);
+    $plan = $files->plan($oldManifest, $signed['files'], $signed['target_version'], $signed['sequence'], $store, $jobId);
     $context = [];
     while (!$files->backupStep($plan, $context, $job)) {
     }
     $context = [];
-    while (!$files->applyStep($plan, $context, $staging)) {
+    while (!$files->applyStep($plan, $context, $staging, $job)) {
     }
     if (!hash_equals($changed['sha256'], (string) hash_file('sha256', $root . '/' . $oldPath))) {
         throw new RuntimeException('Exact artifact was not applied.');

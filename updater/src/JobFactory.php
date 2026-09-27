@@ -27,6 +27,13 @@ final class JobFactory
         $rawCode = strtoupper(bin2hex(random_bytes(16)));
         $recoveryCode = implode('-', str_split($rawCode, 8));
         $algorithm = defined('PASSWORD_ARGON2ID') ? PASSWORD_ARGON2ID : PASSWORD_BCRYPT;
+        // signed.files は数万件になりうるため state.json には載せず files.json へ分離する。
+        $files = null;
+        $slimManifest = $verifiedManifest;
+        if ($verifiedManifest !== null) {
+            $files = $verifiedManifest['signed']['files'];
+            unset($slimManifest['signed']['files']);
+        }
         $state = [
             'schema' => 1,
             'id' => $id,
@@ -36,7 +43,7 @@ final class JobFactory
             'from_version' => VersionReader::current($this->config->basePath),
             'target_version' => $verifiedManifest['signed']['target_version'] ?? null,
             'manifest_url' => $this->config->manifestUrl,
-            'manifest' => $verifiedManifest,
+            'manifest' => $slimManifest,
             'artifact' => [],
             'download' => [],
             'extract' => [],
@@ -58,6 +65,9 @@ final class JobFactory
             'last_error' => null,
         ];
         $this->store->create($state);
+        if ($files !== null) {
+            $this->store->writeJobData($id, 'files.json', ['files' => $files]);
+        }
         return ['job_id' => $id, 'recovery_code' => $recoveryCode];
     }
 }

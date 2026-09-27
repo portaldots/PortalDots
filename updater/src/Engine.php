@@ -110,10 +110,13 @@ final class Engine
                     (int) ($highest['lease_sequence'] ?? 0),
                     isset($highest['lease_digest']) ? (string) $highest['lease_digest'] : null,
                 );
-                $state['manifest'] = $verified;
-                $state['target_version'] = $verified['signed']['target_version'];
                 $this->highwater->observe($verified);
                 $this->keys->applyRotation($verified['signed'], $verified['signing_key_id']);
+                // signed.files は数万件になりうるため state.json には載せず files.json へ分離する。
+                $this->store->writeJobData($state['id'], 'files.json', ['files' => $verified['signed']['files']]);
+                unset($verified['signed']['files']);
+                $state['manifest'] = $verified;
+                $state['target_version'] = $verified['signed']['target_version'];
                 return true;
 
             case 'download_package':
@@ -134,14 +137,16 @@ final class Engine
                 return $complete;
 
             case 'inspect_package':
-                $this->zip->inspect($jobPath . '/update.zip', $signed['files']);
+                $files = $this->store->readJobData($state['id'], 'files.json')['files'];
+                $this->zip->inspect($jobPath . '/update.zip', $files);
                 return true;
 
             case 'extract_package':
+                $files = $this->store->readJobData($state['id'], 'files.json')['files'];
                 return $this->zip->extractUntil(
                     $jobPath . '/update.zip',
                     $jobPath . '/staging',
-                    $signed['files'],
+                    $files,
                     $state['extract'],
                     microtime(true) + 4.0,
                 );
@@ -149,13 +154,18 @@ final class Engine
             case 'preflight':
                 $installed = $this->files->installedManifest($state['from_version']);
                 $this->files->verifyInstallation($installed);
-                $state['file_plan'] = $this->files->plan(
+                $files = $this->store->readJobData($state['id'], 'files.json')['files'];
+                $plan = $this->files->plan(
                     $installed,
-                    $signed['files'],
+                    $files,
                     $state['target_version'],
                     $signed['sequence'],
+                    $this->store,
+                    $state['id'],
                 );
-                $this->preflight->run($signed, $state['file_plan']);
+                $this->store->writeJobData($state['id'], 'file-plan.json', $plan);
+                $state['file_plan'] = ['stored' => true];
+                $this->preflight->run($signed, $files, $plan);
                 return true;
 
             case 'enter_maintenance':
@@ -183,10 +193,11 @@ final class Engine
                 );
 
             case 'backup_files':
+                $plan = $this->store->readJobData($state['id'], 'file-plan.json');
                 $deadline = microtime(true) + 4.0;
                 do {
                     $complete = $this->files->backupStep(
-                        $state['file_plan'],
+                        $plan,
                         $state['file_backup'],
                         $jobPath,
                     );
@@ -199,12 +210,14 @@ final class Engine
                     $this->store->save($state);
                 }
                 CacheCleaner::clear($this->config->basePath);
+                $plan = $this->store->readJobData($state['id'], 'file-plan.json');
                 $deadline = microtime(true) + 4.0;
                 do {
                     $complete = $this->files->applyStep(
-                        $state['file_plan'],
+                        $plan,
                         $state['file_apply'],
                         $jobPath . '/staging',
+                        $jobPath,
                     );
                 } while (!$complete && microtime(true) < $deadline);
                 return $complete;
@@ -337,10 +350,11 @@ final class Engine
                 return false;
             case 'restore_files':
                 if ($state['destructive_started']) {
+                    $plan = $this->store->readJobData($state['id'], 'file-plan.json');
                     $deadline = microtime(true) + 4.0;
                     do {
                         $complete = $this->files->restoreStep(
-                            $state['file_plan'],
+                            $plan,
                             $restore['files'],
                             $jobPath,
                         );
@@ -375,7 +389,7 @@ final class Engine
                 $restore['step'] = 'verify';
                 return false;
             case 'verify':
-                $this->files->verifyInstallation($state['file_plan']['old_manifest']);
+                $this->files->verifyInstallation($this->store->readJobData($state['id'], 'old-manifest.json'));
                 $this->health->check($state['from_version']);
                 $restore['step'] = 'reopen';
                 return false;

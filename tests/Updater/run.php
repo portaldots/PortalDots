@@ -374,17 +374,19 @@ $tests['file apply restores changed, deleted, and added files'] = static functio
         }
         $config = new Config($root, $root . '/storage/app/updater/private', 'https://example.test/manifest',
             ['example.test'], $root . '/missing.pub');
+        $store = new StateStore($config);
         $files = new FileBackup($config);
         $files->verifyInstallation($old);
-        $plan = $files->plan($old, $incoming, '6.0.1', 2);
-        $job = $root . '/storage/app/updater/private/job';
+        $jobId = str_repeat('a', 32);
+        $job = $store->jobPath($jobId);
         mkdir($job, 0700, true);
+        $plan = $files->plan($old, $incoming, '6.0.1', 2, $store, $jobId);
         $context = [];
         while (!$files->backupStep($plan, $context, $job)) {
             $context = json_decode(CanonicalJson::encode($context), true, 16, JSON_THROW_ON_ERROR);
         }
         $context = [];
-        while (!$files->applyStep($plan, $context, $stage)) {
+        while (!$files->applyStep($plan, $context, $stage, $job)) {
             $context = json_decode(CanonicalJson::encode($context), true, 16, JSON_THROW_ON_ERROR);
         }
         assertSame('new-a', file_get_contents($root . '/app/a.php'));
