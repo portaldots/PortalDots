@@ -69,6 +69,13 @@
                     申請管理
                 </a>
             @endcan
+            @can('staff.threads.read')
+                <a href="{{ route('staff.threads.index') }}"
+                    class="drawer-nav__link{{ Request::is('staff/threads*') ? ' is-active' : '' }}">
+                    <i class="far fa-comments drawer-nav__icon fa-fw"></i>
+                    お問い合わせ
+                </a>
+            @endcan
             @can('staff.contacts.categories.read')
                 <a href="{{ route('staff.contacts.categories.index') }}"
                     class="drawer-nav__link{{ Request::is('staff/contacts/categories*') ? ' is-active' : '' }}">

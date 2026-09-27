@@ -290,6 +290,27 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                     ->middleware(['can:staff.documents.edit']);
             });
 
+        // お問い合わせ（企画・お問い合わせ送信者ごとの会話）
+        Route::prefix('/threads')
+            ->name('threads.')
+            ->group(function () {
+                Route::get('/', 'Staff\Threads\IndexAction')->name('index')->middleware(['can:staff.threads.read']);
+                Route::get('/api', 'Staff\Threads\ApiAction')->name('api')->middleware(['can:staff.threads.read']);
+                Route::get('/{thread}', 'Staff\Threads\ShowAction')->name('show')->middleware(['can:staff.threads.read']);
+                Route::post('/{thread}/messages', 'Staff\Threads\MessagesStoreAction')
+                    ->name('messages.store')
+                    ->middleware(['can:staff.threads.edit']);
+                Route::post('/{thread}/notes', 'Staff\Threads\NotesStoreAction')
+                    ->name('notes.store')
+                    ->middleware(['can:staff.threads.edit']);
+                Route::patch('/{thread}/assignee', 'Staff\Threads\AssigneeUpdateAction')
+                    ->name('assignee.update')
+                    ->middleware(['can:staff.threads.edit']);
+                Route::get('/attachments/{attachment}', 'Staff\Threads\Attachments\ShowAction')
+                    ->name('attachments.show')
+                    ->middleware(['can:staff.threads.read']);
+            });
+
         // スタッフの権限設定
         Route::prefix('/permissions')
             ->name('permissions.')

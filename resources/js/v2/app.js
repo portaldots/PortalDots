@@ -50,6 +50,7 @@ import SearchInput from "./components/SearchInput.vue";
 import PermissionsSelector from "./components/PermissionsSelector.vue";
 import UiPrimaryColorPicker from "./components/UiPrimaryColorPicker.vue";
 import DataGridShortcutLink from "./components/DataGridShortcutLink.vue";
+import ThreadComposer from "./components/ThreadComposer.vue";
 
 // Form Questions
 import QuestionItem from "./components/Forms/QuestionItem.vue";
@@ -131,6 +132,7 @@ document.addEventListener("turbolinks:load", () => {
       PermissionsSelector,
       UiPrimaryColorPicker,
       DataGridShortcutLink,
+      ThreadComposer,
     },
     data() {
       return {
