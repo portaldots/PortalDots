@@ -183,9 +183,8 @@ export default {
 <style lang="scss" scoped>
 .question-table { width: 100%; min-width: 0; }
 .question-table__guidance, .question-table__count { color: $color-muted; font-size: 0.9rem; margin: 0 0 $spacing-md; }
-.question-table__row { min-width: 0; border: 0; margin: 0 0 $spacing; padding: 0; }
-.question-table__row + .question-table__row { border-top: 1px solid $color-border; padding-top: $spacing; }
-.question-table__row-title { float: none; font-size: 1rem; font-weight: $font-bold; margin: 0 0 $spacing-md; padding: 0; width: 100%; }
+.question-table__row { min-width: 0; border: 1px solid $color-border; border-radius: $border-radius; margin: 0 0 $spacing; padding: $spacing-md; }
+.question-table__row-title { float: none; font-size: 1rem; font-weight: $font-bold; margin: 0 0 $spacing-sm; padding: 0 $spacing-sm; width: auto; }
 .question-table__cells { display: block; }
 .question-table__cell { min-width: 0; margin-bottom: $spacing-md; }
 .question-table__label { display: block; font-weight: $font-bold; margin: 0 0 $spacing-xs; }
