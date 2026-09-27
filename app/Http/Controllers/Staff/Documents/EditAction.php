@@ -14,8 +14,14 @@ class EditAction extends Controller
     {
         $document->load('versions.uploadedBy');
 
+        $documentApprovals = $document->approvals()
+            ->with(['circle', 'documentVersion', 'decisions.documentVersion', 'decisions.decidedBy'])
+            ->orderBy('id')
+            ->get();
+
         return view('staff.documents.form')
             ->with('document', $document)
+            ->with('document_approvals', $documentApprovals)
             ->with('default_tags', $document->viewableTags->pluck('name')->map(function ($item) {
                 return ['text' => $item];
             })->toJson())

@@ -39,6 +39,10 @@ Route::prefix('/documents')
         Route::get('/{document}/versions/{version:version}', 'Documents\VersionsShowAction')
             ->name('versions.show')
             ->scopeBindings();
+        Route::get('/{document}/approval', 'Documents\Approvals\ShowAction')->name('approval.show');
+        Route::post('/{document}/approval/approve', 'Documents\Approvals\ApproveAction')->name('approval.approve');
+        Route::post('/{document}/approval/request-changes', 'Documents\Approvals\RequestChangesAction')
+            ->name('approval.request-changes');
     });
 
 // 外観設定

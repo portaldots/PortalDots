@@ -11,18 +11,15 @@ use Illuminate\Http\Request;
  */
 trait RespondsToStaleAnswer
 {
+    use RespondsToStaleState;
+
     private function staleAnswerResponse(Request $request)
     {
-        if ($request->expectsJson()) {
-            return response()->json([
-                'message' => '回答が別の操作によって更新されているため、この操作を行えません。画面を再読み込みしてください。',
-            ], 409);
-        }
-
-        return back()
-            ->withInput()
-            ->with('topAlert.type', 'danger')
-            ->with('topAlert.title', '回答が別の操作によって更新されています')
-            ->with('topAlert.body', '画面を再読み込みしてから、もう一度お試しください');
+        return $this->staleStateResponse(
+            $request,
+            '回答が別の操作によって更新されています',
+            '画面を再読み込みしてから、もう一度お試しください',
+            '回答が別の操作によって更新されているため、この操作を行えません。画面を再読み込みしてください。'
+        );
     }
 }

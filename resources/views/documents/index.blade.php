@@ -25,6 +25,18 @@
                             @if ($document->isNew())
                                 <app-badge danger>NEW</app-badge>
                             @endif
+                            @if ($document->approvals->isNotEmpty())
+                                @php $approval = $document->approvals->first(); @endphp
+                                <a href="{{ route('documents.approval.show', ['document' => $document]) }}">
+                                    @if ($approval->status === \App\Eloquents\DocumentApproval::STATUS_APPROVED)
+                                        <app-badge success>{{ $approval->circleStatusLabel() }}</app-badge>
+                                    @elseif ($approval->status === \App\Eloquents\DocumentApproval::STATUS_CHANGES_REQUESTED)
+                                        <app-badge danger>{{ $approval->circleStatusLabel() }}</app-badge>
+                                    @else
+                                        <app-badge primary>{{ $approval->circleStatusLabel() }}</app-badge>
+                                    @endif
+                                </a>
+                            @endif
                         </template>
                         <template v-slot:meta>
                             @datetime($document->updated_at) 更新

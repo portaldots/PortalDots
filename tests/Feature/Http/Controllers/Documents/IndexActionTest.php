@@ -7,6 +7,7 @@ use App\Eloquents\Document;
 use App\Eloquents\Tag;
 use App\Eloquents\User;
 use App\Services\Circles\SelectorService;
+use App\Services\Documents\DocumentApprovalsService;
 use App\Services\Documents\DocumentsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -182,5 +183,55 @@ class IndexActionTest extends TestCase
             'document' => $document,
             'version' => $document->versions()->where('version', 1)->firstOrFail(),
         ]), false);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 自分の企画への確認依頼があればバッジが表示される()
+    {
+        Storage::fake('local');
+
+        $documentsService = App::make(DocumentsService::class);
+        $document = $documentsService->createDocument(
+            '確認依頼のある配布資料',
+            null,
+            UploadedFile::fake()->create('第1版.pdf', 1, 'application/pdf'),
+            true,
+            false,
+            null
+        );
+        App::make(DocumentApprovalsService::class)
+            ->requestForCircles($document, [$this->circleSelected->id], $this->circleSelectedUser);
+
+        $this->selectorService->setCircle($this->circleSelected);
+
+        $response = $this->actingAs($this->circleSelectedUser)
+            ->get(route('documents.index'));
+
+        $response->assertSee('確認してください');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 別の企画への確認依頼のバッジは表示されない()
+    {
+        Storage::fake('local');
+
+        $documentsService = App::make(DocumentsService::class);
+        $document = $documentsService->createDocument(
+            '確認依頼のある配布資料',
+            null,
+            UploadedFile::fake()->create('第1版.pdf', 1, 'application/pdf'),
+            true,
+            false,
+            null
+        );
+        App::make(DocumentApprovalsService::class)
+            ->requestForCircles($document, [$this->circleUnrelated->id], $this->circleUnrelatedUser);
+
+        $this->selectorService->setCircle($this->circleSelected);
+
+        $response = $this->actingAs($this->circleSelectedUser)
+            ->get(route('documents.index'));
+
+        $response->assertDontSee('確認してください');
     }
 }
