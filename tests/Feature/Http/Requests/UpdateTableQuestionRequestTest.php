@@ -35,6 +35,21 @@ class UpdateTableQuestionRequestTest extends TestCase
         $this->assertArrayHasKey('question.table', $validator->errors()->toArray());
     }
 
+    public function test_accepts_an_empty_table_payload_for_a_non_table_question(): void
+    {
+        $request = UpdateQuestionRequest::create('/', 'PATCH', [
+            'question' => [
+                'type' => 'text',
+                'priority' => 1,
+                'table' => [],
+            ],
+        ]);
+
+        $validator = Validator::make($request->all(), $request->rules());
+
+        $this->assertFalse($validator->fails(), json_encode($validator->errors()->toArray()));
+    }
+
     private function makeRequest(array $columns, ?int $minimum = 0, ?int $maximum = 10): UpdateQuestionRequest
     {
         return UpdateQuestionRequest::create('/', 'PATCH', [

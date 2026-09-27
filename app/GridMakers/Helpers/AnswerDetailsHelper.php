@@ -122,9 +122,11 @@ class AnswerDetailsHelper
         Collection $questions,
         Form $form,
         string $questionsKeyPrefix,
-        string $checkboxGroupConcatSeparator
+        string $checkboxGroupConcatSeparator,
+        string $answerIdAttribute = 'id'
     ): array {
         $item = [];
+        $answerId = $record->$answerIdAttribute;
 
         foreach (self::getFormQuestionsKeys($questions, $questionsKeyPrefix) as $formKey) {
             $questionId = intval(str_replace($questionsKeyPrefix, '', $formKey));
@@ -135,7 +137,7 @@ class AnswerDetailsHelper
                 $item[$formKey] = !empty($answerValue) ? [
                     'file_url' => route('staff.forms.answers.uploads.show', [
                         'form' => $form->id,
-                        'answer' => $record->id,
+                        'answer' => $answerId,
                         'question' => $questionId,
                     ])
                 ] : [];
@@ -145,7 +147,7 @@ class AnswerDetailsHelper
                     if ($cell['type'] === 'upload' && $cell['text'] !== '') {
                         $cell['file_url'] = route('staff.forms.answers.uploads.table.show', [
                             'form' => $form->id,
-                            'answer' => $record->id,
+                            'answer' => $answerId,
                             'question' => $questionId,
                             'row' => $cell['row'],
                             'column' => $cell['column'],

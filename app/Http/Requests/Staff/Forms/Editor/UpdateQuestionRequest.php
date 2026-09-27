@@ -27,6 +27,20 @@ class UpdateQuestionRequest extends FormRequest
      */
     public function rules()
     {
+        $tableRules = ['nullable', 'array'];
+        if ($this->input('question.type') === 'table') {
+            $tableRules = [
+                'required',
+                'array',
+                'min:1',
+                function (string $attribute, mixed $value, \Closure $fail) {
+                    if (is_array($value)) {
+                        $this->validateTableDefinition($value, $fail);
+                    }
+                },
+            ];
+        }
+
         return [
             'question.allowed_types' => ['nullable', 'string'],
             'question.description' => ['nullable', 'string'],
@@ -36,17 +50,7 @@ class UpdateQuestionRequest extends FormRequest
             'question.number_min' => ['nullable', 'integer'],
             'question.options' => ['nullable', 'string'],
             'question.priority' => ['required', 'integer'],
-            'question.table' => [
-                Rule::requiredIf(fn () => $this->input('question.type') === 'table'),
-                'nullable',
-                'array',
-                'min:1',
-                function (string $attribute, mixed $value, \Closure $fail) {
-                    if (is_array($value)) {
-                        $this->validateTableDefinition($value, $fail);
-                    }
-                },
-            ],
+            'question.table' => $tableRules,
             'question.type' => ['required', Rule::in(Question::QUESTION_TYPES)],
         ];
     }
