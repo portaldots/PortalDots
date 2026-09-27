@@ -14,6 +14,7 @@ use App\Mail\Forms\AnswerConfirmationMailable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class AnswersService
 {
@@ -134,29 +135,58 @@ class AnswersService
 
     public function createAnswer(Form $form, Circle $circle, ?AnswerRequestInterface $request = null)
     {
-        return DB::transaction(function () use ($form, $circle, $request) {
-            $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
+        try {
+            $answer = DB::transaction(function () use ($form, $circle, $request) {
+                $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
 
-            $answer = Answer::create([
-                'form_id' => $form->id,
-                'circle_id' => $circle->id,
-            ]);
+                $answer = Answer::create([
+                    'form_id' => $form->id,
+                    'circle_id' => $circle->id,
+                ]);
 
-            $this->answerDetailsService->updateAnswerDetails($form, $answer, $answer_details);
+                $this->answerDetailsService->updateAnswerDetails($form, $answer, $answer_details);
 
+                return $answer;
+            });
+            $this->finishStoredFilesAfterOutermostCommit();
             return $answer;
-        });
+        } catch (Throwable $e) {
+            $this->answerDetailsService->discardNewlyStoredFiles();
+            throw $e;
+        }
     }
 
     public function updateAnswer(Form $form, Answer $answer, ?AnswerRequestInterface $request = null)
     {
-        return DB::transaction(function () use ($form, $answer, $request) {
-            $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
+        try {
+            $updatedAnswer = DB::transaction(function () use ($form, $answer, $request) {
+                $answer = Answer::whereKey($answer->id)->lockForUpdate()->firstOrFail();
+                $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
 
-            $answer->update();
-            $this->answerDetailsService->updateAnswerDetails($form, $answer, $answer_details);
+                $answer->update();
+                $this->answerDetailsService->updateAnswerDetails($form, $answer, $answer_details);
 
-            return $answer;
-        });
+                return $answer;
+            });
+            $this->finishStoredFilesAfterOutermostCommit();
+            return $updatedAnswer;
+        } catch (Throwable $e) {
+            $this->answerDetailsService->discardNewlyStoredFiles();
+            throw $e;
+        }
+    }
+
+    public function discardPendingUploads(): void
+    {
+        $this->answerDetailsService->discardNewlyStoredFiles();
+    }
+
+    private function finishStoredFilesAfterOutermostCommit(): void
+    {
+        if (DB::transactionLevel() === 0) {
+            $this->answerDetailsService->forgetNewlyStoredFiles();
+            return;
+        }
+        DB::afterCommit(fn () => $this->answerDetailsService->forgetNewlyStoredFiles());
     }
 }

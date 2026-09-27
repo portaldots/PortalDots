@@ -73,6 +73,11 @@ export default {
           icon: "far fa-file",
           label: "ファイルアップロード",
         },
+        {
+          value: "table",
+          icon: "fas fa-table",
+          label: "表形式入力",
+        },
       ];
     },
   },

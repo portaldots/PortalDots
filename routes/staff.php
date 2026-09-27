@@ -87,6 +87,7 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                         Route::patch('/{answer}', 'Staff\Forms\Answers\UpdateAction')->name('update')->middleware(['can:staff.forms.answers.edit']);
                         Route::get('/create', 'Staff\Forms\Answers\CreateAction')->name('create')->middleware(['can:staff.forms.answers.edit']);
                         Route::post('/', 'Staff\Forms\Answers\StoreAction')->name('store')->middleware(['can:staff.forms.answers.edit']);
+                        Route::get('/{answer}/uploads/{question}/{row}/{column}', 'Staff\Forms\Answers\Uploads\TableShowAction')->name('uploads.table.show')->middleware(['can:staff.forms.answers.read']);
                         Route::get('/{answer}/uploads/{question}', 'Staff\Forms\Answers\Uploads\ShowAction')->name('uploads.show')->middleware(['can:staff.forms.answers.read']);
                         Route::delete('/{answer}', 'Staff\Forms\Answers\DestroyAction')->name('destroy')->middleware(['can:staff.forms.answers.delete']);
                         Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index')->middleware(['can:staff.forms.answers.export'])->middleware(['can:staff.forms.answers.export']);

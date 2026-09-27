@@ -6,8 +6,9 @@ use App;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\UploadedFile;
+use App\Services\Forms\AnswerInputNormalizer;
 use App\Services\Forms\ValidationRulesService;
+use App\Eloquents\Answer;
 use App\Eloquents\Circle;
 
 abstract class BaseAnswerRequest extends FormRequest implements AnswerRequestInterface
@@ -30,15 +31,13 @@ abstract class BaseAnswerRequest extends FormRequest implements AnswerRequestInt
     {
         $all = $this->all();
 
-        // 改行(\r\n)が2文字と認識されてしまわないよう、\n に置換する
-        if (isset($all['answers'])) {
-            $all['answers'] = array_map(function ($item) {
-                if (is_array($item) || $item instanceof UploadedFile) {
-                    // 配列とファイルは処理しない
-                    return $item;
-                }
-                return str_replace("\r\n", "\n", $item);
-            }, $all['answers']);
+        if (array_key_exists('answers', $all)) {
+            $form = $this->route('form');
+            if ($form) {
+                $answer = $this->route('answer');
+                $all['answers'] = App::make(AnswerInputNormalizer::class)
+                    ->normalize($all['answers'], $form, $answer instanceof Answer ? $answer : null);
+            }
         }
 
         return $all;
