@@ -148,6 +148,12 @@ class Permission extends SpatiePermission
                     '場所(エクスポート)',
                     '場所の閲覧とCSVエクスポートが可能'
                 ),
+                'staff.places.read,import' => new PermissionInfo(
+                    'staff.places.read,import',
+                    'スタッフモード › 場所情報管理 › 閲覧とCSVインポート',
+                    '場所(インポート)',
+                    '場所の閲覧とCSVインポートが可能'
+                ),
                 'staff.places.read' => new PermissionInfo(
                     'staff.places.read',
                     'スタッフモード › 場所情報管理 › 閲覧',

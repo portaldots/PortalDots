@@ -49,6 +49,7 @@ class CheckPermissionsTest extends TestCase
             'staff.places.read,edit,delete',
             'staff.places.read,edit',
             'staff.places.read,export',
+            'staff.places.read,import',
             'staff.places.read',
             'staff.pages',
             'staff.pages.read,edit,send_emails',

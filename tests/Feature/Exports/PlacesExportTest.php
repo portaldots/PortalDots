@@ -92,4 +92,23 @@ class PlacesExportTest extends TestCase
             $this->placesExport->map($this->place->load('circles'))
         );
     }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function headings_既存の場所別企画一覧9列を維持する()
+    {
+        $this->assertSame(
+            [
+                '場所ID',
+                '場所名',
+                'タイプ',
+                'スタッフ用メモ',
+                '企画ID',
+                '企画名',
+                '企画名（よみ）',
+                '企画を出店する団体の名称',
+                '企画を出店する団体の名称（よみ）',
+            ],
+            $this->placesExport->headings()
+        );
+    }
 }
