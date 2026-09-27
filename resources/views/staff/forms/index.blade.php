@@ -9,6 +9,7 @@
                             id: 'フォームID',
                             name: 'フォーム名',
                             is_public: '公開',
+                            audience: '公開範囲',
                             answerableTags: '回答可能なタグ',
                             description: 'フォームの説明',
                             open_at: '受付開始日時',
@@ -65,6 +66,11 @@
                     v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])">
                     @{{ row[keyName] }}
                 </a>
+            </template>
+            <template v-else-if="keyName === 'audience'">
+                {{-- 公開範囲 --}}
+                <template v-if="row[keyName] === 'everyone'">すべての企画</template>
+                <template v-else-if="row[keyName] === 'selected'">選んだタグ・企画のみ</template>
             </template>
             <template v-else-if="keyName === 'answerableTags'">
                 {{-- 閲覧可能なタグ --}}

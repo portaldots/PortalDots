@@ -25,7 +25,7 @@
                 @foreach ($forms as $form)
                     <list-view-item href="{{ route('forms.answers.create', ['form' => $form]) }}">
                         <template v-slot:title>
-                            @if (!$form->answerableTags->isEmpty())
+                            @if ($form->audience === \App\Contracts\AudiencePolicy::SELECTED)
                                 <app-badge primary outline>限定公開</app-badge>
                             @else
                                 <app-badge muted outline>全員に公開</app-badge>
@@ -49,6 +49,9 @@
                                 @if ($form->yetOpen())
                                     <app-badge muted>受付開始前</app-badge>
                                 @endif
+                                @if ($form->isOverdueFor($circle))
+                                    <app-badge danger>期限切れ</app-badge>
+                                @endif
                             @endif
                         </template>
                         <template v-slot:meta>
@@ -59,6 +62,12 @@
                             @endif
                             @if ($form->max_answers > 1)
                                 • 1企画あたり{{ $form->max_answers }}つ回答可能
+                            @endif
+                            @if (isset($circle))
+                                @php $dueAt = $form->effectiveDueDateFor($circle); @endphp
+                                @unless ($dueAt->equalTo($form->close_at))
+                                    • 期限 : @datetime($dueAt)
+                                @endunless
                             @endif
                         </template>
                         @summary($form->description)

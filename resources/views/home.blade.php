@@ -210,7 +210,7 @@
                 @foreach ($forms as $form)
                     <list-view-item href="{{ route('forms.answers.create', ['form' => $form]) }}">
                         <template v-slot:title>
-                            @if (!$form->answerableTags->isEmpty())
+                            @if ($form->audience === \App\Contracts\AudiencePolicy::SELECTED)
                                 <app-badge primary outline>限定公開</app-badge>
                             @else
                                 <app-badge muted outline>全員に公開</app-badge>

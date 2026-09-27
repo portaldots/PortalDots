@@ -218,7 +218,7 @@ class StoreActionTest extends TestCase
         $tagged_circle = factory(Circle::class)->create();
         $tagged_circle->tags()->attach($tag->id);
 
-        $tagged_form = factory(Form::class)->create();
+        $tagged_form = factory(Form::class)->create(['audience' => 'selected']);
         $tagged_form->answerableTags()->attach($tag->id);
 
         $this->user->circles()->attach($tagged_circle->id, ['is_leader' => true]);
@@ -260,7 +260,7 @@ class StoreActionTest extends TestCase
         // フォームとは別にタグを企画に紐付ける
         $tagged_circle->tags()->attach(factory(Tag::class)->create());
 
-        $tagged_form = factory(Form::class)->create();
+        $tagged_form = factory(Form::class)->create(['audience' => 'selected']);
         $tagged_form->answerableTags()->attach($tag->id);
 
         $this->user->circles()->attach($tagged_circle->id, ['is_leader' => true]);

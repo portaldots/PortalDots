@@ -134,13 +134,42 @@
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group>
+                    <template v-slot:label>公開範囲</template>
+                    <div class="form-radio">
+                        @if (in_array('everyone', $allowed_audiences))
+                            <label class="form-radio__label">
+                                <input class="form-radio__input" type="radio" name="audience"
+                                    id="audienceRadiosEveryone" value="everyone"
+                                    {{ old('audience', empty($form) ? 'everyone' : $form->audience) === 'everyone' ? 'checked' : '' }}>
+                                <strong>すべての企画</strong>
+                            </label>
+                        @endif
+                        @if (in_array('selected', $allowed_audiences))
+                            <label class="form-radio__label">
+                                <input class="form-radio__input" type="radio" name="audience"
+                                    id="audienceRadiosSelected" value="selected"
+                                    {{ old('audience', empty($form) ? 'everyone' : $form->audience) === 'selected' ? 'checked' : '' }}>
+                                <strong>選んだタグ・企画のみ</strong>
+                            </label>
+                        @endif
+                    </div>
+                    @if ($errors->has('audience'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('audience') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
+                <list-view-form-group>
                     <template v-slot:label>フォームへ回答可能なユーザー</template>
                     <template v-slot:description>
-                        空欄の場合、企画に所属するユーザー全員がフォームに回答できます。
-                        タグを指定した場合、指定したタグのうち、1つ以上該当する企画がフォームに回答できます。
+                        公開範囲が「選んだタグ・企画のみ」の場合のみ有効です。
+                        指定したタグのうち、1つ以上該当する企画がフォームに回答できます。
+                        下部の「送付先の企画」で個別に企画を指定することもできます。
                     </template>
                     <tags-input input-name="answerable_tags" placeholder="企画タグを指定"
-                        placeholder-empty="企画タグを指定 (空欄の場合、企画に所属するユーザー全員が回答可能)" v-bind:default-tags="{{ $default_tags }}"
+                        placeholder-empty="企画タグを指定 (空欄の場合、送付先の企画のみが回答可能)" v-bind:default-tags="{{ $default_tags }}"
                         v-bind:autocomplete-items="{{ $tags_autocomplete_items }}" add-only-from-autocomplete>
                     </tags-input>
                     @if ($errors->has('answerable_tags'))
@@ -203,4 +232,100 @@
             </app-fixed-form-footer>
         </app-container>
     </form>
+
+    @isset($form)
+        <app-container>
+            <list-view>
+                <template v-slot:title>送付先の企画</template>
+                <template v-slot:description>
+                    公開範囲が「選んだタグ・企画のみ」の場合、ここで追加した企画もフォームに回答できるようになります。
+                    公開範囲が「すべての企画」の場合、ここで追加しても期限のみが適用されます。
+                </template>
+                <list-view-form-group>
+                    <template v-slot:label>企画を追加</template>
+                    <form method="post"
+                        action="{{ route('staff.forms.assignments.store', ['form' => $form]) }}">
+                        @csrf
+                        <tags-input input-name="circles" placeholder="企画を指定" v-bind:default-tags="[]"
+                            v-bind:autocomplete-items="{{ $circles_autocomplete_items }}" add-only-from-autocomplete>
+                        </tags-input>
+                        @if ($errors->has('circles'))
+                            <template v-slot:invalid>
+                                @foreach ($errors->get('circles') as $message)
+                                    <div>{{ $message }}</div>
+                                @endforeach
+                            </template>
+                        @endif
+                        <div class="form-group">
+                            <label for="assignment_due_at">期限（任意・追加する企画に共通）</label>
+                            <input id="assignment_due_at" type="datetime-local" class="form-control" name="due_at">
+                        </div>
+                        <button type="submit" class="btn is-primary is-sm">追加</button>
+                    </form>
+                </list-view-form-group>
+            </list-view>
+
+            <list-view>
+                <template v-slot:title>送付済みの企画（{{ count($assignments) }}企画）</template>
+                @if (count($assignments) === 0)
+                    <list-view-empty icon-class="fas fa-users" text="送付済みの企画はありません"></list-view-empty>
+                @else
+                    @foreach ($assignments as $assignment)
+                        @php
+                            $circle = $assignment->circle;
+                            $latestAnswer = $form->requires_review ? $form->latestAnswerFor($circle) : null;
+                        @endphp
+                        <list-view-item>
+                            <template v-slot:title>
+                                {{ $circle->name }}
+                                @if ($form->requires_review)
+                                    @if (empty($latestAnswer))
+                                        <app-badge muted>未提出</app-badge>
+                                    @elseif ($latestAnswer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_ACCEPTED)
+                                        <app-badge success>完了</app-badge>
+                                    @elseif ($latestAnswer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_RETURNED)
+                                        <app-badge danger>差し戻し中</app-badge>
+                                    @else
+                                        <app-badge primary>要確認</app-badge>
+                                    @endif
+                                @elseif ($form->answered($circle))
+                                    <app-badge success>提出済</app-badge>
+                                @else
+                                    <app-badge muted>未提出</app-badge>
+                                @endif
+                                @if ($form->isOverdueFor($circle))
+                                    <app-badge danger>期限切れ</app-badge>
+                                @endif
+                            </template>
+                            <template v-slot:meta>
+                                期限 :
+                                @if (empty($assignment->due_at))
+                                    指定なし（受付終了日時が適用されます : @datetime($form->close_at)）
+                                @else
+                                    @datetime($assignment->due_at)
+                                @endif
+                            </template>
+                            <form method="post"
+                                action="{{ route('staff.forms.assignments.update', ['form' => $form, 'circle' => $circle]) }}">
+                                @method('patch')
+                                @csrf
+                                <label for="due_at_{{ $circle->id }}">期限を変更</label>
+                                <input id="due_at_{{ $circle->id }}" type="datetime-local" class="form-control"
+                                    name="due_at"
+                                    value="{{ empty($assignment->due_at) ? '' : $assignment->due_at->format('Y-m-d\TH:i') }}">
+                                <button type="submit" class="btn is-secondary is-sm">変更</button>
+                            </form>
+                            <form-with-confirm
+                                action="{{ route('staff.forms.assignments.destroy', ['form' => $form, 'circle' => $circle]) }}"
+                                method="post" confirm-message="「{{ $circle->name }}」への送付を取り消しますか？">
+                                @method('delete')
+                                @csrf
+                                <button type="submit" class="btn is-danger is-sm">送付を取り消す</button>
+                            </form-with-confirm>
+                        </list-view-item>
+                    @endforeach
+                @endif
+            </list-view>
+        </app-container>
+    @endisset
 @endsection

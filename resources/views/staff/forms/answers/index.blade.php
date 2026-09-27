@@ -32,9 +32,11 @@
                     </strong>
                 @endif
                 <br />
-                @if (!$form->answerableTags->isEmpty())
-                    回答可能なタグ :
-                    {{ $form->answerableTags->implode('name', ',') }}
+                @if ($form->audience === \App\Contracts\AudiencePolicy::SELECTED)
+                    公開範囲 : 選んだタグ・企画のみ
+                    @unless ($form->answerableTags->isEmpty())
+                        （タグ : {{ $form->answerableTags->implode('name', ',') }}）
+                    @endunless
                 @else
                     全体に公開 — 企画に所属しているユーザー全員が回答可能
                 @endif

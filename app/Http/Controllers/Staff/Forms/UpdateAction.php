@@ -45,7 +45,8 @@ class UpdateAction extends Controller
                 (int)$values['max_answers'] ?? 1,
                 isset($values['is_public']) && $values['is_public'] === "1",
                 $values['answerable_tags'] ?? [],
-                isset($values['requires_review']) && $values['requires_review'] === "1"
+                isset($values['requires_review']) && $values['requires_review'] === "1",
+                $values['audience']
             );
         });
 

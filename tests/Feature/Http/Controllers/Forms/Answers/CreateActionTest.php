@@ -11,6 +11,7 @@ use Carbon\CarbonImmutable;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
+use App\Eloquents\FormAssignment;
 use App\Eloquents\Tag;
 use App\Services\Circles\SelectorService;
 
@@ -110,7 +111,7 @@ class CreateActionTest extends TestCase
         $tagged_circle = factory(Circle::class)->create();
         $tagged_circle->tags()->attach($tag->id);
 
-        $tagged_form = factory(Form::class)->create();
+        $tagged_form = factory(Form::class)->create(['audience' => 'selected']);
         $tagged_form->answerableTags()->attach($tag->id);
 
         $this->user->circles()->attach($tagged_circle->id, ['is_leader' => true]);
@@ -138,7 +139,7 @@ class CreateActionTest extends TestCase
         // フォームとは別にタグを企画に紐付ける
         $tagged_circle->tags()->attach(factory(Tag::class)->create());
 
-        $tagged_form = factory(Form::class)->create();
+        $tagged_form = factory(Form::class)->create(['audience' => 'selected']);
         $tagged_form->answerableTags()->attach($tag->id);
 
         $this->user->circles()->attach($tagged_circle->id, ['is_leader' => true]);
@@ -150,6 +151,43 @@ class CreateActionTest extends TestCase
                     ->get(
                         route('forms.answers.create', [
                             'form' => $tagged_form,
+                        ])
+                    );
+
+        $response->assertStatus(403);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 送付されている企画はタグがなくてもフォームにアクセスできる()
+    {
+        $assignedForm = factory(Form::class)->create(['audience' => 'selected']);
+        FormAssignment::create(['form_id' => $assignedForm->id, 'circle_id' => $this->circle->id]);
+
+        $this->selectorService->setCircle($this->circle);
+
+        $response = $this
+                    ->actingAs($this->user)
+                    ->get(
+                        route('forms.answers.create', [
+                            'form' => $assignedForm,
+                        ])
+                    );
+
+        $response->assertStatus(200);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function selectedでタグも送付もない企画はフォームにアクセスできない()
+    {
+        $selectedForm = factory(Form::class)->create(['audience' => 'selected']);
+
+        $this->selectorService->setCircle($this->circle);
+
+        $response = $this
+                    ->actingAs($this->user)
+                    ->get(
+                        route('forms.answers.create', [
+                            'form' => $selectedForm,
                         ])
                     );
 

@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Staff\Forms;
 
+use App\Contracts\AudiencePolicy;
+use App\Eloquents\Form;
 use Illuminate\Foundation\Http\FormRequest as BaseRequest;
+use Illuminate\Validation\Rule;
 
 class FormRequest extends BaseRequest
 {
@@ -33,6 +36,27 @@ class FormRequest extends BaseRequest
             'is_public' => ['boolean'],
             'answerable_tags' => ['nullable', 'array'],
             'requires_review' => ['boolean'],
+            'audience' => [
+                'required',
+                'string',
+                Rule::in(Form::allowedAudiences(app(AudiencePolicy::class))),
+                function ($attribute, $value, $fail) {
+                    if ($value !== AudiencePolicy::SELECTED) {
+                        return;
+                    }
+                    if (!empty($this->input('answerable_tags'))) {
+                        return;
+                    }
+
+                    /** @var Form|null $form */
+                    $form = $this->route('form');
+                    if (!empty($form) && $form->assignments()->exists()) {
+                        return;
+                    }
+
+                    $fail('公開範囲を「選んだタグ・企画のみ」にする場合、タグを指定するか、送付先の企画を1つ以上追加してください。');
+                },
+            ],
         ];
     }
 
@@ -53,6 +77,7 @@ class FormRequest extends BaseRequest
             'is_public' => '公開設定',
             'answerable_tags' => 'フォームへ回答可能なユーザー',
             'requires_review' => '提出後の確認',
+            'audience' => '公開範囲',
         ];
     }
 }

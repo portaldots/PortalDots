@@ -47,7 +47,16 @@
                         </strong>
                     @endif
                 </p>
-                @if (!$form->answerableTags->isEmpty())
+                @php $dueAt = $form->effectiveDueDateFor($circle); @endphp
+                @if (!$dueAt->equalTo($form->close_at) || $form->isOverdueFor($circle))
+                    <p class="text-muted">
+                        期限 : @datetime($dueAt)
+                        @if ($form->isOverdueFor($circle))
+                            <app-badge danger>期限切れ</app-badge>
+                        @endif
+                    </p>
+                @endif
+                @if ($form->audience === \App\Contracts\AudiencePolicy::SELECTED)
                     <p class="text-muted">
                         <app-badge primary outline>限定公開</app-badge>
                         このフォームは、限られた企画のみ回答可能です。
