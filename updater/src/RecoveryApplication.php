@@ -76,7 +76,15 @@ final class RecoveryApplication
                 $this->render($state, $token, '操作トークンが一致しません。ページを再読み込みしてください。');
                 return;
             }
-            $state = $this->engine->step($id);
+            try {
+                $state = $this->engine->step($id);
+            } catch (\Throwable $exception) {
+                // 別タブや再読み込みで同じジョブのロックが取れない場合も、
+                // 汎用の503画面ではなく進行画面を返して再試行できるようにする。
+                $this->render($this->store->load($id), $token, get_class($exception) === \RuntimeException::class
+                    ? $exception->getMessage() : '更新処理を実行できませんでした。再試行してください。');
+                return;
+            }
         }
         $this->render($state, $token, null);
     }

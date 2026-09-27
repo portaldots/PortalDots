@@ -228,6 +228,11 @@ final class FileBackup
         }
         $operation = $operations[$index];
         $target = $this->config->basePath . '/' . $operation['path'];
+        // applyStep が配置途中で強制終了すると .pdu-new が残り、
+        // 復元後の verifyInstallation が未知ファイルとして拒否する。
+        if ((is_file($target . '.pdu-new') || is_link($target . '.pdu-new')) && !unlink($target . '.pdu-new')) {
+            throw new RuntimeException("中断した更新ファイルを復元時に削除できません: {$operation['path']}");
+        }
         if ($operation['action'] === 'remove') {
             if ((is_file($target) || is_link($target)) && !unlink($target)) {
                 throw new RuntimeException("追加ファイルを復元時に削除できません: {$operation['path']}");

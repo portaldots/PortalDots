@@ -8,6 +8,7 @@ use App\Eloquents\User;
 use PortalDots\Updater\Config;
 use PortalDots\Updater\Downloader;
 use PortalDots\Updater\FileBackup;
+use PortalDots\Updater\HttpProbe;
 use PortalDots\Updater\JobFactory;
 use PortalDots\Updater\ManifestHighwater;
 use PortalDots\Updater\ManifestVerifier;
@@ -90,6 +91,9 @@ final class UpdaterManager
             throw new RuntimeException('別の管理者が更新開始を処理中です。');
         }
         try {
+            // updater.php は APP_URL と実際の接続先が一致しないと動かない。
+            // ジョブを作ってから判明すると取り消せないため、作成前に確認する。
+            (new HttpProbe($this->config))->canonicalUpdaterPath();
             $verified = $this->check();
             if (
                 !preg_match('/^[a-f0-9]{64}$/', $expectedDigest)
