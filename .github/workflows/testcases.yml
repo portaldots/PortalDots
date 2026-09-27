@@ -147,6 +147,8 @@ jobs:
         php tests/Updater/run.php
         php tests/Updater/highwater-race.php
         php tests/Updater/release-operations.php
+        node --check updater/tools/setup-release-signing.mjs
+        sh -n updater/tools/setup-release-signing.sh
         php tests/Updater/setup-release-signing.php
         php tests/Updater/http-private-storage.php
     - name: コードカバレッジを送信
