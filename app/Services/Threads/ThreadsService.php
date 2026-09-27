@@ -224,24 +224,31 @@ class ThreadsService
     }
 
     /**
-     * システムイベントの記録を追加する。将来の機能から呼び出される想定で、
-     * 現時点ではUIから利用しない
+     * システムイベントの記録を追加する。業務イベントのリスナーから呼び出される
      *
      * @param Thread $thread
      * @param string $eventType
      * @param array|null $payload
+     * @param string $clientToken 同じ事実に対して常に同じ値を渡す。同じトークンでの
+     *  再記録は新しいエントリを作らず、既存のエントリをそのまま返す
      * @return ThreadEntry
      */
-    public function appendEvent(Thread $thread, string $eventType, ?array $payload = null): ThreadEntry
+    public function appendEvent(Thread $thread, string $eventType, ?array $payload, string $clientToken): ThreadEntry
     {
-        return DB::transaction(function () use ($thread, $eventType, $payload) {
+        return DB::transaction(function () use ($thread, $eventType, $payload, $clientToken) {
             $thread = Thread::whereKey($thread->id)->lockForUpdate()->firstOrFail();
+
+            $existing = $thread->entries()->where('client_token', $clientToken)->first();
+            if (!empty($existing)) {
+                return $existing;
+            }
 
             $entry = $thread->entries()->create([
                 'kind' => ThreadEntry::KIND_EVENT,
                 'author_side' => ThreadEntry::AUTHOR_SIDE_SYSTEM,
                 'event_type' => $eventType,
                 'event_payload' => $payload,
+                'client_token' => $clientToken,
             ]);
 
             $thread->update([
