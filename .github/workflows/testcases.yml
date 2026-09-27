@@ -51,16 +51,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
     - name: Use Node.js (Yarnをインストールするため)
-      uses: actions/setup-node@v7
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
       with:
         node-version: '22'
     - name: Install Yarn
       run: npm install -g yarn@1.22.22
     # https://github.com/actions/setup-node/issues/182#issuecomment-966885975
     - name: Use Node.js (Yarnパッケージのキャッシュを有効化するため)
-      uses: actions/setup-node@v7
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
       with:
         node-version: '22'
         cache: yarn
@@ -96,22 +96,22 @@ jobs:
           --health-retries=5
 
     steps:
-    - uses: shivammathur/setup-php@v2
+    - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
       with:
         php-version: ${{ matrix.php-version }}
         tools: cs2pr
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
     - name: Use Node.js (Yarnをインストールするため)
-      uses: actions/setup-node@v7
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
       with:
         node-version: '22'
     - name: Install Yarn
       run: npm install -g yarn@1.22.22
     # https://github.com/actions/setup-node/issues/182#issuecomment-966885975
     - name: Use Node.js (Yarnパッケージのキャッシュを有効化するため)
-      uses: actions/setup-node@v7
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
       with:
         node-version: '22'
         cache: yarn
@@ -119,9 +119,9 @@ jobs:
     - run: yarn build
     - name: Get composer cache directory
       id: composer-cache
-      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
     - name: Cache PHP dependencies
-      uses: actions/cache@v6
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -131,13 +131,23 @@ jobs:
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
     - name: phpcs
-      run: composer phpcs-github-actions
+      run: |
+        composer phpcs-github-actions
+        vendor/bin/phpcs --standard=updater/phpcs.xml updater tests/Updater
     - name: マイグレーション
       run: php artisan migrate --env=testing --force
     - name: PHPUnitでテスト実行
       run: vendor/bin/phpunit --coverage-clover=coverage.xml
+    - name: Browser updater standalone and HTTP boundary tests
+      env:
+        UPDATER_MYSQL_DSN: mysql:host=127.0.0.1;port=3306;dbname=ci_database
+        UPDATER_MYSQL_USER: dbuser
+        UPDATER_MYSQL_PASSWORD: dbpassword
+      run: |
+        php tests/Updater/run.php
+        php tests/Updater/http-private-storage.php
     - name: コードカバレッジを送信
-      uses: codecov/codecov-action@v7
+      uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7
       with:
         files: ./coverage.xml
         verbose: true
