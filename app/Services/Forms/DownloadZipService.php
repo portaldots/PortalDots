@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Services\Forms;
 
 use ZipArchive;
-use Storage;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use App\Eloquents\Form;
 use App\Services\Forms\Exceptions\NoDownloadFileExistException;
 use App\Services\Forms\Exceptions\ZipArchiveNotSupportedException;
@@ -19,9 +20,12 @@ class DownloadZipService
      */
     private $zip;
 
-    public function __construct(ZipArchive $zip)
+    private UploadedFilesService $uploadedFilesService;
+
+    public function __construct(ZipArchive $zip, UploadedFilesService $uploadedFilesService)
     {
         $this->zip = $zip;
+        $this->uploadedFilesService = $uploadedFilesService;
     }
 
     /**
@@ -36,45 +40,51 @@ class DownloadZipService
      */
     public function makeZip(Form $form, array $uploaded_file_paths): string
     {
-        if (! file_exists(storage_path('app/answer_details_zip'))) {
-            Storage::makeDirectory('answer_details_zip');
+        // [(フルパス), (ZIPファイル内でのファイル名)] という形式のタプルにする
+        $tuples = [];
+        foreach ($uploaded_file_paths as $path) {
+            $fullpath = $this->uploadedFilesService->getPath($path);
+            if ($fullpath !== null) {
+                $tuples[] = [$fullpath, basename($path)];
+            }
         }
 
-        // [(フルパス), (ZIPファイル内でのファイル名)] という形式のタプルにする
-        $tuples = array_map(function ($path) {
-            if (empty($path)) {
-                return null;
-            } elseif (
-                strpos($path, 'answer_details/') === 0 &&
-                file_exists($fullpath = Storage::path($path)) &&
-                is_file($fullpath)
-            ) {
-                // Project v2 申請フォームからアップロードされたファイル
-                return [$fullpath, str_replace('answer_details/', '', $path)];
-            }
-            return null;
-        }, $uploaded_file_paths);
-        $tuples = array_filter($tuples);
-
-        if (!is_array($tuples) || count($tuples) === 0) {
+        if (count($tuples) === 0) {
             throw new NoDownloadFileExistException();
         }
 
-        $zip_filename = 'uploads_' . $form->id . '_' . date('Y-m-d_H-i-s') . '.zip';
-        $zip_path = storage_path("app/answer_details_zip/{$zip_filename}");
+        Storage::makeDirectory('answer_details_zip');
+        $zip_filename = 'uploads_' . $form->id . '_' . now()->format('Y-m-d_H-i-s') . '_' . Str::uuid() . '.zip';
+        $relative_path = "answer_details_zip/{$zip_filename}";
+        $zip_path = Storage::path($relative_path);
 
-        if ($this->zip->open($zip_path, ZipArchive::CREATE) !== true) {
+        if ($this->zip->open($zip_path, ZipArchive::CREATE | ZipArchive::EXCL) !== true) {
             throw new ZipArchiveNotSupportedException();
         }
 
-        foreach ($tuples as $tuple) {
-            [$fullpath, $localname] = $tuple;
-            $this->zip->addFile($fullpath, $localname);
+        $complete = false;
+        try {
+            foreach ($tuples as [$fullpath, $localname]) {
+                if (!$this->zip->addFile($fullpath, $localname)) {
+                    throw new ZipArchiveNotSupportedException();
+                }
+            }
+            $complete = true;
+        } finally {
+            $closed = false;
+            try {
+                $closed = $this->zip->close();
+            } finally {
+                if (!$complete || !$closed) {
+                    Storage::delete($relative_path);
+                }
+            }
         }
 
-        $this->zip->close();
+        if (!$closed) {
+            throw new ZipArchiveNotSupportedException();
+        }
 
-        // return Storage::download("answer_details_zip/{$zip_filename}", $zip_filename);
         return $zip_path;
     }
 }
