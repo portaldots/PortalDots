@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Eloquents\Place;
+use App\Support\CsvFormulaEscaper;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -36,9 +37,9 @@ class PlacesImport
             foreach ($rows as $index => &$row) {
                 $line = $row['line'];
                 $idValue = trim($row['values']['場所ID']);
-                $name = trim($row['values']['場所名']);
+                $name = trim(CsvFormulaEscaper::unescape($row['values']['場所名']));
                 $type = trim($row['values']['タイプ']);
-                $notes = $row['values']['スタッフ用メモ'];
+                $notes = CsvFormulaEscaper::unescape($row['values']['スタッフ用メモ']);
 
                 $id = null;
                 if ($idValue !== '') {

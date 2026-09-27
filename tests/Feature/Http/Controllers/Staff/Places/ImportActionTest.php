@@ -12,6 +12,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Mockery;
 use PDOException;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use PhpOffice\PhpSpreadsheet\Reader\Csv as CsvReader;
+use PhpOffice\PhpSpreadsheet\Writer\Csv as CsvWriter;
 use Spatie\Activitylog\Models\Activity;
 use Tests\TestCase;
 
@@ -97,7 +100,7 @@ class ImportActionTest extends TestCase
         $contents = $template->streamedContent();
         $this->assertStringContainsString('"場所ID","場所名","タイプ","スタッフ用メモ"', $contents);
         $this->assertStringContainsString('001号室', $contents);
-        $this->assertStringContainsString('=SUM(A1:A2)', $contents);
+        $this->assertStringContainsString("\"'=SUM(A1:A2)\"", $contents);
         $this->assertStringNotContainsString('企画ID', $contents);
 
         $response = $this->actingAsStaff($this->staff)->post(route('staff.places.import.store'), [
@@ -339,6 +342,49 @@ class ImportActionTest extends TestCase
         $response->assertSessionHas('importErrors', fn (array $errors) =>
             $errors[0]['line'] === 5 && $errors[0]['attribute'] === 'タイプ');
         $this->assertDatabaseMissing('places', ['name' => 'エラーの場所']);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function テンプレートは数式として読まれずCSV再保存後も保護文字を解除して取り込める()
+    {
+        $this->grantPermissions($this->staff, ['staff.places.read,import', 'staff.places.read,export']);
+        $values = [
+            '=1+1', '+1+1', '-1+1', '@SUM(1,1)', '＝1＋1', '＋1', '－1', '＠SUM(1,1)',
+            "'literal", "'=1+1", "''=1+1", '001号室',
+            "\t=1+1", "\r=1+1", "\n=1+1", ' =1+1', " メモ\n末尾 ",
+            '=HYPERLINK("https://example.test/", "text")',
+        ];
+        $places = [];
+        foreach ($values as $index => $value) {
+            $places[] = factory(Place::class)->create([
+                'name' => trim($value) . $index,
+                'type' => 1,
+                'notes' => $value,
+            ]);
+        }
+
+        $download = $this->actingAsStaff($this->staff)->get(route('staff.places.import.template'));
+        $download->assertOk();
+        $file = UploadedFile::fake()->createWithContent('template.csv', $download->streamedContent());
+        $sheet = (new CsvReader())->load($file->getRealPath());
+        foreach ($places as $index => $place) {
+            foreach (['B', 'D'] as $column) {
+                $cell = $sheet->getActiveSheet()->getCell($column . ($index + 2));
+                $this->assertNotSame(DataType::TYPE_FORMULA, $cell->getDataType());
+            }
+        }
+
+        (new CsvWriter($sheet))->save($file->getRealPath());
+        $this->actingAsStaff($this->staff)
+            ->post(route('staff.places.import.store'), ['importFile' => $file])
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('staff.places.index'));
+
+        foreach ($places as $place) {
+            $this->assertSame($place->name, $place->fresh()->name);
+            // PhpSpreadsheet normalizes CR to LF in spreadsheet cell strings.
+            $this->assertSame(str_replace("\r", "\n", $place->notes), $place->fresh()->notes);
+        }
     }
 
     private function actingAsStaff(User $user): self
