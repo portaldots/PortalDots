@@ -145,6 +145,9 @@ jobs:
         UPDATER_MYSQL_PASSWORD: dbpassword
       run: |
         php tests/Updater/run.php
+        php tests/Updater/highwater-race.php
+        php tests/Updater/release-operations.php
+        php tests/Updater/setup-release-signing.php
         php tests/Updater/http-private-storage.php
     - name: コードカバレッジを送信
       uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7

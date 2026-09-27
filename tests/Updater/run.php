@@ -10,7 +10,9 @@ use PortalDots\Updater\Config;
 use PortalDots\Updater\DatabaseBackup;
 use PortalDots\Updater\FileBackup;
 use PortalDots\Updater\ManifestVerifier;
+use PortalDots\Updater\ManifestHighwater;
 use PortalDots\Updater\RecoveryAuth;
+use PortalDots\Updater\ReleaseCandidateSelector;
 use PortalDots\Updater\StateStore;
 use PortalDots\Updater\TrustedKeyStore;
 use PortalDots\Updater\UpdateGate;
@@ -60,6 +62,136 @@ $tests['signed manifest rejects tampering and replay'] = static function (): voi
     } finally {
         removeTree($root);
     }
+};
+
+$tests['freshness lease binds immutable release metadata and enforces independent replay protection'] = static function (): void {
+    $root = fixtureRoot();
+    try {
+        mkdir($root . '/updater/keys', 0700, true);
+        mkdir($root . '/storage/app/updater/private', 0700, true);
+        $rootKeys = sodium_crypto_sign_keypair();
+        $rootPublic = sodium_crypto_sign_publickey($rootKeys);
+        $rootSecret = sodium_crypto_sign_secretkey($rootKeys);
+        $renewalKeys = sodium_crypto_sign_keypair();
+        $renewalPublic = sodium_crypto_sign_publickey($renewalKeys);
+        $renewalSecret = sodium_crypto_sign_secretkey($renewalKeys);
+        file_put_contents($root . '/updater/keys/release.pub', base64_encode($rootPublic));
+        $config = new Config($root, $root . '/storage/app/updater/private', 'https://example.test/manifest',
+            ['example.test'], $root . '/updater/keys/release.pub');
+        $verifier = new ManifestVerifier($config, new TrustedKeyStore($config, new StateStore($config)));
+        $signed = signedFixtureV2($renewalPublic);
+        $signed['issued_at'] = gmdate(DATE_ATOM, time() - 7200);
+        $signed['expires_at'] = gmdate(DATE_ATOM, time() - 3600);
+        $envelope = signRootAndLease($signed, $rootPublic, $rootSecret, $renewalPublic, $renewalSecret, 100);
+        $verified = $verifier->verify($envelope, '6.0.0');
+        assertSame(100, $verified['lease_sequence']);
+
+        $wrongKeys = sodium_crypto_sign_keypair();
+        $wrongLease = signLease($signed, $envelope['signed'], sodium_crypto_sign_publickey($wrongKeys),
+            sodium_crypto_sign_secretkey($wrongKeys), 101);
+        $wrongEnvelope = $envelope;
+        $wrongEnvelope['lease'] = $wrongLease;
+        expectFailure(static fn () => $verifier->verify($wrongEnvelope, '6.0.0'));
+
+        $tamperedRoot = $envelope;
+        $tamperedRoot['signed']['artifact']['sha256'] = str_repeat('f', 64);
+        $tamperedRoot['lease'] = signLease($tamperedRoot['signed'], $tamperedRoot['signed'], $renewalPublic,
+            $renewalSecret, 101);
+        expectFailure(static fn () => $verifier->verify($tamperedRoot, '6.0.0'));
+
+        $otherSigned = $signed;
+        $otherSigned['target_version'] = '6.0.2';
+        $otherEnvelope = signRootEnvelope($otherSigned, $rootPublic, $rootSecret);
+        $otherEnvelope['lease'] = $envelope['lease'];
+        expectFailure(static fn () => $verifier->verify($otherEnvelope, '6.0.0'));
+
+        $changedLease = $envelope;
+        $changedLease['lease'] = signLease($signed, $signed, $renewalPublic, $renewalSecret, 100,
+            issuedOffset: -120);
+        expectFailure(static fn () => $verifier->verify($changedLease, '6.0.0', 2,
+            $verified['root_digest'], 100,
+            $verified['lease_digest']));
+
+        $newSigned = $signed;
+        $newSigned['sequence'] = 3;
+        $newSigned['target_version'] = '6.0.2';
+        $newEnvelope = signRootAndLease($newSigned, $rootPublic, $rootSecret, $renewalPublic, $renewalSecret, 50);
+        $newVerified = $verifier->verify($newEnvelope, '6.0.0', 2, $verified['root_digest'], 100,
+            $verified['lease_digest']);
+        assertSame(50, $newVerified['lease_sequence']);
+        expectFailure(static fn () => $verifier->verify($envelope, '6.0.0', 3,
+            $newVerified['root_digest'], 50, $newVerified['lease_digest']));
+
+        $expiredLease = $envelope;
+        $expiredLease['lease'] = signLease($signed, $signed, $renewalPublic, $renewalSecret, 101,
+            issuedOffset: -7200, expiresOffset: -3600);
+        expectFailure(static fn () => $verifier->verify($expiredLease, '6.0.0'));
+        $futureLease = $envelope;
+        $futureLease['lease'] = signLease($signed, $signed, $renewalPublic, $renewalSecret, 101,
+            issuedOffset: 600, expiresOffset: 3600);
+        expectFailure(static fn () => $verifier->verify($futureLease, '6.0.0'));
+        $longLease = $envelope;
+        $longLease['lease'] = signLease($signed, $signed, $renewalPublic, $renewalSecret, 101,
+            issuedOffset: -60, expiresOffset: 4_000_000);
+        expectFailure(static fn () => $verifier->verify($longLease, '6.0.0'));
+    } finally {
+        removeTree($root);
+    }
+};
+
+$tests['manifest highwater scopes lease sequence to one root and rejects damaged state'] = static function (): void {
+    $root = fixtureRoot();
+    try {
+        mkdir($root . '/private', 0700, true);
+        $config = new Config($root, $root . '/private', 'https://example.test/manifest', ['example.test'],
+            $root . '/missing.pub');
+        $highwater = new ManifestHighwater($config);
+        $old = highwaterFixture(2, str_repeat('a', 64), 500, str_repeat('b', 64));
+        $highwater->observe($old);
+        $new = highwaterFixture(3, str_repeat('c', 64), 100, str_repeat('d', 64));
+        $highwater->observe($new);
+        expectFailure(static fn () => $highwater->observe($old));
+        file_put_contents($config->privatePath . '/highest-manifest.json', "{}\n");
+        expectFailure(static fn () => $highwater->read());
+    } finally {
+        removeTree($root);
+    }
+};
+
+$tests['release candidates bootstrap only when no updater metadata exists'] = static function (): void {
+    $rootKeys = sodium_crypto_sign_keypair();
+    $rootPublic = sodium_crypto_sign_publickey($rootKeys);
+    $rootSecret = sodium_crypto_sign_secretkey($rootKeys);
+    $renewalKeys = sodium_crypto_sign_keypair();
+    $signed = signedFixtureV2(sodium_crypto_sign_publickey($renewalKeys));
+    $signed['artifact']['url'] = 'https://github.com/portaldots/PortalDots/releases/download/v6.0.1/PortalDots-update-2.zip';
+    $signed['full_artifact']['url'] = 'https://github.com/portaldots/PortalDots/releases/download/v6.0.1/PortalDots.zip';
+    $manifest = signRootEnvelope($signed, $rootPublic, $rootSecret);
+    $manifestUrl = 'https://github.com/portaldots/PortalDots/releases/download/v6.0.1/PortalDots-update-manifest.json';
+    $release = releaseFixture('v6.0.1', $manifestUrl, $signed);
+    $selector = new ReleaseCandidateSelector();
+    assertSame([], $selector->select([releaseFixture('v5.9.0', null, null)], '6.1.0', base64_encode($rootPublic),
+        static fn (): array => throw new RuntimeException('must not fetch')));
+    $selected = $selector->select([[$release]], '6.1.0', base64_encode($rootPublic),
+        static fn (string $url): array => $manifest);
+    assertSame(['6.0.1'], array_column($selected, 'version'));
+
+    $bad = $manifest;
+    $bad['signatures'][0]['sig'] = base64_encode(str_repeat('x', SODIUM_CRYPTO_SIGN_BYTES));
+    expectFailure(static fn () => $selector->select([$release], '6.1.0', base64_encode($rootPublic),
+        static fn (): array => $bad));
+    $legacy = $manifest;
+    $legacy['signed']['schema'] = 1;
+    $legacyPayload = CanonicalJson::encode($legacy['signed']);
+    $legacy['signatures'][0]['sig'] = base64_encode(sodium_crypto_sign_detached($legacyPayload, $rootSecret));
+    expectFailure(static fn () => $selector->select([$release], '6.1.0', base64_encode($rootPublic),
+        static fn (): array => $legacy));
+    expectFailure(static fn () => $selector->select([['bad']], '6.1.0', base64_encode($rootPublic),
+        static fn (): array => $manifest));
+    $missingUrl = $release;
+    $missingUrl['assets'][0]['browser_download_url'] = null;
+    expectFailure(static fn () => $selector->select([$missingUrl], '6.1.0', base64_encode($rootPublic),
+        static fn (): array => $manifest));
 };
 
 $tests['zip rejects traversal and extracts exact bytes'] = static function (): void {
@@ -374,6 +506,115 @@ function signedFixture(): array
         'next_keys' => [],
         'retired_keys' => [],
     ];
+}
+
+/** @return array<string, mixed> */
+function signedFixtureV2(string $renewalPublic): array
+{
+    $signed = signedFixture();
+    $signed['schema'] = 2;
+    $signed['minimum_runtime'] = 2;
+    $signed['full_artifact'] = [
+        'url' => 'https://example.test/PortalDots.zip',
+        'size' => 5,
+        'sha256' => str_repeat('c', 64),
+    ];
+    $signed['freshness'] = [
+        'keyid' => hash('sha256', $renewalPublic),
+        'public_key' => base64_encode($renewalPublic),
+        'sequence_floor' => 1,
+        'max_lease_seconds' => 3_888_000,
+    ];
+    return $signed;
+}
+
+/** @param array<string, mixed> $signed @return array<string, mixed> */
+function signRootEnvelope(array $signed, string $public, string $secret): array
+{
+    $payload = CanonicalJson::encode($signed);
+    return [
+        'signed' => $signed,
+        'signatures' => [[
+            'keyid' => hash('sha256', $public),
+            'sig' => base64_encode(sodium_crypto_sign_detached($payload, $secret)),
+        ]],
+    ];
+}
+
+/** @param array<string, mixed> $signed @return array<string, mixed> */
+function signRootAndLease(
+    array $signed,
+    string $rootPublic,
+    string $rootSecret,
+    string $renewalPublic,
+    string $renewalSecret,
+    int $sequence,
+): array {
+    $envelope = signRootEnvelope($signed, $rootPublic, $rootSecret);
+    $envelope['lease'] = signLease($signed, $signed, $renewalPublic, $renewalSecret, $sequence);
+    return $envelope;
+}
+
+/**
+ * @param array<string, mixed> $rootSigned
+ * @param array<string, mixed> $bindings
+ * @return array<string, mixed>
+ */
+function signLease(
+    array $rootSigned,
+    array $bindings,
+    string $public,
+    string $secret,
+    int $sequence,
+    int $issuedOffset = -60,
+    int $expiresOffset = 3600,
+): array {
+    $lease = [
+        'schema' => 1,
+        'manifest_sha256' => hash('sha256', CanonicalJson::encode($rootSigned)),
+        'target_version' => $bindings['target_version'],
+        'artifact_sha256' => $bindings['artifact']['sha256'],
+        'full_artifact_sha256' => $bindings['full_artifact']['sha256'],
+        'from_versions_sha256' => hash('sha256', CanonicalJson::encode($bindings['from_versions'])),
+        'migrations_sha256' => hash('sha256', CanonicalJson::encode($bindings['migrations'])),
+        'sequence' => $sequence,
+        'issued_at' => gmdate(DATE_ATOM, time() + $issuedOffset),
+        'expires_at' => gmdate(DATE_ATOM, time() + $expiresOffset),
+    ];
+    $payload = CanonicalJson::encode($lease);
+    return [
+        'signed' => $lease,
+        'signatures' => [[
+            'keyid' => hash('sha256', $public),
+            'sig' => base64_encode(sodium_crypto_sign_detached($payload, $secret)),
+        ]],
+    ];
+}
+
+/** @return array<string, mixed> */
+function highwaterFixture(int $sequence, string $digest, int $leaseSequence, string $leaseDigest): array
+{
+    return [
+        'signed' => ['sequence' => $sequence, 'target_version' => '6.0.' . $sequence],
+        'root_digest' => $digest,
+        'lease_sequence' => $leaseSequence,
+        'lease_digest' => $leaseDigest,
+    ];
+}
+
+/** @param array<string, mixed>|null $signed @return array<string, mixed> */
+function releaseFixture(string $tag, ?string $manifestUrl, ?array $signed): array
+{
+    $assets = [];
+    if ($manifestUrl !== null && $signed !== null) {
+        $assets = [
+            ['name' => 'PortalDots-update-manifest.json', 'browser_download_url' => $manifestUrl],
+            ['name' => 'PortalDots.zip', 'browser_download_url' => $signed['full_artifact']['url']],
+            ['name' => basename((string) parse_url($signed['artifact']['url'], PHP_URL_PATH)),
+                'browser_download_url' => $signed['artifact']['url']],
+        ];
+    }
+    return ['tag_name' => $tag, 'draft' => false, 'prerelease' => false, 'assets' => $assets];
 }
 
 function fixtureRoot(): string

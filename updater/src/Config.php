@@ -6,7 +6,7 @@ namespace PortalDots\Updater;
 
 final class Config
 {
-    public const RUNTIME_VERSION = 1;
+    public const RUNTIME_VERSION = 2;
 
     /** @param list<string> $downloadHosts */
     public function __construct(

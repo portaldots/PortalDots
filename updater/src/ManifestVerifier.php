@@ -15,17 +15,15 @@ final class ManifestVerifier
     ) {
     }
 
-    /**
-     * @param array<string, mixed> $envelope
-     * @return array{signed: array<string, mixed>, signing_key_id: string, digest: string}
-     */
+    /** @param array<string, mixed> $envelope @return array<string, mixed> */
     public function verify(
         array $envelope,
         string $currentVersion,
         int $highestSequence = 0,
         ?string $highestDigest = null,
-    ): array
-    {
+        int $highestLeaseSequence = 0,
+        ?string $highestLeaseDigest = null,
+    ): array {
         if (!extension_loaded('sodium')) {
             throw new RuntimeException('署名検証に必要な sodium 拡張がありません。');
         }
@@ -36,11 +34,49 @@ final class ManifestVerifier
         }
         $payload = CanonicalJson::encode($signed);
         $sequence = is_int($signed['sequence'] ?? null) ? $signed['sequence'] : 0;
-        $trusted = $this->keys->all($sequence);
+        $signingKeyId = $this->verifySignatures($payload, $signatures, $this->keys->all($sequence));
+        if ($signingKeyId === null) {
+            throw new RuntimeException('更新マニフェストの署名を検証できません。');
+        }
+
+        $rootDigest = hash('sha256', $payload);
+        $this->validateSigned($signed, $currentVersion, $highestSequence);
+        if ($sequence === $highestSequence && $highestDigest !== null && !hash_equals($highestDigest, $rootDigest)) {
+            throw new RuntimeException('同じ連番で内容が異なる更新マニフェストは使用できません。');
+        }
+
+        $leaseSequence = null;
+        $leaseDigest = null;
+        $confirmationDigest = $rootDigest;
+        if ($signed['schema'] === 2) {
+            $sameRoot = $sequence === $highestSequence && $highestDigest !== null
+                && hash_equals($highestDigest, $rootDigest);
+            [$leaseSequence, $leaseDigest] = $this->verifyLease(
+                $envelope,
+                $signed,
+                $rootDigest,
+                $sameRoot ? $highestLeaseSequence : 0,
+                $sameRoot ? $highestLeaseDigest : null,
+            );
+            $confirmationDigest = hash('sha256', $rootDigest . ':' . $leaseDigest);
+        }
+
+        return [
+            'signed' => $signed,
+            'signing_key_id' => $signingKeyId,
+            'root_digest' => $rootDigest,
+            'lease_sequence' => $leaseSequence,
+            'lease_digest' => $leaseDigest,
+            'digest' => $confirmationDigest,
+        ];
+    }
+
+    /** @param list<array<string, mixed>> $signatures @param array<string, string> $trusted */
+    private function verifySignatures(string $payload, array $signatures, array $trusted): ?string
+    {
         if ($trusted === []) {
             throw new RuntimeException('更新署名公開鍵が設定されていません。');
         }
-        $signingKeyId = null;
         foreach ($signatures as $candidate) {
             if (!is_array($candidate)) {
                 continue;
@@ -50,24 +86,10 @@ final class ManifestVerifier
             if (isset($trusted[$keyId]) && is_string($signature)
                 && strlen($signature) === SODIUM_CRYPTO_SIGN_BYTES
                 && sodium_crypto_sign_verify_detached($signature, $payload, $trusted[$keyId])) {
-                $signingKeyId = $keyId;
-                break;
+                return $keyId;
             }
         }
-        if ($signingKeyId === null) {
-            throw new RuntimeException('更新マニフェストの署名を検証できません。');
-        }
-
-        $digest = hash('sha256', $payload);
-        $this->validateSigned($signed, $currentVersion, $highestSequence);
-        if ($sequence === $highestSequence && $highestDigest !== null && !hash_equals($highestDigest, $digest)) {
-            throw new RuntimeException('同じ連番で内容が異なる更新マニフェストは使用できません。');
-        }
-        return [
-            'signed' => $signed,
-            'signing_key_id' => $signingKeyId,
-            'digest' => $digest,
-        ];
+        return null;
     }
 
     /** @param array<string, mixed> $signed */
@@ -82,13 +104,13 @@ final class ManifestVerifier
                 throw new RuntimeException("更新マニフェストに {$key} がありません。");
             }
         }
-        if ($signed['schema'] !== 1 || !is_int($signed['sequence']) || $signed['sequence'] < 1) {
+        if (!in_array($signed['schema'], [1, 2], true)
+            || !is_int($signed['sequence']) || $signed['sequence'] < 1) {
             throw new RuntimeException('更新マニフェストのスキーマまたは連番が不正です。');
         }
         if ($signed['sequence'] < $highestSequence) {
             throw new RuntimeException('過去の更新マニフェストは使用できません。');
         }
-
         try {
             $issued = new DateTimeImmutable((string) $signed['issued_at']);
             $expires = new DateTimeImmutable((string) $signed['expires_at']);
@@ -96,7 +118,8 @@ final class ManifestVerifier
             throw new RuntimeException('更新マニフェストの日時が不正です。');
         }
         $now = new DateTimeImmutable('now');
-        if ($expires <= $now || $issued > $now->modify('+5 minutes') || $expires <= $issued) {
+        if ($issued > $now->modify('+5 minutes') || $expires <= $issued
+            || ($signed['schema'] === 1 && $expires <= $now)) {
             throw new RuntimeException('更新マニフェストが期限外です。');
         }
 
@@ -120,14 +143,11 @@ final class ManifestVerifier
             throw new RuntimeException('復旧ランタイムの手動更新が必要です。');
         }
 
-        $artifact = $signed['artifact'];
-        if (!is_array($artifact) || !is_string($artifact['url'] ?? null)
-            || !is_int($artifact['size'] ?? null) || $artifact['size'] < 1
-            || $artifact['size'] > $this->config->maxArchiveBytes
-            || !preg_match('/^[a-f0-9]{64}$/', (string) ($artifact['sha256'] ?? ''))) {
-            throw new RuntimeException('更新ZIPの情報が不正です。');
+        $this->validateArtifact($signed['artifact'], '更新ZIP');
+        if ($signed['schema'] === 2) {
+            $this->validateArtifact($signed['full_artifact'] ?? null, '配布ZIP');
+            $this->validateFreshness($signed['freshness'] ?? null);
         }
-        $this->assertAllowedUrl($artifact['url']);
 
         if (!is_array($signed['files']) || $signed['files'] === []) {
             throw new RuntimeException('更新ファイル一覧が空です。');
@@ -149,7 +169,15 @@ final class ManifestVerifier
             }
             $seen[strtolower($path)] = true;
         }
+        $this->validateMigrations($signed);
+        if (!is_array($signed['next_keys'] ?? []) || !is_array($signed['retired_keys'] ?? [])) {
+            throw new RuntimeException('署名鍵更新情報が不正です。');
+        }
+    }
 
+    /** @param array<string, mixed> $signed */
+    private function validateMigrations(array $signed): void
+    {
         if (!is_array($signed['migrations'])) {
             throw new RuntimeException('DB移行一覧が不正です。');
         }
@@ -173,9 +201,95 @@ final class ManifestVerifier
                 }
             }
         }
-        if (!is_array($signed['next_keys'] ?? []) || !is_array($signed['retired_keys'] ?? [])) {
-            throw new RuntimeException('署名鍵更新情報が不正です。');
+    }
+
+    private function validateArtifact(mixed $artifact, string $label): void
+    {
+        if (!is_array($artifact) || !is_string($artifact['url'] ?? null)
+            || !is_int($artifact['size'] ?? null) || $artifact['size'] < 1
+            || $artifact['size'] > $this->config->maxArchiveBytes
+            || !preg_match('/^[a-f0-9]{64}$/', (string) ($artifact['sha256'] ?? ''))) {
+            throw new RuntimeException("{$label}の情報が不正です。");
         }
+        $this->assertAllowedUrl($artifact['url']);
+    }
+
+    private function validateFreshness(mixed $freshness): void
+    {
+        $public = is_array($freshness) ? base64_decode((string) ($freshness['public_key'] ?? ''), true) : false;
+        if (!is_array($freshness) || !is_string($public)
+            || strlen($public) !== SODIUM_CRYPTO_SIGN_PUBLICKEYBYTES
+            || !hash_equals(hash('sha256', $public), (string) ($freshness['keyid'] ?? ''))
+            || !is_int($freshness['sequence_floor'] ?? null) || $freshness['sequence_floor'] < 1
+            || !is_int($freshness['max_lease_seconds'] ?? null)
+            || $freshness['max_lease_seconds'] < 3600 || $freshness['max_lease_seconds'] > 7_776_000) {
+            throw new RuntimeException('更新情報の署名鍵設定が不正です。');
+        }
+    }
+
+    /** @param array<string, mixed> $envelope @param array<string, mixed> $signed @return array{int, string} */
+    private function verifyLease(
+        array $envelope,
+        array $signed,
+        string $rootDigest,
+        int $highestSequence,
+        ?string $highestDigest,
+    ): array {
+        $lease = $envelope['lease'] ?? null;
+        $leaseSigned = is_array($lease) ? ($lease['signed'] ?? null) : null;
+        $signatures = is_array($lease) ? ($lease['signatures'] ?? null) : null;
+        if (!is_array($leaseSigned) || !is_array($signatures) || !array_is_list($signatures)) {
+            throw new RuntimeException('更新情報の有効期限署名がありません。');
+        }
+        $freshness = $signed['freshness'];
+        $public = base64_decode((string) $freshness['public_key'], true);
+        $leasePayload = CanonicalJson::encode($leaseSigned);
+        if ($this->verifySignatures($leasePayload, $signatures, [$freshness['keyid'] => $public]) === null) {
+            throw new RuntimeException('更新情報の有効期限署名を検証できません。');
+        }
+        $required = [
+            'schema', 'manifest_sha256', 'target_version', 'artifact_sha256', 'full_artifact_sha256',
+            'from_versions_sha256', 'migrations_sha256', 'sequence', 'issued_at', 'expires_at',
+        ];
+        foreach ($required as $key) {
+            if (!array_key_exists($key, $leaseSigned)) {
+                throw new RuntimeException("更新情報の有効期限署名に {$key} がありません。");
+            }
+        }
+        $bindings = [
+            'manifest_sha256' => $rootDigest,
+            'target_version' => $signed['target_version'],
+            'artifact_sha256' => $signed['artifact']['sha256'],
+            'full_artifact_sha256' => $signed['full_artifact']['sha256'],
+            'from_versions_sha256' => hash('sha256', CanonicalJson::encode($signed['from_versions'])),
+            'migrations_sha256' => hash('sha256', CanonicalJson::encode($signed['migrations'])),
+        ];
+        foreach ($bindings as $key => $expected) {
+            if (!is_string($leaseSigned[$key]) || !hash_equals((string) $expected, $leaseSigned[$key])) {
+                throw new RuntimeException('更新情報の有効期限署名が配布内容と一致しません。');
+            }
+        }
+        $sequence = $leaseSigned['sequence'];
+        if ($leaseSigned['schema'] !== 1 || !is_int($sequence)
+            || $sequence < (int) $freshness['sequence_floor'] || $sequence < $highestSequence) {
+            throw new RuntimeException('過去の更新情報は使用できません。');
+        }
+        $digest = hash('sha256', $leasePayload);
+        if ($sequence === $highestSequence && $highestDigest !== null && !hash_equals($highestDigest, $digest)) {
+            throw new RuntimeException('同じ連番で内容が異なる更新情報は使用できません。');
+        }
+        try {
+            $issued = new DateTimeImmutable((string) $leaseSigned['issued_at']);
+            $expires = new DateTimeImmutable((string) $leaseSigned['expires_at']);
+        } catch (\Throwable) {
+            throw new RuntimeException('更新情報の有効期限が不正です。');
+        }
+        $now = new DateTimeImmutable('now');
+        if ($issued > $now->modify('+5 minutes') || $expires <= $now || $expires <= $issued
+            || $expires->getTimestamp() - $issued->getTimestamp() > (int) $freshness['max_lease_seconds']) {
+            throw new RuntimeException('更新情報の有効期限が不正です。');
+        }
+        return [$sequence, $digest];
     }
 
     public function assertAllowedUrl(string $url): void

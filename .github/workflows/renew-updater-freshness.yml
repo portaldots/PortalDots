@@ -1,0 +1,58 @@
+name: Renew updater freshness metadata
+
+on:
+  schedule:
+    - cron: '23 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: renew-updater-freshness
+  cancel-in-progress: false
+
+jobs:
+  renew:
+    runs-on: ubuntu-latest
+    environment: release-renewal
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.3'
+          extensions: sodium
+      - name: Select the latest published stable release of every major
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/releases?per_page=100" > release-pages.json
+          php updater/tools/select-renewal-targets.php release-pages.json renewal-targets.txt
+      - name: Renew leases without replacing release artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          UPDATER_PUBLIC_KEY: ${{ vars.UPDATER_PUBLIC_KEY }}
+          UPDATER_RENEWAL_SIGNING_KEY: ${{ secrets.UPDATER_RENEWAL_SIGNING_KEY }}
+        run: |
+          while IFS= read -r tag; do
+            test -n "$tag" || continue
+            target="renewal-assets/$tag"
+            mkdir -p "$target"
+            gh release download "$tag" --repo "$GITHUB_REPOSITORY" \
+              --pattern PortalDots-update-manifest.json \
+              --pattern 'PortalDots-update-*.zip' \
+              --pattern PortalDots.zip \
+              --dir "$target"
+            mapfile -t update_archives < <(find "$target" -maxdepth 1 -type f -name 'PortalDots-update-*.zip')
+            test "${#update_archives[@]}" -eq 1
+            lease_sequence=$(date -u +%s)
+            php updater/tools/sign-lease.php \
+              "$target/PortalDots-update-manifest.json" \
+              "$target/PortalDots-update-manifest.next.json" \
+              "$lease_sequence" \
+              "${update_archives[0]}" \
+              "$target/PortalDots.zip"
+            mv "$target/PortalDots-update-manifest.next.json" "$target/PortalDots-update-manifest.json"
+            gh release upload "$tag" "$target/PortalDots-update-manifest.json" \
+              --repo "$GITHUB_REPOSITORY" --clobber
+          done < renewal-targets.txt

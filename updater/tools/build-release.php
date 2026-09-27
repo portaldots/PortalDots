@@ -8,11 +8,11 @@ require dirname(__DIR__) . '/bootstrap.php';
 use PortalDots\Updater\CanonicalJson;
 use PortalDots\Updater\ZipPackage;
 
-if ($argc !== 6) {
-    fwrite(STDERR, "Usage: build-release.php DIST OUTPUT VERSION SEQUENCE PUBLIC_KEY_BASE64\n");
+if ($argc !== 8) {
+    fwrite(STDERR, "Usage: build-release.php DIST OUTPUT VERSION SEQUENCE ROOT_PUBLIC_KEY RENEWAL_PUBLIC_KEY CANDIDATES_JSON\n");
     exit(64);
 }
-[, $dist, $output, $version, $sequenceText, $publicKey] = $argv;
+[, $dist, $output, $version, $sequenceText, $publicKey, $renewalPublicKey, $candidatesPath] = $argv;
 $dist = rtrim($dist, '/');
 $output = rtrim($output, '/');
 $sequence = filter_var($sequenceText, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
@@ -23,6 +23,10 @@ if (!is_dir($dist) || $sequence === false
 $decodedPublicKey = base64_decode($publicKey, true);
 if (!is_string($decodedPublicKey) || strlen($decodedPublicKey) !== SODIUM_CRYPTO_SIGN_PUBLICKEYBYTES) {
     throw new RuntimeException('UPDATER_PUBLIC_KEY must be a base64 Ed25519 public key.');
+}
+$decodedRenewalKey = base64_decode($renewalPublicKey, true);
+if (!is_string($decodedRenewalKey) || strlen($decodedRenewalKey) !== SODIUM_CRYPTO_SIGN_PUBLICKEYBYTES) {
+    throw new RuntimeException('UPDATER_RENEWAL_PUBLIC_KEY must be a base64 Ed25519 public key.');
 }
 if (!is_dir($output) && !mkdir($output, 0755, true) && !is_dir($output)) {
     throw new RuntimeException('Cannot create output directory.');
@@ -45,7 +49,8 @@ file_put_contents($dist . '/.portaldots-manifest.json', CanonicalJson::encode([
 ]) . "\n");
 
 $fullFiles = listFiles($dist);
-createZip($output . '/PortalDots.zip', $dist, $fullFiles, [
+$fullArchive = $output . '/PortalDots.zip';
+createZip($fullArchive, $dist, $fullFiles, [
     'bootstrap/cache/',
     'storage/app/public/',
     'storage/app/updater/private/',
@@ -54,6 +59,11 @@ createZip($output . '/PortalDots.zip', $dist, $fullFiles, [
     'storage/framework/views/',
     'storage/logs/',
 ]);
+$fullArchiveHash = hash_file('sha256', $fullArchive);
+$fullArchiveSize = filesize($fullArchive);
+if (!is_string($fullArchiveHash) || !is_int($fullArchiveSize)) {
+    throw new RuntimeException('Cannot hash full release archive.');
+}
 
 $updateFiles = [];
 foreach ($installedFiles as $file) {
@@ -70,11 +80,11 @@ if (!is_string($archiveHash) || !is_int($archiveSize)) {
 }
 
 $major = explode('.', $version, 2)[0];
-$fromVersions = discoverFromVersions($major, $version);
+$fromVersions = discoverFromVersions($candidatesPath, $major, $version);
 $migrations = migrationContracts($dist, $fromVersions);
 $issued = new DateTimeImmutable('now', new DateTimeZone('UTC'));
 $signed = [
-    'schema' => 1,
+    'schema' => 2,
     'sequence' => $sequence,
     'issued_at' => $issued->format(DATE_ATOM),
     'expires_at' => $issued->modify('+30 days')->format(DATE_ATOM),
@@ -82,11 +92,22 @@ $signed = [
     'from_versions' => $fromVersions,
     'minimum_php' => '8.3.0',
     'minimum_mysql' => '8.4.0',
-    'minimum_runtime' => 1,
+    'minimum_runtime' => 2,
     'artifact' => [
         'url' => "https://github.com/portaldots/PortalDots/releases/download/v{$version}/{$updateArchiveName}",
         'size' => $archiveSize,
         'sha256' => $archiveHash,
+    ],
+    'full_artifact' => [
+        'url' => "https://github.com/portaldots/PortalDots/releases/download/v{$version}/PortalDots.zip",
+        'size' => $fullArchiveSize,
+        'sha256' => $fullArchiveHash,
+    ],
+    'freshness' => [
+        'keyid' => hash('sha256', $decodedRenewalKey),
+        'public_key' => $renewalPublicKey,
+        'sequence_floor' => $sequence,
+        'max_lease_seconds' => 3_888_000,
     ],
     'files' => $updateFiles,
     'migrations' => $migrations,
@@ -158,25 +179,30 @@ function isMutableRuntimePath(string $path): bool
 }
 
 /** @return list<string> */
-function discoverFromVersions(string $major, string $target): array
+function discoverFromVersions(string $candidatesPath, string $major, string $target): array
 {
-    $override = getenv('UPDATER_FROM_VERSIONS');
-    if (!is_string($override) || trim($override) === '') {
-        if (getenv('UPDATER_BOOTSTRAP_RELEASE') === '1') {
-            return [];
-        }
-        throw new RuntimeException('UPDATER_FROM_VERSIONS must explicitly list supported source releases.');
+    if (!is_file($candidatesPath)) {
+        throw new RuntimeException('Automatic release candidates file is missing.');
     }
-    $versions = array_values(array_filter(array_map('trim', explode(',', $override))));
-    $versions = array_values(array_filter($versions, static function (string $candidate) use ($major, $target): bool {
-        return (bool) preg_match('/^' . preg_quote($major, '/') . '\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/', $candidate)
-            && version_compare($candidate, $target, '<');
-    }));
+    $candidates = json_decode((string) file_get_contents($candidatesPath), true, 64, JSON_THROW_ON_ERROR);
+    if (!is_array($candidates) || !array_is_list($candidates)) {
+        throw new RuntimeException('Automatic release candidates are malformed.');
+    }
+    $versions = [];
+    foreach ($candidates as $candidate) {
+        $version = is_array($candidate) ? ($candidate['version'] ?? null) : null;
+        $full = is_array($candidate) ? ($candidate['full_artifact'] ?? null) : null;
+        if (!is_string($version) || !is_array($full)
+            || !preg_match('/^' . preg_quote($major, '/') . '\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/', $version)
+            || version_compare($version, $target, '>=')
+            || !preg_match('/^[a-f0-9]{64}$/', (string) ($full['sha256'] ?? ''))
+            || !is_int($full['size'] ?? null) || $full['size'] < 1) {
+            throw new RuntimeException('Automatic release candidate is invalid.');
+        }
+        $versions[] = $version;
+    }
     usort($versions, 'version_compare');
     $versions = array_values(array_unique($versions));
-    if ($versions === []) {
-        throw new RuntimeException('UPDATER_FROM_VERSIONS has no stable same-major source release below target.');
-    }
     return $versions;
 }
 

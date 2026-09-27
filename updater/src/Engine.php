@@ -16,6 +16,7 @@ final class Engine
 
     private Downloader $downloader;
     private ManifestVerifier $verifier;
+    private ManifestHighwater $highwater;
     private TrustedKeyStore $keys;
     private ZipPackage $zip;
     private DatabaseBackup $database;
@@ -30,6 +31,7 @@ final class Engine
     ) {
         $this->keys = new TrustedKeyStore($config, $store);
         $this->verifier = new ManifestVerifier($config, $this->keys);
+        $this->highwater = new ManifestHighwater($config);
         $this->downloader = new Downloader($config, $this->verifier);
         $this->zip = new ZipPackage($config);
         $this->database = new DatabaseBackup($config);
@@ -99,20 +101,18 @@ final class Engine
             case 'fetch_manifest':
                 $envelope = (new UpdateDiscovery($this->config, $this->downloader))
                     ->discover($state['from_version']);
-                $highest = $this->readHighest();
+                $highest = $this->highwater->read();
                 $verified = $this->verifier->verify(
                     $envelope,
                     $state['from_version'],
                     (int) ($highest['sequence'] ?? 0),
                     isset($highest['digest']) ? (string) $highest['digest'] : null,
+                    (int) ($highest['lease_sequence'] ?? 0),
+                    isset($highest['lease_digest']) ? (string) $highest['lease_digest'] : null,
                 );
                 $state['manifest'] = $verified;
                 $state['target_version'] = $verified['signed']['target_version'];
-                $this->writeHighest([
-                    'sequence' => $verified['signed']['sequence'],
-                    'digest' => $verified['digest'],
-                    'target_version' => $verified['signed']['target_version'],
-                ]);
+                $this->highwater->observe($verified);
                 $this->keys->applyRotation($verified['signed'], $verified['signing_key_id']);
                 return true;
 
@@ -428,37 +428,4 @@ final class Engine
             : '内部処理に失敗しました。バックアップを保持したまま安全に停止しました。';
     }
 
-    /** @return array<string, mixed> */
-    private function readHighest(): array
-    {
-        $path = $this->config->privatePath . '/highest-manifest.json';
-        if (!is_file($path)) {
-            return [];
-        }
-        $decoded = json_decode((string) file_get_contents($path), true, 32, JSON_THROW_ON_ERROR);
-        return is_array($decoded) ? $decoded : [];
-    }
-
-    /** @param array<string, mixed> $value */
-    private function writeHighest(array $value): void
-    {
-        $path = $this->config->privatePath . '/highest-manifest.json';
-        $temporary = $path . '.tmp.' . bin2hex(random_bytes(4));
-        $handle = fopen($temporary, 'xb');
-        $contents = CanonicalJson::encode($value) . "\n";
-        if ($handle === false || fwrite($handle, $contents) !== strlen($contents)
-            || !fflush($handle) || (function_exists('fsync') && !fsync($handle))) {
-            if (is_resource($handle)) {
-                fclose($handle);
-            }
-            @unlink($temporary);
-            throw new RuntimeException('更新連番を保存できません。');
-        }
-        fclose($handle);
-        @chmod($temporary, 0600);
-        if (!rename($temporary, $path)) {
-            @unlink($temporary);
-            throw new RuntimeException('更新連番を確定できません。');
-        }
-    }
 }

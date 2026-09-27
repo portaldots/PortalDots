@@ -4,12 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: Existing release tag whose updater metadata should be refreshed
-        required: true
-        type: string
 
 permissions:
   contents: read
@@ -23,7 +17,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
-          ref: ${{ inputs.tag || github.ref }}
+          ref: ${{ github.ref }}
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
           php-version: '8.3'
@@ -36,7 +30,7 @@ jobs:
       - name: Determine release version
         id: version
         env:
-          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           if [[ ! "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
             echo "Release tag must be vN.N.N" >&2
@@ -46,7 +40,18 @@ jobs:
       - name: Require configured updater public key
         env:
           UPDATER_PUBLIC_KEY: ${{ vars.UPDATER_PUBLIC_KEY }}
-        run: test -n "$UPDATER_PUBLIC_KEY"
+          UPDATER_RENEWAL_PUBLIC_KEY: ${{ vars.UPDATER_RENEWAL_PUBLIC_KEY }}
+        run: test -n "$UPDATER_PUBLIC_KEY" && test -n "$UPDATER_RENEWAL_PUBLIC_KEY"
+      - name: Discover every trusted source release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ROOT_PUBLIC_KEY: ${{ vars.UPDATER_PUBLIC_KEY }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/releases?per_page=100" > "$RUNNER_TEMP/release-pages.json"
+          php updater/tools/discover-release-candidates.php \
+            "$RUNNER_TEMP/release-pages.json" "$VERSION" "$ROOT_PUBLIC_KEY" \
+            "$RUNNER_TEMP/release-candidates.json"
       - name: Prepare distribution tree
         run: |
           rsync -a --delete ./ ./dist/ \
@@ -72,11 +77,14 @@ jobs:
       - name: Build immutable release artifacts
         env:
           UPDATER_PUBLIC_KEY: ${{ vars.UPDATER_PUBLIC_KEY }}
-          UPDATER_FROM_VERSIONS: ${{ vars.UPDATER_FROM_VERSIONS }}
-          UPDATER_BOOTSTRAP_RELEASE: ${{ vars.UPDATER_BOOTSTRAP_RELEASE }}
+          UPDATER_RENEWAL_PUBLIC_KEY: ${{ vars.UPDATER_RENEWAL_PUBLIC_KEY }}
           VERSION: ${{ steps.version.outputs.version }}
           SEQUENCE: ${{ github.run_number }}
-        run: php updater/tools/build-release.php dist release-assets "$VERSION" "$SEQUENCE" "$UPDATER_PUBLIC_KEY"
+        run: >-
+          php updater/tools/build-release.php dist release-assets "$VERSION" "$SEQUENCE"
+          "$UPDATER_PUBLIC_KEY" "$UPDATER_RENEWAL_PUBLIC_KEY" "$RUNNER_TEMP/release-candidates.json"
+      - name: Preserve the exact source-release decision
+        run: cp "$RUNNER_TEMP/release-candidates.json" release-assets/release-candidates.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: unsigned-release
@@ -100,7 +108,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          ref: ${{ inputs.tag || github.ref }}
+          ref: ${{ github.ref }}
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
           php-version: '8.3'
@@ -130,10 +138,12 @@ jobs:
           mkdir -p old-releases
           # PHP source must keep its dollar variables literal.
           # shellcheck disable=SC2016
-          php -r '$s=json_decode(file_get_contents("release-assets/PortalDots-update-signed.json"),true,128,JSON_THROW_ON_ERROR); foreach($s["from_versions"] as $v){echo $v,"\n";}' > old-releases/versions.txt
+          php -r '$s=json_decode(file_get_contents("release-assets/release-candidates.json"),true,128,JSON_THROW_ON_ERROR); foreach($s as $v){echo $v["version"],"\n";}' > old-releases/versions.txt
           while IFS= read -r version; do
             mkdir -p "old-releases/$version"
             gh release download "v$version" --repo portaldots/PortalDots --pattern PortalDots.zip --dir "old-releases/$version"
+            php updater/tools/verify-release-candidate.php \
+              release-assets/release-candidates.json "$version" "old-releases/$version/PortalDots.zip"
             php tests/Updater/engine-release-cycle.php \
               release-assets/PortalDots-update-signed.json \
               "release-assets/PortalDots-update-${{ github.run_number }}.zip" \
@@ -150,7 +160,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          ref: ${{ inputs.tag || github.ref }}
+          ref: ${{ github.ref }}
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
           php-version: '8.3'
@@ -163,9 +173,22 @@ jobs:
         env:
           UPDATER_SIGNING_KEY: ${{ secrets.UPDATER_SIGNING_KEY }}
           UPDATER_PUBLIC_KEY: ${{ vars.UPDATER_PUBLIC_KEY }}
-        run: php updater/tools/sign-manifest.php release-assets/PortalDots-update-signed.json release-assets/PortalDots-update-manifest.json
+        run: >-
+          php updater/tools/sign-manifest.php release-assets/PortalDots-update-signed.json
+          release-assets/PortalDots-update-root.json
+      - name: Attach the initial freshness lease
+        env:
+          UPDATER_PUBLIC_KEY: ${{ vars.UPDATER_PUBLIC_KEY }}
+          UPDATER_RENEWAL_SIGNING_KEY: ${{ secrets.UPDATER_RENEWAL_SIGNING_KEY }}
+        run: |
+          lease_sequence=$(date -u +%s)
+          php updater/tools/sign-lease.php \
+            release-assets/PortalDots-update-root.json \
+            release-assets/PortalDots-update-manifest.json \
+            "$lease_sequence" \
+            release-assets/PortalDots-update-*.zip \
+            release-assets/PortalDots.zip
       - name: Create draft release with full and updater-specific assets
-        if: github.event_name == 'push'
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
@@ -174,13 +197,3 @@ jobs:
           release-assets/PortalDots-update-*.zip
           release-assets/PortalDots-update-manifest.json
           --draft --title "${{ github.ref_name }}" --notes ""
-      - name: Upload refreshed updater assets to the existing release
-        if: github.event_name == 'workflow_dispatch'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ inputs.tag }}
-        run: >-
-          gh release upload "$RELEASE_TAG"
-          release-assets/PortalDots-update-*.zip
-          release-assets/PortalDots-update-manifest.json
-          --clobber

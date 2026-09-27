@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Services\Updater;
 
 use App\Eloquents\User;
-use PortalDots\Updater\CanonicalJson;
 use PortalDots\Updater\Config;
 use PortalDots\Updater\Downloader;
 use PortalDots\Updater\FileBackup;
 use PortalDots\Updater\JobFactory;
+use PortalDots\Updater\ManifestHighwater;
 use PortalDots\Updater\ManifestVerifier;
 use PortalDots\Updater\StateStore;
 use PortalDots\Updater\TrustedKeyStore;
@@ -62,13 +62,18 @@ final class UpdaterManager
         $verifier = new ManifestVerifier($this->config, $keys);
         $downloader = new Downloader($this->config, $verifier);
         $envelope = (new UpdateDiscovery($this->config, $downloader))->discover($current);
-        $highest = $this->readHighest();
-        return $verifier->verify(
+        $highwater = new ManifestHighwater($this->config);
+        $highest = $highwater->read();
+        $verified = $verifier->verify(
             $envelope,
             $current,
             (int) ($highest['sequence'] ?? 0),
             isset($highest['digest']) ? (string) $highest['digest'] : null,
+            (int) ($highest['lease_sequence'] ?? 0),
+            isset($highest['lease_digest']) ? (string) $highest['lease_digest'] : null,
         );
+        $highwater->observe($verified);
+        return $verified;
     }
 
     /** @return array{job_id: string, recovery_code: string, target_version: string} */
@@ -94,11 +99,6 @@ final class UpdaterManager
             }
             $keys = new TrustedKeyStore($this->config, $this->store);
             $keys->applyRotation($verified['signed'], $verified['signing_key_id']);
-            $this->writeHighest([
-                'sequence' => $verified['signed']['sequence'],
-                'digest' => $verified['digest'],
-                'target_version' => $verified['signed']['target_version'],
-            ]);
             $result = (new JobFactory($this->config, $this->store))->create([
                 'id' => $actor->getKey(),
                 'email' => $actor->email,
@@ -115,41 +115,5 @@ final class UpdaterManager
     {
         return get_class($exception) === RuntimeException::class
             ? $exception->getMessage() : '更新処理の内部診断に失敗しました。';
-    }
-
-    /** @return array<string, mixed> */
-    private function readHighest(): array
-    {
-        $path = $this->config->privatePath . '/highest-manifest.json';
-        if (!is_file($path)) {
-            return [];
-        }
-        $value = json_decode((string) file_get_contents($path), true, 32, JSON_THROW_ON_ERROR);
-        return is_array($value) ? $value : [];
-    }
-
-    /** @param array<string, mixed> $value */
-    private function writeHighest(array $value): void
-    {
-        $path = $this->config->privatePath . '/highest-manifest.json';
-        $temporary = $path . '.tmp.' . bin2hex(random_bytes(4));
-        $contents = CanonicalJson::encode($value) . "\n";
-        $handle = fopen($temporary, 'xb');
-        if (
-            $handle === false || fwrite($handle, $contents) !== strlen($contents)
-            || !fflush($handle) || (function_exists('fsync') && !fsync($handle))
-        ) {
-            if (is_resource($handle)) {
-                fclose($handle);
-            }
-            @unlink($temporary);
-            throw new RuntimeException('更新連番を保存できません。');
-        }
-        fclose($handle);
-        @chmod($temporary, 0600);
-        if (!rename($temporary, $path)) {
-            @unlink($temporary);
-            throw new RuntimeException('更新連番を確定できません。');
-        }
     }
 }
