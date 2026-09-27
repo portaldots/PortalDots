@@ -139,6 +139,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::patch('/{answer}', 'Forms\Answers\UpdateAction')->name('update');
                     Route::get('/create', 'Forms\Answers\CreateAction')->name('create');
                     Route::post('/', 'Forms\Answers\StoreAction')->name('store');
+                    Route::get('/{answer}/uploads/{question}/{row}/{column}', 'Forms\Answers\Uploads\TableShowAction')->name('uploads.table.show');
                     Route::get('/{answer}/uploads/{question}', 'Forms\Answers\Uploads\ShowAction')->name('uploads.show');
                 });
         });

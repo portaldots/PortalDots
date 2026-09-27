@@ -8,9 +8,23 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Services\Forms\ValidationRulesService;
 use App\Http\Requests\Forms\AnswerRequestInterface;
 use Illuminate\Support\Facades\App;
+use App\Services\Forms\AnswerInputNormalizer;
 
 class CircleRequest extends FormRequest implements AnswerRequestInterface
 {
+    public function validationData()
+    {
+        $all = $this->all();
+        if (array_key_exists('answers', $all) && isset($all['participation_type'])) {
+            $form = ParticipationType::findOrFail($all['participation_type'])->form;
+            $circle = $this->route('circle');
+            $answer = $circle instanceof Circle ? $circle->getParticipationFormAnswer() : null;
+            $all['answers'] = App::make(AnswerInputNormalizer::class)
+                ->normalize($all['answers'], $form, $answer);
+        }
+        return $all;
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *

@@ -82,6 +82,11 @@ class AnswersExport implements FromCollection, WithHeadings, WithMapping
                     '',
                     $answer->details->where('question_id', $question->id)->first()->answer ?? ''
                 );
+            } elseif ($question->type === 'table') {
+                $details[] = \App\Support\TableAnswerPresenter::text(
+                    $question,
+                    $answer->details->where('question_id', $question->id)->first()?->answer
+                );
             } elseif ($question->type === 'checkbox') {
                 $details[] = $answer->details->where('question_id', $question->id)->implode('answer', ',') ?? '';
             } else {

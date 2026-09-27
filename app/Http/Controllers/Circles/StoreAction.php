@@ -9,6 +9,7 @@ use App\Services\Forms\AnswersService;
 use App\Eloquents\ParticipationType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class StoreAction extends Controller
 {
@@ -36,25 +37,30 @@ class StoreAction extends Controller
 
         $this->authorize('circle.create', $participationType);
 
-        $result = DB::transaction(function () use ($request, $participationType) {
-            $circle = $this->circlesService->create(
-                participationType: $participationType,
-                leader: Auth::user(),
-                name: $request->name,
-                name_yomi: $request->name_yomi,
-                group_name: $request->group_name,
-                group_name_yomi: $request->group_name_yomi
-            );
+        try {
+            $result = DB::transaction(function () use ($request, $participationType) {
+                $circle = $this->circlesService->create(
+                    participationType: $participationType,
+                    leader: Auth::user(),
+                    name: $request->name,
+                    name_yomi: $request->name_yomi,
+                    group_name: $request->group_name,
+                    group_name_yomi: $request->group_name_yomi
+                );
 
-            $this->answersService->createAnswer(
-                $participationType->form,
-                $circle,
-                $request
-            );
+                $this->answersService->createAnswer(
+                    $participationType->form,
+                    $circle,
+                    $request
+                );
 
-            return redirect()
-                ->route('circles.users.index', ['circle' => $circle]);
-        });
+                return redirect()
+                    ->route('circles.users.index', ['circle' => $circle]);
+            });
+        } catch (Throwable $e) {
+            $this->answersService->discardPendingUploads();
+            throw $e;
+        }
 
         activity()->enableLogging();
 

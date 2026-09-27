@@ -20,6 +20,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int $number_max
  * @property string $allowed_types
  * @property array $allowed_types_array
+ * @property array|null $table
  * @property int $priority
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
@@ -37,6 +38,7 @@ class Question extends Model
         'checkbox',
         'select',
         'upload',
+        'table',
     ];
 
     protected $fillable = [
@@ -48,6 +50,7 @@ class Question extends Model
         'number_max',
         'allowed_types',
         'options',
+        'table',
         'priority',
     ];
 
@@ -56,6 +59,7 @@ class Question extends Model
         'number_min' => 'int',
         'number_max' => 'int',
         'priority' => 'int',
+        'table' => 'array',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -74,6 +78,7 @@ class Question extends Model
                 'number_max',
                 'allowed_types',
                 'options',
+                'table',
                 'priority',
             ])
             ->logOnlyDirty();

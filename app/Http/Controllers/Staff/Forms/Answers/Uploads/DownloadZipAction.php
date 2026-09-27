@@ -7,6 +7,7 @@ use App\Eloquents\Form;
 use App\Services\Forms\DownloadZipService;
 use App\Services\Forms\Exceptions\NoDownloadFileExistException;
 use App\Services\Forms\Exceptions\ZipArchiveNotSupportedException;
+use App\Services\Forms\AnswerDetailsService;
 
 class DownloadZipAction extends Controller
 {
@@ -25,10 +26,10 @@ class DownloadZipAction extends Controller
         $form->load('answers.details');
         $form->load('answers.circle');
         $form->load(['questions' => function ($query) {
-            $query->where('type', 'upload');
+            $query->whereIn('type', ['upload', 'table']);
         }]);
 
-        $upload_question_ids = $form->questions->pluck('id')->all();
+        $questions = $form->questions->keyBy('id');
         $flatten_details = $form->answers->filter(function ($answer) {
             return !empty($answer->circle->submitted_at);
         })->pluck('details')->flatten();
@@ -36,8 +37,29 @@ class DownloadZipAction extends Controller
         $uploaded_file_paths = [];
 
         foreach ($flatten_details as $detail) {
-            if (in_array($detail->question_id, $upload_question_ids, true)) {
+            $question = $questions->get($detail->question_id);
+            if ($question === null) {
+                continue;
+            }
+            if ($question->type === 'upload') {
                 $uploaded_file_paths[] = $detail->answer;
+                continue;
+            }
+
+            $envelope = AnswerDetailsService::decodeTableAnswerEnvelope($detail->answer);
+            $uploadColumnIds = collect($envelope['columns'])
+                ->filter(fn ($column) => ($column['type'] ?? null) === 'upload')
+                ->pluck('id')
+                ->all();
+            foreach ($envelope['rows'] as $row) {
+                if (!is_array($row)) {
+                    continue;
+                }
+                foreach ($uploadColumnIds as $columnId) {
+                    if (isset($row[$columnId]) && is_string($row[$columnId])) {
+                        $uploaded_file_paths[] = $row[$columnId];
+                    }
+                }
             }
         }
 

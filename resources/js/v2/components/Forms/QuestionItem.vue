@@ -25,6 +25,9 @@
       :numberMin="numberMin"
       :numberMax="numberMax"
       :allowedTypes="computedAllowedTypes"
+      :tableColumns="tableColumns"
+      :tableErrors="tableErrors"
+      :tableUploadUrlTemplate="tableUploadUrlTemplate"
       :disabled="disabled"
     />
     <template #invalid v-if="invalid">
@@ -44,6 +47,7 @@ import QuestionNumber from "./QuestionNumber.vue";
 import QuestionSelect from "./QuestionSelect.vue";
 import QuestionRadio from "./QuestionRadio.vue";
 import QuestionCheckbox from "./QuestionCheckbox.vue";
+import QuestionTable from "./QuestionTable.vue";
 
 export default {
   components: {
@@ -56,6 +60,7 @@ export default {
     QuestionSelect,
     QuestionRadio,
     QuestionCheckbox,
+    QuestionTable,
   },
   props: {
     type: {
@@ -83,7 +88,7 @@ export default {
       default: null,
     },
     value: {
-      type: [String, Array],
+      type: [String, Array, Object],
     },
     options: {
       type: Array,
@@ -99,6 +104,18 @@ export default {
     allowedTypes: {
       type: Array,
     },
+    tableColumns: {
+      type: Array,
+      default: () => [],
+    },
+    tableErrors: {
+      type: Object,
+      default: () => ({}),
+    },
+    tableUploadUrlTemplate: {
+      type: String,
+      default: null,
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -111,7 +128,7 @@ export default {
       }`;
     },
     inputId() {
-      if (["radio", "checkbox"].indexOf(this.type) >= 0) {
+      if (["radio", "checkbox", "table"].indexOf(this.type) >= 0) {
         return undefined;
       }
       return `question-${this.questionId}`;

@@ -73,6 +73,7 @@ import QuestionUpload from "./form/QuestionUpload.vue";
 import QuestionRadio from "./form/QuestionRadio.vue";
 import QuestionSelect from "./form/QuestionSelect.vue";
 import QuestionCheckbox from "./form/QuestionCheckbox.vue";
+import QuestionTable from "./form/QuestionTable.vue";
 import { DRAG_START, DRAG_END, UPDATE_QUESTIONS_ORDER } from "../store/editor";
 import { SAVE_STATUS_SAVING } from "../store/status";
 
@@ -88,6 +89,7 @@ export default {
     QuestionRadio,
     QuestionSelect,
     QuestionCheckbox,
+    QuestionTable,
   },
   data() {
     return {
