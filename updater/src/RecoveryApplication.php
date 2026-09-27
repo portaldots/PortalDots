@@ -152,8 +152,8 @@ code{overflow-wrap:anywhere}@media(prefers-color-scheme:dark){:root{background:#
 <form id="step-form" method="post" action="<?= $h($this->scriptPath) ?>"><input type="hidden" name="action" value="step"><input type="hidden" name="csrf_token" value="<?= $h($csrf) ?>"><button type="submit">次の処理を実行</button></form>
 <?php if (!($state['restore']['paused'] ?? false)): ?><script>setTimeout(function(){document.getElementById('step-form').requestSubmit()},120)</script><?php endif; ?>
 <?php else: ?>
-<?php if ($phase === 'completed'): ?><p>PortalDotsの利用を再開しました。</p><?php endif; ?>
-<?php if ($phase === 'rolled_back'): ?><p>更新前の状態へ戻し、PortalDotsの利用を再開しました。表示された原因を確認してから、必要に応じてサーバーの管理者へ連絡してください。</p><?php endif; ?>
+<?php if ($phase === 'completed'): ?><p>PortalDots を再び利用できるようになりました。</p><?php endif; ?>
+<?php if ($phase === 'rolled_back'): ?><p>更新前の状態に戻しました。PortalDots は更新前と同じように利用できます。表示された原因を確認してから、必要に応じてサーバーの管理者へ連絡してください。</p><?php endif; ?>
 <a class="button" href="<?= $h($this->homePath) ?>">PortalDotsへ戻る</a>
 <?php endif; ?>
 <?php endif; ?>
