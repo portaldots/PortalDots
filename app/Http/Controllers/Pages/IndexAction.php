@@ -36,9 +36,16 @@ class IndexAction extends Controller
                 ->route('pages.index');
         }
 
-        $pages = Page::byCircle($circle)->byKeywords($searchQuery)->with(['usersWhoRead' => function ($query) {
-            $query->where('user_id', Auth::id());
-        }])->public()->pinned(false)->paginate(10);
+        $pages = Page::visibleTo(Auth::user(), $circle)
+            ->byKeywords($searchQuery)
+            ->with([
+                'viewableTags',
+                'usersWhoRead' => function ($query) {
+                    $query->where('user_id', Auth::id());
+                },
+            ])
+            ->pinned(false)
+            ->paginate(10);
 
         if ($pages->currentPage() > $pages->lastPage()) {
             return redirect($pages->url($pages->lastPage()));

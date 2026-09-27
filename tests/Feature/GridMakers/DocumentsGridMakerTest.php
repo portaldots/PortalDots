@@ -26,6 +26,7 @@ class DocumentsGridMakerTest extends TestCase
     {
         $document = factory(Document::class)->make([
             'extension' => 'pdf',
+            'audience' => 'selected',
             'created_at' => '2020-02-02 02:02:02',
             'updated_at' => '2020-02-02 02:02:02',
         ]);
@@ -33,6 +34,7 @@ class DocumentsGridMakerTest extends TestCase
         $result = $this->documentsGridMaker->map($document);
 
         $this->assertSame('PDF', $result['extension']);
+        $this->assertSame('selected', $result['audience']);
         $this->assertSame('2020/02/02 02:02:02', $result['created_at']);
         $this->assertSame('2020/02/02 02:02:02', $result['updated_at']);
     }

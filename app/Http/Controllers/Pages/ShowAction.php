@@ -31,15 +31,20 @@ class ShowAction extends Controller
 
     public function __invoke(Page $page)
     {
-        $this->authorize('view', [$page, $this->selectorService->getCircle()]);
+        $circle = $this->selectorService->getCircle();
+
+        $this->authorize('view', [$page, $circle]);
 
         if (Auth::check()) {
             $this->readsService->markAsRead($page, Auth::user());
         }
 
-        $page->loadMissing(['documents' => function ($query) {
-            $query->public();
-        }]);
+        $page->loadMissing([
+            'viewableTags',
+            'documents' => function ($query) use ($circle) {
+                $query->visibleTo(Auth::user(), $circle);
+            },
+        ]);
 
         return view('pages.show')
             ->with('page', $page);

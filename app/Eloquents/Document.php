@@ -4,12 +4,14 @@ namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Eloquents\Concerns\HasAudienceTrait;
 use App\Eloquents\Concerns\IsNewTrait;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Document extends Model
 {
+    use HasAudienceTrait;
     use IsNewTrait;
     use LogsActivity;
 
@@ -26,6 +28,7 @@ class Document extends Model
         'extension',
         'is_public',
         'is_important',
+        'audience',
         'notes',
     ];
 
@@ -42,6 +45,7 @@ class Document extends Model
                 'extension',
                 'is_public',
                 'is_important',
+                'audience',
                 'notes',
             ])
             ->logOnlyDirty();
@@ -64,6 +68,18 @@ class Document extends Model
     public function pages()
     {
         return $this->belongsToMany(Page::class);
+    }
+
+    public function viewableTags()
+    {
+        return $this->belongsToMany(Tag::class, 'document_viewable_tags')
+            ->using(DocumentViewableTag::class);
+    }
+
+    public function viewableCircles()
+    {
+        return $this->belongsToMany(Circle::class, 'document_viewable_circles')
+            ->using(DocumentViewableCircle::class);
     }
 
     /**

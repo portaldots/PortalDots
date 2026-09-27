@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use App\Contracts\AudiencePolicy;
+use App\Contracts\GuestAccessPolicy;
+use App\Policies\DefaultAudiencePolicy;
+use App\Policies\DefaultGuestAccessPolicy;
 use App\Services\Circles\SelectorService;
 use App\Services\Pages\ReadsService;
 use App\Services\Utils\Utf8DotenvEditor;
@@ -22,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(DotenvEditor::class, Utf8DotenvEditor::class);
+        $this->app->bind(AudiencePolicy::class, DefaultAudiencePolicy::class);
+        $this->app->bind(GuestAccessPolicy::class, DefaultGuestAccessPolicy::class);
     }
 
     /**

@@ -106,6 +106,79 @@
             </list-view>
             <list-view>
                 <list-view-form-group>
+                    <template v-slot:label>公開範囲</template>
+                    <div class="form-radio">
+                        @if (in_array('everyone', $allowed_audiences))
+                            <label class="form-radio__label">
+                                <input class="form-radio__input" type="radio" name="audience"
+                                    id="audienceRadiosEveryone" value="everyone"
+                                    {{ old('audience', empty($document) ? 'everyone' : $document->audience) === 'everyone' ? 'checked' : '' }}>
+                                <strong>誰でも（ログイン不要）</strong>
+                            </label>
+                        @endif
+                        @if (in_array('signed_in', $allowed_audiences))
+                            <label class="form-radio__label">
+                                <input class="form-radio__input" type="radio" name="audience"
+                                    id="audienceRadiosSignedIn" value="signed_in"
+                                    {{ old('audience', empty($document) ? 'everyone' : $document->audience) === 'signed_in' ? 'checked' : '' }}>
+                                <strong>ログインしているユーザー全員</strong>
+                            </label>
+                        @endif
+                        @if (in_array('selected', $allowed_audiences))
+                            <label class="form-radio__label">
+                                <input class="form-radio__input" type="radio" name="audience"
+                                    id="audienceRadiosSelected" value="selected"
+                                    {{ old('audience', empty($document) ? 'everyone' : $document->audience) === 'selected' ? 'checked' : '' }}>
+                                <strong>選んだタグ・企画のみ</strong>
+                            </label>
+                        @endif
+                    </div>
+                    @if ($errors->has('audience'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('audience') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
+                <list-view-form-group>
+                    <template v-slot:label>閲覧可能なタグ</template>
+                    <template v-slot:description>
+                        公開範囲が「選んだタグ・企画のみ」の場合のみ有効です。
+                        指定したタグのうち、1つ以上該当する企画に公開されます。
+                    </template>
+                    <tags-input input-name="viewable_tags" placeholder="企画タグを指定"
+                        v-bind:default-tags="{{ $default_tags }}"
+                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}" add-only-from-autocomplete>
+                    </tags-input>
+                    @if ($errors->has('viewable_tags'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('viewable_tags') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
+                <list-view-form-group>
+                    <template v-slot:label>閲覧可能な企画</template>
+                    <template v-slot:description>
+                        公開範囲が「選んだタグ・企画のみ」の場合のみ有効です。
+                    </template>
+                    <tags-input input-name="viewable_circles" placeholder="企画を指定"
+                        v-bind:default-tags="{{ $default_circles }}"
+                        v-bind:autocomplete-items="{{ $circles_autocomplete_items }}" add-only-from-autocomplete>
+                    </tags-input>
+                    @if ($errors->has('viewable_circles'))
+                        <template v-slot:invalid>
+                            @foreach ($errors->get('viewable_circles') as $message)
+                                <div>{{ $message }}</div>
+                            @endforeach
+                        </template>
+                    @endif
+                </list-view-form-group>
+            </list-view>
+            <list-view>
+                <list-view-form-group>
                     <template v-slot:label>この配布資料は重要かどうか</template>
                     <div class="form-radio">
                         <label class="form-radio__label">

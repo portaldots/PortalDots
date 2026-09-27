@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // トップページ
-Route::get('/', 'HomeAction')->middleware(['circleSelected'])->name('home');
+Route::get('/', 'HomeAction')->middleware(['circleSelected', 'checkGuestAccess'])->name('home');
 
 // 推奨動作環境
 Route::view('/support', 'support')->name('support');
@@ -23,7 +23,7 @@ Route::view('/support', 'support')->name('support');
 // お知らせ
 Route::prefix('/pages')
     ->name('pages.')
-    ->middleware(['circleSelected'])
+    ->middleware(['circleSelected', 'checkGuestAccess'])
     ->group(function () {
         Route::get('/', 'Pages\IndexAction')->name('index');
         Route::get('/{page}', 'Pages\ShowAction')->name('show');
@@ -32,7 +32,7 @@ Route::prefix('/pages')
 // 配布資料
 Route::prefix('/documents')
     ->name('documents.')
-    ->middleware(['circleSelected'])
+    ->middleware(['circleSelected', 'checkGuestAccess'])
     ->group(function () {
         Route::get('/', 'Documents\IndexAction')->name('index');
         Route::get('/{document}', 'Documents\ShowAction')->name('show');

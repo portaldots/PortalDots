@@ -4,6 +4,7 @@ namespace App\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Eloquents\Concerns\HasAudienceTrait;
 use App\Eloquents\Concerns\IsNewTrait;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
@@ -11,6 +12,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Page extends Model
 {
+    use HasAudienceTrait;
     use IsNewTrait;
     use LogsActivity;
 
@@ -24,6 +26,7 @@ class Page extends Model
         'body',
         'is_pinned',
         'is_public',
+        'audience',
         'notes',
     ];
 
@@ -37,6 +40,7 @@ class Page extends Model
                 'body',
                 'is_pinned',
                 'is_public',
+                'audience',
                 'notes',
             ])
             ->logOnlyDirty();
@@ -111,6 +115,12 @@ class Page extends Model
             ->using(PageViewableTag::class);
     }
 
+    public function viewableCircles()
+    {
+        return $this->belongsToMany(Circle::class, 'page_viewable_circles')
+            ->using(PageViewableCircle::class);
+    }
+
     /**
      * このお知らせを読んだユーザー
      */
@@ -140,32 +150,6 @@ class Page extends Model
     public function scopePinned($query, bool $is_pinned = true)
     {
         return $query->where('is_pinned', $is_pinned);
-    }
-
-    /**
-     * 指定した企画が閲覧できるお知らせの一覧を取得できるクエリスコープ
-     *
-     * $circle を省略した場合、閲覧できる企画が限られているお知らせを
-     * 除くお知らせの一覧が取得される
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param Circle|null $circle
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeByCircle($query, ?Circle $circle = null)
-    {
-        $query = self::selectRaw('`pages`.*, min(`page_viewable_tags`.`tag_id`)')
-            ->leftJoin('page_viewable_tags', 'pages.id', '=', 'page_viewable_tags.page_id')
-            ->whereNull('page_viewable_tags.tag_id')
-            ->with('viewableTags')
-            ->groupBy('pages.id');
-
-        if (empty($circle)) {
-            return $query;
-        }
-
-        return $query
-            ->orWhereIn('page_viewable_tags.tag_id', $circle->tags->pluck('id')->all());
     }
 
     /**

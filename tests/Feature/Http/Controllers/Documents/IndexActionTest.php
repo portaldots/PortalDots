@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Pages;
+namespace Tests\Feature\Http\Controllers\Documents;
 
 use App\Eloquents\Circle;
-use App\Eloquents\Page;
+use App\Eloquents\Document;
 use App\Eloquents\Tag;
 use App\Eloquents\User;
 use App\Services\Circles\SelectorService;
@@ -77,41 +77,24 @@ class IndexActionTest extends TestCase
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
-    public function 非公開と固定表示のお知らせは一覧に表示されない()
+    public function 非公開の配布資料は一覧に表示されない()
     {
-        // 固定されたお知らせ
-        $pinnedPrivatePageTitle = 'this is a pinned private page';
-        $pinnedPublicPageTitle = 'this is a pinned public page';
+        $publicDocumentName = '公開されている配布資料';
+        $privateDocumentName = '非公開の配布資料';
 
-        // 通常のお知らせ
-        $privatePageTitle = 'this is a private page';
-        $publicPageTitle = 'this is a public form';
-
-        factory(Page::class)->create([
-            'title' => $pinnedPrivatePageTitle,
-            'is_pinned' => true,
-            'is_public' => false,
-        ]);
-        factory(Page::class)->create([
-            'title' => $pinnedPublicPageTitle,
-            'is_pinned' => true,
+        factory(Document::class)->create([
+            'name' => $publicDocumentName,
             'is_public' => true,
         ]);
-        factory(Page::class)->create([
-            'title' => $privatePageTitle,
+        factory(Document::class)->create([
+            'name' => $privateDocumentName,
             'is_public' => false,
         ]);
-        factory(Page::class)->create([
-            'title' => $publicPageTitle,
-            'is_public' => true,
-        ]);
 
-        $response = $this->get(route('pages.index'));
+        $response = $this->get(route('documents.index'));
 
-        $response->assertDontSee($pinnedPrivatePageTitle);
-        $response->assertDontSee($pinnedPublicPageTitle);
-        $response->assertDontSee($privatePageTitle);
-        $response->assertSee($publicPageTitle);
+        $response->assertSee($publicDocumentName);
+        $response->assertDontSee($privateDocumentName);
     }
 
     /**
@@ -142,41 +125,25 @@ class IndexActionTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider("公開範囲による表示切り替え_provider")]
     public function 公開範囲による表示切り替え(string $audience, string $viewerType, bool $canSee)
     {
-        $pageTitle = '公開範囲のテスト対象お知らせ';
+        $documentName = '公開範囲のテスト対象配布資料';
 
-        $page = factory(Page::class)->create([
-            'title' => $pageTitle,
+        $document = factory(Document::class)->create([
+            'name' => $documentName,
             'is_public' => true,
             'audience' => $audience,
         ]);
 
         if ($audience === 'selected') {
-            $page->viewableTags()->attach($this->tag->id);
-            $page->viewableCircles()->attach($this->circleSelected->id);
+            $document->viewableTags()->attach($this->tag->id);
+            $document->viewableCircles()->attach($this->circleSelected->id);
         }
 
-        $response = $this->actingAsViewer($viewerType)->get(route('pages.index'));
+        $response = $this->actingAsViewer($viewerType)->get(route('documents.index'));
 
         if ($canSee) {
-            $response->assertSee($pageTitle);
+            $response->assertSee($documentName);
         } else {
-            $response->assertDontSee($pageTitle);
+            $response->assertDontSee($documentName);
         }
-    }
-
-    #[\PHPUnit\Framework\Attributes\Test]
-    public function 非公開かつタグ指定のないお知らせは企画にログインしていても一覧に表示されない()
-    {
-        $pageTitle = '非公開の全体公開お知らせ';
-
-        factory(Page::class)->create([
-            'title' => $pageTitle,
-            'is_public' => false,
-            'audience' => 'everyone',
-        ]);
-
-        $response = $this->actingAsViewer('matching_tag')->get(route('pages.index'));
-
-        $response->assertDontSee($pageTitle);
     }
 }

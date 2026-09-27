@@ -13,6 +13,7 @@
                                         body: '本文',
                                         is_pinned: '固定',
                                         is_public: '公開',
+                                        audience: '公開範囲',
                                         created_at: '作成日時',
                                         updated_at: '更新日時',
                                         notes: 'スタッフ用メモ',
@@ -66,9 +67,9 @@
                         @{{ tag.name }}
                     </app-badge>&nbsp;
                 </template>
-                <span class="text-muted" v-if="row[keyName].length === 0">
-                    全体に公開
-                </span>
+                <template v-if="row[keyName].length === 0">
+                    -
+                </template>
             </template>
             <template v-else-if="keyName === 'documents'">
                 {{-- 関連する配布資料 --}}
@@ -80,6 +81,12 @@
                 <template v-if="row[keyName].length === 0">
                     -
                 </template>
+            </template>
+            <template v-else-if="keyName === 'audience'">
+                {{-- 公開範囲 --}}
+                <template v-if="row[keyName] === 'everyone'">誰でも（ログイン不要）</template>
+                <template v-else-if="row[keyName] === 'signed_in'">ログインしているユーザー全員</template>
+                <template v-else-if="row[keyName] === 'selected'">選んだタグ・企画のみ</template>
             </template>
             <template v-else-if="row[keyName] === true">
                 <strong>はい</strong>

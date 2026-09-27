@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Documents;
 
+use App\Contracts\AudiencePolicy;
 use App\Eloquents\Document;
 use App\Eloquents\Permission;
 use App\Eloquents\User;
@@ -43,7 +44,10 @@ class UpdateActionTest extends TestCase
                 null,
                 false,
                 true,
-                'notes'
+                'notes',
+                'everyone',
+                [],
+                []
             )->andReturn(true);
         });
 
@@ -55,6 +59,7 @@ class UpdateActionTest extends TestCase
                 'description' => 'document description',
                 'is_public' => '0',
                 'is_important' => '1',
+                'audience' => 'everyone',
                 'notes' => 'notes',
             ]);
 
@@ -79,5 +84,36 @@ class UpdateActionTest extends TestCase
             ]);
 
         $response->assertForbidden();
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function AudiencePolicyでselectedのみ許可されている場合everyoneとsigned_inは拒否される()
+    {
+        Permission::create(['name' => 'staff.documents.edit']);
+        $this->staff->syncPermissions(['staff.documents.edit']);
+
+        $document = factory(Document::class)->create();
+
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->patch(route('staff.documents.update', ['document' => $document]), [
+                'name' => 'document name',
+                'description' => 'document description',
+                'is_public' => '1',
+                'is_important' => '0',
+                'audience' => 'signed_in',
+                'notes' => 'notes',
+            ]);
+
+        $response->assertSessionHasErrors(['audience']);
     }
 }

@@ -30,7 +30,10 @@ class UpdateAction extends Controller
             $request->file('file'),
             (bool)$validated['is_public'],
             (bool)$validated['is_important'],
-            $validated['notes']
+            $validated['notes'],
+            $validated['audience'],
+            $validated['viewable_tags'] ?? [],
+            $validated['viewable_circles'] ?? []
         );
 
         return redirect()
