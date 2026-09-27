@@ -4,17 +4,26 @@ declare(strict_types=1);
 
 namespace App\Services\Threads;
 
+use App\Contracts\FileStorageLayout;
 use App\Eloquents\Circle;
 use App\Eloquents\ContactCategory;
 use App\Eloquents\Thread;
 use App\Eloquents\ThreadEntry;
 use App\Eloquents\User;
+use App\Events\Threads\StaffMessagePosted;
 use App\Exceptions\Threads\StaleThreadException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
 class ThreadsService
 {
+    private FileStorageLayout $fileStorageLayout;
+
+    public function __construct(FileStorageLayout $fileStorageLayout)
+    {
+        $this->fileStorageLayout = $fileStorageLayout;
+    }
+
     /**
      * 企画の会話を取得する。まだ存在しない場合は作成する（常時ONだが、初回利用時に遅延作成する）
      *
@@ -141,6 +150,7 @@ class ThreadsService
                 'body' => $body,
                 'client_token' => $clientToken,
             ]);
+            $wasRecentlyCreated = $entry->wasRecentlyCreated;
             $this->storeAttachments($entry, $files);
 
             $thread->update([
@@ -148,6 +158,10 @@ class ThreadsService
                 'last_entry_at' => $entry->created_at,
                 'lock_version' => $thread->lock_version + 1,
             ]);
+
+            if ($wasRecentlyCreated) {
+                event(new StaffMessagePosted($thread, $entry));
+            }
 
             return $entry;
         });
@@ -271,7 +285,7 @@ class ThreadsService
             if (empty($file)) {
                 continue;
             }
-            $path = $file->store('thread_attachments');
+            $path = $file->store($this->fileStorageLayout->directoryFor(FileStorageLayout::AREA_THREAD_ATTACHMENTS));
             $entry->attachments()->create([
                 'path' => $path,
                 'name' => $file->getClientOriginalName(),
