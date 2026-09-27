@@ -23,9 +23,9 @@ class TableAnswerPresenter
                 }
                 $value = $row[$columnId];
                 $type = $column['type'];
-                $name = ($column['name'] ?? '') ?: '(無題の列)';
+                $name = ($column['name'] ?? '') ?: '(無題の項目)';
                 if (!$current->has($columnId)) {
-                    $name .= '（削除済みの列）';
+                    $name .= '（削除済みの項目）';
                 }
                 $text = is_array($value) ? implode(', ', $value) : (string) $value;
                 if ($type === 'upload' && $text !== '') {
@@ -34,7 +34,7 @@ class TableAnswerPresenter
                 $cells[] = [
                     'row' => $rowId,
                     'column' => $columnId,
-                    'label' => $number . '行目・' . $name,
+                    'label' => $number . '件目・' . $name,
                     'type' => $type,
                     'text' => $text,
                 ];

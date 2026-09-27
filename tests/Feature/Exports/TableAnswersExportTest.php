@@ -40,8 +40,8 @@ class TableAnswersExportTest extends TestCase
         factory(AnswerDetail::class)->create([
             'answer_id' => $answer->id, 'question_id' => $question->id, 'answer' => $stored,
         ]);
-        $expected = "1行目・名称: <script>alert(1)</script>\n1行目・添付: proof.pdf\n"
-            . "2行目・名称: 0\n2行目・旧項目（削除済みの列）: A, B";
+        $expected = "1件目・名称: <script>alert(1)</script>\n1件目・添付: proof.pdf\n"
+            . "2件目・名称: 0\n2件目・旧項目（削除済みの項目）: A, B";
         $this->assertSame($expected, TableAnswerPresenter::text($question, $stored));
         $this->assertSame([$expected], (new AnswersExport($form))->getDetails($answer));
 
@@ -65,7 +65,7 @@ class TableAnswersExportTest extends TestCase
         $this->assertStringNotContainsString('<script>', $html);
         $this->assertStringContainsString('&lt;script&gt;', $html);
         $this->assertStringContainsString('/first/file', $html);
-        $this->assertStringContainsString('削除済みの列', $html);
+        $this->assertStringContainsString('削除済みの項目', $html);
 
         request()->setLaravelSession(session()->driver());
         session()->flashInput(['answers' => [$question->id => ['second' => ['text' => '0', '__present' => '1']]]]);

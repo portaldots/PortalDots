@@ -71,7 +71,7 @@ class UpdateQuestionRequest extends FormRequest
             'question.number_min' => '設問の最低数',
             'question.options' => '設問の選択肢',
             'question.priority' => '設問の設問表示順優先度',
-            'question.table' => '表形式設問の列定義',
+            'question.table' => '繰り返し入力設問の項目定義',
             'question.type' => '設問タイプ',
         ];
     }
@@ -93,7 +93,7 @@ class UpdateQuestionRequest extends FormRequest
             if (($question->type === 'table') !== ($newType === 'table')) {
                 $validator->errors()->add(
                     'question.type',
-                    '回答済みの表形式設問は別の設問タイプへ変更できません。'
+                    '回答済みの繰り返し入力設問は別の設問タイプへ変更できません。'
                 );
                 return;
             }
@@ -119,7 +119,7 @@ class UpdateQuestionRequest extends FormRequest
                 if ($hasStoredValue) {
                     $validator->errors()->add(
                         'question.table',
-                        "回答済みの列 {$columnId} は種類を変更せず、新しい列として追加してください。"
+                        "回答済みの項目 {$columnId} は種類を変更せず、新しい項目として追加してください。"
                     );
                 }
             }
@@ -141,7 +141,7 @@ class UpdateQuestionRequest extends FormRequest
                 if ($conflictsWithSnapshot) {
                     $validator->errors()->add(
                         'question.table',
-                        "保存済みの列 {$columnId} と異なる種類で同じIDを再利用できません。"
+                        "保存済みの項目 {$columnId} と異なる種類で同じIDを再利用できません。"
                     );
                 }
             }
@@ -158,9 +158,9 @@ class UpdateQuestionRequest extends FormRequest
         $ids = [];
 
         foreach ($columns as $index => $column) {
-            $label = '列' . ((int) $index + 1);
+            $label = '項目' . ((int) $index + 1);
             if (!is_array($column)) {
-                $fail("{$label}は列定義の配列で指定してください。");
+                $fail("{$label}は項目定義の配列で指定してください。");
                 continue;
             }
 
@@ -219,13 +219,13 @@ class UpdateQuestionRequest extends FormRequest
         $minimum = $this->input('question.number_min');
         $maximum = $this->input('question.number_max');
         if ($minimum !== null && ((int) $minimum < 0 || filter_var($minimum, FILTER_VALIDATE_INT) === false)) {
-            $fail('表形式設問の最低行数には0以上の整数を指定してください。');
+            $fail('繰り返し入力設問の最小件数には0以上の整数を指定してください。');
         }
         if ($maximum !== null && ((int) $maximum < 0 || filter_var($maximum, FILTER_VALIDATE_INT) === false)) {
-            $fail('表形式設問の最大行数には0以上の整数を指定してください。');
+            $fail('繰り返し入力設問の最大件数には0以上の整数を指定してください。');
         }
         if ($minimum !== null && $maximum !== null && (int) $maximum < (int) $minimum) {
-            $fail('表形式設問の最大行数は最低行数以上にしてください。');
+            $fail('繰り返し入力設問の最大件数は最小件数以上にしてください。');
         }
     }
 }

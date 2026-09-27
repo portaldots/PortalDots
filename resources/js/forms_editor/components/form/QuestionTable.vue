@@ -1,35 +1,35 @@
 <template>
-  <form-item :item_id="question_id" type_label="表形式入力">
+  <form-item :item_id="question_id" type_label="繰り返し入力">
     <template #content>
       <div class="table-question-preview">
         <p class="table-question-preview__title">{{ name }} <span class="badge text-bg-danger" v-if="question.is_required">必須</span></p>
         <p v-if="question.description" class="form-text text-muted">{{ question.description }}</p>
         <div class="table-question-preview__fields" v-if="columns.length">
           <div v-for="column in columns" :key="column.id" class="table-question-preview__field">
-            <span>{{ column.name || '(列名未入力)' }}<small v-if="column.is_required"> 必須</small></span>
+            <span>{{ column.name || '(項目名未入力)' }}<small v-if="column.is_required"> 必須</small></span>
             <span class="table-question-preview__input">{{ typeLabel(column.type) }}</span>
           </div>
         </div>
-        <p v-else class="text-muted mb-0">列を追加して、1行分の入力項目を設定してください。</p>
-        <p v-if="columns.length" class="table-question-preview__note"><i class="fas fa-plus" aria-hidden="true"></i> 回答者が行を追加できます <span>{{ columns.length }}列</span></p>
+        <p v-else class="text-muted mb-0">項目を追加して、1件分の入力項目を設定してください。</p>
+        <p v-if="columns.length" class="table-question-preview__note"><i class="fas fa-plus" aria-hidden="true"></i> 回答者が回答を追加できます <span>{{ columns.length }}項目</span></p>
       </div>
     </template>
     <template #edit-panel>
-      <edit-panel :question="question" label_number_min="最小行数" label_number_max="最大行数" />
-      <section class="table-question-editor" aria-label="表形式の列設定">
-        <div class="table-question-editor__heading"><strong>列の設定</strong><span>{{ columns.length }}列</span></div>
-        <p class="table-question-editor__help">1行分の入力項目を設定します。上から順に表示されます。</p>
+      <edit-panel :question="question" label_number_min="最小件数" label_number_max="最大件数" />
+      <section class="table-question-editor" aria-label="繰り返し入力の項目設定">
+        <div class="table-question-editor__heading"><strong>項目の設定</strong><span>{{ columns.length }}項目</span></div>
+        <p class="table-question-editor__help">1件分の入力項目を設定します。上から順に表示されます。</p>
         <div class="table-question-editor__column" v-for="(column, index) in columns" :key="column.id">
           <div class="table-question-editor__toolbar">
-            <span class="table-question-editor__position">{{ index + 1 }}列目</span>
+            <span class="table-question-editor__position">項目 {{ index + 1 }}</span>
             <div class="table-question-editor__actions">
-              <button type="button" :disabled="index === 0" :aria-label="`${index + 1}列目を上へ移動`" title="上へ移動" @click="moveColumn(index, -1)"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>
-              <button type="button" :disabled="index === columns.length - 1" :aria-label="`${index + 1}列目を下へ移動`" title="下へ移動" @click="moveColumn(index, 1)"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>
-              <button class="table-question-editor__delete" type="button" :aria-label="`${index + 1}列目を削除`" title="列を削除" @click="removeColumn(index)"><i class="far fa-trash-alt" aria-hidden="true"></i></button>
+              <button type="button" :disabled="index === 0" :aria-label="`${index + 1}番目の項目を上へ移動`" title="上へ移動" @click="moveColumn(index, -1)"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>
+              <button type="button" :disabled="index === columns.length - 1" :aria-label="`${index + 1}番目の項目を下へ移動`" title="下へ移動" @click="moveColumn(index, 1)"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>
+              <button class="table-question-editor__delete" type="button" :aria-label="`${index + 1}番目の項目を削除`" title="項目を削除" @click="removeColumn(index)"><i class="far fa-trash-alt" aria-hidden="true"></i></button>
             </div>
           </div>
           <div class="table-question-editor__basics">
-            <label class="form-label">列名<input class="form-control" type="text" :value="column.name" @input="updateColumn(index, 'name', $event.target.value)" @blur="save" /></label>
+            <label class="form-label">項目名<input class="form-control" type="text" :value="column.name" @input="updateColumn(index, 'name', $event.target.value)" @blur="save" /></label>
             <label class="form-label">入力形式
               <select class="form-select" :value="column.type" @change="updateColumn(index, 'type', $event.target.value); save()">
                 <option v-for="type in columnTypes" :key="type.value" :value="type.value">{{ type.label }}</option>
@@ -47,7 +47,7 @@
             </div>
           </details>
         </div>
-        <button class="table-question-editor__add" type="button" @click="addColumn"><i class="fas fa-plus" aria-hidden="true"></i> 列を追加</button>
+        <button class="btn btn-outline-secondary" type="button" @click="addColumn">項目を追加</button>
       </section>
     </template>
   </form-item>
@@ -72,7 +72,7 @@ export default {
   computed: {
     question() { return this.$store.getters[`editor/${GET_QUESTION_BY_ID}`](this.question_id); },
     columns() { return Array.isArray(this.question.table) ? this.question.table : []; },
-    name() { return this.question.name || "(無題の表形式入力)"; },
+    name() { return this.question.name || "(無題の繰り返し入力)"; },
     columnTypes() {
       return [
         { value: "text", label: "一行入力" }, { value: "textarea", label: "複数行入力" },
@@ -91,7 +91,7 @@ export default {
     nullableNumber(value) { return value === "" ? null : Number(value); },
     setColumns(columns) { this.$store.commit(`editor/${UPDATE_QUESTION}`, { id: this.question_id, key: "table", value: columns }); },
     save() { this.$store.dispatch(`editor/${SAVE_QUESTION}`, this.question_id); },
-    addColumn() { this.setColumns([...this.columns, { id: createUuid(), name: `列${this.columns.length + 1}`, type: "text", is_required: false, options: "", number_min: null, number_max: null, allowed_types: "" }]); this.save(); },
+    addColumn() { this.setColumns([...this.columns, { id: createUuid(), name: `項目${this.columns.length + 1}`, type: "text", is_required: false, options: "", number_min: null, number_max: null, allowed_types: "" }]); this.save(); },
     removeColumn(index) { this.setColumns(this.columns.filter((_, currentIndex) => currentIndex !== index)); this.save(); },
     moveColumn(index, offset) { const columns = [...this.columns]; const target = index + offset; [columns[index], columns[target]] = [columns[target], columns[index]]; this.setColumns(columns); this.save(); },
     updateColumn(index, key, value) { this.setColumns(this.columns.map((column, currentIndex) => currentIndex === index ? { ...column, [key]: value } : column)); },
@@ -101,7 +101,7 @@ export default {
 
 <style lang="scss" scoped>
 .table-question-preview__title { margin: 0 0 0.5rem; font-weight: $font-bold; }
-.table-question-preview__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.table-question-preview__fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; margin-top: 1rem; }
 .table-question-preview__field { display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.875rem; overflow-wrap: anywhere; }
 .table-question-preview__field small { color: $color-danger; }
 .table-question-preview__input { border: 1px solid $color-border; border-radius: $border-radius; padding: 0.6rem 0.75rem; color: $color-muted; background: $color-bg-light; }
@@ -119,7 +119,7 @@ export default {
 .table-question-editor__actions button:disabled { opacity: 0.3; }
 .table-question-editor__actions button:hover:not(:disabled) { color: $color-primary; background: $color-primary-light; }
 .table-question-editor__actions .table-question-editor__delete:hover { color: $color-danger; background: $color-danger-light; }
-.table-question-editor__basics { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.75rem; }
+.table-question-editor__basics { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
 .table-question-editor .form-label { display: block; font-size: 0.875rem; margin-bottom: 0.75rem; }
 .table-question-editor .form-control, .table-question-editor .form-select { margin-top: 0.4rem; }
 .table-question-editor__required { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; margin: 0.25rem 0 1rem; }
@@ -128,7 +128,5 @@ export default {
 .table-question-editor__limits summary { cursor: pointer; font-size: 0.8125rem; }
 .table-question-editor__limits summary span { float: right; color: $color-muted; }
 .table-question-editor__limits[open] summary { margin-bottom: 1rem; }
-.table-question-editor__add { display: flex; gap: 0.5rem; align-items: center; justify-content: center; width: 100%; min-height: 44px; border: 1px dashed $color-primary; border-radius: $border-radius; color: $color-primary; background: $color-bg-surface; font: inherit; font-size: 0.875rem; }
-.table-question-editor__add:hover { background: $color-primary-light; }
 .table-question-editor button:focus-visible, .table-question-editor summary:focus-visible { outline: $focus-outline; outline-offset: 2px; }
 </style>
