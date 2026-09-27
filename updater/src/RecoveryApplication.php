@@ -7,6 +7,8 @@ namespace PortalDots\Updater;
 final class RecoveryApplication
 {
     private const COOKIE = 'portaldots_updater_session';
+    // 復元が失敗して一時停止した後、利用者の操作なしで再試行するまでの待ち時間。
+    private const PAUSED_RETRY_MS = 15_000;
 
     private StateStore $store;
     private RecoveryAuth $auth;
@@ -95,6 +97,7 @@ final class RecoveryApplication
         $authorized = $state !== null && $token !== null;
         $phase = (string) ($state['phase'] ?? 'idle');
         $terminal = in_array($phase, ['completed', 'rolled_back', 'failed'], true);
+        $paused = (bool) ($state['restore']['paused'] ?? false);
         $titles = [
             'updating' => 'PortalDots を更新しています',
             'restoring' => '更新前の状態へ自動復元しています',
@@ -149,8 +152,10 @@ code{overflow-wrap:anywhere}@media(prefers-color-scheme:dark){:root{background:#
 <li class="<?= $isCurrent ? 'current' : ($index < $progress ? 'done' : '') ?>"><?= $h($label) ?><?php if ($isCurrent): ?> <span class="spinner" aria-label="処理中"></span><?php endif; ?></li>
 <?php endforeach; ?></ol>
 <p>この画面を閉じた場合は、復旧コードを使って戻ると処理を再開できます。</p>
-<form id="step-form" method="post" action="<?= $h($this->scriptPath) ?>"><input type="hidden" name="action" value="step"><input type="hidden" name="csrf_token" value="<?= $h($csrf) ?>"><button type="submit">次の処理を実行</button></form>
-<?php if (!($state['restore']['paused'] ?? false)): ?><script>setTimeout(function(){document.getElementById('step-form').requestSubmit()},120)</script><?php endif; ?>
+<?php if ($paused): ?><p>復元を一時停止しています。<?= $h(intdiv(self::PAUSED_RETRY_MS, 1000)) ?>秒後に自動で再試行します。</p><?php endif; ?>
+<form id="step-form" method="post" action="<?= $h($this->scriptPath) ?>"><input type="hidden" name="action" value="step"><input type="hidden" name="csrf_token" value="<?= $h($csrf) ?>"></form>
+<noscript><p class="alert">この画面は JavaScript で自動的に進みます。JavaScript を有効にして再読み込みしてください。</p></noscript>
+<script>setTimeout(function(){document.getElementById('step-form').submit()},<?= $paused ? self::PAUSED_RETRY_MS : 120 ?>)</script>
 <?php else: ?>
 <?php if ($phase === 'completed'): ?><p>PortalDots を再び利用できるようになりました。</p><?php endif; ?>
 <?php if ($phase === 'rolled_back'): ?><p>更新前の状態に戻しました。PortalDots は更新前と同じように利用できます。表示された原因を確認してから、必要に応じてサーバーの管理者へ連絡してください。</p><?php endif; ?>
