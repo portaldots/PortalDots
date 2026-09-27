@@ -30,6 +30,7 @@ class DownloadZipActionTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        Storage::fake('local');
         $this->form = factory(Form::class)->create();
         $this->staff = factory(User::class)->states('staff')->create();
     }
@@ -49,7 +50,7 @@ class DownloadZipActionTest extends TestCase
         $this->mock(DownloadZipService::class, function ($mock) {
             $mock->shouldReceive('makeZip')
                 ->once()
-                ->andReturn(storage_path("app/answer_details_zip/TestFile.png"));
+                ->andReturn(Storage::path('answer_details_zip/TestFile.png'));
         });
 
         $response = $this->actingAs($this->staff)
@@ -57,6 +58,15 @@ class DownloadZipActionTest extends TestCase
             ->post(route('staff.forms.answers.uploads.download_zip', ['form' => $this->form]));
 
         $response->assertOk();
+
+        ob_start();
+        try {
+            $response->baseResponse->sendContent();
+            $this->assertSame(file_get_contents(base_path('tests/TestFile.png')), ob_get_contents());
+        } finally {
+            ob_end_clean();
+        }
+        Storage::assertMissing('answer_details_zip/TestFile.png');
     }
 
     /**

@@ -2,29 +2,27 @@
 
 namespace App\Http\Controllers\Forms\Answers\Uploads;
 
-use Storage;
 use Gate;
-use Auth;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Answer;
-use App\Eloquents\AnswerDetail;
+use App\Services\Forms\UploadedFilesService;
 
 class ShowAction extends Controller
 {
-    public function __invoke(Request $request, int $form_id, Answer $answer, int $question_id)
-    {
-        // Form と Question については、DB から情報を取ってくる必要がないので、int で受け取る
+    public function __invoke(
+        UploadedFilesService $uploadedFilesService,
+        int $form_id,
+        Answer $answer,
+        int $question_id
+    ) {
         $circle = $answer->circle()->first();
         if (Gate::denies('circle.belongsTo', $circle)) {
             abort(404);
         }
 
-        $file_path = AnswerDetail::select('answer')
-            ->where('answer_id', $answer->id)
-            ->where('question_id', $question_id)
-            ->firstOrFail();
+        $path = $uploadedFilesService->getPathForAnswer($form_id, $answer, $question_id);
+        abort_if($path === null, 404);
 
-        return response()->file(Storage::path($file_path->answer));
+        return response()->file($path);
     }
 }

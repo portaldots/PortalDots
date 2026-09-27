@@ -2,110 +2,36 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Forms\Answers\Uploads;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
-use Tests\TestCase;
-use App\Eloquents\Form;
-use App\Eloquents\Question;
-use App\Eloquents\Answer;
-use App\Eloquents\AnswerDetail;
 use App\Eloquents\Permission;
 use App\Eloquents\User;
+use Tests\Feature\Http\Controllers\Forms\Answers\Uploads\UploadTestCase;
 
-class ShowActionTest extends TestCase
+class ShowActionTest extends UploadTestCase
 {
-    use RefreshDatabase;
-
-    /** @var Form */
-    private $form;
-
-    /** @var Answer */
-    private $answer;
-
-    /** @var Question */
-    private $question;
-
-    /** @var User */
-    private $staff;
+    protected $routeName = 'staff.forms.answers.uploads.show';
 
     public function setUp(): void
     {
         parent::setUp();
-
-        // フォーム
-        $this->form = factory(Form::class)->create();
-        $this->question = factory(Question::class)->create([
-            'form_id' => $this->form->id,
-            'type' => 'upload',
-            'number_max' => 1000000000,
-            'allowed_types' => 'png|jpg|jpeg|gif',
-            'options' => null,
-        ]);
-
-        // 回答
-        $this->answer = factory(Answer::class)->create();
-
-        $example_file = new File(base_path('tests/TestFile.png'));
-        $filename = 'testfile_' . sha1($this->answer->id . '_' . $this->question->id) . '.png';
-        $this->answer_details[] = factory(AnswerDetail::class)->create([
-                'answer_id' => $this->answer->id,
-                'question_id' => $this->question->id,
-                'answer' => 'answer_details/' . $filename,
-            ]);
-        Storage::putFileAs('answer_details', $example_file, $filename);
-
-        // スタッフ
-        $this->staff = factory(User::class)->states('staff')->create();
-    }
-
-    /**
-     * @test
-     */
-    public function ダウンロードできる()
-    {
+        $this->user->is_staff = true;
+        $this->user->save();
+        $this->user->circles()->detach();
         Permission::create(['name' => 'staff.forms.answers.read']);
-        $this->staff->syncPermissions(['staff.forms.answers.read']);
-
-        $response = $this->actingAs($this->staff)
-            ->withSession(['staff_authorized' => true])
-            ->get(route('staff.forms.answers.uploads.show', [
-                'form' => $this->form,
-                'answer' => $this->answer,
-                'question' => $this->question
-            ]));
-
-        $response->assertOk();
+        $this->user->syncPermissions(['staff.forms.answers.read']);
+        $this->withSession(['staff_authorized' => true]);
     }
 
-    /**
-     * @test
-     */
-    public function 権限がない場合はダウンロードできない()
+    public function test_cannot_download_without_permission()
     {
-        $response = $this->actingAs($this->staff)
-            ->withSession(['staff_authorized' => true])
-            ->get(route('staff.forms.answers.uploads.show', [
-                'form' => $this->form,
-                'answer' => $this->answer,
-                'question' => $this->question
-            ]));
+        $this->user->syncPermissions([]);
 
-        $response->assertForbidden();
+        $this->getUpload()->assertForbidden();
     }
 
-    /**
-     * @test
-     */
-    public function スタッフ以外はダウンロードできない()
+    public function test_non_staff_cannot_download()
     {
-        $response = $this->actingAs(factory(User::class)->create())
-            ->get(route('staff.forms.answers.uploads.show', [
-                'form' => $this->form,
-                'answer' => $this->answer,
-                'question' => $this->question
-            ]));
+        $this->actingAs(factory(User::class)->create());
 
-        $response->assertForbidden();
+        $this->getUpload()->assertForbidden();
     }
 }

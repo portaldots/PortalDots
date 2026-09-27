@@ -2,21 +2,16 @@
 
 namespace Tests\Feature\Http\Controllers\Forms\Answers\Uploads;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use App\Eloquents\User;
 
-class ShowActionTest extends TestCase
+class ShowActionTest extends UploadTestCase
 {
-    use RefreshDatabase;
+    protected $routeName = 'forms.answers.uploads.show';
 
-    /**
-     * @test
-     */
-    public function 自分が所属していない企画によるアップロードファイルはダウンロードできない()
+    public function test_cannot_download_another_circles_upload()
     {
-        $response = $this->get('/');
+        $this->actingAs(factory(User::class)->create());
 
-        $response->assertStatus(200);
+        $this->getUpload()->assertNotFound();
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Staff\Forms\Answers\Uploads;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Form;
 use App\Services\Forms\DownloadZipService;
@@ -44,7 +43,7 @@ class DownloadZipAction extends Controller
 
         try {
             $zip_path = $this->downloadZipService->makeZip($form, $uploaded_file_paths);
-            return response()->download($zip_path);
+            return response()->download($zip_path)->deleteFileAfterSend(true);
         } catch (NoDownloadFileExistException $e) {
             return back()
                 ->with('topAlert.title', 'ダウンロードできるファイルはありません');
