@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Collection;
 use Spatie\Permission\Traits\HasRoles;
 use App\Eloquents\Circle;
 use App\Eloquents\CircleUser;
+use App\Services\Auth\AuthSettings;
 use Illuminate\Validation\Rule;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property string $id
- * @property string $student_id
+ * @property string|null $student_id
  * @property string $name
  * @property string $name_yomi
  * @property string $name_family
@@ -97,19 +98,23 @@ class User extends Authenticatable
      */
     public static function getValidationRules()
     {
+        $authSettings = app(AuthSettings::class);
+
         return [
-            'student_id' => self::STUDENT_ID_RULES,
+            'student_id' => $authSettings->studentIdEnabled()
+                ? self::STUDENT_ID_RULES
+                : ['nullable', 'string'],
             'name' => self::NAME_RULES,
             'name_yomi' => self::NAME_YOMI_RULES,
             'email' => self::EMAIL_RULES,
-            'univemail_local_part' =>
-            config('portal.univemail_local_part') === 'student_id'
-                ? ['required', 'string', 'same:student_id']
-                : ['required', 'string'],
-            'univemail_domain_part' => [
-                'required',
-                Rule::in(config('portal.univemail_domain_part')),
-            ],
+            'univemail_local_part' => !$authSettings->univemailEnabled()
+                ? ['nullable', 'string']
+                : (config('portal.univemail_local_part') === 'student_id'
+                    ? ['required', 'string', 'same:student_id']
+                    : ['required', 'string']),
+            'univemail_domain_part' => $authSettings->univemailEnabled()
+                ? ['required', Rule::in(config('portal.univemail_domain_part'))]
+                : ['nullable', 'string'],
             'tel' => self::TEL_RULES,
             'password' => self::PASSWORD_RULES,
         ];
@@ -201,9 +206,13 @@ class User extends Authenticatable
      */
     public function scopeVerified($query)
     {
-        return $query
-            ->whereNotNull('email_verified_at')
-            ->whereNotNull('univemail_verified_at');
+        $query->whereNotNull('email_verified_at');
+
+        if (app(AuthSettings::class)->univemailEnabled()) {
+            $query->whereNotNull('univemail_verified_at');
+        }
+
+        return $query;
     }
 
     /**
@@ -225,8 +234,14 @@ class User extends Authenticatable
      */
     public function firstByLoginId(string $login_id)
     {
-        return $this->where('email', $login_id)
-            ->orWhere('student_id', $login_id)
+        $identifiers = app(AuthSettings::class)->loginIdentifiers();
+
+        return $this
+            ->where(function ($query) use ($identifiers, $login_id) {
+                foreach ($identifiers as $identifier) {
+                    $query->orWhere($identifier, $login_id);
+                }
+            })
             ->first();
     }
 
@@ -242,12 +257,13 @@ class User extends Authenticatable
 
     /**
      * student_idのアルファベットを大文字に変換してセットする(セッター)
+     * student_id なしの運用のため、null はそのまま保持する
      *
-     * @param string $value
+     * @param string|null $value
      */
     public function setStudentIdAttribute($value)
     {
-        $this->attributes['student_id'] = mb_strtoupper($value);
+        $this->attributes['student_id'] = is_null($value) ? null : mb_strtoupper($value);
     }
 
     /**
@@ -319,7 +335,7 @@ class User extends Authenticatable
      */
     public function areBothEmailsVerified()
     {
-        return $this->hasVerifiedEmail() && $this->hasVerifiedUnivemail();
+        return app(AuthSettings::class)->isVerified($this);
     }
 
     /**

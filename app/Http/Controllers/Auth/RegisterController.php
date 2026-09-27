@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Eloquents\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Services\Auth\AuthSettings;
 use App\Services\Auth\RegisterService;
 use App\Services\Auth\EmailService;
 use App\Services\Auth\VerifyService;
@@ -65,8 +66,12 @@ class RegisterController extends Controller
     public function __construct(
         RegisterService $registerService,
         EmailService $emailService,
-        VerifyService $verifyService
+        VerifyService $verifyService,
+        AuthSettings $authSettings
     ) {
+        // portal.registration.enabled が false の場合はユーザー登録機能自体を無効化する
+        abort_if(!$authSettings->registrationEnabled(), 404);
+
         $this->middleware('guest');
         $this->registerService = $registerService;
         $this->emailService = $emailService;

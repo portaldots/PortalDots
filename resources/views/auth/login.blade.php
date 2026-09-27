@@ -1,5 +1,7 @@
 @extends('layouts.no_drawer')
 
+@inject('authSettings', 'App\Services\Auth\AuthSettings')
+
 @section('no_footer', true)
 
 @section('title', 'ログイン')
@@ -26,10 +28,10 @@
                 @endif
 
                 <div class="mb-3">
-                    <label for="login_id" class="visually-hidden">{{ config('portal.student_id_name') }}または連絡先メールアドレス</label>
+                    <label for="login_id" class="visually-hidden">{{ $authSettings->loginIdLabel() }}</label>
                     <input id="login_id" type="text" class="form-control" name="login_id" value="{{ old('login_id') }}"
                         required autocomplete="username" autofocus
-                        placeholder="{{ config('portal.student_id_name') }}または連絡先メールアドレス">
+                        placeholder="{{ $authSettings->loginIdLabel() }}">
                 </div>
 
                 <div class="mb-3">
@@ -59,11 +61,13 @@
                         <strong>ログイン</strong>
                     </button>
                 </div>
-                <p>
-                    <a class="btn is-secondary is-block" href="{{ route('register') }}">
-                        はじめての方は新規ユーザー登録
-                    </a>
-                </p>
+                @if ($authSettings->registrationEnabled())
+                    <p>
+                        <a class="btn is-secondary is-block" href="{{ route('register') }}">
+                            はじめての方は新規ユーザー登録
+                        </a>
+                    </p>
+                @endif
             </form>
         </app-container>
     </div>
