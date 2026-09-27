@@ -33,6 +33,11 @@
                     <i class="fas fa-star drawer-nav__icon fa-fw"></i>
                     企画情報管理
                 </a>
+                <a href="{{ route('staff.progress.index') }}"
+                    class="drawer-nav__link{{ Request::is('staff/progress*') ? ' is-active' : '' }}">
+                    <i class="far fa-check-square drawer-nav__icon fa-fw"></i>
+                    進捗
+                </a>
             @endcan
             @can('staff.tags.read')
                 <a href="{{ route('staff.tags.index') }}"

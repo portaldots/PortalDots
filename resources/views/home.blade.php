@@ -49,6 +49,59 @@
     @endguest
     @include('includes.staff_home_tab_strip')
     <app-container>
+        @if ($shows_circle_action_items)
+            @php
+                $action_units = $circle_progress->unitsInState([
+                    \App\Services\Circles\ValueObjects\ProgressUnit::STATE_TODO,
+                    \App\Services\Circles\ValueObjects\ProgressUnit::STATE_CHANGES,
+                ]);
+            @endphp
+            <list-view>
+                <template v-slot:title>対応が必要なもの</template>
+                @if ($action_units->isEmpty() && empty($circle_thread))
+                    <list-view-empty icon-class="fas fa-check-circle" text="対応が必要なものはありません"></list-view-empty>
+                @else
+                    @foreach ($action_units as $unit)
+                        @if ($unit->isType(\App\Services\Circles\ValueObjects\ProgressUnit::TYPE_FORM))
+                            <list-view-item href="{{ route('forms.answers.create', ['form' => $unit->getForm()->id]) }}">
+                                <template v-slot:title>
+                                    {{ $unit->getLabel() }}
+                                    @if ($unit->isOverdue())
+                                        <app-badge danger>期限切れ</app-badge>
+                                    @elseif ($unit->isState(\App\Services\Circles\ValueObjects\ProgressUnit::STATE_CHANGES))
+                                        <app-badge danger>修正してください</app-badge>
+                                    @else
+                                        <app-badge muted>提出してください</app-badge>
+                                    @endif
+                                </template>
+                                <template v-slot:meta>
+                                    @if ($unit->getDueAt())
+                                        期限 : @datetime($unit->getDueAt())
+                                    @endif
+                                </template>
+                            </list-view-item>
+                        @else
+                            <list-view-item
+                                href="{{ route('documents.approval.show', ['document' => $unit->getDocumentApproval()->document_id]) }}">
+                                <template v-slot:title>
+                                    {{ $unit->getLabel() }}
+                                    <app-badge primary>{{ $unit->getDocumentApproval()->circleStatusLabel() }}</app-badge>
+                                </template>
+                            </list-view-item>
+                        @endif
+                    @endforeach
+                    @if (!empty($circle_thread))
+                        <list-view-item href="{{ route('contacts') }}">
+                            <template v-slot:title>
+                                お問い合わせ
+                                <app-badge primary>{{ $circle_thread->circleStatusLabel() }}</app-badge>
+                            </template>
+                        </list-view-item>
+                    @endif
+                @endif
+            </list-view>
+        @endif
+
         @foreach ($pinned_pages as $pinned_page)
             <list-view>
                 <template v-slot:title>{{ $pinned_page->title }}</template>
