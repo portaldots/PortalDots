@@ -144,6 +144,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::post('/', 'Forms\Answers\StoreAction')->name('store');
                     Route::get('/{answer}/uploads/{question}/{row}/{column}', 'Forms\Answers\Uploads\TableShowAction')->name('uploads.table.show');
                     Route::get('/{answer}/uploads/{question}', 'Forms\Answers\Uploads\ShowAction')->name('uploads.show');
+                    Route::get(
+                        '/{answer}/revisions/{revision:revision}/uploads/{question}/{row}/{column}',
+                        'Forms\Answers\Uploads\RevisionTableShowAction'
+                    )->name('revisions.uploads.table.show')->scopeBindings();
+                    Route::get(
+                        '/{answer}/revisions/{revision:revision}/uploads/{question}',
+                        'Forms\Answers\Uploads\RevisionShowAction'
+                    )->name('revisions.uploads.show')->scopeBindings();
+                    Route::get('/{answer}/revisions/{revision:revision}', 'Forms\Answers\RevisionsShowAction')
+                        ->name('revisions.show')->scopeBindings();
                 });
         });
 });

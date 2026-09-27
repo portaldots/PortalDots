@@ -93,6 +93,19 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                         Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index')->middleware(['can:staff.forms.answers.export'])->middleware(['can:staff.forms.answers.export']);
                         Route::post('/uploads/download_zip', 'Staff\Forms\Answers\Uploads\DownloadZipAction')->name('uploads.download_zip')->middleware(['can:staff.forms.answers.export']);
                         Route::get('/export', 'Staff\Forms\Answers\ExportAction')->name('export')->middleware(['can:staff.forms.answers.export']);
+                        // 回答の確認(requires_review)
+                        Route::patch('/{answer}/accept', 'Staff\Forms\Answers\AcceptAction')->name('accept')->middleware(['can:staff.forms.answers.edit']);
+                        Route::patch('/{answer}/return', 'Staff\Forms\Answers\ReturnAction')->name('return')->middleware(['can:staff.forms.answers.edit']);
+                        Route::get(
+                            '/{answer}/revisions/{revision:revision}/uploads/{question}/{row}/{column}',
+                            'Staff\Forms\Answers\Uploads\RevisionTableShowAction'
+                        )->name('revisions.uploads.table.show')->middleware(['can:staff.forms.answers.read'])->scopeBindings();
+                        Route::get(
+                            '/{answer}/revisions/{revision:revision}/uploads/{question}',
+                            'Staff\Forms\Answers\Uploads\RevisionShowAction'
+                        )->name('revisions.uploads.show')->middleware(['can:staff.forms.answers.read'])->scopeBindings();
+                        Route::get('/{answer}/revisions/{revision:revision}', 'Staff\Forms\Answers\RevisionsShowAction')
+                            ->name('revisions.show')->middleware(['can:staff.forms.answers.read'])->scopeBindings();
                     });
 
                 // 申請フォームエディタ

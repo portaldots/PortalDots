@@ -26,6 +26,12 @@ class Form extends Model
 {
     use LogsActivity;
 
+    // requires_review はDB上デフォルト false だが、Eloquentはinsert時にDBの
+    // デフォルト値を読み返さないため、作成直後のインスタンスでも false になるよう明示する
+    protected $attributes = [
+        'requires_review' => false,
+    ];
+
     protected $fillable = [
         'name',
         'description',
@@ -35,11 +41,13 @@ class Form extends Model
         'type',
         'max_answers',
         'is_public',
+        'requires_review',
     ];
 
     protected $casts = [
         'max_answers' => 'int',
         'is_public' => 'bool',
+        'requires_review' => 'bool',
         'open_at' => 'datetime',
         'close_at' => 'datetime',
     ];
@@ -152,6 +160,17 @@ class Form extends Model
     {
         $answer = Answer::where('form_id', $this->id)->where('circle_id', $circle->id)->first();
         return !empty($answer);
+    }
+
+    /**
+     * 企画 $circle による、このフォームへの最新の回答を取得する
+     *
+     * @param Circle $circle
+     * @return Answer|null
+     */
+    public function latestAnswerFor(Circle $circle): ?Answer
+    {
+        return Answer::where('form_id', $this->id)->where('circle_id', $circle->id)->latest('id')->first();
     }
 
     /**

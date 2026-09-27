@@ -34,6 +34,7 @@ class FormsService
      * @param int $max_answers 企画毎に回答可能とする回答数
      * @param bool $is_public フォームを公開するか
      * @param array|null $answerable_tags フォームを回答可能とする企画のタグ
+     * @param bool $requires_review 提出後にスタッフが確認するフォームか
      * @return Form
      */
     public function createForm(
@@ -45,7 +46,8 @@ class FormsService
         User $created_by,
         int $max_answers,
         bool $is_public,
-        ?array $answerable_tags = null
+        ?array $answerable_tags = null,
+        bool $requires_review = false
     ): Form {
         return DB::transaction(function () use (
             $name,
@@ -56,7 +58,8 @@ class FormsService
             $created_by,
             $max_answers,
             $is_public,
-            $answerable_tags
+            $answerable_tags,
+            $requires_review
         ) {
             $form = Form::create([
                 'name' => $name,
@@ -66,6 +69,7 @@ class FormsService
                 'close_at' => $close_at,
                 'max_answers' => $max_answers,
                 'is_public' => $is_public,
+                'requires_review' => $requires_review,
             ]);
 
             // 検索時は大文字小文字の区別をしない
@@ -105,6 +109,7 @@ class FormsService
      * @param int $max_answers 企画毎に回答可能とする回答数
      * @param bool $is_public フォームを公開するか
      * @param array|null $answerable_tags フォームを回答可能とする企画のタグ
+     * @param bool $requires_review 提出後にスタッフが確認するフォームか
      * @return boolean
      */
     public function updateForm(
@@ -117,7 +122,8 @@ class FormsService
         User $created_by,
         int $max_answers,
         bool $is_public,
-        ?array $answerable_tags = null
+        ?array $answerable_tags = null,
+        bool $requires_review = false
     ): bool {
         return DB::transaction(function () use (
             $form,
@@ -129,7 +135,8 @@ class FormsService
             $created_by,
             $max_answers,
             $is_public,
-            $answerable_tags
+            $answerable_tags,
+            $requires_review
         ) {
             $form->update([
                 'name' => $name,
@@ -139,6 +146,7 @@ class FormsService
                 'close_at' => $close_at,
                 'max_answers' => $max_answers,
                 'is_public' => $is_public,
+                'requires_review' => $requires_review,
             ]);
 
             $old_tags = $form->answerableTags()->orderBy('id')->get();

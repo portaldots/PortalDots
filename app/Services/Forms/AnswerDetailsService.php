@@ -6,6 +6,7 @@ namespace App\Services\Forms;
 
 use App\Eloquents\Form;
 use App\Eloquents\Answer;
+use App\Eloquents\AnswerRevision;
 use App\Eloquents\Question;
 use App\Eloquents\AnswerDetail;
 use App\Http\Requests\Forms\AnswerRequestInterface;
@@ -39,25 +40,75 @@ class AnswerDetailsService
     {
         $raw_details = AnswerDetail::where('answer_id', $answer->id)->get();
         $answer->loadMissing('form', 'form.questions');
+        return $this->buildAnswerDetailsArray($answer->form->questions, $raw_details);
+    }
+
+    /**
+     * $revision に記録された、提出当時の回答内容(スナップショット)から、
+     * 設問に対する回答を取得
+     *
+     * @param Form $form
+     * @param AnswerRevision $revision
+     * @return array
+     */
+    public function getAnswerDetailsByRevision(Form $form, AnswerRevision $revision): array
+    {
+        $form->loadMissing('questions');
+        return $this->buildAnswerDetailsArray($form->questions, $revision->details ?? []);
+    }
+
+    /**
+     * 生の回答行(question_id, answer の組)の集まりから、画面表示用の
+     * 配列(question_id をキーとする連想配列)を組み立てる
+     *
+     * @param iterable $questions
+     * @param iterable $raw_rows 各要素は AnswerDetail モデル、または
+     *  question_id・answer をキーに持つ配列(リビジョンのスナップショット)
+     * @return array
+     */
+    private function buildAnswerDetailsArray(iterable $questions, iterable $raw_rows): array
+    {
+        $questions = collect($questions);
         $result = [];
 
         // チェックボックスの設問については、回答が配列になるようにする
-        foreach ($raw_details as $raw_detail) {
-            $question = $answer->form->questions->firstWhere('id', $raw_detail->question_id);
+        foreach ($raw_rows as $raw_row) {
+            $question_id = (int)(is_array($raw_row) ? $raw_row['question_id'] : $raw_row->question_id);
+            $answer_value = is_array($raw_row) ? $raw_row['answer'] : $raw_row->answer;
+            $question = $questions->firstWhere('id', $question_id);
 
             if ($question instanceof Question && $question->type === 'checkbox') {
-                if (empty($result[$raw_detail->question_id]) || !is_array($result[$raw_detail->question_id])) {
-                    $result[$raw_detail->question_id] = [];
+                if (empty($result[$question_id]) || !is_array($result[$question_id])) {
+                    $result[$question_id] = [];
                 }
-                $result[$raw_detail->question_id][] = $raw_detail->answer;
+                $result[$question_id][] = $answer_value;
             } elseif ($question instanceof Question && $question->type === 'table') {
-                $result[$raw_detail->question_id] = self::decodeTableAnswerEnvelope($raw_detail->answer)['rows'];
+                $result[$question_id] = self::decodeTableAnswerEnvelope($answer_value)['rows'];
             } else {
-                $result[$raw_detail->question_id] = $raw_detail->answer;
+                $result[$question_id] = $answer_value;
             }
         }
 
         return $result;
+    }
+
+    /**
+     * $answer の現在の回答内容(answer_details テーブルの行)を、
+     * answer_revisions.details へ保存するためのスナップショットとして取得
+     *
+     * @param Answer $answer
+     * @return array
+     */
+    public function snapshotAnswerDetailsForRevision(Answer $answer): array
+    {
+        return AnswerDetail::where('answer_id', $answer->id)
+            ->get(['question_id', 'answer'])
+            ->map(fn ($detail) => [
+                'question_id' => $detail->question_id,
+                'answer' => $detail->answer,
+            ])
+            ->values()
+            ->all();
     }
 
     /**
@@ -110,8 +161,19 @@ class AnswerDetailsService
         return $answer_details;
     }
 
-    public function updateAnswerDetails(Form $form, Answer $answer, array $answer_details)
-    {
+    /**
+     * @param Form $form
+     * @param Answer $answer
+     * @param array $answer_details
+     * @param bool $keepAllFileVersions requires_review なフォームの回答では、
+     *  過去のリビジョンから参照され続けるファイルを削除しないようにするため true にする
+     */
+    public function updateAnswerDetails(
+        Form $form,
+        Answer $answer,
+        array $answer_details,
+        bool $keepAllFileVersions = false
+    ) {
         $answer_details_on_db = $this->getAnswerDetailsByAnswer($answer);
         $stored_details_on_db = AnswerDetail::where('answer_id', $answer->id)->get()->keyBy('question_id');
 
@@ -181,6 +243,11 @@ class AnswerDetailsService
             $this->getAnswerDetailsByAnswer($answer)
         );
 
+        if ($keepAllFileVersions) {
+            // 差し替えられたファイルも過去のリビジョンから参照され続けるため、削除しない
+            return;
+        }
+
         $oldFilePaths = $this->collectStoredFilePaths($form, $stored_details_on_db->all());
         $newStoredDetails = AnswerDetail::where('answer_id', $answer->id)->get()->keyBy('question_id');
         $newFilePaths = $this->collectStoredFilePaths($form, $newStoredDetails->all());
@@ -225,6 +292,14 @@ class AnswerDetailsService
             ->where('question_id', $questionId)
             ->value('answer');
         return self::decodeTableAnswerEnvelope($stored);
+    }
+
+    public function getTableAnswerEnvelopeByRevision(AnswerRevision $revision, int $questionId): array
+    {
+        $row = collect($revision->details ?? [])->first(function ($row) use ($questionId) {
+            return (int)($row['question_id'] ?? null) === $questionId;
+        });
+        return self::decodeTableAnswerEnvelope($row['answer'] ?? null);
     }
 
     public function discardNewlyStoredFiles(): void
