@@ -2,12 +2,12 @@
 
 @section('no_circle_selector', true)
 
-@section('title', '配布資料')
+@section('title', term('document'))
 
 @section('content')
     <app-container>
         @if ($documents->isEmpty())
-            <list-view-empty icon-class="far fa-file-alt" text="配布資料はまだありません" />
+            <list-view-empty icon-class="far fa-file-alt" text="{{ term('document') }}はまだありません" />
         @else
             <list-view>
                 @foreach ($documents as $document)

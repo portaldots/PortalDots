@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '申請')
+@section('title', term('form'))
 
 @section('content')
     <div class="tab_strip">

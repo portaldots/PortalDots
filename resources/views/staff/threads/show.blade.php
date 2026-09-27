@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'お問い合わせ')
+@section('title', term('contact'))
 
 @section('navbar')
     <app-nav-bar-back href="{{ route('staff.threads.index') }}">
-        お問い合わせ
+        {{ term('contact') }}
     </app-nav-bar-back>
 @endsection
 

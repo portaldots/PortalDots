@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'お問い合わせ')
+@section('title', term('contact'))
 
 @section('content')
     <app-container>
         <list-view>
-            <template v-slot:title>お問い合わせ</template>
+            <template v-slot:title>{{ term('contact') }}</template>
             <template v-slot:description>
                 お問い合わせへの返信は <strong>{{ Auth::user()->email }}</strong> に送信されます。メールアドレスは<a
                     href="{{ route('user.edit') }}">ユーザー設定</a>で変更できます。
@@ -90,7 +90,7 @@
                 <template v-slot:title>メッセージを送る</template>
                 @if (isset($circle))
                     <list-view-form-group>
-                        <template v-slot:label>企画名</template>
+                        <template v-slot:label>{{ term('circle') }}名</template>
                         <input type="text" readonly value="{{ $circle->name }}({{ $circle->group_name }})"
                             class="form-control">
                         @if (Auth::user()->circles()->approved()->count() > 1)
@@ -109,7 +109,7 @@
                 @endif
                 @unless ($categories->isEmpty())
                     <list-view-form-group label-for="category">
-                        <template v-slot:label>お問い合わせ項目</template>
+                        <template v-slot:label>{{ term('contact') }}項目</template>
                         <template v-slot:description>以下のリストから項目を選択してください</template>
                         <select id="category" name="category" class="form-control @error('category') is-invalid @enderror ">
                             <option hidden>選択してください</option>
@@ -131,7 +131,7 @@
                     <input type="hidden" id="category" name="category" value="0">
                 @endunless
                 <list-view-form-group label-for="contact_body">
-                    <template v-slot:label>お問い合わせ内容</template>
+                    <template v-slot:label>{{ term('contact') }}内容</template>
                     <template v-slot:description>確認のため、お問い合わせ内容をメールで送信いたします。</template>
                     <textarea name="contact_body" id="contact_body"
                         class="form-control {{ $errors->has('contact_body') ? 'is-invalid' : '' }}" rows="10"

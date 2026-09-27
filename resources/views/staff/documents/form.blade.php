@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', empty($document) ? '新規作成 — 配布資料' : "{$document->name} — 配布資料")
+@section('title', empty($document) ? '新規作成 — ' . term('document') : "{$document->name} — " . term('document'))
 
 @section('navbar')
     <app-nav-bar-back href="{{ route('staff.documents.index') }}">
@@ -255,14 +255,14 @@
             <list-view>
                 <template v-slot:title>確認依頼</template>
                 <template v-slot:description>
-                    指定した企画に、現在の版を確認するよう依頼します。新しい版を追加すると、依頼済みの企画はすべて新しい版の確認待ちに戻ります。
+                    指定した{{ term('circle') }}に、現在の版を確認するよう依頼します。新しい版を追加すると、依頼済みの{{ term('circle') }}はすべて新しい版の確認待ちに戻ります。
                 </template>
                 <list-view-form-group>
-                    <template v-slot:label>企画を追加</template>
+                    <template v-slot:label>{{ term('circle') }}を追加</template>
                     <form method="post"
                         action="{{ route('staff.documents.approvals.store', ['document' => $document]) }}">
                         @csrf
-                        <tags-input input-name="circles" placeholder="企画を指定" v-bind:default-tags="[]"
+                        <tags-input input-name="circles" placeholder="{{ term('circle') }}を指定" v-bind:default-tags="[]"
                             v-bind:autocomplete-items="{{ $circles_autocomplete_items }}" add-only-from-autocomplete>
                         </tags-input>
                         @if ($errors->has('circles'))
@@ -278,9 +278,9 @@
             </list-view>
 
             <list-view>
-                <template v-slot:title>依頼済みの企画（{{ count($document_approvals) }}企画）</template>
+                <template v-slot:title>依頼済みの{{ term('circle') }}（{{ count($document_approvals) }}{{ term('circle') }}）</template>
                 @if (count($document_approvals) === 0)
-                    <list-view-empty icon-class="fas fa-users" text="確認を依頼した企画はありません"></list-view-empty>
+                    <list-view-empty icon-class="fas fa-users" text="確認を依頼した{{ term('circle') }}はありません"></list-view-empty>
                 @else
                     @foreach ($document_approvals as $approval)
                         <list-view-item>

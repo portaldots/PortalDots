@@ -44,11 +44,11 @@ class DocumentApprovalDecision extends Model
 
     public function circleStatusLabel(): string
     {
-        return DocumentApproval::CIRCLE_STATUS_LABELS[$this->status] ?? $this->status;
+        return DocumentApproval::circleStatusLabels()[$this->status] ?? $this->status;
     }
 
     public function staffStatusLabel(): string
     {
-        return DocumentApproval::STAFF_STATUS_LABELS[$this->status] ?? $this->status;
+        return DocumentApproval::staffStatusLabels()[$this->status] ?? $this->status;
     }
 }

@@ -1,5 +1,4 @@
-@inject('selectorService', 'App\Services\Circles\SelectorService')
-@inject('readsService', 'App\Services\Pages\ReadsService')
+@inject('menuRegistry', 'App\Services\Navigation\MenuRegistry')
 
 @staffpage
     @if (Auth::check() && Auth::user()->is_staff)
@@ -16,99 +15,19 @@
                     一般モードへ
                 </a>
             </div>
-            <a href="{{ route('staff.index') }}" class="drawer-nav__link{{ Request::is('staff') ? ' is-active' : '' }}">
-                <i class="fas fa-home drawer-nav__icon fa-fw"></i>
-                スタッフモード ホーム
-            </a>
-            @can('staff.users.read')
-                <a href="{{ route('staff.users.index') }}"
-                    class="drawer-nav__link{{ Request::is('staff/users*') ? ' is-active' : '' }}">
-                    <i class="far fa-address-book drawer-nav__icon fa-fw"></i>
-                    ユーザー情報管理
+            @foreach ($menuRegistry->get('staff') as $item)
+                <a href="{{ $item->href() }}" class="drawer-nav__link{{ $item->isActive() ? ' is-active' : '' }}">
+                    <i class="{{ $item->icon }} drawer-nav__icon fa-fw"></i>
+                    {{ $item->label() }}
                 </a>
-            @endcan
-            @can('staff.circles.read')
-                <a href="{{ route('staff.circles.index') }}"
-                    class="drawer-nav__link{{ Request::is('staff/circles*') ? ' is-active' : '' }}">
-                    <i class="fas fa-star drawer-nav__icon fa-fw"></i>
-                    企画情報管理
-                </a>
-                <a href="{{ route('staff.progress.index') }}"
-                    class="drawer-nav__link{{ Request::is('staff/progress*') ? ' is-active' : '' }}">
-                    <i class="far fa-check-square drawer-nav__icon fa-fw"></i>
-                    進捗
-                </a>
-            @endcan
-            @can('staff.tags.read')
-                <a href="{{ route('staff.tags.index') }}"
-                    class="drawer-nav__link{{ Request::is('staff/tags*') ? ' is-active' : '' }}">
-                    <i class="fas fa-tags drawer-nav__icon fa-fw"></i>
-                    企画タグ管理
-                </a>
-            @endcan
-            @can('staff.places.read')
-                <a href="{{ route('staff.places.index') }}"
-                    class="drawer-nav__link{{ Request::is('staff/places*') ? ' is-active' : '' }}">
-                    <i class="fas fa-store drawer-nav__icon fa-fw"></i>
-                    場所情報管理
-                </a>
-            @endcan
-            @can('staff.pages.read')
-                <a href="{{ route('staff.pages.index') }}"
-                    class="drawer-nav__link{{ Request::is('staff/pages*') ? ' is-active' : '' }}">
-                    <i class="fas fa-bullhorn drawer-nav__icon fa-fw"></i>
-                    お知らせ管理
-                </a>
-            @endcan
-            @can('staff.documents.read')
-                <a href="{{ route('staff.documents.index') }}"
-                    class="drawer-nav__link{{ Request::is('staff/documents*') ? ' is-active' : '' }}">
-                    <i class="far fa-file-alt drawer-nav__icon fa-fw"></i>
-                    配布資料管理
-                </a>
-            @endcan
-            @can('staff.forms.read')
-                <a href="{{ route('staff.forms.index') }}"
-                    class="drawer-nav__link{{ Request::is('staff/forms*') ? ' is-active' : '' }}">
-                    <i class="far fa-edit drawer-nav__icon fa-fw"></i>
-                    申請管理
-                </a>
-            @endcan
-            @can('staff.threads.read')
-                <a href="{{ route('staff.threads.index') }}"
-                    class="drawer-nav__link{{ Request::is('staff/threads*') ? ' is-active' : '' }}">
-                    <i class="far fa-comments drawer-nav__icon fa-fw"></i>
-                    お問い合わせ
-                </a>
-            @endcan
-            @can('staff.contacts.categories.read')
-                <a href="{{ route('staff.contacts.categories.index') }}"
-                    class="drawer-nav__link{{ Request::is('staff/contacts/categories*') ? ' is-active' : '' }}">
-                    <i class="fas fa-at drawer-nav__icon fa-fw"></i>
-                    お問い合わせ受付設定
-                </a>
-            @endcan
-            @can('staff.permissions.read')
-                <a href="{{ route('staff.permissions.index') }}"
-                    class="drawer-nav__link{{ Request::is('staff/permissions*') ? ' is-active' : '' }}">
-                    <i class="fas fa-key drawer-nav__icon fa-fw"></i>
-                    スタッフの権限設定
-                </a>
-            @endcan
-            @if (Auth::user()->is_admin)
-                <a href="{{ route('admin.activity_log.index') }}"
-                    class="drawer-nav__link{{ Request::is('admin/activity_log*') ? ' is-active' : '' }}">
-                    <i class="fas fa-user-edit drawer-nav__icon fa-fw"></i>
-                    アクティビティログ
+            @endforeach
+            @foreach ($menuRegistry->get('admin') as $item)
+                <a href="{{ $item->href() }}" class="drawer-nav__link{{ $item->isActive() ? ' is-active' : '' }}">
+                    <i class="{{ $item->icon }} drawer-nav__icon fa-fw"></i>
+                    {{ $item->label() }}
                     <app-badge danger>管理者</app-badge>
                 </a>
-                <a href="{{ route('admin.portal.edit') }}"
-                    class="drawer-nav__link{{ Request::is('admin/portal*') ? ' is-active' : '' }}">
-                    <i class="fas fa-cog drawer-nav__icon fa-fw"></i>
-                    PortalDots の設定
-                    <app-badge danger>管理者</app-badge>
-                </a>
-            @endif
+            @endforeach
         </nav>
     @endif
 @else
@@ -126,46 +45,17 @@
                 </a>
             </div>
         @endif
-        <a href="{{ route('home') }}" class="drawer-nav__link{{ Request::is('/') ? ' is-active' : '' }}">
-            <i class="fas fa-home drawer-nav__icon fa-fw"></i>
-            ホーム
-        </a>
-        <a href="{{ route('pages.index') }}" class="drawer-nav__link{{ Request::is('pages*') ? ' is-active' : '' }}">
-            <i class="fas fa-bullhorn drawer-nav__icon fa-fw"></i>
-            お知らせ
-            @if ($readsService->getUnreadsCountOnSelectedCircle() > 0)
-                <app-badge primary pill strong class="drawer-nav__badge">
-                    {{ $readsService->getUnreadsCountOnSelectedCircle() }}
-                </app-badge>
-            @endif
-        </a>
-        <a href="{{ route('documents.index') }}"
-            class="drawer-nav__link{{ Request::is('documents*') ? ' is-active' : '' }}">
-            <i class="far fa-file-alt drawer-nav__icon fa-fw"></i>
-            配布資料
-        </a>
-        @if (Auth::check() && !empty($selectorService->getCircle()))
-            <a href="{{ route('forms.index') }}" class="drawer-nav__link{{ Request::is('forms*') ? ' is-active' : '' }}">
-                <i class="far fa-edit drawer-nav__icon fa-fw"></i>
-                申請
+        @foreach ($menuRegistry->get('circle') as $item)
+            <a href="{{ $item->href() }}" class="drawer-nav__link{{ $item->isActive() ? ' is-active' : '' }}">
+                <i class="{{ $item->icon }} drawer-nav__icon fa-fw"></i>
+                {{ $item->label() }}
+                @if ($item->badgeCount())
+                    <app-badge primary pill strong class="drawer-nav__badge">
+                        {{ $item->badgeCount() }}
+                    </app-badge>
+                @endif
             </a>
-        @endif
-        @auth
-            <a href="{{ route('contacts') }}" class="drawer-nav__link{{ Request::is('contacts*') ? ' is-active' : '' }}">
-                <i class="far fa-envelope drawer-nav__icon fa-fw"></i>
-                お問い合わせ
-            </a>
-            <a href="{{ route('user.edit') }}" class="drawer-nav__link{{ Request::is('user*') ? ' is-active' : '' }}">
-                <i class="fas fa-cog drawer-nav__icon fa-fw"></i>
-                ユーザー設定
-            </a>
-        @else
-            <a href="{{ route('user.appearance') }}"
-                class="drawer-nav__link{{ Request::is('user/appearance') ? ' is-active' : '' }}">
-                <i class="fas fa-cog drawer-nav__icon fa-fw"></i>
-                ユーザー設定
-            </a>
-        @endauth
+        @endforeach
     </nav>
 @endstaffpage
 
