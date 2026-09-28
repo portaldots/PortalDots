@@ -5,6 +5,7 @@ namespace App\Http\Requests\Staff\Users;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Eloquents\User;
+use App\Services\Auth\AuthSettings;
 use Illuminate\Support\Facades\Auth;
 
 class UserRequest extends FormRequest
@@ -78,6 +79,7 @@ class UserRequest extends FormRequest
         $user = $this->route('user');
         $validator->after(function ($validator) use ($user) {
             if (
+                app(AuthSettings::class)->univemailEnabled() &&
                 !User::isValidUnivemailByLocalPartAndDomainPart(
                     $this->univemail_local_part,
                     $this->univemail_domain_part

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@inject('authSettings', 'App\Services\Auth\AuthSettings')
+
 @prepend('meta')
     <meta name="description" content="{{ config('portal.description') }}">
 @endprepend
@@ -36,7 +38,8 @@
     @endauth
 
     @guest
-        <home-header login-url="{{ route('login') }}" register-url="{{ route('register') }}">
+        <home-header login-url="{{ route('login') }}"
+            register-url="{{ $authSettings->registrationEnabled() ? route('register') : '' }}">
             <template v-slot:title>
                 @if (config('portal.enable_demo_mode'))
                     <app-badge primary outline>PortalDots デモサイト</app-badge>

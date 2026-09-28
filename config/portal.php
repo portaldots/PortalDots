@@ -25,6 +25,26 @@ return [
     // デモモード
     'enable_demo_mode' => env('PORTAL_ENABLE_DEMO_MODE', false),
 
+    // ユーザー登録・ログイン方法・学籍番号・大学提供メールアドレスの有無
+    // プライベートなデプロイ用パッケージが Service Provider から
+    // config(['portal.registration.enabled' => false]) のように上書きすることで、
+    // OSS側のファイルを変更せずに招待制での運用に対応できる。
+    // 参照する際は config() を直接呼ばず App\Services\Auth\AuthSettings を使うこと
+    'registration' => [
+        // ユーザー登録を受け付けるか
+        // false にすると /register のルートが登録されず(404)、登録への導線も表示されない
+        'enabled' => true,
+    ],
+    'auth' => [
+        // ログインIDとして受け付けるカラム。'email' と 'student_id' の組み合わせで指定する
+        'login_identifiers' => ['email', 'student_id'],
+        // 学籍番号の入力・表示・必須化を行うか
+        'student_id' => true,
+        // 大学提供メールアドレスの入力・表示・認証を行うか
+        // false の場合、連絡先メールアドレスの認証のみで「メール認証済み」とみなす
+        'univemail' => true,
+    ],
+
     // 用語
     // term() ヘルパーで参照する。プライベートなデプロイ用パッケージが
     // config(['portal.terms.circle' => '案件']) のように上書きすることで、

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@inject('authSettings', 'App\Services\Auth\AuthSettings')
+
 @section('title', 'ユーザー設定')
 
 @section('content')
@@ -12,43 +14,104 @@
             <list-view>
                 <template v-slot:title>一般設定</template>
 
-                @if ($circles->isEmpty())
-                    <list-view-student-id-and-univemail-input
-                        v-bind:allowed-domain-parts="{{ json_encode(config('portal.univemail_domain_part')) }}"
-                        v-bind:allow-arbitrary-local-part="{{ config('portal.univemail_local_part') === 'user_id' ? 'true' : 'false' }}"
-                        student-id-input-name="student_id" univemail-local-part-input-name="univemail_local_part"
-                        univemail-domain-part-input-name="univemail_domain_part"
-                        student-id-label="{{ config('portal.student_id_name') }}"
-                        univemail-label="{{ config('portal.univemail_name') }}"
-                        default-student-id-value="{{ old('student_id', $user->student_id) }}"
-                        default-univemail-local-part-value="{{ old('univemail_local_part', $user->univemail_local_part) }}"
-                        default-univemail-domain-part-value="{{ old('univemail_domain_part', $user->univemail_domain_part) }}">
-                        @error('student_id')
-                            <template v-slot:invalid-student-id>{{ $message }}</template>
-                        @enderror
-                        @error('univemail')
-                            <template v-slot:invalid-univemail>{{ $message }}</template>
-                        @enderror
-                    </list-view-student-id-and-univemail-input>
+                @if ($authSettings->studentIdEnabled() && $authSettings->univemailEnabled())
+                    @if ($circles->isEmpty())
+                        <list-view-student-id-and-univemail-input
+                            v-bind:allowed-domain-parts="{{ json_encode(config('portal.univemail_domain_part')) }}"
+                            v-bind:allow-arbitrary-local-part="{{ config('portal.univemail_local_part') === 'user_id' ? 'true' : 'false' }}"
+                            student-id-input-name="student_id" univemail-local-part-input-name="univemail_local_part"
+                            univemail-domain-part-input-name="univemail_domain_part"
+                            student-id-label="{{ config('portal.student_id_name') }}"
+                            univemail-label="{{ config('portal.univemail_name') }}"
+                            default-student-id-value="{{ old('student_id', $user->student_id) }}"
+                            default-univemail-local-part-value="{{ old('univemail_local_part', $user->univemail_local_part) }}"
+                            default-univemail-domain-part-value="{{ old('univemail_domain_part', $user->univemail_domain_part) }}">
+                            @error('student_id')
+                                <template v-slot:invalid-student-id>{{ $message }}</template>
+                            @enderror
+                            @error('univemail')
+                                <template v-slot:invalid-univemail>{{ $message }}</template>
+                            @enderror
+                        </list-view-student-id-and-univemail-input>
+                    @else
+                        <list-view-form-group label-for="student_id">
+                            <template v-slot:label>{{ config('portal.student_id_name') }}</template>
+                            <template v-slot:description>
+                                企画に所属しているため修正できません
+                            </template>
+                            <input id="student_id" type="text" class="form-control" name="student_id"
+                                value="{{ $user->student_id }}" readonly>
+                        </list-view-form-group>
+                        <list-view-form-group label-for="univemail">
+                            <template v-slot:label>{{ config('portal.univemail_name') }}</template>
+                            <template v-slot:description>
+                                企画に所属しているため修正できません
+                            </template>
+                            <input id="univemail" type="text" class="form-control" name="univemail"
+                                value="{{ $user->univemail }}" readonly>
+                        </list-view-form-group>
+                        <input type="hidden" name="univemail_local_part" value="{{ $user->univemail_local_part }}">
+                        <input type="hidden" name="univemail_domain_part" value="{{ $user->univemail_domain_part }}">
+                    @endif
                 @else
-                    <list-view-form-group label-for="student_id">
-                        <template v-slot:label>{{ config('portal.student_id_name') }}</template>
-                        <template v-slot:description>
-                            企画に所属しているため修正できません
-                        </template>
-                        <input id="student_id" type="text" class="form-control" name="student_id"
-                            value="{{ $user->student_id }}" readonly>
-                    </list-view-form-group>
-                    <list-view-form-group label-for="univemail">
-                        <template v-slot:label>{{ config('portal.univemail_name') }}</template>
-                        <template v-slot:description>
-                            企画に所属しているため修正できません
-                        </template>
-                        <input id="univemail" type="text" class="form-control" name="univemail"
-                            value="{{ $user->univemail }}" readonly>
-                    </list-view-form-group>
-                    <input type="hidden" name="univemail_local_part" value="{{ $user->univemail_local_part }}">
-                    <input type="hidden" name="univemail_domain_part" value="{{ $user->univemail_domain_part }}">
+                    @if ($authSettings->studentIdEnabled())
+                        <list-view-form-group label-for="student_id">
+                            <template v-slot:label>{{ config('portal.student_id_name') }}</template>
+                            @unless ($circles->isEmpty())
+                                <template v-slot:description>
+                                    企画に所属しているため修正できません
+                                </template>
+                            @endunless
+                            <input id="student_id" type="text"
+                                class="form-control @error('student_id') is-invalid @enderror" name="student_id"
+                                value="{{ old('student_id', $user->student_id) }}" autocomplete="username"
+                                {{ $circles->isEmpty() ? 'required' : 'readonly' }}>
+                            @error('student_id')
+                                <template v-slot:invalid>{{ $message }}</template>
+                            @enderror
+                        </list-view-form-group>
+                    @endif
+                    @if ($authSettings->univemailEnabled())
+                        @if ($circles->isEmpty())
+                            <list-view-form-group label-for="univemail_local_part">
+                                <template v-slot:label>{{ config('portal.univemail_name') }}</template>
+                                <input id="univemail_local_part" type="text"
+                                    class="form-control @error('univemail') is-invalid @enderror"
+                                    name="univemail_local_part"
+                                    value="{{ old('univemail_local_part', $user->univemail_local_part) }}"
+                                    required autocomplete="username">
+                                @if (count(config('portal.univemail_domain_part')) > 1)
+                                    <select class="form-control @error('univemail') is-invalid @enderror"
+                                        name="univemail_domain_part">
+                                        @foreach (config('portal.univemail_domain_part') as $domain_part)
+                                            <option value="{{ $domain_part }}"
+                                                {{ old('univemail_domain_part', $user->univemail_domain_part) === $domain_part ? 'selected' : '' }}>
+                                                {{ $domain_part }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                @else
+                                    <template v-slot:append>{{ config('portal.univemail_domain_part')[0] ?? '' }}</template>
+                                    <input type="hidden" name="univemail_domain_part"
+                                        value="{{ config('portal.univemail_domain_part')[0] ?? '' }}">
+                                @endif
+                                @error('univemail')
+                                    <template v-slot:invalid>{{ $message }}</template>
+                                @enderror
+                            </list-view-form-group>
+                        @else
+                            <list-view-form-group label-for="univemail">
+                                <template v-slot:label>{{ config('portal.univemail_name') }}</template>
+                                <template v-slot:description>
+                                    企画に所属しているため修正できません
+                                </template>
+                                <input id="univemail" type="text" class="form-control" name="univemail"
+                                    value="{{ $user->univemail }}" readonly>
+                            </list-view-form-group>
+                            <input type="hidden" name="univemail_local_part" value="{{ $user->univemail_local_part }}">
+                            <input type="hidden" name="univemail_domain_part" value="{{ $user->univemail_domain_part }}">
+                        @endif
+                    @endif
                 @endif
                 <list-view-form-group label-for="name">
                     <template v-slot:label>名前</template>
@@ -76,9 +139,11 @@
                 </list-view-form-group>
                 <list-view-form-group label-for="email">
                     <template v-slot:label>連絡先メールアドレス</template>
-                    <template v-slot:description>
-                        連絡先メールアドレスとして{{ config('portal.univemail_name') }}も利用できます
-                    </template>
+                    @if ($authSettings->univemailEnabled())
+                        <template v-slot:description>
+                            連絡先メールアドレスとして{{ config('portal.univemail_name') }}も利用できます
+                        </template>
+                    @endif
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
                         name="email" value="{{ old('email', $user->email) }}" required autocomplete="email">
                     @error('email')

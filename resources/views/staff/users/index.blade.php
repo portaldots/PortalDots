@@ -77,6 +77,10 @@
             <template v-else-if="row[keyName] === false">
                 -
             </template>
+            <template v-else-if="keyName === 'student_id' && !row[keyName]">
+                {{-- 学籍番号を使わない運用では student_id が空になりうる --}}
+                -
+            </template>
             <template v-else>
                 @{{ row[keyName] }}
             </template>

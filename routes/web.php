@@ -50,6 +50,9 @@ Route::get('/user/appearance', 'Users\EditAppearanceAction')->name('user.appeara
 Route::patch('/user/appearance', 'Users\UpdateAppearanceAction');
 
 // 認証系
+// register ルート自体は常に登録し、無効化は RegisterController 側で行う
+// (config('portal.registration.enabled') はアプリケーション起動時ではなく
+// リクエストのたびに判定する必要があるため)
 Auth::routes([
     'register' => true,
     'reset' => false,

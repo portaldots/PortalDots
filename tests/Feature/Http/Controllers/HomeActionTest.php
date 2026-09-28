@@ -40,6 +40,17 @@ class HomeActionTest extends TestCase
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
+    public function registration_enabledがfalseの場合ユーザー登録への導線が表示されない()
+    {
+        config(['portal.registration.enabled' => false]);
+
+        $response = $this->get(route('home'));
+        $response->assertStatus(200);
+
+        $response->assertDontSee('ユーザー登録');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
     public function メール認証が未完了の時アラートが表示される()
     {
         $user = factory(User::class)->states('not_verified')->create();
