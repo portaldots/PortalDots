@@ -280,6 +280,14 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                     ->middleware(['can:staff.documents.read'])
                     ->scopeBindings();
                 Route::delete('/{document}', 'Staff\Documents\DestroyAction')->name('destroy')->middleware(['can:staff.documents.delete']);
+
+                // 確認依頼
+                Route::post('/{document}/approvals', 'Staff\Documents\Approvals\StoreAction')
+                    ->name('approvals.store')
+                    ->middleware(['can:staff.documents.edit']);
+                Route::delete('/{document}/approvals/{circle}', 'Staff\Documents\Approvals\DestroyAction')
+                    ->name('approvals.destroy')
+                    ->middleware(['can:staff.documents.edit']);
             });
 
         // スタッフの権限設定

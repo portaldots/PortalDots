@@ -22,8 +22,13 @@ class IndexAction extends Controller
 
     public function __invoke()
     {
-        $documents = Document::visibleTo(Auth::user(), $this->selectorService->getCircle())
+        $circle = $this->selectorService->getCircle();
+
+        $documents = Document::visibleTo(Auth::user(), $circle)
             ->with('versions')
+            ->with(['approvals' => function ($query) use ($circle) {
+                $query->where('circle_id', $circle?->id);
+            }])
             ->paginate(10);
 
         if ($documents->currentPage() > $documents->lastPage()) {

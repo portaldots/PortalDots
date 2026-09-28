@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Documents;
 
+use App\Eloquents\Circle;
 use App\Eloquents\Permission;
 use App\Eloquents\User;
+use App\Services\Documents\DocumentApprovalsService;
 use App\Services\Documents\DocumentsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -102,5 +104,33 @@ class EditActionTest extends TestCase
         $response->assertSee('第1版');
         $response->assertSee('第2版');
         $response->assertSee($this->staff->name);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 確認依頼済みの企画とステータスが表示される()
+    {
+        $document = $this->documentsService->createDocument(
+            '配布資料',
+            null,
+            UploadedFile::fake()->create('第1版.pdf', 1, 'application/pdf'),
+            true,
+            false,
+            null,
+            'everyone',
+            [],
+            [],
+            $this->staff
+        );
+        $circle = factory(Circle::class)->create();
+        App::make(DocumentApprovalsService::class)->requestForCircles($document, [$circle->id], $this->staff);
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.documents.edit', ['document' => $document]));
+
+        $response->assertOk();
+        $response->assertSee('確認依頼');
+        $response->assertSee($circle->name);
+        $response->assertSee('確認待ち');
     }
 }

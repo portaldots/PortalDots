@@ -87,6 +87,11 @@ class Document extends Model
         return $this->hasMany(DocumentVersion::class)->orderBy('version', 'desc');
     }
 
+    public function approvals()
+    {
+        return $this->hasMany(DocumentApproval::class);
+    }
+
     /**
      * 公開されている配布資料に限定するクエリスコープ
      *

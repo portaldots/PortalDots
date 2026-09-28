@@ -249,4 +249,84 @@
             </app-fixed-form-footer>
         </app-container>
     </form>
+
+    @isset($document)
+        <app-container>
+            <list-view>
+                <template v-slot:title>確認依頼</template>
+                <template v-slot:description>
+                    指定した企画に、現在の版を確認するよう依頼します。新しい版を追加すると、依頼済みの企画はすべて新しい版の確認待ちに戻ります。
+                </template>
+                <list-view-form-group>
+                    <template v-slot:label>企画を追加</template>
+                    <form method="post"
+                        action="{{ route('staff.documents.approvals.store', ['document' => $document]) }}">
+                        @csrf
+                        <tags-input input-name="circles" placeholder="企画を指定" v-bind:default-tags="[]"
+                            v-bind:autocomplete-items="{{ $circles_autocomplete_items }}" add-only-from-autocomplete>
+                        </tags-input>
+                        @if ($errors->has('circles'))
+                            <template v-slot:invalid>
+                                @foreach ($errors->get('circles') as $message)
+                                    <div>{{ $message }}</div>
+                                @endforeach
+                            </template>
+                        @endif
+                        <button type="submit" class="btn is-primary is-sm">依頼</button>
+                    </form>
+                </list-view-form-group>
+            </list-view>
+
+            <list-view>
+                <template v-slot:title>依頼済みの企画（{{ count($document_approvals) }}企画）</template>
+                @if (count($document_approvals) === 0)
+                    <list-view-empty icon-class="fas fa-users" text="確認を依頼した企画はありません"></list-view-empty>
+                @else
+                    @foreach ($document_approvals as $approval)
+                        <list-view-item>
+                            <template v-slot:title>
+                                {{ $approval->circle->name }}
+                                @if ($approval->status === \App\Eloquents\DocumentApproval::STATUS_APPROVED)
+                                    <app-badge success>{{ $approval->staffStatusLabel() }}</app-badge>
+                                @elseif ($approval->status === \App\Eloquents\DocumentApproval::STATUS_CHANGES_REQUESTED)
+                                    <app-badge danger>{{ $approval->staffStatusLabel() }}</app-badge>
+                                @else
+                                    <app-badge primary>{{ $approval->staffStatusLabel() }}</app-badge>
+                                @endif
+                            </template>
+                            <template v-slot:meta>
+                                対象 : 第{{ $approval->documentVersion->version }}版
+                                @if ($approval->status === \App\Eloquents\DocumentApproval::STATUS_CHANGES_REQUESTED && !empty(optional($approval->decisions->first())->comment))
+                                    <br>
+                                    修正依頼の内容 : {{ $approval->decisions->first()->comment }}
+                                @endif
+                            </template>
+                            <form-with-confirm
+                                action="{{ route('staff.documents.approvals.destroy', ['document' => $document, 'circle' => $approval->circle]) }}"
+                                method="post" confirm-message="「{{ $approval->circle->name }}」への確認依頼を取り消しますか？">
+                                @method('delete')
+                                @csrf
+                                <button type="submit" class="btn is-danger is-sm">依頼を取り消す</button>
+                            </form-with-confirm>
+                            <app-accordion>
+                                <template v-slot:summary>履歴を見る</template>
+                                @foreach ($approval->decisions as $decision)
+                                    <p>
+                                        第{{ $decision->documentVersion->version }}版 ・ {{ $decision->staffStatusLabel() }}
+                                        ・ @datetime($decision->created_at)
+                                        @if ($decision->decidedBy)
+                                            ・{{ $decision->decidedBy->name }}
+                                        @endif
+                                        @if (!empty($decision->comment))
+                                            <br>{{ $decision->comment }}
+                                        @endif
+                                    </p>
+                                @endforeach
+                            </app-accordion>
+                        </list-view-item>
+                    @endforeach
+                @endif
+            </list-view>
+        </app-container>
+    @endisset
 @endsection

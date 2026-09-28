@@ -16,6 +16,16 @@ use Illuminate\Support\Facades\Storage;
 class DocumentsService
 {
     /**
+     * @var DocumentApprovalsService
+     */
+    private $documentApprovalsService;
+
+    public function __construct(DocumentApprovalsService $documentApprovalsService)
+    {
+        $this->documentApprovalsService = $documentApprovalsService;
+    }
+
+    /**
      * 配布資料を作成する
      *
      * @param string $name
@@ -140,13 +150,16 @@ class DocumentsService
                 $extension = $file->getClientOriginalExtension();
 
                 $nextVersion = (int)$document->versions()->max('version') + 1;
-                $document->versions()->create([
+                $newVersion = $document->versions()->create([
                     'version' => $nextVersion,
                     'path' => $path,
                     'size' => $size,
                     'extension' => $extension,
                     'uploaded_by' => $uploaded_by?->id,
                 ]);
+
+                // 新しい版が追加されたら、依頼済みの確認はすべて新しい版の確認待ちへ戻す
+                $this->documentApprovalsService->resetAllToPendingOnNewVersion($document, $newVersion, $uploaded_by);
             }
 
             $result = $document->update([
