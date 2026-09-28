@@ -110,7 +110,8 @@
                 <app-footer>{{ config('app.name') }}</app-footer>
             @endif
         </div>
-        @if (!Request::is('staff*') && !Request::is('admin*'))
+        @if ((!Request::is('staff*') && !Request::is('admin*')) ||
+                (Request::is('staff*') && config('portal.navigation.staff_bottom_tabs', false)))
             @section('bottom_tabs')
                 @include('includes.bottom_tabs')
             @show

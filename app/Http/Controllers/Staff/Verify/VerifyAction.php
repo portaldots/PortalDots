@@ -32,6 +32,6 @@ class VerifyAction extends Controller
         if (!empty($previous_url)) {
             return redirect($previous_url);
         }
-        return redirect()->route('staff.index');
+        return redirect()->route(config('portal.navigation.staff_home_route'));
     }
 }

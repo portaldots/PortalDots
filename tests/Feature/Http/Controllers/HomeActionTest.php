@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Contracts\HomeLanding;
+use App\Policies\DefaultHomeLanding;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Services\Utils\DotenvService;
@@ -17,6 +19,39 @@ use App\Eloquents\ParticipationType;
 class HomeActionTest extends TestCase
 {
     use RefreshDatabase;
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 既定のホーム遷移は画面を表示する()
+    {
+        $this->assertInstanceOf(DefaultHomeLanding::class, app(HomeLanding::class));
+
+        $user = factory(User::class)->create();
+        $response = $this->actingAs($user)->get(route('home'));
+
+        $response->assertOk();
+        $response->assertViewIs('home');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function ホーム遷移の差し替えでログイン中のユーザーを指定URLに転送する()
+    {
+        $user = factory(User::class)->create();
+        $destination = route('documents.index');
+        $landing = $this->mock(HomeLanding::class);
+        $landing->shouldReceive('redirectFor')->once()->with($user, null)->andReturn($destination);
+
+        $this->actingAs($user)->get(route('home'))->assertRedirect($destination);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function ホーム遷移の差し替えがnullを返すと画面を表示する()
+    {
+        $user = factory(User::class)->create();
+        $landing = $this->mock(HomeLanding::class);
+        $landing->shouldReceive('redirectFor')->once()->with($user, null)->andReturn(null);
+
+        $this->actingAs($user)->get(route('home'))->assertOk()->assertViewIs('home');
+    }
 
     #[\PHPUnit\Framework\Attributes\Test]
     public function 未インストール状態の場合はインストーラが表示される()

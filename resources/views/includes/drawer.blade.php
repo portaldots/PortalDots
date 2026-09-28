@@ -2,7 +2,7 @@
 
 @staffpage
     @if (Auth::check() && Auth::user()->is_staff)
-        <a class="drawer-header" href="{{ route('staff.index') }}">
+        <a class="drawer-header" href="{{ route(config('portal.navigation.staff_home_route')) }}">
             {{ config('app.name') }}
             <app-badge primary>スタッフモード</app-badge>
             @if (config('portal.enable_demo_mode'))
@@ -10,11 +10,13 @@
             @endif
         </a>
         <nav class="drawer-nav">
-            <div class="px-spacing py-spacing">
-                <a href="/" class="btn is-primary is-block">
-                    一般モードへ
-                </a>
-            </div>
+            @if (config('portal.navigation.show_mode_switch', true))
+                <div class="px-spacing py-spacing">
+                    <a href="/" class="btn is-primary is-block">
+                        一般モードへ
+                    </a>
+                </div>
+            @endif
             @foreach ($menuRegistry->get('staff') as $item)
                 <a href="{{ $item->href() }}" class="drawer-nav__link{{ $item->isActive() ? ' is-active' : '' }}">
                     <i class="{{ $item->icon }} drawer-nav__icon fa-fw"></i>
@@ -39,11 +41,13 @@
     </a>
     <nav class="drawer-nav">
         @if (Auth::check() && Auth::user()->is_staff)
-            <div class="px-spacing py-spacing">
-                <a href="{{ route('staff.index') }}" class="btn is-primary is-block">
-                    スタッフモードへ
-                </a>
-            </div>
+            @if (config('portal.navigation.show_mode_switch', true))
+                <div class="px-spacing py-spacing">
+                    <a href="{{ route(config('portal.navigation.staff_home_route')) }}" class="btn is-primary is-block">
+                        スタッフモードへ
+                    </a>
+                </div>
+            @endif
         @endif
         @foreach ($menuRegistry->get('circle') as $item)
             <a href="{{ $item->href() }}" class="drawer-nav__link{{ $item->isActive() ? ' is-active' : '' }}">

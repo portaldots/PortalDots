@@ -7,6 +7,9 @@ use App\Eloquents\Page;
 use App\Eloquents\Permission;
 use App\Eloquents\User;
 use App\Services\Circles\SelectorService;
+use App\Services\Navigation\MenuItem;
+use App\Services\Navigation\MenuRegistry;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
@@ -19,6 +22,43 @@ use Tests\TestCase;
 class NavigationTest extends TestCase
 {
     use RefreshDatabase;
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function モード切替を設定で非表示にできる()
+    {
+        config(['portal.navigation.show_mode_switch' => false]);
+        $admin = factory(User::class)->states('admin')->create();
+
+        $this->actingAs($admin)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.index'))
+            ->assertOk()
+            ->assertDontSee('一般モードへ');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function スタッフの下部タブを設定で表示できる()
+    {
+        config(['portal.navigation.staff_bottom_tabs' => true]);
+        app(MenuRegistry::class)->add(MenuRegistry::SECTION_STAFF, new MenuItem(
+            key: 'mobile_staff_home',
+            label: 'モバイル受信箱',
+            route: 'staff.index',
+            routeParams: [],
+            activePattern: 'staff',
+            icon: 'far fa-envelope',
+            visible: fn () => true,
+            showInBottomTabs: true,
+        ));
+        $staff = factory(User::class)->states('staff')->create();
+
+        $this->actingAs($staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.index'))
+            ->assertOk()
+            ->assertSee('bottom_tabs-tab__label')
+            ->assertSee('モバイル受信箱');
+    }
 
     #[\PHPUnit\Framework\Attributes\Test]
     public function ゲストには基本項目のみ表示され順序とアクティブ状態が正しい()
@@ -180,5 +220,47 @@ class NavigationTest extends TestCase
             5,
             substr_count($response->getContent(), '<app-badge danger>管理者</app-badge>')
         );
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 既定のスタッフ入口はstaff_indexを指す()
+    {
+        $this->withoutVite();
+        $this->assertSame('staff.index', config('portal.navigation.staff_home_route'));
+        $staff = factory(User::class)->states('staff')->create();
+
+        $staffPage = $this->actingAs($staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.pages.index'));
+        $staffPage->assertSee('<a class="drawer-header" href="' . route('staff.index') . '">', false);
+
+        $circlePage = $this->get(route('home'));
+        $circlePage->assertSee('<a href="' . route('staff.index') . '" class="btn is-primary is-block">', false);
+
+        $noDrawerPage = $this->get(route('staff.about'));
+        $noDrawerPage->assertSee('href="' . route('staff.index') . '"', false);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function スタッフ入口ルートの差し替えが各リンクに反映される()
+    {
+        $this->withoutVite();
+        Route::get('/staff/custom-home', fn () => 'custom home')->name('staff.custom-home');
+        Route::getRoutes()->refreshNameLookups();
+        config(['portal.navigation.staff_home_route' => 'staff.custom-home']);
+        $staff = factory(User::class)->states('staff')->create();
+        $destination = route('staff.custom-home');
+
+        $staffPage = $this->actingAs($staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.pages.index'));
+        $staffPage->assertSee('<a class="drawer-header" href="' . $destination . '">', false);
+        $staffPage->assertSee('<a href="' . $destination . '" class="drawer-nav__link">', false);
+
+        $circlePage = $this->get(route('home'));
+        $circlePage->assertSee('<a href="' . $destination . '" class="btn is-primary is-block">', false);
+
+        $noDrawerPage = $this->get(route('staff.about'));
+        $noDrawerPage->assertSee('href="' . $destination . '"', false);
     }
 }

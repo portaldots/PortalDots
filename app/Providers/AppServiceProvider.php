@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Schema;
 use App\Contracts\AudiencePolicy;
 use App\Contracts\FileStorageLayout;
 use App\Contracts\GuestAccessPolicy;
+use App\Contracts\HomeLanding;
 use App\Contracts\ThreadReplyAddress;
 use App\Policies\DefaultAudiencePolicy;
 use App\Policies\DefaultFileStorageLayout;
 use App\Policies\DefaultGuestAccessPolicy;
+use App\Policies\DefaultHomeLanding;
 use App\Policies\DefaultThreadReplyAddress;
 use App\Services\Circles\SelectorService;
 use App\Services\Pages\ReadsService;
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(DotenvEditor::class, Utf8DotenvEditor::class);
         $this->app->bind(AudiencePolicy::class, DefaultAudiencePolicy::class);
         $this->app->bind(GuestAccessPolicy::class, DefaultGuestAccessPolicy::class);
+        $this->app->bind(HomeLanding::class, DefaultHomeLanding::class);
         $this->app->bind(FileStorageLayout::class, DefaultFileStorageLayout::class);
         $this->app->bind(ThreadReplyAddress::class, DefaultThreadReplyAddress::class);
     }
