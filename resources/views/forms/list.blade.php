@@ -32,7 +32,18 @@
                             @endif
                             {{ $form->name }}
                             @if (isset($circle))
-                                @if ($form->answered($circle))
+                                @if ($form->requires_review)
+                                    @php $latest_answer = $form->latestAnswerFor($circle); @endphp
+                                    @if (empty($latest_answer))
+                                        <app-badge muted>提出してください</app-badge>
+                                    @elseif ($latest_answer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_ACCEPTED)
+                                        <app-badge success>完了</app-badge>
+                                    @elseif ($latest_answer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_RETURNED)
+                                        <app-badge danger>修正してください</app-badge>
+                                    @else
+                                        <app-badge primary>確認中</app-badge>
+                                    @endif
+                                @elseif ($form->answered($circle))
                                     <app-badge success>提出済</app-badge>
                                 @endif
                                 @if ($form->yetOpen())

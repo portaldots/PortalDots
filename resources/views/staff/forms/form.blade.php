@@ -114,6 +114,26 @@
                     @enderror
                 </list-view-form-group>
                 <list-view-form-group>
+                    <template v-slot:label>提出後の確認</template>
+                    <template v-slot:description>
+                        有効にすると、回答は「要確認」状態で提出され、スタッフが完了にするまで「完了」になりません。差し戻された場合、企画は理由を確認した上で再提出できます。
+                    </template>
+
+                    <div class="form-checkbox">
+                        <label class="form-checkbox__label">
+                            <input id="requires_review" type="checkbox"
+                                class="form-checkbox__input @error('requires_review') is-invalid @enderror"
+                                name="requires_review" value="1"
+                                {{ old('requires_review', (isset($form) ? $form->requires_review : false) === true) ? 'checked' : '' }}>
+                            提出後にスタッフが確認する
+                        </label>
+                    </div>
+
+                    @error('requires_review')
+                        <template v-slot:invalid>{{ $message }}</template>
+                    @enderror
+                </list-view-form-group>
+                <list-view-form-group>
                     <template v-slot:label>フォームへ回答可能なユーザー</template>
                     <template v-slot:description>
                         空欄の場合、企画に所属するユーザー全員がフォームに回答できます。

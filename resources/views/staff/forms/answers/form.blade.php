@@ -9,6 +9,85 @@
 @endsection
 
 @section('content')
+    @if ($form->requires_review && !empty($answer))
+        <app-container>
+            <list-view>
+                <list-view-card>
+                    <p>
+                        回答の状況 :
+                        @if ($answer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_ACCEPTED)
+                            <app-badge success>完了</app-badge>
+                        @elseif ($answer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_RETURNED)
+                            <app-badge danger>差し戻し中</app-badge>
+                        @elseif ($answer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_SUBMITTED)
+                            <app-badge primary>要確認</app-badge>
+                        @else
+                            <app-badge muted>未提出</app-badge>
+                        @endif
+                    </p>
+                    @if ($answer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_RETURNED && !empty($answer->review_note))
+                        <p class="text-danger">
+                            <i class="fas fa-info-circle"></i>
+                            差し戻し理由 : {{ $answer->review_note }}
+                        </p>
+                    @endif
+                </list-view-card>
+            </list-view>
+
+            <list-view>
+                <template v-slot:title>確認操作</template>
+                @if ($answer->review_status !== \App\Eloquents\Answer::REVIEW_STATUS_ACCEPTED)
+                <list-view-card>
+                    <form method="post"
+                        action="{{ route('staff.forms.answers.accept', ['form' => $form, 'answer' => $answer]) }}">
+                        @csrf
+                        @method('patch')
+                        <input type="hidden" name="lock_version" value="{{ $answer->lock_version }}">
+                        <button type="submit" class="btn is-primary">完了にする</button>
+                    </form>
+                </list-view-card>
+                @endif
+                <list-view-card>
+                    <form method="post"
+                        action="{{ route('staff.forms.answers.return', ['form' => $form, 'answer' => $answer]) }}">
+                        @csrf
+                        @method('patch')
+                        <input type="hidden" name="lock_version" value="{{ $answer->lock_version }}">
+                        <list-view-form-group label-for="review_note">
+                            <template v-slot:label>差し戻し理由</template>
+                            <textarea id="review_note" name="review_note"
+                                class="form-control @error('review_note') is-invalid @enderror" required>{{ old('review_note') }}</textarea>
+                            @error('review_note')
+                                <template v-slot:invalid>{{ $message }}</template>
+                            @enderror
+                        </list-view-form-group>
+                        <button type="submit" class="btn is-primary-inverse">差し戻す</button>
+                    </form>
+                </list-view-card>
+            </list-view>
+
+            <list-view>
+                <template v-slot:title>過去の提出</template>
+                @php $staff_revisions = $answer->revisions()->orderByDesc('revision')->get(); @endphp
+                @if ($staff_revisions->isEmpty())
+                    <list-view-item
+                        href="{{ route('staff.forms.answers.edit', ['form' => $form, 'answer' => $answer]) }}">
+                        <template v-slot:title>第1版</template>
+                        <template v-slot:meta>@datetime($answer->submitted_at ?? $answer->created_at)</template>
+                    </list-view-item>
+                @else
+                    @foreach ($staff_revisions as $_revision)
+                        <list-view-item
+                            href="{{ route('staff.forms.answers.revisions.show', ['form' => $form, 'answer' => $answer, 'revision' => $_revision]) }}">
+                            <template v-slot:title>第{{ $_revision->revision }}版</template>
+                            <template v-slot:meta>@datetime($_revision->submitted_at)</template>
+                        </list-view-item>
+                    @endforeach
+                @endif
+            </list-view>
+        </app-container>
+    @endif
+
     <form method="post"
         action="{{ empty($answer) ? route('staff.forms.answers.store', [$form]) : route('staff.forms.answers.update', [$form, $answer]) }}"
         enctype="multipart/form-data">

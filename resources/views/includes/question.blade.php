@@ -7,7 +7,9 @@
 @elseif ($question->type === 'table')
     @php
         $table_columns = is_array($question->table) ? $question->table : [];
-        $table_value = old('answers.' . $question->id, $answer_details[$question->id] ?? []);
+        $table_value = empty($revision ?? null)
+            ? old('answers.' . $question->id, $answer_details[$question->id] ?? [])
+            : ($answer_details[$question->id] ?? []);
         if (!is_array($table_value)) {
             $table_value = [];
         }
@@ -20,8 +22,11 @@
         }
 
         if (!empty($answer)) {
-            $table_envelope = app(\App\Services\Forms\AnswerDetailsService::class)
-                ->getTableAnswerEnvelopeByAnswer($answer, $question->id);
+            $table_envelope = !empty($revision ?? null)
+                ? app(\App\Services\Forms\AnswerDetailsService::class)
+                    ->getTableAnswerEnvelopeByRevision($revision, $question->id)
+                : app(\App\Services\Forms\AnswerDetailsService::class)
+                    ->getTableAnswerEnvelopeByAnswer($answer, $question->id);
             $current_column_ids = array_column($table_columns, 'id');
             foreach (($table_envelope['columns'] ?? []) as $snapshot_column) {
                 if (!in_array($snapshot_column['id'] ?? null, $current_column_ids, true)) {
@@ -39,11 +44,20 @@
             }
         }
 
-        $table_upload_route = ($show_upload_route ?? 'forms.answers.uploads.show') === 'staff.forms.answers.uploads.show'
-            ? 'staff.forms.answers.uploads.table.show'
-            : 'forms.answers.uploads.table.show';
+        // $show_upload_route が「.uploads.show」で終わる規約を利用し、
+        // 表形式の設問用のアップロードルート名を組み立てる
+        // (通常の回答用・リビジョン閲覧用のいずれの route 名にも対応する)
+        $table_upload_route = str_replace(
+            '.uploads.show',
+            '.uploads.table.show',
+            $show_upload_route ?? 'forms.answers.uploads.show'
+        );
+        $table_upload_route_params = ['form' => $form, 'answer' => $answer, 'question' => $question];
+        if (!empty($revision ?? null)) {
+            $table_upload_route_params['revision'] = $revision;
+        }
         $table_upload_url_template = !empty($answer)
-            ? route($table_upload_route, ['form' => $form, 'answer' => $answer, 'question' => $question, 'row' => '__ROW__', 'column' => '__COLUMN__'])
+            ? route($table_upload_route, array_merge($table_upload_route_params, ['row' => '__ROW__', 'column' => '__COLUMN__']))
             : null;
     @endphp
     <question-item @if ($question->is_required) required @endif
@@ -75,9 +89,9 @@
     {{-- ファイルアップロード済の場合は、アップロードしたファイルにアクセスできるURLをvalueに設定 --}}
     <question-item @if ($question->is_required) required @endif
         @if ($question->type === 'upload' && !empty($answer) && !empty($answer_details[$question->id]))
-            value="{{ route($show_upload_route ?? 'forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question]) }}"
+            value="{{ route($show_upload_route ?? 'forms.answers.uploads.show', array_merge(['form' => $form, 'answer' => $answer, 'question' => $question], empty($revision ?? null) ? [] : ['revision' => $revision])) }}"
         @else
-            v-bind:value="{{ json_encode(old('answers.' . $question->id, $answer_details[$question->id] ?? null)) }}"
+            v-bind:value="{{ json_encode(empty($revision ?? null) ? old('answers.' . $question->id, $answer_details[$question->id] ?? null) : ($answer_details[$question->id] ?? null)) }}"
         @endif
         type="{{ $question->type }}" v-bind:question-id="{{ $question->id }}" name="{{ $question->name }}"
         description="{{ $question->description }}" v-bind:options="{{ json_encode($question->optionsArray) }}"

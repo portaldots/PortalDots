@@ -32,6 +32,7 @@ class FormRequest extends BaseRequest
             'max_answers' => ['required', 'integer', 'min:1'],
             'is_public' => ['boolean'],
             'answerable_tags' => ['nullable', 'array'],
+            'requires_review' => ['boolean'],
         ];
     }
 
@@ -51,6 +52,7 @@ class FormRequest extends BaseRequest
             'max_answers' => '企画毎に回答可能とする回答数',
             'is_public' => '公開設定',
             'answerable_tags' => 'フォームへ回答可能なユーザー',
+            'requires_review' => '提出後の確認',
         ];
     }
 }

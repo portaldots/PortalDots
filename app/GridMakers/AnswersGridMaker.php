@@ -83,6 +83,7 @@ class AnswersGridMaker implements GridMakable
         return [
             'id',
             'circle_id',
+            ...($this->form->requires_review ? ['review_status'] : []),
             'created_at',
             'updated_at',
             ...$form_keys,
@@ -121,6 +122,13 @@ class AnswersGridMaker implements GridMakable
                 'created_at' => FilterableKey::datetime(),
                 'updated_at' => FilterableKey::datetime(),
             ],
+            $this->form->requires_review ? [
+                'review_status' => FilterableKey::enum([
+                    Answer::REVIEW_STATUS_SUBMITTED,
+                    Answer::REVIEW_STATUS_RETURNED,
+                    Answer::REVIEW_STATUS_ACCEPTED,
+                ]),
+            ] : [],
             $questionFilterableKeys
         ));
     }
@@ -138,6 +146,7 @@ class AnswersGridMaker implements GridMakable
         return [
             'id',
             'circle_id',
+            ...($this->form->requires_review ? ['review_status'] : []),
             'created_at',
             'updated_at',
             ...$formKeys,

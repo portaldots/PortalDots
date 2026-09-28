@@ -6,6 +6,7 @@ use Auth;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Form;
 use App\Eloquents\Circle;
+use App\Exceptions\Forms\DuplicateAnswerException;
 use App\Http\Requests\Staff\Forms\AnswerRequest;
 use App\Services\Forms\AnswersService;
 
@@ -29,7 +30,17 @@ class StoreAction extends Controller
         }
 
         $circle = Circle::submitted()->findOrFail($request->circle_id);
-        $answer = $this->answersService->createAnswer($form, $circle, $request);
+
+        try {
+            $answer = $this->answersService->createAnswer($form, $circle, $request, Auth::user());
+        } catch (DuplicateAnswerException $e) {
+            $existing = $this->answersService->getAnswersByCircle($form, $circle)->last();
+            return redirect()
+                ->route('staff.forms.answers.edit', ['form' => $form, 'answer' => $existing])
+                ->with('topAlert.type', 'danger')
+                ->with('topAlert.title', 'すでに回答が存在するため、以下の回答を編集してください');
+        }
+
         if ($answer) {
             if ($form->is_public) {
                 // フォームが公開されている場合にのみ確認メールを送信する

@@ -6,6 +6,7 @@ use Auth;
 use App\Http\Controllers\Controller;
 use App\Eloquents\Form;
 use App\Eloquents\Circle;
+use App\Exceptions\Forms\DuplicateAnswerException;
 use App\Http\Requests\Forms\StoreAnswerRequest;
 use App\Services\Forms\AnswersService;
 
@@ -32,7 +33,17 @@ class StoreAction extends Controller
         // ユーザーが企画に所属しているかどうかの検証は
         // StoreAnswerRequest で行っている
         $circle = Circle::approved()->findOrFail($request->circle_id);
-        $answer = $this->answersService->createAnswer($form, $circle, $request);
+
+        try {
+            $answer = $this->answersService->createAnswer($form, $circle, $request, Auth::user());
+        } catch (DuplicateAnswerException $e) {
+            $existing = $this->answersService->getAnswersByCircle($form, $circle)->last();
+            return redirect()
+                ->route('forms.answers.edit', ['form' => $form, 'answer' => $existing])
+                ->with('topAlert.type', 'danger')
+                ->with('topAlert.title', 'すでに回答が存在するため、以下の回答を編集してください');
+        }
+
         if ($answer) {
             $this->answersService->sendAll($answer, Auth::user());
             return redirect()

@@ -139,12 +139,14 @@ class Circle extends Model
      */
     public function scopeNotSubmitted($query)
     {
-        return $query->whereNull('submitted_at');
+        // answers.submitted_at と列名が衝突するため、テーブル名で修飾する
+        return $query->whereNull('circles.submitted_at');
     }
 
     public function scopeSubmitted($query)
     {
-        return $query->whereNotNull('submitted_at');
+        // answers.submitted_at と列名が衝突するため、テーブル名で修飾する
+        return $query->whereNotNull('circles.submitted_at');
     }
 
     public function hasSubmitted()
@@ -157,7 +159,8 @@ class Circle extends Model
      */
     public function scopePending($query)
     {
-        return $query->whereNotNull('submitted_at')->whereNull('status');
+        // answers.submitted_at と列名が衝突するため、テーブル名で修飾する
+        return $query->whereNotNull('circles.submitted_at')->whereNull('status');
     }
 
     public function isPending()
@@ -170,7 +173,8 @@ class Circle extends Model
      */
     public function scopeApproved($query)
     {
-        return $query->whereNotNull('submitted_at')->where('status', 'approved');
+        // answers.submitted_at と列名が衝突するため、テーブル名で修飾する
+        return $query->whereNotNull('circles.submitted_at')->where('status', 'approved');
     }
 
     public function hasApproved()
@@ -183,7 +187,8 @@ class Circle extends Model
      */
     public function scopeRejected($query)
     {
-        return $query->whereNotNull('submitted_at')->where('status', 'rejected');
+        // answers.submitted_at と列名が衝突するため、テーブル名で修飾する
+        return $query->whereNotNull('circles.submitted_at')->where('status', 'rejected');
     }
 
     public function hasRejected()

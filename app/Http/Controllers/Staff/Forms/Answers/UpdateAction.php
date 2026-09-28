@@ -24,7 +24,8 @@ class UpdateAction extends Controller
         // 回答に紐づく企画が参加登録未提出の場合、回答の更新を拒否する
         $answer->circle()->submitted()->firstOrFail();
 
-        $this->answersService->updateAnswer($form, $answer, $request);
+        // スタッフによる修正は、リビジョンを記録するが確認状況(review_status)は変更しない
+        $this->answersService->updateAnswer($form, $answer, $request, Auth::user(), true);
         if ($form->is_public && empty($form->participationType)) {
             // フォームが公開されている場合にのみ確認メールを送信する
             // ただし、参加登録フォームである場合は送信しない
