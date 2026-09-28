@@ -55,7 +55,10 @@ class StoreActionTest extends TestCase
                 'notes',
                 'everyone',
                 [],
-                []
+                [],
+                Mockery::on(function ($arg) {
+                    return $arg->id === $this->staff->id;
+                })
             )->andReturn($document);
         });
 

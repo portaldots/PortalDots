@@ -82,6 +82,11 @@ class Document extends Model
             ->using(DocumentViewableCircle::class);
     }
 
+    public function versions()
+    {
+        return $this->hasMany(DocumentVersion::class)->orderBy('version', 'desc');
+    }
+
     /**
      * 公開されている配布資料に限定するクエリスコープ
      *

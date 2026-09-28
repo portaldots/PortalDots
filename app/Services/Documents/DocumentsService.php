@@ -8,6 +8,7 @@ use App\Contracts\AudiencePolicy;
 use App\Eloquents\Circle;
 use App\Eloquents\Document;
 use App\Eloquents\Tag;
+use App\Eloquents\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -26,6 +27,7 @@ class DocumentsService
      * @param string $audience 配布資料の公開範囲
      * @param array $viewable_tags 配布資料を閲覧可能な企画のタグ
      * @param array $viewable_circles 配布資料を閲覧可能な企画のID
+     * @param User|null $uploaded_by ファイルをアップロードしたスタッフ
      * @return Document
      */
     public function createDocument(
@@ -37,7 +39,8 @@ class DocumentsService
         ?string $notes,
         string $audience = AudiencePolicy::EVERYONE,
         array $viewable_tags = [],
-        array $viewable_circles = []
+        array $viewable_circles = [],
+        ?User $uploaded_by = null
     ): Document {
         return DB::transaction(function () use (
             $name,
@@ -48,20 +51,31 @@ class DocumentsService
             $notes,
             $audience,
             $viewable_tags,
-            $viewable_circles
+            $viewable_circles,
+            $uploaded_by
         ) {
             $path = $file->store('documents');
+            $size = $file->getSize();
+            $extension = $file->getClientOriginalExtension();
 
             $document = Document::create([
                 'name' => $name,
                 'description' => $description,
                 'path' => $path,
-                'size' => $file->getSize(),
-                'extension' => $file->getClientOriginalExtension(),
+                'size' => $size,
+                'extension' => $extension,
                 'is_public' => $is_public,
                 'is_important' => $is_important,
                 'audience' => $audience,
                 'notes' => $notes,
+            ]);
+
+            $document->versions()->create([
+                'version' => 1,
+                'path' => $path,
+                'size' => $size,
+                'extension' => $extension,
+                'uploaded_by' => $uploaded_by?->id,
             ]);
 
             $this->syncViewableTagsAndCircles($document, $viewable_tags, $viewable_circles);
@@ -84,6 +98,7 @@ class DocumentsService
      * @param string $audience 配布資料の公開範囲
      * @param array $viewable_tags 配布資料を閲覧可能な企画のタグ
      * @param array $viewable_circles 配布資料を閲覧可能な企画のID
+     * @param User|null $uploaded_by ファイルをアップロードしたスタッフ
      * @return bool
      */
     public function updateDocument(
@@ -96,7 +111,8 @@ class DocumentsService
         ?string $notes,
         string $audience = AudiencePolicy::EVERYONE,
         array $viewable_tags = [],
-        array $viewable_circles = []
+        array $viewable_circles = [],
+        ?User $uploaded_by = null
     ): bool {
         return DB::transaction(function () use (
             $document,
@@ -108,18 +124,37 @@ class DocumentsService
             $notes,
             $audience,
             $viewable_tags,
-            $viewable_circles
+            $viewable_circles,
+            $uploaded_by
         ) {
+            // バージョン番号の衝突を防ぐため、行ロックを取ってから採番する
+            $document = Document::whereKey($document->id)->lockForUpdate()->firstOrFail();
+
+            $path = $document->path;
+            $size = $document->size;
+            $extension = $document->extension;
+
             if (!empty($file)) {
-                Storage::delete($document->path);
+                $path = $file->store('documents');
+                $size = $file->getSize();
+                $extension = $file->getClientOriginalExtension();
+
+                $nextVersion = (int)$document->versions()->max('version') + 1;
+                $document->versions()->create([
+                    'version' => $nextVersion,
+                    'path' => $path,
+                    'size' => $size,
+                    'extension' => $extension,
+                    'uploaded_by' => $uploaded_by?->id,
+                ]);
             }
 
             $result = $document->update([
                 'name' => $name,
                 'description' => $description,
-                'path' => empty($file) ? $document->path : $file->store('documents'),
-                'size' => empty($file) ? $document->size : $file->getSize(),
-                'extension' => empty($file) ? $document->extension : $file->getClientOriginalExtension(),
+                'path' => $path,
+                'size' => $size,
+                'extension' => $extension,
                 'is_public' => $is_public,
                 'is_important' => $is_important,
                 'audience' => $audience,
@@ -163,7 +198,9 @@ class DocumentsService
      */
     public function deleteDocument(Document $document): bool
     {
-        Storage::delete($document->path);
+        foreach ($document->versions as $version) {
+            Storage::delete($version->path);
+        }
         return $document->delete();
     }
 }

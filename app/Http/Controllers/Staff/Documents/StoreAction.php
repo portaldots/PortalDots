@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Staff\Documents;
 use App\Http\Controllers\Controller;
 use App\Services\Documents\DocumentsService;
 use App\Http\Requests\Staff\Documents\CreateDocumentRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreAction extends Controller
 {
@@ -31,7 +32,8 @@ class StoreAction extends Controller
             $validated['notes'],
             $validated['audience'],
             $validated['viewable_tags'] ?? [],
-            $validated['viewable_circles'] ?? []
+            $validated['viewable_circles'] ?? [],
+            Auth::user()
         );
 
         return redirect()

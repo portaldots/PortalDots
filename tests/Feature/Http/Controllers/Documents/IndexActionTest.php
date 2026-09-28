@@ -7,8 +7,11 @@ use App\Eloquents\Document;
 use App\Eloquents\Tag;
 use App\Eloquents\User;
 use App\Services\Circles\SelectorService;
+use App\Services\Documents\DocumentsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class IndexActionTest extends TestCase
@@ -145,5 +148,39 @@ class IndexActionTest extends TestCase
         } else {
             $response->assertDontSee($documentName);
         }
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 複数版がある配布資料には版番号と過去の版へのリンクが表示される()
+    {
+        Storage::fake('local');
+
+        $documentsService = App::make(DocumentsService::class);
+        $document = $documentsService->createDocument(
+            '複数版の配布資料',
+            null,
+            UploadedFile::fake()->create('第1版.pdf', 1, 'application/pdf'),
+            true,
+            false,
+            null
+        );
+        $documentsService->updateDocument(
+            $document,
+            '複数版の配布資料',
+            null,
+            UploadedFile::fake()->create('第2版.pdf', 1, 'application/pdf'),
+            true,
+            false,
+            null
+        );
+
+        $response = $this->get(route('documents.index'));
+
+        $response->assertSee('第2版');
+        $response->assertSee('第1版');
+        $response->assertSee(route('documents.versions.show', [
+            'document' => $document,
+            'version' => $document->versions()->where('version', 1)->firstOrFail(),
+        ]), false);
     }
 }

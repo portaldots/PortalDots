@@ -12,6 +12,8 @@ class EditAction extends Controller
 {
     public function __invoke(Document $document, AudiencePolicy $audiencePolicy)
     {
+        $document->load('versions.uploadedBy');
+
         return view('staff.documents.form')
             ->with('document', $document)
             ->with('default_tags', $document->viewableTags->pluck('name')->map(function ($item) {

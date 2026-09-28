@@ -36,6 +36,9 @@ Route::prefix('/documents')
     ->group(function () {
         Route::get('/', 'Documents\IndexAction')->name('index');
         Route::get('/{document}', 'Documents\ShowAction')->name('show');
+        Route::get('/{document}/versions/{version:version}', 'Documents\VersionsShowAction')
+            ->name('versions.show')
+            ->scopeBindings();
     });
 
 // 外観設定

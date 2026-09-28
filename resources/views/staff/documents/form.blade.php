@@ -29,9 +29,11 @@
             <list-view>
                 <list-view-form-group label-for="file">
                     <template v-slot:label>
-                        ファイル
                         @empty($document)
+                            ファイル
                             <app-badge danger>必須</app-badge>
+                        @else
+                            新しい版のファイル
                         @endempty
                     </template>
                     @isset($document)
@@ -39,6 +41,7 @@
                             <a href="{{ route('staff.documents.show', ['document' => $document]) }}" target="_blank"
                                 rel="noopener noreferrer">アップロード済ファイルを表示</a> {{ strtoupper($document->extension) }}ファイル •
                             @filesize($document->size)
+                            ファイルを選択すると新しい版として追加され、既存の版は残ります。
                         </template>
                     @endisset
                     <input id="file" class="form-control @error('file') is-invalid @enderror" type="file"
@@ -78,6 +81,27 @@
                     @endif
                 </list-view-form-group>
             </list-view>
+            @isset($document)
+                @if ($document->versions->isNotEmpty())
+                    <list-view>
+                        <template v-slot:title>版の履歴</template>
+                        @foreach ($document->versions as $version)
+                            <list-view-item no-border>
+                                <template v-slot:title>第{{ $version->version }}版</template>
+                                <template v-slot:meta>
+                                    @datetime($version->created_at) アップロード
+                                    @if ($version->uploadedBy)
+                                        ・{{ $version->uploadedBy->name }}
+                                    @endif
+                                    ・<a
+                                        href="{{ route('staff.documents.versions.show', ['document' => $document, 'version' => $version]) }}"
+                                        target="_blank" rel="noopener noreferrer">ダウンロード</a>
+                                </template>
+                            </list-view-item>
+                        @endforeach
+                    </list-view>
+                @endif
+            @endisset
             <list-view>
                 <list-view-form-group>
                     <template v-slot:label>公開設定</template>

@@ -11,14 +11,17 @@
         @else
             <list-view>
                 @foreach ($documents as $document)
-                    <list-view-item href="{{ route('documents.show', ['document' => $document]) }}" newtab>
+                    <list-view-item>
                         <template v-slot:title>
-                            @if ($document->is_important)
-                                <i class="fas fa-exclamation-circle fa-fw text-danger"></i>
-                            @else
-                                <i class="far fa-file-alt fa-fw"></i>
-                            @endif
-                            {{ $document->name }}
+                            <a href="{{ route('documents.show', ['document' => $document]) }}" target="_blank"
+                                rel="noopener noreferrer">
+                                @if ($document->is_important)
+                                    <i class="fas fa-exclamation-circle fa-fw text-danger"></i>
+                                @else
+                                    <i class="far fa-file-alt fa-fw"></i>
+                                @endif
+                                {{ $document->name }}
+                            </a>
                             @if ($document->isNew())
                                 <app-badge danger>NEW</app-badge>
                             @endif
@@ -29,6 +32,15 @@
                             {{ strtoupper($document->extension) }}ファイル
                             •
                             @filesize($document->size)
+                            @if ($document->versions->count() > 1)
+                                <br>
+                                第{{ $document->versions->first()->version }}版
+                                @foreach ($document->versions->skip(1) as $version)
+                                    ・<a
+                                        href="{{ route('documents.versions.show', ['document' => $document, 'version' => $version]) }}"
+                                        target="_blank" rel="noopener noreferrer">第{{ $version->version }}版</a>
+                                @endforeach
+                            @endif
                         </template>
                         {{ $document->description }}
                     </list-view-item>

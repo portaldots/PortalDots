@@ -21,7 +21,8 @@ class DocumentsGridMaker implements GridMakable
      */
     protected function baseEloquentQuery(): Builder
     {
-        return Document::select($this->keys());
+        $columns = array_diff($this->keys(), ['version']);
+        return Document::select($columns)->with('versions');
     }
 
     /**
@@ -35,6 +36,7 @@ class DocumentsGridMaker implements GridMakable
             'path',
             'size',
             'extension',
+            'version',
             'description',
             'is_public',
             'is_important',
@@ -99,6 +101,9 @@ class DocumentsGridMaker implements GridMakable
             switch ($key) {
                 case 'extension':
                     $item[$key] = mb_strtoupper($record->extension);
+                    break;
+                case 'version':
+                    $item[$key] = optional($record->versions->first())->version;
                     break;
                 case 'created_at':
                     $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;
