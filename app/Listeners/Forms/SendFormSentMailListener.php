@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listeners\Forms;
 
+use App\Contracts\FormAnswerUrl;
 use App\Eloquents\Answer;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
@@ -20,8 +21,10 @@ class SendFormSentMailListener
 {
     private NotificationDeliveryService $notificationDeliveryService;
 
-    public function __construct(NotificationDeliveryService $notificationDeliveryService)
-    {
+    public function __construct(
+        NotificationDeliveryService $notificationDeliveryService,
+        private readonly FormAnswerUrl $answerUrl
+    ) {
         $this->notificationDeliveryService = $notificationDeliveryService;
     }
 
@@ -34,9 +37,7 @@ class SendFormSentMailListener
         }
 
         $answer = Answer::where('form_id', $form->id)->where('circle_id', $circle->id)->first();
-        $url = !empty($answer)
-            ? route('forms.answers.edit', ['form' => $form->id, 'answer' => $answer->id])
-            : route('forms.answers.create', ['form' => $form->id]);
+        $url = $this->answerUrl->for($circle->id, $form->id, $answer?->id);
 
         $dueAtText = empty($event->dueAt) ? '指定なし' : FormatTextService::datetime($event->dueAt);
 

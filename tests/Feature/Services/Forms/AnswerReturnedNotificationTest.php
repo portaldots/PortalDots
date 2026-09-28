@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Services\Forms;
 
+use App\Contracts\FormAnswerUrl;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
 use App\Eloquents\User;
@@ -87,5 +88,27 @@ class AnswerReturnedNotificationTest extends TestCase
         event($event);
 
         Mail::assertSent(AnswerReturnedMailable::class, 2);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 差し戻しの回答先URLを差し替えられる()
+    {
+        Mail::fake();
+        App::instance(FormAnswerUrl::class, new class implements FormAnswerUrl {
+            public function for(int $circleId, int $formId, ?int $answerId): string
+            {
+                return "https://example.test/cases/{$circleId}/forms/{$formId}";
+            }
+        });
+
+        $form = factory(Form::class)->create(['requires_review' => true]);
+        $circle = factory(Circle::class)->create();
+        $member = $this->memberOf($circle);
+        Auth::login($member);
+        $answer = $this->answersService->createAnswer($form, $circle, null, $member);
+        $this->answersService->returnAnswer($answer, $this->staff, '修正してください');
+
+        Mail::assertSent(AnswerReturnedMailable::class, fn ($mail) =>
+            $mail->url === "https://example.test/cases/{$circle->id}/forms/{$form->id}");
     }
 }

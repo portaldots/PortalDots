@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listeners\Forms;
 
+use App\Contracts\FormAnswerUrl;
 use App\Eloquents\Circle;
 use App\Events\Forms\AnswerReturned;
 use App\Mail\Forms\AnswerReturnedMailable;
@@ -17,8 +18,10 @@ class SendAnswerReturnedMailListener
 {
     private NotificationDeliveryService $notificationDeliveryService;
 
-    public function __construct(NotificationDeliveryService $notificationDeliveryService)
-    {
+    public function __construct(
+        NotificationDeliveryService $notificationDeliveryService,
+        private readonly FormAnswerUrl $answerUrl
+    ) {
         $this->notificationDeliveryService = $notificationDeliveryService;
     }
 
@@ -29,7 +32,7 @@ class SendAnswerReturnedMailListener
             return;
         }
 
-        $url = route('forms.answers.edit', ['form' => $event->formId, 'answer' => $event->answerId]);
+        $url = $this->answerUrl->for($circle->id, $event->formId, $event->answerId);
 
         foreach ($circle->users as $recipient) {
             $dedupeKey = "answer-returned:{$event->answerId}:{$event->lockVersion}:{$recipient->id}";
