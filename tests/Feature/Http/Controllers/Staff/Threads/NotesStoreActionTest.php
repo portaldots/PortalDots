@@ -130,6 +130,32 @@ class NotesStoreActionTest extends TestCase
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
+    public function 会話のHTML添付ファイルはスタッフと企画の両方でダウンロードになる()
+    {
+        $file = UploadedFile::fake()->create('content.html', 1, 'text/html');
+        $this->threadsService->postCircleMessage(
+            $this->thread,
+            $this->member,
+            '添付します',
+            null,
+            [$file],
+            (string)Str::uuid()
+        );
+        $attachment = ThreadEntryAttachment::where('name', 'content.html')->firstOrFail();
+
+        $staffResponse = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.threads.attachments.show', ['attachment' => $attachment]));
+        $staffResponse->assertOk();
+        $this->assertStringStartsWith('attachment;', $staffResponse->headers->get('content-disposition'));
+
+        $memberResponse = $this->actingAs($this->member)
+            ->get(route('contacts.attachments.show', ['attachment' => $attachment]));
+        $memberResponse->assertOk();
+        $this->assertStringStartsWith('attachment;', $memberResponse->headers->get('content-disposition'));
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 権限がないユーザーはスタッフの会話一覧や詳細を開けない()
     {
         $noPermissionStaff = factory(User::class)->states('staff')->create();

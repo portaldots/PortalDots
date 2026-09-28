@@ -25,6 +25,6 @@ class RevisionShowAction extends Controller
         $path = $uploadedFilesService->getPathForRevisionAnswer($form_id, $answer, $revision, $question_id);
         abort_if($path === null, 404);
 
-        return response()->file($path);
+        return response()->download($path);
     }
 }
