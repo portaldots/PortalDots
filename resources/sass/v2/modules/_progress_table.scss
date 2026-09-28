@@ -1,0 +1,49 @@
+@use "@/sass/variables" as *;
+
+.progress_table {
+  background: $color-bg-surface;
+  border-collapse: collapse;
+  width: 100%;
+
+  th,
+  td {
+    border-bottom: 1px solid $color-border;
+    padding: $spacing-md $spacing;
+    text-align: left;
+    vertical-align: middle;
+  }
+  th {
+    font-weight: bold;
+    white-space: nowrap;
+  }
+  tbody tr:nth-child(even) {
+    background: $color-grid-table-stripe;
+  }
+
+  // スマートフォン幅では見出し行を隠し、各行をラベル付きの縦並びにする
+  @media screen and (max-width: $breakpoint-listview-sm) {
+    thead {
+      display: none;
+    }
+    tr,
+    td {
+      display: block;
+    }
+    tr {
+      border-bottom: 1px solid $color-border;
+      padding: $spacing-sm 0;
+    }
+    td {
+      border-bottom: 0;
+      padding: $spacing-xs $spacing;
+    }
+    td[data-label]::before {
+      color: $color-muted;
+      content: attr(data-label) " : ";
+    }
+  }
+}
+
+.progress_table-wrapper {
+  overflow-x: auto;
+}

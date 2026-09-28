@@ -5,6 +5,9 @@ namespace Tests\Feature\Http\Controllers;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Services\Utils\DotenvService;
+use App\Eloquents\Document;
+use App\Eloquents\DocumentApproval;
+use App\Eloquents\DocumentVersion;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
@@ -124,5 +127,67 @@ class HomeActionTest extends TestCase
 
         $response->assertDontSee($participationFormName);
         $response->assertSee($normalFormName);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function ゲストには対応が必要なものセクションが表示されない()
+    {
+        $response = $this->get(route('home'));
+
+        $response->assertDontSee('対応が必要なもの');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 対応が必要なものが無い場合は空の表示になる()
+    {
+        $circle = factory(Circle::class)->create();
+        $user = factory(User::class)->create();
+        $user->circles()->attach($circle, ['is_leader' => true]);
+
+        $response = $this->actingAs($user)->get(route('home'));
+
+        $response->assertSee('対応が必要なもの');
+        $response->assertSee('対応が必要なものはありません');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 対応が必要なものは選択中の企画のものだけが表示される()
+    {
+        $circle = factory(Circle::class)->create();
+        $user = factory(User::class)->create();
+        $user->circles()->attach($circle, ['is_leader' => true]);
+
+        // 選択中の企画向けの未提出フォーム
+        factory(Form::class)->create(['requires_review' => false, 'name' => '自分の企画向けフォーム']);
+
+        // 他の企画だけに宛てた確認依頼
+        $otherCircle = factory(Circle::class)->create();
+        $otherDocument = factory(Document::class)->create(['name' => '他企画向け配布資料']);
+        $otherVersion = factory(DocumentVersion::class)->create(['document_id' => $otherDocument->id]);
+        DocumentApproval::create([
+            'document_id' => $otherDocument->id,
+            'circle_id' => $otherCircle->id,
+            'document_version_id' => $otherVersion->id,
+            'status' => DocumentApproval::STATUS_PENDING,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('home'));
+
+        $response->assertSee('自分の企画向けフォーム');
+        $response->assertSee('提出してください');
+        $response->assertDontSee('対応が必要なものはありません');
+
+        // 「最近の配布資料」など、他のセクションにも同名の資料が出うるため、
+        // 「対応が必要なもの」に渡されたデータそのものを検証する
+        $progress = $response->viewData('circle_progress');
+        $labels = $progress
+            ->unitsInState([
+                \App\Services\Circles\ValueObjects\ProgressUnit::STATE_TODO,
+                \App\Services\Circles\ValueObjects\ProgressUnit::STATE_CHANGES,
+            ])
+            ->map(fn ($unit) => $unit->getLabel());
+
+        $this->assertContains('自分の企画向けフォーム', $labels->all());
+        $this->assertNotContains('他企画向け配布資料', $labels->all());
     }
 }

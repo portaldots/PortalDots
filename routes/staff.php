@@ -209,6 +209,13 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::delete('/{circle}', 'Staff\Circles\DestroyAction')->name('destroy')->middleware(['can:staff.circles.delete']);
             });
 
+        // 企画の進捗（申請フォームへの回答・配布資料の確認依頼の状況）
+        Route::prefix('/progress')
+            ->name('progress.')
+            ->group(function () {
+                Route::get('/', 'Staff\Progress\IndexAction')->name('index')->middleware(['can:staff.circles.read']);
+            });
+
         Route::prefix('/tags')
             ->name('tags.')
             ->group(function () {

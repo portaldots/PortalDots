@@ -9,6 +9,8 @@ use App\Eloquents\Page;
 use App\Eloquents\Document;
 use App\Eloquents\Form;
 use App\Eloquents\ParticipationType;
+use App\Eloquents\Thread;
+use App\Services\Circles\CircleProgressService;
 use App\Services\Circles\SelectorService;
 
 class HomeAction extends Controller
@@ -23,9 +25,15 @@ class HomeAction extends Controller
      */
     private $selectorService;
 
-    public function __construct(SelectorService $selectorService)
+    /**
+     * @var CircleProgressService
+     */
+    private $circleProgressService;
+
+    public function __construct(SelectorService $selectorService, CircleProgressService $circleProgressService)
     {
         $this->selectorService = $selectorService;
+        $this->circleProgressService = $circleProgressService;
     }
 
     public function __invoke()
@@ -37,7 +45,23 @@ class HomeAction extends Controller
             $circle->loadMissing(['places', 'participationType']);
         }
 
+        // ログイン中かつ企画が選択されている場合のみ、「対応が必要なもの」を計算する
+        $showsCircleActionItems = Auth::check() && isset($circle);
+
         return view('home')
+            ->with('shows_circle_action_items', $showsCircleActionItems)
+            ->with(
+                'circle_progress',
+                $showsCircleActionItems ? $this->circleProgressService->forCircle($circle) : null
+            )
+            ->with(
+                'circle_thread',
+                $showsCircleActionItems
+                    ? Thread::where('circle_id', $circle->id)
+                        ->where('status', Thread::STATUS_AWAITING_REPLY)
+                        ->first()
+                    : null
+            )
             ->with('participation_types', ParticipationType::open()->public()->get())
             ->with(
                 'my_circles',
