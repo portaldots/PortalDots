@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Forms;
 
+use App\Contracts\FileStorageLayout;
 use App\Eloquents\Answer;
 use App\Eloquents\AnswerRevision;
 use App\Eloquents\Question;
@@ -11,6 +12,13 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadedFilesService
 {
+    private FileStorageLayout $fileStorageLayout;
+
+    public function __construct(FileStorageLayout $fileStorageLayout)
+    {
+        $this->fileStorageLayout = $fileStorageLayout;
+    }
+
     public function getPathForAnswer(int $form_id, Answer $answer, int $question_id): ?string
     {
         if ($answer->form_id !== $form_id) {
@@ -132,20 +140,23 @@ class UploadedFilesService
 
     public function getPath(?string $path): ?string
     {
+        $area = $this->fileStorageLayout->directoryFor(FileStorageLayout::AREA_ANSWER_DETAILS);
+        $prefix = $area . '/';
+
         if (
-            $path === null || !str_starts_with($path, 'answer_details/') ||
+            $path === null || !str_starts_with($path, $prefix) ||
             str_contains($path, '\\') || str_contains($path, "\0")
         ) {
             return null;
         }
 
-        // アップロード時に生成されるパスは answer_details 直下のファイルのみ。
-        $filename = substr($path, strlen('answer_details/'));
+        // アップロード時に生成されるパスは保存先ディレクトリ直下のファイルのみ。
+        $filename = substr($path, strlen($prefix));
         if ($filename === '' || $filename !== basename($filename)) {
             return null;
         }
 
-        $directory = realpath(Storage::path('answer_details'));
+        $directory = realpath(Storage::path($area));
         $fullpath = realpath(Storage::path($path));
         if (
             $directory === false || $fullpath === false ||

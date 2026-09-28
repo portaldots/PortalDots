@@ -21,6 +21,7 @@ class MessagesStoreActionTest extends TestCase
     private ThreadsService $threadsService;
     private Circle $circle;
     private User $member;
+    private User $secondMember;
     private User $staff;
     private Thread $thread;
 
@@ -32,6 +33,8 @@ class MessagesStoreActionTest extends TestCase
         $this->circle = factory(Circle::class)->create();
         $this->member = factory(User::class)->create();
         $this->circle->users()->attach($this->member->id, ['is_leader' => true]);
+        $this->secondMember = factory(User::class)->create();
+        $this->circle->users()->attach($this->secondMember->id, ['is_leader' => false]);
         $this->staff = factory(User::class)->states('staff')->create();
         Permission::create(['name' => 'staff.threads.read,edit']);
         $this->staff->syncPermissions(['staff.threads.read,edit']);
@@ -48,7 +51,7 @@ class MessagesStoreActionTest extends TestCase
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
-    public function 送信して返答待ちにするボタンで状態が変わりメールが送信される()
+    public function 送信して返答待ちにするボタンで状態が変わり企画のメンバー全員に1通ずつメールが送信される()
     {
         Mail::fake();
 
@@ -67,6 +70,10 @@ class MessagesStoreActionTest extends TestCase
         Mail::assertSent(StaffMessageMailable::class, function ($mail) {
             return $mail->hasTo($this->member->email);
         });
+        Mail::assertSent(StaffMessageMailable::class, function ($mail) {
+            return $mail->hasTo($this->secondMember->email);
+        });
+        Mail::assertSent(StaffMessageMailable::class, 2);
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -105,7 +112,8 @@ class MessagesStoreActionTest extends TestCase
 
         // 企画の初回メッセージ + スタッフの返信1件 = 2件
         $this->assertDatabaseCount('thread_entries', 2);
-        Mail::assertSent(StaffMessageMailable::class, 1);
+        // 企画のメンバー2人に1通ずつ。2回目の投稿では重複送信しない
+        Mail::assertSent(StaffMessageMailable::class, 2);
     }
 
     #[\PHPUnit\Framework\Attributes\Test]

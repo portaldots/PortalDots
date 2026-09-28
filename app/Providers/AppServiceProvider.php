@@ -5,8 +5,10 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use App\Contracts\AudiencePolicy;
+use App\Contracts\FileStorageLayout;
 use App\Contracts\GuestAccessPolicy;
 use App\Policies\DefaultAudiencePolicy;
+use App\Policies\DefaultFileStorageLayout;
 use App\Policies\DefaultGuestAccessPolicy;
 use App\Services\Circles\SelectorService;
 use App\Services\Pages\ReadsService;
@@ -28,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(DotenvEditor::class, Utf8DotenvEditor::class);
         $this->app->bind(AudiencePolicy::class, DefaultAudiencePolicy::class);
         $this->app->bind(GuestAccessPolicy::class, DefaultGuestAccessPolicy::class);
+        $this->app->bind(FileStorageLayout::class, DefaultFileStorageLayout::class);
     }
 
     /**

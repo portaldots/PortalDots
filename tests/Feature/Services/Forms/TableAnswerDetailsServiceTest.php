@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Services\Forms;
 
+use App\Contracts\FileStorageLayout;
 use App\Eloquents\Answer;
 use App\Eloquents\AnswerDetail;
 use App\Eloquents\Circle;
@@ -13,6 +14,7 @@ use App\Services\Forms\AnswersService;
 use App\Services\Utils\ActivityLogService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -131,7 +133,7 @@ class TableAnswerDetailsServiceTest extends TestCase
         ]);
         $activityLog = $this->mock(ActivityLogService::class);
         $activityLog->shouldReceive('logOnlyAttributesChanged')->once()->andThrow(new RuntimeException('rollback'));
-        $answerDetails = new AnswerDetailsService($activityLog);
+        $answerDetails = new AnswerDetailsService($activityLog, App::make(FileStorageLayout::class));
         $answers = new AnswersService($answerDetails);
 
         try {

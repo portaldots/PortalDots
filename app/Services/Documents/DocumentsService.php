@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Documents;
 
 use App\Contracts\AudiencePolicy;
+use App\Contracts\FileStorageLayout;
 use App\Eloquents\Circle;
 use App\Eloquents\Document;
 use App\Eloquents\Tag;
@@ -20,9 +21,14 @@ class DocumentsService
      */
     private $documentApprovalsService;
 
-    public function __construct(DocumentApprovalsService $documentApprovalsService)
-    {
+    private FileStorageLayout $fileStorageLayout;
+
+    public function __construct(
+        DocumentApprovalsService $documentApprovalsService,
+        FileStorageLayout $fileStorageLayout
+    ) {
         $this->documentApprovalsService = $documentApprovalsService;
+        $this->fileStorageLayout = $fileStorageLayout;
     }
 
     /**
@@ -64,7 +70,7 @@ class DocumentsService
             $viewable_circles,
             $uploaded_by
         ) {
-            $path = $file->store('documents');
+            $path = $file->store($this->fileStorageLayout->directoryFor(FileStorageLayout::AREA_DOCUMENTS));
             $size = $file->getSize();
             $extension = $file->getClientOriginalExtension();
 
@@ -145,7 +151,7 @@ class DocumentsService
             $extension = $document->extension;
 
             if (!empty($file)) {
-                $path = $file->store('documents');
+                $path = $file->store($this->fileStorageLayout->directoryFor(FileStorageLayout::AREA_DOCUMENTS));
                 $size = $file->getSize();
                 $extension = $file->getClientOriginalExtension();
 

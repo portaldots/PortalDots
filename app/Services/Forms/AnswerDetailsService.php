@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Forms;
 
+use App\Contracts\FileStorageLayout;
 use App\Eloquents\Form;
 use App\Eloquents\Answer;
 use App\Eloquents\AnswerRevision;
@@ -23,11 +24,14 @@ class AnswerDetailsService
      */
     private $activityLogService;
 
+    private FileStorageLayout $fileStorageLayout;
+
     private array $newlyStoredFiles = [];
 
-    public function __construct(ActivityLogService $activityLogService)
+    public function __construct(ActivityLogService $activityLogService, FileStorageLayout $fileStorageLayout)
     {
         $this->activityLogService = $activityLogService;
+        $this->fileStorageLayout = $fileStorageLayout;
     }
 
     /**
@@ -317,7 +321,7 @@ class AnswerDetailsService
 
     private function storeUploadedFile($file): string
     {
-        $path = $file->store('answer_details');
+        $path = $file->store($this->fileStorageLayout->directoryFor(FileStorageLayout::AREA_ANSWER_DETAILS));
         $this->newlyStoredFiles[] = $path;
         return $path;
     }
