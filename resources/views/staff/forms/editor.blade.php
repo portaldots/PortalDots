@@ -2,15 +2,15 @@
 
 @section('no_footer', true)
 
-@section('title', "{$form->name} — フォームエディター")
+@section('title', $form->name . ' — ' . config('portal.form_editor.title'))
 
 @push('body-class')
     has-content-fill
 @endpush
 
 @section('navbar')
-    <app-nav-bar-back href="{{ route('staff.forms.index') }}">
-        申請管理
+    <app-nav-bar-back href="{{ route(config('portal.form_editor.back_route')) }}">
+        {{ config('portal.form_editor.back_label') }}
     </app-nav-bar-back>
 @endsection
 

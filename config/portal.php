@@ -29,6 +29,17 @@ return [
         'show_mode_switch' => true,
         'staff_bottom_tabs' => false,
     ],
+    // フォームの項目エディターを別の業務画面から使う場合の表示と遷移先
+    'form_editor' => [
+        'title' => 'フォームエディター',
+        'back_route' => 'staff.forms.index',
+        'back_label' => '申請管理',
+        'settings_route' => 'staff.forms.edit',
+        'settings_label' => '設定',
+        'editor_label' => 'エディター',
+        'show_answers_tab' => true,
+        'publish_confirmation' => "公開しますか？\n公開しても受付期間外の場合、団体は回答できません。",
+    ],
 
     // ユーザー登録・ログイン方法・学籍番号・大学提供メールアドレスの有無
     // プライベートなデプロイ用パッケージが Service Provider から

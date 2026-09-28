@@ -1,6 +1,6 @@
 <template>
   <header class="editor-header editor-header-styling">
-    <div class="editor-header__title">フォームエディター</div>
+    <div class="editor-header__title">{{ editor_title }}</div>
     <div
       class="editor-header__status"
       v-if="!is_unexpected_error && !validation_error"
@@ -60,6 +60,12 @@ import { SET_FORM_PUBLIC, SET_FORM_PRIVATE, SAVE_FORM } from "../store/editor";
 
 export default {
   computed: {
+    editor_title() {
+      return document.getElementById("forms-editor-config").dataset.editorTitle;
+    },
+    publish_confirmation() {
+      return document.getElementById("forms-editor-config").dataset.publishConfirmation;
+    },
     save_status() {
       return this.$store.state.status.save_status;
     },
@@ -96,7 +102,7 @@ export default {
     setPublic() {
       if (
         window.confirm(
-          "公開しますか？\n公開しても受付期間外の場合、団体は回答できません。"
+          this.publish_confirmation
         )
       ) {
         this.$store.commit(`editor/${SET_FORM_PUBLIC}`);
