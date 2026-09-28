@@ -85,6 +85,11 @@ class StoreActionTest extends TestCase
                 {
                     return [self::SELECTED];
                 }
+
+                public function allowsTagTargets(): bool
+                {
+                    return true;
+                }
             };
         });
 
@@ -107,5 +112,60 @@ class StoreActionTest extends TestCase
             ]));
 
         $response->assertSessionHasErrors(['audience']);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function タグの指定を許可しないAudiencePolicyの場合タグを指定するとエラーになる()
+    {
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return false;
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.forms.store'), $this->baseParams([
+                'audience' => 'selected',
+                'answerable_tags' => ['Aタグ'],
+            ]));
+
+        $response->assertSessionHasErrors(['answerable_tags']);
+        $this->assertDatabaseMissing('forms', ['name' => 'テストフォーム']);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function タグの指定を許可しないAudiencePolicyの場合新規作成時はまだ企画を送付できないためselectedにできない()
+    {
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return false;
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.forms.store'), $this->baseParams([
+                'audience' => 'selected',
+            ]));
+
+        $response->assertSessionHasErrors(['audience']);
+        $this->assertDatabaseMissing('forms', ['name' => 'テストフォーム']);
     }
 }

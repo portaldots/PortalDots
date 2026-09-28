@@ -26,6 +26,8 @@ class FormRequest extends BaseRequest
      */
     public function rules()
     {
+        $audiencePolicy = app(AudiencePolicy::class);
+
         return [
             'name' => ['required', 'string'],
             'description' => ['nullable', 'string'],
@@ -34,17 +36,25 @@ class FormRequest extends BaseRequest
             'close_at' => ['required', 'date', 'after:open_at'],
             'max_answers' => ['required', 'integer', 'min:1'],
             'is_public' => ['boolean'],
-            'answerable_tags' => ['nullable', 'array'],
+            'answerable_tags' => [
+                'nullable',
+                'array',
+                function ($attribute, $value, $fail) use ($audiencePolicy) {
+                    if (!$audiencePolicy->allowsTagTargets() && !empty($value)) {
+                        $fail('タグによる公開範囲の指定は許可されていません。');
+                    }
+                },
+            ],
             'requires_review' => ['boolean'],
             'audience' => [
                 'required',
                 'string',
-                Rule::in(Form::allowedAudiences(app(AudiencePolicy::class))),
-                function ($attribute, $value, $fail) {
+                Rule::in(Form::allowedAudiences($audiencePolicy)),
+                function ($attribute, $value, $fail) use ($audiencePolicy) {
                     if ($value !== AudiencePolicy::SELECTED) {
                         return;
                     }
-                    if (!empty($this->input('answerable_tags'))) {
+                    if ($audiencePolicy->allowsTagTargets() && !empty($this->input('answerable_tags'))) {
                         return;
                     }
 
@@ -54,7 +64,9 @@ class FormRequest extends BaseRequest
                         return;
                     }
 
-                    $fail('公開範囲を「選んだタグ・企画のみ」にする場合、タグを指定するか、送付先の企画を1つ以上追加してください。');
+                    $fail($audiencePolicy->allowsTagTargets()
+                        ? '公開範囲を「選んだタグ・企画のみ」にする場合、タグを指定するか、送付先の企画を1つ以上追加してください。'
+                        : '公開範囲を「選んだタグ・企画のみ」にする場合、送付先の企画を1つ以上追加してください。');
                 },
             ],
         ];

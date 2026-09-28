@@ -30,4 +30,10 @@ interface AudiencePolicy
      * @return string[]
      */
     public function allowedAudiences(): array;
+
+    /**
+     * タグによる公開範囲の指定を許可するかどうか
+     * falseの場合、公開範囲「selected」はタグではなく企画を直接指定する必要がある
+     */
+    public function allowsTagTargets(): bool;
 }

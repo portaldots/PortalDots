@@ -19,4 +19,9 @@ class DefaultAudiencePolicy implements AudiencePolicy
             self::SELECTED,
         ];
     }
+
+    public function allowsTagTargets(): bool
+    {
+        return true;
+    }
 }

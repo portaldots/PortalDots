@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Eloquents\User;
 use App\Eloquents\Page;
+use App\Eloquents\Circle;
 use App\Eloquents\Document;
 use App\Eloquents\Permission;
 use App\Services\Pages\PagesService;
@@ -169,6 +170,11 @@ class StoreActionTest extends TestCase
                 {
                     return [self::SELECTED];
                 }
+
+                public function allowsTagTargets(): bool
+                {
+                    return true;
+                }
             };
         });
 
@@ -217,5 +223,82 @@ class StoreActionTest extends TestCase
 
         $response->assertSessionHasErrors(['viewable_circles.0']);
         $this->assertSame(0, Page::count());
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function タグの指定を許可しないAudiencePolicyの場合タグを指定するとエラーになる()
+    {
+        Permission::create(['name' => 'staff.pages.edit']);
+        $this->staff->syncPermissions(['staff.pages.edit']);
+
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return false;
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.pages.store'), [
+                'title' => 'お知らせのタイトル',
+                'body' => '本文',
+                'audience' => 'selected',
+                'viewable_tags' => ['Cブース'],
+                'is_public' => '1',
+                'is_pinned' => null,
+                'send_emails' => '0',
+            ]);
+
+        $response->assertSessionHasErrors(['viewable_tags']);
+        $this->assertSame(0, Page::count());
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function タグの指定を許可しないAudiencePolicyの場合企画のみでselectedのお知らせを作成できる()
+    {
+        Permission::create(['name' => 'staff.pages.edit']);
+        $this->staff->syncPermissions(['staff.pages.edit']);
+
+        $circle = factory(Circle::class)->create();
+
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return false;
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.pages.store'), [
+                'title' => 'お知らせのタイトル',
+                'body' => '本文',
+                'audience' => 'selected',
+                'viewable_circles' => [$circle->id],
+                'is_public' => '1',
+                'is_pinned' => null,
+                'send_emails' => '0',
+            ]);
+
+        $response->assertSessionDoesntHaveErrors(['audience', 'viewable_tags', 'viewable_circles']);
+        $this->assertDatabaseHas('pages', [
+            'title' => 'お知らせのタイトル',
+            'audience' => 'selected',
+        ]);
     }
 }

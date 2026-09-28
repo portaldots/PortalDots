@@ -161,25 +161,27 @@
                         </template>
                     @endif
                 </list-view-form-group>
-                <list-view-form-group>
-                    <template v-slot:label>フォームへ回答可能なユーザー</template>
-                    <template v-slot:description>
-                        公開範囲が「選んだタグ・企画のみ」の場合のみ有効です。
-                        指定したタグのうち、1つ以上該当する企画がフォームに回答できます。
-                        下部の「送付先の企画」で個別に企画を指定することもできます。
-                    </template>
-                    <tags-input input-name="answerable_tags" placeholder="企画タグを指定"
-                        placeholder-empty="企画タグを指定 (空欄の場合、送付先の企画のみが回答可能)" v-bind:default-tags="{{ $default_tags }}"
-                        v-bind:autocomplete-items="{{ $tags_autocomplete_items }}" add-only-from-autocomplete>
-                    </tags-input>
-                    @if ($errors->has('answerable_tags'))
-                        <template v-slot:invalid>
-                            @foreach ($errors->get('answerable_tags') as $message)
-                                <div>{{ $message }}</div>
-                            @endforeach
+                @if ($allows_tag_targets)
+                    <list-view-form-group>
+                        <template v-slot:label>フォームへ回答可能なユーザー</template>
+                        <template v-slot:description>
+                            公開範囲が「選んだタグ・企画のみ」の場合のみ有効です。
+                            指定したタグのうち、1つ以上該当する企画がフォームに回答できます。
+                            下部の「送付先の企画」で個別に企画を指定することもできます。
                         </template>
-                    @endif
-                </list-view-form-group>
+                        <tags-input input-name="answerable_tags" placeholder="企画タグを指定"
+                            placeholder-empty="企画タグを指定 (空欄の場合、送付先の企画のみが回答可能)" v-bind:default-tags="{{ $default_tags }}"
+                            v-bind:autocomplete-items="{{ $tags_autocomplete_items }}" add-only-from-autocomplete>
+                        </tags-input>
+                        @if ($errors->has('answerable_tags'))
+                            <template v-slot:invalid>
+                                @foreach ($errors->get('answerable_tags') as $message)
+                                    <div>{{ $message }}</div>
+                                @endforeach
+                            </template>
+                        @endif
+                    </list-view-form-group>
+                @endif
             </list-view>
             <app-accordion>
                 <template v-slot:summary>

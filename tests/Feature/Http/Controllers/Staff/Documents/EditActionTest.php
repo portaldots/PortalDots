@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Documents;
 
+use App\Contracts\AudiencePolicy;
 use App\Eloquents\Circle;
 use App\Eloquents\Permission;
 use App\Eloquents\User;
@@ -132,5 +133,45 @@ class EditActionTest extends TestCase
         $response->assertSee('確認依頼');
         $response->assertSee($circle->name);
         $response->assertSee('確認待ち');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function タグの指定を許可しないAudiencePolicyの場合タグ入力が表示されない()
+    {
+        $document = $this->documentsService->createDocument(
+            '配布資料',
+            null,
+            UploadedFile::fake()->create('第1版.pdf', 1, 'application/pdf'),
+            true,
+            false,
+            null,
+            'everyone',
+            [],
+            [],
+            $this->staff
+        );
+
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return false;
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.documents.edit', ['document' => $document]));
+
+        $response->assertOk();
+        $response->assertDontSee('閲覧可能なタグ');
+        $response->assertDontSee('viewable_tags', false);
+        $response->assertSee('閲覧可能な企画');
     }
 }

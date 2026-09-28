@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Forms;
 
+use App\Contracts\AudiencePolicy;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
 use App\Eloquents\FormAssignment;
@@ -74,5 +75,68 @@ class UpdateActionTest extends TestCase
             ]));
 
         $response->assertSessionHasErrors(['audience']);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function タグの指定を許可しないAudiencePolicyの場合タグを指定するとエラーになる()
+    {
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return false;
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->patch(route('staff.forms.update', ['form' => $this->form]), $this->baseParams([
+                'audience' => 'selected',
+                'answerable_tags' => ['Aタグ'],
+            ]));
+
+        $response->assertSessionHasErrors(['answerable_tags']);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function タグの指定を許可しないAudiencePolicyの場合送付先の企画があればタグなしでselectedに更新できる()
+    {
+        $circle = factory(Circle::class)->create();
+        FormAssignment::create([
+            'form_id' => $this->form->id,
+            'circle_id' => $circle->id,
+        ]);
+
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return false;
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->patch(route('staff.forms.update', ['form' => $this->form]), $this->baseParams([
+                'audience' => 'selected',
+            ]));
+
+        $response->assertSessionDoesntHaveErrors(['audience', 'answerable_tags']);
+        $this->assertDatabaseHas('forms', [
+            'id' => $this->form->id,
+            'audience' => 'selected',
+        ]);
     }
 }
