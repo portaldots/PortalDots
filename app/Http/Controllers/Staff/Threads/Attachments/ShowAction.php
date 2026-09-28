@@ -23,6 +23,6 @@ class ShowAction extends Controller
         $path = $this->threadAttachmentsService->getPath($attachment);
         abort_if($path === null, 404);
 
-        return response()->file($path);
+        return response()->download($path, $attachment->name);
     }
 }

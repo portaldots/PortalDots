@@ -10,6 +10,7 @@ use App\Exceptions\Threads\StaleThreadException;
 use App\Services\Threads\ThreadsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -53,6 +54,20 @@ class ThreadsServiceTest extends TestCase
 
         $this->assertNull($thread->circle_id);
         $this->assertSame($user->id, $thread->user_id);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 個人の会話はDBでもユーザーごとに一件に制限する()
+    {
+        $user = factory(User::class)->create();
+        $this->threadsService->getOrCreateForUser($user);
+
+        $this->expectException(QueryException::class);
+        Thread::create([
+            'circle_id' => null,
+            'user_id' => $user->id,
+            'status' => Thread::STATUS_RESOLVED,
+        ]);
     }
 
     #[\PHPUnit\Framework\Attributes\Test]

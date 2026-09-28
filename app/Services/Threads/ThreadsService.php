@@ -33,6 +33,7 @@ class ThreadsService
     public function getOrCreateForCircle(Circle $circle): Thread
     {
         return DB::transaction(function () use ($circle) {
+            Circle::whereKey($circle->id)->lockForUpdate()->firstOrFail();
             $thread = Thread::where('circle_id', $circle->id)->lockForUpdate()->first();
             if (!empty($thread)) {
                 return $thread;
@@ -55,6 +56,7 @@ class ThreadsService
     public function getOrCreateForUser(User $user): Thread
     {
         return DB::transaction(function () use ($user) {
+            User::whereKey($user->id)->lockForUpdate()->firstOrFail();
             $thread = Thread::whereNull('circle_id')->where('user_id', $user->id)->lockForUpdate()->first();
             if (!empty($thread)) {
                 return $thread;

@@ -34,6 +34,6 @@ class RevisionTableShowAction extends Controller
         );
         abort_if($path === null, 404);
 
-        return response()->file($path);
+        return response()->download($path);
     }
 }
