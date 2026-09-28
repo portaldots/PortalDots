@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\GridMakers;
 
+use App\Contracts\AudiencePolicy;
 use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Form;
@@ -36,6 +37,7 @@ class FormsGridMaker implements GridMakable
             'id',
             'name',
             'is_public',
+            'audience',
             'description',
             'open_at',
             'close_at',
@@ -53,6 +55,7 @@ class FormsGridMaker implements GridMakable
             'id',
             'name',
             'is_public',
+            'audience',
             'answerableTags',
             'description',
             'open_at',
@@ -77,6 +80,10 @@ class FormsGridMaker implements GridMakable
             'id' => FilterableKey::number(),
             'name' => FilterableKey::string(),
             'is_public' => FilterableKey::bool(),
+            'audience' => FilterableKey::enum([
+                AudiencePolicy::EVERYONE,
+                AudiencePolicy::SELECTED,
+            ]),
             'answerableTags' => FilterableKey::belongsToMany(
                 'form_answerable_tags',
                 'form_id',
@@ -101,6 +108,7 @@ class FormsGridMaker implements GridMakable
             'id',
             'name',
             'is_public',
+            'audience',
             'description',
             'open_at',
             'close_at',

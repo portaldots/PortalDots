@@ -127,6 +127,16 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
 
                 Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction')->name('not_answered')->middleware(['can:staff.forms.answers.read']);
 
+                // 送付先の企画
+                Route::prefix('/assignments')
+                    ->name('assignments.')
+                    ->middleware(['can:staff.forms.edit'])
+                    ->group(function () {
+                        Route::post('/', 'Staff\Forms\Assignments\StoreAction')->name('store');
+                        Route::patch('/{circle}', 'Staff\Forms\Assignments\UpdateAction')->name('update');
+                        Route::delete('/{circle}', 'Staff\Forms\Assignments\DestroyAction')->name('destroy');
+                    });
+
                 Route::get('/preview', 'Staff\Forms\PreviewAction')->name('preview')->middleware(['can:staff.forms.read']);
 
                 // フォームの複製

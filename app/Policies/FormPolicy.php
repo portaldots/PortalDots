@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Contracts\AudiencePolicy;
 use App\Eloquents\User;
 use App\Eloquents\Form;
 use App\Eloquents\Circle;
@@ -21,12 +22,14 @@ class FormPolicy
      */
     public function view(?User $user, Form $form, ?Circle $circle): bool
     {
-        if (!$form->answerableTags->isEmpty()) {
-            if (empty($circle)) {
-                return false;
-            }
-            return $circle->tags()->whereIn('tags.id', $form->answerableTags->pluck('id')->all())->exists();
+        if ($form->audience === AudiencePolicy::EVERYONE) {
+            return true;
         }
-        return true;
+
+        if (empty($circle)) {
+            return false;
+        }
+
+        return Circle::whereKey($circle->id)->targetedByForm($form)->exists();
     }
 }

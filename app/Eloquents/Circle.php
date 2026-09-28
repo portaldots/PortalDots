@@ -2,6 +2,7 @@
 
 namespace App\Eloquents;
 
+use App\Contracts\AudiencePolicy;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Contracts\Activity;
 use Spatie\Activitylog\LogOptions;
@@ -115,6 +116,11 @@ class Circle extends Model
         return $this->hasMany(Answer::class);
     }
 
+    public function formAssignments()
+    {
+        return $this->hasMany(FormAssignment::class);
+    }
+
     public function statusSetBy()
     {
         return $this->belongsTo(User::class, 'status_set_by');
@@ -194,6 +200,34 @@ class Circle extends Model
     public function hasRejected()
     {
         return isset($this->submitted_at) && $this->status === 'rejected';
+    }
+
+    /**
+     * 指定したフォームの回答対象となっている企画だけに限定するクエリスコープ
+     *
+     * フォームの audience が everyone の場合は全ての企画が対象。
+     * selected の場合は、フォームの回答可能なタグに該当するか、
+     * 個別に送付されている（form_assignments に行がある）企画が対象。
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param Form $form
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeTargetedByForm($query, Form $form)
+    {
+        if ($form->audience === AudiencePolicy::EVERYONE) {
+            return $query;
+        }
+
+        $tagIds = $form->answerableTags->pluck('id')->all();
+
+        return $query->where(function ($query) use ($form, $tagIds) {
+            $query->whereHas('tags', function ($query) use ($tagIds) {
+                $query->whereIn('tags.id', $tagIds);
+            })->orWhereHas('formAssignments', function ($query) use ($form) {
+                $query->where('form_id', $form->id);
+            });
+        });
     }
 
     /**

@@ -36,7 +36,7 @@
                         </strong>
                     @endif
                 </p>
-                @if (!$form->answerableTags->isEmpty())
+                @if ($form->audience === \App\Contracts\AudiencePolicy::SELECTED)
                     <p class="text-muted">
                         <app-badge primary outline>限定公開</app-badge>
                         このフォームは、限られた企画のみ回答可能です。
