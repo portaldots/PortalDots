@@ -27,6 +27,8 @@ class UpdateDocumentRequest extends FormRequest
      */
     public function rules()
     {
+        $audiencePolicy = app(AudiencePolicy::class);
+
         return [
             'name' => ['required', 'string'],
             'description' => ['nullable', 'string'],
@@ -36,18 +38,31 @@ class UpdateDocumentRequest extends FormRequest
             'audience' => [
                 'required',
                 'string',
-                Rule::in(app(AudiencePolicy::class)->allowedAudiences()),
-                function ($attribute, $value, $fail) {
-                    if (
-                        $value === AudiencePolicy::SELECTED &&
-                        empty($this->input('viewable_tags')) &&
-                        empty($this->input('viewable_circles'))
-                    ) {
-                        $fail('公開範囲を「選んだタグ・企画のみ」にする場合、タグまたは企画を1つ以上指定してください。');
+                Rule::in($audiencePolicy->allowedAudiences()),
+                function ($attribute, $value, $fail) use ($audiencePolicy) {
+                    if ($value !== AudiencePolicy::SELECTED) {
+                        return;
+                    }
+                    if ($audiencePolicy->allowsTagTargets() && !empty($this->input('viewable_tags'))) {
+                        return;
+                    }
+                    if (!empty($this->input('viewable_circles'))) {
+                        return;
+                    }
+                    $fail($audiencePolicy->allowsTagTargets()
+                        ? '公開範囲を「選んだタグ・企画のみ」にする場合、タグまたは企画を1つ以上指定してください。'
+                        : '公開範囲を「選んだタグ・企画のみ」にする場合、企画を1つ以上指定してください。');
+                },
+            ],
+            'viewable_tags' => [
+                'nullable',
+                'array',
+                function ($attribute, $value, $fail) use ($audiencePolicy) {
+                    if (!$audiencePolicy->allowsTagTargets() && !empty($value)) {
+                        $fail('タグによる公開範囲の指定は許可されていません。');
                     }
                 },
             ],
-            'viewable_tags' => ['nullable', 'array'],
             'viewable_circles' => ['nullable', 'array'],
             'viewable_circles.*' => ['integer', 'exists:circles,id'],
             'notes' => ['nullable', 'string'],

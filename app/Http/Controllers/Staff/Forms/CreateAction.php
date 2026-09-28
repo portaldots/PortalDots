@@ -16,6 +16,7 @@ class CreateAction extends Controller
             ->with('tags_autocomplete_items', Tag::get()->pluck('name')->map(function ($item) {
                 return ['text' => $item];
             })->toJson())
-            ->with('allowed_audiences', Form::allowedAudiences($audiencePolicy));
+            ->with('allowed_audiences', Form::allowedAudiences($audiencePolicy))
+            ->with('allows_tag_targets', $audiencePolicy->allowsTagTargets());
     }
 }

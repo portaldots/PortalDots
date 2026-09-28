@@ -34,6 +34,7 @@ class EditAction extends Controller
             ->with('circles_autocomplete_items', Circle::get()->map(function ($item) {
                 return ['text' => $item->name, 'value' => $item->id];
             })->toJson())
-            ->with('allowed_audiences', $audiencePolicy->allowedAudiences());
+            ->with('allowed_audiences', $audiencePolicy->allowedAudiences())
+            ->with('allows_tag_targets', $audiencePolicy->allowsTagTargets());
     }
 }

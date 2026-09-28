@@ -31,6 +31,7 @@ class EditAction extends Controller
                 return ['text' => $item->name, 'value' => $item->id];
             })->toJson())
             ->with('assignments', $assignments)
-            ->with('allowed_audiences', Form::allowedAudiences($audiencePolicy));
+            ->with('allowed_audiences', Form::allowedAudiences($audiencePolicy))
+            ->with('allows_tag_targets', $audiencePolicy->allowsTagTargets());
     }
 }
