@@ -76,6 +76,8 @@ class CheckPermissionsTest extends TestCase
             'staff.contacts.categories.read,edit,delete',
             'staff.contacts.categories.read,edit',
             'staff.contacts.categories.read',
+            'staff.threads.read,edit',
+            'staff.threads.read',
             'staff.permissions',
             'staff.permissions.read,edit',
             'staff.permissions.read',

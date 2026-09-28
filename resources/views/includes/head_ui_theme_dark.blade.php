@@ -11,6 +11,8 @@ color-scheme: dark;
 --color-danger-light: rgba(226, 118, 120, 0.2);
 --color-success: rgb(75, 189, 119);
 --color-success-light: rgba(75, 189, 119, 0.2);
+--color-warning: rgb(224, 178, 76);
+--color-warning-light: rgba(224, 178, 76, 0.2);
 --color-muted: rgb(150, 150, 150);
 --color-muted-2: rgb(130, 130, 130);
 /* --color-muted-3: rgb(195, 207, 216); */

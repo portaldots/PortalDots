@@ -90,10 +90,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user/password', 'Users\PostChangePasswordAction');
     Route::get('/user/delete', 'Users\DeleteAction')->name('user.delete');
     Route::delete('/user', 'Users\DestroyAction')->name('user.destroy');
-    // お問い合わせページ
+    // お問い合わせページ（企画ごと、または企画に未所属のユーザー本人ごとの会話）
     Route::middleware(['circleSelected'])->group(function () {
         Route::get('/contacts', 'Contacts\CreateAction')->name('contacts');
         Route::post('/contacts', 'Contacts\PostAction')->name('contacts.post');
+        Route::get('/contacts/attachments/{attachment}', 'Contacts\Attachments\ShowAction')
+            ->name('contacts.attachments.show');
     });
 
     // 企画セレクター (GETパラメーターの redirect に Route名 を入れる)

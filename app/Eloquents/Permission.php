@@ -311,6 +311,18 @@ class Permission extends SpatiePermission
                     'お問い合わせ(受付設定の閲覧)',
                     'お問い合わせ受付設定のお問い合わせ項目の閲覧が可能'
                 ),
+                'staff.threads.read,edit' => new PermissionInfo(
+                    'staff.threads.read,edit',
+                    'スタッフモード › お問い合わせ管理 › 会話の閲覧と返信、内部メモ、担当者設定',
+                    'お問い合わせ(会話への返信)',
+                    'お問い合わせの会話の閲覧、返信、内部メモの記入、担当者の設定が可能'
+                ),
+                'staff.threads.read' => new PermissionInfo(
+                    'staff.threads.read',
+                    'スタッフモード › お問い合わせ管理 › 会話の閲覧',
+                    'お問い合わせ(会話の閲覧)',
+                    'お問い合わせの会話の閲覧が可能'
+                ),
                 'staff.permissions' => new PermissionInfo(
                     'staff.permissions',
                     'スタッフモード › スタッフの権限設定 › 全機能',
