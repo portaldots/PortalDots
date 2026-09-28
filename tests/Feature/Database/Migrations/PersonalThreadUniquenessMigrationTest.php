@@ -6,6 +6,7 @@ use App\Eloquents\Thread;
 use App\Eloquents\ThreadEntry;
 use App\Eloquents\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class PersonalThreadUniquenessMigrationTest extends TestCase
@@ -41,5 +42,10 @@ class PersonalThreadUniquenessMigrationTest extends TestCase
         $this->assertSame(2, ThreadEntry::where('thread_id', $first->id)->count());
         $this->assertSame(Thread::STATUS_NEEDS_STAFF, $first->fresh()->status);
         $this->assertNull(Thread::find($second->id));
+
+        $migration->down();
+        $migration->up();
+        $this->assertTrue(Schema::hasIndex('threads', 'threads_user_id_unique'));
+        $this->assertFalse(Schema::hasIndex('threads', 'threads_user_id_migration_index'));
     }
 }

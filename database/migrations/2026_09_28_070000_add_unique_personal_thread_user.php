@@ -44,14 +44,21 @@ return new class extends Migration
         Schema::table('threads', function (Blueprint $table) {
             $table->unique('user_id', 'threads_user_id_unique');
         });
+        if (Schema::hasIndex('threads', 'threads_user_id_migration_index')) {
+            Schema::table('threads', function (Blueprint $table) {
+                $table->dropIndex('threads_user_id_migration_index');
+            });
+        }
     }
 
     public function down(): void
     {
         // MySQL が外部キーに一意インデックスを使っている場合は代替を先に作る。
-        Schema::table('threads', function (Blueprint $table) {
-            $table->index('user_id', 'threads_user_id_migration_index');
-        });
+        if (!Schema::hasIndex('threads', 'threads_user_id_migration_index')) {
+            Schema::table('threads', function (Blueprint $table) {
+                $table->index('user_id', 'threads_user_id_migration_index');
+            });
+        }
         Schema::table('threads', function (Blueprint $table) {
             $table->dropUnique('threads_user_id_unique');
         });
