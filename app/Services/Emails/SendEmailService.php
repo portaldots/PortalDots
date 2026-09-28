@@ -77,6 +77,15 @@ class SendEmailService
                 $email->sent_at = $now;
                 $email->locked_at = null;
                 $email->save();
+            } catch (MailDeliveryDeferred $e) {
+                // 一時的な制限では再試行回数を消費せず、同じ実行中の後続メールも送らない。
+                $email->locked_at = null;
+                $email->save();
+                Log::info('メールの送信を次回へ延期しました。', [
+                    'email_id' => $email->id,
+                    'exception_class' => get_class($e),
+                ]);
+                break;
             } catch (Throwable $e) {
                 // 送信失敗したので失敗カウントを1つ追加
                 ++$email->count_failed;
