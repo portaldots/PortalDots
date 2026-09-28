@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $form->name . ' — 申請')
+@section('title', $form->name . ' — ' . term('form'))
 
 @section('no_circle_selector', true)
 
@@ -11,7 +11,7 @@
         </app-nav-bar-back>
     @else
         <app-nav-bar-back href="{{ route('forms.index') }}">
-            申請
+            {{ term('form') }}
         </app-nav-bar-back>
     @endif
 @endsection
@@ -69,7 +69,7 @@
         <app-container>
             <list-view>
                 <list-view-form-group>
-                    <template v-slot:label>申請企画名</template>
+                    <template v-slot:label>{{ term('form') }}{{ term('circle') }}名</template>
                     <input type="text" readonly value="{{ $circle->name }}({{ $circle->group_name }})"
                         class="form-control">
                     @if (empty($answer) &&

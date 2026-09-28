@@ -24,22 +24,34 @@ class DocumentApproval extends Model
     public const STATUS_APPROVED = 'approved';
 
     /**
-     * 企画向けの状態ラベル
+     * 企画向けの状態ラベル。term() を経由するため config/portal.php の
+     * terms を上書きすると表示も変わる
+     *
+     * @return array<string, string>
      */
-    public const CIRCLE_STATUS_LABELS = [
-        self::STATUS_PENDING => '確認してください',
-        self::STATUS_CHANGES_REQUESTED => '修正対応中',
-        self::STATUS_APPROVED => '確認済み',
-    ];
+    public static function circleStatusLabels(): array
+    {
+        return [
+            self::STATUS_PENDING => term('document_status_circle_pending'),
+            self::STATUS_CHANGES_REQUESTED => term('document_status_circle_changes_requested'),
+            self::STATUS_APPROVED => term('document_status_circle_approved'),
+        ];
+    }
 
     /**
-     * スタッフ向けの状態ラベル
+     * スタッフ向けの状態ラベル。term() を経由するため config/portal.php の
+     * terms を上書きすると表示も変わる
+     *
+     * @return array<string, string>
      */
-    public const STAFF_STATUS_LABELS = [
-        self::STATUS_PENDING => '確認待ち',
-        self::STATUS_CHANGES_REQUESTED => '修正依頼あり',
-        self::STATUS_APPROVED => '確認済み',
-    ];
+    public static function staffStatusLabels(): array
+    {
+        return [
+            self::STATUS_PENDING => term('document_status_staff_pending'),
+            self::STATUS_CHANGES_REQUESTED => term('document_status_staff_changes_requested'),
+            self::STATUS_APPROVED => term('document_status_staff_approved'),
+        ];
+    }
 
     // lock_version はDB上デフォルト0だが、Eloquentはinsert時にDBのデフォルト値を
     // 読み返さないため、作成直後のインスタンスでも0になるよう明示する
@@ -87,11 +99,11 @@ class DocumentApproval extends Model
 
     public function circleStatusLabel(): string
     {
-        return self::CIRCLE_STATUS_LABELS[$this->status] ?? $this->status;
+        return self::circleStatusLabels()[$this->status] ?? $this->status;
     }
 
     public function staffStatusLabel(): string
     {
-        return self::STAFF_STATUS_LABELS[$this->status] ?? $this->status;
+        return self::staffStatusLabels()[$this->status] ?? $this->status;
     }
 }

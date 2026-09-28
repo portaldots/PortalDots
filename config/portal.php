@@ -24,4 +24,29 @@ return [
     'primary_color_hsl' => [env('PORTAL_PRIMARY_COLOR_H', null), env('PORTAL_PRIMARY_COLOR_S', null), env('PORTAL_PRIMARY_COLOR_L', null)],
     // デモモード
     'enable_demo_mode' => env('PORTAL_ENABLE_DEMO_MODE', false),
+
+    // 用語
+    // term() ヘルパーで参照する。プライベートなデプロイ用パッケージが
+    // config(['portal.terms.circle' => '案件']) のように上書きすることで、
+    // OSS側のファイルを変更せずに画面上の呼称を変更できる
+    'terms' => [
+        // 「企画」の呼称
+        'circle' => '企画',
+        // 「申請」の呼称
+        'form' => '申請',
+        // 「配布資料」の呼称
+        'document' => '配布資料',
+        // 「お問い合わせ」の呼称
+        'contact' => 'お問い合わせ',
+        // 主催側（「スタッフ」）の呼称
+        'staff_side' => 'スタッフ',
+        // 配布資料の確認依頼の状態ラベル（企画向け）
+        'document_status_circle_pending' => '確認してください',
+        'document_status_circle_changes_requested' => '修正対応中',
+        'document_status_circle_approved' => '確認済み',
+        // 配布資料の確認依頼の状態ラベル（スタッフ向け）
+        'document_status_staff_pending' => '確認待ち',
+        'document_status_staff_changes_requested' => '修正依頼あり',
+        'document_status_staff_approved' => '確認済み',
+    ],
 ];

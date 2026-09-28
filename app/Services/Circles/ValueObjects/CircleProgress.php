@@ -126,4 +126,17 @@ final class CircleProgress
 
         return self::TURN_DONE;
     }
+
+    /**
+     * getTurn() の表示用ラベル。term() を経由するため config/portal.php の
+     * terms を上書きすると表示も変わる
+     */
+    public function getTurnLabel(): string
+    {
+        return match ($this->getTurn()) {
+            self::TURN_STAFF => term('staff_side'),
+            self::TURN_CIRCLE => term('circle'),
+            default => self::TURN_DONE,
+        };
+    }
 }

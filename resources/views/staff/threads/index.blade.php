@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'お問い合わせ')
+@section('title', term('contact'))
 
 @section('top_alert_props', 'container-fluid')
 

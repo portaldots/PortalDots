@@ -93,7 +93,7 @@
                     @if (!empty($circle_thread))
                         <list-view-item href="{{ route('contacts') }}">
                             <template v-slot:title>
-                                お問い合わせ
+                                {{ term('contact') }}
                                 <app-badge primary>{{ $circle_thread->circleStatusLabel() }}</app-badge>
                             </template>
                         </list-view-item>

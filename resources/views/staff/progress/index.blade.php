@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', '企画の進捗')
+@section('title', term('circle') . 'の進捗')
 
 @section('content')
     <app-container>
         <list-view>
-            <template v-slot:title>企画の進捗（{{ $progresses->total() }}企画）</template>
+            <template v-slot:title>{{ term('circle') }}の進捗（{{ $progresses->total() }}{{ term('circle') }}）</template>
             @if ($progresses->isEmpty())
-                <list-view-empty icon-class="fas fa-star" text="承認済みの企画はありません"></list-view-empty>
+                <list-view-empty icon-class="fas fa-star" text="承認済みの{{ term('circle') }}はありません"></list-view-empty>
             @else
                 <div class="progress_table-wrapper">
                     <table class="progress_table">
                         <thead>
                             <tr>
-                                <th>企画</th>
+                                <th>{{ term('circle') }}</th>
                                 <th>進捗</th>
                                 <th>次の期限</th>
                                 <th>誰の番</th>
@@ -38,9 +38,9 @@
                                     </td>
                                     <td data-label="誰の番">
                                         @if ($progress->getTurn() === \App\Services\Circles\ValueObjects\CircleProgress::TURN_STAFF)
-                                            <app-badge danger>{{ $progress->getTurn() }}</app-badge>
+                                            <app-badge danger>{{ $progress->getTurnLabel() }}</app-badge>
                                         @else
-                                            {{ $progress->getTurn() }}
+                                            {{ $progress->getTurnLabel() }}
                                         @endif
                                     </td>
                                     <td data-label="遅れ">
@@ -62,7 +62,7 @@
         </list-view>
 
         <list-view>
-            <template v-slot:title>スタッフの対応が必要</template>
+            <template v-slot:title>{{ term('staff_side') }}の対応が必要</template>
             @if ($review_entries->isEmpty() && $needs_staff_threads->isEmpty())
                 <list-view-empty icon-class="fas fa-check-circle" text="対応が必要な項目はありません"></list-view-empty>
             @else

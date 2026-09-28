@@ -173,6 +173,7 @@ return [
         App\Providers\BladeServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\NavigationServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
     ])->toArray(),

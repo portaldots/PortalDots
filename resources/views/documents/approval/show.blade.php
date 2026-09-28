@@ -6,7 +6,7 @@
 
 @section('navbar')
     <app-nav-bar-back href="{{ route('documents.index') }}">
-        配布資料
+        {{ term('document') }}
     </app-nav-bar-back>
 @endsection
 
