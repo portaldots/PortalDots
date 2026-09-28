@@ -22,6 +22,19 @@ class NavigationTest extends TestCase
     use RefreshDatabase;
 
     #[\PHPUnit\Framework\Attributes\Test]
+    public function モード切替を設定で非表示にできる()
+    {
+        config(['portal.navigation.show_mode_switch' => false]);
+        $admin = factory(User::class)->states('admin')->create();
+
+        $this->actingAs($admin)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.index'))
+            ->assertOk()
+            ->assertDontSee('一般モードへ');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
     public function ゲストには基本項目のみ表示され順序とアクティブ状態が正しい()
     {
         $response = $this->get(route('home'));

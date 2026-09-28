@@ -68,6 +68,14 @@ class MenuRegistry
     }
 
     /**
+     * 表示条件に関係なく、セクションの全項目を取り除く。
+     */
+    public function clear(string $section): void
+    {
+        $this->items[$section] = [];
+    }
+
+    /**
      * $section に登録されている項目のうち、表示可能なものだけを登録順で返す
      *
      * @param string $section self::SECTION_* のいずれか

@@ -26,6 +26,7 @@ return [
     'enable_demo_mode' => env('PORTAL_ENABLE_DEMO_MODE', false),
     'navigation' => [
         'staff_home_route' => 'staff.index',
+        'show_mode_switch' => true,
     ],
 
     // ユーザー登録・ログイン方法・学籍番号・大学提供メールアドレスの有無
