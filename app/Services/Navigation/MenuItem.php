@@ -16,7 +16,7 @@ final class MenuItem
      * @param string $key MenuRegistry::remove() や add() の $after で指定する一意な識別子
      * @param string|Closure(): string $label 表示テキスト。文字列ならそのまま、
      *   クロージャなら呼び出した戻り値を使う（term() を使った用語の組み立てに使う）
-     * @param string $route route() に渡すルート名
+     * @param string|Closure(): string $route route() に渡すルート名
      * @param array $routeParams route() に渡すパラメータ
      * @param string $activePattern Request::is() に渡すパターン。現在のページかどうかの判定に使う
      * @param string $icon Font Awesome のアイコンクラス
@@ -27,7 +27,7 @@ final class MenuItem
     public function __construct(
         public readonly string $key,
         public readonly string|Closure $label,
-        public readonly string $route,
+        public readonly string|Closure $route,
         public readonly array $routeParams,
         public readonly string $activePattern,
         public readonly string $icon,
@@ -44,7 +44,7 @@ final class MenuItem
 
     public function href(): string
     {
-        return route($this->route, $this->routeParams);
+        return route($this->route instanceof Closure ? ($this->route)() : $this->route, $this->routeParams);
     }
 
     public function isActive(): bool

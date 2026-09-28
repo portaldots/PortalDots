@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Contracts\HomeLanding;
 use Illuminate\Support\Facades\Auth;
 use App\Eloquents\Page;
 use App\Eloquents\Document;
@@ -30,16 +31,27 @@ class HomeAction extends Controller
      */
     private $circleProgressService;
 
-    public function __construct(SelectorService $selectorService, CircleProgressService $circleProgressService)
-    {
+    private $homeLanding;
+
+    public function __construct(
+        SelectorService $selectorService,
+        CircleProgressService $circleProgressService,
+        HomeLanding $homeLanding
+    ) {
         $this->selectorService = $selectorService;
         $this->circleProgressService = $circleProgressService;
+        $this->homeLanding = $homeLanding;
     }
 
     public function __invoke()
     {
         $circle = $this->selectorService->getCircle();
         $user = Auth::user();
+
+        $redirect = $this->homeLanding->redirectFor($user, $circle);
+        if ($redirect !== null) {
+            return redirect($redirect);
+        }
 
         if (isset($circle)) {
             $circle->loadMissing(['places', 'participationType']);

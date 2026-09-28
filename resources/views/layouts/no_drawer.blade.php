@@ -58,7 +58,7 @@
     <div class="app" id="v2-app">
         <app-nav-bar no-drawer @staffpage staff @endstaffpage>
             @section('navbar')
-            <a @staffpage href="{{ route('staff.index') }}" @else href="{{ route('home') }}" @endif
+            <a @staffpage href="{{ route(config('portal.navigation.staff_home_route')) }}" @else href="{{ route('home') }}" @endif
                     class="navbar-brand">
                     {{ config('app.name', 'ホームへ戻る') }}
                 </a>

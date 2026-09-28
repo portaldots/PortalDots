@@ -117,7 +117,7 @@ class NavigationServiceProvider extends ServiceProvider
         $menuRegistry->add(MenuRegistry::SECTION_STAFF, new MenuItem(
             key: 'staff_home',
             label: 'スタッフモード ホーム',
-            route: 'staff.index',
+            route: fn () => config('portal.navigation.staff_home_route'),
             routeParams: [],
             activePattern: 'staff',
             icon: 'fas fa-home',

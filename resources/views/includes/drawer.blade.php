@@ -2,7 +2,7 @@
 
 @staffpage
     @if (Auth::check() && Auth::user()->is_staff)
-        <a class="drawer-header" href="{{ route('staff.index') }}">
+        <a class="drawer-header" href="{{ route(config('portal.navigation.staff_home_route')) }}">
             {{ config('app.name') }}
             <app-badge primary>スタッフモード</app-badge>
             @if (config('portal.enable_demo_mode'))
@@ -40,7 +40,7 @@
     <nav class="drawer-nav">
         @if (Auth::check() && Auth::user()->is_staff)
             <div class="px-spacing py-spacing">
-                <a href="{{ route('staff.index') }}" class="btn is-primary is-block">
+                <a href="{{ route(config('portal.navigation.staff_home_route')) }}" class="btn is-primary is-block">
                     スタッフモードへ
                 </a>
             </div>

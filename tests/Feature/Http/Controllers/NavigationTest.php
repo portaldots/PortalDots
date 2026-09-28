@@ -7,6 +7,7 @@ use App\Eloquents\Page;
 use App\Eloquents\Permission;
 use App\Eloquents\User;
 use App\Services\Circles\SelectorService;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
@@ -180,5 +181,47 @@ class NavigationTest extends TestCase
             5,
             substr_count($response->getContent(), '<app-badge danger>管理者</app-badge>')
         );
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 既定のスタッフ入口はstaff_indexを指す()
+    {
+        $this->withoutVite();
+        $this->assertSame('staff.index', config('portal.navigation.staff_home_route'));
+        $staff = factory(User::class)->states('staff')->create();
+
+        $staffPage = $this->actingAs($staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.pages.index'));
+        $staffPage->assertSee('<a class="drawer-header" href="' . route('staff.index') . '">', false);
+
+        $circlePage = $this->get(route('home'));
+        $circlePage->assertSee('<a href="' . route('staff.index') . '" class="btn is-primary is-block">', false);
+
+        $noDrawerPage = $this->get(route('staff.about'));
+        $noDrawerPage->assertSee('href="' . route('staff.index') . '"', false);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function スタッフ入口ルートの差し替えが各リンクに反映される()
+    {
+        $this->withoutVite();
+        Route::get('/staff/custom-home', fn () => 'custom home')->name('staff.custom-home');
+        Route::getRoutes()->refreshNameLookups();
+        config(['portal.navigation.staff_home_route' => 'staff.custom-home']);
+        $staff = factory(User::class)->states('staff')->create();
+        $destination = route('staff.custom-home');
+
+        $staffPage = $this->actingAs($staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.pages.index'));
+        $staffPage->assertSee('<a class="drawer-header" href="' . $destination . '">', false);
+        $staffPage->assertSee('<a href="' . $destination . '" class="drawer-nav__link">', false);
+
+        $circlePage = $this->get(route('home'));
+        $circlePage->assertSee('<a href="' . $destination . '" class="btn is-primary is-block">', false);
+
+        $noDrawerPage = $this->get(route('staff.about'));
+        $noDrawerPage->assertSee('href="' . $destination . '"', false);
     }
 }
