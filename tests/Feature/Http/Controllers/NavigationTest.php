@@ -7,6 +7,8 @@ use App\Eloquents\Page;
 use App\Eloquents\Permission;
 use App\Eloquents\User;
 use App\Services\Circles\SelectorService;
+use App\Services\Navigation\MenuItem;
+use App\Services\Navigation\MenuRegistry;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
@@ -32,6 +34,30 @@ class NavigationTest extends TestCase
             ->get(route('staff.index'))
             ->assertOk()
             ->assertDontSee('一般モードへ');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function スタッフの下部タブを設定で表示できる()
+    {
+        config(['portal.navigation.staff_bottom_tabs' => true]);
+        app(MenuRegistry::class)->add(MenuRegistry::SECTION_STAFF, new MenuItem(
+            key: 'mobile_staff_home',
+            label: 'モバイル受信箱',
+            route: 'staff.index',
+            routeParams: [],
+            activePattern: 'staff',
+            icon: 'far fa-envelope',
+            visible: fn () => true,
+            showInBottomTabs: true,
+        ));
+        $staff = factory(User::class)->states('staff')->create();
+
+        $this->actingAs($staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.index'))
+            ->assertOk()
+            ->assertSee('bottom_tabs-tab__label')
+            ->assertSee('モバイル受信箱');
     }
 
     #[\PHPUnit\Framework\Attributes\Test]

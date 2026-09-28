@@ -2,7 +2,7 @@
 
 <div class="bottom_tabs">
     <div class="bottom_tabs-container">
-        @foreach ($menuRegistry->get('circle') as $item)
+        @foreach ($menuRegistry->get(Request::is('staff*') ? 'staff' : 'circle') as $item)
             @continue(!$item->showInBottomTabs)
             <a href="{{ $item->href() }}" class="bottom_tabs-tab{{ $item->isActive() ? ' is-active' : '' }}">
                 <i class="{{ $item->icon }} bottom_tabs-tab__icon"></i>
