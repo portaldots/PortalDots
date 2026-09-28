@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Documents;
 
+use App\Contracts\AudiencePolicy;
 use App\Eloquents\Document;
 use App\Eloquents\Permission;
 use App\Eloquents\User;
@@ -51,7 +52,10 @@ class StoreActionTest extends TestCase
                 Mockery::any(),
                 false,
                 true,
-                'notes'
+                'notes',
+                'everyone',
+                [],
+                []
             )->andReturn($document);
         });
 
@@ -63,6 +67,7 @@ class StoreActionTest extends TestCase
                 'file' => $file,
                 'is_public' => '0',
                 'is_important' => '1',
+                'audience' => 'everyone',
                 'notes' => 'notes',
             ]);
 
@@ -89,5 +94,38 @@ class StoreActionTest extends TestCase
             ]);
 
         $response->assertForbidden();
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function AudiencePolicyでselectedのみ許可されている場合everyoneとsigned_inは拒否される()
+    {
+        Permission::create(['name' => 'staff.documents.edit']);
+        $this->staff->syncPermissions(['staff.documents.edit']);
+
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+            };
+        });
+
+        Storage::fake('local');
+        $file = UploadedFile::fake()->create('配布資料.pdf', 1, 'application/pdf');
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.documents.store'), [
+                'name' => 'document name',
+                'description' => 'document description',
+                'file' => $file,
+                'is_public' => '1',
+                'is_important' => '0',
+                'audience' => 'everyone',
+                'notes' => 'notes',
+            ]);
+
+        $response->assertSessionHasErrors(['audience']);
     }
 }

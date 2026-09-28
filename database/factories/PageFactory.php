@@ -11,5 +11,6 @@ $factory->define(Page::class, function (Faker $faker) {
         'body' => $faker->text,
         'is_pinned' => false,
         'is_public' => true,
+        'audience' => 'everyone',
     ];
 });

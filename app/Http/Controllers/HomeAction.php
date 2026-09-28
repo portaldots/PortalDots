@@ -31,6 +31,7 @@ class HomeAction extends Controller
     public function __invoke()
     {
         $circle = $this->selectorService->getCircle();
+        $user = Auth::user();
 
         if (isset($circle)) {
             $circle->loadMissing(['places', 'participationType']);
@@ -50,33 +51,33 @@ class HomeAction extends Controller
             ->with('circle', $circle)
             ->with(
                 'pinned_pages',
-                Page::byCircle($circle)
+                Page::visibleTo($user, $circle)
                     ->with([
-                        'documents' => function ($query) {
-                            $query->public();
+                        'viewableTags',
+                        'documents' => function ($query) use ($user, $circle) {
+                            $query->visibleTo($user, $circle);
                         }
                     ])
-                    ->public()
                     ->pinned()
                     ->get()
             )
             ->with(
                 'pages',
-                Page::byCircle($circle)
+                Page::visibleTo($user, $circle)
                     ->take(self::TAKE_COUNT)
                     ->with([
+                        'viewableTags',
                         'usersWhoRead' => function ($query) {
                             $query->where('user_id', Auth::id());
                         },
                     ])
-                    ->public()
                     ->pinned(false)
                     ->get()
             )
             ->with(
                 'documents',
-                Document::take(self::TAKE_COUNT)
-                    ->public()
+                Document::visibleTo($user, $circle)
+                    ->take(self::TAKE_COUNT)
                     ->get()
             )
             ->with(

@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Services\Pages\PagesService;
 use App\Eloquents\Tag;
 use App\Eloquents\Circle;
+use App\Eloquents\Document;
 use App\Eloquents\User;
 use App\Eloquents\Page;
 use App\Eloquents\Email;
@@ -204,6 +205,7 @@ class PagesServiceTest extends TestCase
             [],
             $this->content['is_public'],
             $this->content['is_pinned'],
+            'selected',
         );
 
         $this->pagesService->sendEmailsByPage($page);
@@ -239,5 +241,134 @@ class PagesServiceTest extends TestCase
         $this->assertSame(1, Page::count());
         // 未作成のタグが混じっていた場合、作成済みタグのみ保存される
         $this->assertSame(1, DB::table('page_viewable_tags')->count());
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function sendEmailsByPage_公開範囲がeveryoneの場合は全ての認証済みユーザーに送信される()
+    {
+        factory(User::class, 5)->create();
+
+        $page = $this->pagesService->createPage(
+            $this->content['title'],
+            $this->content['body'],
+            $this->staff,
+            '',
+            [],
+            [],
+            $this->content['is_public'],
+            $this->content['is_pinned'],
+            'everyone',
+        );
+
+        $this->pagesService->sendEmailsByPage($page);
+
+        $this->assertSame(User::verified()->count(), Email::count());
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function sendEmailsByPage_公開範囲がselectedで企画を直接指定した場合はその企画のメンバーにのみ送信される()
+    {
+        $targetCircle = factory(Circle::class)->create();
+        $targetCircleUser = factory(User::class)->create();
+        $targetCircle->users()->attach($targetCircleUser->id, ['is_leader' => true]);
+
+        $otherCircle = factory(Circle::class)->create();
+        $otherCircleUser = factory(User::class)->create();
+        $otherCircle->users()->attach($otherCircleUser->id, ['is_leader' => true]);
+
+        $page = $this->pagesService->createPage(
+            $this->content['title'],
+            $this->content['body'],
+            $this->staff,
+            '',
+            [],
+            [],
+            $this->content['is_public'],
+            $this->content['is_pinned'],
+            'selected',
+            [$targetCircle->id],
+        );
+
+        $this->pagesService->sendEmailsByPage($page);
+
+        $this->assertSame(1, Email::count());
+        $this->assertDatabaseHas('emails', ['email_to' => $targetCircleUser->email]);
+        $this->assertDatabaseMissing('emails', ['email_to' => $otherCircleUser->email]);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function sendEmailsByPage_公開範囲がselectedでタグを指定した場合は該当タグの企画のメンバーにのみ送信される()
+    {
+        $tag = factory(Tag::class)->create();
+
+        $taggedCircle = factory(Circle::class)->create();
+        $taggedCircle->tags()->attach($tag->id);
+        $taggedCircleUser = factory(User::class)->create();
+        $taggedCircle->users()->attach($taggedCircleUser->id, ['is_leader' => true]);
+
+        $untaggedCircle = factory(Circle::class)->create();
+        $untaggedCircleUser = factory(User::class)->create();
+        $untaggedCircle->users()->attach($untaggedCircleUser->id, ['is_leader' => true]);
+
+        $page = $this->pagesService->createPage(
+            $this->content['title'],
+            $this->content['body'],
+            $this->staff,
+            '',
+            [$tag->name],
+            [],
+            $this->content['is_public'],
+            $this->content['is_pinned'],
+            'selected',
+        );
+
+        $this->pagesService->sendEmailsByPage($page);
+
+        $this->assertSame(1, Email::count());
+        $this->assertDatabaseHas('emails', ['email_to' => $taggedCircleUser->email]);
+        $this->assertDatabaseMissing('emails', ['email_to' => $untaggedCircleUser->email]);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function sendEmailsByPage_受信者全員が閲覧できない配布資料は本文に含まれない()
+    {
+        $visibleDocument = factory(Document::class)->create([
+            'name' => '全員が閲覧できる配布資料',
+            'is_public' => true,
+            'audience' => 'everyone',
+        ]);
+
+        $circleForRecipient = factory(Circle::class)->create();
+        $hiddenDocument = factory(Document::class)->create([
+            'name' => '一部の受信者しか閲覧できない配布資料',
+            'is_public' => true,
+            'audience' => 'selected',
+        ]);
+        $hiddenDocument->viewableCircles()->attach($circleForRecipient->id);
+
+        // このユーザーは $hiddenDocument を閲覧できるが、他のユーザーは閲覧できない
+        $recipientWithAccess = factory(User::class)->create();
+        $circleForRecipient->users()->attach($recipientWithAccess->id, ['is_leader' => true]);
+
+        // audience が everyone のお知らせなので、上記以外の認証済みユーザーにも送信される
+        factory(User::class)->create();
+
+        $page = $this->pagesService->createPage(
+            $this->content['title'],
+            $this->content['body'],
+            $this->staff,
+            '',
+            [],
+            [$visibleDocument->id, $hiddenDocument->id],
+            $this->content['is_public'],
+            $this->content['is_pinned'],
+            'everyone',
+        );
+
+        $this->pagesService->sendEmailsByPage($page);
+
+        $email = Email::first();
+        $this->assertStringContainsString('全員が閲覧できる配布資料', $email->body);
+        $this->assertStringNotContainsString('一部の受信者しか閲覧できない配布資料', $email->body);
     }
 }

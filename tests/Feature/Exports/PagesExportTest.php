@@ -63,6 +63,7 @@ class PagesExportTest extends TestCase
                 $this->page->body,
                 'いいえ',
                 'はい',
+                '誰でも（ログイン不要）',
                 $this->page->notes,
                 $this->page->created_at,
                 $this->page->updated_at,
