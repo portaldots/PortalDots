@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Services\Forms;
 
+use App\Contracts\FormAnswerUrl;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
 use App\Eloquents\User;
@@ -55,5 +56,25 @@ class FormSentNotificationTest extends TestCase
         $this->formAssignmentsService->assignToCircles($form, [$circle->id], $dueAt, $this->staff);
 
         Mail::assertSent(FormSentMailable::class, 1);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 回答先URLを差し替えられる()
+    {
+        Mail::fake();
+        App::instance(FormAnswerUrl::class, new class implements FormAnswerUrl {
+            public function for(int $circleId, int $formId, ?int $answerId): string
+            {
+                return "https://example.test/cases/{$circleId}/forms/{$formId}";
+            }
+        });
+
+        $form = factory(Form::class)->create(['audience' => 'selected']);
+        $circle = factory(Circle::class)->create();
+        $this->memberOf($circle);
+        $this->formAssignmentsService->assignToCircles($form, [$circle->id], null, $this->staff);
+
+        Mail::assertSent(FormSentMailable::class, fn ($mail) =>
+            $mail->url === "https://example.test/cases/{$circle->id}/forms/{$form->id}");
     }
 }
