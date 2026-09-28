@@ -4,6 +4,7 @@ namespace Tests\Feature\Services\Emails;
 
 use App\Eloquents\Email;
 use App\Services\Emails\SendEmailService;
+use App\Services\Emails\MailDeliveryDeferred;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -49,6 +50,32 @@ class SendEmailsServiceTest extends TestCase
         $this->assertNull($email->locked_at);
         $this->assertNotNull($email->sent_at);
         Mail::assertSent(SendEmailServiceMailable::class, 1);
+    }
+
+    public function test_temporary_delivery_limit_defers_the_queue_without_using_retries(): void
+    {
+        $first = factory(Email::class)->create();
+        $second = factory(Email::class)->create();
+        $mailManager = Mail::getFacadeRoot();
+        $pendingMail = Mockery::mock();
+        $pendingMail->shouldReceive('send')->once()->andThrow(new MailDeliveryDeferred('Daily limit'));
+        Mail::shouldReceive('to')->once()->andReturn($pendingMail);
+
+        SendEmailService::runJob();
+
+        $this->assertNull($first->fresh()->locked_at);
+        $this->assertNull($first->fresh()->sent_at);
+        $this->assertSame(0, $first->fresh()->count_failed);
+        $this->assertNull($second->fresh()->sent_at);
+        $this->assertSame(0, $second->fresh()->count_failed);
+
+        Mail::swap($mailManager);
+        Mail::fake();
+        SendEmailService::runJob();
+
+        $this->assertNotNull($first->fresh()->sent_at);
+        $this->assertNotNull($second->fresh()->sent_at);
+        Mail::assertSent(SendEmailServiceMailable::class, 2);
     }
 
     public function test_delivery_skips_sent_locked_and_exhausted_emails(): void
