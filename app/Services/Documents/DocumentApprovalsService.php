@@ -9,6 +9,9 @@ use App\Eloquents\Document;
 use App\Eloquents\DocumentApproval;
 use App\Eloquents\DocumentVersion;
 use App\Eloquents\User;
+use App\Events\Documents\DocumentConfirmationDecided;
+use App\Events\Documents\DocumentConfirmationRequested;
+use App\Events\Documents\DocumentConfirmationReset;
 use App\Exceptions\Documents\StaleDocumentApprovalException;
 use Illuminate\Support\Facades\DB;
 
@@ -61,11 +64,19 @@ class DocumentApprovalsService
                     ]);
                 }
 
-                $approval->decisions()->create([
+                $decision = $approval->decisions()->create([
                     'document_version_id' => $latestVersion->id,
                     'status' => DocumentApproval::STATUS_PENDING,
                     'decided_by' => $requestedBy->id,
                 ]);
+
+                event(new DocumentConfirmationRequested(
+                    $circle->id,
+                    $document->id,
+                    $document->name,
+                    $latestVersion->version,
+                    $decision->id
+                ));
             }
         });
     }
@@ -127,12 +138,23 @@ class DocumentApprovalsService
                 'lock_version' => $approval->lock_version + 1,
             ]);
 
-            $approval->decisions()->create([
+            $decision = $approval->decisions()->create([
                 'document_version_id' => $approval->document_version_id,
                 'status' => $status,
                 'comment' => $comment,
                 'decided_by' => $decidedBy->id,
             ]);
+
+            $version = DocumentVersion::find($approval->document_version_id);
+            event(new DocumentConfirmationDecided(
+                $approval->circle_id,
+                $approval->document_id,
+                $approval->document->name,
+                $version?->version ?? 0,
+                $status,
+                $comment,
+                $decision->id
+            ));
 
             return $approval;
         });
@@ -165,11 +187,19 @@ class DocumentApprovalsService
                 'lock_version' => $approval->lock_version + 1,
             ]);
 
-            $approval->decisions()->create([
+            $decision = $approval->decisions()->create([
                 'document_version_id' => $newVersion->id,
                 'status' => DocumentApproval::STATUS_PENDING,
                 'decided_by' => $uploadedBy?->id,
             ]);
+
+            event(new DocumentConfirmationReset(
+                $approval->circle_id,
+                $document->id,
+                $document->name,
+                $newVersion->version,
+                $decision->id
+            ));
         }
     }
 }

@@ -31,22 +31,32 @@
                 <template v-slot:title>やり取り</template>
                 @foreach ($entries as $entry)
                     <list-view-item no-border>
-                        <template v-slot:title>
-                            @if ($entry->kind === \App\Eloquents\ThreadEntry::KIND_EVENT)
-                                {{ $entry->event_type }}
-                            @elseif ($entry->author_side === \App\Eloquents\ThreadEntry::AUTHOR_SIDE_STAFF)
-                                スタッフ
-                            @else
-                                {{ optional($entry->author)->name }}
-                            @endif
-                            @if (isset($entry->contactCategory))
-                                <app-badge muted small>{{ $entry->contactCategory->name }}</app-badge>
-                            @endif
-                        </template>
-                        <template v-slot:meta>
-                            @datetime($entry->created_at)
-                        </template>
-                        @if ($entry->kind !== \App\Eloquents\ThreadEntry::KIND_EVENT)
+                        @if ($entry->kind === \App\Eloquents\ThreadEntry::KIND_EVENT)
+                            @php($eventLink = isset($circle) ? \App\Services\Threads\ThreadEventLinkService::circleLink($entry, $circle, Auth::user()) : null)
+                            <template v-slot:title>
+                                @if ($eventLink)
+                                    <a href="{{ route($eventLink['route'], $eventLink['params']) }}">{{ $entry->eventText() }}</a>
+                                @else
+                                    {{ $entry->eventText() }}
+                                @endif
+                            </template>
+                            <template v-slot:meta>
+                                @datetime($entry->created_at)
+                            </template>
+                        @else
+                            <template v-slot:title>
+                                @if ($entry->author_side === \App\Eloquents\ThreadEntry::AUTHOR_SIDE_STAFF)
+                                    スタッフ
+                                @else
+                                    {{ optional($entry->author)->name }}
+                                @endif
+                                @if (isset($entry->contactCategory))
+                                    <app-badge muted small>{{ $entry->contactCategory->name }}</app-badge>
+                                @endif
+                            </template>
+                            <template v-slot:meta>
+                                @datetime($entry->created_at)
+                            </template>
                             <div style="white-space: pre-wrap">{{ $entry->body }}</div>
                             @unless ($entry->attachments->isEmpty())
                                 <ul class="mb-0">

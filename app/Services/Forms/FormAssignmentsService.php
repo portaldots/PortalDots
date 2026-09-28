@@ -8,6 +8,8 @@ use App\Eloquents\Circle;
 use App\Eloquents\Form;
 use App\Eloquents\FormAssignment;
 use App\Eloquents\User;
+use App\Events\Forms\FormDueDateChanged;
+use App\Events\Forms\FormSent;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -31,10 +33,41 @@ class FormAssignmentsService
 
         DB::transaction(function () use ($form, $circles, $due_at, $assigned_by) {
             foreach ($circles as $circle) {
-                FormAssignment::updateOrCreate(
-                    ['form_id' => $form->id, 'circle_id' => $circle->id],
-                    ['due_at' => $due_at, 'assigned_by' => $assigned_by->id]
-                );
+                $assignment = FormAssignment::where('form_id', $form->id)
+                    ->where('circle_id', $circle->id)
+                    ->lockForUpdate()
+                    ->first();
+
+                if (empty($assignment)) {
+                    $assignment = FormAssignment::create([
+                        'form_id' => $form->id,
+                        'circle_id' => $circle->id,
+                        'due_at' => $due_at,
+                        'assigned_by' => $assigned_by->id,
+                    ]);
+
+                    event(new FormSent(
+                        $circle->id,
+                        $form->id,
+                        $form->name,
+                        optional($due_at)->toIso8601String(),
+                        $assignment->id
+                    ));
+                    continue;
+                }
+
+                $dueAtChanged = !$this->sameDueAt($assignment->due_at, $due_at);
+                $assignment->update(['due_at' => $due_at, 'assigned_by' => $assigned_by->id]);
+
+                if ($dueAtChanged) {
+                    event(new FormDueDateChanged(
+                        $circle->id,
+                        $form->id,
+                        $form->name,
+                        optional($due_at)->toIso8601String(),
+                        $assignment->id
+                    ));
+                }
             }
         });
     }
@@ -49,9 +82,45 @@ class FormAssignmentsService
      */
     public function updateDueDate(Form $form, Circle $circle, ?Carbon $due_at): void
     {
-        FormAssignment::where('form_id', $form->id)
-            ->where('circle_id', $circle->id)
-            ->update(['due_at' => $due_at]);
+        DB::transaction(function () use ($form, $circle, $due_at) {
+            $assignment = FormAssignment::where('form_id', $form->id)
+                ->where('circle_id', $circle->id)
+                ->lockForUpdate()
+                ->first();
+
+            if (empty($assignment)) {
+                return;
+            }
+
+            $dueAtChanged = !$this->sameDueAt($assignment->due_at, $due_at);
+            $assignment->update(['due_at' => $due_at]);
+
+            if ($dueAtChanged) {
+                event(new FormDueDateChanged(
+                    $circle->id,
+                    $form->id,
+                    $form->name,
+                    optional($due_at)->toIso8601String(),
+                    $assignment->id
+                ));
+            }
+        });
+    }
+
+    /**
+     * @param Carbon|null $a
+     * @param Carbon|null $b
+     * @return bool
+     */
+    private function sameDueAt(?Carbon $a, ?Carbon $b): bool
+    {
+        if (empty($a) && empty($b)) {
+            return true;
+        }
+        if (empty($a) || empty($b)) {
+            return false;
+        }
+        return $a->eq($b);
     }
 
     /**

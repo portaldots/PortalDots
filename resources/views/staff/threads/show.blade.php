@@ -80,8 +80,15 @@
                         </list-view-item>
                     </div>
                 @elseif ($entry->kind === \App\Eloquents\ThreadEntry::KIND_EVENT)
+                    @php($eventLink = \App\Services\Threads\ThreadEventLinkService::staffLink($entry))
                     <list-view-item no-border>
-                        <template v-slot:title>{{ $entry->event_type }}</template>
+                        <template v-slot:title>
+                            @if ($eventLink)
+                                <a href="{{ route($eventLink['route'], $eventLink['params']) }}">{{ $entry->eventText() }}</a>
+                            @else
+                                {{ $entry->eventText() }}
+                            @endif
+                        </template>
                         <template v-slot:meta>
                             @datetime($entry->created_at)
                         </template>

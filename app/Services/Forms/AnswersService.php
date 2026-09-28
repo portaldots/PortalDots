@@ -8,6 +8,9 @@ use App\Eloquents\Form;
 use App\Eloquents\Circle;
 use App\Eloquents\Answer;
 use App\Eloquents\User;
+use App\Events\Forms\AnswerAccepted;
+use App\Events\Forms\AnswerReturned;
+use App\Events\Forms\AnswerSubmitted;
 use App\Exceptions\Forms\DuplicateAnswerException;
 use App\Exceptions\Forms\StaleAnswerException;
 use App\Services\Forms\AnswerDetailsService;
@@ -174,7 +177,7 @@ class AnswersService
                 );
 
                 if ($form->requires_review) {
-                    $this->recordSubmission($answer, $actingUser, false);
+                    $this->recordSubmission($form, $answer, $actingUser, false);
                 }
 
                 return $answer;
@@ -241,7 +244,7 @@ class AnswersService
                 );
 
                 if ($form->requires_review) {
-                    $this->recordSubmission($answer, $actingUser, $isStaffEdit);
+                    $this->recordSubmission($form, $answer, $actingUser, $isStaffEdit);
                 }
 
                 return $answer;
@@ -266,6 +269,7 @@ class AnswersService
     {
         return DB::transaction(function () use ($answer, $staff, $expectedLockVersion) {
             $answer = Answer::whereKey($answer->id)->lockForUpdate()->firstOrFail();
+            $form = $answer->form()->firstOrFail();
 
             if ($expectedLockVersion !== null && $answer->lock_version !== $expectedLockVersion) {
                 throw new StaleAnswerException($answer);
@@ -278,6 +282,16 @@ class AnswersService
                 'reviewed_at' => now(),
                 'lock_version' => $answer->lock_version + 1,
             ]);
+
+            if ($form->requires_review) {
+                event(new AnswerAccepted(
+                    $answer->circle_id,
+                    $form->id,
+                    $form->name,
+                    $answer->id,
+                    $answer->lock_version
+                ));
+            }
 
             return $answer;
         });
@@ -296,6 +310,7 @@ class AnswersService
     {
         return DB::transaction(function () use ($answer, $staff, $reason, $expectedLockVersion) {
             $answer = Answer::whereKey($answer->id)->lockForUpdate()->firstOrFail();
+            $form = $answer->form()->firstOrFail();
 
             if ($expectedLockVersion !== null && $answer->lock_version !== $expectedLockVersion) {
                 throw new StaleAnswerException($answer);
@@ -308,6 +323,17 @@ class AnswersService
                 'reviewed_at' => now(),
                 'lock_version' => $answer->lock_version + 1,
             ]);
+
+            if ($form->requires_review) {
+                event(new AnswerReturned(
+                    $answer->circle_id,
+                    $form->id,
+                    $form->name,
+                    $answer->id,
+                    $reason,
+                    $answer->lock_version
+                ));
+            }
 
             return $answer;
         });
@@ -322,11 +348,12 @@ class AnswersService
      * requires_review な回答の作成・更新時に、提出リビジョンを記録し、
      * スタッフによる修正でなければ確認待ち状態に戻す
      *
+     * @param Form $form
      * @param Answer $answer 行ロック済のAnswer
      * @param User|null $actingUser
      * @param bool $isStaffEdit
      */
-    private function recordSubmission(Answer $answer, ?User $actingUser, bool $isStaffEdit): void
+    private function recordSubmission(Form $form, Answer $answer, ?User $actingUser, bool $isStaffEdit): void
     {
         $nextRevision = (int)$answer->revisions()->max('revision') + 1;
 
@@ -344,6 +371,15 @@ class AnswersService
             $update['review_note'] = null;
         }
         $answer->update($update);
+
+        event(new AnswerSubmitted(
+            $answer->circle_id,
+            $form->id,
+            $form->name,
+            $answer->id,
+            $nextRevision,
+            $isStaffEdit
+        ));
     }
 
     private function finishStoredFilesAfterOutermostCommit(): void
