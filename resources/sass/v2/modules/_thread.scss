@@ -152,7 +152,39 @@
   padding-top: $spacing-md;
 }
 
+.thread-composer-panel__footer,
+.thread-composer-panel__attachments {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.thread-composer-panel__footer {
+  justify-content: space-between;
+  padding-top: $spacing-sm;
+}
+
+.thread-composer-panel__footer .thread-composer-panel__actions {
+  width: auto;
+  padding-top: 0;
+}
+
+.thread-composer-panel__attachments:focus-within .btn {
+  box-shadow: $box-shadow-focus-primary;
+}
+
+.thread-composer-panel__selected-files {
+  max-width: 12rem;
+  overflow: hidden;
+  color: $color-muted;
+  font-size: $font-size;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .thread-composer-panel textarea {
+  width: 100%;
   min-height: 6rem;
 }
 
@@ -160,13 +192,32 @@
   border-color: $color-focus-primary;
 }
 
+body.has-thread-workspace .content {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.has-thread-workspace .content__body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.staff-thread-workspace-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
 .staff-thread-workspace {
   display: grid;
+  flex: 1;
   grid-template-areas: "conversation details";
   grid-template-columns: minmax(0, 1fr) minmax(15rem, 18rem);
   gap: $spacing-md;
-  height: calc(100dvh - #{$navbar-height});
-  min-height: 32rem;
+  min-height: 0;
 }
 
 .staff-thread-workspace__details {
@@ -175,7 +226,11 @@
   overflow-y: auto;
 }
 
-.staff-thread-workspace__details-panel summary {
+.staff-thread-workspace__details-mobile {
+  display: none;
+}
+
+.staff-thread-workspace__details-mobile summary {
   padding: $spacing-md;
   border-radius: $border-radius;
   background: $color-bg-surface;
@@ -221,13 +276,13 @@
   border-top: 1px solid $color-border;
 }
 
-.staff-thread-workspace__reply .thread-composer-panel__actions {
+.staff-thread-workspace__reply .thread-composer-panel__footer {
   position: sticky;
   bottom: 0;
   background: $color-bg-surface;
 }
 
-.staff-thread-workspace__reply .thread-composer-panel.is-note .thread-composer-panel__actions {
+.staff-thread-workspace__reply .thread-composer-panel.is-note .thread-composer-panel__footer {
   background: $color-warning-light;
 }
 
@@ -244,6 +299,30 @@
   }
 
   .staff-thread-workspace__details {
-    max-height: 16rem;
+    overflow: visible;
+  }
+
+  .staff-thread-workspace__details-desktop {
+    display: none;
+  }
+
+  .staff-thread-workspace__details-mobile {
+    display: block;
+  }
+
+  body.has-thread-workspace:has(.staff-thread-workspace__details-mobile[open]) .content {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .staff-thread-workspace:has(.staff-thread-workspace__details-mobile[open]) {
+    flex: none;
+    grid-template-rows: auto auto;
+  }
+
+  .staff-thread-workspace:has(.staff-thread-workspace__details-mobile[open]) .staff-thread-workspace__conversation {
+    height: calc(100dvh - #{$navbar-height} - #{$spacing-md});
+    min-height: 24rem;
   }
 }

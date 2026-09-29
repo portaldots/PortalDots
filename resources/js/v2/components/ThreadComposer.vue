@@ -19,55 +19,55 @@
       </label>
     </div>
 
-    <list-view-form-group label-for="thread_composer_body">
-      <template #label>本文</template>
-      <textarea
-        id="thread_composer_body"
-        name="body"
-        class="form-control"
-        rows="3"
-        required
-      ></textarea>
-    </list-view-form-group>
+    <label class="visually-hidden" for="thread_composer_body">本文</label>
+    <textarea
+      id="thread_composer_body"
+      name="body"
+      class="form-control"
+      :placeholder="mode === 'internal_note' ? '内部メモを入力' : 'メッセージを入力'"
+      rows="3"
+      required
+    ></textarea>
 
-    <list-view-form-group label-for="thread_composer_attachments">
-      <template #label>添付ファイル</template>
-      <template #description>
-        {{ maxFiles }}個まで、1つにつき10MBまで添付できます。
-        <template v-if="mode === 'internal_note'">内部メモの添付ファイルは企画側には表示されません。</template>
-      </template>
-      <input
-        id="thread_composer_attachments"
-        type="file"
-        name="attachments[]"
-        multiple
-        class="form-control"
-      />
-    </list-view-form-group>
-
-    <div class="thread-composer-panel__actions">
-      <template v-if="mode === 'message'">
-        <button type="submit" name="target_status" value="awaiting_reply" class="btn is-secondary">
-          送信して返答待ちにする
-        </button>
-        <button type="submit" name="target_status" value="resolved" class="btn is-primary">
-          送信して解決済みにする
-        </button>
-      </template>
-      <template v-else>
-        <button type="submit" class="btn is-primary">メモを追加</button>
-      </template>
+    <div class="thread-composer-panel__footer">
+      <div class="thread-composer-panel__attachments">
+        <label for="thread_composer_attachments" class="btn is-secondary">添付</label>
+        <input
+          id="thread_composer_attachments"
+          type="file"
+          name="attachments[]"
+          multiple
+          class="visually-hidden"
+          aria-describedby="thread_composer_attachment_help"
+          @change="selectedFiles = Array.from($event.target.files).map(file => file.name)"
+        />
+        <span id="thread_composer_attachment_help" class="visually-hidden">
+          {{ maxFiles }}個まで、1つにつき10MBまで添付できます。
+          <template v-if="mode === 'internal_note'">内部メモの添付ファイルは企画側には表示されません。</template>
+        </span>
+        <span v-if="selectedFiles.length" class="thread-composer-panel__selected-files">
+          {{ selectedFiles.join('、') }}
+        </span>
+      </div>
+      <div class="thread-composer-panel__actions">
+        <template v-if="mode === 'message'">
+          <button type="submit" name="target_status" value="awaiting_reply" class="btn is-secondary">
+            送信して返答待ちにする
+          </button>
+          <button type="submit" name="target_status" value="resolved" class="btn is-primary">
+            送信して解決済みにする
+          </button>
+        </template>
+        <template v-else>
+          <button type="submit" class="btn is-primary">メモを追加</button>
+        </template>
+      </div>
     </div>
   </form>
 </template>
 
 <script>
-import ListViewFormGroup from "./ListViewFormGroup.vue";
-
 export default {
-  components: {
-    ListViewFormGroup,
-  },
   props: {
     messagesUrl: {
       type: String,
@@ -93,6 +93,7 @@ export default {
   data() {
     return {
       mode: "message",
+      selectedFiles: [],
     };
   },
 };
