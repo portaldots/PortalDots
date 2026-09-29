@@ -25,13 +25,14 @@
       name="body"
       class="form-control"
       :placeholder="mode === 'internal_note' ? '内部メモを入力' : 'メッセージを入力'"
-      rows="3"
+      rows="2"
       required
     ></textarea>
 
     <div class="thread-composer-panel__footer">
       <div class="thread-composer-panel__attachments">
         <label for="thread_composer_attachments" class="btn is-secondary">添付</label>
+        <span class="thread-composer-panel__attachment-limit" aria-hidden="true">最大{{ maxFiles }}件・各10MB</span>
         <input
           id="thread_composer_attachments"
           type="file"

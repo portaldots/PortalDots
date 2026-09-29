@@ -183,9 +183,14 @@
   white-space: nowrap;
 }
 
+.thread-composer-panel__attachment-limit {
+  color: $color-muted;
+  font-size: $font-size;
+}
+
 .thread-composer-panel textarea {
   width: 100%;
-  min-height: 6rem;
+  min-height: 4.5rem;
 }
 
 .thread-composer-panel:focus-within {
@@ -196,6 +201,12 @@ body.has-thread-workspace .content {
   height: 100dvh;
   min-height: 0;
   overflow: hidden;
+}
+
+@media (max-width: $breakpoint-bottom-tabs) {
+  body.has-thread-workspace.has-staff-bottom-tabs .content {
+    height: calc(100dvh - env(safe-area-inset-bottom) - #{$bottom-tabs-height});
+  }
 }
 
 body.has-thread-workspace .content__body {
@@ -316,6 +327,10 @@ body.has-thread-workspace .content__body {
     overflow: visible;
   }
 
+  body.has-thread-workspace.has-staff-bottom-tabs:has(.staff-thread-workspace__details-mobile[open]) .content {
+    min-height: calc(100dvh - env(safe-area-inset-bottom) - #{$bottom-tabs-height});
+  }
+
   .staff-thread-workspace:has(.staff-thread-workspace__details-mobile[open]) {
     flex: none;
     grid-template-rows: auto auto;
@@ -324,5 +339,9 @@ body.has-thread-workspace .content__body {
   .staff-thread-workspace:has(.staff-thread-workspace__details-mobile[open]) .staff-thread-workspace__conversation {
     height: calc(100dvh - #{$navbar-height} - #{$spacing-md});
     min-height: 24rem;
+  }
+
+  body.has-staff-bottom-tabs .staff-thread-workspace:has(.staff-thread-workspace__details-mobile[open]) .staff-thread-workspace__conversation {
+    height: calc(100dvh - env(safe-area-inset-bottom) - #{$bottom-tabs-height} - #{$navbar-height} - #{$spacing-md});
   }
 }

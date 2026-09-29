@@ -11,7 +11,7 @@
 @section('no_footer', '1')
 
 @push('body-class')
-    has-thread-workspace
+    has-thread-workspace {{ config('portal.navigation.staff_bottom_tabs', false) ? 'has-staff-bottom-tabs' : '' }}
 @endpush
 
 @section('content')
