@@ -45,7 +45,7 @@ class CircleProgressServiceTest extends TestCase
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
-    public function forCircle_進捗_誰の番_次の期限_遅れを単位から計算する()
+    public function forCircle_進捗_担当_次の期限_期限切れを単位から計算する()
     {
         Carbon::setTestNow(new Carbon('2026-10-15 00:00:00'));
 
