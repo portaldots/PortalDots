@@ -76,7 +76,7 @@ class NotesStoreActionTest extends TestCase
             ->get(route('staff.threads.show', ['thread' => $this->thread]));
         $showResponse->assertOk();
         $showResponse->assertSee('社内向けの内部メモです');
-        $showResponse->assertSee('thread-timeline__message is-note');
+        $showResponse->assertSee('thread-timeline__message is-note is-own');
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
