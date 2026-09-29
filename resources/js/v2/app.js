@@ -178,4 +178,11 @@ document.addEventListener("turbolinks:load", () => {
   app.use(FloatingVue, { delay: 400 });
 
   app.mount("#v2-app");
+
+  const threadHistory = document.querySelector(".staff-thread-workspace__history");
+  if (threadHistory) {
+    requestAnimationFrame(() => {
+      threadHistory.scrollTop = threadHistory.scrollHeight;
+    });
+  }
 });
