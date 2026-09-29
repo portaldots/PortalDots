@@ -1,25 +1,27 @@
+@use "@/sass/variables" as *;
+
 .thread-timeline {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  max-width: 52rem;
+  gap: $spacing-md;
+  max-width: $container-width-medium;
   margin: 0 auto;
-  padding: 1.5rem 1rem;
+  padding: $spacing $spacing-md;
 }
 
 .thread-timeline__message {
   box-sizing: border-box;
   width: fit-content;
   max-width: min(85%, 42rem);
-  padding: 0.8rem 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
-  background: var(--color-bg-surface);
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  background: $color-bg-surface;
   overflow-wrap: anywhere;
 
   &.is-own {
     align-self: flex-end;
-    background: var(--color-primary-light);
+    background: $color-primary-light;
   }
 
   &.is-other,
@@ -28,110 +30,114 @@
   }
 
   &.is-note {
-    background: var(--color-warning-light);
+    background: $color-warning-light;
   }
 }
 
 .thread-timeline__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 0.75rem;
+  gap: $spacing-xs $spacing-sm;
   justify-content: space-between;
-  color: var(--color-muted);
-  font-size: 0.8rem;
+  color: $color-muted;
+  font-size: $font-size;
 }
 
 .thread-timeline__body {
-  margin: 0.4rem 0 0;
+  margin: $spacing-sm 0 0;
   white-space: pre-wrap;
 }
 
 .thread-timeline__note-label {
-  margin-right: 0.4rem;
-  color: var(--color-text);
-  font-weight: var(--font-weight-bold);
+  margin-right: $spacing-sm;
+  color: $color-text;
+  font-weight: $font-bold;
 }
 
 .thread-timeline__category {
-  margin-left: 0.4rem;
+  margin-left: $spacing-sm;
 }
 
 .thread-timeline__event {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: $spacing-sm;
   max-width: 42rem;
-  color: var(--color-muted);
-  font-size: 0.8rem;
+  color: $color-muted;
+  font-size: $font-size;
 }
 
 .thread-timeline__event-mark {
-  flex: 0 0 0.45rem;
-  height: 0.45rem;
-  margin-top: 0.55rem;
+  flex: 0 0 $spacing-sm;
+  height: $spacing-sm;
+  margin-top: $spacing-sm;
   border-radius: 50%;
-  background: var(--color-muted-2);
+  background: $color-muted-2;
 }
 
 .thread-timeline__event-content time {
   display: inline-block;
-  margin-left: 0.6rem;
+  margin-left: $spacing-sm;
 }
 
 .thread-timeline__attachments {
-  margin: 0.6rem 0 0;
-  padding-left: 1.25rem;
+  margin: $spacing-sm 0 0;
+  padding-left: $spacing-s;
 }
 
 .thread-timeline__empty {
   margin: 0;
-  padding: 1rem;
-  color: var(--color-muted);
+  padding: $spacing-md;
+  color: $color-muted;
   text-align: center;
 }
 
 .thread-composer-panel {
   box-sizing: border-box;
-  max-width: 52rem;
+  max-width: $container-width-medium;
   margin: 0 auto;
-  padding: 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
-  background: var(--color-bg-surface);
+  padding: $spacing-md;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  background: $color-bg-surface;
 }
 
 .thread-composer-panel.is-note {
-  background: var(--color-warning-light);
+  background: $color-warning-light;
 }
 
 .thread-composer-panel__modes,
 .thread-composer-panel__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: $spacing-sm;
 }
 
 .thread-composer-panel__actions {
   width: 100%;
+
+  &[hidden] {
+    display: none;
+  }
 }
 
 .thread-composer-panel__mode {
   position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.4rem;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
   cursor: pointer;
 
   &.is-selected {
-    border-color: var(--color-primary);
-    background: var(--color-primary-light);
+    border-color: $color-primary;
+    background: $color-primary-light;
   }
 
   &:focus-within {
-    outline: 2px solid var(--color-focus-primary);
-    outline-offset: 2px;
+    outline: $focus-outline;
+    outline-offset: $spacing-xs;
   }
 }
 
@@ -144,33 +150,19 @@
 
 .thread-composer-panel__actions {
   justify-content: flex-end;
-  padding-top: 1rem;
+  padding-top: $spacing-md;
 }
 
 .thread-composer-panel textarea {
-  box-sizing: border-box;
-  width: 100%;
   min-height: 6rem;
-  padding: 0.65rem;
-  border: 1px solid var(--color-border-form-control);
-  border-radius: 0.4rem;
-  background: var(--color-bg-form-control);
-  color: var(--color-text);
-  font: inherit;
-  resize: vertical;
-}
-
-.thread-composer-panel textarea:focus-visible {
-  outline: 2px solid var(--color-focus-primary);
-  outline-offset: 1px;
 }
 
 .thread-composer-panel:focus-within {
-  border-color: var(--color-focus-primary);
+  border-color: $color-focus-primary;
 }
 
-@media (max-width: 600px) {
-  .thread-timeline { padding: 1rem 0.5rem; }
+@media (max-width: $breakpoint-listview-sm) {
+  .thread-timeline { padding: $spacing-md $spacing-sm; }
   .thread-timeline__message { max-width: 92%; }
-  .thread-composer-panel { padding: 0.75rem; }
+  .thread-composer-panel { padding: $spacing-sm; }
 }
