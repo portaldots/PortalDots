@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
  */
 final class CircleProgress
 {
-    // 「誰の番」の表記。用語をここへ集約しておき、将来の用語変更に対応しやすくする
+    // 担当の表記。用語をここへ集約しておき、将来の用語変更に対応しやすくする
     public const TURN_STAFF = 'スタッフ';
     public const TURN_CIRCLE = '企画';
     public const TURN_DONE = '完了';
@@ -108,7 +108,7 @@ final class CircleProgress
     }
 
     /**
-     * 「誰の番」。review の単位が1つでもあればスタッフ、todo・changes の単位が
+     * 担当。review の単位が1つでもあればスタッフ、todo・changes の単位が
      * 1つでもあれば企画、どちらも無ければ完了
      */
     public function getTurn(): string

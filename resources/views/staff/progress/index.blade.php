@@ -16,8 +16,8 @@
                                 <th>{{ term('circle') }}</th>
                                 <th>進捗</th>
                                 <th>次の期限</th>
-                                <th>誰の番</th>
-                                <th>遅れ</th>
+                                <th>担当</th>
+                                <th>期限切れ</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,14 +36,16 @@
                                             -
                                         @endif
                                     </td>
-                                    <td data-label="誰の番">
+                                    <td data-label="担当">
                                         @if ($progress->getTurn() === \App\Services\Circles\ValueObjects\CircleProgress::TURN_STAFF)
                                             <app-badge danger>{{ $progress->getTurnLabel() }}</app-badge>
+                                        @elseif ($progress->getTurn() === \App\Services\Circles\ValueObjects\CircleProgress::TURN_DONE)
+                                            なし
                                         @else
                                             {{ $progress->getTurnLabel() }}
                                         @endif
                                     </td>
-                                    <td data-label="遅れ">
+                                    <td data-label="期限切れ">
                                         @if ($progress->getOverdueCount() > 0)
                                             <app-badge danger>{{ $progress->getOverdueCount() }}件</app-badge>
                                         @else

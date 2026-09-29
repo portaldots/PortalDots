@@ -133,7 +133,7 @@ class TerminologyOverrideTest extends TestCase
         $this->assertSame('承認済み', $approval->fresh()->circleStatusLabel());
         $this->assertSame('承認済み', $approval->fresh()->staffStatusLabel());
 
-        // スタッフ進捗ページのタイトル・見出し・「誰の番」にも用語が反映される
+        // スタッフ進捗ページのタイトル・見出し・担当にも用語が反映される
         Permission::create(['name' => 'staff.circles.read']);
         $staff->syncPermissions(['staff.circles.read']);
 
