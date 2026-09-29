@@ -1,23 +1,23 @@
 <template>
   <form
     :action="mode === 'internal_note' ? notesUrl : messagesUrl"
+    :class="{ 'is-note': mode === 'internal_note' }"
     method="post"
     enctype="multipart/form-data"
   >
     <input type="hidden" name="_token" :value="csrfToken" />
     <input type="hidden" name="client_token" :value="clientToken" />
 
-    <list-view-form-group>
-      <template #label>入力モード</template>
-      <label class="thread-composer__mode">
-        <input v-model="mode" type="radio" value="message" />
+    <div class="thread-composer-panel__modes" role="group" aria-label="入力モード">
+      <label class="thread-composer-panel__mode" :class="{ 'is-selected': mode === 'message' }">
+        <input v-model="mode" class="thread-composer-panel__radio" type="radio" value="message" />
         メッセージ
       </label>
-      <label class="thread-composer__mode">
-        <input v-model="mode" type="radio" value="internal_note" />
+      <label class="thread-composer-panel__mode" :class="{ 'is-selected': mode === 'internal_note' }">
+        <input v-model="mode" class="thread-composer-panel__radio" type="radio" value="internal_note" />
         内部メモ
       </label>
-    </list-view-form-group>
+    </div>
 
     <list-view-form-group label-for="thread_composer_body">
       <template #label>本文</template>
@@ -25,7 +25,7 @@
         id="thread_composer_body"
         name="body"
         class="form-control"
-        rows="6"
+        rows="3"
         required
       ></textarea>
     </list-view-form-group>
@@ -45,7 +45,7 @@
       />
     </list-view-form-group>
 
-    <div class="text-right pt-spacing-md">
+    <div class="thread-composer-panel__actions">
       <template v-if="mode === 'message'">
         <button type="submit" name="target_status" value="awaiting_reply" class="btn is-secondary">
           送信して返答待ちにする
@@ -97,13 +97,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.thread-composer__mode {
-  display: inline-flex;
-  align-items: center;
-  gap: $spacing-xs;
-  margin-right: $spacing-md;
-  font-weight: normal;
-}
-</style>

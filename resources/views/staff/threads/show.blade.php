@@ -51,87 +51,24 @@
     </app-container>
 
     <app-container>
-        <list-view>
+        <list-view no-card-style>
             <template v-slot:title>やり取り</template>
-            @foreach ($entries as $entry)
-                @if ($entry->kind === \App\Eloquents\ThreadEntry::KIND_INTERNAL_NOTE)
-                    <div style="background: var(--color-warning-light); border-radius: 4px; padding: 0 1rem;">
-                        <list-view-item no-border>
-                            <template v-slot:title>
-                                内部メモ ・ {{ optional($entry->author)->name }}
-                            </template>
-                            <template v-slot:meta>
-                                @datetime($entry->created_at)
-                            </template>
-                            <div style="white-space: pre-wrap">{{ $entry->body }}</div>
-                            @unless ($entry->attachments->isEmpty())
-                                <ul class="mb-0">
-                                    @foreach ($entry->attachments as $attachment)
-                                        <li>
-                                            <a href="{{ route('staff.threads.attachments.show', ['attachment' => $attachment]) }}"
-                                                target="_blank" rel="noopener noreferrer">
-                                                <i class="fas fa-paperclip fa-fw"></i>
-                                                {{ $attachment->name }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endunless
-                        </list-view-item>
-                    </div>
-                @elseif ($entry->kind === \App\Eloquents\ThreadEntry::KIND_EVENT)
-                    @php($eventLink = \App\Services\Threads\ThreadEventLinkService::staffLink($entry))
-                    <list-view-item no-border>
-                        <template v-slot:title>
-                            @if ($eventLink)
-                                <a href="{{ route($eventLink['route'], $eventLink['params']) }}">{{ $entry->eventText() }}</a>
-                            @else
-                                {{ $entry->eventText() }}
-                            @endif
-                        </template>
-                        <template v-slot:meta>
-                            @datetime($entry->created_at)
-                        </template>
-                    </list-view-item>
-                @else
-                    <list-view-item no-border>
-                        <template v-slot:title>
-                            @if ($entry->author_side === \App\Eloquents\ThreadEntry::AUTHOR_SIDE_STAFF)
-                                スタッフ ・ {{ optional($entry->author)->name }}
-                            @else
-                                {{ optional($entry->author)->name }}
-                            @endif
-                            @if ($entry->contactCategory)
-                                <app-badge muted small>{{ $entry->contactCategory->name }}</app-badge>
-                            @endif
-                        </template>
-                        <template v-slot:meta>
-                            @datetime($entry->created_at)
-                        </template>
-                        <div style="white-space: pre-wrap">{{ $entry->body }}</div>
-                        @unless ($entry->attachments->isEmpty())
-                            <ul class="mb-0">
-                                @foreach ($entry->attachments as $attachment)
-                                    <li>
-                                        <a href="{{ route('staff.threads.attachments.show', ['attachment' => $attachment]) }}"
-                                            target="_blank" rel="noopener noreferrer">
-                                            <i class="fas fa-paperclip fa-fw"></i>
-                                            {{ $attachment->name }}
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endunless
-                    </list-view-item>
-                @endif
-            @endforeach
+            @include('threads.timeline', [
+                'entries' => $entries,
+                'viewerSide' => \App\Eloquents\ThreadEntry::AUTHOR_SIDE_STAFF,
+                'eventUrlFor' => function ($entry) {
+                    $link = \App\Services\Threads\ThreadEventLinkService::staffLink($entry);
+                    return $link ? route($link['route'], $link['params']) : null;
+                },
+                'attachmentUrlFor' => fn ($attachment) => route('staff.threads.attachments.show', ['attachment' => $attachment]),
+            ])
         </list-view>
     </app-container>
 
     <app-container>
-        <list-view>
+        <list-view no-card-style>
             <template v-slot:title>返信・内部メモ</template>
-            <thread-composer
+            <thread-composer class="thread-composer-panel"
                 messages-url="{{ route('staff.threads.messages.store', ['thread' => $thread]) }}"
                 notes-url="{{ route('staff.threads.notes.store', ['thread' => $thread]) }}"
                 csrf-token="{{ csrf_token() }}"

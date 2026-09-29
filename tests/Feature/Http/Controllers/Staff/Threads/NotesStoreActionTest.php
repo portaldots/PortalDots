@@ -76,6 +76,7 @@ class NotesStoreActionTest extends TestCase
             ->get(route('staff.threads.show', ['thread' => $this->thread]));
         $showResponse->assertOk();
         $showResponse->assertSee('社内向けの内部メモです');
+        $showResponse->assertSee('thread-timeline__message is-note');
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -98,6 +99,7 @@ class NotesStoreActionTest extends TestCase
 
         $circleResponse = $this->actingAs($this->member)->get(route('contacts'));
         $circleResponse->assertOk();
+        $circleResponse->assertSee('thread-timeline');
         $circleResponse->assertDontSee('企画には見せない内部メモです');
 
         $attachmentResponse = $this->actingAs($this->member)

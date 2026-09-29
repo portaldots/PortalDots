@@ -25,68 +25,31 @@
         </list-view>
     </app-container>
 
-    @unless ($entries->isEmpty())
-        <app-container>
-            <list-view>
-                <template v-slot:title>やり取り</template>
-                @foreach ($entries as $entry)
-                    <list-view-item no-border>
-                        @if ($entry->kind === \App\Eloquents\ThreadEntry::KIND_EVENT)
-                            @php($eventLink = isset($circle) ? \App\Services\Threads\ThreadEventLinkService::circleLink($entry, $circle, Auth::user()) : null)
-                            <template v-slot:title>
-                                @if ($eventLink)
-                                    <a href="{{ route($eventLink['route'], $eventLink['params']) }}">{{ $entry->eventText() }}</a>
-                                @else
-                                    {{ $entry->eventText() }}
-                                @endif
-                            </template>
-                            <template v-slot:meta>
-                                @datetime($entry->created_at)
-                            </template>
-                        @else
-                            <template v-slot:title>
-                                @if ($entry->author_side === \App\Eloquents\ThreadEntry::AUTHOR_SIDE_STAFF)
-                                    スタッフ
-                                @else
-                                    {{ optional($entry->author)->name }}
-                                @endif
-                                @if (isset($entry->contactCategory))
-                                    <app-badge muted small>{{ $entry->contactCategory->name }}</app-badge>
-                                @endif
-                            </template>
-                            <template v-slot:meta>
-                                @datetime($entry->created_at)
-                            </template>
-                            <div style="white-space: pre-wrap">{{ $entry->body }}</div>
-                            @unless ($entry->attachments->isEmpty())
-                                <ul class="mb-0">
-                                    @foreach ($entry->attachments as $attachment)
-                                        <li>
-                                            <a href="{{ route('contacts.attachments.show', ['attachment' => $attachment]) }}"
-                                                target="_blank" rel="noopener noreferrer">
-                                                <i class="fas fa-paperclip fa-fw"></i>
-                                                {{ $attachment->name }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endunless
-                        @endif
-                    </list-view-item>
-                @endforeach
-            </list-view>
-        </app-container>
-    @endunless
-
     <app-container>
-        <form method="post" action="{{ route('contacts.post') }}" enctype="multipart/form-data">
+        <list-view no-card-style>
+            <template v-slot:title>やり取り</template>
+            @php($selectedCircle = $circle ?? null)
+            @include('threads.timeline', [
+                'entries' => $entries,
+                'viewerSide' => \App\Eloquents\ThreadEntry::AUTHOR_SIDE_CIRCLE,
+                'eventUrlFor' => function ($entry) use ($selectedCircle) {
+                    if (!$selectedCircle) return null;
+                    $link = \App\Services\Threads\ThreadEventLinkService::circleLink($entry, $selectedCircle, Auth::user());
+                    return $link ? route($link['route'], $link['params']) : null;
+                },
+                'attachmentUrlFor' => fn ($attachment) => route('contacts.attachments.show', ['attachment' => $attachment]),
+            ])
+        </list-view>
+    </app-container>
+    <app-container>
+        <form class="thread-composer-panel" method="post" action="{{ route('contacts.post') }}" enctype="multipart/form-data">
             @csrf
             @if (isset($circle))
                 <input type="hidden" name="circle_id" value="{{ $circle->id }}">
             @endif
             <input type="hidden" name="client_token" value="{{ $clientToken }}">
 
-            <list-view>
+            <list-view no-card-style>
                 <template v-slot:title>メッセージを送る</template>
                 @if (isset($circle))
                     <list-view-form-group>
@@ -161,7 +124,7 @@
                     @endif
                 </list-view-form-group>
             </list-view>
-            <div class="text-center pt-spacing-md pb-spacing">
+            <div class="thread-composer-panel__actions">
                 <button type="submit" class="btn is-primary is-wide">送信</button>
             </div>
         </form>
