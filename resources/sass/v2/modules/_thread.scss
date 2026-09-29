@@ -24,8 +24,7 @@
     background: $color-primary-light;
   }
 
-  &.is-other,
-  &.is-note {
+  &.is-other {
     align-self: flex-start;
   }
 
@@ -161,8 +160,90 @@
   border-color: $color-focus-primary;
 }
 
+.staff-thread-workspace {
+  display: grid;
+  grid-template-areas: "conversation details";
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 18rem);
+  gap: $spacing-md;
+  height: calc(100dvh - #{$navbar-height});
+  min-height: 32rem;
+}
+
+.staff-thread-workspace__details {
+  grid-area: details;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+.staff-thread-workspace__details-panel summary {
+  padding: $spacing-md;
+  border-radius: $border-radius;
+  background: $color-bg-surface;
+  box-shadow: $box-shadow-lv1;
+  cursor: pointer;
+  font-weight: $font-bold;
+
+  &:focus-visible {
+    outline: $focus-outline;
+    outline-offset: $spacing-xs;
+  }
+}
+
+.staff-thread-workspace__details-status,
+.staff-thread-workspace__details-assignee {
+  display: block;
+  margin-top: $spacing-sm;
+  font-size: $font-size;
+  font-weight: normal;
+}
+
+.staff-thread-workspace__details-assignee {
+  color: $color-muted;
+}
+
+.staff-thread-workspace__conversation {
+  display: grid;
+  grid-area: conversation;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.staff-thread-workspace__history {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.staff-thread-workspace__reply {
+  max-height: 50dvh;
+  overflow-y: auto;
+  border-top: 1px solid $color-border;
+}
+
+.staff-thread-workspace__reply .thread-composer-panel__actions {
+  position: sticky;
+  bottom: 0;
+  background: $color-bg-surface;
+}
+
+.staff-thread-workspace__reply .thread-composer-panel.is-note .thread-composer-panel__actions {
+  background: $color-warning-light;
+}
+
 @media (max-width: $breakpoint-listview-sm) {
   .thread-timeline { padding: $spacing-md $spacing-sm; }
   .thread-timeline__message { max-width: 92%; }
   .thread-composer-panel { padding: $spacing-sm; }
+
+  .staff-thread-workspace {
+    grid-template-areas: "details" "conversation";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .staff-thread-workspace__details {
+    max-height: 16rem;
+  }
 }

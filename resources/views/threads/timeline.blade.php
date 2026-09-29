@@ -28,7 +28,7 @@
                 $isNote = $entry->kind === \App\Eloquents\ThreadEntry::KIND_INTERNAL_NOTE;
                 $isOwn = $entry->author_side === $viewerSide;
             @endphp
-            <article class="thread-timeline__message {{ $isNote ? 'is-note' : ($isOwn ? 'is-own' : 'is-other') }}">
+            <article class="thread-timeline__message {{ $isNote ? 'is-note ' : '' }}{{ $isOwn ? 'is-own' : 'is-other' }}">
                 <div class="thread-timeline__meta">
                     <span>
                         @if ($isNote)<span class="thread-timeline__note-label">内部メモ</span>@endif
