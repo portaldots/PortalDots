@@ -29,7 +29,7 @@
         "@vitejs/plugin-vue": "^4.6.2",
         "@vue/compiler-sfc": "^3.2.45",
         "blade-formatter": "^1.38.6",
-        "cross-env": "^7.0",
+        "cross-env": "^10.1",
         "eslint": "^8.49.0",
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-prettier": "^9.0.0",
