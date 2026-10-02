@@ -24,4 +24,65 @@ return [
     'primary_color_hsl' => [env('PORTAL_PRIMARY_COLOR_H', null), env('PORTAL_PRIMARY_COLOR_S', null), env('PORTAL_PRIMARY_COLOR_L', null)],
     // デモモード
     'enable_demo_mode' => env('PORTAL_ENABLE_DEMO_MODE', false),
+    'navigation' => [
+        'staff_home_route' => 'staff.index',
+        'show_mode_switch' => true,
+        'staff_bottom_tabs' => false,
+    ],
+    // フォームの項目エディターを別の業務画面から使う場合の表示と遷移先
+    'form_editor' => [
+        'title' => 'フォームエディター',
+        'back_route' => 'staff.forms.index',
+        'back_label' => '申請管理',
+        'settings_route' => 'staff.forms.edit',
+        'settings_label' => '設定',
+        'editor_label' => 'エディター',
+        'show_answers_tab' => true,
+        'publish_confirmation' => "公開しますか？\n公開しても受付期間外の場合、団体は回答できません。",
+    ],
+
+    // ユーザー登録・ログイン方法・学籍番号・大学提供メールアドレスの有無
+    // プライベートなデプロイ用パッケージが Service Provider から
+    // config(['portal.registration.enabled' => false]) のように上書きすることで、
+    // OSS側のファイルを変更せずに招待制での運用に対応できる。
+    // 参照する際は config() を直接呼ばず App\Services\Auth\AuthSettings を使うこと
+    'registration' => [
+        // ユーザー登録を受け付けるか
+        // false にすると /register のルートが登録されず(404)、登録への導線も表示されない
+        'enabled' => true,
+    ],
+    'auth' => [
+        // ログインIDとして受け付けるカラム。'email' と 'student_id' の組み合わせで指定する
+        'login_identifiers' => ['email', 'student_id'],
+        // 学籍番号の入力・表示・必須化を行うか
+        'student_id' => true,
+        // 大学提供メールアドレスの入力・表示・認証を行うか
+        // false の場合、連絡先メールアドレスの認証のみで「メール認証済み」とみなす
+        'univemail' => true,
+    ],
+
+    // 用語
+    // term() ヘルパーで参照する。プライベートなデプロイ用パッケージが
+    // config(['portal.terms.circle' => '案件']) のように上書きすることで、
+    // OSS側のファイルを変更せずに画面上の呼称を変更できる
+    'terms' => [
+        // 「企画」の呼称
+        'circle' => '企画',
+        // 「申請」の呼称
+        'form' => '申請',
+        // 「配布資料」の呼称
+        'document' => '配布資料',
+        // 「お問い合わせ」の呼称
+        'contact' => 'お問い合わせ',
+        // 主催側（「スタッフ」）の呼称
+        'staff_side' => 'スタッフ',
+        // 配布資料の確認依頼の状態ラベル（企画向け）
+        'document_status_circle_pending' => '確認してください',
+        'document_status_circle_changes_requested' => '修正対応中',
+        'document_status_circle_approved' => '確認済み',
+        // 配布資料の確認依頼の状態ラベル（スタッフ向け）
+        'document_status_staff_pending' => '確認待ち',
+        'document_status_staff_changes_requested' => '修正依頼あり',
+        'document_status_staff_approved' => '確認済み',
+    ],
 ];

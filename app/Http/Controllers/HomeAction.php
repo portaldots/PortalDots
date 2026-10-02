@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Contracts\HomeLanding;
 use Illuminate\Support\Facades\Auth;
 use App\Eloquents\Page;
 use App\Eloquents\Document;
 use App\Eloquents\Form;
 use App\Eloquents\ParticipationType;
+use App\Eloquents\Thread;
+use App\Services\Circles\CircleProgressService;
 use App\Services\Circles\SelectorService;
 
 class HomeAction extends Controller
@@ -23,20 +26,54 @@ class HomeAction extends Controller
      */
     private $selectorService;
 
-    public function __construct(SelectorService $selectorService)
-    {
+    /**
+     * @var CircleProgressService
+     */
+    private $circleProgressService;
+
+    private $homeLanding;
+
+    public function __construct(
+        SelectorService $selectorService,
+        CircleProgressService $circleProgressService,
+        HomeLanding $homeLanding
+    ) {
         $this->selectorService = $selectorService;
+        $this->circleProgressService = $circleProgressService;
+        $this->homeLanding = $homeLanding;
     }
 
     public function __invoke()
     {
         $circle = $this->selectorService->getCircle();
+        $user = Auth::user();
+
+        $redirect = $this->homeLanding->redirectFor($user, $circle);
+        if ($redirect !== null) {
+            return redirect($redirect);
+        }
 
         if (isset($circle)) {
             $circle->loadMissing(['places', 'participationType']);
         }
 
+        // ログイン中かつ企画が選択されている場合のみ、「対応が必要なもの」を計算する
+        $showsCircleActionItems = Auth::check() && isset($circle);
+
         return view('home')
+            ->with('shows_circle_action_items', $showsCircleActionItems)
+            ->with(
+                'circle_progress',
+                $showsCircleActionItems ? $this->circleProgressService->forCircle($circle) : null
+            )
+            ->with(
+                'circle_thread',
+                $showsCircleActionItems
+                    ? Thread::where('circle_id', $circle->id)
+                        ->where('status', Thread::STATUS_AWAITING_REPLY)
+                        ->first()
+                    : null
+            )
             ->with('participation_types', ParticipationType::open()->public()->get())
             ->with(
                 'my_circles',
@@ -50,33 +87,33 @@ class HomeAction extends Controller
             ->with('circle', $circle)
             ->with(
                 'pinned_pages',
-                Page::byCircle($circle)
+                Page::visibleTo($user, $circle)
                     ->with([
-                        'documents' => function ($query) {
-                            $query->public();
+                        'viewableTags',
+                        'documents' => function ($query) use ($user, $circle) {
+                            $query->visibleTo($user, $circle);
                         }
                     ])
-                    ->public()
                     ->pinned()
                     ->get()
             )
             ->with(
                 'pages',
-                Page::byCircle($circle)
+                Page::visibleTo($user, $circle)
                     ->take(self::TAKE_COUNT)
                     ->with([
+                        'viewableTags',
                         'usersWhoRead' => function ($query) {
                             $query->where('user_id', Auth::id());
                         },
                     ])
-                    ->public()
                     ->pinned(false)
                     ->get()
             )
             ->with(
                 'documents',
-                Document::take(self::TAKE_COUNT)
-                    ->public()
+                Document::visibleTo($user, $circle)
+                    ->take(self::TAKE_COUNT)
                     ->get()
             )
             ->with(

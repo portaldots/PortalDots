@@ -14,6 +14,7 @@ $factory->define(Document::class, function (Faker $faker) {
         'extension' => 'pdf',
         'is_public' => true,
         'is_important' => false,
+        'audience' => 'everyone',
         'notes' => $faker->text,
     ];
 });

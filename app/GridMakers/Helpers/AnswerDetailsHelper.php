@@ -49,6 +49,7 @@ class AnswerDetailsHelper
                     case 'radio':
                     case 'select':
                     case 'upload':
+                    case 'table':
                         return "MAX(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END) AS '{$columnAlias}'";
                     case 'checkbox':
                         $separator = $checkboxGroupConcatSeparator;
@@ -121,9 +122,11 @@ class AnswerDetailsHelper
         Collection $questions,
         Form $form,
         string $questionsKeyPrefix,
-        string $checkboxGroupConcatSeparator
+        string $checkboxGroupConcatSeparator,
+        string $answerIdAttribute = 'id'
     ): array {
         $item = [];
+        $answerId = $record->$answerIdAttribute;
 
         foreach (self::getFormQuestionsKeys($questions, $questionsKeyPrefix) as $formKey) {
             $questionId = intval(str_replace($questionsKeyPrefix, '', $formKey));
@@ -134,10 +137,25 @@ class AnswerDetailsHelper
                 $item[$formKey] = !empty($answerValue) ? [
                     'file_url' => route('staff.forms.answers.uploads.show', [
                         'form' => $form->id,
-                        'answer' => $record->id,
+                        'answer' => $answerId,
                         'question' => $questionId,
                     ])
                 ] : [];
+            } elseif ($question->type === 'table') {
+                $cells = \App\Support\TableAnswerPresenter::cells($question, $answerValue);
+                foreach ($cells as &$cell) {
+                    if ($cell['type'] === 'upload' && $cell['text'] !== '') {
+                        $cell['file_url'] = route('staff.forms.answers.uploads.table.show', [
+                            'form' => $form->id,
+                            'answer' => $answerId,
+                            'question' => $questionId,
+                            'row' => $cell['row'],
+                            'column' => $cell['column'],
+                        ]);
+                    }
+                }
+                unset($cell);
+                $item[$formKey] = ['table_cells' => $cells];
             } elseif ($question->type === 'checkbox') {
                 $item[$formKey] = isset($answerValue)
                     ? explode($checkboxGroupConcatSeparator, $answerValue)

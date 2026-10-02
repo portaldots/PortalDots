@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Forms;
 
+use App\Contracts\AudiencePolicy;
 use App\Eloquents\Form;
 use App\Eloquents\User;
 use App\Eloquents\Tag;
@@ -34,6 +35,8 @@ class FormsService
      * @param int $max_answers 企画毎に回答可能とする回答数
      * @param bool $is_public フォームを公開するか
      * @param array|null $answerable_tags フォームを回答可能とする企画のタグ
+     * @param bool $requires_review 提出後にスタッフが確認するフォームか
+     * @param string $audience フォームの公開範囲
      * @return Form
      */
     public function createForm(
@@ -45,7 +48,9 @@ class FormsService
         User $created_by,
         int $max_answers,
         bool $is_public,
-        ?array $answerable_tags = null
+        ?array $answerable_tags = null,
+        bool $requires_review = false,
+        string $audience = AudiencePolicy::EVERYONE
     ): Form {
         return DB::transaction(function () use (
             $name,
@@ -56,7 +61,9 @@ class FormsService
             $created_by,
             $max_answers,
             $is_public,
-            $answerable_tags
+            $answerable_tags,
+            $requires_review,
+            $audience
         ) {
             $form = Form::create([
                 'name' => $name,
@@ -66,6 +73,8 @@ class FormsService
                 'close_at' => $close_at,
                 'max_answers' => $max_answers,
                 'is_public' => $is_public,
+                'requires_review' => $requires_review,
+                'audience' => $audience,
             ]);
 
             // 検索時は大文字小文字の区別をしない
@@ -105,6 +114,8 @@ class FormsService
      * @param int $max_answers 企画毎に回答可能とする回答数
      * @param bool $is_public フォームを公開するか
      * @param array|null $answerable_tags フォームを回答可能とする企画のタグ
+     * @param bool $requires_review 提出後にスタッフが確認するフォームか
+     * @param string $audience フォームの公開範囲
      * @return boolean
      */
     public function updateForm(
@@ -117,7 +128,9 @@ class FormsService
         User $created_by,
         int $max_answers,
         bool $is_public,
-        ?array $answerable_tags = null
+        ?array $answerable_tags = null,
+        bool $requires_review = false,
+        string $audience = AudiencePolicy::EVERYONE
     ): bool {
         return DB::transaction(function () use (
             $form,
@@ -129,7 +142,9 @@ class FormsService
             $created_by,
             $max_answers,
             $is_public,
-            $answerable_tags
+            $answerable_tags,
+            $requires_review,
+            $audience
         ) {
             $form->update([
                 'name' => $name,
@@ -139,6 +154,8 @@ class FormsService
                 'close_at' => $close_at,
                 'max_answers' => $max_answers,
                 'is_public' => $is_public,
+                'requires_review' => $requires_review,
+                'audience' => $audience,
             ]);
 
             $old_tags = $form->answerableTags()->orderBy('id')->get();

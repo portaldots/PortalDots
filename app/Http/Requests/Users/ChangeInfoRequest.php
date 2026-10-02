@@ -5,6 +5,7 @@ namespace App\Http\Requests\Users;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Eloquents\User;
+use App\Services\Auth\AuthSettings;
 use Illuminate\Support\Facades\Auth;
 
 class ChangeInfoRequest extends FormRequest
@@ -29,7 +30,7 @@ class ChangeInfoRequest extends FormRequest
         $rules = User::getValidationRules();
         return [
             'student_id' => array_merge(
-                User::STUDENT_ID_RULES,
+                $rules['student_id'],
                 [Rule::unique('users')->ignore(Auth::user())]
             ),
             'name' => User::NAME_RULES,
@@ -80,8 +81,11 @@ class ChangeInfoRequest extends FormRequest
         $user = Auth::user();
         $circles = $user->circles()->submitted()->get();
 
-        $validator->after(function ($validator) use ($user, $circles) {
+        $authSettings = app(AuthSettings::class);
+
+        $validator->after(function ($validator) use ($user, $circles, $authSettings) {
             if (
+                $authSettings->univemailEnabled() &&
                 !User::isValidUnivemailByLocalPartAndDomainPart(
                     $this->univemail_local_part,
                     $this->univemail_domain_part

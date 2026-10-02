@@ -2,9 +2,14 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Contracts\HomeLanding;
+use App\Policies\DefaultHomeLanding;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Services\Utils\DotenvService;
+use App\Eloquents\Document;
+use App\Eloquents\DocumentApproval;
+use App\Eloquents\DocumentVersion;
 use App\Eloquents\User;
 use App\Eloquents\Circle;
 use App\Eloquents\Form;
@@ -14,6 +19,39 @@ use App\Eloquents\ParticipationType;
 class HomeActionTest extends TestCase
 {
     use RefreshDatabase;
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 既定のホーム遷移は画面を表示する()
+    {
+        $this->assertInstanceOf(DefaultHomeLanding::class, app(HomeLanding::class));
+
+        $user = factory(User::class)->create();
+        $response = $this->actingAs($user)->get(route('home'));
+
+        $response->assertOk();
+        $response->assertViewIs('home');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function ホーム遷移の差し替えでログイン中のユーザーを指定URLに転送する()
+    {
+        $user = factory(User::class)->create();
+        $destination = route('documents.index');
+        $landing = $this->mock(HomeLanding::class);
+        $landing->shouldReceive('redirectFor')->once()->with($user, null)->andReturn($destination);
+
+        $this->actingAs($user)->get(route('home'))->assertRedirect($destination);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function ホーム遷移の差し替えがnullを返すと画面を表示する()
+    {
+        $user = factory(User::class)->create();
+        $landing = $this->mock(HomeLanding::class);
+        $landing->shouldReceive('redirectFor')->once()->with($user, null)->andReturn(null);
+
+        $this->actingAs($user)->get(route('home'))->assertOk()->assertViewIs('home');
+    }
 
     #[\PHPUnit\Framework\Attributes\Test]
     public function 未インストール状態の場合はインストーラが表示される()
@@ -34,6 +72,17 @@ class HomeActionTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSee('home-header');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function registration_enabledがfalseの場合ユーザー登録への導線が表示されない()
+    {
+        config(['portal.registration.enabled' => false]);
+
+        $response = $this->get(route('home'));
+        $response->assertStatus(200);
+
+        $response->assertDontSee('ユーザー登録');
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -124,5 +173,67 @@ class HomeActionTest extends TestCase
 
         $response->assertDontSee($participationFormName);
         $response->assertSee($normalFormName);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function ゲストには対応が必要なものセクションが表示されない()
+    {
+        $response = $this->get(route('home'));
+
+        $response->assertDontSee('対応が必要なもの');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 対応が必要なものが無い場合は空の表示になる()
+    {
+        $circle = factory(Circle::class)->create();
+        $user = factory(User::class)->create();
+        $user->circles()->attach($circle, ['is_leader' => true]);
+
+        $response = $this->actingAs($user)->get(route('home'));
+
+        $response->assertSee('対応が必要なもの');
+        $response->assertSee('対応が必要なものはありません');
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 対応が必要なものは選択中の企画のものだけが表示される()
+    {
+        $circle = factory(Circle::class)->create();
+        $user = factory(User::class)->create();
+        $user->circles()->attach($circle, ['is_leader' => true]);
+
+        // 選択中の企画向けの未提出フォーム
+        factory(Form::class)->create(['requires_review' => false, 'name' => '自分の企画向けフォーム']);
+
+        // 他の企画だけに宛てた確認依頼
+        $otherCircle = factory(Circle::class)->create();
+        $otherDocument = factory(Document::class)->create(['name' => '他企画向け配布資料']);
+        $otherVersion = factory(DocumentVersion::class)->create(['document_id' => $otherDocument->id]);
+        DocumentApproval::create([
+            'document_id' => $otherDocument->id,
+            'circle_id' => $otherCircle->id,
+            'document_version_id' => $otherVersion->id,
+            'status' => DocumentApproval::STATUS_PENDING,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('home'));
+
+        $response->assertSee('自分の企画向けフォーム');
+        $response->assertSee('提出してください');
+        $response->assertDontSee('対応が必要なものはありません');
+
+        // 「最近の配布資料」など、他のセクションにも同名の資料が出うるため、
+        // 「対応が必要なもの」に渡されたデータそのものを検証する
+        $progress = $response->viewData('circle_progress');
+        $labels = $progress
+            ->unitsInState([
+                \App\Services\Circles\ValueObjects\ProgressUnit::STATE_TODO,
+                \App\Services\Circles\ValueObjects\ProgressUnit::STATE_CHANGES,
+            ])
+            ->map(fn ($unit) => $unit->getLabel());
+
+        $this->assertContains('自分の企画向けフォーム', $labels->all());
+        $this->assertNotContains('他企画向け配布資料', $labels->all());
     }
 }

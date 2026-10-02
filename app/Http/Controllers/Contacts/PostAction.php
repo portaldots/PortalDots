@@ -34,7 +34,14 @@ class PostAction extends Controller
                 'name' => config('portal.admin_name'),
             ]);
 
-        $this->contactsService->create($circle, $sender, $request->contact_body, $category);
+        $this->contactsService->create(
+            $circle,
+            $sender,
+            $request->contact_body,
+            $category,
+            $request->file('attachments', []),
+            $request->input('client_token')
+        );
 
         return redirect()
             ->route('contacts')

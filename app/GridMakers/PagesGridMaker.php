@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\GridMakers;
 
+use App\Contracts\AudiencePolicy;
 use App\Eloquents\Document;
 use App\Eloquents\Tag;
 use Illuminate\Database\Eloquent\Builder;
@@ -39,6 +40,7 @@ class PagesGridMaker implements GridMakable
             'body',
             'is_pinned',
             'is_public',
+            'audience',
             'notes',
             'created_at',
             'updated_at',
@@ -58,6 +60,7 @@ class PagesGridMaker implements GridMakable
             'body',
             'is_pinned',
             'is_public',
+            'audience',
             'notes',
             'created_at',
             'updated_at',
@@ -100,6 +103,11 @@ class PagesGridMaker implements GridMakable
             'body' => FilterableKey::string(),
             'is_pinned' => FilterableKey::bool(),
             'is_public' => FilterableKey::bool(),
+            'audience' => FilterableKey::enum([
+                AudiencePolicy::EVERYONE,
+                AudiencePolicy::SIGNED_IN,
+                AudiencePolicy::SELECTED,
+            ]),
             'notes' => FilterableKey::string(),
             'created_at' => FilterableKey::datetime(),
             'updated_at' => FilterableKey::datetime(),
@@ -117,6 +125,7 @@ class PagesGridMaker implements GridMakable
             'body',
             'is_pinned',
             'is_public',
+            'audience',
             'notes',
             'created_at',
             'updated_at',

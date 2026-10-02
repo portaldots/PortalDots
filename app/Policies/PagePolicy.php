@@ -21,15 +21,10 @@ class PagePolicy
      */
     public function view(?User $user, Page $page, ?Circle $circle): bool
     {
-        if (!$page->is_public || $page->is_pinned) {
+        if ($page->is_pinned) {
             return false;
         }
-        if (!$page->viewableTags->isEmpty()) {
-            if (empty($circle)) {
-                return false;
-            }
-            return $circle->tags()->whereIn('tags.id', $page->viewableTags->pluck('id')->all())->exists();
-        }
-        return true;
+
+        return Page::whereKey($page->id)->visibleTo($user, $circle)->exists();
     }
 }

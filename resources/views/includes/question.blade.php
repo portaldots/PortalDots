@@ -4,6 +4,74 @@
             @markdown($question->description)
         </div>
     </question-heading>
+@elseif ($question->type === 'table')
+    @php
+        $table_columns = is_array($question->table) ? $question->table : [];
+        $table_value = empty($revision ?? null)
+            ? old('answers.' . $question->id, $answer_details[$question->id] ?? [])
+            : ($answer_details[$question->id] ?? []);
+        if (!is_array($table_value)) {
+            $table_value = [];
+        }
+        $table_errors = [];
+        $error_prefix = 'answers.' . $question->id . '.';
+        foreach ($errors->getMessages() as $key => $messages) {
+            if (str_starts_with($key, $error_prefix)) {
+                $table_errors[substr($key, strlen($error_prefix))] = $messages[0];
+            }
+        }
+
+        if (!empty($answer)) {
+            $table_envelope = !empty($revision ?? null)
+                ? app(\App\Services\Forms\AnswerDetailsService::class)
+                    ->getTableAnswerEnvelopeByRevision($revision, $question->id)
+                : app(\App\Services\Forms\AnswerDetailsService::class)
+                    ->getTableAnswerEnvelopeByAnswer($answer, $question->id);
+            $current_column_ids = array_column($table_columns, 'id');
+            foreach (($table_envelope['columns'] ?? []) as $snapshot_column) {
+                if (!in_array($snapshot_column['id'] ?? null, $current_column_ids, true)) {
+                    $snapshot_column['deleted'] = true;
+                    $table_columns[] = $snapshot_column;
+                    if (is_array($table_value)) {
+                        foreach ($table_value as $row_id => &$row_value) {
+                            if (is_array($row_value) && array_key_exists($snapshot_column['id'], $table_envelope['rows'][$row_id] ?? [])) {
+                                $row_value[$snapshot_column['id']] = $table_envelope['rows'][$row_id][$snapshot_column['id']];
+                            }
+                        }
+                        unset($row_value);
+                    }
+                }
+            }
+        }
+
+        // $show_upload_route が「.uploads.show」で終わる規約を利用し、
+        // 表形式の設問用のアップロードルート名を組み立てる
+        // (通常の回答用・リビジョン閲覧用のいずれの route 名にも対応する)
+        $table_upload_route = str_replace(
+            '.uploads.show',
+            '.uploads.table.show',
+            $show_upload_route ?? 'forms.answers.uploads.show'
+        );
+        $table_upload_route_params = ['form' => $form, 'answer' => $answer, 'question' => $question];
+        if (!empty($revision ?? null)) {
+            $table_upload_route_params['revision'] = $revision;
+        }
+        $table_upload_url_template = !empty($answer)
+            ? route($table_upload_route, array_merge($table_upload_route_params, ['row' => '__ROW__', 'column' => '__COLUMN__']))
+            : null;
+    @endphp
+    <question-item @if ($question->is_required) required @endif
+        type="table" v-bind:question-id="{{ $question->id }}" name="{{ $question->name }}"
+        description="{{ $question->description }}" v-bind:value="{{ json_encode($table_value) }}"
+        v-bind:table-columns="{{ json_encode($table_columns) }}"
+        v-bind:table-errors="{{ json_encode($table_errors) }}"
+        v-bind:table-upload-url-template="{{ json_encode($table_upload_url_template) }}"
+        v-bind:number-min="{{ $question->number_min ?? 'null' }}"
+        v-bind:number-max="{{ $question->number_max ?? 'null' }}"
+        v-bind:disabled="{{ json_encode($is_disabled ?? false) }}"
+        @error('answers.' . $question->id)
+        invalid="{{ $message }}"
+        @enderror></question-item>
 @elseif ($question->type === 'textarea' && !empty($is_disabled) && $is_disabled)
     {{-- 複数行入力されたテキストをスクロールすることなく全文表示できるよう、 --}}
     {{-- textareaタグではなくpreタグで回答内容を表示 --}}
@@ -21,9 +89,9 @@
     {{-- ファイルアップロード済の場合は、アップロードしたファイルにアクセスできるURLをvalueに設定 --}}
     <question-item @if ($question->is_required) required @endif
         @if ($question->type === 'upload' && !empty($answer) && !empty($answer_details[$question->id]))
-            value="{{ route($show_upload_route ?? 'forms.answers.uploads.show', ['form' => $form, 'answer' => $answer, 'question' => $question]) }}"
+            value="{{ route($show_upload_route ?? 'forms.answers.uploads.show', array_merge(['form' => $form, 'answer' => $answer, 'question' => $question], empty($revision ?? null) ? [] : ['revision' => $revision])) }}"
         @else
-            v-bind:value="{{ json_encode(old('answers.' . $question->id, $answer_details[$question->id] ?? null)) }}"
+            v-bind:value="{{ json_encode(empty($revision ?? null) ? old('answers.' . $question->id, $answer_details[$question->id] ?? null) : ($answer_details[$question->id] ?? null)) }}"
         @endif
         type="{{ $question->type }}" v-bind:question-id="{{ $question->id }}" name="{{ $question->name }}"
         description="{{ $question->description }}" v-bind:options="{{ json_encode($question->optionsArray) }}"

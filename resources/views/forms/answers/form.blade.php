@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $form->name . ' — 申請')
+@section('title', $form->name . ' — ' . term('form'))
 
 @section('no_circle_selector', true)
 
@@ -11,7 +11,7 @@
         </app-nav-bar-back>
     @else
         <app-nav-bar-back href="{{ route('forms.index') }}">
-            申請
+            {{ term('form') }}
         </app-nav-bar-back>
     @endif
 @endsection
@@ -25,6 +25,14 @@
         @method(empty($answer) ? 'post' : 'patch')
 
         <input type="hidden" name="circle_id" value="{{ $circle->id }}">
+        @if ($form->requires_review && !empty($answer))
+            <input type="hidden" name="lock_version" value="{{ $answer->lock_version }}">
+        @endif
+
+        @php
+            $is_review_locked = $form->requires_review && !empty($answer) &&
+                $answer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_ACCEPTED;
+        @endphp
 
         <app-header>
             <template v-slot:title>{{ $form->name }}</template>
@@ -39,7 +47,16 @@
                         </strong>
                     @endif
                 </p>
-                @if (!$form->answerableTags->isEmpty())
+                @php $dueAt = $form->effectiveDueDateFor($circle); @endphp
+                @if (!$dueAt->equalTo($form->close_at) || $form->isOverdueFor($circle))
+                    <p class="text-muted">
+                        期限 : @datetime($dueAt)
+                        @if ($form->isOverdueFor($circle))
+                            <app-badge danger>期限切れ</app-badge>
+                        @endif
+                    </p>
+                @endif
+                @if ($form->audience === \App\Contracts\AudiencePolicy::SELECTED)
                     <p class="text-muted">
                         <app-badge primary outline>限定公開</app-badge>
                         このフォームは、限られた企画のみ回答可能です。
@@ -52,7 +69,7 @@
         <app-container>
             <list-view>
                 <list-view-form-group>
-                    <template v-slot:label>申請企画名</template>
+                    <template v-slot:label>{{ term('form') }}{{ term('circle') }}名</template>
                     <input type="text" readonly value="{{ $circle->name }}({{ $circle->group_name }})"
                         class="form-control">
                     @if (empty($answer) &&
@@ -63,6 +80,48 @@
                     @endif
                 </list-view-form-group>
             </list-view>
+
+            @if ($form->requires_review && !empty($answer))
+                <list-view>
+                    <list-view-card>
+                        <p>
+                            回答の状況 :
+                            @if ($answer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_ACCEPTED)
+                                <app-badge success>完了</app-badge>
+                            @elseif ($answer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_RETURNED)
+                                <app-badge danger>修正してください</app-badge>
+                            @else
+                                <app-badge primary>確認中</app-badge>
+                            @endif
+                        </p>
+                        @if ($answer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_RETURNED && !empty($answer->review_note))
+                            <p class="text-danger">
+                                <i class="fas fa-info-circle"></i>
+                                差し戻し理由 : {{ $answer->review_note }}
+                            </p>
+                        @endif
+                    </list-view-card>
+                </list-view>
+
+                <list-view>
+                    <template v-slot:title>過去の提出</template>
+                    @php $answer_revisions = $answer->revisions()->orderByDesc('revision')->get(); @endphp
+                    @if ($answer_revisions->isEmpty())
+                        <list-view-item href="{{ route('forms.answers.edit', ['form' => $form, 'answer' => $answer]) }}">
+                            <template v-slot:title>第1版</template>
+                            <template v-slot:meta>@datetime($answer->submitted_at ?? $answer->created_at)</template>
+                        </list-view-item>
+                    @else
+                        @foreach ($answer_revisions as $_revision)
+                            <list-view-item
+                                href="{{ route('forms.answers.revisions.show', ['form' => $form, 'answer' => $answer, 'revision' => $_revision]) }}">
+                                <template v-slot:title>第{{ $_revision->revision }}版</template>
+                                <template v-slot:meta>@datetime($_revision->submitted_at)</template>
+                            </list-view-item>
+                        @endforeach
+                    @endif
+                </list-view>
+            @endif
 
             {{-- $answers ← 企画 $circle が回答した全回答（回答新規作成画面で使用。変更画面でも使用可能） --}}
             {{-- $answer ← 編集対象の回答（回答変更画面で使用） --}}
@@ -105,21 +164,21 @@
                     @endif
                 @endif
                 @isset($answer)
-                    <template v-slot:title>{{ $form->isOpen() ? '回答を編集' : '回答を閲覧' }} — 回答ID : {{ $answer->id }}</template>
+                    <template v-slot:title>{{ ($form->isOpen() && !$is_review_locked) ? '回答を編集' : '回答を閲覧' }} — 回答ID : {{ $answer->id }}</template>
                     <template v-slot:description>回答の最終更新日時 : @datetime($form->updated_at)</template>
                 @endisset
 
                 @foreach ($questions as $question)
                     @include('includes.question', [
                         'is_disabled' =>
-                            !$form->isOpen() || (empty($answer) && $form->max_answers <= count($answers)),
+                            !$form->isOpen() || $is_review_locked || (empty($answer) && $form->max_answers <= count($answers)),
                     ])
                 @endforeach
             </list-view>
 
             <div class="text-center pt-spacing-md pb-spacing">
                 <button type="submit" class="btn is-primary is-wide"
-                    {{ !$form->isOpen() || (empty($answer) && $form->max_answers <= count($answers)) ? ' disabled' : '' }}>送信</button>
+                    {{ !$form->isOpen() || $is_review_locked || (empty($answer) && $form->max_answers <= count($answers)) ? ' disabled' : '' }}>送信</button>
                 @if (config('app.debug'))
                     <button type="submit" class="btn is-primary-inverse" formnovalidate>
                         <app-badge primary strong>開発モード</app-badge>

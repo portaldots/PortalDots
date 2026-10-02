@@ -26,6 +26,8 @@ $color-danger: var(--color-danger);
 $color-danger-light: var(--color-danger-light);
 $color-success: var(--color-success);
 $color-success-light: var(--color-success-light);
+$color-warning: var(--color-warning);
+$color-warning-light: var(--color-warning-light);
 $color-muted: var(--color-muted);
 $color-muted-2: var(--color-muted-2);
 $color-muted-3: var(--color-muted-3);
@@ -45,12 +47,14 @@ $semantic-colors: (
   primary: $color-primary,
   danger: $color-danger,
   success: $color-success,
+  warning: $color-warning,
   muted: $color-muted,
 );
 $semantic-light-colors: (
   primary: $color-primary-light,
   danger: $color-danger-light,
   success: $color-success-light,
+  warning: $color-warning-light,
   muted: $color-muted-light,
 );
 $color-box-shadow: var(--color-box-shadow);

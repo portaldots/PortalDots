@@ -32,9 +32,11 @@
                     </strong>
                 @endif
                 <br />
-                @if (!$form->answerableTags->isEmpty())
-                    回答可能なタグ :
-                    {{ $form->answerableTags->implode('name', ',') }}
+                @if ($form->audience === \App\Contracts\AudiencePolicy::SELECTED)
+                    公開範囲 : 選んだタグ・企画のみ
+                    @unless ($form->answerableTags->isEmpty())
+                        （タグ : {{ $form->answerableTags->implode('name', ',') }}）
+                    @endunless
                 @else
                     全体に公開 — 企画に所属しているユーザー全員が回答可能
                 @endif
@@ -56,6 +58,13 @@
             'circle_id.created_at': '作成日時',
             'circle_id.updated_at': '更新日時',
             'circle_id.notes': 'スタッフ用メモ',
+            @if ($form->requires_review)
+                review_status: '確認状況',
+                'review_status.submitted': '要確認',
+                'review_status.returned': '差し戻し中',
+                'review_status.accepted': '完了',
+                'review_status.NULL': '未提出',
+            @endif
             created_at: '作成日時',
             updated_at: '更新日時',
             @if (isset($form)) @foreach ($form->questions as $question)
@@ -110,8 +119,22 @@
                 <ruby class="text-muted">@{{ row[keyName].group_name }}<rt>@{{ row[keyName].group_name_yomi }}</rt></ruby> (企画ID :
                 @{{ row[keyName].id }})
             </template>
+            <template v-else-if="keyName === 'review_status'">
+                {{-- 確認状況 --}}
+                <span class="text-success" v-if="row[keyName] === 'accepted'">完了</span>
+                <span class="text-danger" v-else-if="row[keyName] === 'returned'">差し戻し中</span>
+                <span class="text-primary" v-else-if="row[keyName] === 'submitted'">要確認</span>
+                <span class="text-muted" v-else>未提出</span>
+            </template>
             <template v-else-if="keyName.includes('{{ App\GridMakers\AnswersGridMaker::FORM_QUESTIONS_KEY_PREFIX }}')">
                 {{-- フォームへの回答 --}}
+                <template v-if="row[keyName] && row[keyName].table_cells">
+                    <div v-for="cell in row[keyName].table_cells" v-bind:key="cell.row + cell.column">
+                        @{{ cell.label }}:
+                        <a v-if="cell.file_url" v-bind:href="cell.file_url" target="_blank" rel="noopener noreferrer">@{{ cell.text }}</a>
+                        <span v-else style="white-space: pre-wrap">@{{ cell.text }}</span>
+                    </div>
+                </template>
                 <template v-if="row[keyName] && row[keyName].file_url">
                     <a v-bind:href="row[keyName].file_url" target="_blank" rel="noopener noreferrer">表示</a>
                 </template>

@@ -11,9 +11,11 @@
                 path: 'ファイル',
                 size: 'サイズ(バイト)',
                 extension: 'ファイル形式',
+                version: '版',
                 description: '説明',
                 is_public: '公開',
                 is_important: '重要',
+                audience: '公開範囲',
                 created_at: '作成日時',
                 updated_at: '更新日時',
                 notes: 'スタッフ用メモ',
@@ -49,6 +51,12 @@
                 {{-- ファイル --}}
                 <a v-bind:href="`{{ route('staff.documents.show', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])"
                     target="_blank" rel="noopener noreferrer">表示</a>
+            </template>
+            <template v-else-if="keyName === 'audience'">
+                {{-- 公開範囲 --}}
+                <template v-if="row[keyName] === 'everyone'">誰でも（ログイン不要）</template>
+                <template v-else-if="row[keyName] === 'signed_in'">ログインしているユーザー全員</template>
+                <template v-else-if="row[keyName] === 'selected'">選んだタグ・企画のみ</template>
             </template>
             <template v-else-if="row[keyName] === true">
                 <strong>はい</strong>

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Pages;
 
+use App\Contracts\AudiencePolicy;
+use App\Eloquents\Circle;
 use App\Eloquents\Document;
 use App\Eloquents\Page;
 use App\Eloquents\User;
@@ -58,6 +60,8 @@ class PagesService
      * @param array $documents お知らせに関連する配布資料のID
      * @param bool $is_public お知らせを公開するか
      * @param bool $is_pinned お知らせを固定表示するか
+     * @param string $audience お知らせの公開範囲
+     * @param array $viewable_circles お知らせを閲覧可能な企画のID
      * @return Page
      */
     public function createPage(
@@ -68,7 +72,9 @@ class PagesService
         array $viewable_tags,
         array $documents,
         bool $is_public,
-        bool $is_pinned
+        bool $is_pinned,
+        string $audience = AudiencePolicy::EVERYONE,
+        array $viewable_circles = []
     ): Page {
         return DB::transaction(function () use (
             $title,
@@ -78,13 +84,16 @@ class PagesService
             $viewable_tags,
             $documents,
             $is_public,
-            $is_pinned
+            $is_pinned,
+            $audience,
+            $viewable_circles
         ) {
             $page = Page::create([
                 'title' => $title,
                 'body' => $body,
                 'is_pinned' => $is_pinned,
                 'is_public' => $is_public,
+                'audience' => $audience,
                 'notes' => $notes,
             ]);
 
@@ -107,6 +116,29 @@ class PagesService
                         return [
                             'id' => $tag->id,
                             'name' => $tag->name,
+                        ];
+                    })
+                    ->toArray()
+            );
+
+            // 閲覧可能な企画を保存する
+            $exist_circles = Circle::select('id', 'name')
+                ->whereIn('id', $viewable_circles)
+                ->orderBy('id')
+                ->get();
+            $page->viewableCircles()->sync($exist_circles->pluck('id')->all());
+
+            // 閲覧可能な企画の変更をログに残す
+            $this->activityLogService->logOnlyAttributesChanged(
+                'page_viewable_circle',
+                $created_by,
+                $page,
+                [],
+                $exist_circles
+                    ->map(function ($circle) {
+                        return [
+                            'id' => $circle->id,
+                            'name' => $circle->name,
                         ];
                     })
                     ->toArray()
@@ -151,6 +183,8 @@ class PagesService
      * @param array $documents お知らせに関連する配布資料のID
      * @param bool $is_public お知らせを公開するか
      * @param bool $is_pinned お知らせを固定表示するか
+     * @param string $audience お知らせの公開範囲
+     * @param array $viewable_circles お知らせを閲覧可能な企画のID
      * @return bool
      */
     public function updatePage(
@@ -162,7 +196,9 @@ class PagesService
         array $viewable_tags,
         array $documents,
         bool $is_public,
-        bool $is_pinned
+        bool $is_pinned,
+        string $audience = AudiencePolicy::EVERYONE,
+        array $viewable_circles = []
     ): bool {
         return DB::transaction(function () use (
             $page,
@@ -173,13 +209,16 @@ class PagesService
             $viewable_tags,
             $documents,
             $is_public,
-            $is_pinned
+            $is_pinned,
+            $audience,
+            $viewable_circles
         ) {
             $page->update([
                 'title' => $title,
                 'body' => $body,
                 'is_pinned' => $is_pinned,
                 'is_public' => $is_public,
+                'audience' => $audience,
                 'notes' => $notes,
             ]);
 
@@ -188,6 +227,11 @@ class PagesService
 
             $old_tags = $page
                 ->viewableTags()
+                ->orderBy('id')
+                ->get();
+
+            $old_circles = $page
+                ->viewableCircles()
                 ->orderBy('id')
                 ->get();
 
@@ -217,6 +261,28 @@ class PagesService
                 $page,
                 $old_tags->map($tags_map_function)->toArray(),
                 $exist_tags->map($tags_map_function)->toArray()
+            );
+
+            // 閲覧可能な企画を保存する
+            $exist_circles = Circle::select('id', 'name')
+                ->whereIn('id', $viewable_circles)
+                ->orderBy('id')
+                ->get();
+            $page->viewableCircles()->sync($exist_circles->pluck('id')->all());
+
+            // 閲覧可能な企画の変更をログに残す
+            $circles_map_function = function ($circle) {
+                return [
+                    'id' => $circle->id,
+                    'name' => $circle->name,
+                ];
+            };
+            $this->activityLogService->logOnlyAttributesChanged(
+                'page_viewable_circle',
+                $updated_by,
+                $page,
+                $old_circles->map($circles_map_function)->toArray(),
+                $exist_circles->map($circles_map_function)->toArray()
             );
 
             // 関連する配布資料を保存する
@@ -263,32 +329,113 @@ class PagesService
     }
 
     /**
-     * お知らせにおいて指定されているタグに所属している企画のユーザーへ、
-     * メール送信予約を行う
+     * お知らせの公開範囲に応じたメール送信対象ユーザーを取得する
+     *
+     * audience が everyone・signed_in の場合はメール認証済みの全ユーザー、
+     * selected の場合は閲覧可能なタグ・企画のいずれかに該当する企画に
+     * 所属しているユーザーのみが対象となる
+     *
+     * @param Page $page
+     * @return \Illuminate\Support\Collection
+     */
+    private function recipientsForPage(Page $page)
+    {
+        if ($page->audience !== AudiencePolicy::SELECTED) {
+            return User::verified()->get();
+        }
+
+        $circle_ids = $this->matchingCircleIdsForSelectedAudience($page);
+
+        if ($circle_ids->isEmpty()) {
+            return collect();
+        }
+
+        return User::verified()
+            ->whereHas('circles', function ($query) use ($circle_ids) {
+                $query->whereIn('circles.id', $circle_ids);
+            })
+            ->get();
+    }
+
+    /**
+     * 配布資料が、指定したメール送信対象ユーザー全員から閲覧可能かどうかを判定する
+     *
+     * メール送信対象ユーザーは必ずログイン済みのユーザーであるため、
+     * audience が everyone・signed_in の配布資料は常に全員が閲覧できる
+     *
+     * @param Document $document
+     * @param \Illuminate\Support\Collection $recipients
+     * @return bool
+     */
+    private function isDocumentVisibleToAllRecipients(Document $document, $recipients): bool
+    {
+        if ($recipients->isEmpty()) {
+            return true;
+        }
+
+        if ($document->audience !== AudiencePolicy::SELECTED) {
+            return true;
+        }
+
+        $circle_ids = $this->matchingCircleIdsForSelectedAudience($document);
+
+        if ($circle_ids->isEmpty()) {
+            return false;
+        }
+
+        return User::whereIn('id', $recipients->pluck('id'))
+            ->whereDoesntHave('circles', function ($query) use ($circle_ids) {
+                $query->whereIn('circles.id', $circle_ids);
+            })
+            ->doesntExist();
+    }
+
+    /**
+     * audience が selected のお知らせ・配布資料について、閲覧可能なタグを持つか
+     * 直接閲覧可能な企画として指定されている企画のIDを取得する
+     *
+     * @param Page|Document $model
+     * @return \Illuminate\Support\Collection
+     */
+    private function matchingCircleIdsForSelectedAudience($model)
+    {
+        $tag_ids = $model->viewableTags()->pluck('tags.id');
+        $circle_ids = $model->viewableCircles()->pluck('circles.id');
+
+        if ($tag_ids->isEmpty() && $circle_ids->isEmpty()) {
+            return collect();
+        }
+
+        return Circle::where(function ($query) use ($tag_ids, $circle_ids) {
+            $query->whereHas('tags', function ($query) use ($tag_ids) {
+                $query->whereIn('tags.id', $tag_ids);
+            })->orWhereIn('id', $circle_ids);
+        })->pluck('id');
+    }
+
+    /**
+     * お知らせの公開範囲に応じたユーザーへ、メール送信予約を行う
      *
      * @param Page $page
      */
     public function sendEmailsByPage(Page $page)
     {
         $page->refresh();
-        $users = User::verified()
-            ->byTags(
-                $page
-                    ->viewableTags()
-                    ->select('tags.id')
-                    ->get()
-            )
-            ->get();
+        $users = $this->recipientsForPage($page);
         $body = $page->body;
 
         $page->loadMissing(['documents' => function ($query) {
             $query->public();
         }]);
 
+        // メール送信対象ユーザー全員が閲覧できない配布資料は一覧から除く
+        $visible_documents = $page->documents->filter(function ($document) use ($users) {
+            return $this->isDocumentVisibleToAllRecipients($document, $users);
+        });
+
         // 関連する配布資料の一覧を末尾に追加する
-        if ($page->documents->count() > 0) {
-            $documents_markdown_list = $page
-                ->documents
+        if ($visible_documents->count() > 0) {
+            $documents_markdown_list = $visible_documents
                 ->map(function ($document) {
                     $escaped_name = $this->formatTextService->escapeMarkdown(
                         e($document->name)

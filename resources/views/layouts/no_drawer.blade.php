@@ -2,6 +2,7 @@
 
 @php
     $is_iframe = (bool) request()->get('iframe');
+    $hideNavbar = trim($__env->yieldContent('no_navbar')) !== '';
 @endphp
 
 <!DOCTYPE html>
@@ -56,15 +57,17 @@
 <body class="{{ $is_iframe ? 'is-in-iframe' : '' }} @stack('body-class')">
     @include('includes.loading')
     <div class="app" id="v2-app">
-        <app-nav-bar no-drawer @staffpage staff @endstaffpage>
-            @section('navbar')
-            <a @staffpage href="{{ route('staff.index') }}" @else href="{{ route('home') }}" @endif
-                    class="navbar-brand">
-                    {{ config('app.name', 'ホームへ戻る') }}
-                </a>
-            @show
-        </app-nav-bar>
-        <div class="content is-no-drawer">
+        @unless ($hideNavbar)
+            <app-nav-bar no-drawer @staffpage staff @endstaffpage>
+                @section('navbar')
+                <a @staffpage href="{{ route(config('portal.navigation.staff_home_route')) }}" @else href="{{ route('home') }}" @endif
+                        class="navbar-brand">
+                        {{ config('app.name', 'ホームへ戻る') }}
+                    </a>
+                @show
+            </app-nav-bar>
+        @endunless
+        <div class="content is-no-drawer{{ $hideNavbar ? ' is-no-navbar' : '' }}">
             <div class="content__body">
                 @include('includes.top_circle_selector')
                 @if (Session::has('topAlert.title'))

@@ -8,12 +8,18 @@ use App\Eloquents\Form;
 use App\Eloquents\Circle;
 use App\Eloquents\Answer;
 use App\Eloquents\User;
+use App\Events\Forms\AnswerAccepted;
+use App\Events\Forms\AnswerReturned;
+use App\Events\Forms\AnswerSubmitted;
+use App\Exceptions\Forms\DuplicateAnswerException;
+use App\Exceptions\Forms\StaleAnswerException;
 use App\Services\Forms\AnswerDetailsService;
 use App\Http\Requests\Forms\AnswerRequestInterface;
 use App\Mail\Forms\AnswerConfirmationMailable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class AnswersService
 {
@@ -132,31 +138,256 @@ class AnswersService
         return Answer::where('form_id', $form->id)->where('circle_id', $circle->id)->get();
     }
 
-    public function createAnswer(Form $form, Circle $circle, ?AnswerRequestInterface $request = null)
-    {
-        return DB::transaction(function () use ($form, $circle, $request) {
-            $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
+    /**
+     * @param Form $form
+     * @param Circle $circle
+     * @param AnswerRequestInterface|null $request
+     * @param User|null $actingUser requires_review なフォームで、リビジョンの提出者として記録するユーザー
+     * @return Answer
+     */
+    public function createAnswer(
+        Form $form,
+        Circle $circle,
+        ?AnswerRequestInterface $request = null,
+        ?User $actingUser = null
+    ) {
+        try {
+            $answer = DB::transaction(function () use ($form, $circle, $request, $actingUser) {
+                if ($form->requires_review && $form->max_answers === 1) {
+                    // フォームの行をロックし、同じ企画による2件目の回答が
+                    // 同時に作成されないようにする
+                    Form::whereKey($form->id)->lockForUpdate()->first();
+                    if (Answer::where('form_id', $form->id)->where('circle_id', $circle->id)->exists()) {
+                        throw new DuplicateAnswerException($form, $circle);
+                    }
+                }
 
-            $answer = Answer::create([
-                'form_id' => $form->id,
-                'circle_id' => $circle->id,
+                $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
+
+                $answer = Answer::create([
+                    'form_id' => $form->id,
+                    'circle_id' => $circle->id,
+                ]);
+
+                $this->answerDetailsService->updateAnswerDetails(
+                    $form,
+                    $answer,
+                    $answer_details,
+                    $form->requires_review
+                );
+
+                if ($form->requires_review) {
+                    $this->recordSubmission($form, $answer, $actingUser, false);
+                }
+
+                return $answer;
+            });
+            $this->finishStoredFilesAfterOutermostCommit();
+            return $answer;
+        } catch (Throwable $e) {
+            $this->answerDetailsService->discardNewlyStoredFiles();
+            throw $e;
+        }
+    }
+
+    /**
+     * @param Form $form
+     * @param Answer $answer
+     * @param AnswerRequestInterface|null $request
+     * @param User|null $actingUser requires_review なフォームで、リビジョンの提出者として記録するユーザー
+     * @param bool $isStaffEdit スタッフによる既存回答の修正の場合はtrue。
+     *  この場合、review_status は変更せずリビジョンのみ記録する
+     * @param int|null $expectedLockVersion 画面表示時に読み込んだ lock_version。
+     *  requires_review なフォームで、現在のDB上の値と一致しない場合は
+     *  StaleAnswerException をthrowし、何も変更しない
+     * @return Answer
+     */
+    public function updateAnswer(
+        Form $form,
+        Answer $answer,
+        ?AnswerRequestInterface $request = null,
+        ?User $actingUser = null,
+        bool $isStaffEdit = false,
+        ?int $expectedLockVersion = null
+    ) {
+        try {
+            $updatedAnswer = DB::transaction(function () use (
+                $form,
+                $answer,
+                $request,
+                $actingUser,
+                $isStaffEdit,
+                $expectedLockVersion
+            ) {
+                $answer = Answer::whereKey($answer->id)->lockForUpdate()->firstOrFail();
+
+                if ($form->requires_review) {
+                    $isStale = $expectedLockVersion !== null && $answer->lock_version !== $expectedLockVersion;
+                    // 企画側からの更新は、読み込んだ版の指定がない場合と、スタッフが完了にした後を拒否する
+                    $isCircleUpdateRejected = !$isStaffEdit && (
+                        $expectedLockVersion === null ||
+                        $answer->review_status === Answer::REVIEW_STATUS_ACCEPTED
+                    );
+                    if ($isStale || $isCircleUpdateRejected) {
+                        throw new StaleAnswerException($answer);
+                    }
+                }
+
+                $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
+
+                $answer->update();
+                $this->answerDetailsService->updateAnswerDetails(
+                    $form,
+                    $answer,
+                    $answer_details,
+                    $form->requires_review
+                );
+
+                if ($form->requires_review) {
+                    $this->recordSubmission($form, $answer, $actingUser, $isStaffEdit);
+                }
+
+                return $answer;
+            });
+            $this->finishStoredFilesAfterOutermostCommit();
+            return $updatedAnswer;
+        } catch (Throwable $e) {
+            $this->answerDetailsService->discardNewlyStoredFiles();
+            throw $e;
+        }
+    }
+
+    /**
+     * スタッフが回答を完了にする
+     *
+     * @param Answer $answer
+     * @param User $staff
+     * @param int|null $expectedLockVersion 一致しない場合は StaleAnswerException をthrowする
+     * @return Answer
+     */
+    public function acceptAnswer(Answer $answer, User $staff, ?int $expectedLockVersion = null): Answer
+    {
+        return DB::transaction(function () use ($answer, $staff, $expectedLockVersion) {
+            $answer = Answer::whereKey($answer->id)->lockForUpdate()->firstOrFail();
+            $form = $answer->form()->firstOrFail();
+
+            if ($expectedLockVersion !== null && $answer->lock_version !== $expectedLockVersion) {
+                throw new StaleAnswerException($answer);
+            }
+
+            $answer->update([
+                'review_status' => Answer::REVIEW_STATUS_ACCEPTED,
+                'review_note' => null,
+                'reviewed_by' => $staff->id,
+                'reviewed_at' => now(),
+                'lock_version' => $answer->lock_version + 1,
             ]);
 
-            $this->answerDetailsService->updateAnswerDetails($form, $answer, $answer_details);
+            if ($form->requires_review) {
+                event(new AnswerAccepted(
+                    $answer->circle_id,
+                    $form->id,
+                    $form->name,
+                    $answer->id,
+                    $answer->lock_version
+                ));
+            }
 
             return $answer;
         });
     }
 
-    public function updateAnswer(Form $form, Answer $answer, ?AnswerRequestInterface $request = null)
+    /**
+     * スタッフが回答を差し戻す
+     *
+     * @param Answer $answer
+     * @param User $staff
+     * @param string $reason 差し戻し理由(必須)
+     * @param int|null $expectedLockVersion 一致しない場合は StaleAnswerException をthrowする
+     * @return Answer
+     */
+    public function returnAnswer(Answer $answer, User $staff, string $reason, ?int $expectedLockVersion = null): Answer
     {
-        return DB::transaction(function () use ($form, $answer, $request) {
-            $answer_details = $this->answerDetailsService->getAnswerDetailsWithFilePathFromRequest($form, $request);
+        return DB::transaction(function () use ($answer, $staff, $reason, $expectedLockVersion) {
+            $answer = Answer::whereKey($answer->id)->lockForUpdate()->firstOrFail();
+            $form = $answer->form()->firstOrFail();
 
-            $answer->update();
-            $this->answerDetailsService->updateAnswerDetails($form, $answer, $answer_details);
+            if ($expectedLockVersion !== null && $answer->lock_version !== $expectedLockVersion) {
+                throw new StaleAnswerException($answer);
+            }
+
+            $answer->update([
+                'review_status' => Answer::REVIEW_STATUS_RETURNED,
+                'review_note' => $reason,
+                'reviewed_by' => $staff->id,
+                'reviewed_at' => now(),
+                'lock_version' => $answer->lock_version + 1,
+            ]);
+
+            if ($form->requires_review) {
+                event(new AnswerReturned(
+                    $answer->circle_id,
+                    $form->id,
+                    $form->name,
+                    $answer->id,
+                    $reason,
+                    $answer->lock_version
+                ));
+            }
 
             return $answer;
         });
+    }
+
+    public function discardPendingUploads(): void
+    {
+        $this->answerDetailsService->discardNewlyStoredFiles();
+    }
+
+    /**
+     * requires_review な回答の作成・更新時に、提出リビジョンを記録し、
+     * スタッフによる修正でなければ確認待ち状態に戻す
+     *
+     * @param Form $form
+     * @param Answer $answer 行ロック済のAnswer
+     * @param User|null $actingUser
+     * @param bool $isStaffEdit
+     */
+    private function recordSubmission(Form $form, Answer $answer, ?User $actingUser, bool $isStaffEdit): void
+    {
+        $nextRevision = (int)$answer->revisions()->max('revision') + 1;
+
+        $answer->revisions()->create([
+            'revision' => $nextRevision,
+            'details' => $this->answerDetailsService->snapshotAnswerDetailsForRevision($answer),
+            'submitted_by' => $actingUser?->id,
+            'submitted_at' => now(),
+        ]);
+
+        $update = ['lock_version' => $answer->lock_version + 1];
+        if (!$isStaffEdit) {
+            $update['review_status'] = Answer::REVIEW_STATUS_SUBMITTED;
+            $update['submitted_at'] = now();
+            $update['review_note'] = null;
+        }
+        $answer->update($update);
+
+        event(new AnswerSubmitted(
+            $answer->circle_id,
+            $form->id,
+            $form->name,
+            $answer->id,
+            $nextRevision,
+            $isStaffEdit
+        ));
+    }
+
+    private function finishStoredFilesAfterOutermostCommit(): void
+    {
+        if (DB::transactionLevel() === 0) {
+            $this->answerDetailsService->forgetNewlyStoredFiles();
+            return;
+        }
+        DB::afterCommit(fn () => $this->answerDetailsService->forgetNewlyStoredFiles());
     }
 }

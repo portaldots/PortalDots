@@ -35,7 +35,9 @@ class StoreAction extends Controller
                 $values['viewable_tags'] ?? [],
                 $values['documents'] ?? [],
                 isset($values['is_public']) && $values['is_public'] === '1',
-                isset($values['is_pinned']) && $values['is_pinned'] === '1'
+                isset($values['is_pinned']) && $values['is_pinned'] === '1',
+                $values['audience'],
+                $values['viewable_circles'] ?? []
             );
 
             if (($values['send_emails'] ?? false) && Auth::user()->can('staff.pages.send_emails')) {

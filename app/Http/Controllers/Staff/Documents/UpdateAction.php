@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Documents\DocumentsService;
 use App\Http\Requests\Staff\Documents\UpdateDocumentRequest;
 use App\Eloquents\Document;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateAction extends Controller
 {
@@ -30,7 +31,11 @@ class UpdateAction extends Controller
             $request->file('file'),
             (bool)$validated['is_public'],
             (bool)$validated['is_important'],
-            $validated['notes']
+            $validated['notes'],
+            $validated['audience'],
+            $validated['viewable_tags'] ?? [],
+            $validated['viewable_circles'] ?? [],
+            Auth::user()
         );
 
         return redirect()

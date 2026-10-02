@@ -17,6 +17,6 @@ class ShowAction extends Controller
         $path = $uploadedFilesService->getPathForAnswer($form_id, $answer, $question_id);
         abort_if($path === null, 404);
 
-        return response()->file($path);
+        return response()->download($path);
     }
 }

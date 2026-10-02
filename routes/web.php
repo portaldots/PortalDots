@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // トップページ
-Route::get('/', 'HomeAction')->middleware(['circleSelected'])->name('home');
+Route::get('/', 'HomeAction')->middleware(['circleSelected', 'checkGuestAccess'])->name('home');
 
 // 推奨動作環境
 Route::view('/support', 'support')->name('support');
@@ -23,7 +23,7 @@ Route::view('/support', 'support')->name('support');
 // お知らせ
 Route::prefix('/pages')
     ->name('pages.')
-    ->middleware(['circleSelected'])
+    ->middleware(['circleSelected', 'checkGuestAccess'])
     ->group(function () {
         Route::get('/', 'Pages\IndexAction')->name('index');
         Route::get('/{page}', 'Pages\ShowAction')->name('show');
@@ -32,10 +32,17 @@ Route::prefix('/pages')
 // 配布資料
 Route::prefix('/documents')
     ->name('documents.')
-    ->middleware(['circleSelected'])
+    ->middleware(['circleSelected', 'checkGuestAccess'])
     ->group(function () {
         Route::get('/', 'Documents\IndexAction')->name('index');
         Route::get('/{document}', 'Documents\ShowAction')->name('show');
+        Route::get('/{document}/versions/{version:version}', 'Documents\VersionsShowAction')
+            ->name('versions.show')
+            ->scopeBindings();
+        Route::get('/{document}/approval', 'Documents\Approvals\ShowAction')->name('approval.show');
+        Route::post('/{document}/approval/approve', 'Documents\Approvals\ApproveAction')->name('approval.approve');
+        Route::post('/{document}/approval/request-changes', 'Documents\Approvals\RequestChangesAction')
+            ->name('approval.request-changes');
     });
 
 // 外観設定
@@ -43,6 +50,9 @@ Route::get('/user/appearance', 'Users\EditAppearanceAction')->name('user.appeara
 Route::patch('/user/appearance', 'Users\UpdateAppearanceAction');
 
 // 認証系
+// register ルート自体は常に登録し、無効化は RegisterController 側で行う
+// (config('portal.registration.enabled') はアプリケーション起動時ではなく
+// リクエストのたびに判定する必要があるため)
 Auth::routes([
     'register' => true,
     'reset' => false,
@@ -83,10 +93,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user/password', 'Users\PostChangePasswordAction');
     Route::get('/user/delete', 'Users\DeleteAction')->name('user.delete');
     Route::delete('/user', 'Users\DestroyAction')->name('user.destroy');
-    // お問い合わせページ
+    // お問い合わせページ（企画ごと、または企画に未所属のユーザー本人ごとの会話）
     Route::middleware(['circleSelected'])->group(function () {
         Route::get('/contacts', 'Contacts\CreateAction')->name('contacts');
         Route::post('/contacts', 'Contacts\PostAction')->name('contacts.post');
+        Route::get('/contacts/attachments/{attachment}', 'Contacts\Attachments\ShowAction')
+            ->name('contacts.attachments.show');
     });
 
     // 企画セレクター (GETパラメーターの redirect に Route名 を入れる)
@@ -139,7 +151,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     Route::patch('/{answer}', 'Forms\Answers\UpdateAction')->name('update');
                     Route::get('/create', 'Forms\Answers\CreateAction')->name('create');
                     Route::post('/', 'Forms\Answers\StoreAction')->name('store');
+                    Route::get('/{answer}/uploads/{question}/{row}/{column}', 'Forms\Answers\Uploads\TableShowAction')->name('uploads.table.show');
                     Route::get('/{answer}/uploads/{question}', 'Forms\Answers\Uploads\ShowAction')->name('uploads.show');
+                    Route::get(
+                        '/{answer}/revisions/{revision:revision}/uploads/{question}/{row}/{column}',
+                        'Forms\Answers\Uploads\RevisionTableShowAction'
+                    )->name('revisions.uploads.table.show')->scopeBindings();
+                    Route::get(
+                        '/{answer}/revisions/{revision:revision}/uploads/{question}',
+                        'Forms\Answers\Uploads\RevisionShowAction'
+                    )->name('revisions.uploads.show')->scopeBindings();
+                    Route::get('/{answer}/revisions/{revision:revision}', 'Forms\Answers\RevisionsShowAction')
+                        ->name('revisions.show')->scopeBindings();
                 });
         });
 });

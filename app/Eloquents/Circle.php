@@ -2,6 +2,7 @@
 
 namespace App\Eloquents;
 
+use App\Contracts\AudiencePolicy;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Contracts\Activity;
 use Spatie\Activitylog\LogOptions;
@@ -115,6 +116,11 @@ class Circle extends Model
         return $this->hasMany(Answer::class);
     }
 
+    public function formAssignments()
+    {
+        return $this->hasMany(FormAssignment::class);
+    }
+
     public function statusSetBy()
     {
         return $this->belongsTo(User::class, 'status_set_by');
@@ -139,12 +145,14 @@ class Circle extends Model
      */
     public function scopeNotSubmitted($query)
     {
-        return $query->whereNull('submitted_at');
+        // answers.submitted_at と列名が衝突するため、テーブル名で修飾する
+        return $query->whereNull('circles.submitted_at');
     }
 
     public function scopeSubmitted($query)
     {
-        return $query->whereNotNull('submitted_at');
+        // answers.submitted_at と列名が衝突するため、テーブル名で修飾する
+        return $query->whereNotNull('circles.submitted_at');
     }
 
     public function hasSubmitted()
@@ -157,7 +165,8 @@ class Circle extends Model
      */
     public function scopePending($query)
     {
-        return $query->whereNotNull('submitted_at')->whereNull('status');
+        // answers.submitted_at と列名が衝突するため、テーブル名で修飾する
+        return $query->whereNotNull('circles.submitted_at')->whereNull('status');
     }
 
     public function isPending()
@@ -170,7 +179,8 @@ class Circle extends Model
      */
     public function scopeApproved($query)
     {
-        return $query->whereNotNull('submitted_at')->where('status', 'approved');
+        // answers.submitted_at と列名が衝突するため、テーブル名で修飾する
+        return $query->whereNotNull('circles.submitted_at')->where('status', 'approved');
     }
 
     public function hasApproved()
@@ -183,12 +193,41 @@ class Circle extends Model
      */
     public function scopeRejected($query)
     {
-        return $query->whereNotNull('submitted_at')->where('status', 'rejected');
+        // answers.submitted_at と列名が衝突するため、テーブル名で修飾する
+        return $query->whereNotNull('circles.submitted_at')->where('status', 'rejected');
     }
 
     public function hasRejected()
     {
         return isset($this->submitted_at) && $this->status === 'rejected';
+    }
+
+    /**
+     * 指定したフォームの回答対象となっている企画だけに限定するクエリスコープ
+     *
+     * フォームの audience が everyone の場合は全ての企画が対象。
+     * selected の場合は、フォームの回答可能なタグに該当するか、
+     * 個別に送付されている（form_assignments に行がある）企画が対象。
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param Form $form
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeTargetedByForm($query, Form $form)
+    {
+        if ($form->audience === AudiencePolicy::EVERYONE) {
+            return $query;
+        }
+
+        $tagIds = $form->answerableTags->pluck('id')->all();
+
+        return $query->where(function ($query) use ($form, $tagIds) {
+            $query->whereHas('tags', function ($query) use ($tagIds) {
+                $query->whereIn('tags.id', $tagIds);
+            })->orWhereHas('formAssignments', function ($query) use ($form) {
+                $query->where('form_id', $form->id);
+            });
+        });
     }
 
     /**

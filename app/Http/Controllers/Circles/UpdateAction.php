@@ -9,6 +9,7 @@ use App\Services\Forms\AnswersService;
 use App\Eloquents\Circle;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class UpdateAction extends Controller
 {
@@ -38,33 +39,38 @@ class UpdateAction extends Controller
 
         activity()->disableLogging();
 
-        DB::transaction(function () use ($request, $circle) {
-            $this->circlesService->update(
-                circle: $circle,
-                name: $request->name,
-                name_yomi: $request->name_yomi,
-                group_name: $request->group_name,
-                group_name_yomi: $request->group_name_yomi
-            );
-
-            $participationFormAnswer = $circle->getParticipationFormAnswer();
-
-            $circle->touch();
-
-            if (empty($participationFormAnswer)) {
-                $this->answersService->createAnswer(
-                    form: $circle->participationType->form,
+        try {
+            DB::transaction(function () use ($request, $circle) {
+                $this->circlesService->update(
                     circle: $circle,
-                    request: $request
+                    name: $request->name,
+                    name_yomi: $request->name_yomi,
+                    group_name: $request->group_name,
+                    group_name_yomi: $request->group_name_yomi
                 );
-            } else {
-                $this->answersService->updateAnswer(
-                    form: $circle->participationType->form,
-                    answer: $participationFormAnswer,
-                    request: $request
-                );
-            }
-        });
+
+                $participationFormAnswer = $circle->getParticipationFormAnswer();
+
+                $circle->touch();
+
+                if (empty($participationFormAnswer)) {
+                    $this->answersService->createAnswer(
+                        form: $circle->participationType->form,
+                        circle: $circle,
+                        request: $request
+                    );
+                } else {
+                    $this->answersService->updateAnswer(
+                        form: $circle->participationType->form,
+                        answer: $participationFormAnswer,
+                        request: $request
+                    );
+                }
+            });
+        } catch (Throwable $e) {
+            $this->answersService->discardPendingUploads();
+            throw $e;
+        }
 
         activity()->enableLogging();
 

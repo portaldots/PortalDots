@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Pages;
 
+use App\Contracts\AudiencePolicy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Eloquents\User;
 use App\Eloquents\Page;
+use App\Eloquents\Circle;
 use App\Eloquents\Document;
 use App\Eloquents\Permission;
 use App\Services\Pages\PagesService;
@@ -49,7 +51,9 @@ class StoreActionTest extends TestCase
                 ['Cブース', '屋外模擬店'],
                 [$this->document->id],
                 false,
-                false
+                false,
+                'selected',
+                []
             )->andReturn(new Page());
         });
 
@@ -58,6 +62,7 @@ class StoreActionTest extends TestCase
             ->post(route('staff.pages.store'), [
                 'title' => 'お知らせのタイトル',
                 'body' => "本文です\n\n# 見出し\n- リストです\n- リストです",
+                'audience' => 'selected',
                 'viewable_tags' => ['Cブース', '屋外模擬店'],
                 'documents' => [(string)$this->document->id],
                 'is_public' => '0',
@@ -127,6 +132,8 @@ class StoreActionTest extends TestCase
                 // お知らせは非公開でもメール配信は可能
                 false,
                 false,
+                'selected',
+                [],
             )->andReturn($page);
 
             $mock->shouldReceive('sendEmailsByPage')->once()->with(
@@ -141,6 +148,7 @@ class StoreActionTest extends TestCase
             ->post(route('staff.pages.store'), [
                 'title' => $page->title,
                 'body' => "本文です\n\n# 見出し\n- リストです\n- リストです",
+                'audience' => 'selected',
                 'viewable_tags' => ['Cブース', '屋外模擬店'],
                 'documents' => [],
                 'is_public' => '0',
@@ -148,5 +156,149 @@ class StoreActionTest extends TestCase
                 'send_emails' => '1',
                 'notes' => 'スタッフ用メモです！123',
             ]);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function AudiencePolicyでselectedのみ許可されている場合everyoneとsigned_inは拒否される()
+    {
+        Permission::create(['name' => 'staff.pages.edit']);
+        $this->staff->syncPermissions(['staff.pages.edit']);
+
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return true;
+                }
+            };
+        });
+
+        $everyoneResponse = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.pages.store'), [
+                'title' => 'お知らせのタイトル',
+                'body' => '本文',
+                'audience' => 'everyone',
+                'is_public' => '1',
+                'is_pinned' => null,
+                'send_emails' => '0',
+            ]);
+        $everyoneResponse->assertSessionHasErrors(['audience']);
+
+        $signedInResponse = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.pages.store'), [
+                'title' => 'お知らせのタイトル',
+                'body' => '本文',
+                'audience' => 'signed_in',
+                'is_public' => '1',
+                'is_pinned' => null,
+                'send_emails' => '0',
+            ]);
+        $signedInResponse->assertSessionHasErrors(['audience']);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 存在しない企画を閲覧可能な企画に指定するとエラーが発生する()
+    {
+        Permission::create(['name' => 'staff.pages.edit']);
+        $this->staff->syncPermissions(['staff.pages.edit']);
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.pages.store'), [
+                'title' => 'お知らせのタイトル',
+                'body' => '本文',
+                'audience' => 'selected',
+                'viewable_circles' => [999999],
+                'is_public' => '1',
+                'is_pinned' => null,
+                'send_emails' => '0',
+            ]);
+
+        $response->assertSessionHasErrors(['viewable_circles.0']);
+        $this->assertSame(0, Page::count());
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function タグの指定を許可しないAudiencePolicyの場合タグを指定するとエラーになる()
+    {
+        Permission::create(['name' => 'staff.pages.edit']);
+        $this->staff->syncPermissions(['staff.pages.edit']);
+
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return false;
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.pages.store'), [
+                'title' => 'お知らせのタイトル',
+                'body' => '本文',
+                'audience' => 'selected',
+                'viewable_tags' => ['Cブース'],
+                'is_public' => '1',
+                'is_pinned' => null,
+                'send_emails' => '0',
+            ]);
+
+        $response->assertSessionHasErrors(['viewable_tags']);
+        $this->assertSame(0, Page::count());
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function タグの指定を許可しないAudiencePolicyの場合企画のみでselectedのお知らせを作成できる()
+    {
+        Permission::create(['name' => 'staff.pages.edit']);
+        $this->staff->syncPermissions(['staff.pages.edit']);
+
+        $circle = factory(Circle::class)->create();
+
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return false;
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->post(route('staff.pages.store'), [
+                'title' => 'お知らせのタイトル',
+                'body' => '本文',
+                'audience' => 'selected',
+                'viewable_circles' => [$circle->id],
+                'is_public' => '1',
+                'is_pinned' => null,
+                'send_emails' => '0',
+            ]);
+
+        $response->assertSessionDoesntHaveErrors(['audience', 'viewable_tags', 'viewable_circles']);
+        $this->assertDatabaseHas('pages', [
+            'title' => 'お知らせのタイトル',
+            'audience' => 'selected',
+        ]);
     }
 }

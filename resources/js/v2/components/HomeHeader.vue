@@ -11,7 +11,7 @@
         </div>
         <div class="home-header-buttons">
           <a :href="loginUrl" class="btn is-primary is-block"> ログイン </a>
-          <a :href="registerUrl" class="btn is-secondary is-block">
+          <a v-if="registerUrl" :href="registerUrl" class="btn is-secondary is-block">
             ユーザー登録
           </a>
         </div>
@@ -31,7 +31,7 @@ const props = defineProps({
   },
   registerUrl: {
     type: String,
-    required: true,
+    default: "",
   },
 });
 </script>

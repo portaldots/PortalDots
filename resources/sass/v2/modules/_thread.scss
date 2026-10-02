@@ -1,0 +1,347 @@
+@use "@/sass/variables" as *;
+
+.thread-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  max-width: $container-width-medium;
+  margin: 0 auto;
+  padding: $spacing $spacing-md;
+}
+
+.thread-timeline__message {
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: min(85%, 42rem);
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  background: $color-bg-surface;
+  overflow-wrap: anywhere;
+
+  &.is-own {
+    align-self: flex-end;
+    background: $color-primary-light;
+  }
+
+  &.is-other {
+    align-self: flex-start;
+  }
+
+  &.is-note {
+    background: $color-warning-light;
+  }
+}
+
+.thread-timeline__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs $spacing-sm;
+  justify-content: space-between;
+  color: $color-muted;
+  font-size: $font-size;
+}
+
+.thread-timeline__body {
+  margin: $spacing-sm 0 0;
+  white-space: pre-wrap;
+}
+
+.thread-timeline__note-label {
+  margin-right: $spacing-sm;
+  color: $color-text;
+  font-weight: $font-bold;
+}
+
+.thread-timeline__category {
+  margin-left: $spacing-sm;
+}
+
+.thread-timeline__event {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  max-width: 42rem;
+  color: $color-muted;
+  font-size: $font-size;
+}
+
+.thread-timeline__event-mark {
+  flex: 0 0 $spacing-sm;
+  height: $spacing-sm;
+  margin-top: $spacing-sm;
+  border-radius: 50%;
+  background: $color-muted-2;
+}
+
+.thread-timeline__event-content time {
+  display: inline-block;
+  margin-left: $spacing-sm;
+}
+
+.thread-timeline__attachments {
+  margin: $spacing-sm 0 0;
+  padding-left: $spacing-s;
+}
+
+.thread-timeline__empty {
+  margin: 0;
+  padding: $spacing-md;
+  color: $color-muted;
+  text-align: center;
+}
+
+.thread-composer-panel {
+  box-sizing: border-box;
+  max-width: $container-width-medium;
+  margin: 0 auto;
+  padding: $spacing-md;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  background: $color-bg-surface;
+}
+
+.thread-composer-panel.is-note {
+  background: $color-warning-light;
+}
+
+.thread-composer-panel__modes,
+.thread-composer-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.thread-composer-panel__actions {
+  width: 100%;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.thread-composer-panel__mode {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $color-border;
+  border-radius: $border-radius;
+  cursor: pointer;
+
+  &.is-selected {
+    border-color: $color-primary;
+    background: $color-primary-light;
+  }
+
+  &:focus-within {
+    outline: $focus-outline;
+    outline-offset: $spacing-xs;
+  }
+}
+
+.thread-composer-panel__radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.thread-composer-panel__actions {
+  justify-content: flex-end;
+  padding-top: $spacing-md;
+}
+
+.thread-composer-panel__footer,
+.thread-composer-panel__attachments {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.thread-composer-panel__footer {
+  justify-content: space-between;
+  padding-top: $spacing-sm;
+}
+
+.thread-composer-panel__footer .thread-composer-panel__actions {
+  width: auto;
+  padding-top: 0;
+}
+
+.thread-composer-panel__attachments:focus-within .btn {
+  box-shadow: $box-shadow-focus-primary;
+}
+
+.thread-composer-panel__selected-files {
+  max-width: 12rem;
+  overflow: hidden;
+  color: $color-muted;
+  font-size: $font-size;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.thread-composer-panel__attachment-limit {
+  color: $color-muted;
+  font-size: $font-size;
+}
+
+.thread-composer-panel textarea {
+  width: 100%;
+  min-height: 4.5rem;
+}
+
+.thread-composer-panel:focus-within {
+  border-color: $color-focus-primary;
+}
+
+body.has-thread-workspace .content {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (max-width: $breakpoint-bottom-tabs) {
+  body.has-thread-workspace.has-staff-bottom-tabs .content {
+    height: calc(100dvh - env(safe-area-inset-bottom) - #{$bottom-tabs-height});
+  }
+}
+
+body.has-thread-workspace .content__body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.staff-thread-workspace-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.staff-thread-workspace {
+  display: grid;
+  flex: 1;
+  grid-template-areas: "conversation details";
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 18rem);
+  gap: $spacing-md;
+  min-height: 0;
+}
+
+.staff-thread-workspace__details {
+  grid-area: details;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+.staff-thread-workspace__details-mobile {
+  display: none;
+}
+
+.staff-thread-workspace__details-mobile summary {
+  padding: $spacing-md;
+  border-radius: $border-radius;
+  background: $color-bg-surface;
+  box-shadow: $box-shadow-lv1;
+  cursor: pointer;
+  font-weight: $font-bold;
+
+  &:focus-visible {
+    outline: $focus-outline;
+    outline-offset: $spacing-xs;
+  }
+}
+
+.staff-thread-workspace__details-status,
+.staff-thread-workspace__details-assignee {
+  display: block;
+  margin-top: $spacing-sm;
+  font-size: $font-size;
+  font-weight: normal;
+}
+
+.staff-thread-workspace__details-assignee {
+  color: $color-muted;
+}
+
+.staff-thread-workspace__conversation {
+  display: grid;
+  grid-area: conversation;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.staff-thread-workspace__history {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.staff-thread-workspace__reply {
+  max-height: 50dvh;
+  overflow-y: auto;
+  border-top: 1px solid $color-border;
+}
+
+.staff-thread-workspace__reply .thread-composer-panel__footer {
+  position: sticky;
+  bottom: 0;
+  background: $color-bg-surface;
+}
+
+.staff-thread-workspace__reply .thread-composer-panel.is-note .thread-composer-panel__footer {
+  background: $color-warning-light;
+}
+
+@media (max-width: $breakpoint-listview-sm) {
+  .thread-timeline { padding: $spacing-md $spacing-sm; }
+  .thread-timeline__message { max-width: 92%; }
+  .thread-composer-panel { padding: $spacing-sm; }
+
+  .staff-thread-workspace {
+    grid-template-areas: "details" "conversation";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .staff-thread-workspace__details {
+    overflow: visible;
+  }
+
+  .staff-thread-workspace__details-desktop {
+    display: none;
+  }
+
+  .staff-thread-workspace__details-mobile {
+    display: block;
+  }
+
+  body.has-thread-workspace:has(.staff-thread-workspace__details-mobile[open]) .content {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  body.has-thread-workspace.has-staff-bottom-tabs:has(.staff-thread-workspace__details-mobile[open]) .content {
+    min-height: calc(100dvh - env(safe-area-inset-bottom) - #{$bottom-tabs-height});
+  }
+
+  .staff-thread-workspace:has(.staff-thread-workspace__details-mobile[open]) {
+    flex: none;
+    grid-template-rows: auto auto;
+  }
+
+  .staff-thread-workspace:has(.staff-thread-workspace__details-mobile[open]) .staff-thread-workspace__conversation {
+    height: calc(100dvh - #{$navbar-height} - #{$spacing-md});
+    min-height: 24rem;
+  }
+
+  body.has-staff-bottom-tabs .staff-thread-workspace:has(.staff-thread-workspace__details-mobile[open]) .staff-thread-workspace__conversation {
+    height: calc(100dvh - env(safe-area-inset-bottom) - #{$bottom-tabs-height} - #{$navbar-height} - #{$spacing-md});
+  }
+}

@@ -39,7 +39,7 @@ class CreateAction extends Controller
         // 参加登録フォームの場合で、かつ対応するanswerが作成されていない場合
         // 作成した上でUpdate画面へリダイレクト
         if (isset($form->participationType) && count($answers) === 0) {
-            $answer = $this->answersService->createAnswer($form, $circle);
+            $answer = $this->answersService->createAnswer($form, $circle, null, Auth::user());
             return redirect()
                 ->route('staff.forms.answers.edit', ['form' => $form, 'answer' => $answer]);
         }

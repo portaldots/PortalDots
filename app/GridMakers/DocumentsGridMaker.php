@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\GridMakers;
 
+use App\Contracts\AudiencePolicy;
 use Illuminate\Database\Eloquent\Builder;
 use App\Eloquents\Document;
 use App\GridMakers\Concerns\UseEloquent;
@@ -20,7 +21,8 @@ class DocumentsGridMaker implements GridMakable
      */
     protected function baseEloquentQuery(): Builder
     {
-        return Document::select($this->keys());
+        $columns = array_diff($this->keys(), ['version']);
+        return Document::select($columns)->with('versions');
     }
 
     /**
@@ -34,9 +36,11 @@ class DocumentsGridMaker implements GridMakable
             'path',
             'size',
             'extension',
+            'version',
             'description',
             'is_public',
             'is_important',
+            'audience',
             'created_at',
             'updated_at',
             'notes',
@@ -56,6 +60,11 @@ class DocumentsGridMaker implements GridMakable
             'description' => FilterableKey::string(),
             'is_public' => FilterableKey::bool(),
             'is_important' => FilterableKey::bool(),
+            'audience' => FilterableKey::enum([
+                AudiencePolicy::EVERYONE,
+                AudiencePolicy::SIGNED_IN,
+                AudiencePolicy::SELECTED,
+            ]),
             'created_at' => FilterableKey::datetime(),
             'updated_at' => FilterableKey::datetime(),
             'notes' => FilterableKey::string(),
@@ -75,6 +84,7 @@ class DocumentsGridMaker implements GridMakable
             'description',
             'is_public',
             'is_important',
+            'audience',
             'created_at',
             'updated_at',
             'notes',
@@ -91,6 +101,9 @@ class DocumentsGridMaker implements GridMakable
             switch ($key) {
                 case 'extension':
                     $item[$key] = mb_strtoupper($record->extension);
+                    break;
+                case 'version':
+                    $item[$key] = optional($record->versions->first())->version;
                     break;
                 case 'created_at':
                     $item[$key] = !empty($record->created_at) ? $record->created_at->format('Y/m/d H:i:s') : null;

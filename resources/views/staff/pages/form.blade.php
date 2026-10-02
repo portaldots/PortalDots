@@ -83,18 +83,73 @@
                 <layout-column>
                     <list-view>
                         <list-view-form-group>
-                            <template v-slot:label>お知らせを閲覧可能なユーザー</template>
-                            <template v-slot:description>
-                                空欄の場合、未ログインユーザーを含む全員に公開されます。
-                                タグを指定した場合、指定したタグのうち、1つ以上該当する企画に公開されます。
-                            </template>
-                            <tags-input input-name="viewable_tags" placeholder="企画タグを指定"
-                                placeholder-empty="企画タグを指定 (空欄の場合すべてのユーザーに公開)" v-bind:default-tags="{{ $default_tags }}"
-                                v-bind:autocomplete-items="{{ $tags_autocomplete_items }}" add-only-from-autocomplete>
-                            </tags-input>
-                            @if ($errors->has('viewable_tags'))
+                            <template v-slot:label>公開範囲</template>
+                            <div class="form-radio">
+                                @if (in_array('everyone', $allowed_audiences))
+                                    <label class="form-radio__label">
+                                        <input class="form-radio__input" type="radio" name="audience"
+                                            id="audienceRadiosEveryone" value="everyone"
+                                            {{ old('audience', empty($page) ? 'everyone' : $page->audience) === 'everyone' ? 'checked' : '' }}>
+                                        <strong>誰でも（ログイン不要）</strong>
+                                    </label>
+                                @endif
+                                @if (in_array('signed_in', $allowed_audiences))
+                                    <label class="form-radio__label">
+                                        <input class="form-radio__input" type="radio" name="audience"
+                                            id="audienceRadiosSignedIn" value="signed_in"
+                                            {{ old('audience', empty($page) ? 'everyone' : $page->audience) === 'signed_in' ? 'checked' : '' }}>
+                                        <strong>ログインしているユーザー全員</strong>
+                                    </label>
+                                @endif
+                                @if (in_array('selected', $allowed_audiences))
+                                    <label class="form-radio__label">
+                                        <input class="form-radio__input" type="radio" name="audience"
+                                            id="audienceRadiosSelected" value="selected"
+                                            {{ old('audience', empty($page) ? 'everyone' : $page->audience) === 'selected' ? 'checked' : '' }}>
+                                        <strong>選んだタグ・企画のみ</strong>
+                                    </label>
+                                @endif
+                            </div>
+                            @if ($errors->has('audience'))
                                 <template v-slot:invalid>
-                                    @foreach ($errors->get('viewable_tags') as $message)
+                                    @foreach ($errors->get('audience') as $message)
+                                        <div>{{ $message }}</div>
+                                    @endforeach
+                                </template>
+                            @endif
+                        </list-view-form-group>
+                        @if ($allows_tag_targets)
+                            <list-view-form-group>
+                                <template v-slot:label>閲覧可能なタグ</template>
+                                <template v-slot:description>
+                                    公開範囲が「選んだタグ・企画のみ」の場合のみ有効です。
+                                    指定したタグのうち、1つ以上該当する企画に公開されます。
+                                </template>
+                                <tags-input input-name="viewable_tags" placeholder="企画タグを指定"
+                                    v-bind:default-tags="{{ $default_tags }}"
+                                    v-bind:autocomplete-items="{{ $tags_autocomplete_items }}" add-only-from-autocomplete>
+                                </tags-input>
+                                @if ($errors->has('viewable_tags'))
+                                    <template v-slot:invalid>
+                                        @foreach ($errors->get('viewable_tags') as $message)
+                                            <div>{{ $message }}</div>
+                                        @endforeach
+                                    </template>
+                                @endif
+                            </list-view-form-group>
+                        @endif
+                        <list-view-form-group>
+                            <template v-slot:label>閲覧可能な企画</template>
+                            <template v-slot:description>
+                                公開範囲が「選んだタグ・企画のみ」の場合のみ有効です。
+                            </template>
+                            <tags-input input-name="viewable_circles" placeholder="企画を指定"
+                                v-bind:default-tags="{{ $default_circles }}"
+                                v-bind:autocomplete-items="{{ $circles_autocomplete_items }}" add-only-from-autocomplete>
+                            </tags-input>
+                            @if ($errors->has('viewable_circles'))
+                                <template v-slot:invalid>
+                                    @foreach ($errors->get('viewable_circles') as $message)
                                         <div>{{ $message }}</div>
                                     @endforeach
                                 </template>
@@ -155,7 +210,7 @@
                                 <label class="form-checkbox__label">
                                     <input class="form-checkbox__input" type="checkbox" name="send_emails" value="1"
                                         {{ Auth::user()->can('staff.pages.send_emails') ? '' : 'disabled' }}>
-                                    <strong>保存後にこのお知らせを「閲覧可能なユーザー」で指定したユーザー全員にメール配信</strong><br>
+                                    <strong>保存後にこのお知らせを「公開範囲」の対象ユーザー全員にメール配信</strong><br>
                                     <span
                                         class="text-muted">このお知らせを保存したタイミングでの内容が配信されます。お知らせを編集しても、メール配信が完了するまで編集内容は反映されません。</span>
                                 </label>

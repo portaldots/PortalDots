@@ -123,7 +123,7 @@ export default {
       border-left: 0;
     }
   }
-  .form-control {
+  > .form-control {
     flex: 1 1 0%;
     &:not(:is([type="file"], [type="color"])):not(:first-child) {
       border-bottom-left-radius: 0;
@@ -142,7 +142,7 @@ export default {
       }
     }
   }
-  .form-control ~ .form-control:not(:focus) {
+  > .form-control ~ .form-control:not(:focus) {
     border-left: 0;
   }
 }

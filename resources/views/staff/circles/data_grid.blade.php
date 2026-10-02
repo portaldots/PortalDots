@@ -142,6 +142,13 @@
             <template
                 v-else-if="keyName.includes('{{ App\GridMakers\CirclesGridMaker::PARTICIPATION_FORM_QUESTIONS_KEY_PREFIX }}')">
                 {{-- カスタムフォームへの回答 --}}
+                <template v-if="row[keyName] && row[keyName].table_cells">
+                    <div v-for="cell in row[keyName].table_cells" v-bind:key="cell.row + cell.column">
+                        @{{ cell.label }}:
+                        <a v-if="cell.file_url" v-bind:href="cell.file_url" target="_blank" rel="noopener noreferrer">@{{ cell.text }}</a>
+                        <span v-else style="white-space: pre-wrap">@{{ cell.text }}</span>
+                    </div>
+                </template>
                 <template v-if="row[keyName] && row[keyName].file_url">
                     <a v-bind:href="row[keyName].file_url" target="_blank" rel="noopener noreferrer">表示</a>
                 </template>

@@ -21,7 +21,7 @@ class IndexAction extends Controller
     public function __invoke()
     {
         if (config('portal.enable_demo_mode')) {
-            return redirect()->route('staff.index');
+            return redirect()->route(config('portal.navigation.staff_home_route'));
         }
 
         $this->staffAuthService->send(Auth::user());

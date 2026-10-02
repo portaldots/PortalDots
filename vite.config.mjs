@@ -1,3 +1,4 @@
+import { copyFile } from "node:fs/promises";
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
@@ -25,6 +26,17 @@ export default defineConfig({
         },
       },
     }),
+    {
+      name: "include-fontawesome-license",
+      apply: "build",
+      enforce: "post",
+      async closeBundle() {
+        await copyFile(
+          new URL("./node_modules/@fortawesome/fontawesome-free/LICENSE.txt", import.meta.url),
+          new URL("./public/build/FONT_AWESOME_LICENSE.txt", import.meta.url),
+        );
+      },
+    },
   ],
   resolve: {
     dedupe: ["@codemirror/state"],

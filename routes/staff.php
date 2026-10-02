@@ -87,11 +87,25 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                         Route::patch('/{answer}', 'Staff\Forms\Answers\UpdateAction')->name('update')->middleware(['can:staff.forms.answers.edit']);
                         Route::get('/create', 'Staff\Forms\Answers\CreateAction')->name('create')->middleware(['can:staff.forms.answers.edit']);
                         Route::post('/', 'Staff\Forms\Answers\StoreAction')->name('store')->middleware(['can:staff.forms.answers.edit']);
+                        Route::get('/{answer}/uploads/{question}/{row}/{column}', 'Staff\Forms\Answers\Uploads\TableShowAction')->name('uploads.table.show')->middleware(['can:staff.forms.answers.read']);
                         Route::get('/{answer}/uploads/{question}', 'Staff\Forms\Answers\Uploads\ShowAction')->name('uploads.show')->middleware(['can:staff.forms.answers.read']);
                         Route::delete('/{answer}', 'Staff\Forms\Answers\DestroyAction')->name('destroy')->middleware(['can:staff.forms.answers.delete']);
                         Route::get('/uploads', 'Staff\Forms\Answers\Uploads\IndexAction')->name('uploads.index')->middleware(['can:staff.forms.answers.export'])->middleware(['can:staff.forms.answers.export']);
                         Route::post('/uploads/download_zip', 'Staff\Forms\Answers\Uploads\DownloadZipAction')->name('uploads.download_zip')->middleware(['can:staff.forms.answers.export']);
                         Route::get('/export', 'Staff\Forms\Answers\ExportAction')->name('export')->middleware(['can:staff.forms.answers.export']);
+                        // 回答の確認(requires_review)
+                        Route::patch('/{answer}/accept', 'Staff\Forms\Answers\AcceptAction')->name('accept')->middleware(['can:staff.forms.answers.edit']);
+                        Route::patch('/{answer}/return', 'Staff\Forms\Answers\ReturnAction')->name('return')->middleware(['can:staff.forms.answers.edit']);
+                        Route::get(
+                            '/{answer}/revisions/{revision:revision}/uploads/{question}/{row}/{column}',
+                            'Staff\Forms\Answers\Uploads\RevisionTableShowAction'
+                        )->name('revisions.uploads.table.show')->middleware(['can:staff.forms.answers.read'])->scopeBindings();
+                        Route::get(
+                            '/{answer}/revisions/{revision:revision}/uploads/{question}',
+                            'Staff\Forms\Answers\Uploads\RevisionShowAction'
+                        )->name('revisions.uploads.show')->middleware(['can:staff.forms.answers.read'])->scopeBindings();
+                        Route::get('/{answer}/revisions/{revision:revision}', 'Staff\Forms\Answers\RevisionsShowAction')
+                            ->name('revisions.show')->middleware(['can:staff.forms.answers.read'])->scopeBindings();
                     });
 
                 // 申請フォームエディタ
@@ -112,6 +126,16 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                     });
 
                 Route::get('/not_answered', 'Staff\Forms\Answers\NotAnswered\ShowAction')->name('not_answered')->middleware(['can:staff.forms.answers.read']);
+
+                // 送付先の企画
+                Route::prefix('/assignments')
+                    ->name('assignments.')
+                    ->middleware(['can:staff.forms.edit'])
+                    ->group(function () {
+                        Route::post('/', 'Staff\Forms\Assignments\StoreAction')->name('store');
+                        Route::patch('/{circle}', 'Staff\Forms\Assignments\UpdateAction')->name('update');
+                        Route::delete('/{circle}', 'Staff\Forms\Assignments\DestroyAction')->name('destroy');
+                    });
 
                 Route::get('/preview', 'Staff\Forms\PreviewAction')->name('preview')->middleware(['can:staff.forms.read']);
 
@@ -185,6 +209,13 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::delete('/{circle}', 'Staff\Circles\DestroyAction')->name('destroy')->middleware(['can:staff.circles.delete']);
             });
 
+        // 企画の進捗（申請フォームへの回答・配布資料の確認依頼の状況）
+        Route::prefix('/progress')
+            ->name('progress.')
+            ->group(function () {
+                Route::get('/', 'Staff\Progress\IndexAction')->name('index')->middleware(['can:staff.circles.read']);
+            });
+
         Route::prefix('/tags')
             ->name('tags.')
             ->group(function () {
@@ -210,6 +241,16 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::patch('/{place}', 'Staff\Places\UpdateAction')->name('update')->middleware(['can:staff.places.edit']);
                 Route::delete('/{place}', 'Staff\Places\DestroyAction')->name('destroy')->middleware(['can:staff.places.delete']);
                 Route::get('/export', 'Staff\Places\ExportAction')->name('export')->middleware(['can:staff.places.export']);
+                Route::prefix('/import')
+                    ->name('import.')
+                    ->middleware(['can:staff.places.import'])
+                    ->group(function () {
+                        Route::get('/', 'Staff\Places\Import\IndexAction')->name('index');
+                        Route::post('/', 'Staff\Places\Import\StoreAction')->name('store');
+                        Route::get('/template', 'Staff\Places\Import\TemplateAction')
+                            ->name('template')
+                            ->middleware(['can:staff.places.export']);
+                    });
             });
 
         // メール一斉送信
@@ -241,7 +282,40 @@ Route::middleware(['auth', 'verified', 'can:staff', 'staffAuthed'])
                 Route::get('/{document}/edit', 'Staff\Documents\EditAction')->name('edit')->middleware(['can:staff.documents.edit']);
                 Route::patch('/{document}', 'Staff\Documents\UpdateAction')->name('update')->middleware(['can:staff.documents.edit']);
                 Route::get('/{document}', 'Staff\Documents\ShowAction')->name('show')->middleware(['can:staff.documents.read']);
+                Route::get('/{document}/versions/{version:version}', 'Staff\Documents\VersionsShowAction')
+                    ->name('versions.show')
+                    ->middleware(['can:staff.documents.read'])
+                    ->scopeBindings();
                 Route::delete('/{document}', 'Staff\Documents\DestroyAction')->name('destroy')->middleware(['can:staff.documents.delete']);
+
+                // 確認依頼
+                Route::post('/{document}/approvals', 'Staff\Documents\Approvals\StoreAction')
+                    ->name('approvals.store')
+                    ->middleware(['can:staff.documents.edit']);
+                Route::delete('/{document}/approvals/{circle}', 'Staff\Documents\Approvals\DestroyAction')
+                    ->name('approvals.destroy')
+                    ->middleware(['can:staff.documents.edit']);
+            });
+
+        // お問い合わせ（企画・お問い合わせ送信者ごとの会話）
+        Route::prefix('/threads')
+            ->name('threads.')
+            ->group(function () {
+                Route::get('/', 'Staff\Threads\IndexAction')->name('index')->middleware(['can:staff.threads.read']);
+                Route::get('/api', 'Staff\Threads\ApiAction')->name('api')->middleware(['can:staff.threads.read']);
+                Route::get('/{thread}', 'Staff\Threads\ShowAction')->name('show')->middleware(['can:staff.threads.read']);
+                Route::post('/{thread}/messages', 'Staff\Threads\MessagesStoreAction')
+                    ->name('messages.store')
+                    ->middleware(['can:staff.threads.edit']);
+                Route::post('/{thread}/notes', 'Staff\Threads\NotesStoreAction')
+                    ->name('notes.store')
+                    ->middleware(['can:staff.threads.edit']);
+                Route::patch('/{thread}/assignee', 'Staff\Threads\AssigneeUpdateAction')
+                    ->name('assignee.update')
+                    ->middleware(['can:staff.threads.edit']);
+                Route::get('/attachments/{attachment}', 'Staff\Threads\Attachments\ShowAction')
+                    ->name('attachments.show')
+                    ->middleware(['can:staff.threads.read']);
             });
 
         // スタッフの権限設定

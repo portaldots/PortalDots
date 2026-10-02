@@ -130,4 +130,32 @@ class AnswerDetailsServiceTest extends TestCase
 
         Storage::disk('local')->assertExists($file);
     }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function updateAnswerDetails_keepAllFileVersionsがtrueの場合差し替えられた古いファイルを削除しない()
+    {
+        $form = factory(Form::class)->create(['requires_review' => true]);
+
+        $file_upload = factory(Question::class)->create([
+            'form_id' => $form->id,
+            'type' => 'upload'
+        ]);
+
+        $answer = factory(Answer::class)->create([
+            'form_id' => $form->id,
+            'circle_id' => $this->circle->id
+        ]);
+
+        Auth::login($this->user);
+
+        $old_file = UploadedFile::fake()->create('file.jpeg', 0, 'image/jpeg')->store('answer_details');
+        $this->answerDetailsService->updateAnswerDetails($form, $answer, [$file_upload->id => $old_file], true);
+
+        $new_file = UploadedFile::fake()->create('update.png', 0, 'image/png')->store('answer_details');
+        $this->answerDetailsService->updateAnswerDetails($form, $answer, [$file_upload->id => $new_file], true);
+
+        // 新しいファイルはもちろん、過去のリビジョンから参照される旧ファイルも削除されない
+        Storage::disk('local')->assertExists($new_file);
+        Storage::disk('local')->assertExists($old_file);
+    }
 }

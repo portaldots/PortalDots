@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Staff\Documents;
 
+use App\Contracts\AudiencePolicy;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateDocumentRequest extends FormRequest
 {
@@ -23,12 +25,44 @@ class CreateDocumentRequest extends FormRequest
      */
     public function rules()
     {
+        $audiencePolicy = app(AudiencePolicy::class);
+
         return [
             'name' => ['required', 'string'],
             'description' => ['nullable', 'string'],
             'file' => ['required', 'file'],
             'is_public' => ['required', 'boolean'],
             'is_important' => ['required', 'boolean'],
+            'audience' => [
+                'required',
+                'string',
+                Rule::in($audiencePolicy->allowedAudiences()),
+                function ($attribute, $value, $fail) use ($audiencePolicy) {
+                    if ($value !== AudiencePolicy::SELECTED) {
+                        return;
+                    }
+                    if ($audiencePolicy->allowsTagTargets() && !empty($this->input('viewable_tags'))) {
+                        return;
+                    }
+                    if (!empty($this->input('viewable_circles'))) {
+                        return;
+                    }
+                    $fail($audiencePolicy->allowsTagTargets()
+                        ? '公開範囲を「選んだタグ・企画のみ」にする場合、タグまたは企画を1つ以上指定してください。'
+                        : '公開範囲を「選んだタグ・企画のみ」にする場合、企画を1つ以上指定してください。');
+                },
+            ],
+            'viewable_tags' => [
+                'nullable',
+                'array',
+                function ($attribute, $value, $fail) use ($audiencePolicy) {
+                    if (!$audiencePolicy->allowsTagTargets() && !empty($value)) {
+                        $fail('タグによる公開範囲の指定は許可されていません。');
+                    }
+                },
+            ],
+            'viewable_circles' => ['nullable', 'array'],
+            'viewable_circles.*' => ['integer', 'exists:circles,id'],
             'notes' => ['nullable', 'string'],
         ];
     }
@@ -46,6 +80,9 @@ class CreateDocumentRequest extends FormRequest
             'file' => 'ファイル',
             'is_public' => '公開設定',
             'is_important' => 'この配布資料は重要かどうか',
+            'audience' => '公開範囲',
+            'viewable_tags' => '配布資料を閲覧可能なタグ',
+            'viewable_circles' => '配布資料を閲覧可能な企画',
             'notes' => 'スタッフ用メモ',
         ];
     }

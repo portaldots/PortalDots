@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '申請')
+@section('title', term('form'))
 
 @section('content')
     <div class="tab_strip">
@@ -25,18 +25,32 @@
                 @foreach ($forms as $form)
                     <list-view-item href="{{ route('forms.answers.create', ['form' => $form]) }}">
                         <template v-slot:title>
-                            @if (!$form->answerableTags->isEmpty())
+                            @if ($form->audience === \App\Contracts\AudiencePolicy::SELECTED)
                                 <app-badge primary outline>限定公開</app-badge>
                             @else
                                 <app-badge muted outline>全員に公開</app-badge>
                             @endif
                             {{ $form->name }}
                             @if (isset($circle))
-                                @if ($form->answered($circle))
+                                @if ($form->requires_review)
+                                    @php $latest_answer = $form->latestAnswerFor($circle); @endphp
+                                    @if (empty($latest_answer))
+                                        <app-badge muted>提出してください</app-badge>
+                                    @elseif ($latest_answer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_ACCEPTED)
+                                        <app-badge success>完了</app-badge>
+                                    @elseif ($latest_answer->review_status === \App\Eloquents\Answer::REVIEW_STATUS_RETURNED)
+                                        <app-badge danger>修正してください</app-badge>
+                                    @else
+                                        <app-badge primary>確認中</app-badge>
+                                    @endif
+                                @elseif ($form->answered($circle))
                                     <app-badge success>提出済</app-badge>
                                 @endif
                                 @if ($form->yetOpen())
                                     <app-badge muted>受付開始前</app-badge>
+                                @endif
+                                @if ($form->isOverdueFor($circle))
+                                    <app-badge danger>期限切れ</app-badge>
                                 @endif
                             @endif
                         </template>
@@ -48,6 +62,12 @@
                             @endif
                             @if ($form->max_answers > 1)
                                 • 1企画あたり{{ $form->max_answers }}つ回答可能
+                            @endif
+                            @if (isset($circle))
+                                @php $dueAt = $form->effectiveDueDateFor($circle); @endphp
+                                @unless ($dueAt->equalTo($form->close_at))
+                                    • 期限 : @datetime($dueAt)
+                                @endunless
                             @endif
                         </template>
                         @summary($form->description)

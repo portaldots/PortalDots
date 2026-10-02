@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers\Staff\Documents;
 
+use App\Contracts\AudiencePolicy;
+use App\Eloquents\Circle;
 use App\Eloquents\Document;
 use App\Eloquents\Permission;
 use App\Eloquents\User;
@@ -43,7 +45,13 @@ class UpdateActionTest extends TestCase
                 null,
                 false,
                 true,
-                'notes'
+                'notes',
+                'everyone',
+                [],
+                [],
+                Mockery::on(function ($arg) {
+                    return $arg->id === $this->staff->id;
+                })
             )->andReturn(true);
         });
 
@@ -55,6 +63,7 @@ class UpdateActionTest extends TestCase
                 'description' => 'document description',
                 'is_public' => '0',
                 'is_important' => '1',
+                'audience' => 'everyone',
                 'notes' => 'notes',
             ]);
 
@@ -79,5 +88,120 @@ class UpdateActionTest extends TestCase
             ]);
 
         $response->assertForbidden();
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function AudiencePolicyでselectedのみ許可されている場合everyoneとsigned_inは拒否される()
+    {
+        Permission::create(['name' => 'staff.documents.edit']);
+        $this->staff->syncPermissions(['staff.documents.edit']);
+
+        $document = factory(Document::class)->create();
+
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return true;
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->patch(route('staff.documents.update', ['document' => $document]), [
+                'name' => 'document name',
+                'description' => 'document description',
+                'is_public' => '1',
+                'is_important' => '0',
+                'audience' => 'signed_in',
+                'notes' => 'notes',
+            ]);
+
+        $response->assertSessionHasErrors(['audience']);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function タグの指定を許可しないAudiencePolicyの場合タグを指定するとエラーになる()
+    {
+        Permission::create(['name' => 'staff.documents.edit']);
+        $this->staff->syncPermissions(['staff.documents.edit']);
+
+        $document = factory(Document::class)->create();
+
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return false;
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->patch(route('staff.documents.update', ['document' => $document]), [
+                'name' => 'document name',
+                'description' => 'document description',
+                'is_public' => '1',
+                'is_important' => '0',
+                'audience' => 'selected',
+                'viewable_tags' => ['Cブース'],
+                'notes' => 'notes',
+            ]);
+
+        $response->assertSessionHasErrors(['viewable_tags']);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function タグの指定を許可しないAudiencePolicyの場合企画のみでselectedに更新できる()
+    {
+        Permission::create(['name' => 'staff.documents.edit']);
+        $this->staff->syncPermissions(['staff.documents.edit']);
+
+        $document = factory(Document::class)->create();
+        $circle = factory(Circle::class)->create();
+
+        $this->app->bind(AudiencePolicy::class, function () {
+            return new class implements AudiencePolicy {
+                public function allowedAudiences(): array
+                {
+                    return [self::SELECTED];
+                }
+
+                public function allowsTagTargets(): bool
+                {
+                    return false;
+                }
+            };
+        });
+
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->patch(route('staff.documents.update', ['document' => $document]), [
+                'name' => 'document name',
+                'description' => 'document description',
+                'is_public' => '1',
+                'is_important' => '0',
+                'audience' => 'selected',
+                'viewable_circles' => [$circle->id],
+                'notes' => 'notes',
+            ]);
+
+        $response->assertSessionDoesntHaveErrors(['audience', 'viewable_tags', 'viewable_circles']);
+        $this->assertDatabaseHas('documents', [
+            'id' => $document->id,
+            'audience' => 'selected',
+        ]);
     }
 }
