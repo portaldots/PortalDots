@@ -341,4 +341,11 @@ Route::middleware(['auth', 'verified', 'can:admin', 'staffAuthed'])
         // ポータル情報編集
         Route::get('/portal', 'Admin\Portal\EditAction')->name('portal.edit');
         Route::patch('/portal', 'Admin\Portal\UpdateAction')->name('portal.update');
+
+        // PortalDots のブラウザ更新（実在する管理者のみ）
+        Route::prefix('/update')->name('updater.')->middleware('realAdmin')->group(function () {
+            Route::get('/', 'Admin\Updater\IndexAction')->name('index');
+            Route::post('/check', 'Admin\Updater\CheckAction')->name('check');
+            Route::post('/start', 'Admin\Updater\StartAction')->name('start');
+        });
     });

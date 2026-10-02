@@ -70,6 +70,7 @@ class Kernel extends HttpKernel
         'install' => \App\Http\Middleware\DenyIfInstalled::class,
         'circleSelected' => \App\Http\Middleware\CheckSelectedCircle::class,
         'checkGuestAccess' => \App\Http\Middleware\CheckGuestAccess::class,
+        'realAdmin' => \App\Http\Middleware\EnsureRealAdministrator::class,
     ];
 
     /**

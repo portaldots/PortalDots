@@ -112,6 +112,14 @@
                     'description' => 'このウェブシステムの設定を変更します',
                 ],
                 [
+                    'can' => Auth::user()->is_admin,
+                    'admin' => true,
+                    'href' => route('admin.updater.index'),
+                    'icon_class' => 'fas fa-cloud-download-alt fa-fw',
+                    'title' => 'PortalDots の更新',
+                    'description' => '利用可能な更新を確認します',
+                ],
+                [
                     'can' => true,
                     'href' => route('staff.about'),
                     'icon_class' => 'fa-solid fa-arrows-rotate fa-fw',
