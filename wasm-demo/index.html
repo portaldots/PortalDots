@@ -68,11 +68,15 @@
     }
 
     #help {
-      position: fixed; top: 12px; right: 12px; width: 32px; height: 32px; border: 1px solid var(--line);
+      position: fixed; right: 16px; bottom: 16px; width: 36px; height: 36px; border: 1px solid var(--line);
       border-radius: 50%; background: var(--surface); color: var(--muted); font: 600 16px/1 system-ui, sans-serif;
       box-shadow: 0 2px 8px rgba(0, 0, 0, .15); cursor: pointer; opacity: .75;
     }
     #help:hover, #help:focus-visible { opacity: 1; }
+    /* PortalDots shows a 4.5rem bottom tab bar at 1000px and below. */
+    @media (max-width: 1000px) {
+      #help { bottom: calc(env(safe-area-inset-bottom) + 4.5rem + 12px); }
+    }
   </style>
 </head>
 <body>
