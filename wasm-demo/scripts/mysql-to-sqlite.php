@@ -1,4 +1,5 @@
 <?php
+
 require getcwd() . '/vendor/autoload.php';
 $app = require getcwd() . '/bootstrap/app.php';
 $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
@@ -73,8 +74,9 @@ foreach ($schema->getTables() as $table) {
     $sqlite->beginTransaction();
     foreach ($rows as $record) {
         $row = (array)$record;
-        $insert = $sqlite->prepare('INSERT INTO ' . $quote($name) . ' (' . implode(', ', array_map($quote, array_keys($row)))
-            . ') VALUES (' . implode(', ', array_fill(0, count($row), '?')) . ')');
+        $columns = implode(', ', array_map($quote, array_keys($row)));
+        $placeholders = implode(', ', array_fill(0, count($row), '?'));
+        $insert = $sqlite->prepare('INSERT INTO ' . $quote($name) . " ({$columns}) VALUES ({$placeholders})");
         $insert->execute(array_values($row));
     }
     $sqlite->commit();
@@ -84,7 +86,8 @@ foreach ($schema->getTables() as $table) {
     }
 }
 $sqlite->exec('PRAGMA foreign_keys = ON');
-if ($sqlite->query('PRAGMA foreign_key_check')->fetchAll() || $sqlite->query('PRAGMA integrity_check')->fetchColumn() !== 'ok') {
+$foreignKeyErrors = $sqlite->query('PRAGMA foreign_key_check')->fetchAll();
+if ($foreignKeyErrors || $sqlite->query('PRAGMA integrity_check')->fetchColumn() !== 'ok') {
     throw new RuntimeException('SQLite integrity check failed');
 }
 file_put_contents(dirname(__DIR__) . '/.work/conversion.json', json_encode([
