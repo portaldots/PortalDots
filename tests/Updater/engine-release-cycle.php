@@ -11,6 +11,7 @@ use PortalDots\Updater\Engine;
 use PortalDots\Updater\FileBackup;
 use PortalDots\Updater\JobFactory;
 use PortalDots\Updater\StateStore;
+use PortalDots\Updater\UpdateGate;
 use PortalDots\Updater\VersionReader;
 
 if (($argv[1] ?? null) === '--step') {
@@ -164,7 +165,7 @@ foreach (['rollback-after-migration', 'success'] as $mode) {
                 JSON_THROW_ON_ERROR,
             ));
         }
-        if (is_file($config->privatePath . '/maintenance.json')) {
+        if (UpdateGate::isInMaintenance($config)) {
             throw new RuntimeException("Engine {$mode} left maintenance enabled after verification.");
         }
         fwrite(STDOUT, "ok - engine {$mode}\n");

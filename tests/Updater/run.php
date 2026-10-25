@@ -415,10 +415,22 @@ $tests['recovery code is hashed, rate limited, and session bound'] = static func
     }
 };
 
+$tests['traffic gate does not create updater private storage'] = static function (): void {
+    $root = fixtureRoot();
+    try {
+        mkdir($root . '/storage/framework', 0700, true);
+        assertTrue(UpdateGate::enter($root));
+        assertTrue(!file_exists($root . '/storage/app/updater/private'));
+    } finally {
+        removeTree($root);
+    }
+};
+
 $tests['job creation and traffic gate reject concurrent work'] = static function (): void {
     $root = fixtureRoot();
     try {
         mkdir($root . '/storage/app/updater/private', 0700, true);
+        mkdir($root . '/storage/framework', 0700, true);
         mkdir($root . '/app', 0700, true);
         file_put_contents($root . '/app/ReleaseInfo.php', "<?php const PORTAL_VERSION = '6.0.0';\n");
         $config = new Config($root, $root . '/storage/app/updater/private', 'https://example.test/manifest',
@@ -437,7 +449,7 @@ $tests['job creation and traffic gate reject concurrent work'] = static function
         UpdateGate::beginMaintenance($config, $id);
         assertTrue(!UpdateGate::enter($root));
         UpdateGate::endMaintenance($config);
-        $lease = fopen($config->privatePath . '/traffic.lock', 'c+');
+        $lease = fopen($root . '/storage/framework/portaldots-update-traffic.lock', 'c+');
         assertTrue(is_resource($lease) && flock($lease, LOCK_SH));
         assertTrue(!UpdateGate::waitForDrain($config));
         flock($lease, LOCK_UN);

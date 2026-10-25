@@ -8,33 +8,34 @@ use RuntimeException;
 
 final class UpdateGate
 {
+    // 停止の目印と通信ロックは、Laravel が Web と CLI の両方に書き込みを求める
+    // storage/framework に置く。実行ユーザーが異なっても、インストール時の権限設定のまま共有できる。
+    private const MAINTENANCE_FILE = 'portaldots-update-maintenance.json';
+    private const TRAFFIC_LOCK = 'portaldots-update-traffic.lock';
+
     /** @var resource|null */
     private static $lease = null;
 
     public static function enter(string $basePath): bool
     {
-        try {
-            $config = Config::fromEnvironment($basePath);
-            PrivateStorage::ensure($config->privatePath);
-            $privatePath = $config->privatePath;
-        } catch (\Throwable) {
+        $maintenancePath = self::path($basePath, self::MAINTENANCE_FILE);
+        if (is_file($maintenancePath)) {
             return false;
         }
-        if (is_file($privatePath . '/maintenance.json')) {
-            return false;
-        }
-        $lockPath = $privatePath . '/traffic.lock';
+        $lockPath = self::path($basePath, self::TRAFFIC_LOCK);
         $handle = @fopen($lockPath, 'c+');
+        if ($handle === false) {
+            $handle = @fopen($lockPath, 'r');
+        }
         if ($handle === false) {
             return false;
         }
-        @chmod($lockPath, 0600);
         if (!@flock($handle, LOCK_SH)) {
             fclose($handle);
             return false;
         }
 
-        if (is_file($privatePath . '/maintenance.json')) {
+        if (is_file($maintenancePath)) {
             flock($handle, LOCK_UN);
             fclose($handle);
             return false;
@@ -51,9 +52,14 @@ final class UpdateGate
         return true;
     }
 
+    public static function isInMaintenance(Config $config): bool
+    {
+        return is_file(self::path($config->basePath, self::MAINTENANCE_FILE));
+    }
+
     public static function beginMaintenance(Config $config, string $jobId): void
     {
-        $path = $config->privatePath . '/maintenance.json';
+        $path = self::path($config->basePath, self::MAINTENANCE_FILE);
         $temporary = $path . '.tmp.' . bin2hex(random_bytes(4));
         $written = file_put_contents($temporary, CanonicalJson::encode([
             'job_id' => $jobId,
@@ -62,7 +68,6 @@ final class UpdateGate
         if ($written === false) {
             throw new RuntimeException('メンテナンス状態を書き込めません。');
         }
-        @chmod($temporary, 0600);
         if (!rename($temporary, $path)) {
             @unlink($temporary);
             throw new RuntimeException('メンテナンス状態を確定できません。');
@@ -71,7 +76,13 @@ final class UpdateGate
 
     public static function waitForDrain(Config $config): bool
     {
-        $handle = fopen($config->privatePath . '/traffic.lock', 'c+');
+        // CLI が先に作ったロックは Web の実行ユーザーから書き込めない場合がある。
+        // 排他ロックは読み取り専用で開いた記述子でも取れる。
+        $lockPath = self::path($config->basePath, self::TRAFFIC_LOCK);
+        $handle = @fopen($lockPath, 'c+');
+        if ($handle === false) {
+            $handle = @fopen($lockPath, 'r');
+        }
         if ($handle === false) {
             throw new RuntimeException('通信停止ロックを開けません。');
         }
@@ -85,9 +96,14 @@ final class UpdateGate
 
     public static function endMaintenance(Config $config): void
     {
-        $path = $config->privatePath . '/maintenance.json';
+        $path = self::path($config->basePath, self::MAINTENANCE_FILE);
         if (is_file($path) && !unlink($path)) {
             throw new RuntimeException('メンテナンス状態を解除できません。');
         }
+    }
+
+    private static function path(string $basePath, string $name): string
+    {
+        return rtrim($basePath, DIRECTORY_SEPARATOR) . '/storage/framework/' . $name;
     }
 }

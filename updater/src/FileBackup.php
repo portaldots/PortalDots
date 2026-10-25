@@ -468,7 +468,8 @@ final class FileBackup
             }
             if (is_dir($absolute)) {
                 $children[] = $relative;
-            } elseif (is_file($absolute) && !isset($expectedLowercase[strtolower($relative)])) {
+            } elseif (is_file($absolute) && !isset($expectedLowercase[strtolower($relative)])
+                && !$this->isServerGeneratedFile($relative)) {
                 throw new RuntimeException("公式配布にない追加ファイルがあります: {$relative}");
             }
         }
@@ -482,5 +483,19 @@ final class FileBackup
             || $relative === 'bootstrap/cache' || str_starts_with($relative, 'bootstrap/cache/')
             || $relative === 'public/storage' || str_starts_with($relative, 'public/storage/')
             || $relative === 'public/uploads' || str_starts_with($relative, 'public/uploads/');
+    }
+
+    /**
+     * 共有ホストの PHP エラーログと .user.ini、証明書の自動更新の確認ファイルは、サーバーが配置先に作る。
+     * 同名のディレクトリや、確認用の場所に置かれた PHP は除外しない。
+     */
+    private function isServerGeneratedFile(string $relative): bool
+    {
+        if (in_array(basename($relative), ['error_log', '.user.ini'], true)) {
+            return true;
+        }
+        return str_starts_with($relative, 'public/.well-known/acme-challenge/')
+            && !str_contains(substr($relative, strlen('public/.well-known/acme-challenge/')), '/')
+            && preg_match('/\.(php\d*|phtml|phar)$/i', $relative) !== 1;
     }
 }

@@ -49,7 +49,11 @@ file_put_contents($dist . '/.portaldots-manifest.json', CanonicalJson::encode([
     'files' => $installedFiles,
 ]) . "\n");
 
-$fullFiles = listFiles($dist);
+// dist での composer install が artisan を通じて作る通信ロックは、配置先ごとに作り直す。
+$fullFiles = array_values(array_filter(
+    listFiles($dist),
+    static fn (string $path): bool => !str_starts_with($path, 'storage/framework/portaldots-update-'),
+));
 $fullArchive = $output . '/PortalDots.zip';
 createZip($fullArchive, $dist, $fullFiles, [
     'bootstrap/cache/',

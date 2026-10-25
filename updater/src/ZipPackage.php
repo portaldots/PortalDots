@@ -18,97 +18,6 @@ final class ZipPackage
     {
     }
 
-    /** @param list<array{path: string, sha256: string, size: int}> $expected */
-    public function verifyAndExtract(string $archive, string $destination, array $expected): void
-    {
-        if (!extension_loaded('zip')) {
-            throw new RuntimeException('更新展開に必要な ZIP 拡張がありません。');
-        }
-        $zip = new ZipArchive();
-        if ($zip->open($archive, ZipArchive::RDONLY) !== true) {
-            throw new RuntimeException('更新ZIPを開けません。');
-        }
-        try {
-            if ($zip->numFiles > $this->config->maxArchiveFiles) {
-                throw new RuntimeException('更新ZIPのファイル数が上限を超えています。');
-            }
-            $expectedByPath = [];
-            foreach ($expected as $file) {
-                $expectedByPath[$file['path']] = $file;
-            }
-            $seen = [];
-            $total = 0;
-            for ($index = 0; $index < $zip->numFiles; $index++) {
-                $stat = $zip->statIndex($index, ZipArchive::FL_UNCHANGED);
-                if (!is_array($stat)) {
-                    throw new RuntimeException('更新ZIPの索引を読み取れません。');
-                }
-                $raw = (string) $stat['name'];
-                $path = self::normalizePath($raw);
-                if ($path !== $raw || str_ends_with($path, '/')) {
-                    throw new RuntimeException("更新ZIPに不正な項目があります: {$raw}");
-                }
-                $lower = strtolower($path);
-                if (isset($seen[$lower]) || !isset($expectedByPath[$path])) {
-                    throw new RuntimeException("更新ZIPに重複または未宣言のファイルがあります: {$path}");
-                }
-                $seen[$lower] = true;
-                $size = (int) ($stat['size'] ?? -1);
-                $compressed = (int) ($stat['comp_size'] ?? 0);
-                if ($size < 0 || $size !== $expectedByPath[$path]['size']) {
-                    throw new RuntimeException("更新ZIPのファイルサイズが一致しません: {$path}");
-                }
-                $total += $size;
-                if ($total > $this->config->maxExtractedBytes
-                    || ($size > 10_485_760 && $compressed > 0 && $size / $compressed > 200)) {
-                    throw new RuntimeException('更新ZIPの展開容量または圧縮率が上限を超えています。');
-                }
-                $opsys = 0;
-                $attributes = 0;
-                if ($zip->getExternalAttributesIndex($index, $opsys, $attributes)) {
-                    $mode = ($attributes >> 16) & 0170000;
-                    if ($mode === 0120000) {
-                        throw new RuntimeException("更新ZIPにシンボリックリンクがあります: {$path}");
-                    }
-                }
-            }
-            if (count($seen) !== count($expectedByPath)) {
-                throw new RuntimeException('更新ZIPに不足しているファイルがあります。');
-            }
-
-            if (!is_dir($destination) && !mkdir($destination, 0700, true) && !is_dir($destination)) {
-                throw new RuntimeException('更新ZIPの展開先を作成できません。');
-            }
-            foreach (array_keys($expectedByPath) as $path) {
-                $target = $destination . '/' . $path;
-                $directory = dirname($target);
-                if (!is_dir($directory) && !mkdir($directory, 0700, true) && !is_dir($directory)) {
-                    throw new RuntimeException("更新ファイルの展開先を作成できません: {$path}");
-                }
-                $input = $zip->getStream($path);
-                $output = fopen($target, 'xb');
-                if ($input === false || $output === false) {
-                    if (is_resource($input)) {
-                        fclose($input);
-                    }
-                    throw new RuntimeException("更新ファイルを展開できません: {$path}");
-                }
-                stream_copy_to_stream($input, $output);
-                fclose($input);
-                fflush($output);
-                fclose($output);
-                @chmod($target, 0600);
-                $actualHash = hash_file('sha256', $target);
-                if (!is_string($actualHash)
-                    || !hash_equals($expectedByPath[$path]['sha256'], $actualHash)) {
-                    throw new RuntimeException("更新ファイルのハッシュが一致しません: {$path}");
-                }
-            }
-        } finally {
-            $zip->close();
-        }
-    }
-
     /**
      * Inspect the whole central directory without writing files.
      *
@@ -116,6 +25,9 @@ final class ZipPackage
      */
     public function inspect(string $archive, array $expected): void
     {
+        if (!extension_loaded('zip')) {
+            throw new RuntimeException('更新展開に必要な ZIP 拡張がありません。');
+        }
         $zip = new ZipArchive();
         if ($zip->open($archive, ZipArchive::RDONLY) !== true) {
             throw new RuntimeException('更新ZIPを開けません。');
