@@ -28,7 +28,7 @@ class DemoMode
      */
     public function handle($request, Closure $next)
     {
-        if (!config('portal.enable_demo_mode')) {
+        if (!isDemoReadOnly()) {
             return $next($request);
         }
 

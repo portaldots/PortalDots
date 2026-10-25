@@ -30,6 +30,8 @@
     <exclude-pattern>/routes/</exclude-pattern>
     <exclude-pattern>/storage/</exclude-pattern>
     <exclude-pattern>/vendor/</exclude-pattern>
+    <exclude-pattern>/wasm-demo/.work/</exclude-pattern>
+    <exclude-pattern>/wasm-demo/dist/</exclude-pattern>
     <exclude-pattern>/server.php</exclude-pattern>
     <exclude-pattern>/app/Console/Kernel.php</exclude-pattern>
     <exclude-pattern>/tests/CreatesApplication.php</exclude-pattern>

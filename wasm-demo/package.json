@@ -1,0 +1,18 @@
+{
+  "name": "portaldots-wasm-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "http-server dist -p 8787 -c-1"
+  },
+  "dependencies": {
+    "@php-wasm/universal": "~3.1.0",
+    "@php-wasm/web": "~3.1.0",
+    "fflate": "^0.8.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "http-server": "^14.1.1"
+  }
+}

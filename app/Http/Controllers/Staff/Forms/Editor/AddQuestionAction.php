@@ -19,7 +19,7 @@ class AddQuestionAction extends Controller
 
     public function __invoke(Form $form, AddQuestionRequest $request)
     {
-        if (config('portal.enable_demo_mode')) {
+        if (isDemoReadOnly()) {
             return [
                 'id' => random_int(100, 9999),
                 'name' => '',
