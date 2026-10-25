@@ -36,10 +36,12 @@ async (page) => {
     const brave = await page.evaluate(async () => !!navigator.brave && await navigator.brave.isBrave());
     if (!brave) throw new Error('Verification requires Brave');
     await capture('01-login');
+    const intro = page.getByRole('button', { name: '自分で入力する', exact: true });
+    if (await intro.isVisible()) await intro.click();
     await f.locator('input[name=login_id]').fill('admin@example.test');
     await f.locator('input[name=password]').fill('PortalDemo123!');
     await f.getByRole('button', { name: 'ログイン', exact: true }).click();
-    await f.getByRole('link', { name: 'Music Cafe', exact: true }).click();
+    await f.getByRole('link', { name: '軽音楽部ライブ', exact: true }).click();
     await f.getByRole('heading', { name: '対応が必要なもの', exact: true }).waitFor();
     await capture('02-dashboard');
     results.push({ step: 'admin login and dashboard', passed: true });
@@ -48,10 +50,10 @@ async (page) => {
     await capture('03-staff');
     results.push({ step: 'staff dashboard', passed: true });
     for (const [link, expected, file] of [
-      ['申請管理', 'Music registration', '04-forms'],
-      ['企画情報管理', 'Music Cafe', '05-circles'],
+      ['申請管理', '電源使用申請', '04-forms'],
+      ['企画情報管理', '軽音楽部ライブ', '05-circles'],
       ['ユーザー情報管理', 'admin@example.test', '06-users'],
-      ['お知らせ管理', 'Art festival information', '07-pages'],
+      ['お知らせ管理', '搬入スケジュールのお知らせ', '07-pages'],
     ]) {
       await f.getByRole('link', { name: link, exact: true }).click();
       if (link === '企画情報管理') await f.getByRole('link', { name: 'すべての企画を表示', exact: true }).click();

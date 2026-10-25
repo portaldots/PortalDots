@@ -1,4 +1,5 @@
 <?php
+
 require getcwd() . '/vendor/autoload.php';
 $app = require getcwd() . '/bootstrap/app.php';
 $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
@@ -9,16 +10,20 @@ set_exception_handler(static function (Throwable $exception): never {
 if (App\Eloquents\User::count() !== 2 || App\Eloquents\Form::count() !== 2) {
     throw new RuntimeException('Seed counts failed');
 }
-if (App\Eloquents\Page::byKeywords('festival information')->count() !== 2
-    || App\Eloquents\Page::byKeywords('missing-keyword')->count() !== 0) {
+if (
+    App\Eloquents\Page::byKeywords('お知らせ')->count() !== 2
+    || App\Eloquents\Page::byKeywords('missing-keyword')->count() !== 0
+) {
     throw new RuntimeException('SQLite keyword search failed');
 }
 $grid = $app->make(App\GridMakers\FormsGridMaker::class);
-foreach ([
-    ['name', '!=', 'Music registration', 1],
+foreach (
+    [
+    ['name', '!=', '電源使用申請', 1],
     ['created_at', '<', '2000-01-01 00:00', 0],
     ['created_at', '>=', '2000-01-01 00:00', 2],
-] as [$key, $operator, $value, $expected]) {
+    ] as [$key, $operator, $value, $expected]
+) {
     $filters = App\GridMakers\Filter\FilterQueries::fromArray([
         ['key_name' => $key, 'operator' => $operator, 'value' => $value],
     ]);
@@ -40,7 +45,9 @@ try {
     }
     $query = App\GridMakers\Helpers\AnswerDetailsHelper::makeQueryWithAnswerDetails(
         App\Eloquents\Answer::query()->select('answers.id', 'pivot_answer_details.*'),
-        $form->questions()->get(), 'question_', "\n"
+        $form->questions()->get(),
+        'question_',
+        "\n"
     );
     $choices = explode("\n", $query->firstOrFail()->{'question_' . $checkbox->id});
     sort($choices);
@@ -55,4 +62,4 @@ $response = $kernel->handle(Illuminate\Http\Request::create('/login'));
 if ($response->getStatusCode() !== 200 || strpos($response->getContent(), 'login_id') === false) {
     throw new RuntimeException('SQLite login render failed: ' . $response->getContent());
 }
-echo "Laravel boot + SQLite seed counts, keyword search, grid inequality/datetime filters, checkbox aggregation, login render: OK\n";
+echo "SQLite smoke checks passed: seed counts, keyword search, grid filters, checkbox aggregation, login render\n";

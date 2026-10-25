@@ -54,7 +54,7 @@ async function forward(event) {
     url.searchParams.delete('__portalOwner');
     const clientId = event.clientId || event.replacesClientId;
     const owner = await findOwner(clientId, token);
-    if (!owner) return new Response('This demo session has ended. Open the landing page to start a new instance.', { status: 503 });
+    if (!owner) return new Response('このデモは終了しています。デモのトップページを開き直してください。', { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
     const clientIds = [clientId, event.resultingClientId].filter(Boolean);
     for (const id of clientIds) clientsToOwners.set(id, owner.id);
     const headers = Object.fromEntries(request.headers);
