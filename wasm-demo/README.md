@@ -41,7 +41,7 @@ Open the demo through the landing page. An independent tab opened directly at an
 
 ## Runtime configuration
 
-`APP_NOT_INSTALLED=false`; a random APP_KEY is generated at build time. File sessions/cache live in the virtual filesystem, mail uses the log driver, and the queue is synchronous. Demo mode remains enabled for staff access. The new `PORTAL_DEMO_ALLOW_WRITES=true` setting enables real form creation/question updates; its default is false and existing demo behavior is retained when false.
+`APP_NOT_INSTALLED=false`; a random APP_KEY is generated at build time. File sessions/cache live in the virtual filesystem, mail uses the log driver, and the queue is synchronous. Demo mode remains enabled for staff access. The new `PORTAL_DEMO_ALLOW_WRITES=true` setting enables real form creation/question updates; its default is false and existing demo behavior is retained when false. Demo mode grants every signed-in user every permission, so never set it to true on a shared server such as the current PHP-hosted demo: any visitor could change everyone's data. It is only safe here because each visitor's data stays in their own browser.
 
 No fonts, scripts, analytics, or APIs are loaded from a CDN. The staged MarkdownEditor disables optional CDN extensions (highlight.js, KaTeX, Mermaid, ECharts, Prettier and image cropping/upload); basic Markdown editing remains available. These changes are confined to the staged copy under `.work/app`. The release checker is only used by the About action; the checkout's release-version placeholder makes it return before its HTTP call. The accepted flow does not reach that action. SMTP and external queues are not configured. Browser-origin restrictions are also enforced with CSP.
 

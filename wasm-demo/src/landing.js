@@ -30,17 +30,34 @@ function closeIntro() {
   try { localStorage.setItem(INTRO_SEEN_KEY, '1'); } catch { /* Private browsing may block storage. */ }
 }
 
+function loadFrame(navigate) {
+  return new Promise(resolve => {
+    frame.addEventListener('load', resolve, { once: true });
+    navigate();
+  });
+}
+
+const findLoginForm = () => frame.contentDocument?.querySelector('input[name="login_id"]')?.form;
+
 async function logIn(loginId) {
   closeIntro();
   await loginReady;
-  let form = frame.contentDocument?.querySelector('input[name="login_id"]')?.form;
+  let form = findLoginForm();
   if (!form) {
-    await new Promise(resolve => {
-      frame.addEventListener('load', resolve, { once: true });
-      frame.src = `${appUrl}/login`;
-    });
-    form = frame.contentDocument?.querySelector('input[name="login_id"]')?.form;
-    // Already signed in: Laravel redirects /login to the dashboard.
+    await loadFrame(() => { frame.src = `${appUrl}/login`; });
+    form = findLoginForm();
+  }
+  if (!form) {
+    // Laravel redirects /login to the dashboard while signed in, so sign out to switch accounts.
+    const doc = frame.contentDocument;
+    const csrf = doc?.querySelector('meta[name="csrf-token"]')?.content;
+    if (!csrf) return;
+    const logout = Object.assign(doc.createElement('form'), { method: 'post', action: `${appUrl}/logout` });
+    logout.append(Object.assign(doc.createElement('input'), { type: 'hidden', name: '_token', value: csrf }));
+    doc.body.append(logout);
+    await loadFrame(() => logout.submit());
+    await loadFrame(() => { frame.src = `${appUrl}/login`; });
+    form = findLoginForm();
     if (!form) return;
   }
   form.querySelector('input[name="login_id"]').value = loginId;

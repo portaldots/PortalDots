@@ -166,9 +166,10 @@ class Page extends Model
         }
         if ($query->getConnection()->getDriverName() !== 'mysql') {
             foreach (preg_split('/\s+/u', trim($keywords), -1, PREG_SPLIT_NO_EMPTY) as $keyword) {
-                $query->where(function ($query) use ($keyword) {
-                    $query->where('title', 'like', '%' . $keyword . '%')
-                        ->orWhere('body', 'like', '%' . $keyword . '%');
+                $pattern = '%' . addcslashes($keyword, '%_\\') . '%';
+                $query->where(function ($query) use ($pattern) {
+                    $query->whereRaw("title LIKE ? ESCAPE '\\'", [$pattern])
+                        ->orWhereRaw("body LIKE ? ESCAPE '\\'", [$pattern]);
                 });
             }
             return $query;

@@ -37,7 +37,11 @@ async function findOwner(clientId, token) {
     };
     client.postMessage({ type: 'identify-instance', clientId, token }, [channel.port2]);
   })));
-  return matches.find(Boolean);
+  const owner = matches.find(Boolean);
+  // Some browsers leave clientId empty on iframe navigations. With a single
+  // landing page open, it is the only instance that can own the request.
+  if (!owner && !clientId && !token && candidates.length === 1) return candidates[0];
+  return owner;
 }
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
@@ -85,6 +89,8 @@ async function forward(event) {
     });
   } catch (error) {
     console.error(error);
-    return new Response(String(error), { status: 502, headers: { 'Content-Type': 'text/plain' } });
+    return new Response('エラーが発生しました。デモのトップページを開き直してください。', {
+      status: 502, headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    });
   }
 }

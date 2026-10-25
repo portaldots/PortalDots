@@ -46,9 +46,6 @@ for (const entry of ['app', 'bootstrap', 'config', 'database', 'resources', 'rou
   'lang', 'artisan', 'composer.json', 'composer.lock', 'package.json', 'yarn.lock', 'vite.config.mjs']) {
   await cp(join(root, entry), join(app, entry), { recursive: true });
 }
-for (const folder of ['storage/framework/cache/data', 'storage/framework/sessions', 'storage/framework/views', 'storage/logs', 'bootstrap/cache']) {
-  await mkdir(join(app, folder), { recursive: true });
-}
 // Never package a checkout's cached configuration, sessions, views, logs, or uploads.
 for (const folder of ['bootstrap/cache', 'storage']) {
   await rm(join(app, folder), { recursive: true, force: true });

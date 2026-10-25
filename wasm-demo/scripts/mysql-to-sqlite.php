@@ -24,8 +24,9 @@ foreach ($schema->getTables() as $table) {
     $name = $table['name'];
     $indexes = $schema->getIndexes($name);
     $primary = array_values(array_filter($indexes, fn ($index) => $index['primary']));
+    $tableColumns = $schema->getColumns($name);
     $columns = [];
-    foreach ($schema->getColumns($name) as $column) {
+    foreach ($tableColumns as $column) {
         $type = strtolower($column['type_name']);
         $affinity = match (true) {
             str_contains($type, 'int'), in_array($type, ['bool', 'boolean', 'bit']) => 'INTEGER',
@@ -48,7 +49,7 @@ foreach ($schema->getTables() as $table) {
         }
         $columns[] = $sql;
     }
-    $autoIncrement = array_filter($schema->getColumns($name), fn ($column) => $column['auto_increment']);
+    $autoIncrement = array_filter($tableColumns, fn ($column) => $column['auto_increment']);
     if ($primary && !$autoIncrement) {
         $columns[] = 'PRIMARY KEY (' . implode(', ', array_map($quote, $primary[0]['columns'])) . ')';
     }
@@ -72,12 +73,13 @@ foreach ($schema->getTables() as $table) {
     }
     $rows = $mysql->table($name)->get();
     $sqlite->beginTransaction();
+    $columnNames = array_column($tableColumns, 'name');
+    $insert = $sqlite->prepare('INSERT INTO ' . $quote($name)
+        . ' (' . implode(', ', array_map($quote, $columnNames)) . ')'
+        . ' VALUES (' . implode(', ', array_fill(0, count($columnNames), '?')) . ')');
     foreach ($rows as $record) {
         $row = (array)$record;
-        $columns = implode(', ', array_map($quote, array_keys($row)));
-        $placeholders = implode(', ', array_fill(0, count($row), '?'));
-        $insert = $sqlite->prepare('INSERT INTO ' . $quote($name) . " ({$columns}) VALUES ({$placeholders})");
-        $insert->execute(array_values($row));
+        $insert->execute(array_map(fn ($column) => $row[$column], $columnNames));
     }
     $sqlite->commit();
     $counts[$name] = count($rows);
