@@ -164,6 +164,15 @@ class Page extends Model
         if (empty($keywords)) {
             return $query;
         }
+        if ($query->getConnection()->getDriverName() !== 'mysql') {
+            foreach (preg_split('/\s+/u', trim($keywords), -1, PREG_SPLIT_NO_EMPTY) as $keyword) {
+                $query->where(function ($query) use ($keyword) {
+                    $query->where('title', 'like', '%' . $keyword . '%')
+                        ->orWhere('body', 'like', '%' . $keyword . '%');
+                });
+            }
+            return $query;
+        }
         return $query->whereRaw("match(title,body) against (? IN BOOLEAN MODE)", [$keywords]);
     }
 }

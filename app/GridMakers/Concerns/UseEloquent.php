@@ -215,6 +215,9 @@ trait UseEloquent
                     return;
                 }
                 $query_key_name_for_sql = "date_format(`{$filter_query->getFullKeyName()}`, '%Y-%m-%d %H:%i')";
+                if ($db_query->getConnection()->getDriverName() === 'sqlite') {
+                    $query_key_name_for_sql = "strftime('%Y-%m-%d %H:%M', `{$filter_query->getFullKeyName()}`)";
+                }
                 $query_value_for_sql = (new Carbon($filter_query->getValue()))->format('Y-m-d H:i');
                 break;
             case FilterableKey::TYPE_BOOL:
@@ -250,7 +253,11 @@ trait UseEloquent
             $is = $query_value_for_sql ? 'NULL' : 'NOT NULL';
             $db_query->whereRaw("{$query_key_name_for_sql} IS {$is}", null, $filter_mode);
         } elseif ($filter_query->getOperator() === '!=') {
-            $db_query->whereRaw("NOT ({$query_key_name_for_sql} <=> ?)", [$query_value_for_sql], $filter_mode);
+            if ($db_query->getConnection()->getDriverName() === 'sqlite') {
+                $db_query->whereRaw("{$query_key_name_for_sql} IS NOT ?", [$query_value_for_sql], $filter_mode);
+            } else {
+                $db_query->whereRaw("NOT ({$query_key_name_for_sql} <=> ?)", [$query_value_for_sql], $filter_mode);
+            }
         } elseif ($type === FilterableKey::TYPE_DATETIME) {
             $db_query->whereRaw(
                 "{$query_key_name_for_sql} {$filter_query->getOperator()} ?",

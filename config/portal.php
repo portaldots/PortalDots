@@ -24,6 +24,7 @@ return [
     'primary_color_hsl' => [env('PORTAL_PRIMARY_COLOR_H', null), env('PORTAL_PRIMARY_COLOR_S', null), env('PORTAL_PRIMARY_COLOR_L', null)],
     // デモモード
     'enable_demo_mode' => env('PORTAL_ENABLE_DEMO_MODE', false),
+    'demo_allow_writes' => env('PORTAL_DEMO_ALLOW_WRITES', false),
     'navigation' => [
         'staff_home_route' => 'staff.index',
         'show_mode_switch' => true,

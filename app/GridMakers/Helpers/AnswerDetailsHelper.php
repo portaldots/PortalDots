@@ -30,7 +30,7 @@ class AnswerDetailsHelper
         string $checkboxGroupConcatSeparator
     ): Builder {
         $questionColumns = $questions
-            ->map(function (Question $question) use ($questionsKeyPrefix, $checkboxGroupConcatSeparator) {
+            ->map(function (Question $question) use ($query, $questionsKeyPrefix, $checkboxGroupConcatSeparator) {
                 $idInt = intval($question->id);
                 if ($idInt === 0 || !is_int($idInt)) {
                     return null;
@@ -52,6 +52,11 @@ class AnswerDetailsHelper
                     case 'table':
                         return "MAX(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END) AS '{$columnAlias}'";
                     case 'checkbox':
+                        if ($query->getConnection()->getDriverName() === 'sqlite') {
+                            $separator = str_replace("'", "''", $checkboxGroupConcatSeparator);
+                            // phpcs:ignore
+                            return "GROUP_CONCAT(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END, '{$separator}') AS '{$columnAlias}'";
+                        }
                         $separator = $checkboxGroupConcatSeparator;
                         // phpcs:ignore
                         return "GROUP_CONCAT(CASE WHEN question_id = {$idInt} THEN answer ELSE NULL END SEPARATOR '{$separator}') AS '{$columnAlias}'";

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PortalDots browser demo</title>
+  <link rel="icon" href="data:,">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 15px/1.5 system-ui, sans-serif; color: #192d3b; background: #edf3f6; }
+    header { padding: 16px 24px; background: #fff; border-bottom: 1px solid #b7cbd7; }
+    h1 { margin: 0 0 4px; font-size: 21px; }
+    p { margin: 4px 0; }
+    code { font-size: 14px; }
+    #status { color: #345a70; font-weight: 600; }
+    details { margin-top: 8px; font-size: 12px; overflow-wrap: anywhere; }
+    iframe { border: 0; width: 100%; height: calc(100vh - 200px); min-height: 650px; background: #fff; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PortalDots · browser demo</h1>
+    <p>Admin login: <code>admin@example.test</code> · Password: <code>PortalDemo123!</code></p>
+    <p>Participant: <code>user@example.test</code> · Same password. Student IDs <code>DEMO1</code> / <code>DEMO2</code> also work.</p>
+    <p>Your changes stay in this tab while this page is open. Restarting this page starts a fresh demo.</p>
+    <p id="status" role="status">Starting…</p>
+    <details><summary>Runtime details</summary><p id="runtime"></p></details>
+  </header>
+  <iframe title="PortalDots application" hidden></iframe>
+  <script type="module" src="./landing.js"></script>
+</body>
+</html>
