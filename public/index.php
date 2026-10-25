@@ -5,6 +5,17 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+require __DIR__ . '/../updater/bootstrap.php';
+if (!\PortalDots\Updater\UpdateGate::enter(dirname(__DIR__))) {
+    http_response_code(503);
+    header('Content-Type: text/html; charset=UTF-8');
+    header('Cache-Control: no-store');
+    echo '<!doctype html><html lang="ja"><meta charset="utf-8"><title>更新中</title>'
+        . '<body><h1>PortalDots を更新しています</h1><p>管理者は更新・復旧画面で進行状況を確認できます。</p>'
+        . '</body></html>';
+    exit;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance

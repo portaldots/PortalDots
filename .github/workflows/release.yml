@@ -1,67 +1,199 @@
+name: Build, verify, sign, and upload release assets
+
 on:
   push:
-    # Sequence of patterns matched against refs/tags
     tags:
-    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-
-name: Upload Release Asset
+      - 'v*'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
-    name: Upload Release Asset
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
           php-version: '8.3'
+          extensions: sodium, zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: '22'
-      - name: Install Yarn
-        run: npm install -g yarn@1.22.22
-      # Compile and Release
-      - name: Prepare compile
-        # vendor ディレクトリの除外には、最初にスラッシュをつけている。これにより resources フォルダ内にある vendor ディレクトリが除外されてしまうのを防いでいる
-        run: |
-          rsync -av --update --delete --stats ./ ./dist/ --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='.github/' --exclude='/vendor/' --exclude='node_modules/' --exclude='.circleci/' --exclude='tests/' --exclude='phpunit.xml' --exclude='phpcs.xml' --exclude='.editorconfig' --exclude='.env.testing' --exclude='eslint.config.js' --exclude='.gitattributes' --exclude='.gitignore' --exclude='.prettierrc' >& /dev/null
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-        working-directory: dist
-      - name: Cache PHP dependencies
-        uses: actions/cache@v6
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-      - name: Install PHP dependencies
-        run: composer install --optimize-autoloader --no-dev
-        working-directory: dist
-      - name: Install JS dependencies
-        run: yarn install --frozen-lockfile
-        working-directory: dist
-      - name: Compile assets
-        run: yarn run build
-        working-directory: dist
-      - name: Set Version in Release Info
+      - name: Determine release version
+        id: version
         env:
-          RELEASE_INFO_PATH: app/ReleaseInfo.php
-          GITHUB_REF: ${{ github.ref }}
-        run: VERSION=`echo "$GITHUB_REF" | sed -e 's/refs\/tags\/v//g'`; sed -i -e "s/###VERSION_PLACEHOLDER###/$VERSION/g" "$RELEASE_INFO_PATH";
-        working-directory: dist
-      - name: Build project
-        run: zip -9 -r ../PortalDots.zip . -x node_modules/\* composer.json package.json yarn.lock vite.config.mjs patches/\*
-        working-directory: dist
-      - name: Create draft release and upload archive
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo "Release tag must be vN.N.N" >&2
+            exit 64
+          fi
+          echo "version=${RELEASE_TAG#v}" >> "$GITHUB_OUTPUT"
+      - name: Require configured updater public key
+        env:
+          UPDATER_PUBLIC_KEY: ${{ vars.UPDATER_PUBLIC_KEY }}
+          UPDATER_RENEWAL_PUBLIC_KEY: ${{ vars.UPDATER_RENEWAL_PUBLIC_KEY }}
+        run: test -n "$UPDATER_PUBLIC_KEY" && test -n "$UPDATER_RENEWAL_PUBLIC_KEY"
+      - name: Discover every trusted source release
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.ref_name }}
-        run: gh release create "$RELEASE_TAG" PortalDots.zip --draft --title "$RELEASE_TAG" --notes ""
+          ROOT_PUBLIC_KEY: ${{ vars.UPDATER_PUBLIC_KEY }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/releases?per_page=100" > "$RUNNER_TEMP/release-pages.json"
+          php updater/tools/discover-release-candidates.php \
+            "$RUNNER_TEMP/release-pages.json" "$VERSION" "$ROOT_PUBLIC_KEY" \
+            "$RUNNER_TEMP/release-candidates.json"
+      - name: Prepare distribution tree
+        run: |
+          rsync -a --delete ./ ./dist/ \
+            --exclude='dist/' --exclude='docker_dev/' --exclude='.git/' --exclude='.github/' \
+            --exclude='/vendor/' --exclude='node_modules/' --exclude='.circleci/' --exclude='tests/' \
+            --exclude='phpunit.xml' --exclude='phpcs.xml' --exclude='.editorconfig' --exclude='.env.testing' \
+            --exclude='eslint.config.js' --exclude='.gitattributes' --exclude='.gitignore' --exclude='.prettierrc'
+      - name: Install production dependencies
+        working-directory: dist
+        run: composer install --optimize-autoloader --no-dev --no-interaction
+      - name: Build frontend
+        working-directory: dist
+        run: |
+          corepack enable
+          yarn install --frozen-lockfile
+          yarn build
+          rm -rf node_modules
+      - name: Set release version
+        working-directory: dist
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: sed -i -e "s/###VERSION_PLACEHOLDER###/$VERSION/g" app/ReleaseInfo.php
+      - name: Build immutable release artifacts
+        env:
+          UPDATER_PUBLIC_KEY: ${{ vars.UPDATER_PUBLIC_KEY }}
+          UPDATER_RENEWAL_PUBLIC_KEY: ${{ vars.UPDATER_RENEWAL_PUBLIC_KEY }}
+          VERSION: ${{ steps.version.outputs.version }}
+          SEQUENCE: ${{ github.run_number }}
+        run: >-
+          php updater/tools/build-release.php dist release-assets "$VERSION" "$SEQUENCE"
+          "$UPDATER_PUBLIC_KEY" "$UPDATER_RENEWAL_PUBLIC_KEY" "$RUNNER_TEMP/release-candidates.json"
+      - name: Preserve the exact source-release decision
+        run: cp "$RUNNER_TEMP/release-candidates.json" release-assets/release-candidates.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: unsigned-release
+          path: release-assets/
+          if-no-files-found: error
+
+  verify:
+    needs: build
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_DATABASE: updater_test
+          MYSQL_ROOT_PASSWORD: updater-test
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -pupdater-test"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.ref }}
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql, sodium, zip
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: unsigned-release
+          path: release-assets
+      - name: Verify exact update archive
+        run: |
+          php updater/tools/verify-release.php release-assets/PortalDots-update-signed.json
+          php tests/Updater/artifact-cycle.php release-assets/PortalDots-update-signed.json
+      - name: Run standalone updater tests
+        env:
+          UPDATER_MYSQL_DSN: mysql:host=127.0.0.1;port=3306;dbname=updater_test
+          UPDATER_MYSQL_USER: root
+          UPDATER_MYSQL_PASSWORD: updater-test
+        run: |
+          php tests/Updater/run.php
+          php tests/Updater/http-private-storage.php
+      - name: Update and interrupted-restore cycles from every supported release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          UPDATER_MYSQL_USER: root
+          UPDATER_MYSQL_PASSWORD: updater-test
+        run: |
+          mkdir -p old-releases
+          # PHP source must keep its dollar variables literal.
+          # shellcheck disable=SC2016
+          php -r '$s=json_decode(file_get_contents("release-assets/release-candidates.json"),true,128,JSON_THROW_ON_ERROR); foreach($s as $v){echo $v["version"],"\n";}' > old-releases/versions.txt
+          while IFS= read -r version; do
+            mkdir -p "old-releases/$version"
+            gh release download "v$version" --repo portaldots/PortalDots --pattern PortalDots.zip --dir "old-releases/$version"
+            php updater/tools/verify-release-candidate.php \
+              release-assets/release-candidates.json "$version" "old-releases/$version/PortalDots.zip"
+            php tests/Updater/engine-release-cycle.php \
+              release-assets/PortalDots-update-signed.json \
+              "release-assets/PortalDots-update-${{ github.run_number }}.zip" \
+              "old-releases/$version/PortalDots.zip" \
+              127.0.0.1 3306 updater_test
+          done < old-releases/versions.txt
+
+  sign-and-publish:
+    needs: [build, verify]
+    runs-on: ubuntu-latest
+    environment: release-signing
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.ref }}
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.3'
+          extensions: sodium
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: unsigned-release
+          path: release-assets
+      - name: Sign the verified manifest
+        env:
+          UPDATER_SIGNING_KEY: ${{ secrets.UPDATER_SIGNING_KEY }}
+          UPDATER_PUBLIC_KEY: ${{ vars.UPDATER_PUBLIC_KEY }}
+        run: >-
+          php updater/tools/sign-manifest.php release-assets/PortalDots-update-signed.json
+          release-assets/PortalDots-update-root.json
+      - name: Attach the initial freshness lease
+        env:
+          UPDATER_PUBLIC_KEY: ${{ vars.UPDATER_PUBLIC_KEY }}
+          UPDATER_RENEWAL_SIGNING_KEY: ${{ secrets.UPDATER_RENEWAL_SIGNING_KEY }}
+        run: |
+          lease_sequence=$(date -u +%s)
+          php updater/tools/sign-lease.php \
+            release-assets/PortalDots-update-root.json \
+            release-assets/PortalDots-update-manifest.json \
+            "$lease_sequence" \
+            release-assets/PortalDots-update-*.zip \
+            release-assets/PortalDots.zip
+      - name: Create draft release with full and updater-specific assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create "${{ github.ref_name }}"
+          release-assets/PortalDots.zip
+          release-assets/PortalDots-update-*.zip
+          release-assets/PortalDots-update-manifest.json
+          --draft --title "${{ github.ref_name }}" --notes ""

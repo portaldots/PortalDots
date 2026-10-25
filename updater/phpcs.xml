@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="PortalDots standalone updater">
+    <description>Portable checks for the dependency-free recovery runtime and executable fixtures.</description>
+    <arg name="extensions" value="php" />
+    <arg name="colors" />
+    <arg value="ps" />
+
+    <rule ref="Generic.Files.ByteOrderMark" />
+    <rule ref="Generic.Files.LineEndings" />
+    <rule ref="Generic.PHP.DisallowAlternativePHPTags" />
+    <rule ref="Generic.PHP.LowerCaseConstant" />
+    <rule ref="Generic.PHP.LowerCaseKeyword" />
+    <rule ref="Generic.PHP.LowerCaseType" />
+    <rule ref="PSR1.Classes.ClassDeclaration" />
+    <rule ref="PSR1.Methods.CamelCapsMethodName" />
+    <rule ref="PSR2.Classes.PropertyDeclaration" />
+    <rule ref="PSR2.Files.ClosingTag" />
+    <rule ref="PSR12.Files.DeclareStatement" />
+    <rule ref="PSR12.Files.ImportStatement" />
+    <rule ref="PSR12.Files.OpenTag" />
+    <rule ref="PSR12.Namespaces.CompoundNamespaceDepth" />
+</ruleset>

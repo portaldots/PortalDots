@@ -33,6 +33,9 @@
     <exclude-pattern>/server.php</exclude-pattern>
     <exclude-pattern>/app/Console/Kernel.php</exclude-pattern>
     <exclude-pattern>/tests/CreatesApplication.php</exclude-pattern>
+    <!-- The dependency-free runtime is checked by updater/phpcs.xml. -->
+    <exclude-pattern type="relative">^updater/</exclude-pattern>
+    <exclude-pattern type="relative">^tests/Updater/</exclude-pattern>
 
     <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
         <exclude-pattern>/tests/</exclude-pattern>

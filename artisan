@@ -3,6 +3,12 @@
 
 define('LARAVEL_START', microtime(true));
 
+require __DIR__ . '/updater/bootstrap.php';
+if (!\PortalDots\Updater\UpdateGate::enter(__DIR__)) {
+    fwrite(STDERR, "PortalDots is being updated. New CLI, queue, and scheduler processes are blocked.\n");
+    exit(75);
+}
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader
