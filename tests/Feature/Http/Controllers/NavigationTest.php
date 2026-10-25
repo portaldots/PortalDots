@@ -215,9 +215,9 @@ class NavigationTest extends TestCase
         ], false);
 
         // ドロワーの管理者セクション2項目・ログイン中ユーザー情報1箇所・
-        // スタッフモードホームの管理者向けショートカット2項目、計5箇所に「管理者」バッジが付く
+        // スタッフモードホームの管理者向けショートカット3項目、計6箇所に「管理者」バッジが付く
         $this->assertSame(
-            5,
+            6,
             substr_count($response->getContent(), '<app-badge danger>管理者</app-badge>')
         );
     }
