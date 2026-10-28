@@ -8,13 +8,14 @@ use App\Contracts\ThreadReplyAddress;
 use App\Events\Threads\StaffMessagePosted;
 use App\Mail\Threads\StaffMessageMailable;
 use App\Services\Notifications\NotificationDeliveryService;
+use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
 use Illuminate\Support\Facades\Mail;
 
 /**
  * スタッフからの会話への返信を、企画のメンバー（または企画に所属していない
  * 送信者本人）へ通知メールで送信する
  */
-class SendStaffMessageMailListener
+class SendStaffMessageMailListener implements ShouldHandleEventsAfterCommit
 {
     private NotificationDeliveryService $notificationDeliveryService;
     private ThreadReplyAddress $threadReplyAddress;
