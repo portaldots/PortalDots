@@ -57,7 +57,8 @@
         "vue": "^3.5.44",
         "vue-global-events": "^3.0.1",
         "vuedraggable": "^4.1.0",
-        "vuex": "^4.1.0"
+        "vuex": "^4.1.0",
+        "xss": "^1.0.15"
     },
     "resolutions": {
         "vue": "^3.5.44"
