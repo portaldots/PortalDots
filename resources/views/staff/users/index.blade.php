@@ -36,7 +36,7 @@
         </template>
         <template v-slot:activities="{ row, openEditorByUrl }">
             <icon-button button
-                v-on:click="() => openEditorByUrl(`{{ route('staff.users.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id']))"
+                v-on:click="() => openEditorByUrl(`{{ route('staff.users.edit', ['user' => '__USER__']) }}`.replace('__USER__', row['id']))"
                 title="編集">
                 <i class="fas fa-pencil-alt fa-fw"></i>
             </icon-button>
@@ -54,7 +54,7 @@
                 <span v-if="row[keyName]" class="text-success">確認済み</span>
                 <span v-else class="text-danger">
                     <form-with-confirm
-                        v-bind:action="`{{ route('staff.users.verified', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])"
+                        v-bind:action="`{{ route('staff.users.verified', ['user' => '__USER__']) }}`.replace('__USER__', row['id'])"
                         method="post"
                         confirm-message="本人確認は本来、「{{ config('app.name') }}」からユーザー自身が持つ{{ config('portal.univemail_name') }}に届く本人確認メールによって行われます。
 しかし、ユーザーが{{ config('portal.univemail_name') }}を利用できない場合、代替手段として「本人確認済としてマーク」できます。

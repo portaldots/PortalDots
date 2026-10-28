@@ -53,6 +53,19 @@ class IndexActionTest extends TestCase
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
+    public function 一覧の会話を開くリンクのプレースホルダーがURLエンコードされずに残る()
+    {
+        // 一覧の各行のリンクは、ルートが生成した URL の中の __THREAD__ を JavaScript で
+        // 行の ID に置き換えて作る。プレースホルダーがエンコードされると置き換えられず 404 になる
+        $response = $this->actingAs($this->staff)
+            ->withSession(['staff_authorized' => true])
+            ->get(route('staff.threads.index'));
+
+        $response->assertOk();
+        $response->assertSee("/staff/threads/__THREAD__`.replace('__THREAD__', row['id'])", false);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
     public function 担当者名で絞り込める()
     {
         $response = $this->actingAs($this->staff)

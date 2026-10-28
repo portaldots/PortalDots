@@ -96,7 +96,7 @@
         </template>
         <template v-slot:activities="{ row, openEditorByUrl }">
             <form-with-confirm
-                v-bind:action="`{{ route('staff.circles.destroy', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])"
+                v-bind:action="`{{ route('staff.circles.destroy', ['circle' => '__CIRCLE__']) }}`.replace('__CIRCLE__', row['id'])"
                 method="post"
                 v-bind:confirm-message="`企画「${row['name']}」を削除しますか？
 
@@ -104,12 +104,12 @@
                 @method('delete')
                 @csrf
                 <icon-button button
-                    v-on:click="() => openEditorByUrl(`{{ route('staff.circles.edit', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id']))"
+                    v-on:click="() => openEditorByUrl(`{{ route('staff.circles.edit', ['circle' => '__CIRCLE__']) }}`.replace('__CIRCLE__', row['id']))"
                     title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>
                 <icon-button
-                    v-bind:href="`{{ route('staff.circles.email', ['circle' => '%%CIRCLE%%']) }}`.replace('%%CIRCLE%%', row['id'])"
+                    v-bind:href="`{{ route('staff.circles.email', ['circle' => '__CIRCLE__']) }}`.replace('__CIRCLE__', row['id'])"
                     title="メール送信">
                     <i class="far fa-envelope fa-fw"></i>
                 </icon-button>

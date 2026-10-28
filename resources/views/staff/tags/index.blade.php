@@ -23,7 +23,7 @@
         </template>
         <template v-slot:activities="{ row, openEditorByUrl }">
             <form-with-confirm
-                v-bind:action="`{{ route('staff.tags.destroy', ['tag' => '%%TAG%%']) }}`.replace('%%TAG%%', row['id'])"
+                v-bind:action="`{{ route('staff.tags.destroy', ['tag' => '__TAG__']) }}`.replace('__TAG__', row['id'])"
                 method="post"
                 v-bind:confirm-message="`タグ「${row['name']}」を削除しますか？
 
@@ -33,7 +33,7 @@
                 @method('delete')
                 @csrf
                 <icon-button button
-                    v-on:click="() => openEditorByUrl(`{{ route('staff.tags.edit', ['tag' => '%%TAG%%']) }}`.replace('%%TAG%%', row['id']))"
+                    v-on:click="() => openEditorByUrl(`{{ route('staff.tags.edit', ['tag' => '__TAG__']) }}`.replace('__TAG__', row['id']))"
                     title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>

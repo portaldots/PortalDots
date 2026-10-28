@@ -34,7 +34,7 @@
         </template>
         <template v-slot:activities="{ row, openEditorByUrl }">
             <form-with-confirm
-                v-bind:action="`{{ route('staff.places.destroy', ['place' => '%%PLACE%%']) }}`.replace('%%PLACE%%', row['id'])"
+                v-bind:action="`{{ route('staff.places.destroy', ['place' => '__PLACE__']) }}`.replace('__PLACE__', row['id'])"
                 method="post"
                 v-bind:confirm-message="`場所「${row['name']}」を削除しますか？
 
@@ -42,7 +42,7 @@
                 @method('delete')
                 @csrf
                 <icon-button button
-                    v-on:click="() => openEditorByUrl(`{{ route('staff.places.edit', ['place' => '%%PLACE%%']) }}`.replace('%%PLACE%%', row['id']))"
+                    v-on:click="() => openEditorByUrl(`{{ route('staff.places.edit', ['place' => '__PLACE__']) }}`.replace('__PLACE__', row['id']))"
                     title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>

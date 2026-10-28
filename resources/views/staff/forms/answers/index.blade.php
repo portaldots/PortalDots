@@ -95,12 +95,12 @@
         </template>
         <template v-slot:activities="{ row }">
             <icon-button
-                v-bind:href="`{{ route('staff.forms.answers.edit', ['form' => $form, 'answer' => '%%ANSWER%%']) }}`.replace('%%ANSWER%%', row['id'])"
+                v-bind:href="`{{ route('staff.forms.answers.edit', ['form' => $form, 'answer' => '__ANSWER__']) }}`.replace('__ANSWER__', row['id'])"
                 title="編集">
                 <i class="fas fa-pencil-alt fa-fw"></i>
             </icon-button>
             <form-with-confirm
-                v-bind:action="`{{ route('staff.forms.answers.destroy', ['form' => $form, 'answer' => '%%ANSWER%%']) }}`.replace('%%ANSWER%%', row['id'])"
+                v-bind:action="`{{ route('staff.forms.answers.destroy', ['form' => $form, 'answer' => '__ANSWER__']) }}`.replace('__ANSWER__', row['id'])"
                 method="post"
                 v-bind:confirm-message="`この回答を削除しますか？
 
