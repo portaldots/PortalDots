@@ -32,12 +32,12 @@
         </template>
         <template v-slot:activities="{ row, openEditorByUrl }">
             <form-with-confirm
-                v-bind:action="`{{ route('staff.documents.destroy', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])"
+                v-bind:action="`{{ route('staff.documents.destroy', ['document' => '__DOCUMENT__']) }}`.replace('__DOCUMENT__', row['id'])"
                 method="post" v-bind:confirm-message="`配布資料「${row['name']}」を削除しますか？`">
                 @method('delete')
                 @csrf
                 <icon-button button
-                    v-on:click="() => openEditorByUrl(`{{ route('staff.documents.edit', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id']))"
+                    v-on:click="() => openEditorByUrl(`{{ route('staff.documents.edit', ['document' => '__DOCUMENT__']) }}`.replace('__DOCUMENT__', row['id']))"
                     title="編集">
                     <i class="fas fa-pencil-alt fa-fw"></i>
                 </icon-button>
@@ -49,7 +49,7 @@
         <template v-slot:td="{ row, keyName }">
             <template v-if="keyName === 'path'">
                 {{-- ファイル --}}
-                <a v-bind:href="`{{ route('staff.documents.show', ['document' => '%%DOCUMENT%%']) }}`.replace('%%DOCUMENT%%', row['id'])"
+                <a v-bind:href="`{{ route('staff.documents.show', ['document' => '__DOCUMENT__']) }}`.replace('__DOCUMENT__', row['id'])"
                     target="_blank" rel="noopener noreferrer">表示</a>
             </template>
             <template v-else-if="keyName === 'audience'">

@@ -142,6 +142,14 @@ class ThreadsService
 
             $existing = $thread->entries()->where('client_token', $clientToken)->first();
             if (!empty($existing)) {
+                // 前回の通知メールが途中で失敗していた場合に、未送信の宛先へ送り直す。
+                // 送信済みの宛先は NotificationDeliveryService が飛ばす
+                if (
+                    $existing->kind === ThreadEntry::KIND_MESSAGE
+                    && $existing->author_side === ThreadEntry::AUTHOR_SIDE_STAFF
+                ) {
+                    event(new StaffMessagePosted($thread, $existing));
+                }
                 return $existing;
             }
 

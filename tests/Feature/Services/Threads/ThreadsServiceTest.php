@@ -9,9 +9,13 @@ use App\Eloquents\User;
 use App\Exceptions\Threads\StaleThreadException;
 use App\Services\Threads\ThreadsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\App;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use RuntimeException;
 use Tests\TestCase;
 
 class ThreadsServiceTest extends TestCase
@@ -135,6 +139,60 @@ class ThreadsServiceTest extends TestCase
         $thread->refresh();
         $this->assertSame($statusBefore, $thread->status);
         $this->assertSame(ThreadEntry::KIND_INTERNAL_NOTE, $entry->kind);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function スタッフ返信の通知メールが途中で失敗しても返信は保存され同じトークンの再送信で未送信の宛先にだけ届く()
+    {
+        $other = factory(User::class)->create();
+        $this->circle->users()->attach($other->id);
+        $thread = $this->threadsService->getOrCreateForCircle($this->circle);
+        $token = (string)Str::uuid();
+
+        $failingEmail = $other->email;
+        Event::listen(MessageSending::class, function (MessageSending $event) use (&$failingEmail) {
+            foreach ($event->message->getTo() as $address) {
+                if ($address->getAddress() === $failingEmail) {
+                    throw new RuntimeException('SMTP failure');
+                }
+            }
+        });
+
+        try {
+            $this->threadsService->postStaffMessage(
+                $thread,
+                $this->staff,
+                '回答です',
+                Thread::STATUS_AWAITING_REPLY,
+                [],
+                $token
+            );
+            $this->fail('1回目の通知は失敗するはず');
+        } catch (RuntimeException $e) {
+            $this->assertSame('SMTP failure', $e->getMessage());
+        }
+
+        $this->assertDatabaseCount('thread_entries', 1);
+        $this->assertSame(Thread::STATUS_AWAITING_REPLY, $thread->fresh()->status);
+
+        $failingEmail = null;
+        $this->threadsService->postStaffMessage(
+            $thread,
+            $this->staff,
+            '回答です',
+            Thread::STATUS_AWAITING_REPLY,
+            [],
+            $token
+        );
+
+        $sentTo = collect(Mail::mailer()->getSymfonyTransport()->messages())
+            ->flatMap(fn ($sent) => $sent->getEnvelope()->getRecipients())
+            ->map(fn ($address) => $address->getAddress())
+            ->countBy()
+            ->all();
+        $this->assertSame(1, $sentTo[$this->member->email] ?? 0);
+        $this->assertSame(1, $sentTo[$other->email] ?? 0);
+        $this->assertDatabaseCount('thread_entries', 1);
     }
 
     #[\PHPUnit\Framework\Attributes\Test]

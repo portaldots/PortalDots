@@ -18,9 +18,11 @@ sh updater/tools/setup-release-signing.sh --apply
 
 鍵を `$HOME/.portaldots-release-keys` に生成し、GitHubの保護設定と鍵登録を行います。既存の鍵は再生成しません。途中で失敗した場合も鍵を削除せず、表示された原因を確認してください。
 
-対象リポジトリと鍵の保存先は `--repo OWNER/REPO --key-dir PATH` で変更できます。鍵の保存先はGit checkoutの外側を指定し、親ディレクトリをあらかじめ作成してください。確認だけの実行は鍵ファイルやGitHub設定を変更しません。
+対象リポジトリと鍵の保存先は `--repo OWNER/REPO --key-dir PATH` で変更できます。鍵の保存先はGit checkoutの外側を指定し、親ディレクトリをあらかじめ作成してください。確認だけの実行は鍵ファイルやGitHub設定を変更しません。`--generate` を付けると、`--apply` なしでも鍵だけを生成します（GitHub設定は変更しません）。
 
-`--apply` は次の順に処理します。
+鍵はroot署名用（`release.key`／`release.pub`）とrenewal署名用（`renewal.key`／`renewal.pub`）の2組で、どちらもEd25519です。公開鍵は32 bytes、秘密鍵はseed 32 bytesと公開鍵32 bytesを連結した64 bytesで、いずれもbase64で保存します。
+
+`--apply` は、鍵がなければ生成し、鍵の形式を検証し、既存のSecretsと公開鍵Variablesが上書きされないことを確認してから、次の順に処理します。
 
 1. `v*` タグの作成・更新・削除を管理者へ制限するrulesetを作成する
 2. `release-signing` を `v*` タグだけ、`release-renewal` をGitHubから取得した既定ブランチだけに制限する

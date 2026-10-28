@@ -18,7 +18,7 @@
                         }">
         <template v-slot:activities="{ row }">
             <icon-button
-                v-bind:href="`{{ route('staff.permissions.edit', ['user' => '%%USER%%']) }}`.replace('%%USER%%', row['id'])"
+                v-bind:href="`{{ route('staff.permissions.edit', ['user' => '__USER__']) }}`.replace('__USER__', row['id'])"
                 v-bind:disabled="row['is_admin']" title="編集">
                 <i class="fas fa-pencil-alt fa-fw"></i>
             </icon-button>

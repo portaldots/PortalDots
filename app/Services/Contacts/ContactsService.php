@@ -11,6 +11,7 @@ use App\Eloquents\ContactCategory;
 use App\Eloquents\User;
 use App\Mail\Contacts\ContactMailable;
 use App\Mail\Contacts\EmailCategoryMailable;
+use App\Services\Notifications\NotificationDeliveryService;
 use App\Services\Threads\ThreadsService;
 
 class ContactsService
@@ -20,9 +21,17 @@ class ContactsService
      */
     private $threadsService;
 
-    public function __construct(ThreadsService $threadsService)
-    {
+    /**
+     * @var NotificationDeliveryService
+     */
+    private $notificationDeliveryService;
+
+    public function __construct(
+        ThreadsService $threadsService,
+        NotificationDeliveryService $notificationDeliveryService
+    ) {
         $this->threadsService = $threadsService;
+        $this->notificationDeliveryService = $notificationDeliveryService;
     }
 
     /**
@@ -60,22 +69,35 @@ class ContactsService
             $clientToken
         );
 
-        if (!$entry->wasRecentlyCreated) {
-            // 同じトークンでの二重送信。メールは初回送信時に送っているため何もしない
-            return;
-        }
-
+        // 同じトークンで再送信された場合、会話への投稿は1件のまま、送信済みの宛先は飛ばして
+        // 前回の送信が途中で失敗した宛先だけに送る
         if (isset($circle) && is_iterable($circle->users) && count($circle->users) > 0) {
             // 企画に所属するユーザー全員に確認メールを送信する
-            foreach ($circle->users as $user) {
-                $this->send($user, $circle, $sender, $contactBody, $category);
-            }
+            $recipients = $circle->users;
+            $mailCircle = $circle;
         } else {
             // 企画に所属していないユーザーの場合
-            $this->send($sender, null, $sender, $contactBody, $category);
+            $recipients = [$sender];
+            $mailCircle = null;
         }
 
-        $this->sendToStaff($circle, $sender, $contactBody, $category);
+        foreach ($recipients as $recipient) {
+            $this->notificationDeliveryService->sendOnce(
+                "contact-received:{$entry->id}:{$recipient->id}",
+                $recipient->id,
+                function () use ($recipient, $mailCircle, $sender, $contactBody, $category) {
+                    $this->send($recipient, $mailCircle, $sender, $contactBody, $category);
+                }
+            );
+        }
+
+        $this->notificationDeliveryService->sendOnce(
+            "contact-received:{$entry->id}:staff",
+            null,
+            function () use ($circle, $sender, $contactBody, $category) {
+                $this->sendToStaff($circle, $sender, $contactBody, $category);
+            }
+        );
     }
 
     /**

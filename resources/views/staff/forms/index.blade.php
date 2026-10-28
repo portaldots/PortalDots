@@ -29,12 +29,12 @@
         </template>
         <template v-slot:activities="{ row, openEditorByUrl }">
             <icon-button
-                v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
+                v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '__FORM__']) }}`.replace('__FORM__', row['id'])"
                 title="回答一覧・設定">
                 <i class="far fa-eye fa-fw"></i>
             </icon-button>
             <form-with-confirm
-                v-bind:action="`{{ route('staff.forms.copy', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
+                v-bind:action="`{{ route('staff.forms.copy', ['form' => '__FORM__']) }}`.replace('__FORM__', row['id'])"
                 method="post"
                 v-bind:confirm-message="`フォーム「${row['name']}」を複製しますか？
 
@@ -48,7 +48,7 @@
                 </icon-button>
             </form-with-confirm>
             <form-with-confirm
-                v-bind:action="`{{ route('staff.forms.destroy', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])"
+                v-bind:action="`{{ route('staff.forms.destroy', ['form' => '__FORM__']) }}`.replace('__FORM__', row['id'])"
                 method="post" v-bind:confirm-message="`フォーム「${row['name']}」を削除しますか？
 
 • 設問、回答は全て削除されます`" inline>
@@ -63,7 +63,7 @@
             <template v-if="keyName === 'name' || keyName === 'id'">
                 {{-- ID・フォーム名 --}}
                 <a
-                    v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '%%FORM%%']) }}`.replace('%%FORM%%', row['id'])">
+                    v-bind:href="`{{ route('staff.forms.answers.index', ['form' => '__FORM__']) }}`.replace('__FORM__', row['id'])">
                     @{{ row[keyName] }}
                 </a>
             </template>

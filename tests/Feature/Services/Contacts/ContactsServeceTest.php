@@ -7,7 +7,10 @@ use App\Mail\Contacts\ContactMailable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Services\Contacts\ContactsService;
+use Illuminate\Mail\Events\MessageSending;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
+use RuntimeException;
 use Tests\TestCase;
 use App;
 use App\Eloquents\Circle;
@@ -105,6 +108,57 @@ class ContactsServeceTest extends TestCase
 
         // 1回ごとに メンバー2人 + スタッフ控え = 3通、2回で6通
         Mail::assertSent(ContactMailable::class, 6);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function 送信が途中で失敗しても同じトークンで再送信すると未送信の宛先にだけ届く()
+    {
+        // スタッフ用控えは企画のメンバー全員へ送った後に送るため、控えで失敗させると
+        // 1回目で送信済みになった宛先が再送信で飛ばされることを確かめられる
+        $failingEmail = $this->contactCategory->email;
+        Event::listen(MessageSending::class, function (MessageSending $event) use (&$failingEmail) {
+            foreach ($event->message->getTo() as $address) {
+                if ($address->getAddress() === $failingEmail) {
+                    throw new RuntimeException('SMTP failure');
+                }
+            }
+        });
+
+        try {
+            $this->contactsService->create(
+                $this->circle,
+                $this->leader,
+                '本文',
+                $this->contactCategory,
+                [],
+                'retry-token'
+            );
+            $this->fail('1回目の送信は失敗するはず');
+        } catch (RuntimeException $e) {
+            $this->assertSame('SMTP failure', $e->getMessage());
+        }
+
+        $failingEmail = null;
+        $this->contactsService->create(
+            $this->circle,
+            $this->leader,
+            '本文',
+            $this->contactCategory,
+            [],
+            'retry-token'
+        );
+
+        $sentTo = collect(Mail::mailer()->getSymfonyTransport()->messages())
+            ->flatMap(fn ($sent) => $sent->getEnvelope()->getRecipients())
+            ->map(fn ($address) => $address->getAddress())
+            ->countBy()
+            ->all();
+        $this->assertSame(1, $sentTo[$this->leader->email] ?? 0);
+        $this->assertSame(1, $sentTo[$this->member->email] ?? 0);
+        $this->assertSame(1, $sentTo[$this->contactCategory->email] ?? 0);
+
+        $thread = Thread::where('circle_id', $this->circle->id)->firstOrFail();
+        $this->assertSame(1, $thread->entries()->count());
     }
 
     #[\PHPUnit\Framework\Attributes\Test]

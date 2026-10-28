@@ -53,7 +53,7 @@
         </template>
         <template v-slot:activities="{ row }">
             <icon-button
-                v-bind:href="`{{ route('staff.threads.show', ['thread' => '%%THREAD%%']) }}`.replace('%%THREAD%%', row['id'])"
+                v-bind:href="`{{ route('staff.threads.show', ['thread' => '__THREAD__']) }}`.replace('__THREAD__', row['id'])"
                 title="開く">
                 <i class="fas fa-comments fa-fw"></i>
             </icon-button>
