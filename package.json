@@ -36,7 +36,7 @@
         "globals": "^17.13.0",
         "laravel-vite-plugin": "^3.2.0",
         "lodash": "^4.17.23",
-        "sass": "^1.105.0",
+        "sass": "^1.106.1",
         "vite": "^8.3.5",
         "vue-eslint-parser": "^10.3.0"
     },
