@@ -28,7 +28,7 @@
         "eslint-check": "eslint ./resources"
     },
     "devDependencies": {
-        "@vitejs/plugin-vue": "^6.0.9",
+        "@vitejs/plugin-vue": "^6.0.10",
         "@vue/compiler-sfc": "^3.5.43",
         "eslint": "^10.11.0",
         "eslint-config-prettier": "^10.1.8",
