@@ -18,7 +18,7 @@
         "doctrine/dbal": "^3.3",
         "ezyang/htmlpurifier": "^4.9",
         "fideloper/proxy": "^4.0",
-        "fruitcake/laravel-cors": "^2.2",
+        "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "jackiedo/dotenv-editor": "^2.0",
         "laravel/framework": "^8.0",
